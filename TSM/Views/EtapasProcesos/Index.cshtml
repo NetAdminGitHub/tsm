@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Definición de Etapas de Procesos";
+    ViewBag.IdVersion = "TSM0101042|v18101701";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)"
+        var UrlModulos = "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+    <script src="~/Scripts/js/EtapasProcesos.js"></script>
+}
+
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <h4>@ViewBag.Title</h4>
+    </div>
+    <div class="form-group col-lg-12">
+        <label for="cmbModulo" style="font-size: 1.2em;">Módulo:</label>
+        <input id="cmbModulo" style="width: 450px;" />
+    </div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>

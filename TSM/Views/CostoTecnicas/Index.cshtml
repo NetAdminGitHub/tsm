@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Costos por Técnicas";
+    ViewBag.IdVersion = "TSM0101027|v18102501";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}CostoTecnicas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlApiServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTec = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlBase ="@string.Format("{0}Bases", TSM.Utils.Config.TSM_WebApi)";
+
+    </script>
+
+    <script src="~/Scripts/js/CostoTecnicas.js"></script>
+}
+
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>Costos por Técnicas</h4></div>
+    <div class="form-group col-lg-12">
+        <label for="CmbIdServicio" style="font-size: 1.2em;">Servicio:</label>
+        <input id="CmbIdServicio" style="width: 450px;" />
+    </div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>

@@ -1,0 +1,639 @@
+@font-face {
+    font-family: 'TSM-Icons-General';
+    src: url('../Fonts/TSM-Icons-General.woff?#iefix') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="TS-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'TSM-Icons-General';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.TS-icon-ABIERTO:before {
+    content: "\e900";
+}
+
+.TS-icon-ACTUALIZAR:before {
+    content: "\e901";
+}
+
+.TS-icon-ACTUALIZAR3:before {
+    content: "\e902";
+}
+
+.TS-icon-AD1:before {
+    content: "\e903";
+}
+
+.TS-icon-AD2:before {
+    content: "\e904";
+}
+
+.TS-icon-AD3:before {
+    content: "\e905";
+}
+
+.TS-icon-AD4:before {
+    content: "\e906";
+}
+
+.TS-icon-ADELANTE:before {
+    content: "\e907";
+}
+
+.TS-icon-ADJUNTAR:before {
+    content: "\e908";
+}
+
+.TS-icon-AJUSTES_1:before {
+    content: "\e909";
+}
+
+.TS-icon-AJUSTES:before {
+    content: "\e90a";
+}
+
+.TS-icon-ALTO:before {
+    content: "\e90b";
+}
+
+.TS-icon-ARRIBA:before {
+    content: "\e90c";
+}
+
+.TS-icon-ARROBA:before {
+    content: "\e90d";
+}
+
+.TS-icon-ARROW:before {
+    content: "\e90e";
+}
+
+.TS-icon-Asset-278:before {
+    content: "\e90f";
+}
+
+.TS-icon-Asset-279:before {
+    content: "\e910";
+}
+
+.TS-icon-Asset-280:before {
+    content: "\e911";
+}
+
+.TS-icon-Asset-281:before {
+    content: "\e912";
+}
+
+.TS-icon-ATRAS:before {
+    content: "\e913";
+}
+
+.TS-icon-BASURERO_1:before {
+    content: "\e914";
+}
+
+.TS-icon-BASURERO:before {
+    content: "\e915";
+}
+
+.TS-icon-BUSCAR:before {
+    content: "\e916";
+}
+
+.TS-icon-BUSCAR2:before {
+    content: "\e917";
+}
+
+.TS-icon-CA1:before {
+    content: "\e918";
+}
+
+.TS-icon-CA2:before {
+    content: "\e919";
+}
+
+.TS-icon-CA3:before {
+    content: "\e91a";
+}
+
+.TS-icon-CA4:before {
+    content: "\e91b";
+}
+
+.TS-icon-CAL-1:before {
+    content: "\e91c";
+}
+
+.TS-icon-CAL2:before {
+    content: "\e91d";
+}
+
+.TS-icon-CALCULADORA:before {
+    content: "\e91e";
+}
+
+.TS-icon-CAMISA-1:before {
+    content: "\e91f";
+}
+
+.TS-icon-CAMISA-2:before {
+    content: "\e920";
+}
+
+.TS-icon-CARNET:before {
+    content: "\e921";
+}
+
+.TS-icon-CARPETA_1:before {
+    content: "\e922";
+}
+
+.TS-icon-CARPETA:before {
+    content: "\e923";
+}
+
+.TS-icon-CERRADO:before {
+    content: "\e924";
+}
+
+.TS-icon-CERRAR:before {
+    content: "\e925";
+}
+
+.TS-icon-CO1:before {
+    content: "\e926";
+}
+
+.TS-icon-CO2:before {
+    content: "\e927";
+}
+
+.TS-icon-CO3:before {
+    content: "\e928";
+}
+
+.TS-icon-CO4:before {
+    content: "\e929";
+}
+
+.TS-icon-CONCULTA:before {
+    content: "\e92a";
+}
+
+.TS-icon-CONSULTAR:before {
+    content: "\e92b";
+}
+
+.TS-icon-COPIAR:before {
+    content: "\e92c";
+}
+
+.TS-icon-CORREO:before {
+    content: "\e92d";
+}
+
+.TS-icon-CORTAR:before {
+    content: "\e92e";
+}
+
+.TS-icon-CRUZ:before {
+    content: "\e92f";
+}
+
+.TS-icon-DE1:before {
+    content: "\e930";
+}
+
+.TS-icon-DE2:before {
+    content: "\e931";
+}
+
+.TS-icon-DE3:before {
+    content: "\e932";
+}
+
+.TS-icon-DE4:before {
+    content: "\e933";
+}
+
+.TS-icon-DER:before {
+    content: "\e934";
+}
+
+.TS-icon-DESCARGAR_1:before {
+    content: "\e935";
+}
+
+.TS-icon-DESCARGAR:before {
+    content: "\e936";
+}
+
+.TS-icon-DI1:before {
+    content: "\e937";
+}
+
+.TS-icon-DI2:before {
+    content: "\e938";
+}
+
+.TS-icon-DI3:before {
+    content: "\e939";
+}
+
+.TS-icon-DI4:before {
+    content: "\e93a";
+}
+
+.TS-icon-DIRECCIONALES:before {
+    content: "\e93b";
+}
+
+.TS-icon-DOLAR:before {
+    content: "\e93c";
+}
+
+.TS-icon-DP1:before {
+    content: "\e93d";
+}
+
+.TS-icon-DP2:before {
+    content: "\e93e";
+}
+
+.TS-icon-DP3:before {
+    content: "\e93f";
+}
+
+.TS-icon-DP4:before {
+    content: "\e940";
+}
+
+.TS-icon-EDITAR:before {
+    content: "\e941";
+}
+
+.TS-icon-EFECTIVO:before {
+    content: "\e942";
+}
+
+.TS-icon-ESTADISTICA:before {
+    content: "\e943";
+}
+
+.TS-icon-EV1:before {
+    content: "\e944";
+}
+
+.TS-icon-EV2:before {
+    content: "\e945";
+}
+
+.TS-icon-EV3:before {
+    content: "\e946";
+}
+
+.TS-icon-EV4:before {
+    content: "\e947";
+}
+
+.TS-icon-favoprito:before {
+    content: "\e948";
+}
+
+.TS-icon-FAVORITOS-1:before {
+    content: "\e949";
+}
+
+.TS-icon-FAVORITOS:before {
+    content: "\e94a";
+}
+
+.TS-icon-FIEL-:before {
+    content: "\e94b";
+}
+
+.TS-icon-FOCO:before {
+    content: "\e94c";
+}
+
+.TS-icon-GRAFICAS:before {
+    content: "\e94d";
+}
+
+.TS-icon-HOME-2:before {
+    content: "\e94e";
+}
+
+.TS-icon-HOME:before {
+    content: "\e94f";
+}
+
+.TS-icon-IMAGEN:before {
+    content: "\e950";
+}
+
+.TS-icon-INFO:before {
+    content: "\e951";
+}
+
+.TS-icon-INFO1:before {
+    content: "\e952";
+}
+
+.TS-icon-INFORMACION-1:before {
+    content: "\e953";
+}
+
+.TS-icon-INFORMACION-2:before {
+    content: "\e954";
+}
+
+.TS-icon-INGRESO:before {
+    content: "\e955";
+}
+
+.TS-icon-IZQ:before {
+    content: "\e956";
+}
+
+.TS-icon-LAPIZ:before {
+    content: "\e957";
+}
+
+.TS-icon-LINK:before {
+    content: "\e958";
+}
+
+.TS-icon-MALETA:before {
+    content: "\e959";
+}
+
+.TS-icon-MARCADOR:before {
+    content: "\e95a";
+}
+
+.TS-icon-MAS:before {
+    content: "\e95b";
+}
+
+.TS-icon-MENOS:before {
+    content: "\e95c";
+}
+
+.TS-icon-MENU:before {
+    content: "\e95d";
+}
+
+.TS-icon-MF1:before {
+    content: "\e95e";
+}
+
+.TS-icon-MF2:before {
+    content: "\e95f";
+}
+
+.TS-icon-MF3:before {
+    content: "\e960";
+}
+
+.TS-icon-MF4:before {
+    content: "\e961";
+}
+
+.TS-icon-MK1:before {
+    content: "\e962";
+}
+
+.TS-icon-MK2:before {
+    content: "\e963";
+}
+
+.TS-icon-MK3:before {
+    content: "\e964";
+}
+
+.TS-icon-MK4:before {
+    content: "\e965";
+}
+
+.TS-icon-MONEDAS:before {
+    content: "\e966";
+}
+
+.TS-icon-MT1:before {
+    content: "\e967";
+}
+
+.TS-icon-MT2:before {
+    content: "\e968";
+}
+
+.TS-icon-MT3:before {
+    content: "\e969";
+}
+
+.TS-icon-MT4:before {
+    content: "\e96a";
+}
+
+.TS-icon-NOTIFICACION:before {
+    content: "\e96b";
+}
+
+.TS-icon-NUBE:before {
+    content: "\e96c";
+}
+
+.TS-icon-ON:before {
+    content: "\e96d";
+}
+
+.TS-icon-OP1:before {
+    content: "\e96e";
+}
+
+.TS-icon-OP2:before {
+    content: "\e96f";
+}
+
+.TS-icon-OP3:before {
+    content: "\e970";
+}
+
+.TS-icon-OP4:before {
+    content: "\e971";
+}
+
+.TS-icon-PLUMA-1:before {
+    content: "\e972";
+}
+
+.TS-icon-PLUMA-2:before {
+    content: "\e973";
+}
+
+.TS-icon-PORCENTAJE:before {
+    content: "\e974";
+}
+
+.TS-icon-PR1:before {
+    content: "\e975";
+}
+
+.TS-icon-PR2:before {
+    content: "\e976";
+}
+
+.TS-icon-PR3:before {
+    content: "\e977";
+}
+
+.TS-icon-PR4:before {
+    content: "\e978";
+}
+
+.TS-icon-PRECAUCION:before {
+    content: "\e979";
+}
+
+.TS-icon-PRINT:before {
+    content: "\e97a";
+}
+
+.TS-icon-PY1:before {
+    content: "\e97b";
+}
+
+.TS-icon-PY2:before {
+    content: "\e97c";
+}
+
+.TS-icon-PY3:before {
+    content: "\e97d";
+}
+
+.TS-icon-PY4:before {
+    content: "\e97e";
+}
+
+.TS-icon-R4:before {
+    content: "\e97f";
+}
+
+.TS-icon-RE1:before {
+    content: "\e980";
+}
+
+.TS-icon-RE2:before {
+    content: "\e981";
+}
+
+.TS-icon-RE3:before {
+    content: "\e982";
+}
+
+.TS-icon-RH1:before {
+    content: "\e983";
+}
+
+.TS-icon-RH2:before {
+    content: "\e984";
+}
+
+.TS-icon-RH3:before {
+    content: "\e985";
+}
+
+.TS-icon-RH4:before {
+    content: "\e986";
+}
+
+.TS-icon-SALIDA:before {
+    content: "\e987";
+}
+
+.TS-icon-SCREEN:before {
+    content: "\e988";
+}
+
+.TS-icon-SENAL:before {
+    content: "\e989";
+}
+
+.TS-icon-TECNICA-1:before {
+    content: "\e98a";
+}
+
+.TS-icon-TECNICA-2:before {
+    content: "\e98b";
+}
+
+.TS-icon-TEXTO-1:before {
+    content: "\e98c";
+}
+
+.TS-icon-TEXTO-2:before {
+    content: "\e98d";
+}
+
+.TS-icon-TI1:before {
+    content: "\e98e";
+}
+
+.TS-icon-TI2:before {
+    content: "\e98f";
+}
+
+.TS-icon-TI3:before {
+    content: "\e990";
+}
+
+.TS-icon-TI4:before {
+    content: "\e991";
+}
+
+.TS-icon-TN1:before {
+    content: "\e992";
+}
+
+.TS-icon-TN2:before {
+    content: "\e993";
+}
+
+.TS-icon-TN3 .path1:before {
+    content: "\e994";
+    color: rgb(0, 0, 0);
+}
+
+.TS-icon-TN3 .path2:before {
+    content: "\e995";
+    margin-left: -1em;
+    color: rgb(16, 24, 32);
+}
+
+.TS-icon-TN4:before {
+    content: "\e996";
+}
+
+.TS-icon-UPLOAD:before {
+    content: "\e997";
+}
+
+.TS-icon-USUARIO:before {
+    content: "\e998";
+}
+
+.TS-icon-USUARIOS:before {
+    content: "\e999";
+}

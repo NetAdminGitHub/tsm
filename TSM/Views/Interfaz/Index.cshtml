@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Definción de Interfaces";
+    ViewBag.IdVersion = "TSM0101004|v18052901";
+}
+@section Scripts {
+<script type="text/javascript">
+    var crudServiceBaseUrl = "@string.Format("{0}Interfaz", TSM.Utils.Config.TSM_WebApi)"
+    var VistaSistemaUlr = "@string.Format("{0}Sistemas", TSM.Utils.Config.TSM_WebApi)"
+</script>
+
+<script src="~/Scripts/js/Interfaz.js"></script>
+}
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>Definción de Interfaces</h4></div>
+    <div class="form-group col-lg-12">
+        <label for="CmdSistema" style="font-size: 1.2em;">Sistema:</label>
+        <input id="CmdSistema" style="width: 450px;" />
+    </div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿<div class="form-group col-lg-12">
+ 
+    <div class="row">
+        <div class="form-group col-lg-9">
+            <form id="FrmSerigrafia" enctype="multipart/form-data" autocomplete="off">
+                <div class="row">
+                    <input id="IdAnalisisDiseno" name="IdAnalisisDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <input id="IdRequerimiento" name="IdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <div class="form-group col-lg-3">
+                        <label for="Estado" style="font-size: 1.2em;">Estado:</label>
+                        <input id="Estado" name="Estado" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="Fecha" style="font-size: 1.2em;">Fecha:</label>
+                        <input id="Fecha" name="Fecha" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="ResolucionDPI" style="font-size: 1.2em;">Resolución (DPI):</label>
+                        <input id="ResolucionDPI" name="ResolucionDPI" type="text" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="ResolucionSqr" style="font-size: 1.2em;">Resolución<sup>2</sup>:</label>
+                        <input id="ResolucionSqr" name="ResolucionSqr" class="form-control" value="0" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="PixelesTotal" style="font-size: 1.2em;">Pixeles:</label>
+                        <input id="PixelesTotal" name="PixelesTotal" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="AreaTotal" style="font-size: 1.2em;">Area Total:</label>
+                        <input id="AreaTotal" name="AreaTotal" class="form-control" value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="IdUniArea" style="font-size: 1.2em;">Unidad Medida:</label>
+                        <input id="IdUniArea" name="IdUniArea" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CntTallas" style="font-size: 1.2em;">Tamaño:</label>
+                        <input id="CntTallas" name="CntTallas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="AnchoDiseno" style="font-size: 1.2em;">Ancho:</label>
+                        <input id="AnchoDiseno" name="AnchoDiseno" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="AltoDiseno" style="font-size: 1.2em;">Alto:</label>
+                        <input id="AltoDiseno" name="AltoDiseno" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="IdUniDimension" style="font-size: 1.2em;">Unidad Medida:</label>
+                        <input id="IdUniDimension" name="IdUniDimension" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <div class="row">
+                            <div class="form-group col-md-7 col-lg-7">
+                                <label for="CntcolorSer" style="font-size: 1.2em;">Cantidad Colores:</label>
+                                <input id="CntcolorSer" name="CntcolorSer" class="form-control" value="0" />
+                            </div>
+                            <div class="form-group col-md-5 col-lg-5 align-self-end">
+                                <input type="checkbox" id="chkDisenoFullColor" name="chkDisenoFullColor" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkDisenoFullColor" style="font-size: 1.2em;">Full Color</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="TxtVelocidadMaquina" style="font-size: 1.2em;">Velocidad Maquina:</label>
+                        <input id="TxtVelocidadMaquina" name="TxtVelocidadMaquina" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdUnidadVelocidad" style="font-size: 1.2em;">Unidad Velocidad:</label>
+                        <input id="CmbIdUnidadVelocidad" name="CmbIdUnidadVelocidad" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="TxtComentarios" style="font-size: 1.2em;">Comentarios:</label>
+                        <input id="TxtComentarios" name="TxtComentarios" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 align-self-end">
+                        <button type="button" id="GSerigrafia" name="GSerigrafia">&nbsp;Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="form-group col-lg-3">
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDirectorioSeri" style="font-size: 1.2em;">Directorio Archivos:</label>
+                    <input id="TxtDirectorioSeri" name="TxtDirectorioSeri" type="text" class="k-textbox form-control" readonly="readonly" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12" id="SerigrafiaSlide">
+                    @* aqui se coloca dinamicamente las imagenes  *@
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <div id="vistaParSeri"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Técnicas</label></div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-12">
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <div id="GSeparacion"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

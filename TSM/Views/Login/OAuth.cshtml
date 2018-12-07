@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redireccionando - Techno Screen Management</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Login")
+    @Styles.Render("~/Content/bootstrap/css")
+    @Styles.Render("~/Content/Kendo/css")
+</head>
+<body>
+    <div>
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 offset-sm-3">
+                            <h3 align="center"><strong>Redireccionando...</strong></h3>
+                        </div>
+                    </div>
+                    <div class="row" id="waitDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Kendo/js")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            kendo.ui.progress($("#waitDiv"), true);
+            
+            item = {};
+            item["Usuario"] = "@ViewBag.Usuario";
+            item["t"] = "@ViewBag.Token";
+            item["TipoSolicitud"] = "RENOVARTOKEN";
+
+            $.ajax({
+                url: '/Token/GetToken',
+                data: { trama: JSON.stringify(item) }
+            }).done(function (data) {
+                if (data === null || data === "")
+                    window.location.href = "/Token/Redirect";
+                else {                    
+                    window.sessionStorage.setItem("t", data);
+                    window.sessionStorage.setItem("user", "@ViewBag.Usuario");
+                    kendo.ui.progress($("#waitDiv"), false);
+                    window.location.href = "/";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

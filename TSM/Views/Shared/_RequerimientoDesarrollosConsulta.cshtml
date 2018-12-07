@@ -1,0 +1,208 @@
+﻿
+<style>
+    .k-datepicker .k-select {
+        display: none;
+    }
+</style>
+<div class="row">
+    <div class="form-group col-lg-12" id="DivFrmRD">
+        <!-- SECION FROMULARIO REQUERIMIENTO DE DESARROLLO -->
+        <div class="border p-md-1 p-lg-1 ">
+            <div class="row">
+                <div class="col-md-6 col-lg-10"> <label class="font-weight-bold" style=" font-size:1.2em;">Información General</label></div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="NoDocumento_Cota" style="font-size: 1.2em;">No Req:</label>
+                    <input id="NoDocumento_Cota" name="NoDocumento_Cota" type="text" class="k-textbox form-control" , style="width:100%" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtFechaConsulta" style="font-size: 1.2em;">Fecha Requerimiento:</label>
+                    <input id="TxtFechaConsulta" name="TxtFechaConsulta" class="form-control" />
+                </div>
+                <div class="form-group col-md-6  col-lg-3">
+                    <label for="TxtPrograma" style="font-size: 1.2em;">Programa:</label>
+                    <input id="TxtPrograma" name="TxtPrograma" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3 align-self-end">
+                    <input type="checkbox" id="chkRevisionTecnica_Cota" name="chkRevisionTecnica" class="k-checkbox" disabled="disabled">
+                    <label class="k-checkbox-label" for="chkRevisionTecnica_Cota" style="font-size: 1.2em;">Revisión Técnica</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtUbicacion" style="font-size: 1.2em;">Ubicación del Estampado:</label>
+                    <input id="TxtUbicacion" name="TxtUbicacion" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="UbicacionVer_Cota" style="font-size: 1.2em;">Ubicación Vertical: </label>
+                    <input id="UbicacionVer_Cota" name="UbicacionVer_Cota" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="UbicacionHor_Cota" style="font-size: 1.2em;">Ubicación Horizontal:</label>
+                    <input id="UbicacionHor_Cota" name="UbicacionHor_Cota" type="text" class="k-textbox form-control" />
+                </div>
+
+                <div class="form-group col-md-6 col-lg-3">
+                    <div class="row">
+                        <div class="form-group col-md-6 col-lg-7">
+                            <label for="CntPiezas_Cota" style="font-size: 1.2em;">Cantidad a Producir:</label>
+                            <input id="CntPiezas_Cota" name="CntPiezas_Cota" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6 col-lg-5">
+                            <label for="CmbIdUnidadMedidaCantidad_Cota" style="font-size: 1.2em;">Unidad</label>
+                            <input id="CmbIdUnidadMedidaCantidad_Cota" name="CmbIdUnidadMedidaCantidad_Cota" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Row4RD">
+                <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TallaPrincipal_Cota" style="font-size: 1.2em;">Tallas:</label>
+                    <input id="TallaPrincipal_Cota" name="TallaPrincipal_Cota" type="text" class="k-textbox form-control" style="width:100%" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <div class="row">
+                        <div class="form-group col-md-7 col-lg-6">
+                            <label for="CantidadColores_Cota" style="font-size: 1.2em;">Cant. Colores:</label>
+                            <input id="CantidadColores_Cota" name="CantidadColores_Cota" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-5 col-lg-6 align-self-end">
+                            <input type="checkbox" id="chkDisenoFullColorConsulta_Cota" name="chkDisenoFullColorConsulta_Cota" class="k-checkbox" disabled="disabled">
+                            <label class="k-checkbox-label" for="chkDisenoFullColorConsulta_Cota" style="font-size: 1.2em;">Full Color</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="CantidadTallas_Cota" style="font-size: 1.2em;">Cantidad Tallas:</label>
+                    <input id="CantidadTallas_Cota" name="CantidadTallas_Cota" type="text" class="form-control" />
+
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="Montaje_Cota" style="font-size: 1.2em;">Montaje:</label>
+                    <input id="Montaje_Cota" name="Montaje_Cota" type="text" class="form-control" />
+
+                </div>
+
+            </div>
+            <div class="row"  id="Row5RD">
+                <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio-->
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="Combo_Cota" style="font-size: 1.2em;">Combo:</label>
+                    <input id="Combo_Cota" name="Combo_Cota" type="text" class="form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtVelocidadMaquinaConsulta" style="font-size: 1.2em;">Velocidad Maquina:</label>
+                    <input id="TxtVelocidadMaquinaConsulta" name="TxtVelocidadMaquinaConsulta_Cota" class="form-control" required value="0" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="CmbIdUnidadVelocidadConsulta" style="font-size: 1.2em;">Unidad Velocidad:</label>
+                    <input id="CmbIdUnidadVelocidadConsulta" name="CmbIdUnidadVelocidadConsulta" class="form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="CmbBase_Cota" style="font-size: 1.2em;">Base:</label>
+                    <input id="CmbBase_Cota" name="CmbBase_Cota" class="form-control" required validationMessage="Requerido" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="InstruccionesEspeciales_Cota" style="font-size: 1.2em;"> Instrucciones Especiales:</label>
+                    <input id="InstruccionesEspeciales_Cota" name="InstruccionesEspeciales_Cota" type="text" class="k-textbox form-control" />
+                </div>
+            </div>
+           
+        </div>
+        <!-- SECION FROMULARIO PRENDA-->
+        <div class="border p-md-1 p-lg-1">
+            <div class="row">
+                <div class="col-lg-6"><label class="font-weight-bold" style=" font-size:1.2em;">Prenda</label></div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtComposicionTela" style="font-size: 1.2em;">Composición Tela:</label>
+                    <input id="TxtComposicionTela" name="TxtComposicionTela" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtCategoriaConfeccion" style="font-size: 1.2em;">Confección:</label>
+                    <input id="TxtCategoriaConfeccion" name="TxtCategoriaConfeccion" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="TxtConstruccionTela" style="font-size: 1.2em;">Construcción Tela:</label>
+                    <input id="TxtConstruccionTela" name="TxtConstruccionTela" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="Color_Cota" style="font-size: 1.2em;">Color:</label>
+                    <input id="Color_Cota" name="Color_Cota" type="text" class="k-textbox form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="TxtCategoriaPrenda" style="font-size: 1.2em;">Prenda Estampar:</label>
+                    <input id="TxtCategoriaPrenda" name="TxtCategoriaPrenda" class="form-control" />
+                </div>
+                
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="IdSistemaTinta_Cota" style="font-size: 1.2em;">Sistemas de Tintas:</label>
+                    <input id="IdSistemaTinta_Cota" name="IdSistemaTinta_Cota" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-lg-12">
+        <!-- SECION FROMULARIO ARTE-->
+        <div class="border p-md-1 p-lg-1">
+            <div class="row">
+                <div class="col-lg-6"><label class="font-weight-bold" style=" font-size:1.2em;">Diseño</label></div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 col-lg-4">
+                    <label for="Nombre_Cota" style="font-size: 1.2em;">Nombre del Diseño:</label>
+                    <input id="Nombre_Cota" name="Nombre_Cota" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+                <div class="form-group col-md-6  col-lg-4">
+                    <label for="NumeroDiseno_Cota" style="font-size: 1.2em;">Numero del Diseño:</label>
+                    <input id="NumeroDiseno_Cota" name="NumeroDiseno_Cota" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+                <div class="form-group col-md-6 col-lg-4">
+                    <label for="EstiloDiseno_Cota" style="font-size: 1.2em;">Estilo:</label>
+                    <input id="EstiloDiseno_Cota" name="EstiloDiseno_Cota" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDirectorioArchivos_Cota" style="font-size: 1.2em;">Directorio Archivos:</label>
+                    <input id="TxtDirectorioArchivos_Cota" name="TxtDirectorioArchivos_Cota" type="text" class="k-textbox form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="DimenMsg">
+    <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Dimensiones</label></div>
+</div>
+<!-- SECION GRID DIMENSIONES TALLAS-->
+<div class="row" id="DimenGrid">
+    <div class="form-group col-lg-12">
+        <div id="GRDimension_Cota"></div>
+    </div>
+</div>
+<!-- SECION GRID REQUERIMIENTO DESARROLLO TECNICAS-->
+<div class="row" id="ColorMsg">
+    <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Detalle Ténicas</label></div>
+</div>
+<div class="row" id="ColorGrid">
+    <div class="form-group col-lg-12">
+        <div id="GRReqDesTec_Cota"></div>
+    </div>
+</div>
+

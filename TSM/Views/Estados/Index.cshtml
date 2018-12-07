@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Definición de Estados";
+    ViewBag.IdVersion = "TSM0101003|v18100201";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)"
+        var UrlES = "@string.Format("{0}EstadosSiguientes", TSM.Utils.Config.TSM_WebApi)"
+        var UrlEA = "@string.Format("{0}EstadosAutorizados", TSM.Utils.Config.TSM_WebApi)"
+        var UrlRoles = "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)"
+        var VistaTablasUlr = "@string.Format("{0}Tablas", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+    <script src="~/Scripts/js/Estados.js"></script>
+}
+
+<div class="row">
+    <div class="form-group col-lg-12">
+        <h3>Definición de Estados</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group col">
+            <label for="CmbTabla" style="font-size: 1.2em;">Tabla:</label>
+            <input id="CmbTabla" style="width: 450px;" />
+        </div>
+        <div class="form-group col">
+            <div id="grid"></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div id="TabSimulacion" class="form-group col-lg-12">
+            <ul>
+                <li class="k-state-active">
+                    Estados Autorizaciones
+                </li>
+                <li>
+                    Estados Siguientes
+                </li>
+            </ul>
+            <div class="form-group col-lg-12">
+                <div id="gridEstadosAutorizados"></div>
+            </div>
+            <div class="form-group col-lg-12">
+                <div id="gridEstadosSiguientes"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Definición de Categoría de Confección";
+    ViewBag.IdVersion = "TSM0101009|v18061301";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}CategoriaConfecciones", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+    <script src="~/Scripts/js/CategoriaConfecciones.js"></script>
+}
+    <div class="form-row">
+        <div class="form-group col-lg-12"> <h4>@ViewBag.Title</h4></div>
+        <div class="form-group col-lg-12">
+            <div id="grid"></div>
+        </div>
+    </div>
+
+

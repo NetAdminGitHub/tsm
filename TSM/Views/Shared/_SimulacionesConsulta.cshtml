@@ -1,0 +1,201 @@
+﻿
+ <div id="TabSimulacion" >
+            <ul>
+                <li class="k-state-active">
+                    Datos de Simulación
+                </li>
+                <li>
+                    Consumos
+                </li>
+                <li>
+                    Rentabilidad
+                </li>
+            </ul>
+            <div id="TabPDatos" class="form-group col-md-12 col-lg-12" >
+                <div class="row">
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtNoDocumento_colta" style="font-size: 1.2em;">No Simulación:</label>
+                        <input id="TxtNoDocumento_colta" name="TxtNoDocumento_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                    </div>
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtFechaSim_colta" style="font-size: 1.2em;">Fecha:</label>
+                        <input id="TxtFechaSim_colta" name="TxtFechaSim_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtEstado_colta" style="font-size: 1.2em;">Estado:</label>
+                        <input id="TxtEstado_colta" name="TxtEstado_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtCantidadPiezas_colta" style="font-size: 1.2em;">Cantidad de Piezas:</label>
+                        <input id="TxtCantidadPiezas_colta" name="TxtCantidadPiezas_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtCantidadTecnicas_colta" style="font-size: 1.2em;">Cantidad Tenicas:</label>
+                        <input id="TxtCantidadTecnicas_colta" name="TxtCantidadTecnicas_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="txtTiempoProyecto_colta" style="font-size: 1.2em;">Horas de Proyecto:</label>
+                        <input id="txtTiempoProyecto_colta" name="txtTiempoProyecto_colta" class="form-control" />
+                    </div>
+                </div>
+                @*Datos de Costos por Corrida*@
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col">
+                                <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Costos por Corrida</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoMP_colta" style="font-size: 1.2em;">Costo de Materia Prima Total:</label>
+                                <input id="TxtCostoMP_colta" name="TxtCostoMP_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoMOD_colta" style="font-size: 1.2em;">Costo de Mano de Obra Directa:</label>
+                                <input id="TxtCostoMOD_colta" name="TxtCostoMOD_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoPrimo_colta" style="font-size: 1.2em;">Costo Primo:</label>
+                                <input id="TxtCostoPrimo_colta" name="TxtCostoPrimo_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoFabril_colta" style="font-size: 1.2em;">Costo Fabril Total:</label>
+                                <input id="TxtCostoFabril_colta" name="TxtCostoFabril_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoProduccion_colta" style="font-size: 1.2em;">Costo Producción:</label>
+                                <input id="TxtCostoProduccion_colta" name="TxtCostoProduccion_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoOperacion_colta" style="font-size: 1.2em;">Costo Operación:</label>
+                                <input id="TxtCostoOperacion_colta" name="TxtCostoOperacion_colta" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoTotal_colta" style="font-size: 1.2em;">Costo Total:</label>
+                                <input id="TxtCostoTotal_colta" name="TxtCostoTotal_colta" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    @*Datos de Corridas por Pieza*@
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col">
+                                <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Corridas por Pieza</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoMP_coltaUnitario" style="font-size: 1.2em;">Costo de Materia Prima:</label>
+                                <input id="TxtCostoMP_coltaUnitario" name="TxtCostoMP_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoMOD_coltaUnitario" style="font-size: 1.2em;">Costo de Mano de Obra Directa:</label>
+                                <input id="TxtCostoMOD_coltaUnitario" name="TxtCostoMOD_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoPrimo_coltaUnitario" style="font-size: 1.2em;">Costo Primo:</label>
+                                <input id="TxtCostoPrimo_coltaUnitario" name="TxtCostoPrimo_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoFabril_coltaUnitario" style="font-size: 1.2em;">Costo Fabril:</label>
+                                <input id="TxtCostoFabril_coltaUnitario" name="TxtCostoFabril_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoProduccion_coltaUnitario" style="font-size: 1.2em;">Costo Producción:</label>
+                                <input id="TxtCostoProduccion_coltaUnitario" name="TxtCostoProduccion_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoOperacion_coltaUnitario" style="font-size: 1.2em;">Costo Operación:</label>
+                                <input id="TxtCostoOperacion_coltaUnitario" name="TxtCostoOperacion_coltaUnitario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                                <label for="TxtCostoUnitario_colta" style="font-size: 1.2em;">Costo por pieza:</label>
+                                <input id="TxtCostoUnitario_colta" name="TxtCostoUnitario_colta" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*Datos de Utilidad*@
+                <div class="row">
+                    <div class="col-md-12 col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Datos de Utilidad</label></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12  col-lg-4">
+                        <label for="TxtPorcUtilidadConsiderada_colta" style="font-size: 1.2em;">% Utilidad Considerada:</label>
+                        <input id="TxtPorcUtilidadConsiderada_colta" name="TxtPorcUtilidadConsiderada_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtUtilidadDolares_colta" style="font-size: 1.2em;">Utilidad:</label>
+                        <input id="TxtUtilidadDolares_colta" name="TxtUtilidadDolares_colta" class="form-control" />
+                    </div>
+                </div>
+                @*Datos de Precio*@
+                <div class="row">
+                    <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Precio</label></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 col-lg-4">
+                        <label for="TxtPrecioCliente_colta" style="font-size: 1.2em;">Precio Cliente:</label>
+                        <input id="TxtPrecioCliente_colta" name="TxtPrecioCliente_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12  col-lg-4">
+                        <label for="TxtPrecioTS_colta" style="font-size: 1.2em;">Precio Techno Screen:</label>
+                        <input id="TxtPrecioTS_colta" name="TxtPrecioTS_colta" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12  col-lg-4">
+                        <label for="TxtPrecioVenta_colta" style="font-size: 1.2em;">Precio Venta:</label>
+                        <input id="TxtPrecioVenta_colta" name="TxtPrecioVenta_colta" class="form-control" />
+                    </div>
+                </div>
+                @*@*Distribución de Costos*@
+                <div class="row">
+                    <div class=" form-group col-md-12 col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Distribución de Costos</label></div>
+                </div>
+                <div class="row">
+                    <div class=" form-group col-md-12 col-lg-12">
+                        <div id="chart"></div>
+                    </div>
+                        
+                 </div>
+             </div>
+            <div id="TabPConsu" class="form-group col-md-12 col-lg-12">
+                <div class="row">
+                    <div class=" form-group col-lg-12"><div id="gridSimuConsumo_colta"></div></div>
+                </div>
+            </div>
+            <div id="TabPSimu" class="form-group col-md-12 col-lg-12">
+                <div class="row">
+                    <div class=" form-group col-lg-12"><div id="gridRentabilidad_colta"></div></div>
+                </div>
+            </div>
+ </div>
+
+
+

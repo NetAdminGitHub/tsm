@@ -1,0 +1,92 @@
+﻿<style>
+    .titulosStep {
+        text-align: center;
+    }
+
+    .tituloStep {
+        text-align: center;
+        width: 192px;
+        font-size: 13px;
+        color: #b5b5ba;
+        display: inline-block;
+    }
+
+    .progressStep {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .progressStep .circle,
+    .progressStep .bar {
+        display: inline-block;
+        background: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 40px;
+        border: 1px solid #d5d5da;
+    }
+
+    .progressStep .bar {
+        position: relative;
+        width: 150px;
+        height: 6px;
+        margin-left: -5px;
+        margin-right: -5px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+
+    .progressStep .circle .label {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        /*line-height: 32px;*/
+        border-radius: 32px;
+        margin-top: 3px;
+        color: #b5b5ba;
+        font-size: 17px;
+    }
+    
+    /* Done / Active */
+    .progressStep .bar.done,
+    .progressStep .circle.done {
+        background: #eee;
+    }
+
+    .progressStep .bar.active {
+        background: linear-gradient(to right, #EEE 40%, #FFF 60%);
+    }
+
+    .progressStep .circle.done .label {
+        color: #FFF;
+        background: #81CE97;
+        box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+    }
+
+    .progressStep .circle.blocked .label {
+        color: #FFF;
+        background: #BF0000;
+        box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+    }
+
+    .progressStep .circle.done .title {
+        color: #444;
+    }
+
+    .progressStep .circle.active .label {
+        color: #FFF;
+        background: #0c95be;
+        box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+    }
+
+    .progressStep .circle.active .title {
+        color: #0c95be;
+    }
+</style>
+
+<div id="divEstados" class="progressStep">
+</div>
+<div id="divEstadosTitulos" class="titulosStep">
+</div>

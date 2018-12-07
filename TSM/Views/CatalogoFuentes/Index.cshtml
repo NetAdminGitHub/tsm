@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Catalogo de Fuentes";
+    ViewBag.IdVersion = "TSM0101040|v18090601";
+}
+@section Scripts {
+    <script type="text/javascript">
+            var crudServiceBaseUrl = "@string.Format("{0}CatalogoFuentes", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+
+    <script src="~/Scripts/js/CatalogoFuentes.js"></script>
+}
+
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>@ViewBag.Title</h4></div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>
+
+

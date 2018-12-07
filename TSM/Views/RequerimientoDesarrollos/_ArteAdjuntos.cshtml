@@ -1,0 +1,36 @@
+﻿@*<form id="FrmAdj" method="POST" enctype="multipart/form-data" autocomplete="off">*@
+    <div class="row">
+        <div class="form-group col-lg-12">
+            <div class="input-group">
+                <div style="width: 100%;">
+                    <button type="button" id="myBtnAdjunto" data-toggle="modal" data-target="#myModalAdjunto" style="width: 100%;" onclick="$('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;">Adjuntos</button>
+                </div>
+           
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalAdjunto" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Adjuntos</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" role="document">
+                    <div class="k-content k-rtl">
+                        <input id="Adjunto" name="Adjunto" type="file" />
+                    </div>
+                    <div class="row">
+                        <div class=" form-group col-lg-12"><div id="GridAdjuntos"></div></div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-lg">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+@*</form>*@
+

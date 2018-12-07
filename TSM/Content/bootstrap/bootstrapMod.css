@@ -1,0 +1,68 @@
+﻿body {
+    font-family: "Helvetica Neue";
+}
+
+/*#region Cambios Bootstrap*/
+
+/*Menos bordenes para resoluciones FHD*/
+@media (min-width: 1700px) {
+    .container {
+        max-width: 1540px;
+    }
+}
+
+/*Color Barra superior*/
+.navbar-dark {
+    background-color: #002D72;
+}
+
+/*Ver botón menu, siempre*/
+@media (min-width: 578px) {
+    .navbar-expand .navbar-toggler {
+        display: inline-block;
+    }
+}
+
+/*Espacio entre boton menu y Nombre de la App*/
+.navbar-toggler {
+    margin-right: 15px;
+}
+
+/*#endregion Cambios Bootstrap*/
+
+/*#region Kendo Bootstrap*/
+
+/*Linea final en el contenido de un Grid*/
+.k-grid-content tr:last-child td, .k-grid-content-locked tr:last-child td {
+    border-bottom-width: 1px !important;
+}
+/*#endregion Kendo Bootstrap*/
+
+/*#region Modificaciones Kendo*/
+
+/*Se hace de dos lineas el encabezado de columnas*/
+.k-grid .k-grid-header .k-header .k-link {
+    height: 60px;
+}
+
+.k-grid .k-grid-header .k-header {
+    white-space: normal;
+}
+
+.k-grid-header .k-header > .k-link {
+    overflow: visible !important;
+}
+
+/*Se cambia fondo de los input al estar deshabilitados*/
+input:disabled {
+    background-color: #CCCCCC !important;
+}
+input:read-only {
+    background-color: #CCCCCC !important;
+}
+
+div.k-state-disabled input {
+    background-color: #CCCCCC !important;
+}
+
+/*#endregion*/

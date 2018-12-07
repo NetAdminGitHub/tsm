@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Definición de Telas";
+    ViewBag.IdVersion = "TSM0101017|v18052901";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}Telas", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+    <script src="~/Scripts/js/Telas.js"></script>
+}
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>Definición de Telas</h4></div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>
+ 

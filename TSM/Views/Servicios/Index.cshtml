@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Definición de Servicios";
+    ViewBag.IdVersion = "TSM0101012|v18052901";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)"
+        var crudDetaBaseUrl = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+
+    <script src="~/Scripts/js/Servicios.js"></script>
+}
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>Definición de Servicios</h4></div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>
+

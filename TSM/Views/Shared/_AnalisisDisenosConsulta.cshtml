@@ -1,0 +1,40 @@
+﻿
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRD = "@string.Format("{0}RequerimientoDesarrollos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlAD = "@string.Format("{0}AnalisisDisenos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlS = "@string.Format("{0}Separaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSD = "@string.Format("{0}SeparacionesDetalles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlApiArteAdj = "@string.Format("{0}ArteAdjuntos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlADAdj = "@string.Format("{0}ArteAdjuntos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlArtes = "@string.Format("{0}Artes", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+
+    <script src="~/Scripts/js/AnalisisDisenosConsulta.js"></script>
+}
+<link href="~/Content/bootstrap/AdjCarousel.css" rel="stylesheet" />
+
+<div id="bottom-panel" class="form-control">
+    <div class="row">
+        <div class="form-group col-lg-12">
+            <div class="row">
+                <div class="col-lg-11"><label class="font-weight-bold" style=" font-size:1.2em;">Información general</label></div>
+            </div>
+            <div class="row" id="divSerigrafia">
+                @Html.Partial("_AnalisDisenoSerigrafiaConsulta")
+            </div>
+            <div class="row" id="divSubli" hidden="hidden">
+                @Html.Partial("_AnalisDisenoSublimacionConsulta")
+            </div>
+
+            <div class="row" id="divPlan" hidden="hidden">
+                @Html.Partial("_AnalisDisenoPlantillaConsulta")
+            </div>
+        </div>
+    </div>
+</div>
+
+

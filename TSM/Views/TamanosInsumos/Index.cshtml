@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = " Tamaños Insumos";
+    ViewBag.IdVersion = "TSM0101033|v18080101";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}TamanosInsumos", TSM.Utils.Config.TSM_WebApi)"
+        var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)"
+    </script>
+    <script src="~/Scripts/js/TamanosInsumos.js"></script>
+}
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>@ViewBag.Title</h4></div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>
+

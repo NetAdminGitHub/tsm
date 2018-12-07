@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Definición de Telas";
+    ViewBag.IdVersion = "TSM0101023|v18072001";
+}
+@section Scripts {
+        <script type="text/javascript">
+            var crudServiceBaseUrl = "@string.Format("{0}CatalogoInsumos", TSM.Utils.Config.TSM_WebApi)"
+            var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)"
+            var UrlTI = "@string.Format("{0}TamanosInsumos", TSM.Utils.Config.TSM_WebApi)"
+            var UrlGI = "@string.Format("{0}GradosInsumos", TSM.Utils.Config.TSM_WebApi)"
+            var UrlFTI = "@string.Format("{0}FormaTipoInsumos", TSM.Utils.Config.TSM_WebApi)"
+            var UrlSrv = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)"
+            var UrlTec = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)"
+        </script>
+        <script src="~/Scripts/js/CatalogoInsumos.js"></script>
+    }
+<div class="form-row">
+    <div class="form-group col-lg-12"> <h4>Definición Catalogo Insumos</h4></div>
+    <div class="form-group col-lg-12">
+        <div id="grid"></div>
+    </div>
+</div>

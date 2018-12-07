@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="es-sv">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Techno Screen Management</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/bootstrap/css")
+    @Styles.Render("~/Content/Kendo/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body id="body">
+    <span id="kendoNotificaciones"></span>
+    @* Nav Bar *@
+    <div id="headerPage" class="navbar navbar-expand-sm navbar-dark" style="background-color: @TSM.Utils.Config.ColorApp;">
+        <button id="menu-toggle" href="#menu-toggle" class="navbar-toggler" style="display: inline-block;" type="button" data-toggle="toggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="mr-auto">
+            @Html.ActionLink("Techno Screen Management", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "navbar-brand" })
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <button id="btnHome" class="btn btn-link nav-link" onclick="location.href='@Url.Action("Index", "Home")';return false;" aria-label="Inicio">
+                    <span class="TS-icon-HOME"></span>
+                </button>
+            </li>
+        </ul>
+        @Html.Partial("_LoginPartial")
+    </div>
+    @* Menu Principal *@
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <nav class="navbar navbar-light">
+                <ul class="navbar-nav" id="navbarMP">
+                    @*En este especio se creara dinamicamente las opciones de menu Nivel 1 y nivel 2*@
+                </ul>
+            </nav>
+        </div>
+    </div>
+    @* Sub Menu *@
+    <div id="wrapper2">
+        <div id="sidebar-wrapper2" class="sidebar-SubMenu">
+            @*en este espacio dinamicamente creara la opciones del menu*@
+        </div>
+    </div>
+    <div class="container-fluid body-content mt-2">
+        @RenderBody()
+    </div>
+    @*Footer*@
+    <div class="fixed-bottom text-white" style="background-color: #2DA5DE;">
+        <footer class="align-middle text-center">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 mb-0">&copy; @DateTime.Now.Year - <a style="color: inherit;" class="btn-link" target="_blank" href="http://www.techno-screen.com/">Techno Screen S.A. de C.V.</a></div>
+                <div class="col-md-2 mb-0 text-md-right align-middle" style="font-size: 0.7rem;">@ViewBag.IdVersion</div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryAjax")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Utils/js")
+    @Scripts.Render("~/bundles/Kendo/js")
+    @Scripts.Render("~/bundles/Kendo/culture/js")
+    @Scripts.Render("~/bundles/Kendo/messages/js")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        var UrlMenu = "@string.Format("{0}Menus", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMRSeguridad = "@string.Format("{0}MenusRoles", TSM.Utils.Config.TSM_WebApi)";
+        var TSM_Web_APi = "@TSM.Utils.Config.TSM_WebApi";
+        kendo.culture("es-SV");
+    </script>
+</body>
+</html>

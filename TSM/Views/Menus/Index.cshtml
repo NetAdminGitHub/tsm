@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Definición de Menus";
+    ViewBag.IdVersion = "TSM0101039|v18082401";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlMenu = "@string.Format("{0}Menus", TSM.Utils.Config.TSM_WebApi)";
+        var UrlNiveles = "@string.Format("{0}Niveles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRoles = "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuarioRoles = "@string.Format("{0}UsuariosRoles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMenuRoles = "@string.Format("{0}MenusRoles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMenusUsuarios = "@string.Format("{0}MenusUsuarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuarios = "@string.Format("{0}Usuarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCatalogoFuentes = "@string.Format("{0}CatalogoFuentes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlModulo= "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/Menus.js"></script>
+}
+<link href="~/Content/TreeviewStyle.css" rel="stylesheet" />
+<link href="~/Content/UsuariosRoles.css" rel="stylesheet" />
+
+
+<div class="row">
+    <div class="form-group col-lg-12"><h4>@ViewBag.Title</h4></div>
+    <div class="form-group col-lg-12">
+        <div class="row">
+            <div class="form-group col-lg-3 border p-md-2 p-lg-2">
+                <div class="row">
+                    <div class="form-group col-md-2 col-lg-2">
+                        <label for="cmbModulo" style="font-size: 1.2em;">Modulo:</label>
+                    </div>
+                    <div class="form-group col-md-10 col-lg-10">
+                        <input id="cmbModulo" name="cmbModulo" required validationMessage="Requerido" class="form-control" />
+                    </div>
+                </div>
+                @*<div class="row">
+                    <div class="form-group col-lg-12">
+                        <label class="font-weight-bold" style=" font-size:1.2em;">Creación de Opciones</label>
+                    </div>
+                </div>*@
+                <form id="FrmMenu" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <button type="submit" value="Submit" id="btnNuevo" name="btnNuevo">&nbsp;Nuevo</button>
+                            <button type="submit" value="Submit" id="btnEditar" name="btnEditar">&nbsp;Editar</button>
+                            <button type="submit" value="Submit" id="btnCancelar" name="btnCancelar">&nbsp;Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtNivel" style="font-size: 1.2em;" hidden="hidden">Nivel:</label>
+                            <input id="TxtNivel" name="TxtNivel" class="form-control" style="width:100%" hidden="hidden" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="CmbMenuPadre" style="font-size: 1.2em;">Opci&oacute;n men&uacute; padre:</label>
+                            <input id="CmbMenuPadre" name="CmbMenuPadre" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtIdMenu" style="font-size: 1.2em;" hidden="hidden">Código men&uacute;:</label>
+                            <input id="TxtIdMenu" name="TxtIdMenu" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" hidden="hidden" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtEtiquetaMenu" style="font-size: 1.2em;">Etiqueta men&uacute;:</label>
+                            <input id="TxtEtiquetaMenu" name="TxtEtiquetaMenu" class=" k-textbox form-control" required validationMessage="Requerido" mayus="no"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtControlador" style="font-size: 1.2em;">Controlador:</label>
+                            <input id="TxtControlador" name=" TxtControlador" class="k-textbox form-control" mayus="no" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtAccion" style="font-size: 1.2em;">Acci&oacute;n:</label>
+                            <input id="TxtAccion" name="TxtAccion" class="k-textbox form-control" mayus="no" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="TxtUrl" style="font-size: 1.2em;">Url:</label>
+                            <input id="TxtUrl" name="TxtUrl" class="k-textbox form-control" mayus="no" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="CmbIdCatalogoFuente" style="font-size: 1.2em;">Fuente Opción:</label>
+                            <input id="CmbIdCatalogoFuente" name="CmbIdCatalogoFuente" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <button type="submit" value="Submit" id="btnGuardar" name="btnGuardar">&nbsp;Guardar</button>
+                            <button type="submit" value="Submit" id="btnEliminar" name="btnEliminar">&nbsp;Eliminar</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="form-group col-lg-3 border p-md-2 p-lg-2">
+
+                <div class="row"><div class="col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Menú </label></div></div>
+                <div class="row">
+                    <div class="form-group col-lg-12"><div id="treeview" style="height:576px; overflow: auto"></div></div>
+                </div>
+
+            </div>
+            <div class="form-group col-lg-0 align-self-center d-flex justify-content-center " style="width:60px">
+                <div class="row ">
+                    <div class=" nav flex-column nav-pills align-middle" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
+                        <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
+                        @*<button type="submit" value="Submit" id="btnFlechaDerechaTodos" data-toggle="pill"></button>
+                            <button type="submit" value="Submit" id="btnFlechaIzqTodos" data-toggle="pill"></button>*@
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group  col-lg-5 border p-md-2 p-lg-2 ">
+                <div class="row"><div class="col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Asignación de menú </label></div></div>
+                <div id="tabstrip-left">
+                    <ul>
+                        <li class="k-state-active ">
+                            Rol Men&uacute;
+                        </li>
+                        <li>
+                            Usuario Men&uacute;
+                        </li>
+
+                    </ul>
+
+                    <div class="form-group" id="tabMenus">
+                        <div class="row">
+                            <div class="form-group col-md-1 col-lg-2">
+                                <label for="CmbRoles" style="font-size: 1.2em;">Roles:</label>
+                            </div>
+                            <div class="form-group col-md-11 col-lg-10">
+                                <input id="CmbRoles" name="CmbRoles" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <div id="treeviewRoles" style="height:503px; overflow: auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="tabMenuUsuario">
+                        <div class="row">
+                            <div class="form-group col-md-1 col-lg-2">
+                                <label for="CmbIdUsuario" style="font-size: 1.2em;">Usuarios:</label>
+                            </div>
+                            <div class="form-group col-md-11 col-lg-10">
+                                <input id="CmbIdUsuario" name="CmbIdUsuario" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <div id="treeviewMenuUsuario" style="height:503px; overflow: auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-12">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.Partial("_MenuPermisos")
+            </div>
+        </div>
+        @*Etiqueta vista parcial cambio de estado*@
+        <div id="vCambioEstado"></div>
+    </div>
+</div>
+
+

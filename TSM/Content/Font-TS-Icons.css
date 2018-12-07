@@ -1,0 +1,232 @@
+@font-face {
+    font-family: 'TS-Icons';
+    src: url('../Fonts/TS-Icons.woff?#iefix') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'TS-Icons';
+    speak: none;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-AD1:before {
+  content: "\e900";
+}
+.icon-AD2:before {
+  content: "\e901";
+}
+.icon-AD3:before {
+  content: "\e902";
+}
+.icon-AD4:before {
+  content: "\e903";
+}
+.icon-CA1:before {
+  content: "\e904";
+}
+.icon-CA2:before {
+  content: "\e905";
+}
+.icon-CA3:before {
+  content: "\e906";
+}
+.icon-CA4:before {
+  content: "\e907";
+}
+.icon-CO1:before {
+  content: "\e908";
+}
+.icon-CO2:before {
+  content: "\e909";
+}
+.icon-CO3:before {
+  content: "\e90a";
+}
+.icon-CO4:before {
+  content: "\e90b";
+}
+.icon-DE1:before {
+  content: "\e90c";
+}
+.icon-DE2:before {
+  content: "\e90d";
+}
+.icon-DE3:before {
+  content: "\e90e";
+}
+.icon-DE4:before {
+  content: "\e90f";
+}
+.icon-DI1:before {
+  content: "\e910";
+}
+.icon-DI2:before {
+  content: "\e911";
+}
+.icon-DI3:before {
+  content: "\e912";
+}
+.icon-DI4:before {
+  content: "\e913";
+}
+.icon-DP1:before {
+  content: "\e914";
+}
+.icon-DP2:before {
+  content: "\e915";
+}
+.icon-DP3:before {
+  content: "\e916";
+}
+.icon-DP4:before {
+  content: "\e917";
+}
+.icon-EV1:before {
+  content: "\e918";
+}
+.icon-EV2:before {
+  content: "\e919";
+}
+.icon-EV3:before {
+  content: "\e91a";
+}
+.icon-EV4:before {
+  content: "\e91b";
+}
+.icon-MF1:before {
+  content: "\e91c";
+}
+.icon-MF2:before {
+  content: "\e91d";
+}
+.icon-MF3:before {
+  content: "\e91e";
+}
+.icon-MF4:before {
+  content: "\e91f";
+}
+.icon-MK1:before {
+  content: "\e920";
+}
+.icon-MK2:before {
+  content: "\e921";
+}
+.icon-MK3:before {
+  content: "\e922";
+}
+.icon-MK4:before {
+  content: "\e923";
+}
+.icon-MT1:before {
+  content: "\e924";
+}
+.icon-MT2:before {
+  content: "\e925";
+}
+.icon-MT3:before {
+  content: "\e926";
+}
+.icon-MT4:before {
+  content: "\e927";
+}
+.icon-OP1:before {
+  content: "\e928";
+}
+.icon-OP2:before {
+  content: "\e929";
+}
+.icon-OP3:before {
+  content: "\e92a";
+}
+.icon-OP4:before {
+  content: "\e92b";
+}
+.icon-PR1:before {
+  content: "\e92c";
+}
+.icon-PR2:before {
+  content: "\e92d";
+}
+.icon-PR3:before {
+  content: "\e92e";
+}
+.icon-PR4:before {
+  content: "\e92f";
+}
+.icon-PY1:before {
+  content: "\e930";
+}
+.icon-PY2:before {
+  content: "\e931";
+}
+.icon-PY3:before {
+  content: "\e932";
+}
+.icon-PY4:before {
+  content: "\e933";
+}
+.icon-RE1:before {
+  content: "\e934";
+}
+.icon-RE2:before {
+  content: "\e935";
+}
+.icon-RE3:before {
+  content: "\e936";
+}
+.icon-RE4:before {
+  content: "\e937";
+}
+.icon-RH1:before {
+  content: "\e938";
+}
+.icon-RH2:before {
+  content: "\e939";
+}
+.icon-RH3:before {
+  content: "\e93a";
+}
+.icon-RH4:before {
+  content: "\e93b";
+}
+.icon-TI1:before {
+  content: "\e93c";
+}
+.icon-TI2:before {
+  content: "\e93d";
+}
+.icon-TI3:before {
+  content: "\e93e";
+}
+.icon-TI4:before {
+  content: "\e93f";
+}
+.icon-TN1:before {
+  content: "\e940";
+}
+.icon-TN2:before {
+  content: "\e941";
+}
+.icon-TN3 .path1:before {
+  content: "\e942";
+  color: rgb(0, 0, 0);
+}
+.icon-TN3 .path2:before {
+  content: "\e943";
+  margin-left: -1em;
+  color: rgb(16, 24, 32);
+}
+.icon-TN4:before {
+  content: "\e944";
+}

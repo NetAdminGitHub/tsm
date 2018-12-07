@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Usuarios Roles";
+    ViewBag.IdVersion = "TSM0101038|v18082101";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlUsuarios = "@string.Format("{0}Usuarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuariosRoles = "@string.Format("{0}UsuariosRoles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRoles= "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/UsuariosRoles.js"></script>
+}
+    <div class="form-row">
+        <div class="form-group col-lg-12"><h4>@ViewBag.Title</h4></div>
+        <div class="form-group col-lg-6">
+            <div id="gridUsuario"></div>
+        </div>
+        <div class="form-group col-lg-6">
+            <div id="gridUsuarioRoles"></div>
+        </div>
+    </div>
+
+
+
