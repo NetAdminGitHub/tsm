@@ -11,8 +11,8 @@ $(document).ready(function () {
     $("#btnCerrar").kendoButton({ icon: "close-circle" });
     $("#btnAceptar").kendoButton({ icon: "check-circle" });
     $("#btnCambioEstado").kendoButton({ icon: "check" });
-    Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlApiServ, "Nombre", "IdServicio", "Selecione el servicio");
-    Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlApiClient, "Nombre", "IdCliente", "Selecione el servicio");
+    Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlApiServ, "Nombre", "IdServicio", "Selecione un Servicio...");
+    Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlApiClient, "Nombre", "IdCliente", "Selecione un Cliente...");
 
     //Programacion del splitter
     $("#splitter").kendoSplitter({
@@ -69,12 +69,26 @@ $(document).ready(function () {
                     return input.val() >= 0;
                 }
                 return true;
+            },
+            CombosMayorIgual0: function (input) {
+                if (input.is("[name='txtCombos']")) {
+                    return input.val() > 0;
+                }
+                return true;
+            },
+            VeloMayorIgual0: function (input) {
+                if (input.is("[name='txtVeloMaquina']")) {
+                    return input.val() > 0;
+                }
+                return true;
             }
         },
         messages: {
             Mayor0: "La cantidad de piezas no puede ser 0.",
             NoMontajeMayor0: "El Montaje es requerido.",
             PersonalMayorIgual0: "La cantidad de personal extra no puede ser negativo.",
+            CombosMayorIgual0: "La cantidad de combos no puede ser cero.",
+            VeloMayorIgual0: "La velocidad de la maquina no puede ser cero",
             required:"requerido"
         }
     }).data("kendoValidator");
@@ -98,6 +112,20 @@ $(document).ready(function () {
         decimals: 0,
         min: 0,
         value: 0
+    });
+    $("#txtCombos").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 1,
+        value: 1
+    });
+    $("#txtVeloMaquina").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 1,
+        value: 1
     });
     $("#TxtCostoMP").kendoNumericTextBox({
         format: "c",
@@ -171,6 +199,18 @@ $(document).ready(function () {
         decimals: 4,
         value: 0
     });
+    $("#txtCostoTermofijado").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#txtCostoTermofijadoUnitario").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
     $("#TxtCostoTotal").kendoNumericTextBox({
         format: "c",
         restrictDecimals: false,
@@ -238,6 +278,35 @@ $(document).ready(function () {
         min: 0,
         value: 0
     });
+    $("#txtCantidadColores").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtCantidadCombos").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtCantidadTallas").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtVelocidadMaquina").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+
     $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     $("#txtTiempoProyecto").kendoNumericTextBox({
@@ -982,7 +1051,7 @@ $(document).ready(function () {
     function fn_NuevaSimulacion() {       
         kendo.ui.progress($("#splitter"), true);
         $.ajax({
-            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value(),
+            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ IdAnalisisDiseno: null }),
@@ -1024,6 +1093,9 @@ $(document).ready(function () {
         $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value(0);
         $("#TxtNoMontaje").data("kendoNumericTextBox").value(0);
         $("#txtPersonalExtra").data("kendoNumericTextBox").value(0);
+        $("#txtCombos").data("kendoNumericTextBox").value(0);
+        $("#txtVeloMaquina").data("kendoNumericTextBox").value(0);
+        $("#chkUsarTermofijado").prop("checked", false);
     })
 
     $('#NuevaSimulacion').on('shown.bs.modal', function (e) {
@@ -1058,16 +1130,23 @@ $(document).ready(function () {
     function getRDS() {
         kendo.ui.progress($("#NuevaSimulacion"), true);
         $.ajax({
-            url: UrlRD + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() ,
+            url: UrlRequeDesarrollo + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() ,
             dataType: 'json',
             type: 'GET',
             async: false,
             success: function (respuesta) {
                 $.each(respuesta, function (index, elemento) {
                     elemento.IdServicio == 1 ? $("#TxtNoMontaje").data("kendoNumericTextBox").enable(true) : $("#TxtNoMontaje").data("kendoNumericTextBox").enable(false);
+                    elemento.IdServicio == 1 ? $("#txtCombos").data("kendoNumericTextBox").enable(true) : $("#txtCombos").data("kendoNumericTextBox").enable(false);
+                    elemento.IdServicio == 1 ? $("#txtVeloMaquina").data("kendoNumericTextBox").enable(true) : $("#txtVeloMaquina").data("kendoNumericTextBox").enable(false);
+                    elemento.IdServicio == 1 ? $('#chkUsarTermofijado').prop('disabled', false) : $('#chkUsarTermofijado').prop('disabled', true);
+                    
                     $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").focus();
                     $("#TxtNoMontaje").data("kendoNumericTextBox").value(elemento.Montaje);
                     $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
+                    $("#txtCombos").data("kendoNumericTextBox").value(elemento.Combo);
+                    $("#txtVeloMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+                    $('#chkUsarTermofijado').prop('checked', false);
                 });
 
                 kendo.ui.progress($("#NuevaSimulacion"), false);
@@ -1112,6 +1191,7 @@ function getSimulacionGrid(g) {
     $("#TxtCostoFabril").data("kendoNumericTextBox").value(elemento.CostoFabril);
     $("#TxtCostoProduccion").data("kendoNumericTextBox").value(elemento.CostoProduccion);
     $("#TxtCostoOperacion").data("kendoNumericTextBox").value(elemento.CostoOperacion);
+    $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
     $("#TxtCostoTotal").data("kendoNumericTextBox").value(elemento.CostoTotal);
     $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMP / elemento.CantidadPiezas * 10000) / 10000);
     $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMOD / elemento.CantidadPiezas * 10000) / 10000);
@@ -1119,6 +1199,7 @@ function getSimulacionGrid(g) {
     $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoFabril / elemento.CantidadPiezas * 10000) / 10000);
     $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoProduccion / elemento.CantidadPiezas * 10000) / 10000);
     $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoOperacion / elemento.CantidadPiezas * 10000) / 10000);
+    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTermofijado / elemento.CantidadPiezas * 10000) / 10000);
     $("#TxtCostoUnitario").data("kendoNumericTextBox").value(elemento.CostoUnitario);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
@@ -1129,6 +1210,11 @@ function getSimulacionGrid(g) {
     $("#TxtMontajes").data("kendoNumericTextBox").value(elemento.Montajes);
     $("#TxtCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
     $("#txtNoPersonalExtra").data("kendoNumericTextBox").value(elemento.PersonalExtra);
+    $("#txtCantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
+    $("#txtCantidadCombos").data("kendoNumericTextBox").value(elemento.CantidadCombos);
+    $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
+    $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+    $("#chkUsarTermo").prop("checked", elemento.UsarTermofijado);
     $("#TxtEstado").val(elemento.Estado);
     $("#TxtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha2), 'dd/MM/yyyy'));
     $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
@@ -1161,6 +1247,11 @@ function getSimulacionGrid(g) {
             category: "Costo Operación",
             value: elemento.CostoOperacion,
             color: "#6497B1"
+        },
+        {
+            category: "Costo Termofijado",
+            value: elemento.CostoTermofijado,
+            color: "#178AB8"
         });
 
     $("#chart").kendoChart({
@@ -1202,7 +1293,9 @@ function DesHabilitarCamposSim() {
     $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").enable(false);
+    $("#txtCostoTermofijado").data("kendoNumericTextBox").enable(false);
     $("#TxtCostoTotal").data("kendoNumericTextBox").enable(false);
+    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtCostoUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").enable(false);
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").enable(false);
@@ -1214,6 +1307,11 @@ function DesHabilitarCamposSim() {
     $("#txtTiempoProyecto").data("kendoNumericTextBox").enable(false);
     $("#TxtCantidadPiezas").data("kendoNumericTextBox").enable(false);
     $("#txtNoPersonalExtra").data("kendoNumericTextBox").enable(false);
+    $("#txtCantidadColores").data("kendoNumericTextBox").enable(false);
+    $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
+    $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
+    $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
+    $("#chkUsarTermo").prop("disabled", false);
     $("#TxtFecha").data("kendoDatePicker").enable(false);
 }
 
@@ -1224,7 +1322,9 @@ function LimpiarCamposSim() {
     $("#TxtCostoFabril").data("kendoNumericTextBox").value("0");
     $("#TxtCostoProduccion").data("kendoNumericTextBox").value("0");
     $("#TxtCostoOperacion").data("kendoNumericTextBox").value("0");
+    $("#txtCostoTermofijado").data("kendoNumericTextBox").value("0");
     $("#TxtCostoTotal").data("kendoNumericTextBox").value("0");
+    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value("0");
     $("#TxtCostoUnitario").data("kendoNumericTextBox").value("0");
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value("0");
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").value("0");
@@ -1235,6 +1335,11 @@ function LimpiarCamposSim() {
     $("#TxtMontajes").data("kendoNumericTextBox").value("0");
     $("#TxtCantidadPiezas").data("kendoNumericTextBox").value("0");
     $("#txtNoPersonalExtra").data("kendoNumericTextBox").value("0");
+    $("#txtCantidadColores").data("kendoNumericTextBox").value("0");
+    $("#txtCantidadCombos").data("kendoNumericTextBox").value("0");
+    $("#txtCantidadTallas").data("kendoNumericTextBox").value("0");
+    $("#txtVelocidadMaquina").data("kendoNumericTextBox").value("0");
+    $("#chkUsarTermo").prop("checked", false);
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     $("#TxtNoDocumento").val("");
     $("#TxtEstado").val("");

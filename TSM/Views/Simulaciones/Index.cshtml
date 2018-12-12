@@ -18,6 +18,7 @@
         var UrlCatalo = "@string.Format("{0}CatalogoInsumos", TSM.Utils.Config.TSM_WebApi)";
         var UrlEP = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)";
         var UrlCI = "@string.Format("{0}CatalogoInsumos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRequeDesarrollo = "@string.Format("{0}RequerimientoDesarrollos", TSM.Utils.Config.TSM_WebApi)";
     </script>
 
     <script src="~/Scripts/js/Simulaciones.js"></script>
@@ -81,6 +82,14 @@
                     </ul>
                     <div id="TabPDatos" class="form-group col-lg-12">
                         <div class="row">
+                            <div class="form-group col-lg-9">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <input id="chkUsarTermo" type="checkbox" name="chkUsarTermo" class="k-checkbox" disabled />
+                                <label class="k-checkbox-label" for="chkUsarTermo">Utilizar Termofijado</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="TxtNoDocumento" style="font-size: 1.2em;">No Simulación:</label>
                                 <input id="TxtNoDocumento" name="TxtNoDocumento" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
@@ -114,6 +123,24 @@
                             <div class="form-group col-lg-3">
                                 <label for="txtTiempoProyecto" style="font-size: 1.2em;">Horas de Proyecto:</label>
                                 <input id="txtTiempoProyecto" name="txtTiempoProyecto" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-3">
+                                <label for="txtCantidadColores" style="font-size: 1.2em;">Cantidad Colores:</label>
+                                <input id="txtCantidadColores" name="txtCantidadColores" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtCantidadCombos" style="font-size: 1.2em;">Combos:</label>
+                                <input id="txtCantidadCombos" name="txtCantidadCombos" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtCantidadTallas" style="font-size: 1.2em;">Cantidad Tallas:</label>
+                                <input id="txtCantidadTallas" name="txtCantidadTallas" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtVelocidadMaquina" style="font-size: 1.2em;">Velocidad Maquina:</label>
+                                <input id="txtVelocidadMaquina" name="txtVelocidadMaquina" class="form-control" />
                             </div>
                         </div>
                         @*Datos de Costos por Corrida*@
@@ -158,6 +185,12 @@
                                     <div class="form-group col">
                                         <label for="TxtCostoOperacion" style="font-size: 1.2em;">Costo Operación:</label>
                                         <input id="TxtCostoOperacion" name="TxtCostoOperacion" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col">
+                                        <label for="txtCostoTermofijado" style="font-size: 1.2em;">Costo Termofijado:</label>
+                                        <input id="txtCostoTermofijado" name="txtCostoTermofijado" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -208,6 +241,12 @@
                                     <div class="form-group col">
                                         <label for="TxtCostoOperacionUnitario" style="font-size: 1.2em;">Costo Operación:</label>
                                         <input id="TxtCostoOperacionUnitario" name="TxtCostoOperacionUnitario" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col">
+                                        <label for="txtCostoTermofijadoUnitario" style="font-size: 1.2em;">Costo Unitario Termofijado:</label>
+                                        <input id="txtCostoTermofijadoUnitario" name="txtCostoTermofijadoUnitario" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row">
