@@ -2400,7 +2400,7 @@ $(document).ready(function () {
     $("#btnCambioEstado").click(function () {
         event.preventDefault();
         var Procesar = true;
-        var fnGuardar = function () { return GuardarAnalisis(parseInt(Kendo_CmbGetvalue($("#IdServicio")))); };
+        var fnGuardar = function () { return Fn_GuardaEnCambioEstado(parseInt(Kendo_CmbGetvalue($("#IdServicio")))); };
         Fn_VistaCambioEstadoMostrar("AnalisisDisenos", getEstadoActual(), UrlAD + "/AnalisisDisenos_CambiarEstado", "Sp_CambioEstado", getIdAD($("#ReqDes").data("kendoGrid")), fnGuardar);
 
 
@@ -2408,6 +2408,39 @@ $(document).ready(function () {
     })
 
 
+    function Fn_GuardaEnCambioEstado(bServicio) {
+        var validacion = true;
+        switch (bServicio) {
+            case 1:
+                if ($("#FrmSerigrafia").find(".row.k-state-disabled").length > 0) {
+                    validacion = true;
+                } else {
+                    validacion = GuardarAnalisis(bServicio);
+
+                };
+                break;
+
+            case 2:
+                if ($("#FrmSublimacion").find(".row.k-state-disabled").length > 0) {
+                    validacion = true;
+                } else {
+                    validacion = GuardarAnalisis(bServicio);
+                };
+                break;
+
+            case 3:
+                if ($("#FrmPlantillas").find(".row.k-state-disabled").length > 0) {
+                    validacion = true;
+                } else {
+                    validacion = GuardarAnalisis(bServicio);
+                };
+                break;
+            default:
+        }
+
+        return validacion
+
+    }
    
     //#region vista consulta estados
 
