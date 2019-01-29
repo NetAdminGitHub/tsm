@@ -706,7 +706,7 @@ $(document).ready(function () {
 
             $('[name="Rentabilidad"]').on("change", function (e) {
                 var CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
-                var Utilidad = CU * parseFloat(this.value);
+                var Utilidad = CU / (1 - parseFloat(this.value)) - CU;
                 var PrecioVenta = fn_RoundToUp( (Utilidad + CU),4);
                 $('[name="Utilidad"]').data("kendoNumericTextBox").value(Utilidad);
                 $('[name="PrecioVenta"]').data("kendoNumericTextBox").value(PrecioVenta);
@@ -717,11 +717,11 @@ $(document).ready(function () {
 
             $('[name="PrecioVenta"]').on("change", function (e) {
                 var CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
-                var Rentabilidad = (parseFloat(this.value) / CU) - 1;
+                var Rentabilidad = (parseFloat(this.value) - CU) / parseFloat(this.value);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").value(Rentabilidad);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").trigger("change");
 
-                var Utilidad = CU * Rentabilidad;
+                var Utilidad = CU / (1 - Rentabilidad) - CU;
             
                 $('[name="Utilidad"]').data("kendoNumericTextBox").value(Utilidad);
                 $('[name="Utilidad"]').data("kendoNumericTextBox").trigger("change");
