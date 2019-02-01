@@ -32,6 +32,7 @@ namespace TSM
 
             bundles.Add(new ScriptBundle("~/bundles/Login").Include("~/Scripts/js/Login.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/pdfobject").Include("~/Scripts/pdfobject.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/css").Include("~/Content/bootstrap/bootstrap.css",
                                                                            "~/Content/bootstrap/bootstrapMod.css"));
