@@ -256,6 +256,11 @@ $(document).ready(function () {
         value: 0
     });
 
+    $("#TxtComentarios").kendoEditor({
+        encoded: false,
+        tools: []
+    });
+
 
     fn_deshabilitar();
     //#region PRGRANMACION DEL GRID citizacion
@@ -359,7 +364,14 @@ $(document).ready(function () {
                     NumeroSeteos: { type: "string" },
                     CotizacionVigencia: { type: "string" },
                     PorcentajeSegundos: { type: "string" },
-                    Nombre2: { type: "string" }
+                    Nombre2: { type: "string" },
+                    PrecioSetupAdicional: { type: "string" },
+                    PrecioAdicionalColorTela: { type: "string" },
+                    TerminosPago: { type: "string" },
+                    ExcesoSetup: { type: "string" },
+                    PrecioSetup: { type: "string" },
+                    RepeticionesDesarrollo: { type: "string" },
+                    RepeticionesCTL: { type: "string" }
                 }
             }
         }
@@ -416,6 +428,20 @@ $(document).ready(function () {
             e.container.find("label[for=CondicionPagoCTL]").parent().next("div .k-edit-field").hide();
             e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
             e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=PrecioSetupAdicional]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=PrecioSetupAdicional]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=PrecioAdicionalColorTela]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=PrecioAdicionalColorTela]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=TerminosPago]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=TerminosPago]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=ExcesoSetup]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=ExcesoSetup]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=PrecioSetup]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=PrecioSetup]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=RepeticionesDesarrollo]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=RepeticionesDesarrollo]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=RepeticionesCTL]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=RepeticionesCTL]").parent().next("div .k-edit-field").hide();
 
             $('[name="FechaCreacion"]').data("kendoDatePicker").enable(false);
         },
@@ -447,7 +473,14 @@ $(document).ready(function () {
             { field: "CondicionPagoProduccion", title: "Condicion Pago Produccion", hidden: true},
             { field: "NumeroSeteos", title: "Numero Seteos",hidden: true},
             { field: "CotizacionVigencia", title: "Cotizacion Vigencia", hidden: true},
-            { field: "PorcentajeSegundos", title: "Porcentaje Segundos", hidden: true }
+            { field: "PorcentajeSegundos", title: "Porcentaje Segundos", hidden: true },
+            { field: "PrecioSetupAdicional", title: "Numero Seteos", hidden: true },
+            { field: "PrecioAdicionalColorTela", title: "Numero Seteos", hidden: true },
+            { field: "TerminosPago", title: "Numero Seteos", hidden: true },
+            { field: "ExcesoSetup", title: "Numero Seteos", hidden: true },
+            { field: "PrecioSetup", title: "Numero Seteos", hidden: true },
+            { field: "RepeticionesDesarrollo", title: "Numero Seteos", hidden: true },
+            { field: "RepeticionesCTL", title: "Numero Seteos", hidden: true }
         ]
     });
     
@@ -513,7 +546,7 @@ $(document).ready(function () {
                 NombreArchivo: nombreArchivo,
                 KeyPath: "rptPreCosteo",
                 TipoReporte: "RDLC",
-                NombreReporte: "rptCotizacionPrograma.rdlc",
+                NombreReporte: "rptCotizacionPrograma2.rdlc",
                 Formato: "PDF",
                 data: JSON.stringify(dataCli)
             });
@@ -524,8 +557,22 @@ $(document).ready(function () {
                 data: trama,
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    var url = "data:" + data.ContentType + ";base64," + data.Content;
-                    $("#frameReporte").attr("src", url);
+                    //var url = "data:" + data.ContentType + ";base64," + data.Content;
+
+                    var binary = atob(data.Content.replace(/\s/g, ''));
+                    var len = binary.length;
+                    var buffer = new ArrayBuffer(len);
+                    var view = new Uint8Array(buffer);
+                    for (var i = 0; i < len; i++) {
+                        view[i] = binary.charCodeAt(i);
+                    }
+
+                    // create the blob object with content-type "application/pdf"               
+                    var blob = new Blob([view], { type: "application/pdf" });
+                    var url = URL.createObjectURL(blob);
+
+                    //$("#frameReporte").attr("data", url);
+                    PDFObject.embed(url, "#frameReporte");
                     kendo.ui.progress($("#splitter"), false);
                 }
             });
@@ -553,7 +600,7 @@ $(document).ready(function () {
                     FechaAprobacion: fn_getFechaAprobacion($("#gridCotizacion").data("kendoGrid")),
                     FechaCreacion: fn_getFechaCreacion($("#gridCotizacion").data("kendoGrid")),
                     IdUsuario: fn_getIdUsuario($("#gridCotizacion").data("kendoGrid")),
-                    Comentarios: $("#TxtComentarios").val(),
+                    Comentarios: $("#TxtComentarios").data("kendoEditor").value(),
                     Estado: fn_getEstado($("#gridCotizacion").data("kendoGrid")),
                     Contacto: $("#TxtContacto").val(),
                     CotizaPromedio: $("#chkCotizaPromedio").is(':checked'),
@@ -567,7 +614,14 @@ $(document).ready(function () {
                     CondicionPagoProduccion: $("#TxtCondicionPagoProduccion").val(),
                     NumeroSeteos: $("#TxtNumeroSeteos").val(),
                     CotizacionVigencia: $("#TxtCotizacionVigencia").val(),
-                    PorcentajeSegundos: $("#TxtPorcentajeSegundos").val()
+                    PorcentajeSegundos: $("#TxtPorcentajeSegundos").val(),
+                    PrecioSetupAdicional: $("#txtPrecioSetupAdicional").val(),
+                    PrecioAdicionalColorTela: $("#txtPrecioAdicionalColorTela").val(),
+                    TerminosPago: $("#txtTerminosPago").val(),
+                    ExcesoSetup: $("#txtExcesoSetup").val(),
+                    PrecioSetup: $("#txtPrecioSetup").val(),
+                    RepeticionesDesarrollo: $("#txtRepeticionesDesarrollo").val(),
+                    RepeticionesCTL: $("#txtRepeticionesCTL").val()
                 }),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
@@ -918,7 +972,7 @@ function Fn_getCotizacion(g) {
     var elemento = g.dataItem(g.select());
     $("#TxtNombre").val(elemento.Nombre);
     $("#TxtContacto").val(elemento.Contacto);
-    $("#TxtComentarios").val(elemento.Comentarios);
+    $("#TxtComentarios").data("kendoEditor").value(elemento.Comentarios);
     $('#chkCotizaPromedio').prop('checked', elemento.CotizaPromedio);
     $('#chkPrecioPreliminar').prop('checked', elemento.PrecioPreliminar);
     $('#chkFinalCotizacion').prop('checked', elemento.FinalCotizacion);
@@ -931,12 +985,19 @@ function Fn_getCotizacion(g) {
     $("#TxtNumeroSeteos").val(elemento.NumeroSeteos);
     $("#TxtCotizacionVigencia").val(elemento.CotizacionVigencia);
     $("#TxtPorcentajeSegundos").val(elemento.PorcentajeSegundos);
+    $("#txtPrecioSetupAdicional").val(elemento.PrecioSetupAdicional);
+    $("#txtPrecioAdicionalColorTela").val(elemento.PrecioAdicionalColorTela);
+    $("#txtTerminosPago").val(elemento.TerminosPago);
+    $("#txtExcesoSetup").val(elemento.ExcesoSetup);
+    $("#txtPrecioSetup").val(elemento.PrecioSetup);
+    $("#txtRepeticionesDesarrollo").val(elemento.RepeticionesDesarrollo);
+    $("#txtRepeticionesCTL").val(elemento.RepeticionesCTL);
 }
 
 function Fn_getLimpiar(g) {    
     $("#TxtNombre").val("");
     $("#TxtContacto").val("");
-    $("#TxtComentarios").val("");
+    $("#TxtComentarios").data("kendoEditor").value("");
     $('#chkCotizaPromedio').prop('checked', 0);
     $('#chkPrecioPreliminar').prop('checked', 1);
     $('#chkFinalCotizacion').prop('checked',0);
@@ -949,6 +1010,13 @@ function Fn_getLimpiar(g) {
     $("#TxtNumeroSeteos").val("");
     $("#TxtCotizacionVigencia").val("0");
     $("#TxtPorcentajeSegundos").val("0");
+    $("#txtPrecioSetupAdicional").val("");
+    $("#txtPrecioAdicionalColorTela").val("");
+    $("#txtTerminosPago").val("");
+    $("#txtExcesoSetup").val("");
+    $("#txtPrecioSetup").val("");
+    $("#txtRepeticionesDesarrollo").val("");
+    $("#txtRepeticionesCTL").val("");
 }
 
 function fn_deshabilitar() {
