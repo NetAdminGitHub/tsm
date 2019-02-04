@@ -239,17 +239,8 @@
     <Compile Include="Utils\Config.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\FrwkAuthSrv\Auth.wsdl" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\FrwkAuthSrv\Auth2.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth11.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -257,6 +248,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth33.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth34.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth35.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\configuration91.svcinfo" />
@@ -273,7 +273,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth1.disco" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth.disco" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth11.disco" />
     <Content Include="Content\bootstrap\AdjCarousel.css" />
     <Content Include="Content\bootstrap\boostrapKendoMod.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />

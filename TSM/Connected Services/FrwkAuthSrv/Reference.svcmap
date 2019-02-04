@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:38097/Auth.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://frwk.techno-screen.com/Auth.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Auth.xsd" MetadataType="Schema" ID="31ebd114-a701-426c-8d2f-db008124c771" SourceId="1" SourceUrl="http://localhost:38097/Auth.svc?xsd=xsd0" />
-    <MetadataFile FileName="Auth.disco" MetadataType="Disco" ID="adeb0b4e-c9ee-4329-aae5-e02c1abed45b" SourceId="1" SourceUrl="http://localhost:38097/Auth.svc?disco" />
-    <MetadataFile FileName="Auth.wsdl" MetadataType="Wsdl" ID="fb22b45d-0bd5-494a-a406-392fa1bb72de" SourceId="1" SourceUrl="http://localhost:38097/Auth.svc?wsdl" />
-    <MetadataFile FileName="Auth1.xsd" MetadataType="Schema" ID="77a585ce-fdbf-459e-a26b-ca9a07e1b59f" SourceId="1" SourceUrl="http://localhost:38097/Auth.svc?xsd=xsd1" />
-    <MetadataFile FileName="Auth2.xsd" MetadataType="Schema" ID="b329a6fa-4787-4265-b754-397b4e033508" SourceId="1" SourceUrl="http://localhost:38097/Auth.svc?xsd=xsd2" />
+    <MetadataFile FileName="Auth33.xsd" MetadataType="Schema" ID="6da0ac79-ba6b-4dd4-973b-05bf169a9592" SourceId="1" SourceUrl="http://frwk.techno-screen.com/Auth.svc?xsd=xsd0" />
+    <MetadataFile FileName="Auth34.xsd" MetadataType="Schema" ID="09328cb7-7d3e-447c-bdc2-f6c5b6dff24b" SourceId="1" SourceUrl="http://frwk.techno-screen.com/Auth.svc?xsd=xsd2" />
+    <MetadataFile FileName="Auth11.wsdl" MetadataType="Wsdl" ID="445f431a-d2f0-4110-b773-01466b57b669" SourceId="1" SourceUrl="http://frwk.techno-screen.com/Auth.svc?wsdl" />
+    <MetadataFile FileName="Auth35.xsd" MetadataType="Schema" ID="7cb82ce5-0c80-4d16-b73d-191802d326d7" SourceId="1" SourceUrl="http://frwk.techno-screen.com/Auth.svc?xsd=xsd1" />
+    <MetadataFile FileName="Auth11.disco" MetadataType="Disco" ID="ff7355d1-1890-49d6-b31f-9a83fb91a2c5" SourceId="1" SourceUrl="http://frwk.techno-screen.com/Auth.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

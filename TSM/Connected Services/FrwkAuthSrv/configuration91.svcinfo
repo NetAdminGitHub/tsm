@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="XPNwgqkSW95L9ObS3wyYdN5EZ9Q=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="bV8lz/Pjo705stfXMdCA6UJe9b0=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IAuth">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IAuth" contract="FrwkAuthSrv.IAuth" bindingType="basicHttpBinding" address="http://localhost:38097/Auth.svc" bindingConfiguration="BasicHttpBinding_IAuth">
+    <endpoint name="BasicHttpBinding_IAuth" contract="FrwkAuthSrv.IAuth" bindingType="basicHttpBinding" address="http://frwk.techno-screen.com/Auth.svc" bindingConfiguration="BasicHttpBinding_IAuth">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:38097/Auth.svc</serializedValue>
+          <serializedValue>http://frwk.techno-screen.com/Auth.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
