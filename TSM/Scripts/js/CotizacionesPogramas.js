@@ -8,10 +8,10 @@ $(document).ready(function () {
     DivCarousel.append(Fn_Carouselcontent());
     Fn_LeerImagenes($("#Mycarousel"), "", null);
 
-    $("#btnGuardar").kendoButton({ icon: "save" });
-    $("#btnImprime").kendoButton({ icon: "print" });
-    $("#btnGeneraCotiPro").kendoButton({ icon: "gear" });
-    $("#btnCambioEstado").kendoButton({ icon: "check" });
+    KdoButton($("#btnGuardar"), "save", "Guardar");
+    KdoButton($("#btnImprime"),"print","Imprimir");
+    KdoButton($("#btnGeneraCotiPro"), "gear"," Generar cotización por programa");
+    KdoButton($("#btnCambioEstado"),"check","Cambio de estado");
 
     $("#btnGeneraCotiPro").data("kendoButton").enable(false)
     $("#btnCambioEstado").data("kendoButton").enable(false)
@@ -20,8 +20,8 @@ $(document).ready(function () {
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%", resizable: true },
-            { collapsible: false, scrollable: true, size: "100%" }
+            { collapsible: true, size: "50%", max: "95%", min: "20%", },
+            { collapsible: true, size: "50%" }
         ]
 
     });
@@ -34,10 +34,16 @@ $(document).ready(function () {
 
         var splElement = $("#splitter"),
             splObject = splElement.data("kendoSplitter");
-        splElement.css({ height: height-"200"+ "px" });
-        splObject.resize();
+        splElement.css({ height: height - height * 0.27 });
+        setTimeout(function () {
+            splObject.resize(true);
+        }, 300);
 
     };
+
+    $(".sidebar").hover(function () {
+        resizeSplitter($(window).height());
+    });
 
     resizeSplitter($(window).height());
 
@@ -785,7 +791,7 @@ $(document).ready(function () {
         ]
     });
 
-    SetGrid($("#gridCotizacionDetalle").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 350);
+    SetGrid($("#gridCotizacionDetalle").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#gridCotizacionDetalle").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridCotizacionDetalle").data("kendoGrid"), false, fn_SNBorrar(true));
     Set_Grid_DataSource($("#gridCotizacionDetalle").data("kendoGrid"), DsCT);

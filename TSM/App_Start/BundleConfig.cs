@@ -8,7 +8,11 @@ namespace TSM
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery/jquery-{version}.js",
+                                                                "~/Scripts/jquery/jquery.sparkline.min.js",
+                                                                "~/Scripts/jquery/jquery.scrollbar.min.js",
+                                                                "~/Scripts/jquery/jquery-ui.min.js"
+                                                                ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));
 
@@ -28,7 +32,9 @@ namespace TSM
                                                                        "~/Scripts/js/Layout.js",
                                                                        "~/Scripts/Utils/MltSelectPersonalizar.js",
                                                                        "~/Scripts/Utils/Menu.js",
-                                                                        "~/Scripts/js/CambioEstado.js"));
+                                                                        "~/Scripts/js/CambioEstado.js",
+                                                                        "~/Scripts/Utils/TSM-LayoutSet.js"
+                                                                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/Login").Include("~/Scripts/js/Login.js"));
 
@@ -39,12 +45,14 @@ namespace TSM
 
             bundles.Add(new StyleBundle("~/Content/Login").Include("~/Content/Login.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/Menu.css",
-                                                                 "~/Content/Font-HelveticaNeue.css",
+            bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/Font-HelveticaNeue.css",
                                                                  "~/Content/Font-TS-Icons.css",
-                                                                 "~/Content/Font-TSM-General.css"));
+                                                                 "~/Content/Font-TSM-General.css",
+                                                                 "~/Content/TSM-Style.css"
+                                                                 ));
             
-            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-v4.min.css"));
+            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-v4.min.css",
+                                                                        "~/Content/bootstrap/boostrapKendoMod.css"));
 
             //BundleTable.EnableOptimizations = true;
         }

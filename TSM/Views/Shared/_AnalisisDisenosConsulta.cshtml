@@ -17,24 +17,32 @@
 }
 <link href="~/Content/bootstrap/AdjCarousel.css" rel="stylesheet" />
 
-<div id="bottom-panel" class="form-control">
-    <div class="row">
-        <div class="form-group col-lg-12">
-            <div class="row">
-                <div class="col-lg-11"><label class="font-weight-bold" style=" font-size:1.2em;">Información general</label></div>
-            </div>
-            <div class="row" id="divSerigrafia">
-                @Html.Partial("_AnalisDisenoSerigrafiaConsulta")
-            </div>
-            <div class="row" id="divSubli" hidden="hidden">
-                @Html.Partial("_AnalisDisenoSublimacionConsulta")
-            </div>
+<div class="form-row">
+        <div class="card">
+            <div class="card-body">
+                <div id="bottom-panel" class="form-control">
+                
+                        <div class="form-group col-lg-12">
+                            <div class="form-row">
+                                <div class="col-lg-11"><label class="font-weight-bold" style=" font-size:1.2em;">Información general</label></div>
+                            </div>
+                            <div class="form-row" id="divSerigrafia">
+                                @Html.Partial("_AnalisDisenoSerigrafiaConsulta")
+                            </div>
+                            <div class="form-row" id="divSubli" hidden="hidden">
+                                @Html.Partial("_AnalisDisenoSublimacionConsulta")
+                            </div>
 
-            <div class="row" id="divPlan" hidden="hidden">
-                @Html.Partial("_AnalisDisenoPlantillaConsulta")
+                            <div class="form-row" id="divPlan" hidden="hidden">
+                                @Html.Partial("_AnalisDisenoPlantillaConsulta")
+                            </div>
+                        </div>
+                
+                </div>
             </div>
         </div>
-    </div>
 </div>
+
+
 
 

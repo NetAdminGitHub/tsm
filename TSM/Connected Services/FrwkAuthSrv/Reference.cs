@@ -20,6 +20,12 @@ namespace TSM.FrwkAuthSrv {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuth/Action", ReplyAction="http://tempuri.org/IAuth/ActionResponse")]
         System.Threading.Tasks.Task<string> ActionAsync(string jTrama);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuth/getUserLDAP", ReplyAction="http://tempuri.org/IAuth/getUserLDAPResponse")]
+        System.Collections.Generic.Dictionary<string, string>[] getUserLDAP(string user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuth/getUserLDAP", ReplyAction="http://tempuri.org/IAuth/getUserLDAPResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>[]> getUserLDAPAsync(string user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +61,14 @@ namespace TSM.FrwkAuthSrv {
         
         public System.Threading.Tasks.Task<string> ActionAsync(string jTrama) {
             return base.Channel.ActionAsync(jTrama);
+        }
+        
+        public System.Collections.Generic.Dictionary<string, string>[] getUserLDAP(string user) {
+            return base.Channel.getUserLDAP(user);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>[]> getUserLDAPAsync(string user) {
+            return base.Channel.getUserLDAPAsync(user);
         }
     }
 }

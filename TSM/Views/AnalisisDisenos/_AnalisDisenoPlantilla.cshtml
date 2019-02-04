@@ -1,85 +1,82 @@
-﻿<div class="form-group col-lg-12">
+﻿
   
-    <div class="row">
-        <div class="form-group col-lg-9">
-            <form id="FrmPlantillas" enctype="multipart/form-data" autocomplete="off">
-                <div class="row">
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="UbicacionPla" style="font-size: 1.2em;">Tipo Prenda:</label>
-                        <input id="UbicacionPla" name="UbicacionPla" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="FechaPla" style="font-size: 1.2em;">Fecha:</label>
-                        <input id="FechaPla" name="FechaPla" class="form-control" />
-                    </div>
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="EstadoPla" style="font-size: 1.2em;">Estado:</label>
-                        <input id="EstadoPla" name="EstadoPla" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-7">
+            <div class="form-row">
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="UbicacionPla">Tipo Prenda:</label>
+                    <input id="UbicacionPla" name="UbicacionPla" class="k-textbox form-control"  />
                 </div>
-                <div class="row">
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="FechaPla">Fecha:</label>
+                    <input id="FechaPla" name="FechaPla" class="form-control" />
+                </div>
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="EstadoPla">Estado:</label>
+                    <input id="EstadoPla" name="EstadoPla" class="k-textbox form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDirectorioPlan">Directorio Archivos:</label>
+                    <input id="TxtDirectorioPlan" name="TxtDirectorioPlan" type="text" class="k-textbox form-control"  />
+                </div>
+            </div>
+            <form id="FrmPlantillas" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-row">
                     <div class="form-group col-md-3  col-lg-4">
-                        <label for="AnchoDisenoPla" style="font-size: 1.2em;">Ancho Diseño:</label>
+                        <label for="AnchoDisenoPla" >Ancho Diseño:</label>
                         <input id="AnchoDisenoPla" name="AnchoDisenoPla" class="form-control" required />
                     </div>
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="AltoDisenoPla" style="font-size: 1.2em;">Alto Diseño:</label>
+                        <label for="AltoDisenoPla" >Alto Diseño:</label>
                         <input id="AltoDisenoPla" name="AltoDisenoPla" class="form-control" required />
                     </div>
                     <div class="form-group col-md-2 col-lg-4">
-                        <label for="cmbIdUnidadDimensionPla" style="font-size: 1.2em;">Unidad Medida:</label>
+                        <label for="cmbIdUnidadDimensionPla" >Unidad Medida:</label>
                         <input id="cmbIdUnidadDimensionPla" name="cmbIdUnidadDimensionPla" class="form-control" required validationMessage="Requerido" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-row">
                     <div class="form-group  col-md-3 col-lg-4">
-                        <label for="TxtVelocidadMaquinaPla" style="font-size: 1.2em;" hidden="hidden">Velocidad Maquina:</label>
+                        <label for="TxtVelocidadMaquinaPla"  hidden="hidden">Velocidad Maquina:</label>
                         <input id="TxtVelocidadMaquinaPla" name="TxtVelocidadMaquinaPla" class="form-control" hidden="hidden" />
                     </div>
                     <div class="form-group  col-md-3 col-lg-4">
-                        <label for="CmbIdUnidadVelocidadPla" style="font-size: 1.2em;" hidden="hidden">Unidad Velocidad:</label>
+                        <label for="CmbIdUnidadVelocidadPla"  hidden="hidden">Unidad Velocidad:</label>
                         <input id="CmbIdUnidadVelocidadPla" name="CmbIdUnidadVelocidadPla" class="form-control" hidden="hidden" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-row">
                     <div class="form-group col-md-6 col-lg-4 align-self-end">
-                        <button type="button" id="btnGPlantilla" name="btnGPlantilla">&nbsp;Guardar</button>
+                        <div class="input-group">
+                            <div style="width:100%">
+                                <button type="button" id="btnGPlantilla" name="btnGPlantilla"></button>
+                                <button type="button" id="btnVerReq2" name="btnVerReq"></button>
+                                <button type="button" id="myBtnAdjunto2" data-toggle="modal" data-target="#myModalAdjunto" onclick=" $('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;"></button>
+                            
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </form>
+            
         </div>
-        <div class="form-group col-lg-3">
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <label for="TxtDirectorioPlan" style="font-size: 1.2em;">Directorio Archivos:</label>
-                    <input id="TxtDirectorioPlan" name="TxtDirectorioPlan" type="text" class="k-textbox form-control" readonly="readonly" />
-                </div>
-            </div>
-            <div class="row">
+        <div class="form-group col-lg-5">
+            <div class="form-row">
                 <div class="form-group col-lg-12" id="PlantillaSlide">
                     @* aqui se coloca dinamicamente las imagenes  *@
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <div id="vistaParPlantilla"></div>
-                </div>
-            </div>
         </div>
-
     </div>
-    <div class="row">
-        <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Lienzos</label></div>
+    <div class="form-row">
+        <div class="form-group col-lg-12"><label class="font-weight-bold">Lienzos</label></div>
     </div>
-    <form id="FrmSublimacion">
-        <div class="row">
+    <div class="form-row">
             <div class="form-group col-lg-12">
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        <div id="gridPlantillas"></div>
-                    </div>
-                </div>
+                <div id="gridPlantillas"></div>
             </div>
-        </div>
-    </form>
-</div>
+    </div>
+

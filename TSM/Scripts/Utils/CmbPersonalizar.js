@@ -62,7 +62,7 @@ var KdoComboBoxEnable = function (InputElem, enable) {
  * @param {number} opcHeight Alto por defecto del control
  * @param {string} parentCascade Nombre del campo del cual dependerá el ComboBox en cascada
  * @param {string} clearButton activar boton clear,
- * @param {string} fn_crear 
+ * @param {string} fn_crear crea registro
  */
 var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton,fn_crear) {
     $.ajax({

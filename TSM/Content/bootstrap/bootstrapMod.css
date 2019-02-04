@@ -1,7 +1,8 @@
-﻿body {
+﻿/*body {
+ 
     font-family: "Helvetica Neue";
-}
 
+}*/
 /*#region Cambios Bootstrap*/
 
 /*Menos bordenes para resoluciones FHD*/
@@ -30,39 +31,12 @@
 
 /*#endregion Cambios Bootstrap*/
 
-/*#region Kendo Bootstrap*/
-
-/*Linea final en el contenido de un Grid*/
-.k-grid-content tr:last-child td, .k-grid-content-locked tr:last-child td {
-    border-bottom-width: 1px !important;
-}
-/*#endregion Kendo Bootstrap*/
-
-/*#region Modificaciones Kendo*/
-
-/*Se hace de dos lineas el encabezado de columnas*/
-.k-grid .k-grid-header .k-header .k-link {
-    height: 60px;
+/*#region estilos iconos*/
+i[class*="ficonm"] {
+    font-size: 30px;
+    line-height: 30px;
+    text-rendering: auto;
+    display: inline-block;
 }
 
-.k-grid .k-grid-header .k-header {
-    white-space: normal;
-}
-
-.k-grid-header .k-header > .k-link {
-    overflow: visible !important;
-}
-
-/*Se cambia fondo de los input al estar deshabilitados*/
-input:disabled {
-    background-color: #CCCCCC !important;
-}
-input:read-only {
-    background-color: #CCCCCC !important;
-}
-
-div.k-state-disabled input {
-    background-color: #CCCCCC !important;
-}
-
-/*#endregion*/
+/*#endregion estilos iconos*/

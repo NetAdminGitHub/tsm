@@ -1,12 +1,9 @@
-﻿    <div class="row">
-        <div class="form-group col-lg-12">
-            <div class="input-group">
-                <div style="width: 100%;">
-                    <button type="button" id="btnRecalcular" name="btnRecalcular">&nbsp;Recalcular</button>
-                    <button type="button" id="btnSimulacion" name="btnSimulacion" data-toggle="modal" data-target="#NuevaSimulacion">&nbsp;Nueva Simulación</button>
-                    <button type="button" id="btnCambioEstado" name="btnCambioEstado">&nbsp;Cambio de Estado</button>
-                </div>
-            </div>
+﻿
+    <div class="input-group">
+        <div style="width: 100%;">
+            <button type="button" id="btnRecalcular" name="btnRecalcular"></button>
+            <button type="button" id="btnSimulacion" name="btnSimulacion" data-toggle="modal" data-target="#NuevaSimulacion"></button>
+            <button type="button" id="btnCambioEstado" name="btnCambioEstado"></button>
         </div>
     </div>
     <form id="FrmNuevoSim" method="POST" enctype="multipart/form-data" autocomplete="off">
@@ -19,34 +16,36 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body" role="document">
-                        <div class="form-group col-lg-12">
-                            <label for="TxtNuevaCantidadPiezas" style="font-size: 1.2em;">Cantidad de Piezas:</label>
-                            <input id="TxtNuevaCantidadPiezas" name="TxtNuevaCantidadPiezas" class="form-control" required />
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="TxtNoMontaje" style="font-size: 1.2em;">Montajes:</label>
-                            <input id="TxtNoMontaje" name="TxtNoMontaje" class="form-control" required />
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="txtPersonalExtra" style="font-size: 1.2em;">Personal Extra:</label>
-                            <input id="txtPersonalExtra" name="txtPersonalExtra" class="form-control" required />
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="txtCombos" style="font-size: 1.2em;">Cantidad de Combos:</label>
-                            <input id="txtCombos" name="txtCombos" class="form-control" required />
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="txtVeloMaquina" style="font-size: 1.2em;">Velocidad Maquina:</label>
-                            <input id="txtVeloMaquina" name="txtVeloMaquina" class="form-control" required />
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <input id="chkUsarTermofijado" type="checkbox" name="chkUsarTermofijado" class="k-checkbox" />
-                            <label class="k-checkbox-label" for="chkUsarTermofijado">Utilizar Termofijado</label>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="TxtNuevaCantidadPiezas">Cantidad de Piezas:</label>
+                                <input id="TxtNuevaCantidadPiezas" name="TxtNuevaCantidadPiezas" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="TxtNoMontaje">Montajes:</label>
+                                <input id="TxtNoMontaje" name="TxtNoMontaje" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="txtPersonalExtra">Personal Extra:</label>
+                                <input id="txtPersonalExtra" name="txtPersonalExtra" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="txtCombos">Cantidad de Combos:</label>
+                                <input id="txtCombos" name="txtCombos" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="txtVeloMaquina">Velocidad Maquina:</label>
+                                <input id="txtVeloMaquina" name="txtVeloMaquina" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <input id="chkUsarTermofijado" type="checkbox" name="chkUsarTermofijado" class="k-checkbox" />
+                                <label class="k-checkbox-label" for="chkUsarTermofijado">Utilizar Termofijado</label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer ">
-                        <button type="button"   class="btn btn-default" id="btnAceptar">Aceptar</button>
-                        <button type="button"  class="btn btn-default" data-dismiss="modal" id="btnCerrar">Cerrar</button>
+                        <button type="button"   class="k-primary" id="btnAceptar">Aceptar</button>
+                        <button type="button"  data-dismiss="modal" id="btnCerrar">Cancelar</button>
                     </div>
                 </div>
             </div>

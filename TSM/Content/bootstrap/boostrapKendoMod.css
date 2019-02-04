@@ -1,0 +1,64 @@
+﻿
+/*#region Kendo Bootstrap*/
+
+/*Linea final en el contenido de un Grid*/
+.k-grid-content tr:last-child td, .k-grid-content-locked tr:last-child td {
+    border-bottom-width: 1px !important;
+}
+/*#endregion Kendo Bootstrap*/
+
+/*#region Modificaciones Kendo*/
+
+/*Se hace de dos lineas el encabezado de columnas*/
+.k-grid .k-grid-header .k-header .k-link {
+    height: 60px;
+}
+
+.k-grid .k-grid-header .k-header {
+    white-space: normal;
+}
+
+.k-grid-header .k-header > .k-link {
+    overflow: visible !important;
+}
+
+.k-grid .k-button-icontext .k-i-plus, .k-grid .k-button-icontext .k-i-edit, .k-grid .k-button-icontext .k-i-delete, .k-command-cell > .k-button {
+    margin: 0px;
+    font-size:0.875rem;
+}
+
+
+
+/*Se cambia fondo de los input al estar deshabilitados*/
+input:disabled {
+    background-color: #CCCCCC !important;
+}
+
+input:read-only {
+    background-color: #CCCCCC !important;
+}
+
+div.k-state-disabled input {
+    background-color: #CCCCCC !important;
+}
+.k-widget{
+    font-size:0.875rem;
+}
+.k-input, .k-input.k-textbox, input.k-textbox, textarea.k-textbox, textarea[class*="form-control"], .k-button.k-upload-button {
+    font-size: 0.875rem;
+}
+
+.k-grid td, .k-grid th {
+    padding-top: 0.2rem;
+    padding-right: 0.4rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.4rem;
+}
+.card{
+    width:100%;
+}
+
+.k-dialog-buttongroup .k-button {
+    display: inline-flex;
+}
+/*#endregion*/

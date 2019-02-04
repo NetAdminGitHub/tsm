@@ -44,12 +44,12 @@ $(document).ready(function () {
     });
 
     OcultarTab($("#tabstrip-left"), 1)
-
-    $("#btnNuevo").kendoButton({ icon: "plus" });
-    $("#btnGuardar").kendoButton({ icon: "save" });
-    $("#btnEliminar").kendoButton({ icon: "delete" });
-    $("#btnEditar").kendoButton({ icon: "edit" });
-    $("#btnCancelar").kendoButton({ icon: "cancel" });
+ 
+    KdoButton($("#btnNuevo"),"plus","Nuevo");
+    KdoButton($("#btnGuardar"),"save","Guardar");
+    KdoButton($("#btnEliminar"),"delete","Eliminar");
+    KdoButton($("#btnEditar"), "edit" ,"Editar");
+    KdoButton($("#btnCancelar"),"cancel","Cancelar");
     $("#btnCerrar").kendoButton({ icon: "close-circle" });
     $("#btnAceptar").kendoButton({ icon: "check-circle" });
 

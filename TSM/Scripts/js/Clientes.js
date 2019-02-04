@@ -110,6 +110,12 @@ $(document).ready(function () {
     $("#GkClientes").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#GkClientes"), selectedRows);
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#GkClientes"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#GkClientes"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

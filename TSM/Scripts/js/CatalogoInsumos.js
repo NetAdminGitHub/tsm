@@ -218,6 +218,13 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
+
+    $(window).on("resize", function () {
+        var gridWidget = $("#grid").data("kendoGrid");
+        gridWidget.wrapper.height($(window).height()-"371");
+        gridWidget.resize();
+
+    });
 });
 
 fPermisos = function (datos) {

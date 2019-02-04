@@ -1,88 +1,91 @@
-﻿
+﻿<style>
+    #GSeparacion {
+        height: 100%;
+    }
+</style>
 <div class="form-group col-lg-12">
-
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-12">
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <label for="EstadoSer" style="font-size: 1.2em;">Estado:</label>
-                        <input id="EstadoSer_colta" name="EstadoSer_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="FechaSer_colta" style="font-size: 1.2em;">Fecha:</label>
-                        <input id="FechaSer_colta" name="FechaSer_colta" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="ResolucionDPISer_colta" style="font-size: 1.2em;">Resolución (DPI):</label>
-                        <input id="ResolucionDPISer_colta" name="ResolucionDPISer_colta" type="text" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="ResolucionSqrSer_colta" style="font-size: 1.2em;">Resolución<sup>2</sup>:</label>
-                        <input id="ResolucionSqrSer_colta" name="ResolucionSqrSer_colta" class="form-control" value="0" />
-                    </div>
+            <div class="form-row">
+                <div class="form-group col-lg-3">
+                    <label for="EstadoSer">Estado:</label>
+                    <input id="EstadoSer_colta" name="EstadoSer_colta" class="k-textbox form-control" , disabled="disabled" />
                 </div>
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <label for="PixelesTotalSer_colta" style="font-size: 1.2em;">Pixeles:</label>
-                        <input id="PixelesTotalSer_colta" name="PixelesTotalSer_colta" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="AreaTotalSer_colta" style="font-size: 1.2em;">Area Total:</label>
-                        <input id="AreaTotalSer_colta" name="AreaTotalSer_colta" class="form-control" value="0" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="IdUniAreaSer_colta" style="font-size: 1.2em;">Unidad Medida:</label>
-                        <input id="IdUniAreaSer_colta" name="IdUniAreaSer_colta" class="form-control" required validationMessage="Requerido" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="CntTallasSer_colta" style="font-size: 1.2em;">Tamaño:</label>
-                        <input id="CntTallasSer_colta" name="CntTallasSer_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
+                <div class="form-group col-lg-3">
+                    <label for="FechaSer_colta">Fecha:</label>
+                    <input id="FechaSer_colta" name="FechaSer_colta" class="form-control" />
                 </div>
+                <div class="form-group col-lg-3">
+                    <label for="ResolucionDPISer_colta">Resolución (DPI):</label>
+                    <input id="ResolucionDPISer_colta" name="ResolucionDPISer_colta" type="text" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="ResolucionSqrSer_colta">Resolución<sup>2</sup>:</label>
+                    <input id="ResolucionSqrSer_colta" name="ResolucionSqrSer_colta" class="form-control" value="0" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-3">
+                    <label for="PixelesTotalSer_colta">Pixeles:</label>
+                    <input id="PixelesTotalSer_colta" name="PixelesTotalSer_colta" class="form-control" required data-max-msg="ingrese el valor entre 1 y 999999999" value="0" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="AreaTotalSer_colta">Area Total:</label>
+                    <input id="AreaTotalSer_colta" name="AreaTotalSer_colta" class="form-control" value="0" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="IdUniAreaSer_colta">Unidad Medida:</label>
+                    <input id="IdUniAreaSer_colta" name="IdUniAreaSer_colta" class="form-control" required validationMessage="Requerido" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="CntTallasSer_colta">Tamaño:</label>
+                    <input id="CntTallasSer_colta" name="CntTallasSer_colta" class="k-textbox form-control" , disabled="disabled" />
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-6">
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="AnchoDisenoSer_colta" style="font-size: 1.2em;">Ancho:</label>
+                    <label for="AnchoDisenoSer_colta">Ancho:</label>
                     <input id="AnchoDisenoSer_colta" name="AnchoDisenoSer_colta" class="form-control" required value="0" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="AltoDisenoSer_colta" style="font-size: 1.2em;">Alto:</label>
+                    <label for="AltoDisenoSer_colta">Alto:</label>
                     <input id="AltoDisenoSer_colta" name="AltoDisenoSer_colta" class="form-control" required value="0" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="IdUniDimensionSer_colta" style="font-size: 1.2em;">Unidad Medida:</label>
+                    <label for="IdUniDimensionSer_colta">Unidad Medida:</label>
                     <input id="IdUniDimensionSer_colta" name="IdUniDimensionSer_colta" class="form-control" required validationMessage="Requerido" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="TxtVelocidadMaquinaSer_colta" style="font-size: 1.2em;">Velocidad Maquina:</label>
+                    <label for="TxtVelocidadMaquinaSer_colta">Velocidad Maquina:</label>
                     <input id="TxtVelocidadMaquinaSer_colta" name="TxtVelocidadMaquinaSer_colta" class="form-control" required value="0" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="CmbIdUnidadVelocidadSer_colta" style="font-size: 1.2em;">Unidad Velocidad:</label>
+                    <label for="CmbIdUnidadVelocidadSer_colta">Unidad Velocidad:</label>
                     <input id="CmbIdUnidadVelocidadSer_colta" name="CmbIdUnidadVelocidadSer_colta" class="form-control" required validationMessage="Requerido" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <div class="row">
+                    <div class="form-row">
                         <div class="form-group col-md-7 col-lg-7">
-                            <label for="CntcolorSer_colta" style="font-size: 1.2em;">Cantidad Colores:</label>
+                            <label for="CntcolorSer_colta">Cantidad Colores:</label>
                             <input id="CntcolorSer_colta" name="CntcolorSer_colta" class="form-control" value="0" />
                         </div>
                         <div class="form-group col-md-5 col-lg-5 align-self-end">
                             <input type="checkbox" id="chkDisenoFullColorSer_colta" name="chkDisenoFullColorSer_colta" class="k-checkbox" disabled="disabled">
-                            <label class="k-checkbox-label" for="chkDisenoFullColorSer_colta" style="font-size: 1.2em;" >Full Color</label>
+                            <label class="k-checkbox-label" for="chkDisenoFullColorSer_colta">Full Color</label>
                         </div>
                     </div>
 
@@ -90,36 +93,38 @@
             </div>
         </div>
         <div class="form-group col-lg-6">
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="TxtDirectorioSeri_colta" style="font-size: 1.2em;">Directorio Archivos:</label>
+                    <label for="TxtDirectorioSeri_colta">Directorio Archivos:</label>
                     <input id="TxtDirectorioSeri_colta" name="TxtDirectorioSeri_colta" type="text" class="k-textbox form-control" readonly="readonly" />
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12" id="SerigrafiaSlide">
                     @* aqui se coloca dinamicamente las imagenes  *@
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-12">
+            <div class="form-row">
+                <div class="form-group col-lg-10">
+                </div>
+                <div class="form-group col-lg-2 align-self-end">
                     <div id="vistaParSeri"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-12">
-            <label for="TxtComentarios" style="font-size: 1.2em;">Comentarios:</label>
-            <input id="TxtComentarios" name="TxtComentarios" class="form-control" readonly="readonly"/>
+            <label for="TxtComentarios">Comentarios:</label>
+            <input id="TxtComentarios" name="TxtComentarios" class="form-control" readonly="readonly" />
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Técnicas</label></div>
+    <div class="form-row">
+        <div class="col-lg-12"><label class="font-weight-bold">Técnicas</label></div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-12">
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
                     <div id="GSeparacion"></div>
                 </div>

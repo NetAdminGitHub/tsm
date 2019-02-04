@@ -100,7 +100,7 @@ function SetGrid_CRUD_Toolbar(e, agregar, editar, borrar) {
  */
 function SetGrid_CRUD_ToolbarTop(e, agregar) {
     var opciones = [];
-    if (agregar) opciones.push("create");
+    if (agregar) opciones.push({ name: "create", text: "", iconClass: "k-icon k-i-plus" });
 
 
     if (agregar === false) {
@@ -120,11 +120,19 @@ function SetGrid_CRUD_ToolbarTop(e, agregar) {
  * @param {kendo.ui.Grid} e  Grid contenedor de la funcion
  * @param {boolean} editar Muestra boton Editar.
  * @param {boolean} borrar Muestra boton Eliminar.
+ * @param {string} Id_GridDetalle colocar id cuando sea un grid detalle para el funcionamiento del boton elminar.
  */
-function SetGrid_CRUD_Command(e, editar, borrar) {
-    var EliminarTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton' style='width: 75px;'>Si</button> <button class='k-button' id='noButton' style='width: 75px;'>No</button><div>");
+function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
+
+    if (givenOrDefault(Id_GridDetalle, "") !== "" && e.element.parent().attr("class") === "k-detail-cell") {
+        e.element.attr('id', Id_GridDetalle + Date.now().toString());
+    }
+
+    $("#" + Id_GridDetalle + "").children().remove();
+
+    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button' id='noButton_" + e.element.attr('id') +"' style='width: 75px;'>No</button></div></span>");
     var windowEliminar = $("<div />").kendoWindow({
-        title: "Confirmación",
+        title: "Confirmación" ,
         visible: false,
         width: "400px",
         height: "200px",
@@ -138,12 +146,12 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
         windowEliminar.content(EliminarTemplate(data));
         windowEliminar.center().open();
 
-        $("#yesButton").click(function () {
+        $("#yesButton_" + e.element.attr('id') + "").click(function () {
             e.dataSource.remove(data);
             e.dataSource.sync();
             windowEliminar.close();
         });
-        $("#noButton").click(function () {
+        $("#noButton_" + e.element.attr('id') + "").click(function () {
             windowEliminar.close();
         });
     };
@@ -152,9 +160,17 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
     var columns = e.columns;
     var w = 0;
 
-    if (editar) opciones.push({ name: "edit" });
-    if (borrar) opciones.push({ name: "Eliminar", click: EliminarClick, iconClass: "k-icon k-i-close" });
+    if (editar) opciones.push({ name: "edit", text: "", iconClass: "k-icon k-i-edit" });
 
+    if (givenOrDefault(Id_GridDetalle, "") !== "" && e.element.parent().attr("class") === "k-detail-cell") {
+        // cuando es un grid detalle
+        if (borrar) opciones.push({ name: "EliminarDet", click: EliminarClick, iconClass: "k-icon k-i-delete", text: "" });
+    }
+    else {
+        // grdi maestro.
+        if (borrar) opciones.push({ name: "Eliminar", click: EliminarClick, iconClass: "k-icon k-i-delete", text: "" });
+    }
+   
     // habilitar o deshabilitar el modo edicion cuando el usuario presiona <enter> en la fila
     e.options.editable.update = editar;
 
@@ -167,7 +183,7 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
             Opccommand = {
                 columns: columns.concat([{
                     field: "cmdEdit", title: "&nbsp;", menu: false,
-                    command: opciones[0], width: 100 + "px", attributes: {
+                    command: opciones[0], width: 70 + "px", attributes: {
 
                         style: "text-align: center"
                     }
@@ -180,13 +196,13 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
             Opccommand = {
                 columns:  Opccommand === "" ? columns.concat([{
                     field: "cmdDel", title: "&nbsp;", menu: false,
-                    command: opciones[0], width: 115 + "px", attributes: {
+                    command: opciones[0], width: 70 + "px", attributes: {
 
                         style: "text-align: center"
                     }
                 }]) : Opccommand.columns.concat([{
                         field: "cmdDel", title: "&nbsp;", menu: false,
-                        command: opciones[1], width: 115 + "px", attributes: {
+                        command: opciones[1], width: 70 + "px", attributes: {
 
                             style: "text-align: center"
                         }
@@ -194,6 +210,7 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
             };
         }
         e.setOptions($.extend({}, e.getOptions(), Opccommand));
+
     }
 
 }
@@ -204,7 +221,7 @@ function SetGrid_CRUD_Command(e, editar, borrar) {
  * @param {number} TamañoPagina Paremtro Opcional, Numero de registros de datos que se mostrarán en la cuadrícula 
  */
 function Set_Grid_DataSource(e, ds, TamañoPagina) {
- 
+
     DSource = {
         dataSource: ds,
         noRecords: {
@@ -213,6 +230,29 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
     };
     e.setOptions($.extend({}, e.getOptions(), DSource));
     e.dataSource.pageSize(givenOrDefault(TamañoPagina, 50));
+
+    // aplicar tooltips a botones de edicion y eliminacion del grid
+
+    $("#" + e.element.attr('id') + "").kendoTooltip({
+        filter: ".k-grid-edit",
+        content: function (e) {
+            return "Editar";
+        }
+    });
+
+    $("#" + e.element.attr('id')+"").kendoTooltip({
+        filter: ".k-grid-Eliminar",  
+        content: function (e) {
+            return "Eliminar";
+        }
+    });
+
+    $("#" + e.element.attr('id') + "").kendoTooltip({
+        filter: ".k-grid-add",
+        content: function (e) {
+            return "Agregar";
+        }
+    });
 }
 
 // colocar ckecbox en columna del grid
@@ -571,4 +611,15 @@ function Grid_RetornarRow(e, uid) {
     row = el.find("tbody>tr[data-uid='" + uid + "']");
     return row;
 
+}
+
+/**
+ * reajusta el tamaño del grid Alto 
+ * @param {kendo.ui.Grid} e Definicion del grid 
+ * @param {number} height alto del grid
+ */
+function Fn_Grid_Resize(e, height) {
+    var gridWidget = e.data("kendoGrid");
+    gridWidget.wrapper.height(height);
+    gridWidget.resize();
 }

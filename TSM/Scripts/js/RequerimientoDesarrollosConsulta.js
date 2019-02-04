@@ -159,7 +159,7 @@ var RequerimientoDes = function () {
 
     });
 
-    SetGrid($("#GRDimension_Cota").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 325);
+    SetGrid($("#GRDimension_Cota").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRDimension_Cota").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#GRDimension_Cota").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#GRDimension_Cota").data("kendoGrid"), DsDimension);
@@ -229,7 +229,7 @@ var RequerimientoDes = function () {
 
     });
 
-    SetGrid($("#GRReqDesTec_Cota").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 325);
+    SetGrid($("#GRReqDesTec_Cota").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRReqDesTec_Cota").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#GRReqDesTec_Cota").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#GRReqDesTec_Cota").data("kendoGrid"), DsReqDesTec);

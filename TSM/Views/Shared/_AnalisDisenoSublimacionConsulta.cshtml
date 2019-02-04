@@ -1,75 +1,80 @@
-﻿<div class="form-group col-lg-12">
-    EstadoSub_colta
-    <div class="row">
+﻿<style>
+    #GSublimacion {
+        height: 100%;
+    }
+</style>
+<div class="form-group col-lg-12">
+    <div class="form-row">
         <div class="form-group col-lg-12">
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-md-4 col-lg-4">
-                    <label for="UbicacionSub_colta" style="font-size: 1.2em;">Tipo Prenda:</label>
-                    <input id="UbicacionSub_colta" name="UbicacionSub_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                    <label for="UbicacionSub_colta">Tipo Prenda:</label>
+                    <input id="UbicacionSub_colta" name="UbicacionSub_colta" class="k-textbox form-control" , disabled="disabled" />
                 </div>
                 <div class="form-group col-md-4 col-lg-4">
-                    <label for="FechaSub_colta" style="font-size: 1.2em;">Fecha:</label>
+                    <label for="FechaSub_colta">Fecha:</label>
                     <input id="FechaSub_colta" name="FechaSub_colta" class="form-control" />
                 </div>
                 <div class="form-group col-md-4 col-lg-4">
-                    <label for="EstadoSub_colta" style="font-size: 1.2em;">Estado:</label>
+                    <label for="EstadoSub_colta">Estado:</label>
                     <input id="EstadoSub_colta" name="EstadoSub_colta" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                 </div>
-
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-6">
-            <div class="row">
-                <div class="form-group col-md-12  col-lg-12">
-                    <label for="AnchoDisenoSub_colta" style="font-size: 1.2em;">Ancho:</label>
-                    <input id="AnchoDisenoSub_colta" name="AnchoDisenoSub_colta" class="form-control" required />
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12 col-lg-12">
-                    <label for="AltoDisenoSub_colta" style="font-size: 1.2em;">Alto:</label>
-                    <input id="AltoDisenoSub_colta" name="AltoDisenoSub_colta" class="form-control" required />
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12 col-lg-12">
-                    <label for="IdUnidadDimensionSub_colta" style="font-size: 1.2em;">Unidad Medida:</label>
-                    <input id="IdUnidadDimensionSub_colta" name="IdUnidadDimensionSub_colta" class="form-control" required validationMessage="Requerido" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12 col-lg-12">
-                    <label for="TxtFactorDistribucion_colta" style="font-size: 1.2em;">Factor Distribución:</label>
-                    <input id="TxtFactorDistribucion_colta" name="TxtFactorDistribucion_colta" class="form-control" required />
-                </div>
-
-            </div>
-        </div>
-        <div class="form-group col-lg-6">
-            <div class="row">
+            <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="TxtDirectorioSubli_colta" style="font-size: 1.2em;">Directorio Archivos:</label>
+                    <label for="TxtDirectorioSubli_colta">Directorio Archivos:</label>
                     <input id="TxtDirectorioSubli_colta" name="TxtDirectorioSubli_colta" type="text" class="k-textbox form-control" readonly="readonly" />
                 </div>
             </div>
-            <div class="row">
+
+            <div class="form-row">
+                <div class="form-group col-md-12  col-lg-12">
+                    <label for="AnchoDisenoSub_colta">Ancho:</label>
+                    <input id="AnchoDisenoSub_colta" name="AnchoDisenoSub_colta" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="AltoDisenoSub_colta">Alto:</label>
+                    <input id="AltoDisenoSub_colta" name="AltoDisenoSub_colta" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="IdUnidadDimensionSub_colta">Unidad Medida:</label>
+                    <input id="IdUnidadDimensionSub_colta" name="IdUnidadDimensionSub_colta" class="form-control" required validationMessage="Requerido" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12 col-lg-12">
+                    <label for="TxtFactorDistribucion_colta">Factor Distribución:</label>
+                    <input id="TxtFactorDistribucion_colta" name="TxtFactorDistribucion_colta" class="form-control" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <div class="form-row">
                 <div class="form-group col-lg-12" id="SubliSlide">
                     @* aqui se coloca dinamicamente las imagenes  *@
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-12">
+            <div class="form-row">
+                <div class="form-group col-md-10 col-lg-10 align-self-lg-end"></div>
+                <div class="form-group col-md-2 col-lg-2 align-self-lg-end">
                     <div id="vistaParSubli"></div>
                 </div>
             </div>
+            
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Procesos</label></div>
+    <div class="form-row">
+        <div class="col-lg-12"><label class="font-weight-bold" >Procesos</label></div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-12">
             <div id="GSublimacion"></div>
         </div>

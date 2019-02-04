@@ -135,27 +135,10 @@ $(document).ready(function () {
 
     });
 
-    //recargar grid de estados siguientes y autorizados.
-    $("#grid").data("kendoGrid").bind("change", function (e) {
-        if (VarTabla != "" && getEstado($("#grid").data("kendoGrid"))) {
-            Set_Grid_DataSource($("#gridEstadosSiguientes").data("kendoGrid"), dataSourceES);
-            $("#gridEstadosSiguientes").data("kendoGrid").dataSource.read();
-            Grid_HabilitaToolbar($("#gridEstadosSiguientes"), Permisos.SNAgregar, false, Permisos.SNBorrar);
-
-            Set_Grid_DataSource($("#gridEstadosAutorizados").data("kendoGrid"), dataSourceEA);
-            $("#gridEstadosAutorizados").data("kendoGrid").dataSource.read();
-            Grid_HabilitaToolbar($("#gridEstadosAutorizados"), Permisos.SNAgregar, false, Permisos.SNBorrar);
-        }
-    });
-
-    var selectedRows = [];
-    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#grid"), selectedRows);
-    });
-
-    $("#grid").data("kendoGrid").bind("change", function (e) { //foco en la fila
-        Grid_SelectRow($("#grid"), selectedRows);
-    });
+   
+    //$("#grid").data("kendoGrid").bind("change", function (e) { //foco en la fila
+      
+    //});
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true,  true, true, true, redimensionable.Si);
@@ -309,6 +292,7 @@ $(document).ready(function () {
     SetGrid($("#gridEstadosSiguientes").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_Command($("#gridEstadosSiguientes").data("kendoGrid"), false, Permisos.SNBorrar);
     SetGrid_CRUD_ToolbarTop($("#gridEstadosSiguientes").data("kendoGrid"), Permisos.SNAgregar);
+    Set_Grid_DataSource($("#gridEstadosSiguientes").data("kendoGrid"), dataSourceES);
     Grid_HabilitaToolbar($("#gridEstadosSiguientes"), false, false, false);
 //#endregion Grid Estados Siguientes
 
@@ -437,8 +421,47 @@ $(document).ready(function () {
     SetGrid($("#gridEstadosAutorizados").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_Command($("#gridEstadosAutorizados").data("kendoGrid"), false, Permisos.SNBorrar);
     SetGrid_CRUD_ToolbarTop($("#gridEstadosAutorizados").data("kendoGrid"), Permisos.SNAgregar);
+    Set_Grid_DataSource($("#gridEstadosAutorizados").data("kendoGrid"), dataSourceEA);
     Grid_HabilitaToolbar($("#gridEstadosAutorizados"), false, false, false);
-//#endregion Grid Estados Siguientes
+//#endregion Grid Estados Siguientes
+
+
+    //recargar grid de estados siguientes y autorizados.
+
+    var selectedRows = [];
+    $("#grid").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#grid"), selectedRows);
+
+        $("#gridEstadosAutorizados").data("kendoGrid").dataSource.data([]);
+        $("#gridEstadosAutorizados").data("kendoGrid").dataSource.read();
+
+        $("#gridEstadosSiguientes").data("kendoGrid").dataSource.data([]);
+        $("#gridEstadosSiguientes").data("kendoGrid").dataSource.read();
+
+        //if (VarTabla != "" && getEstado($("#grid").data("kendoGrid"))) {
+        //    Set_Grid_DataSource($("#gridEstadosSiguientes").data("kendoGrid"), dataSourceES);
+        //    $("#gridEstadosSiguientes").data("kendoGrid").dataSource.read();
+        //    Grid_HabilitaToolbar($("#gridEstadosSiguientes"), Permisos.SNAgregar, false, Permisos.SNBorrar);
+
+        //    Set_Grid_DataSource($("#gridEstadosAutorizados").data("kendoGrid"), dataSourceEA);
+        //    $("#gridEstadosAutorizados").data("kendoGrid").dataSource.read();
+        //    Grid_HabilitaToolbar($("#gridEstadosAutorizados"), Permisos.SNAgregar, false, Permisos.SNBorrar);
+        //}
+    });
+
+    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#grid"), selectedRows);
+        if ($("#grid").data("kendoGrid").dataSource.total() == 0) {
+            $("#gridEstadosSiguientes").data("kendoGrid").dataSource.data([]);
+            $("#gridEstadosAutorizados").data("kendoGrid").dataSource.data([]);
+            Grid_HabilitaToolbar($("#gridEstadosSiguientes"), false, false, false);
+            Grid_HabilitaToolbar($("#gridEstadosAutorizados"), false, false, false);
+        } else {
+            Grid_HabilitaToolbar($("#gridEstadosSiguientes"), Permisos.SNAgregar, false, Permisos.SNBorrar);
+            Grid_HabilitaToolbar($("#gridEstadosAutorizados"), Permisos.SNAgregar, false, Permisos.SNBorrar);
+        }
+    });
+
 //#region ComboBox de Tablas
     $("#CmbTabla").data("kendoComboBox").bind("select", function(e) {
 
@@ -460,6 +483,16 @@ $(document).ready(function () {
             $("#grid").data("kendoGrid").dataSource.data([]);
         }       
     });    
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridEstadosSiguientes"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#gridEstadosAutorizados"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#grid"), ($(window).height() - "401"));
+    });
+
+    Fn_Grid_Resize($("#gridEstadosSiguientes"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#gridEstadosAutorizados"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "401"));
 });  
 //#endregion ComboBox de tablas.
 

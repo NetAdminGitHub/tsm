@@ -5,6 +5,7 @@ $(document).ready(function () {
         kendo.ui.progress($("#body"), true);
 
     vtoken();
+
     // oerde de ejecucion de documentos
     var ReadyList = [];
     ReadyList.push(ReadyMenuJs);
@@ -13,6 +14,9 @@ $(document).ready(function () {
         elemento.call(document, jQuery);
       
     });
+
+    fn_getPerfilUsuario(getUser());
+
     //seguridad obtner los permisos 
     if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false) {
         var ParamPath = location.pathname.toString();//location.pathname.toUpperCase().endsWith("/INDEX")? location.pathname : location.pathname.toString() +'/' + 'Index'
@@ -22,18 +26,30 @@ $(document).ready(function () {
 
         } else {
             fPermisos(permisos[0]);
+            MostrarMapaSitio(permisos[0].IdMenu);
         }
+
+       
     }
     document.addEventListener("click", function () {
         vtoken();
     });
 
+
     //Todos los textos ingresados por el usuario, a mayusculas (excepto passwords)
     $(document).on("input", function (e) {
-        if ((e.target.tagName.toUpperCase() === "INPUT" || e.target.tagName.toUpperCase() === "TEXTAREA" ) && e.target.type.toUpperCase() != "PASSWORD" && (e.target.attributes["mayus"] == undefined || e.target.attributes["mayus"].value != "no"))
-            e.target.value = e.target.value.toUpperCase();
+        if ((e.target.tagName.toUpperCase() === "INPUT" || e.target.tagName.toUpperCase() === "TEXTAREA") && e.target.type.toUpperCase() !== "PASSWORD" && (e.target.attributes["mayus"] === undefined || e.target.attributes["mayus"].value !== "no"))
+            if (e.target.type !== 'file')
+                fn_ForzarInputUppercase(e);
     });
- 
+
+    var fn_ForzarInputUppercase = function (e) {
+        var start = e.target.selectionStart;
+        var end = e.target.selectionEnd;
+        e.target.value = e.target.value.toUpperCase();
+        e.target.setSelectionRange(start, end);
+    };
+   
 
     $("#kendoNotificaciones").kendoNotification({ position: { top: $("#headerPage").outerHeight() }, stacking: "down" }).data("kendoNotification");
 });
@@ -105,7 +121,7 @@ var vtoken = function () {
         renovar();
     }
 };
-//var FiltroPapelPla = { idTecnica: 89, EsPapel: true, EsRhinestone: false }
+
 var fn_getOpcionesMenuPermisos=function (xIdUsuario, xUrl) {
     var datos;
     $.ajax({

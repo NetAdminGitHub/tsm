@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Requerimiento de Desarrollo";
-    ViewBag.IdVersion = "TSM0101029|v18120401";
+    ViewBag.IdVersion = "TSM0101029|v19011801";
 }
 
 
@@ -43,320 +43,331 @@
 
 <link href="~/Content/bootstrap/AdjCarousel.css" rel="stylesheet" />
 <style>
-    #splitter,
+    #GRReqDesTec,
+    #GRDimension,
     #grid {
-        margin: 0;
-        padding: 0;
-        border-width: 0;
         height: 100%;
     }
 </style>
+
 @*Cargar vista parcial modal para copiar requerimientos de desarrollo ingresados*@
-<div class="row">
-    <div class="form-group col-lg-12"> <h5>Requerimiento de Desarrollo</h5></div>
-    @Html.Partial("_CopiarRequerimiento")
-</div>
+@Html.Partial("_CopiarRequerimiento")
 
 @*Etiqueta vista parcial cambio de estado*@
 <div id="vCambioEstado"></div>
 
 <!-- SECION FILTRO REQUERIMIENTO DESARROLLO-->
-<form id="FrmConsultar">
-    <div class="row">
-        <div class="form-group col-md-2 col-lg-1">
-            <label for="IdServicio" style="font-size: 1.2em;">Servicio :</label>
-        </div>
-        <div class="form-group col-md-3 col-lg-3">
-            <input id="IdServicio" name="IdServicio" required validationMessage="Requerido" class="form-control" />
-        </div>
-        <div class="form-group  col-md-2 col-lg-1">
-            <label for="IdCliente" style="font-size: 1.2em;">Cliente :</label>
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                   <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="IdServicio">Servicio :</label>
+                            <input id="IdServicio" name="IdServicio" required validationMessage="Requerido" class="form-control" />
+                        </div>
 
-        </div>
-        <div class="form-group  col-md-3 col-lg-3">
-            <input id="IdCliente" name="IdCliente" required validationMessage="Requerido" class="form-control" />
-        </div>
-        <div class="form-group  col-md-12 col-lg-4">
-            <button type="button" id="Nuevo" name="Nuevo">&nbsp;Nuevo</button>
-            <button type="button" id="Copiar" name="Copiar" data-toggle="modal" data-target="#CopiarRegistro">&nbsp;Copiar Registro </button>
-            <button type="button" id="btnCambioEstado" name="btnCambioEstado">&nbsp;Cambio de Estado</button>
-        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="IdCliente">Cliente :</label>
+                            <input id="IdCliente" name="IdCliente" required validationMessage="Requerido" class="form-control" />
+                        </div>
+               
+                        <div class="form-group col-lg-4 align-self-lg-end">
+                            <button type="button" id="Nuevo" name="Nuevo"></button>
+                            <button type="button" id="Copiar" name="Copiar" data-toggle="modal" data-target="#CopiarRegistro"></button>
+                            <button type="button" id="btnCambioEstado" name="btnCambioEstado"></button>
+                        </div>
+                   </div>
 
-    </div>
-</form>
-
-
-<div id="splitter">
-    <!--panel medio-->
-    <div id="middle-panel" class="form-control">
-        <div id="grid"></div>
-    </div>
-    <!--panel inferior-->
-    <div id="bottom-panel" class="form-control col-lg-12">
-
-        <!-- Vista Parcial estados del requerimiento-->
-        @Html.Partial("_EstadoRequerimientoDesarrollo")
-        <form id="ReqDes" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <ul id="BarPanel">
-                <li class="k-state-active">
-                    <span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>
-                    Información General
-
-                    <!-- SECION REQUERIMIENTO y PRENDA -->
-                    <div class="row">
-                        <div class="form-group col-lg-12" id="DivFrmRD">
-                            <!-- SECION FROMULARIO REQUERIMIENTO DE DESARROLLO -->
-
-                            <div class="border p-md-1 p-lg-1 ">
-                                <div class="row">
-
-                                    <div class="col-lg-4"> <input id="IdRequerimiento" name="IdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                    <div class="col-lg-4"> <input id="Estado" name="Estado" class="k-textbox form-control" , disabled="disabled" value="" hidden="hidden" /></div>
-                                    <div class="form-group col-md-6 col-lg-9"> <label class="font-weight-bold" style=" font-size:1.2em;"></label></div>
-                                    <div class="form-group col-md-6 col-lg-3 ">
-                                        <input type="checkbox" id="chkRevisionTecnica" name="chkRevisionTecnica" class="k-checkbox">
-                                        <label class="k-checkbox-label" for="chkRevisionTecnica" style="font-size: 1.2em;">Revisión Técnica</label>
-                                    </div>
-
+                   <div id="splitter">
+                                <!--panel medio-->
+                                <div id="middle-panel"  >
+                                    <div id="grid"></div>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="NoDocumento" style="font-size: 1.2em;">No Req:</label>
-                                        <input id="NoDocumento" name="NoDocumento" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                <!--panel inferior-->
+                                <div id="bottom-panel" >
+                                    <div class="form-group col-lg-12">
+                                        <!-- Vista Parcial estados del requerimiento-->
+                                        @Html.Partial("_EstadoRequerimientoDesarrollo")
                                     </div>
+                                    <div class="form-group col-lg-12">
+                                        <form id="ReqDes" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                            <ul id="BarPanel">
+                                                <li class="k-state-active">
+                                                    <span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>
+                                                    Información General
 
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="Fecha" style="font-size: 1.2em;">Fecha:</label>
-                                        <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6  col-lg-3">
-                                        <label for="IdPrograma" style="font-size: 1.2em;">Programa:</label>
-                                        <input id="IdPrograma" name="IdPrograma" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-lg-7">
-                                                <label for="CntPiezas" style="font-size: 1.2em;"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Cantidad a Producir:</a></label>
-                                                <input id="CntPiezas" name="CntPiezas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                            </div>
-                                            <div class="form-group col-md-6 col-lg-5">
-                                                <label for="CmbIdUnidadMedidaCantidad" style="font-size: 1.2em;">Unidad de Medida:</label>
-                                                <input id="CmbIdUnidadMedidaCantidad" name="CmbIdUnidadMedidaCantidad" required validationMessage="Requerido" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                    <!-- SECION REQUERIMIENTO y PRENDA -->
+                                                    <div class="form-row">
+                                                            <div class="form-group col-lg-12" id="DivFrmRD">
+                                                                <!-- SECION FROMULARIO REQUERIMIENTO DE DESARROLLO -->
 
-                                <div class="row" id="Row4RD">
-                                    <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="TallaPrincipal" style="font-size: 1.2em;" id="lblTallas">Tallas:</label>
-                                        <input id="TallaPrincipal" name="TallaPrincipal" class="k-input k-textbox form-control" disabled="disabled" style="width:100%" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="CantidadTallas" style="font-size: 1.2em;" id="lblCantidadTallas">Cantidad Tallas:</label>
-                                        <input id="CantidadTallas" name="CantidadTallas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <div class="row">
-                                            <div class="form-group col-md-7 col-lg-8">
-                                                <label for="CantidadColores" style="font-size: 1.2em;" id="lblCantidadColores">Cantidad Colores:</label>
-                                                <input id="CantidadColores" name="CantidadColores" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                            </div>
-                                            <div class="form-group col-md-5 col-lg-4 align-self-end">
-                                                <input type="checkbox" id="chkDisenoFullColor" name="chkDisenoFullColor" class="k-checkbox">
-                                                <label class="k-checkbox-label" for="chkDisenoFullColor" style="font-size: 1.2em;" id="lblDisenoFullColor">Full Color</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="Montaje" style="font-size: 1.2em;" id="lblMontaje"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Montajes:</a></label>
-                                        <input id="Montaje" name="Montaje" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row" id="Row5RD">
-                                    <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio-->
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="Combo" style="font-size: 1.2em;" id="lblCombo">Combo:</label>
-                                        <input id="Combo" name="Combo" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="TxtVelocidadMaquina" style="font-size: 1.2em;" id="lblVelocidadMaq"><a href="~/Support/IT_PreCosteo_Requerimientos_Velocidad.pdf" target="_blank">Velocidad Maquina:</a></label>
-                                        <input id="TxtVelocidadMaquina" name="TxtVelocidadMaquina" class="form-control" required value="0" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="CmbIdUnidadVelocidad" style="font-size: 1.2em;" id="lblIdUnidadVelocidad">Unidad Velocidad:</label>
-                                        <input id="CmbIdUnidadVelocidad" name="CmbIdUnidadVelocidad" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="CmbBase" style="font-size: 1.2em;" id="lblBase"><a href="~/Support/IT_PreCosteo_Requerimientos_Bases.pdf" target="_blank">Base:</a></label>
-                                        <input id="CmbBase" name="CmbBase" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="InstruccionesEspeciales" style="font-size: 1.2em;"> Instrucciones Especiales:</label>
-                                        <input id="InstruccionesEspeciales" name="InstruccionesEspeciales" class="form-control" />
+                                                                <div class="border p-md-1 p-lg-1 ">
+                                                                    <div class="form-row">
+
+                                                                        <div class="col-lg-4"> <input id="IdRequerimiento" name="IdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                                        <div class="col-lg-4"> <input id="Estado" name="Estado" class="k-textbox form-control" , disabled="disabled" value="" hidden="hidden" /></div>
+                                                                        <div class="form-group col-md-6 col-lg-9"> <label class="font-weight-bold"></label></div>
+                                                                        <div class="form-group col-md-6 col-lg-3 ">
+                                                                            <input type="checkbox" id="chkRevisionTecnica" name="chkRevisionTecnica" class="k-checkbox">
+                                                                            <label class="k-checkbox-label" for="chkRevisionTecnica">Revisión Técnica</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="NoDocumento">No Requerimiento:</label>
+                                                                            <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" />
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="Fecha">Fecha:</label>
+                                                                            <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6  col-lg-3">
+                                                                            <label for="IdPrograma">Programa:</label>
+                                                                            <input id="IdPrograma" name="IdPrograma" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <div class="form-row">
+                                                                                <div class="form-group col-md-6 col-lg-7">
+                                                                                    <label for="CntPiezas"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Cantidad a Producir:</a></label>
+                                                                                    <input id="CntPiezas" name="CntPiezas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                                </div>
+                                                                                <div class="form-group col-md-6 col-lg-5">
+                                                                                    <label for="CmbIdUnidadMedidaCantidad">Unidad de Medida:</label>
+                                                                                    <input id="CmbIdUnidadMedidaCantidad" name="CmbIdUnidadMedidaCantidad" required validationMessage="Requerido" class="form-control" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row" id="Row4RD">
+                                                                        <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="TallaPrincipal" id="lblTallas">Tallas:</label>
+                                                                            <input id="TallaPrincipal" name="TallaPrincipal" class="k-textbox form-control" disabled="disabled" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="CantidadTallas" id="lblCantidadTallas">Cantidad Tallas:</label>
+                                                                            <input id="CantidadTallas" name="CantidadTallas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <div class="form-row">
+                                                                                <div class="form-group col-md-7 col-lg-8">
+                                                                                    <label for="CantidadColores" id="lblCantidadColores">Cantidad Colores:</label>
+                                                                                    <input id="CantidadColores" name="CantidadColores" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                                </div>
+                                                                                <div class="form-group col-md-5 col-lg-4 align-self-end">
+                                                                                    <input type="checkbox" id="chkDisenoFullColor" name="chkDisenoFullColor" class="k-checkbox">
+                                                                                    <label class="k-checkbox-label" for="chkDisenoFullColor" id="lblDisenoFullColor">Full Color</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="Montaje" id="lblMontaje"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Montajes:</a></label>
+                                                                            <input id="Montaje" name="Montaje" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row" id="Row5RD">
+                                                                        <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio-->
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="Combo" id="lblCombo">Combo:</label>
+                                                                            <input id="Combo" name="Combo" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="TxtVelocidadMaquina" id="lblVelocidadMaq"><a href="~/Support/IT_PreCosteo_Requerimientos_Velocidad.pdf" target="_blank">Velocidad Maquina:</a></label>
+                                                                            <input id="TxtVelocidadMaquina" name="TxtVelocidadMaquina" class="form-control" required value="0" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="CmbIdUnidadVelocidad" id="lblIdUnidadVelocidad">Unidad Velocidad:</label>
+                                                                            <input id="CmbIdUnidadVelocidad" name="CmbIdUnidadVelocidad" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="CmbBase" id="lblBase"><a href="~/Support/IT_PreCosteo_Requerimientos_Bases.pdf" target="_blank">Base:</a></label>
+                                                                            <input id="CmbBase" name="CmbBase" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12 col-lg-12">
+                                                                            <label for="InstruccionesEspeciales"> Instrucciones Especiales:</label>
+                                                                            <input id="InstruccionesEspeciales" name="InstruccionesEspeciales" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <br />
+                                                                </div>
+                                                                <!-- SECION FROMULARIO PRENDA-->
+                                                                <div class="border p-md-1 p-lg-1">
+                                                                    <div class="form-row">
+                                                                        <div class="col-lg-6"><label class="font-weight-bold">Prenda</label></div>
+                                                                        @*<div class="col-lg-6"> <input id="IdPrenda" name="IdPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>*@
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="IdComposicionTela">Composición Tela:</label>
+                                                                            <input id="IdComposicionTela" name="IdComposicionTela" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="IdCategoriaConfeccion">Confección:</label>
+                                                                            <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="IdConstruccionTela">Construcción Tela:</label>
+                                                                            <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="Color">Color:</label>
+                                                                            <input id="Color" name="Color" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="IdCategoriaPrenda">Tipo Prenda:</label>
+                                                                            <input id="IdCategoriaPrenda" name="IdCategoriaPrenda" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label for="IdUbicacion">Ubicación del Estampado:</label>
+                                                                            <input id="IdUbicacion" name="IdUbicacion" required validationMessage="Requerido" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label id="LblUbicacionVer" for="UbicacionVer">Ubicación Vertical: </label>
+                                                                            <input id="UbicacionVer" name="UbicacionVer" type="text" class="k-textbox form-control" />
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                            <label id="LblUbicacionHor" for="UbicacionHor">Ubicación Horizontal:</label>
+                                                                            <input id="UbicacionHor" name="UbicacionHor" type="text" class="k-textbox form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12 col-lg-12">
+                                                                            <label for="IdSistemaTinta">Sistemas de Tintas:</label>
+                                                                            <input id="IdSistemaTinta" name="IdSistemaTinta" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <div class="form-row">
+
+                                                                <div class="form-group col-lg-7">
+                                                                    <!-- SECION FROMULARIO ARTE-->
+                                                                    <div class="border p-md-1 p-lg-1">
+                                                                        <div class="form-row">
+                                                                            <div class="col-lg-6"><label class="font-weight-bold">Diseño</label></div>
+                                                                            <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="Nombre">Nombre del Diseño:</label>
+                                                                                <input id="Nombre" name="Nombre" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="NumeroDiseno">Numero del Diseño:</label>
+                                                                                <input id="NumeroDiseno" name="NumeroDiseno" type="text" class="k-textbox form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-lg-12">
+                                                                                <label for="EstiloDiseno">Estilo:</label>
+                                                                                <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-lg-12">
+                                                                                <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
+                                                                                <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="form-row"> <div class="form-group"></div></div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12 col-lg-4 align-self-lg-end">
+                                                                            <div class="input-group">
+                                                                                <div style="width: 100%;">
+                                                                                    <button type="button" id="Guardar" name="Guardar"></button>
+                                                                                    <button type="button" id="Eliminar" name="Eliminar"></button>
+                                                                                    @Html.Partial("_ArteAdjuntos")
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                                <div class="form-group col-lg-5">
+                                                                    <!-- SECION ADJUNTOS-->
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-lg-12" id="Div_Carousel">
+                                                                            @* aqui se coloca dinamicamente las imagenes  *@
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-lg-3">
+                                                                           
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+
+                                                <li id="BPGRDimension">
+                                                    <span class="TS-icon-TEXTO-2" style="font-size: 1.7em;">&nbsp</span>
+                                                    Dimensiones
+
+                                                    <div class="form-row" id="DimenGrid">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <div id="GRDimension"></div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </li>
+
+                                                <li id="BPGRReqDesTec">
+                                                    <span class="TS-icon-TECNICA-2" style="font-size: 1.7em;">&nbsp</span>
+                                                    Detallle de Técnicas
+
+                                                    <div class="form-row" id="ColorGrid">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <div id="GRReqDesTec"></div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </li>
+
+                                            </ul>
+                                        </form>
+
+                                        @* div utilizado para cargar la vista estados *@
+                                        <div class="form-row" id="vConsultaEstados"></div>
+
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <br />
-                            </div>
-                            <!-- SECION FROMULARIO PRENDA-->
-                            <div class="border p-md-1 p-lg-1">
-                                <div class="row">
-                                    <div class="col-lg-6"><label class="font-weight-bold" style=" font-size:1.2em;">Prenda</label></div>
-                                    @*<div class="col-lg-6"> <input id="IdPrenda" name="IdPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>*@
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="IdComposicionTela" style="font-size: 1.2em;">Composición Tela:</label>
-                                        <input id="IdComposicionTela" name="IdComposicionTela" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="IdCategoriaConfeccion" style="font-size: 1.2em;">Confección:</label>
-                                        <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="IdConstruccionTela" style="font-size: 1.2em;">Construcción Tela:</label>
-                                        <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="Color" style="font-size: 1.2em;">Color:</label>
-                                        <input id="Color" name="Color" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="IdCategoriaPrenda" style="font-size: 1.2em;">Tipo Prenda:</label>
-                                        <input id="IdCategoriaPrenda" name="IdCategoriaPrenda" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label for="IdUbicacion" style="font-size: 1.2em;">Ubicación del Estampado:</label>
-                                        <input id="IdUbicacion" name="IdUbicacion" required validationMessage="Requerido" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label id="LblUbicacionVer" for="UbicacionVer" style="font-size: 1.2em;">Ubicación Vertical: </label>
-                                        <input id="UbicacionVer" name="UbicacionVer" type="text" class="k-textbox form-control" />
-                                    </div>
-                                    <div class="form-group col-md-6 col-lg-3">
-                                        <label id="LblUbicacionHor" for="UbicacionHor" style="font-size: 1.2em;">Ubicación Horizontal:</label>
-                                        <input id="UbicacionHor" name="UbicacionHor" type="text" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="IdSistemaTinta" style="font-size: 1.2em;">Sistemas de Tintas:</label>
-                                        <input id="IdSistemaTinta" name="IdSistemaTinta" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            <div class="row">
-                                <div class="form-group col-lg-8">
-                                    <!-- SECION FROMULARIO ARTE-->
-
-                                    <div class="border p-md-1 p-lg-1">
-                                        <div class="row">
-                                            <div class="col-lg-6"><label class="font-weight-bold" style=" font-size:1.2em;">Diseño</label></div>
-                                            <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-lg-6">
-                                                <label for="Nombre" style="font-size: 1.2em;">Nombre del Diseño:</label>
-                                                <input id="Nombre" name="Nombre" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
-                                            </div>
-                                            <div class="form-group col-md-6 col-lg-6">
-                                                <label for="NumeroDiseno" style="font-size: 1.2em;">Numero del Diseño:</label>
-                                                <input id="NumeroDiseno" name="NumeroDiseno" type="text" class="k-textbox form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-12">
-                                                <label for="EstiloDiseno" style="font-size: 1.2em;">Estilo:</label>
-                                                <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-12">
-                                                <label for="TxtDirectorioArchivos" style="font-size: 1.2em;">Directorio Archivos:</label>
-                                                <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="p-md-3 p-lg-3">
-                                        <div class="row">
-
-                                            <div class="form-group col-md-12 col-lg-3 align-self-lg-end">
-                                                <button type="button" id="Guardar" name="Guardar">&nbsp;Guardar</button>
-                                                <button type="button" id="Eliminar" name="Eliminar">&nbsp;Eliminar</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                                <div class="form-group col-lg-4">
-                                    <!-- SECION ADJUNTOS-->
-                                    <div class="row">
-                                        <div class="form-group col-lg-12" id="Div_Carousel">
-                                            @* aqui se coloca dinamicamente las imagenes  *@
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class=" form-group col-lg-3">
-                                            @Html.Partial("_ArteAdjuntos")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                </li>
-
-                <li id="BPGRDimension">
-                    <span class="TS-icon-TEXTO-2" style="font-size: 1.7em;">&nbsp</span>
-                    Dimensiones
-
-
-                    <div class="row" id="DimenGrid">
-                        <div class="form-group col-lg-12">
-                            <div id="GRDimension"></div>
-                        </div>
-                    </div>
-
-                </li>
-                <li id="BPGRReqDesTec">
-                    <span class="TS-icon-TECNICA-2" style="font-size: 1.7em;">&nbsp</span>
-                    Detallle de Técnicas
-
-
-                    <div class="row" id="ColorGrid">
-                        <div class="form-group col-lg-12">
-                            <div id="GRReqDesTec"></div>
-                        </div>
-                    </div>
-
-
-                </li>
-
-            </ul>
-        </form>
-
-        @* div utilizado para cargar la vista estados *@
-        <div class="row" id="vConsultaEstados"></div>
+                
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+

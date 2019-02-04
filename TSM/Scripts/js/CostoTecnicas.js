@@ -175,6 +175,12 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

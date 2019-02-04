@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Cotizacion por Programa";
-    ViewBag.IdVersion = "TSM0101035|v18080201";
+    ViewBag.IdVersion = "TSM0101035|v19011801";
 
 }
 @section Scripts {
@@ -14,7 +14,7 @@
         var UrlAAdj = "@string.Format("{0}ArteAdjuntos", TSM.Utils.Config.TSM_WebApi)";
         var UrlPrint = "@string.Format("{0}VisorReportes", TSM.Utils.Config.TSM_WebApi)";
         var UrlEP = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)";
-    
+
     </script>
     <script src="~/Scripts/js/CotizacionesPogramas.js"></script>
     <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js"></script>
@@ -22,436 +22,422 @@
     <script src="~/Scripts/js/SimulacionesConsulta.js"></script>
 }
 <style>
-    #splitter,
+    #gridCotizacionDetalle,
     #gridCotizacion {
-        margin: 0;
-        padding: 0;
-        border-width: 0;
         height: 100%;
     }
 </style>
-<div class="row">
-    <div class="form-group col-lg-12"> <h5> @ViewBag.Title</h5></div>
-</div>
-<div id="splitter">
-    <div id="Panel1" class="form-control">
-        <div id="gridCotizacion"></div>
-    </div>
-    <div id="Panel2" class="form-control col-lg-12">
-        <div class="form-group col-lg-12">
-            <div id="TabCotizacion" class="form-group col-lg-12">
-                <ul>
-                    <li class="k-state-active">
-                        Detalle
-                    </li>
-                    <li>
-                        Condiciones
-                    </li>
-                    <li>
-                        Impresión
-                    </li>
-                </ul>
-                <div id="TabPDetalle" class="form-group col-lg-12">
-                    <div id="TabCotizacionDet" class="form-group col-lg-12">
-                        <ul>
-                            <li class="k-state-active">
-                                Cotización
-                            </li>
-                            <li>
-                                Totales
-                            </li>
-                        </ul>
-                        <div id="TabPVariable" class="form-group col-lg-12">
-                            <div class="row">
-                                <div class="form-group col-md-4 col-lg-2">
-                                    <button type="button" id="btnGeneraCotiPro" name="btnGeneraCotiPro">&nbsp;Generar Cotización por Programa</button>
-                                </div>
-                                <div class="form-group col-md-4 col-lg-2">
-                                    <button type="button" id="btnCambioEstado" name="btnCambioEstado">&nbsp;Cambio de Estado</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class=" form-group col-lg-12"><div id="gridCotizacionDetalle"></div></div>
-                            </div>
-                            @Html.Partial("_EstadoRequerimientoDesarrollo")
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Unidades </label></div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCntPiezas" style="font-size: 1.2em;">Cnt. Piezas:</label>
-                                    <input id="TxtCntPiezas" name="TxtCntPiezas" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCntDocena" style="font-size: 1.2em;">Cnt. de Docenas:</label>
-                                    <input id="TxtCntDocena" name="TxtCntDocena" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Costos</label></div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCM" style="font-size: 1.2em;">Costo de Materia Prima Total:</label>
-                                    <input id="TxtCM" name="TxtCM" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoMOD" style="font-size: 1.2em;">Costo de Mano de Obra Directa:</label>
-                                    <input id="TxtCostoMOD" name="TxtCostoMOD" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoPrimo" style="font-size: 1.2em;">Costo Primo:</label>
-                                    <input id="TxtCostoPrimo" name="TxtCostoPrimo" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoFra" style="font-size: 1.2em;">Costo Fabril Total:</label>
-                                    <input id="TxtCostoFra" name="TxtCostoFra" class="form-control" />
-                                </div>
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="splitter">
+                    <div id="Panel1">
+                        <div id="gridCotizacion"></div>
+                    </div>
+                    <div id="Panel2">
+                        <div class="form-group col-lg-12">
+                            <div id="TabCotizacion">
+                                <ul>
+                                    <li class="k-state-active">
+                                        Detalle
+                                    </li>
+                                    <li>
+                                        Condiciones
+                                    </li>
+                                    <li>
+                                        Impresión
+                                    </li>
+                                </ul>
+                                <div id="TabPDetalle">
+                                    <div id="TabCotizacionDet">
+                                        <ul>
+                                            <li class="k-state-active">
+                                                Cotización
+                                            </li>
+                                            <li>
+                                                Totales
+                                            </li>
+                                        </ul>
+                                        <div id="TabPVariable">
+                                            <div class="form-group col-lg-12">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-8 col-lg-4">
+                                                        <div class="input-group">
+                                                            <div style="width: 100%;">
+                                                                <button type="button" id="btnGeneraCotiPro" name="btnGeneraCotiPro" > </button >
+                                                                <button type="button" id="btnCambioEstado" name="btnCambioEstado" > </button >
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
 
-                            </div>
-                            <div class="row">
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class=" form-group col-lg-12"><div id="gridCotizacionDetalle"></div></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-12">@Html.Partial("_EstadoRequerimientoDesarrollo")</div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 col-lg-12"> <label class="font-weight-bold">Unidades </label></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCntPiezas">Cnt. Piezas:</label>
+                                                        <input id="TxtCntPiezas" name="TxtCntPiezas" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCntDocena">Cnt. de Docenas:</label>
+                                                        <input id="TxtCntDocena" name="TxtCntDocena" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 col-lg-12"> <label class="font-weight-bold">Datos de Costos</label></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCM">Costo de Materia Prima Total:</label>
+                                                        <input id="TxtCM" name="TxtCM" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoMOD">Costo de Mano de Obra Directa:</label>
+                                                        <input id="TxtCostoMOD" name="TxtCostoMOD" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoPrimo">Costo Primo:</label>
+                                                        <input id="TxtCostoPrimo" name="TxtCostoPrimo" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoFra">Costo Fabril Total:</label>
+                                                        <input id="TxtCostoFra" name="TxtCostoFra" class="form-control" />
+                                                    </div>
 
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoProduccion" style="font-size: 1.2em;">Costo Producción:</label>
-                                    <input id="TxtCostoProduccion" name="TxtCostoProduccion" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoOper" style="font-size: 1.2em;">Costo Operación:</label>
-                                    <input id="TxtCostoOper" name="TxtCostoOper" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoTotal" style="font-size: 1.2em;">Costo Total:</label>
-                                    <input id="TxtCostoTotal" name="TxtCostoTotal" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtCostoUnitario" style="font-size: 1.2em;">Costo por pieza:</label>
-                                    <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
-                                </div>
+                                                </div>
+                                                <div class="form-row">
 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Utilidad </label></div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtPorcUtilidadConsiderada" style="font-size: 1.2em;">% Utilidad Considerada:</label>
-                                    <input id="TxtPorcUtilidadConsiderada" name="TxtPorcUtilidadConsiderada" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="TxtUtilidadDolares" style="font-size: 1.2em;">Utilidad:</label>
-                                    <input id="TxtUtilidadDolares" name="TxtUtilidadDolares" class="form-control" />
-                                </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoProduccion">Costo Producción:</label>
+                                                        <input id="TxtCostoProduccion" name="TxtCostoProduccion" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoOper">Costo Operación:</label>
+                                                        <input id="TxtCostoOper" name="TxtCostoOper" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoTotal">Costo Total:</label>
+                                                        <input id="TxtCostoTotal" name="TxtCostoTotal" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtCostoUnitario">Costo por pieza:</label>
+                                                        <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
+                                                    </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Precio</label></div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtPrecioCliente" style="font-size: 1.2em;">Precio Cliente:</label>
-                                    <input id="TxtPrecioCliente" name="TxtPrecioCliente" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtPrecioTS" style="font-size: 1.2em;">Precio Techno Screen:</label>
-                                    <input id="TxtPrecioTS" name="TxtPrecioTS" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtPrecioVenta" style="font-size: 1.2em;">Precio Venta:</label>
-                                    <input id="TxtPrecioVenta" name="TxtPrecioVenta" class="form-control" />
-                                </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 col-lg-12"> <label class="font-weight-bold">Datos de Utilidad </label></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtPorcUtilidadConsiderada">% Utilidad Considerada:</label>
+                                                        <input id="TxtPorcUtilidadConsiderada" name="TxtPorcUtilidadConsiderada" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label for="TxtUtilidadDolares">Utilidad:</label>
+                                                        <input id="TxtUtilidadDolares" name="TxtUtilidadDolares" class="form-control" />
+                                                    </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtFacturaClie" style="font-size: 1.2em;">Facturación Cliente $:</label>
-                                    <input id="TxtFacturaClie" name="TxtFacturaClie" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtFacturaTech" style="font-size: 1.2em;">Facturación Techno $:</label>
-                                    <input id="TxtFacturaTech" name="TxtFacturaTech" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-4">
-                                    <label for="TxtFacturacionVenta" style="font-size: 1.2em;">Facturación Venta $:</label>
-                                    <input id="TxtFacturacionVenta" name="TxtFacturacionVenta" class="form-control" />
-                                </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 col-lg-12"> <label class="font-weight-bold">Datos de Precio</label></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtPrecioCliente">Precio Cliente:</label>
+                                                        <input id="TxtPrecioCliente" name="TxtPrecioCliente" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtPrecioTS">Precio Techno Screen:</label>
+                                                        <input id="TxtPrecioTS" name="TxtPrecioTS" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtPrecioVenta">Precio Venta:</label>
+                                                        <input id="TxtPrecioVenta" name="TxtPrecioVenta" class="form-control" />
+                                                    </div>
 
-                            </div>
-                        </div>
-                        <div id="TabPResumen" class="form-group col-lg-12">
-                            <div class="row">
-                                <div class="form-group col-lg-8">
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtPrecioPon" style="font-size: 1.2em;">Precio ponderado cliente:</label>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtFacturaClie">Facturación Cliente $:</label>
+                                                        <input id="TxtFacturaClie" name="TxtFacturaClie" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtFacturaTech">Facturación Techno $:</label>
+                                                        <input id="TxtFacturaTech" name="TxtFacturaTech" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-lg-4">
+                                                        <label for="TxtFacturacionVenta">Facturación Venta $:</label>
+                                                        <input id="TxtFacturacionVenta" name="TxtFacturacionVenta" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtPrecioPon" name="TxtPrecioPon" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtPrecioPonTechno" style="font-size: 1.2em;">Precio ponderado Techno:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtPrecioPonTechno" name="TxtPrecioPonTechno" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtDiferencia" style="font-size: 1.2em;">Diferencia:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtDiferencia" name="TxtDiferencia" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtMargenNetoP" style="font-size: 1.2em;">Margen neto precio cliente:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtMargenNetoP" name="TxtMargenNetoP" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtMargenNetoPTech" style="font-size: 1.2em;">Margen neto precio Techno:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtMargenNetoPTech" name="TxtMargenNetoPTech" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtFacturaTotalCliente" style="font-size: 1.2em;">Total Factura Cliente:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtFacturaTotalCliente" name="TxtFacturaTotalCliente" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtFacturaTotalTS" style="font-size: 1.2em;">Total Factura Techno:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtFacturaTotalTS" name="TxtFacturaTotalTS" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="TxtFacturaTotalVenta" style="font-size: 1.2em;">Total Factura Venta:</label>
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <input id="TxtFacturaTotalVenta" name="TxtFacturaTotalVenta" class="form-control" />
+                                        <div id="TabPResumen">
+                                            <div class="form-group col-lg-12">
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-8">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtPrecioPon">Precio ponderado cliente:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtPrecioPon" name="TxtPrecioPon" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtPrecioPonTechno">Precio ponderado Techno:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtPrecioPonTechno" name="TxtPrecioPonTechno" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtDiferencia">Diferencia:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtDiferencia" name="TxtDiferencia" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtMargenNetoP">Margen neto precio cliente:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtMargenNetoP" name="TxtMargenNetoP" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtMargenNetoPTech">Margen neto precio Techno:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtMargenNetoPTech" name="TxtMargenNetoPTech" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtFacturaTotalCliente">Total Factura Cliente:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtFacturaTotalCliente" name="TxtFacturaTotalCliente" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtFacturaTotalTS">Total Factura Techno:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtFacturaTotalTS" name="TxtFacturaTotalTS" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-lg-4">
+                                                                <label for="TxtFacturaTotalVenta">Total Factura Venta:</label>
+                                                            </div>
+                                                            <div class="form-group col-lg-4">
+                                                                <input id="TxtFacturaTotalVenta" name="TxtFacturaTotalVenta" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-lg-4" id="Div_Carousel">
+                                                        @* espacio reservad para la vista carrousel *@
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-lg-4" id="Div_Carousel">
-                                    @* espacio reservad para la vista carrousel *@
+                                <div id="TabPDatos">
+                                    <div class="form-group col-lg-12">
+                                        <form id="frmCondiciones" method="POST" enctype="multipart/form-data" autocomplete="on">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtNombre">Nombre del Programa:</label>
+                                                            <input id="TxtNombre" name="TxtNombre" class="k-textbox form-control" disabled="disabled" value="" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtContacto">Contact:</label>
+                                                            <input id="TxtContacto" name="TxtContacto" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtPrecioDesarrolloMuestra">Sample development price:</label>
+                                                            <input id="TxtPrecioDesarrolloMuestra" name="TxtPrecioDesarrolloMuestra" class="k-textbox form-control" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtRepeticionesDesarrollo">N° of repeats:</label>
+                                                            <input id="txtRepeticionesDesarrollo" name="txtRepeticionesDesarrollo" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtCondicionPagoDesarrollo">Payament conditions:</label>
+                                                            <input id="TxtCondicionPagoDesarrollo" name="TxtCondicionPagoDesarrollo" class="k-textbox form-control" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtNumeroSeteos">Number of set-up's:</label>
+                                                            <input id="TxtNumeroSeteos" name="TxtNumeroSeteos" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtPrecioSetupAdicional">Additional set-up price:</label>
+                                                            <input id="txtPrecioSetupAdicional" name="txtPrecioSetupAdicional" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtPrecioAdicionalColorTela">Price per additional CW:</label>
+                                                            <input id="txtPrecioAdicionalColorTela" name="txtPrecioAdicionalColorTela" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtExcesoSetup">If the N° of set-up's exceds:</label>
+                                                            <input id="txtExcesoSetup" name="txtExcesoSetup" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="form-row"> <div class="form-group col-lg-12"></div></div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-3"></div>
+                                                        <div class="form-group col-lg-9 ">
+                                                            <input type="checkbox" id="chkCotizaPromedio" class="k-checkbox form-control">
+                                                            <label class="k-checkbox-label" for="chkCotizaPromedio">Cotiza por average</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-3"></div>
+                                                        <div class="form-group col-lg-9">
+                                                            <input type="radio" id="chkPrecioPreliminar" name="GTipoPrecio" class="k-radio form-control">
+                                                            <label class="k-radio-label" for="chkPrecioPreliminar">Preliminary price</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-3"></div>
+                                                        <div class="form-group col-lg-9">
+                                                            <input type="radio" id="chkFinalCotizacion" name="GTipoPrecio" class="k-radio form-control">
+                                                            <label class="k-radio-label" for="chkFinalCotizacion">Final quote</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtPrecioVendedorCTL">CTL's sample or vendor's sample price:</label>
+                                                            <input id="TxtPrecioVendedorCTL" name="TxtPrecioVendedorCTL" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtRepeticionesCTL">N° of repeats:</label>
+                                                            <input id="txtRepeticionesCTL" name="txtRepeticionesCTL" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtCondicionPagoCTL">Payament conditions:</label>
+                                                            <input id="TxtCondicionPagoCTL" name="TxtCondicionPagoCTL" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtTransporte">Transport:</label>
+                                                            <input id="TxtTransporte" name="TxtTransPorte" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtCondicionPagoProduccion">Payament condtions:</label>
+                                                            <input id="TxtCondicionPagoProduccion" name="TxtCondicionPagoProduccion" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtPrecioSetup">Set-up price:</label>
+                                                            <input id="txtPrecioSetup" name="txtPrecioSetup" class="k-textbox form-control" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="txtTerminosPago">Payment terms:</label>
+                                                            <input id="txtTerminosPago" name="txtTerminosPago" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtPorcentajeSegundos">Porcetage of second's:</label>
+                                                            <input id="TxtPorcentajeSegundos" name="TxtPorcentajeSegundos" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TxtComentarios">Technical aspect to consider:</label>
+                                                            <textarea id="TxtComentarios" name="TxtComentarios" aria-label="editor"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-6 align-self-end">
+                                                            <button type="submit" id="btnGuardar" name="Guardar"></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="tabImpresion" class="form-group col-lg-12">
+                                    <div class="form-group col-lg-12">
+                                        <button id="btnImprime" name="Eliminar"></button>
+                                    </div>
+                                    @*<canvas id="canvasReporte"></canvas>*@
+                                    <object id="frameReporte" class="form-group col-lg-12" style="height: 400px; width: 100%;"></object>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="TabPDatos" class="form-group col-lg-12">
-                    <form id="frmCondiciones" method="POST" enctype="multipart/form-data" autocomplete="on">
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtNombre" style="font-size: 1.2em;">Nombre del Programa:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtNombre" name="TxtNombre" class="k-textbox form-control" disabled="disabled" value="" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtContacto" style="font-size: 1.2em;">Contact:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtContacto" name="TxtContacto" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtPrecioDesarrolloMuestra" style="font-size: 1.2em;">Sample development price:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtPrecioDesarrolloMuestra" name="TxtPrecioDesarrolloMuestra" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtRepeticionesDesarrollo" style="font-size: 1.2em;">N° of repeats:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtRepeticionesDesarrollo" name="txtRepeticionesDesarrollo" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtCondicionPagoDesarrollo" style="font-size: 1.2em;">Payament conditions:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtCondicionPagoDesarrollo" name="TxtCondicionPagoDesarrollo" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtNumeroSeteos" style="font-size: 1.2em;">Number of set-up's:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtNumeroSeteos" name="TxtNumeroSeteos" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtPrecioSetupAdicional" style="font-size: 1.2em;">Additional set-up price:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtPrecioSetupAdicional" name="txtPrecioSetupAdicional" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtPrecioAdicionalColorTela" style="font-size: 1.2em;">Price per additional CW:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtPrecioAdicionalColorTela" name="txtPrecioAdicionalColorTela" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtExcesoSetup" style="font-size: 1.2em;">If the N° of set-up's exceds:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtExcesoSetup" name="txtExcesoSetup" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input type="checkbox" id="chkCotizaPromedio" class="k-checkbox">
-                                        <label class="k-checkbox-label" for="chkCotizaPromedio" style="font-size: 1.2em;">Cotiza por average</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input type="radio" id="chkPrecioPreliminar" name="GTipoPrecio" class="k-radio ">
-                                        <label class="k-radio-label" for="chkPrecioPreliminar" style="font-size: 1.2em;">Preliminary price</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input type="radio" id="chkFinalCotizacion" name="GTipoPrecio" class="k-radio">
-                                        <label class="k-radio-label" for="chkFinalCotizacion" style="font-size: 1.2em;">Final quote</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtPrecioVendedorCTL" style="font-size: 1.2em;">CTL's sample or vendor's sample price:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtPrecioVendedorCTL" name="TxtPrecioVendedorCTL" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtRepeticionesCTL" style="font-size: 1.2em;">N° of repeats:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtRepeticionesCTL" name="txtRepeticionesCTL" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtCondicionPagoCTL" style="font-size: 1.2em;">Payament conditions:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtCondicionPagoCTL" name="TxtCondicionPagoCTL" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtTransporte" style="font-size: 1.2em;">Transport:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtTransporte" name="TxtTransPorte" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtCondicionPagoProduccion" style="font-size: 1.2em;">Payament condtions:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtCondicionPagoProduccion" name="TxtCondicionPagoProduccion" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtPrecioSetup" style="font-size: 1.2em;">Set-up price:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtPrecioSetup" name="txtPrecioSetup" class="k-textbox form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="txtTerminosPago" style="font-size: 1.2em;">Payment terms:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="txtTerminosPago" name="txtTerminosPago" class="k-textbox form-control" />
-                                    </div>
-                                </div>                                
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtPorcentajeSegundos" style="font-size: 1.2em;">Porcetage of second's:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input id="TxtPorcentajeSegundos" name="TxtPorcentajeSegundos" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label for="TxtComentarios" style="font-size: 1.2em;">Technical aspect to consider:</label>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <textarea id="TxtComentarios" name="TxtComentarios" aria-label="editor"></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6 align-items-end">
-                                        <button type="submit" id="btnGuardar" name="Guardar">&nbsp;Guardar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div id="tabImpresion" class="form-group col-lg-12">
-                    <div class="form-group col-lg-12">
-                        <button id="btnImprime" name="Eliminar">&nbsp;Ver Reporte</button>
-                    </div>
-                    @*<canvas id="canvasReporte"></canvas>*@
-                    <object id="frameReporte" class="form-group col-lg-12" style="height: 400px; width: 100%;"></object>
-                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+
 @* div utilizado para cargar la vista estados *@
-<div class="row">
+<div class="form-row">
     <div class="form-control col-md-12 col-lg-12" id="vConsultaEstados"></div>
 </div>
 @* div utilizado para cargar la vista consulta de simulación *@
-<div class="row">
+<div class="form-row">
     <div class="form-control col-md-12 col-lg-12" id="vConsultaSimulaciones"></div>
 </div>
 <div class="row">

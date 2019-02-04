@@ -55,7 +55,7 @@ $(document).ready(function () {
                     },
                     IdUnidadCosto: {
                         type: "string",
-                        defaultValue:6,
+                        defaultValue: 6,
                         validation: {
                             maxlength: function (input) {
                                 // cuando es estampado
@@ -100,11 +100,11 @@ $(document).ready(function () {
         columns: [
             { field: "IdBase", title: "Código base", editor: Grid_ColInt64NumSinDecimal, hidden: true },
             { field: "Nombre", title: "Nombre de la base" },
-            { field: "Costo", title: "Costo base", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n4", 4]},
-            { field: "IdUnidadCosto", title: "Unidad del costo", hidden: true, editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUM, "", "Seleccione....","required","","Requerido"]},
-            { field: "Nombre1", title: "Unidad"},
+            { field: "Costo", title: "Costo base", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n4", 4] },
+            { field: "IdUnidadCosto", title: "Unidad del costo", hidden: true, editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUM, "", "Seleccione....", "required", "", "Requerido"] },
+            { field: "Nombre1", title: "Unidad" },
             { field: "IdUsuarioMod", title: "Usuario", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}"}
+            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" }
 
         ]
     });
@@ -123,6 +123,13 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
+
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

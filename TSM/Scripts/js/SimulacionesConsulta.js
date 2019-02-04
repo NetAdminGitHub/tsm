@@ -217,7 +217,7 @@ Simulacion_consulta =function () {
 
     });
 
-    SetGrid($("#gridRentabilidad_colta").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#gridRentabilidad_colta").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#gridRentabilidad_colta").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridRentabilidad_colta").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridRentabilidad_colta").data("kendoGrid"), DsRent);
@@ -296,7 +296,7 @@ Simulacion_consulta =function () {
 
     });
 
-    SetGrid($("#gridSimuConsumo_colta").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#gridSimuConsumo_colta").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#gridSimuConsumo_colta").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridSimuConsumo_colta").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridSimuConsumo_colta").data("kendoGrid"), DsSimConsu);

@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Costos por Técnicas";
-    ViewBag.IdVersion = "TSM0101027|v18102501";
+    ViewBag.IdVersion = "TSM0101027|v19010701";
 }
 @section Scripts {
     <script type="text/javascript">
@@ -15,13 +15,18 @@
     <script src="~/Scripts/js/CostoTecnicas.js"></script>
 }
 
-<div class="form-row">
-    <div class="form-group col-lg-12"> <h4>Costos por Técnicas</h4></div>
-    <div class="form-group col-lg-12">
-        <label for="CmbIdServicio" style="font-size: 1.2em;">Servicio:</label>
-        <input id="CmbIdServicio" style="width: 450px;" />
+    <div class="form-row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="CmbIdServicio">Servicio:</label>
+                        <input id="CmbIdServicio" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <div id="grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group col-lg-12">
-        <div id="grid"></div>
-    </div>
-</div>

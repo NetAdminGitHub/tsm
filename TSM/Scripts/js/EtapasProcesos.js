@@ -93,6 +93,9 @@ $(document).ready(function () {
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();
             e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();
+
+            $('[name="Icono"').attr('mayus', 'no');
+
             Grid_Focus(e, "Nombre");
         },
 
@@ -148,6 +151,12 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"),($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

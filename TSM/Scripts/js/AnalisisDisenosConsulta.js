@@ -264,7 +264,7 @@ AnalisisDis_Consulta = function (){
         ]
     });
 
-    SetGrid($("#GSeparacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 400);
+    SetGrid($("#GSeparacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GSeparacion").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#GSeparacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#GSeparacion").data("kendoGrid"), dsSeparacion);
@@ -351,7 +351,7 @@ AnalisisDis_Consulta = function (){
 
     });
 
-    SetGrid($("#GSublimacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 400);
+    SetGrid($("#GSublimacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GSublimacion").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#GSublimacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#GSublimacion").data("kendoGrid"), dsSeparacionSubli);
@@ -451,7 +451,7 @@ AnalisisDis_Consulta = function (){
     });
 
     //FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridPlantillas").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 500);
+    SetGrid($("#gridPlantillas").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 0);
     SetGrid_CRUD_Command($("#gridPlantillas").data("kendoGrid"), false, false);
     SetGrid_CRUD_ToolbarTop($("#gridPlantillas").data("kendoGrid"), false);
     Set_Grid_DataSource($("#gridPlantillas").data("kendoGrid"), dataSourcePla);
@@ -542,19 +542,10 @@ AnalisisDis_Consulta = function (){
 
 
 
-    hmlAdj = '<form id="FrmAdj" method="POST" enctype="multipart/form-data" autocomplete="off">' +
-        '<div class="row">' +
-        '<div class="form-group col-lg-12">' +
-        '<div class="input-group">' +
-        '<div style="width: 100%;">' +
-        '<button type="button" id="myBtnAdjunto" data-toggle="modal" data-target="#myModalAdjunto" style="width: 100%;" onclick="' + "$('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;" + '">Adjuntos</button>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
+    hmlAdj =
+        '<button type="button" id="myBtnAdjunto" data-toggle="modal" data-target="#myModalAdjunto"  onclick="' + "$('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;" + '"></button>' +
         '<div class="modal fade" id="myModalAdjunto" role="dialog">' +
         '<div class="modal-dialog modal-lg">' +
-
         ' <div class="modal-content">' +
         '<div class="modal-header">' +
         '<h4 class="modal-title">Adjuntos</h4>' +
@@ -569,10 +560,9 @@ AnalisisDis_Consulta = function (){
         '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>' +
         '</div>' +
         '</div>' +
-
         '</div>' +
-        '</div>' +
-        '</form>';
+        '</div>';
+      
 
 
     //#endregion fin imagenes
@@ -815,8 +805,8 @@ function MostarAdjuntos(IdReq) {
 }
 
 function setAdjun(Idart) {
-
-    $("#myBtnAdjunto").kendoButton({ icon: "attachment" });
+    KdoButton($("#myBtnAdjunto"), "attachment", "Ver imagenes adjuntas");
+   
     //DataSource para Grid de Artes Adjuntos
     var DsAdj = new kendo.data.DataSource({
         transport: {

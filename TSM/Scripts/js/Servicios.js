@@ -194,7 +194,7 @@ $(document).ready(function () {
             ]
         });
 
-        ConfGDetalle(g.data("kendoGrid"), VdS);
+        ConfGDetalle(g.data("kendoGrid"), VdS, "grid_detalle" + Idser);
 
         var selectedRowsTec = [];
         g.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -206,12 +206,18 @@ $(document).ready(function () {
         });
     }
 
-    function ConfGDetalle(g, ds) {
+    function ConfGDetalle(g, ds,Id_GridDetalle) {
         SetGrid(g, ModoEdicion.EnPopup, true,  true, true, true, redimensionable.Si, 400);
         SetGrid_CRUD_ToolbarTop(g, Permisos.SNAgregar);
-        SetGrid_CRUD_Command(g, Permisos.SNEditar, Permisos.SNBorrar);
+        SetGrid_CRUD_Command(g, Permisos.SNEditar, Permisos.SNBorrar, Id_GridDetalle);
         Set_Grid_DataSource(g, ds);
     }
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

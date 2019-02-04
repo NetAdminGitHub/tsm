@@ -89,6 +89,12 @@ $(document).ready(function () {
     $("#GkTemporadas").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#GkTemporadas"), selectedRows);
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#GkTemporadas"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#GkTemporadas"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

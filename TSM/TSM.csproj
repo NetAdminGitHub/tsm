@@ -211,6 +211,7 @@
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
@@ -238,7 +239,26 @@
     <Compile Include="Utils\Config.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\FrwkAuthSrv\Auth.disco" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth.wsdl" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth32.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\FrwkAuthSrv\configuration91.svcinfo" />
     <None Include="Connected Services\FrwkAuthSrv\configuration.svcinfo" />
     <None Include="Connected Services\FrwkAuthSrv\Reference.svcmap">
@@ -252,7 +272,10 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth1.disco" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth.disco" />
     <Content Include="Content\bootstrap\AdjCarousel.css" />
+    <Content Include="Content\bootstrap\boostrapKendoMod.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap\bootstrap-reboot.css" />
@@ -602,6 +625,7 @@
     <Content Include="Content\kendo\Uniform\sprite_kpi_2x.png" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Menu.css" />
+    <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="favicon.ico" />
@@ -716,9 +740,12 @@
     <Content Include="Content\kendo\kendo.uniform.mobile.min.css.map" />
     <Content Include="Fonts\TS-Icons.woff" />
     <Content Include="Fonts\TSM-Icons-General.woff" />
+    <Content Include="Images\DefaultUser.png" />
+    <Content Include="Images\MailImg.png" />
     <Content Include="Images\NoDisponible.png" />
     <Content Include="Images\NoImage.JPG" />
     <Content Include="Images\NoImagen.png" />
+    <Content Include="Images\TSM4hdpi.png" />
     <Content Include="Scripts\bootstrap\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap\bootstrap.bundle.min.js" />
@@ -735,6 +762,9 @@
     <Content Include="Scripts\Jquery\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\Jquery\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\Jquery\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\Jquery\jquery-ui.min.js" />
+    <Content Include="Scripts\Jquery\jquery.scrollbar.min.js" />
+    <Content Include="Scripts\Jquery\jquery.sparkline.min.js" />
     <Content Include="Scripts\js\AnalisisDisenos.js" />
     <Content Include="Scripts\js\AnalisisDisenosConsulta.js" />
     <Content Include="Scripts\js\Bases.js" />
@@ -1052,11 +1082,13 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.es-ES.min.js.map" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
     <Content Include="Scripts\Utils\CmbPersonalizar.js" />
     <Content Include="Scripts\Utils\Generico.js" />
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\TSM-LayoutSet.js" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -1122,6 +1154,8 @@
     <Content Include="Support\IT_PreCosteo_Requerimientos_Bases.pdf" />
     <Content Include="Support\IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" />
     <Content Include="Support\IT_PreCosteo_Requerimientos_Velocidad.pdf" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\ArteAdjunto\View.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1136,17 +1170,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ArteAdjunto\" />
+    <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\FrwkAuthSrv\Auth.wsdl" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\FrwkAuthSrv\Auth1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\FrwkSeguridadSrv\Seguridad.wsdl" />
     <None Include="Connected Services\FrwkSeguridadSrv\Seguridad.xsd">
       <SubType>Designer</SubType>

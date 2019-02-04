@@ -14,6 +14,15 @@ function Get_KendoDataSource(Url_api) {
         }
     });
 }
+
+var fn_FiltrarJsonResult = function (Data, Keyfilter) {
+    if (Data.length !== 0) {
+        var resul = Data.filter(function (item) { return item[Keyfilter] != null; });
+        return resul[0][Keyfilter];
+    } else {
+        return "";
+    }
+}
 /**
  * Devuelve fecha y hora actual.
  */
@@ -410,7 +419,7 @@ var imgError = function (image) {
  */
 var Fn_Carouselcontent = function () {
 
-    var VarCarousel = '<div class="row">' +
+    var VarCarousel = '<div class="form-row">' +
         '<div class="container-fluid">' +
         '<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="9000">' +
         '<div class="carousel-inner row w-100 " role="listbox" id="Mycarousel" ></div>' +
@@ -442,7 +451,7 @@ var Fn_VistaCambioEstado = function (e) {
         success: function (result) {
             var RList = [];
             VistaPopup.kendoDialog({
-                height: $(window).height() - "550" + "px",
+                height: $(window).height() - "510" + "px",
                 width: "20%",
                 title: "Cambio de estado",
                 closable: true,
@@ -450,8 +459,8 @@ var Fn_VistaCambioEstado = function (e) {
                 content: result,
                 visible: false,
                 actions: [
-                    { text: 'Cambiar', primary: true, action: Fn_Cambio },
-                    { text: 'Cancelar'}
+                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_Cambio, },
+                    { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar'}
                    
                 ],
                 close: onCloseCambioEstado
@@ -600,15 +609,29 @@ var KdoButtonEnable = function (BotonElem, enable) {
     var Button = BotonElem.data("kendoButton");
     Button.enable(enable);
 };
+
+var KdoButton = function (BotonDiv,icono,tooltip) {
+
+    BotonDiv.kendoButton({ icon: icono });
+    if (givenOrDefault(tooltip, "undefined") !== "undefined") {
+        BotonDiv.kendoTooltip({
+            content: function (e) {
+                return tooltip;
+            }
+
+        });
+    }
+   
+};
 /**
  * ocultar campo en ventana modal de edicion popup
  * @param {container} container recibe  e.container
  * @param {string} campo nombre del campo a ocultar
  */
-var KdoHideCampoPopup = function (container,campo) {
-    container.find("label[for=" + campo +"]").parent("div .k-edit-label").hide();
-   container.find("label[for="+ campo + "]").parent().next("div .k-edit-field").hide();
-}
+var KdoHideCampoPopup = function (container, campo) {
+    container.find("label[for=" + campo + "]").parent("div .k-edit-label").hide();
+    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
+};
 
 /**
  * Muestra campo en ventana modal de edicion popup
@@ -618,4 +641,5 @@ var KdoHideCampoPopup = function (container,campo) {
 var KdoShowCampoPopup = function (container, campo) {
     container.find("label[for=" + campo + "]").parent("div .k-edit-label").show();
     container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
-}
+};
+

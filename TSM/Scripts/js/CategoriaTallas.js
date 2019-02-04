@@ -88,6 +88,14 @@ $(document).ready(function () {
     $("#GkCateTallas").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#GkCateTallas"), selectedRows);
     });
+
+
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#GkCateTallas"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#GkCateTallas"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {

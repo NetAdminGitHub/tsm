@@ -6,16 +6,15 @@ var vEstampado = true;
 var RowAct = ""; // guarda la fila activa del grid.
 $(document).ready(function () {
 
-    Fn_VistaConsultaRequerimiento($('#vConsulta'))
+    Fn_VistaConsultaRequerimiento($('#vConsulta'));
 
-//#region Inicializacion de controles Kendo
+    //#region Inicializacion de controles Kendo
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%", resizable: true },
-            { collapsible: false, scrollable: true, size: "100%" }
+            { collapsible: true, size: "50%", max: "95%", min: "20%", },
+            { collapsible: true, size: "50%" }
         ]
-
     });
 
     $(window).resize(function () {
@@ -26,10 +25,16 @@ $(document).ready(function () {
 
         var splElement = $("#splitter"),
             splObject = splElement.data("kendoSplitter");
-        splElement.css({ height: height - "220" + "px" });
-        splObject.resize();
+        splElement.css({ height: height - height * 0.36 });
+        setTimeout(function () {
+            splObject.resize(true);
+        }, 300);
 
     };
+
+    $(".sidebar").hover(function () {
+        resizeSplitter($(window).height());
+    });
 
     resizeSplitter($(window).height());
 
@@ -43,49 +48,49 @@ $(document).ready(function () {
     var IdS = 0;
     var IdTec = 0;
     var IdClie = 0;
-  
+
     var IdUnidadFC = "";
     var EST = null;
 
     var ValidSerigrafia = $("#FrmSerigrafia").kendoValidator({
         rules: {
             ResolucionRuler1: function (input) {
-             
+
                 if (input.is("[name='ResolucionDPI']")) {
                     return $("#ResolucionDPI").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             PixelesRuler1: function (input) {
-        
+
                 if (input.is("[name='PixelesTotal']")) {
                     return $("#PixelesTotal").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             AnchoRuler1: function (input) {
-                
+
                 if (input.is("[name='AnchoDiseno']")) {
                     return $("#AnchoDiseno").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             AltoRuler1: function (input) {
-              
+
                 if (input.is("[name='AltoDiseno']")) {
                     return $("#AltoDiseno").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             CntcolorSerRuler1: function (input) {
-             
+
                 if (input.is("[name='CntcolorSer']")) {
                     return $("#CntcolorSer").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             VelocidadMaquinaRuler1: function (input) {
-              
+
                 if (input.is("[name='TxtVelocidadMaquina']")) {
                     return $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value() > 0;
                 }
@@ -132,27 +137,27 @@ $(document).ready(function () {
             MsgIdUniArea: "Requerido",
             MsgIdUniDimension: "Requerido",
             MsgCmbIdUnidadVelocidad: "Requerido"
-           
+
         }
     }).data("kendoValidator");
     var ValidSubli = $("#FrmSublimacion").kendoValidator({
         rules: {
             AnchoSubRuler1: function (input) {
-                
+
                 if (input.is("[name='AnchoDisenoSub']")) {
                     return $("#AnchoDisenoSub").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             AltoSubRuler1: function (input) {
-              
+
                 if (input.is("[name='AltoDisenoSub']")) {
                     return $("#AltoDisenoSub").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             FactorDistribucionRuler1: function (input) {
-               
+
                 if (input.is("[name='TxtFactorDistribucion']")) {
                     return $("#TxtFactorDistribucion").data("kendoNumericTextBox").value() > 0;
                 }
@@ -165,29 +170,29 @@ $(document).ready(function () {
                 return true;
             }
 
-            
+
         },
         messages: {
 
             AnchoSubRuler1: "Debe ser mayor a 0",
             AltoSubRuler1: "Debe ser mayor a 0",
-            FactorDistribucionRuler1:"Debe ser mayor a 0",
+            FactorDistribucionRuler1: "Debe ser mayor a 0",
             required: "Requerido",
-            MsgIdUnidadDimensionSub:"Requerido"
+            MsgIdUnidadDimensionSub: "Requerido"
 
         }
     }).data("kendoValidator");
     var ValidPla = $("#FrmPlantillas").kendoValidator({
         rules: {
             AnchoPlaRuler1: function (input) {
-            
+
                 if (input.is("[name='AnchoDisenoPla']")) {
                     return $("#AnchoDisenoPla").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
             AltoPlaRuler1: function (input) {
-                
+
                 if (input.is("[name='AltoDisenoPla']")) {
                     return $("#AltoDisenoPla").data("kendoNumericTextBox").value() > 0;
                 }
@@ -200,7 +205,7 @@ $(document).ready(function () {
                 return true;
             }
 
-            
+
         },
         messages: {
 
@@ -329,7 +334,7 @@ $(document).ready(function () {
         value: 0
 
     });
-    $("#Fecha").kendoDatePicker({format: "dd/MM/yyyy"});
+    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#Fecha").data("kendoDatePicker").enable(false);
     $("#FechaSub").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
     $("#FechaSub").data("kendoDatePicker").enable(false);
@@ -337,16 +342,26 @@ $(document).ready(function () {
     $("#AreaTotal").data("kendoNumericTextBox").enable(false);
     $("#FechaPla").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
     $("#FechaPla").data("kendoDatePicker").enable(false);
-    $("#GSerigrafia").kendoButton({ icon: "save" });
-    $("#GuardarSubli").kendoButton({ icon: "save" });
-    $("#btnGPlantilla").kendoButton({ icon: "save" });
-    $("#btnCambioEstado").kendoButton({ icon: "gear" });
-    $("#btnVerReq").kendoButton({ icon: "search" });
+    KdoButton($("#GSerigrafia"), "save", "Guardar análisis");
+    KdoButton($("#GuardarSubli"), "save", "Guardar análisis");
+    KdoButton($("#btnGPlantilla"), "save", "Guardar análisis");
+    KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
+    KdoButton($("#btnVerReq"), "search", "Consultar requerimiento"); //serigrafia
+    KdoButton($("#btnVerReq1"), "search", "Consultar requerimiento");//sublimacion
+    KdoButton($("#btnVerReq2"), "search", "Consultar requerimiento");//pantillas
+
+    $("#TxtDirectorioPlan").prop("readonly", "readonly");
+    $("#UbicacionPla").prop("disabled", "disabled");
+    $("#EstadoPla").prop("disabled", "disabled");
+
+    $("#TxtDirectorioSubli").prop("readonly", "readonly");
+    $("#UbicacionSub").prop("disabled", "disabled");
+    $("#EstadoSub").prop("disabled", "disabled");
 
     $("#GSerigrafia").data("kendoButton").enable(fn_SNEditar(true));
     $("#GuardarSubli").data("kendoButton").enable(fn_SNEditar(true));
     $("#btnGPlantilla").data("kendoButton").enable(fn_SNEditar(true));
-  
+
 
     $("#btnCambioEstado").data("kendoButton").enable(false);
     $("#btnVerReq").data("kendoButton").enable(false);
@@ -365,9 +380,9 @@ $(document).ready(function () {
 
     $("#CmbIdUnidadVelocidadPla").data("kendoComboBox").wrapper.hide();
     $("#TxtVelocidadMaquinaPla").data("kendoNumericTextBox").wrapper.hide();
-//#endregion FIN Inicializacion de control Kendo
+    //#endregion FIN Inicializacion de control Kendo
 
-//#region PROGRAMACION GRID PRINCIPAL PARA EL ANALISIS DE DISEÑO
+    //#region PROGRAMACION GRID PRINCIPAL PARA EL ANALISIS DE DISEÑO
     var DsRD = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
@@ -414,8 +429,8 @@ $(document).ready(function () {
                     Nombre3: { type: "string" },
                     Nombre4: { type: "string" },
                     Nombre5: { type: "string" },
-                    NoDocumento2: { type: "string"},
-                    IdBase: { type: "string"}
+                    NoDocumento2: { type: "string" },
+                    IdBase: { type: "string" }
 
 
                 }
@@ -430,7 +445,7 @@ $(document).ready(function () {
         autoBind: false,
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdAnalisisDiseno", title: "Cod. Analis Diseño" ,hidden:true},
+            { field: "IdAnalisisDiseno", title: "Cod. Analis Diseño", hidden: true },
             { field: "NoDocumento2", title: "No Analisis Diseño" },
             { field: "Fecha1", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             {
@@ -438,7 +453,7 @@ $(document).ready(function () {
                     return "<button class='btn btn-link nav-link' onclick='Fn_VerRequerimientoConsulta(" + data["IdRequerimiento"] + ")' >" + data["NoDocumento1"] + "</button>";
                 }
             },
-            { field: "Fecha", title: "Fecha del requerimiento", format: "{0: dd/MM/yyyy}", hidden: true},
+            { field: "Fecha", title: "Fecha del requerimiento", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "Nombre2", title: "Nombre del diseño" },
             { field: "EstiloDiseno", title: "Estilo diseño" },
             { field: "NumeroDiseno", title: "Número diseño" },
@@ -458,10 +473,12 @@ $(document).ready(function () {
             { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "Estado1", title: "Cod. Estado Analisis Diseño" ,hidden:true},
-            {field: "Nombre5", title: "Estado Analisis Diseño", template: function (data) {
-                return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
-                }  },
+            { field: "Estado1", title: "Cod. Estado Analisis Diseño", hidden: true },
+            {
+                field: "Nombre5", title: "Estado Analisis Diseño", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
+                }
+            },
             { field: "InstruccionesEspeciales", title: "Instrucciones especiales", hidden: true }
 
         ]
@@ -474,26 +491,19 @@ $(document).ready(function () {
     Set_Grid_DataSource($("#ReqDes").data("kendoGrid"), DsRD);
 
 
-    function Consultar(IdServicio,IdCliente) {
+    function Consultar(IdServicio, IdCliente) {
 
         var VistaP1 = $("#SerigrafiaSlide");
         var VistaP2 = $("#SubliSlide");
         var VistaP3 = $("#PlantillaSlide");
-        var VParSeri = $('#vistaParSeri');
-        var VParSubli = $('#vistaParSubli');
-        var VParPlan = $('#vistaParPlantilla');
-
+ 
         VistaP1.children().remove();
         VistaP2.children().remove();
         VistaP3.children().remove();
-        VParSeri.children().remove();
-        VParSubli.children().remove();
-        VParPlan.children().remove();
+ 
         // limpiar etapas del proceso
         CargarEtapasProceso(0);
 
-        //var dataItem = this.dataItem(e.item.index());
-        //IdSer = dataItem.IdServicio;
         IdSer = IdServicio;
         IdClie = IdCliente;
 
@@ -508,7 +518,9 @@ $(document).ready(function () {
         $("#FrmPlantillas").children().addClass("k-state-disabled");
 
         $("#btnCambioEstado").data("kendoButton").enable(false);
-        $("#btnVerReq").data("kendoButton").enable(false);
+        $("#btnVerReq").data("kendoButton").enable(false); //serigrafia
+        $("#btnVerReq1").data("kendoButton").enable(false);//sublimacion
+        $("#btnVerReq2").data("kendoButton").enable(false);//Plantillas
         LimpiarADSubli();
         LimpiarADSer();
         LimpiarADPla();
@@ -516,14 +528,13 @@ $(document).ready(function () {
         IdClie === 0 ? $("#ReqDes").data("kendoGrid").showColumn("Nombre4") : $("#ReqDes").data("kendoGrid").hideColumn("Nombre4");
 
         $("#ReqDes").data("kendoGrid").dataSource.read();
-        
+
         switch (IdSer) {
             case "1":
                 $("#divSerigrafia").removeAttr("hidden", "hidden");
                 $("#divSubli").attr("hidden", "hidden");
                 $("#divPlan").attr("hidden", "hidden");
                 VistaP1.append(Fn_Carouselcontent());
-                VParSeri.append(hmlAdj);
                 break;
 
             case "2":
@@ -531,7 +542,6 @@ $(document).ready(function () {
                 $("#divSerigrafia").attr("hidden", "hidden");
                 $("#divPlan").attr("hidden", "hidden");
                 VistaP2.append(Fn_Carouselcontent());
-                VParSubli.append(hmlAdj);
                 break;
 
             case "3":
@@ -539,9 +549,9 @@ $(document).ready(function () {
                 $("#divSerigrafia").attr("hidden", "hidden");
                 $("#divPlan").removeAttr("hidden", "hidden");
                 VistaP3.append(Fn_Carouselcontent());
-                VParPlan.append(hmlAdj);
                 break;
         }
+
     }
 
     $("#IdServicio").data("kendoComboBox").bind("select", function (e) {
@@ -551,7 +561,7 @@ $(document).ready(function () {
         } else {
             Consultar(0, Kendo_CmbGetvalue($("#IdCliente")));
         }
-        
+
     });
 
     $("#IdServicio").data("kendoComboBox").bind("change", function (e) {
@@ -590,10 +600,10 @@ $(document).ready(function () {
                 IdA = getIdAD($("#ReqDes").data("kendoGrid"));
                 $("#GSeparacion").data("kendoGrid").dataSource.read();
                 $('#ResolucionDPI').siblings('input:visible').focus();
-             
-                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#GSeparacion"), false, false, false) : Grid_HabilitaToolbar($("#GSeparacion"), Permisos.SNAgregar, Permisos.SNEditar , Permisos.SNBorrar);
+
+                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#GSeparacion"), false, false, false) : Grid_HabilitaToolbar($("#GSeparacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? $("#FrmSerigrafia").children().addClass("k-state-disabled") : $("#FrmSerigrafia").children().removeClass("k-state-disabled");
-                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnCambioEstado").data("kendoButton").enable(false):$("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
+                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnCambioEstado").data("kendoButton").enable(false) : $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
                 break;
             case "2":
                 var urlsub = UrlAD + "/GetAnalisisDisenobyIdAnalisisDiseno/" + getIdAD($("#ReqDes").data("kendoGrid"));
@@ -601,8 +611,8 @@ $(document).ready(function () {
                 IdA = getIdAD($("#ReqDes").data("kendoGrid"));
                 $("#GSublimacion").data("kendoGrid").dataSource.read();
                 $('#AnchoDisenoSub').siblings('input:visible').focus();
-                
-                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#GSublimacion"), false, false, false) : Grid_HabilitaToolbar($("#GSublimacion"), Permisos.SNAgregar , Permisos.SNEditar, Permisos.SNBorrar);
+
+                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#GSublimacion"), false, false, false) : Grid_HabilitaToolbar($("#GSublimacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? $("#FrmSublimacion").children().addClass("k-state-disabled") : $("#FrmSublimacion").children().removeClass("k-state-disabled");
                 $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnCambioEstado").data("kendoButton").enable(false) : $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
                 break;
@@ -612,19 +622,20 @@ $(document).ready(function () {
                 IdA = getIdAD($("#ReqDes").data("kendoGrid"));
                 $("#gridPlantillas").data("kendoGrid").dataSource.read();
                 $('#AnchoDisenoPla').siblings('input:visible').focus();
-          
-                $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#gridPlantillas"), false, false, false) : Grid_HabilitaToolbar($("#gridPlantillas"), Permisos.SNAgregar , Permisos.SNEditar , Permisos.SNBorrar);
+
+                $("#ReqDes").data("kendoGrid").dataSource.total() ==
+                    0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#gridPlantillas"), false, false, false) : Grid_HabilitaToolbar($("#gridPlantillas"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? $("#FrmPlantillas").children().addClass("k-state-disabled") : $("#FrmPlantillas").children().removeClass("k-state-disabled");
                 $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnCambioEstado").data("kendoButton").enable(false) : $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
                 break;
         }
 
-        //$('#carouselExampleControls').carousel({
-        //    interval: 0
-        //});
-        setAdjun();
+
+
         $("#ReqDes").data("kendoGrid").dataSource.total() == 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? $("#myBtnAdjunto").data("kendoButton").enable(false) : $("#myBtnAdjunto").data("kendoButton").enable(true);
-        $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnVerReq").data("kendoButton").enable(false) : $("#btnVerReq").data("kendoButton").enable(true) ;
+        $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnVerReq").data("kendoButton").enable(false) : $("#btnVerReq").data("kendoButton").enable(true);
+        $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnVerReq1").data("kendoButton").enable(false) : $("#btnVerReq1").data("kendoButton").enable(true);
+        $("#ReqDes").data("kendoGrid").dataSource.total() == 0 ? $("#btnVerReq2").data("kendoButton").enable(false) : $("#btnVerReq2").data("kendoButton").enable(true);
         var UrlAdjRD = UrlApiArteAdj + "/GetByArte/" + (getIdArteRD($("#ReqDes").data("kendoGrid")) == null ? 0 : getIdArteRD($("#ReqDes").data("kendoGrid")));
         getAdjRD(UrlAdjRD);
         CargarEtapasProceso(getIdRequerimientoRD($("#ReqDes").data("kendoGrid")));
@@ -651,11 +662,19 @@ $(document).ready(function () {
     $("#btnVerReq").click(function (event) {
         Fn_VistaConsultaRequerimientoGet($('#vConsulta'), getIdRequerimientoRD($("#ReqDes").data("kendoGrid")))
     });
- 
+
+
+    $("#btnVerReq1").click(function (event) {
+        Fn_VistaConsultaRequerimientoGet($('#vConsulta'), getIdRequerimientoRD($("#ReqDes").data("kendoGrid")))
+    });
+
+    $("#btnVerReq2").click(function (event) {
+        Fn_VistaConsultaRequerimientoGet($('#vConsulta'), getIdRequerimientoRD($("#ReqDes").data("kendoGrid")))
+    });
 
     //#endregion FIN GRID PRINCIPAL
 
-//#region SERVICIO SERIGRAFIA
+    //#region SERVICIO SERIGRAFIA
 
     //#region Informacion Serigrafia
     $("#GSerigrafia").click(function (event) {
@@ -706,17 +725,27 @@ $(document).ready(function () {
     $("#ResolucionDPI").bind("change", function (e) {
         var Resolucion = parseInt(this.value);
         $("#ResolucionSqr").data("kendoNumericTextBox").value(Resolucion * Resolucion);
+
+        fn_CalcularAreaTotal(parseFloat($("#ResolucionSqr").data("kendoNumericTextBox").value()), $("#PixelesTotal").data("kendoNumericTextBox").value());
+
+
     });
 
     $("#PixelesTotal").bind("change", function (e) {
         var ResSqr = parseFloat($("#ResolucionSqr").data("kendoNumericTextBox").value());
         var Pixel = parseFloat(this.value);
+        fn_CalcularAreaTotal(ResSqr, Pixel);
+    });
+
+    var fn_CalcularAreaTotal = function (ResSqr, Pixel) {
         if (ResSqr > 0) {
             $("#AreaTotal").data("kendoNumericTextBox").value(Pixel / ResSqr);
         } else {
             $("#AreaTotal").data("kendoNumericTextBox").value(0);
         }
-    });
+
+    }
+
 
     function getAD(UrlAD) {
         kendo.ui.progress($("#splitter"), true);
@@ -762,7 +791,7 @@ $(document).ready(function () {
         $.ajax({
             url: UrlAD,//
             type: "Put",
-            async:false,
+            async: false,
             dataType: "json",
             data: JSON.stringify({
                 IdRequerimiento: $("#IdRequerimiento").val(),
@@ -921,9 +950,9 @@ $(document).ready(function () {
                                     return $("[name='AnchoConsumo']").data("kendoNumericTextBox").value() > 0;
                                 }
 
-                                if (input.is("[name='IdTecnica']") && RowAct.EsBase == false )  {
+                                if (input.is("[name='IdTecnica']") && RowAct.EsBase == false) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return  $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='IdUnidadArea']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
@@ -939,7 +968,7 @@ $(document).ready(function () {
                                 }
                                 if (input.is("[name='IdUnidadDimensionesConsumo']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return  $("#IdUnidadDimensionesConsumo").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdUnidadDimensionesConsumo").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='IdCostoTecnica']") && RowAct.EsBase == false) {
                                     input.attr("data-maxlength-msg", "Requerido");
@@ -950,21 +979,21 @@ $(document).ready(function () {
                         }
                     },
                     IdAnalisisDiseno: { type: "number", defaultValue: function (e) { return getIdAD($("#ReqDes").data("kendoGrid")); }, hidden: true },
-                    NomIdTecnica: { type: "string", defaultValue: null}, // nombre tecnica
+                    NomIdTecnica: { type: "string", defaultValue: null }, // nombre tecnica
                     Pixeles: { type: "number", defaultValue: 0 },
                     Area: { type: "number", defaultValue: 0 },
-                    IdUnidadArea: { type: "string", defaultValue: 6},
+                    IdUnidadArea: { type: "string", defaultValue: 6 },
                     NomIdUnidadArea: { type: "string" }, // nombre del area
                     Alto: { type: "number", defaultValue: 0 },
                     Ancho: { type: "number", defaultValue: 0 },
-                    IdUnidadDimension: { type: "string", defaultValue: 5},
+                    IdUnidadDimension: { type: "string", defaultValue: 5 },
                     NombreUniDimension: { type: "string" }, // nombre unidad dimension
                     AltoConsumo: { type: "number", defaultValue: 0 },
                     AnchoConsumo: { type: "number", defaultValue: 0 },
-                    IdUnidadDimensionesConsumo: { type: "string", defaultValue: 5},
+                    IdUnidadDimensionesConsumo: { type: "string", defaultValue: 5 },
                     NombreUniDimensionConsumo: { type: "string" },
                     IdCatalogoInsumo: { type: "string", defaultValue: null },
-                    NombreCataloInsumo: {type: "string" },
+                    NombreCataloInsumo: { type: "string" },
                     IdCostoTecnica: { type: "string", defaultValue: null },
                     NombreCostoTecnicas: { type: "string" },
                     EsBase: { type: "bool", defaultValue: false }
@@ -980,95 +1009,65 @@ $(document).ready(function () {
     $("#GSeparacion").kendoGrid({
         edit: function (e) {
             RowAct = e.model;
-            e.container.find("label[for=IdSeparacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdSeparacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NomIdTecnica]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NomIdTecnica]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NomIdUnidadArea]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NomIdUnidadArea]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreUniDimension]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUniDimension]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreUniDimensionConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUniDimensionConsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreCostoTecnicas]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreCostoTecnicas]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=EsBase]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=EsBase]").parent().next("div .k-edit-field").hide();
+            KdoHideCampoPopup(e.container, "IdSeparacion");
+            KdoHideCampoPopup(e.container, "IdAnalisisDiseno");
+            KdoHideCampoPopup(e.container, "NomIdTecnica");
+            KdoHideCampoPopup(e.container, "NomIdUnidadArea");
+            KdoHideCampoPopup(e.container, "NombreCataloInsumo");
+            KdoHideCampoPopup(e.container, "NombreUniDimension");
+            KdoHideCampoPopup(e.container, "NombreUniDimensionConsumo");
+            KdoHideCampoPopup(e.container, "NombreCostoTecnicas");
+            KdoHideCampoPopup(e.container, "EsBase");
 
-            $('[name="Pixeles"]').data("kendoNumericTextBox").enable(false);
-            $('[name="Area"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadArea"]').data("kendoComboBox").enable(false);
+            KdoNumerictextboxEnable($('[name="Pixeles"]'), false);
+            KdoNumerictextboxEnable($('[name="Area"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadArea"]'), false);
+            KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+            KdoNumerictextboxEnable($('[name="Alto"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimension"]'), false);
+            KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), false);
+            KdoNumerictextboxEnable($('[name="AltoConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
 
-            $('[name="Ancho"]').data("kendoNumericTextBox").enable(false);
-            $('[name="Alto"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(false);
-            $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(false);
-            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
             if (!e.model.isNew()) {
                 //modo edicion
                 if (!e.model.EsBase) {
-                    // cuando una area de tecnica y no base
-                    // asignar datasource al combobox tecnica
-                   
+                    // cuando una area de tecnica y no base.
+                    // asignar datasource al combobox tecnica.
                     $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(getDsComboTenica());
+                    $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(getDsDsCostoTec(e.model.IdTecnica));
                     IdTec = e.model.IdTecnica;
                     MostrarCamposxTecnica(e.container);
+
                     Grid_Focus(e, "IdTecnica");
                 } else {
                     //cuando el registro de area a modificar es base , tecnica y costo tecnica se ocultan
                     // luego se muestra el nombre de la tecnica.
-                    e.container.find("label[for=IdCostoTecnica]").parent("div .k-edit-label").hide();
-                    e.container.find("label[for=IdCostoTecnica]").parent().next("div .k-edit-field").hide();
-                    e.container.find("label[for=IdTecnica]").parent("div .k-edit-label").hide();
-                    e.container.find("label[for=IdTecnica]").parent().next("div .k-edit-field").hide();
-                    e.container.find("label[for=NomIdTecnica]").parent("div .k-edit-label").show();
-                    e.container.find("label[for=NomIdTecnica]").parent().next("div .k-edit-field").show();
+                    KdoHideCampoPopup(e.container, "IdCostoTecnica");
+                    KdoHideCampoPopup(e.container, "IdTecnica");
+                    KdoShowCampoPopup(e.container, "NomIdTecnica");
                     MostrarCamposxBase(true);
                     Grid_Focus(e, "NomIdTecnica");
                 }
 
             }
-            else {
+            else
+            {
                 // Nuevo registro.
                 // asignar datasource al combobox tecnica}
-
                 $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(getDsComboTenica());
                 Grid_Focus(e, "IdTecnica");
 
             };
+
             $('[name="IdTecnica"]').on('change', function (e) {
                 IdTec = Kendo_CmbGetvalue($('[name="IdTecnica"]'));
                 $('[name="IdCostoTecnica"]').data("kendoComboBox").value("");
                 LimpiarMttoTec();
                 MostrarCamposxTecnica(e.container);
-              
-                var DsCostoTec = new kendo.data.DataSource({
-                    dataType: 'json',
-                    sort: { field: "Nombre", dir: "asc" },
-                    transport: {
-                        read: function (datos) {
-                            $.ajax({
-                                dataType: 'json',
-                                url: UrlApiCoTec + "/" + getIdBase($("#ReqDes").data("kendoGrid")) + "/" + IdTec.toString(),
-                                async: false,
-                                contentType: "application/json; charset=utf-8",
-                                success: function (result) {
-                                    datos.success(result);
-
-                                }
-                            });
-                        }
-                    }
-                });
-
                 // asignar DataSource al combobox tecnica
-                $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(DsCostoTec);
+                $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(getDsDsCostoTec(IdTec));
 
             });
 
@@ -1095,43 +1094,44 @@ $(document).ready(function () {
                 $('[name="Area"]').data("kendoNumericTextBox").trigger("change");
             });
 
-      
+
             getFactorCosto(e.model.isNew());
-          
+
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdSeparacion", title: "Separación", hidden: true },
             { field: "IdTecnica", title: "Técnica", editor: Grid_Combox, values: ["IdTecnica", "Nombre", UrlTec, "", "Seleccione un Técnica....", "required", "", "Requerido"], hidden: true },
-            { field: "NomIdTecnica", title: "Nombre Técnica", editor:Grid_ColLocked},
+            { field: "NomIdTecnica", title: "Nombre Técnica", editor: Grid_ColLocked },
             { field: "IdCostoTecnica", title: "Costo técnica", editor: Grid_Combox, values: ["IdCostoTecnica", "Nombre", UrlApiCoTec, "", "Seleccione un Costo Tec...", "", "IdTecnica", ""], hidden: true },
             { field: "NombreCostoTecnicas", title: "Nombre costo técnica" },
             { field: "IdAnalisisDiseno", title: "IdAnalisisDiseno", hidden: true },
-            { field: "Pixeles", title: "Pixeles", editor: Grid_ColNumeric, values: ["required", "0", "999999999999999999", "#", 0]},
+            { field: "Pixeles", title: "Pixeles", editor: Grid_ColNumeric, values: ["required", "0", "999999999999999999", "#", 0] },
             { field: "Area", title: "Area", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
-            { field: "IdUnidadArea", title: "Unidad Area", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....","required","","Requerido"], hidden: true },
+            { field: "IdUnidadArea", title: "Unidad Area", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NomIdUnidadArea", title: "Unidad Area" },
-            { field: "IdCatalogoInsumo", title: "Catalogo Insumo", editor: Grid_Combox, values: ["IdCatalogoInsumo", "Nombre", UrlCI, "", "Seleccione....","required", "", "Requerido"], hidden: true },
+            { field: "IdCatalogoInsumo", title: "Catalogo Insumo", editor: Grid_Combox, values: ["IdCatalogoInsumo", "Nombre", UrlCI, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreCataloInsumo", title: "Insumo" },
-            { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric,values: ["required", "0.00", "99999999999999.99", "n2", 2] },
-            { field: "Alto", title: "Alto" ,  editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
+            { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
+            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
             { field: "IdUnidadDimension", title: "Unidad Dimensión", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreUniDimension", title: "Unidad Dimensión" },
-            { field: "AnchoConsumo", title: "Ancho Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2]  },
-            { field: "AltoConsumo", title: "Alto Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2]  },
+            { field: "AnchoConsumo", title: "Ancho Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
+            { field: "AltoConsumo", title: "Alto Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
             { field: "IdUnidadDimensionesConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreUniDimensionConsumo", title: "Unidad Consumo" },
-            { field: "EsBase", title: "EsBase",menu:false ,hidden:true} // menu false oculta de la opciones filtro.
-            
+            { field: "EsBase", title: "EsBase", menu: false, hidden: true } // menu false oculta de la opciones filtro.
+
         ]
 
     });
 
-    SetGrid($("#GSeparacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#GSeparacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GSeparacion").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#GSeparacion").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GSeparacion").data("kendoGrid"), dsSeparacion);
     Grid_HabilitaToolbar($("#GSeparacion"), false, false, false);
+
     var selectedRowsGSeparacion = [];
     $("#GSeparacion").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#GSeparacion"), selectedRowsGSeparacion);
@@ -1149,6 +1149,7 @@ $(document).ready(function () {
         $.ajax({
             url: UrlTec + "/" + IdTec,
             dataType: 'json',
+            async:false,
             type: 'GET',
             success: function (respuesta) {
                 if (respuesta !== null) {
@@ -1156,39 +1157,21 @@ $(document).ready(function () {
                     if (respuesta.EsPapel === true) {
                         vEspapel = true;
                         vEstampado = false;
-                        $('[name="Pixeles"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="IdUnidadArea"]').data("kendoComboBox").enable(false);
+                      
+                        KdoNumerictextboxEnable($('[name="Pixeles"]'), false);
+                        KdoComboBoxEnable($('[name="IdUnidadArea"]'), false);
 
-                        $('[name="Ancho"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="Alto"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(true);
-                        $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(true);
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(true);
+                        KdoNumerictextboxEnable($('[name="Ancho"]'), true);
+                        KdoNumerictextboxEnable($('[name="Alto"]'), true);
+                        KdoComboBoxEnable($('[name="IdUnidadDimension"]'), true);
+                        KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), true);
+                        KdoNumerictextboxEnable($('[name="AltoConsumo"]'), true);
+                        KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), true);
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+
                         $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
 
-                        var NewDS = new kendo.data.DataSource( {
-                            dataType: 'json',
-                            sort: { field:"Nombre", dir: "asc" },
-                            transport: {
-                                read: function (datos) {
-                                    $.ajax({
-                                        type: "POST",
-                                        dataType: 'json',
-                                        async: false,
-                                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
-                                        url: UrlCI + "/Filtrado",
-                                        contentType: "application/json; charset=utf-8",
-                                        success: function (result) {
-                                            datos.success(result);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                      
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(NewDS);
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getDSInsumo());
 
                     }
 
@@ -1196,32 +1179,34 @@ $(document).ready(function () {
                     if (respuesta.EsEstampado === true) {
                         vEspapel = false;
                         vEstampado = true;
-                       
-                        $('[name="Pixeles"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="IdUnidadArea"]').data("kendoComboBox").enable(true);
 
-                        $('[name="Ancho"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="Alto"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(false);
-                        $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(false);
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+                        KdoNumerictextboxEnable($('[name="Pixeles"]'), true);
+                        KdoComboBoxEnable($('[name="IdUnidadArea"]'), true);
+
+                        KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+                        KdoNumerictextboxEnable($('[name="Alto"]'), false);
+                        KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), false);
+                        KdoNumerictextboxEnable($('[name="AltoConsumo"]'), false);
+                        KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), false);
+                        KdoComboBoxEnable($('[name="IdUnidadDimension"]'), false);
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+
                         $("#IdCostoTecnica").data("kendoComboBox").input.focus();
-                        
+
                     }
                 }
                 else {
-                    $('[name="Pixeles"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="IdUnidadArea"]').data("kendoComboBox").enable(false);
 
-                    $('[name="Ancho"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="Alto"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(false);
-                    $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(false);
-                    $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+                    KdoNumerictextboxEnable($('[name="Pixeles"]'), false);
+                    KdoComboBoxEnable($('[name="IdUnidadArea"]'), false);
+
+                    KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+                    KdoNumerictextboxEnable($('[name="Alto"]'), false);
+                    KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), false);
+                    KdoNumerictextboxEnable($('[name="AltoConsumo"]'), false);
+                    KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), false);
+                    KdoComboBoxEnable($('[name="IdUnidadDimension"]'), false);
+                    KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
 
                 }
                 kendo.ui.progress($("#GSeparacion"), false);
@@ -1234,35 +1219,61 @@ $(document).ready(function () {
     }
 
     // habilitar opciones true si selecciona una base y false no seleccionan la opcion .
+
+    var fn_getDSInsumo = function () {
+            // devuelve los insumos por tcnica e insumo configurado como papel.
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        async: false,
+                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
+                        url: UrlCI + "/Filtrado",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            datos.success(result);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     function MostrarCamposxBase(opcion) {
         if (opcion) {
 
-            $('[name="Pixeles"]').data("kendoNumericTextBox").enable(true);
-            $('[name="IdUnidadArea"]').data("kendoComboBox").enable(true);
+            KdoNumerictextboxEnable($('[name="Pixeles"]'), true);
+            KdoComboBoxEnable($('[name="IdUnidadArea"]'), true);
 
-            $('[name="Ancho"]').data("kendoNumericTextBox").enable(false);
-            $('[name="Alto"]').data("kendoNumericTextBox").enable(false);
-            $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(false);
-            $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(false);
-            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+            KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+            KdoNumerictextboxEnable($('[name="Alto"]'), false);
+            KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), false);
+            KdoNumerictextboxEnable($('[name="AltoConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimension"]'), false);
+            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+
             $('[name="Pixeles"]').data("kendoNumericTextBox").focus();
 
         }
         else {
-            $('[name="Pixeles"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadArea"]').data("kendoComboBox").enable(false);
+            KdoNumerictextboxEnable($('[name="Pixeles"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadArea"]'), false);
 
-            $('[name="Ancho"]').data("kendoNumericTextBox").enable(false);
-            $('[name="Alto"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadDimension"]').data("kendoComboBox").enable(false);
-            $('[name="AnchoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="AltoConsumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").enable(false);
-            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+            KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+            KdoNumerictextboxEnable($('[name="Alto"]'), false);
+            KdoNumerictextboxEnable($('[name="AnchoConsumo"]'), false);
+            KdoNumerictextboxEnable($('[name="AltoConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimensionesConsumo"]'), false);
+            KdoComboBoxEnable($('[name="IdUnidadDimension"]'), false);
+            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
         }
     }
+
     function LimpiarMttoTec() {
         $('[name="Pixeles"]').data("kendoNumericTextBox").value("0");
         $('[name="Area"]').data("kendoNumericTextBox").value("0");
@@ -1283,7 +1294,7 @@ $(document).ready(function () {
         $.ajax({
             url: UrlFC + "/MCF",
             dataType: 'json',
-            async:false,
+            async: false,
             type: 'GET',
             success: function (respuesta) {
                 if (respuesta !== null) {
@@ -1293,22 +1304,22 @@ $(document).ready(function () {
                         $('[name="IdUnidadDimensionesConsumo"]').data("kendoComboBox").value(IdUnidadFC);
                         $('[name="IdUnidadDimension"]').data("kendoComboBox").value(IdUnidadFC);
                     };
-                   
+
                 } else {
                     FactorCosto = "0.00";
-                   IdUnidadFC = "";
+                    IdUnidadFC = "";
                 }
                 kendo.ui.progress($("#GSeparacion"), false);
             },
             error: function () {
                 kendo.ui.progress($("#GSeparacion"), false);
-       
+
             }
         });
     }
-    
+
     function getDsComboTenica() {
-         //preparar crear datasource para obtner la tecnica filtrado por base
+        //preparar crear datasource para obtner la tecnica filtrado por base
         return new kendo.data.DataSource({
             sort: { field: "Nombre", dir: "asc" },
             transport: {
@@ -1326,12 +1337,34 @@ $(document).ready(function () {
             }
         });
     }
-    
-    //#endregion
+
+    function getDsDsCostoTec(idtecnica) {
+       
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        dataType: 'json',
+                        url: UrlApiCoTec + "/" + getIdBase($("#ReqDes").data("kendoGrid")) + "/" + idtecnica.toString(),
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            datos.success(result);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     //#endregion
 
-//#region SERVICIO DE SUBLIMACION
+    //#endregion
+
+    //#region SERVICIO DE SUBLIMACION
     //#region Informacion Sublimacion
     $("#GuardarSubli").click(function (event) {
         event.preventDefault();
@@ -1357,7 +1390,7 @@ $(document).ready(function () {
                     $("#UbicacionSub").val(getUbicacionRD($("#ReqDes").data("kendoGrid")));
                     $("#TxtFactorDistribucion").data("kendoNumericTextBox").value(respuesta.FactorDistribucion);
                     $("#TxtDirectorioSubli").val(respuesta.DirectorioArchivos);
-                    
+
                 } else {
 
                     LimpiarADSubli();
@@ -1370,7 +1403,7 @@ $(document).ready(function () {
             },
             error: function () {
                 kendo.ui.progress($("#splitter"), false);
-              
+
             }
         });
     }
@@ -1398,7 +1431,7 @@ $(document).ready(function () {
                 LineajeLPI: 0, //no aplica para serigrafia
                 Estado: $("#EstadoSub").val(),
                 Fecha: kendo.toString(kendo.parseDate($("#FechaSub").val()), 'u'),
-                Comentarios:"",
+                Comentarios: "",
                 AltoLienzo: 0,
                 AnchoLienzo: 0,
                 IdUnidadLienzo: null,
@@ -1453,7 +1486,7 @@ $(document).ready(function () {
                 url: function (datos) { return UrlS + "/" + datos.IdSeparacion; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
-                
+
 
             },
             destroy: {
@@ -1465,7 +1498,7 @@ $(document).ready(function () {
                 url: UrlS,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
-       
+
             },
 
             parameterMap: function (data, type) {
@@ -1522,13 +1555,13 @@ $(document).ready(function () {
                         }
                     },
                     IdAnalisisDiseno: { type: "number", defaultValue: function (e) { return getIdAD($("#ReqDes").data("kendoGrid")); }, hidden: true },
-                    VelocidadMaquina: { type: "number", defaultValue: 0},
+                    VelocidadMaquina: { type: "number", defaultValue: 0 },
                     IdUnidadVelocidad: { type: "string", defaultValue: 15 },
                     NombrUnidadVelocidad: { type: "string" }, // nombre unidad velocidad  
                     Consumo: { type: "number", defaultValue: 0 },
-                    IdUnidadConsumo: { type: "string", defaultValue: 8},
+                    IdUnidadConsumo: { type: "string", defaultValue: 8 },
                     NombreUnidadConsumo: { type: "string" },
-                    IdCatalogoInsumo: { type: "string"},
+                    IdCatalogoInsumo: { type: "string" },
                     NombreCataloInsumo: { type: "string" }, // nombre catalogo insumo
                     VelocidadMaquinaMts: { type: "number", defaultValue: 0 }
                 }
@@ -1539,26 +1572,21 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#GSublimacion").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdSeparacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdSeparacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUnidadVelocidad]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdUnidadVelocidad]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombrUnidadVelocidad]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombrUnidadVelocidad]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreUnidadConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUnidadConsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NomIdTecnica]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NomIdTecnica]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent().next("div .k-edit-field").hide();
+  
+            KdoHideCampoPopup(e.container, "IdSeparacion");
+            KdoHideCampoPopup(e.container, "IdAnalisisDiseno");
+            KdoHideCampoPopup(e.container, "IdUnidadVelocidad");
+            KdoHideCampoPopup(e.container, "NombrUnidadVelocidad");
+            KdoHideCampoPopup(e.container, "NombreUnidadConsumo");
+            KdoHideCampoPopup(e.container, "NomIdTecnica");
+            KdoHideCampoPopup(e.container, "NombreCataloInsumo");
+            
+            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'),false)
+            KdoNumerictextboxEnable($('[name="VelocidadMaquina"]'), false)
+            KdoComboBoxEnable($('[name="IdUnidadVelocidad"]'), false)
+            KdoNumerictextboxEnable($('[name="Consumo"]'), false)
+            KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), false)
 
-            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
-            $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadVelocidad"]').data("kendoComboBox").enable(false);
-            $('[name="Consumo"]').data("kendoNumericTextBox").enable(false);
-            $('[name="IdUnidadConsumo"]').data("kendoComboBox").enable(false);
 
             $('[name="IdTecnica"]').on('change', function (e) {
 
@@ -1576,12 +1604,12 @@ $(document).ready(function () {
                 $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").value(parseFloat(this.value) * 1.09361);
                 $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").trigger("change");
             });
-            
+
             if (!e.model.isNew()) {
                 IdTec = e.model.IdTecnica;
                 MostrarCamposxTecnicaSubli(e.container);
             };
-            
+
             Grid_Focus(e, "IdTecnica");
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -1594,15 +1622,15 @@ $(document).ready(function () {
             { field: "NombreCataloInsumo", title: "Insumo" },
             { field: "VelocidadMaquinaMts", title: "Velocidad (Mts/Hrs)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
             { field: "VelocidadMaquina", title: "Velocidad (Yds/Hrs)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
-            { field: "IdUnidadVelocidad", title: "Unidad Velocidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione...." ,"required", "", "Requerido"], hidden: true },
+            { field: "IdUnidadVelocidad", title: "Unidad Velocidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombrUnidadVelocidad", title: "Unidad Velocidad", hidden: true },
-            { field: "Consumo", title: "Consumo Tinta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2]},
+            { field: "Consumo", title: "Consumo Tinta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
             { field: "IdUnidadConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreUnidadConsumo", title: "Unidad Consumo" }
         ]
     });
 
-    SetGrid($("#GSublimacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#GSublimacion").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GSublimacion").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#GSublimacion").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GSublimacion").data("kendoGrid"), dsSeparacionSubli);
@@ -1623,35 +1651,44 @@ $(document).ready(function () {
         $.ajax({
             url: UrlTec + "/" + IdTec,
             dataType: 'json',
+            async: false,
             type: 'GET',
             success: function (respuesta) {
                 if (respuesta !== null) {
-                    if (respuesta.EsImpresion === true) {                 
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(true);
-                        $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="VelocidadMaquinaMts"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="IdUnidadVelocidad"]').data("kendoComboBox").enable(false);
-                        $('[name="Consumo"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="IdUnidadConsumo"]').data("kendoComboBox").enable(true);
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();                        
+                    if (respuesta.EsImpresion === true) {
+  
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+                        KdoNumerictextboxEnable($('[name="VelocidadMaquina"]'), false);
+                        KdoNumerictextboxEnable($('[name="VelocidadMaquinaMts"]'), false);
+                        KdoComboBoxEnable($('[name="IdUnidadVelocidad"]'), false);
+                        KdoNumerictextboxEnable($('[name="Consumo"]'), true);
+                        KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), true);
+
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
                     }
 
                     if (respuesta.EsSublimacion === true) {
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(true);
-                        $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="VelocidadMaquinaMts"]').data("kendoNumericTextBox").enable(true);
-                        $('[name="IdUnidadVelocidad"]').data("kendoComboBox").enable(true);
-                        $('[name="Consumo"]').data("kendoNumericTextBox").enable(false);
-                        $('[name="IdUnidadConsumo"]').data("kendoComboBox").enable(false);
+
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+                        KdoNumerictextboxEnable($('[name="VelocidadMaquina"]'), true);
+                        KdoNumerictextboxEnable($('[name="VelocidadMaquinaMts"]'), true);
+                        KdoComboBoxEnable($('[name="IdUnidadVelocidad"]'), true);
+                        KdoNumerictextboxEnable($('[name="Consumo"]'), false);
+                        KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), false);
+
                         $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+
+              
+
                     }
+
                 } else {
-                    $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
-                    $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="VelocidadMaquinaMts"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="IdUnidadVelocidad"]').data("kendoComboBox").enable(false);
-                    $('[name="Consumo"]').data("kendoNumericTextBox").enable(false);
-                    $('[name="IdUnidadConsumo"]').data("kendoComboBox").enable(false);
+                    KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+                    KdoNumerictextboxEnable($('[name="VelocidadMaquina"]'), false);
+                    KdoNumerictextboxEnable($('[name="VelocidadMaquinaMts"]'), false);
+                    KdoComboBoxEnable($('[name="IdUnidadVelocidad"]'), false);
+                    KdoNumerictextboxEnable($('[name="Consumo"]'), false);
+                    KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), false);
                 }
 
                 $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(getDsCmbCI());
@@ -1671,8 +1708,8 @@ $(document).ready(function () {
                     $.ajax({
                         type: "POST",
                         dataType: 'json',
-                        async:false,
-                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
+                        async: false,
+                        data: JSON.stringify({ idTecnica: IdTec, EsPapel: true, EsRhinestone: false }),
                         url: UrlCI + "/Filtrado",
                         contentType: "application/json; charset=utf-8",
                         success: function (result) {
@@ -1691,11 +1728,11 @@ $(document).ready(function () {
         $('[name="IdUnidadVelocidad"]').data("kendoComboBox").value(15);
         $('[name="Consumo"]').data("kendoNumericTextBox").value("0");
         $('[name="IdUnidadConsumo"]').data("kendoComboBox").value(8);
-    } 
+    }
     //#endregion FIN Proceso Sublimacion
-//#endregion FIN Servicio Sublimacion
+    //#endregion FIN Servicio Sublimacion
 
-//#region SERVICIO DE PLANTILLAS
+    //#region SERVICIO DE PLANTILLAS
     //#region Información
     //CONFIGURACION DEL GRID,CAMPOS
     function getADPla(UrlAD) {
@@ -1725,7 +1762,7 @@ $(document).ready(function () {
                 kendo.ui.progress($("#splitter"), false);
             },
             error: function () {
-                kendo.ui.progress($("#splitter"), false);                
+                kendo.ui.progress($("#splitter"), false);
             }
         });
     }
@@ -1782,8 +1819,8 @@ $(document).ready(function () {
     //#region Lienzos
 
     var FiltroPapelPla = { idTecnica: 89, EsPapel: true, EsRhinestone: false };// filtro para detalle de palntillas
-    var FiltroTec = { IdServicio: 3, EsPapel: false, EsImpresion: false, EsSublimacion: false, EsPlantilla: true, EsEstampado:false};// filtro para detalle de palntillas
-    
+    var FiltroTec = { IdServicio: 3, EsPapel: false, EsImpresion: false, EsSublimacion: false, EsPlantilla: true, EsEstampado: false };// filtro para detalle de palntillas
+
     var dataSourcePla = new kendo.data.DataSource({
         transport: {
             read: {
@@ -1794,7 +1831,7 @@ $(document).ready(function () {
                 url: function (datos) { return UrlS + "/" + datos.IdSeparacion; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
-                
+
 
             },
             destroy: {
@@ -1805,7 +1842,7 @@ $(document).ready(function () {
                 url: UrlS,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
-    
+
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -1879,11 +1916,11 @@ $(document).ready(function () {
                         }
                     },
                     IdAnalisisDiseno: { type: "number", defaultValue: function (e) { return getIdAD($("#ReqDes").data("kendoGrid")); } },
-                    NomIdTecnica: { type: "string"}, // nombre tecnica
+                    NomIdTecnica: { type: "string" }, // nombre tecnica
 
                     Alto: { type: "number", defaultValue: 0 },
                     Ancho: { type: "number", defaultValue: 0 },
-                    IdUnidadDimension: { type: "string", defaultValue:5 },
+                    IdUnidadDimension: { type: "string", defaultValue: 5 },
                     NombreUniDimension: { type: "string" }, // nombre unidad dimension
 
                     AltoConsumo: { type: "number", defaultValue: 0 },
@@ -1895,7 +1932,7 @@ $(document).ready(function () {
                     IdUnidadConsumo: { type: "string", defaultValue: 9 },
                     NombreUnidadConsumo: { type: "string" },
 
-                    IdCatalogoInsumo: { type: "string"},
+                    IdCatalogoInsumo: { type: "string" },
                     NombreCataloInsumo: { type: "string" }, // nombre catalogo insumo
 
                     AltoLienzo: { type: "number", defaultValue: 0 },
@@ -1914,26 +1951,17 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridPlantillas").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdSeparacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdSeparacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdAnalisisDiseno]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NomIdTecnica]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NomIdTecnica]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreUniDimension]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUniDimension]").parent().next("div .k-edit-field").hide();            
-            e.container.find("label[for=NombreUniDimensionConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUniDimensionConsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreUnidadConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreUnidadConsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreCataloInsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NombreIdUnidadLienzo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NombreIdUnidadLienzo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Consumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Consumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUnidadConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdUnidadConsumo]").parent().next("div .k-edit-field").hide();
+
+            KdoHideCampoPopup(e.container, "IdSeparacion");
+            KdoHideCampoPopup(e.container, "IdAnalisisDiseno");
+            KdoHideCampoPopup(e.container, "NomIdTecnica");
+            KdoHideCampoPopup(e.container, "NombreUniDimension");
+            KdoHideCampoPopup(e.container, "NombreUniDimensionConsumo");
+            KdoHideCampoPopup(e.container, "NombreUnidadConsumo");
+            KdoHideCampoPopup(e.container, "NombreCataloInsumo");
+            KdoHideCampoPopup(e.container, "NombreIdUnidadLienzo");
+            KdoHideCampoPopup(e.container, "Consumo");
+            KdoHideCampoPopup(e.container, "IdUnidadConsumo");
 
             Grid_Focus(e, "IdTecnica");
         },
@@ -1945,7 +1973,7 @@ $(document).ready(function () {
         columns: [
             { field: "IdSeparacion", title: "Separación", hidden: true },
             { field: "IdAnalisisDiseno", title: "IdAnalisisDiseno", hidden: true },
-            { field: "IdTecnica", title: "Técnica", editor: Grid_ComboxAjax, values: ["IdTecnica", "Nombre", UrlTec + "/Filtrado", FiltroTec, "Seleccione un Técnica...." ,"required", "", "Requerido"], hidden: true },
+            { field: "IdTecnica", title: "Técnica", editor: Grid_ComboxAjax, values: ["IdTecnica", "Nombre", UrlTec + "/Filtrado", FiltroTec, "Seleccione un Técnica....", "required", "", "Requerido"], hidden: true },
             { field: "NomIdTecnica", title: "Lienzo" },
             { field: "IdCatalogoInsumo", title: "Cod. Papel", editor: Grid_ComboxAjax, values: ["IdCatalogoInsumo", "Nombre", UrlCI + "/Filtrado", FiltroPapelPla, "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreCataloInsumo", title: "Papel" },
@@ -1954,22 +1982,22 @@ $(document).ready(function () {
             { field: "NombreUnidadConsumo", title: "Unidad Consumo", hidden: true },
             { field: "AnchoLienzo", title: "Ancho Lienzo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
             { field: "AltoLienzo", title: "Alto Lienzo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
-            { field: "IdUnidadLienzo", title: "Unidad Lienzo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione...." ,"required", "", "Requerido"], hidden: true },
+            { field: "IdUnidadLienzo", title: "Unidad Lienzo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreIdUnidadLienzo", title: "Unidad Lienzo" },
             { field: "Ancho", title: "Ancho Diseño", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
             { field: "Alto", title: "Alto Diseño", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
-            { field: "IdUnidadDimension", title: "Unidad Diseño", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione...." ,"required", "", "Requerido"], hidden: true },
+            { field: "IdUnidadDimension", title: "Unidad Diseño", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreUniDimension", title: "Unidad Dimensión" },
             { field: "AnchoConsumo", title: "Ancho Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
             { field: "AltoConsumo", title: "Alto Consumo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:n2}", 2] },
-            { field: "IdUnidadDimensionesConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione...." ,"required", "", "Requerido"], hidden: true },
+            { field: "IdUnidadDimensionesConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreUniDimensionConsumo", title: "Unidad Consumo" },
             { field: "FactorDistribucion", title: "Factor Distribución", editor: Grid_ColNumeric, values: ["required", "0", "99999999999999", "#", 0] }
         ]
     });
 
     //FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridPlantillas").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 650);
+    SetGrid($("#gridPlantillas").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_Command($("#gridPlantillas").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     SetGrid_CRUD_ToolbarTop($("#gridPlantillas").data("kendoGrid"), Permisos.SNAgregar);
     Set_Grid_DataSource($("#gridPlantillas").data("kendoGrid"), dataSourcePla);
@@ -1984,7 +2012,7 @@ $(document).ready(function () {
         Grid_SelectRow($("#gridPlantillas"), selectedRowsGPlant);
     });
     //GridDetalle de SeparacionesDetalles
- 
+
 
     function detailInit(e) {
         var IdSep = e.data.IdSeparacion;
@@ -2015,7 +2043,7 @@ $(document).ready(function () {
                     }
                 }
             },
-            aggregate: [ { field: "Consumo", aggregate: "sum" } ],
+            aggregate: [{ field: "Consumo", aggregate: "sum" }],
             requestEnd: Grid_requestEnd,
             //    function (e) {
             //    if (e.type === "create" || e.type === "update" || e.type === "destroy") {
@@ -2071,14 +2099,11 @@ $(document).ready(function () {
 
         var g = $("<div/>").appendTo(e.detailCell).kendoGrid({
             edit: function (e) {
-                e.container.find("label[for=IdSeparacionDetalle]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=IdSeparacionDetalle]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=IdSeparacion]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=IdSeparacion]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
+  
+                KdoHideCampoPopup(e.container, "IdSeparacionDetalle");
+                KdoHideCampoPopup(e.container, "IdSeparacion");
+                KdoHideCampoPopup(e.container, "Nombre");
+                KdoHideCampoPopup(e.container, "Nombre1");
 
                 Grid_Focus(e, "IdCatalogoInsumo");
             },
@@ -2094,7 +2119,7 @@ $(document).ready(function () {
 
         });
 
-        ConfGDetalle(g.data("kendoGrid"), VdS);
+        ConfGDetalle(g.data("kendoGrid"), VdS, "gridPlantillas_Deta" + IdSep);
 
         var selectedRowsGPlantDet = [];
         g.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -2107,11 +2132,11 @@ $(document).ready(function () {
         });
     }
 
-    function ConfGDetalle(g, ds) {
-        SetGrid(g, ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 400);
+    function ConfGDetalle(g, ds, Id_GridDetalle) {
+        SetGrid(g, ModoEdicion.EnPopup, false, true, true, true, true, 300);
+        SetGrid_CRUD_Command(g, Permisos.SNEditar, Permisos.SNBorrar, Id_GridDetalle);
         SetGrid_CRUD_ToolbarTop(g, Permisos.SNAgregar);
         Set_Grid_DataSource(g, ds);
-        SetGrid_CRUD_Command(g, Permisos.SNEditar, Permisos.SNBorrar);   
     }
 
     function LimpiarADPla() {
@@ -2128,46 +2153,43 @@ $(document).ready(function () {
         $("#TxtDirectorioPlan").val("");
     }
     //#endregion FIN LIENZOS
-//#endregion FIN SERVICIO DE PLANTILLAS
+    //#endregion FIN SERVICIO DE PLANTILLAS
 
-//#region imagenes Adjuntas
+    //#region imagenes Adjuntas
 
+   //agregar codigo html adjuntos. por defecto
    
 
-    var hmlAdj = '<form id="FrmAdj" method="POST" enctype="multipart/form-data" autocomplete="off">' +
+    var hmlAdj = 
+        '<div class="modal fade" id="myModalAdjunto" role="dialog">' +
+        '<div class="modal-dialog modal-lg">' +
+        ' <div class="modal-content">' +
+        '<div class="modal-header">' +
+        '<h4 class="modal-title">Adjuntos</h4>' +
+        '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+        '</div>' +
+        '<div class="modal-body" role="document">' +
+        '<div class="k-content k-rtl">' +
+        '<input id="Adjunto" name="Adjunto" type="file" />' +
+        '</div>' +
         '<div class="row">' +
-        '<div class="form-group col-lg-12">' +
-        '<div class="input-group">' +
-        '<div style="width: 100%;">' +
-        '<button type="button" id="myBtnAdjunto" data-toggle="modal" data-target="#myModalAdjunto" style="width: 100%;" onclick="' + "$('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;" +'">Adjuntos</button>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="modal fade" id="myModalAdjunto" role="dialog">' +
-            '<div class="modal-dialog modal-lg">' +
+        '<div class=" form-group col-lg-12"><div id="GridAdjuntos"></div></div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="modal-footer modal-lg">' +
+        '<button type="button" class="btn btn-default" data-dismiss="modal" id="btnCerrarAdj">Cerrar</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
 
-            ' <div class="modal-content">' +
-            '<div class="modal-header">' +
-            '<h4 class="modal-title">Adjuntos</h4>' +
-            '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-            '</div>' +
-            '<div class="modal-body" role="document">' +
-            '<div class="k-content k-rtl">' +
-            '<input id="Adjunto" name="Adjunto" type="file" />' +
-            '</div>' +
-            '<div class="row">' +
-            '<div class=" form-group col-lg-12"><div id="GridAdjuntos"></div></div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="modal-footer modal-lg">' +
-            '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>' +
-            '</div>' +
-            '</div>' +
+    VParSeri = $('#vistaParSeri').append(hmlAdj);
+    KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseño");
+    KdoButton($("#myBtnAdjunto1"), "attachment", "Adjuntar Diseño");
+    KdoButton($("#myBtnAdjunto2"), "attachment", "Adjuntar Diseño");
+    KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
 
-            '</div>' +
-            '</div>' +
-            '</form>'
+    setAdjun();
 
     function getAdjRD(UrlAA) {
         kendo.ui.progress($("#splitter"), true);
@@ -2176,7 +2198,7 @@ $(document).ready(function () {
             dataType: 'json',
             type: 'GET',
             success: function (respuesta) {
-                Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + getNoRequerimiento($("#ReqDes").data("kendoGrid"))  + "", respuesta);
+                Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + getNoRequerimiento($("#ReqDes").data("kendoGrid")) + "", respuesta);
                 kendo.ui.progress($("#splitter"), false);
             },
             error: function () {
@@ -2187,8 +2209,7 @@ $(document).ready(function () {
     }
 
     function setAdjun() {
-
-        $("#myBtnAdjunto").kendoButton({ icon: "attachment" });
+     
         //DataSource para Grid de Artes Adjuntos
         var DsAdj = new kendo.data.DataSource({
             transport: {
@@ -2271,8 +2292,6 @@ $(document).ready(function () {
                 }
             }
         });
-        
-
         //Control para subir los adjutos
         $("#Adjunto").kendoUpload({
             async: {
@@ -2283,7 +2302,7 @@ $(document).ready(function () {
                 e.sender.options.async.saveUrl = "/AnalisisDisenos/SubirArchivo/" + getNoRequerimiento($("#ReqDes").data("kendoGrid"));
             },
             localization: {
-                select: "Seleccione Archivo"
+                select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
             },
             showFileList: false,
             success: function (e) {
@@ -2299,7 +2318,7 @@ $(document).ready(function () {
             autoBind: false,
             edit: function (e) {
                 // Ocultar
-                
+
                 e.container.find("label[for=Fecha]").parent("div .k-edit-label").hide();
                 e.container.find("label[for=Fecha]").parent().next("div .k-edit-field").hide();
                 e.container.find("label[for=Item]").parent("div .k-edit-label").hide();
@@ -2324,7 +2343,7 @@ $(document).ready(function () {
         });
 
         SetGrid($("#GridAdjuntos").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 350);
-        SetGrid_CRUD_ToolbarTop($("#GridAdjuntos").data("kendoGrid"),false);
+        SetGrid_CRUD_ToolbarTop($("#GridAdjuntos").data("kendoGrid"), false);
         SetGrid_CRUD_Command($("#GridAdjuntos").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
         Set_Grid_DataSource($("#GridAdjuntos").data("kendoGrid"), DsAdj);
 
@@ -2351,7 +2370,7 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
-                var UrlGA = UrlApiArteAdj + "/GetByArte/" + getIdArteRD($("#ReqDes").data("kendoGrid")); 
+                var UrlGA = UrlApiArteAdj + "/GetByArte/" + getIdArteRD($("#ReqDes").data("kendoGrid"));
                 getAdjRD(UrlGA)
                 kendo.ui.progress($("#splitter"), false);
                 RequestEndMsg(data, XType);
@@ -2388,7 +2407,7 @@ $(document).ready(function () {
 
 
 
-//#endregion fin imagenes
+    //#endregion fin imagenes
 
     //#region ENVIAR A PRECOTIZAR
 
@@ -2441,7 +2460,7 @@ $(document).ready(function () {
         return validacion
 
     }
-   
+
     //#region vista consulta estados
 
     Fn_VistaConsultaRequerimientoEstados(($("#vConsultaEstados")));

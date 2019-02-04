@@ -225,11 +225,20 @@ $(document).ready(function () {
     //#region navegacion Grid usuario
    
     $("#gridUsuario").data("kendoGrid").bind("change", function (e) { 
-     
+        Grid_SelectRow($("#gridUsuario"), selectedRowsUser);
         $("#gridUsuarioRoles").data("kendoGrid").dataSource.data([]);
         $("#gridUsuarioRoles").data("kendoGrid").dataSource.read();
-        Grid_SelectRow($("#gridUsuario"), selectedRowsUser);
+      
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridUsuario"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#gridUsuarioRoles"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#gridUsuario"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#gridUsuarioRoles"), ($(window).height() - "371"));
+
     //#endregion fin Navegacion grid Usuario
 
 });

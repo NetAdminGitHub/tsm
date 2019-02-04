@@ -1,16 +1,17 @@
-﻿var Permisos;
+﻿
+var Permisos;
 
 $(document).ready(function () {
     //#region Inicializacion de variables
     var VIdSer = 0;
     var VIdCliente = 0;
     var VIDSim = 0;
-
-    $("#btnRecalcular").kendoButton({ icon: "gears" });
-    $("#btnSimulacion").kendoButton({ icon: "gears" });
-    $("#btnCerrar").kendoButton({ icon: "close-circle" });
-    $("#btnAceptar").kendoButton({ icon: "check-circle" });
-    $("#btnCambioEstado").kendoButton({ icon: "check" });
+    Fn_VistaConsultaRequerimiento($('#vConsulta'));
+    KdoButton($("#btnRecalcular"),"gears","Recalcular simulación");
+    KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
+    KdoButton($("#btnCerrar"),"cancel","Cancelar");
+    KdoButton($("#btnAceptar"), "check","Aceptar");
+    KdoButton($("#btnCambioEstado"), "check","Cambio de estado");
     Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlApiServ, "Nombre", "IdServicio", "Selecione un Servicio...");
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlApiClient, "Nombre", "IdCliente", "Selecione un Cliente...");
 
@@ -18,8 +19,8 @@ $(document).ready(function () {
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%", resizable: true },
-            { collapsible: false, scrollable: true, size: "100%" }
+            { collapsible: true, size: "50%", max: "95%", min: "20%", },
+            { collapsible: true, size: "50%" }
         ]
 
     });
@@ -32,10 +33,15 @@ $(document).ready(function () {
 
         var splElement = $("#splitter"),
             splObject = splElement.data("kendoSplitter");
-        splElement.css({ height: height - "230" + "px"});
-        splObject.resize();
+        splElement.css({ height: height - height * 0.36 });
+        setTimeout(function () {
+            splObject.resize(true);
+        }, 300);
 
     };
+    $(".sidebar").hover(function () {
+        resizeSplitter($(window).height());
+    });
 
     resizeSplitter($(window).height());
 
@@ -410,7 +416,11 @@ $(document).ready(function () {
             { field: "Fecha2", title: "Fecha simulación", format: "{0: dd/MM/yyyy}"},
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
-            { field: "NoDocumento1", title: "No Requerimiento" },
+            {
+                field: "NoDocumento1", title: "No Requerimiento", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='Fn_VerRequerimientoConsulta(" + data["IdRequerimiento"] + ")' >" + data["NoDocumento1"] + "</button>";
+                }
+            },
             {field: "IdAnalisisDiseno", title: "Cod. análisis diseño", hidden:true },
             {
                 field: "NoDocumento3", title: "No Analisis Diseño", template: function (data) {
@@ -744,7 +754,7 @@ $(document).ready(function () {
 
     });
 
-    SetGrid($("#gridRentabilidad").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#gridRentabilidad").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#gridRentabilidad").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridRentabilidad").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gridRentabilidad").data("kendoGrid"), DsRent);
@@ -833,118 +843,55 @@ $(document).ready(function () {
 
     $("#gridSimuConsumo").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdSimulacionConsumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdSimulacionConsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdSimulacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdSimulacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre3]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre3]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();
-
+ 
+            KdoHideCampoPopup(e.container, "IdSimulacionConsumo");
+            KdoHideCampoPopup(e.container, "IdSimulacion");
+            KdoHideCampoPopup(e.container, "Nombre1");
+            KdoHideCampoPopup(e.container, "Nombre2");
+            KdoHideCampoPopup(e.container, "Nombre3");
+            KdoHideCampoPopup(e.container, "FechaMod");
+           
             if (e.model.EsBase === true) {
-                e.container.find("label[for=IdTecnica]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=IdTecnica]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=IdCostoTecnica]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=IdCostoTecnica]").parent().next("div .k-edit-field").hide();
+                $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(GetNewDSTec());
+                KdoHideCampoPopup(e.container, "IdTecnica");
+                KdoHideCampoPopup(e.container, "IdCostoTecnica");
             }
             else {
-                e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
+             
+                KdoHideCampoPopup(e.container, "Nombre");
 
-                if (e.model.IdServicio === 1) {
-                    e.container.find("label[for=IdCostoTecnica]").parent("div .k-edit-label").hide();
-                    e.container.find("label[for=IdCostoTecnica]").parent().next("div .k-edit-field").hide();
+                if (Kendo_CmbGetvalue($("#CmbIdServicio")) !== "1") {
+                    $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(GetNewDSTec());
+                    KdoHideCampoPopup(e.container, "IdCostoTecnica");
+                } else {
+                    $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(getDsComboTenica());
+                    $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(getDsCostoTec(e.model.IdTecnica));
                 }
             }
-                        
-            e.container.find("label[for=Consumo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Consumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Costo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Costo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUnidad]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdUnidad]").parent().next("div .k-edit-field").hide();
+            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());   
 
-            $('[name="FechaMod"]').data("kendoDatePicker").enable(false);
+            KdoHideCampoPopup(e.container, "Consumo");
+            KdoHideCampoPopup(e.container, "Costo");
+            KdoHideCampoPopup(e.container, "IdUnidad");
+            
+            KdoDatePikerEnable($('[name="FechaMod"]'), false);
             Grid_Focus(e, "Rentabilidad");
 
             $('[name="IdTecnica"]').on('change', function (e, dtmodel) {
-                $('[name="IdCostoTecnica"]').data("kendoComboBox").value("");
+              
                 $('[name="IdCatalogoInsumo"]').data("kendoComboBox").value("");
                 MostrarCamposxTecnica();
-                
-                var DsCostoTec = new kendo.data.DataSource({
-                    dataType: 'json',
-                    sort: { field: "Nombre", dir: "asc" },
-                    transport: {
-                        read: function (datos) {
-                            $.ajax({
-                                dataType: 'json',
-                                url: UrlCosTec + "/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")) + "/" + Kendo_CmbGetvalue($('[name="IdTecnica"]')).toString(),
-                                async: false,
-                                contentType: "application/json; charset=utf-8",
-                                success: function (result) {
-                                    datos.success(result);
-
-                                }
-                            });
-                        }
-                    }
-                });
-
+               
                 // asignar DataSource al combobox tecnica
-                $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(DsCostoTec);
-
+                $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(getDsCostoTec(Kendo_CmbGetvalue($('[name="IdTecnica"]'))));
+                $('[name="IdCostoTecnica"]').data("kendoComboBox").value("");
             });
 
             if (!e.model.isNew()) {
                 MostrarCamposxTecnica();
             };
 
-            var NewDSTec = new kendo.data.DataSource({
-                dataType: 'json',
-                sort: { field: "Nombre", dir: "asc" },
-                transport: {
-                    read: function (datos) {
-                        $.ajax({
-                            type: "GET",
-                            dataType: 'json',
-                            url: UrlTec + "/GetbyServicio/" + Kendo_CmbGetvalue($("#CmbIdServicio")),
-                            contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                datos.success(result);
-                            }
-                        });
-                    }
-                }
-            });
-
-            $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(NewDSTec);
-
-            var NewDSSub = new kendo.data.DataSource({
-                dataType: 'json',
-                sort: { field: "Nombre", dir: "asc" },
-                transport: {
-                    read: function (datos) {
-                        $.ajax({
-                            type: "POST",
-                            dataType: 'json',
-                            data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
-                            url: UrlCI + "/Filtrado",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                datos.success(result);
-                            }
-                        });
-                    }
-                }
-            });
-
-            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(NewDSSub);            
+                 
         },
 
         //DEFICNICIÓN DE LOS CAMPOS
@@ -966,7 +913,7 @@ $(document).ready(function () {
 
     });
 
-    SetGrid($("#gridSimuConsumo").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 650);
+    SetGrid($("#gridSimuConsumo").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#gridSimuConsumo").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridSimuConsumo").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gridSimuConsumo").data("kendoGrid"), DsSimConsu);
@@ -991,49 +938,122 @@ $(document).ready(function () {
             type: 'GET',
             success: function (respuesta) {
                 if (respuesta !== null) {
-                    if (respuesta.EsPapel === true) {
-                        vEspapel = true;
-                        vEstampado = false;
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(true);
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
 
-                        var NewDS = {
-                            dataType: 'json',
-                            sort: { field: "Nombre", dir: "asc" },
-                            transport: {
-                                read: function (datos) {
-                                    $.ajax({
-                                        type: "POST",
-                                        dataType: 'json',
-                                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
-                                        url: UrlCI + "/Filtrado",
-                                        contentType: "application/json; charset=utf-8",
-                                        success: function (result) {
-                                            datos.success(result);
-                                        }
-                                    });
-                                }
-                            }
-                        };
+                    if ((Kendo_CmbGetvalue($("#CmbIdServicio")) === "1") || (Kendo_CmbGetvalue($("#CmbIdServicio")) === "2")) {
+                        if (respuesta.EsPapel === true || respuesta.EsImpresion === true || respuesta.EsSublimacion === true) {
 
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(NewDS);
+                            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
+                        }
+
+                        if (respuesta.EsEstampado === true) {
+                            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+                        }
                     }
 
-                    if (respuesta.EsEstampado === true) {
-                        vEspapel = false;
-                        vEstampado = true;
-
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+                   
+                    if (Kendo_CmbGetvalue($("#CmbIdServicio")) === "3") {
+                    
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
                         $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
                     }
+
+               
                 } else {
-                    $('[name="IdCatalogoInsumo"]').data("kendoComboBox").enable(false);
+                    KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
                 }
             },
             error: function () {
                 kendo.ui.progress($("#splitter"), false);
             }
         });
+    }
+
+    var getDsCostoTec = function (idtecnica) {
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        dataType: 'json',
+                        url: UrlCosTec + "/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")) + "/" + idtecnica.toString(),
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            datos.success(result);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    var GetNewDSTec = function () {
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'json',
+                        url: UrlTec + "/GetbyServicio/" + Kendo_CmbGetvalue($("#CmbIdServicio")),
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        success: function (result) {
+                            datos.success(result);
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+    function getDsComboTenica() {
+        //preparar crear datasource para obtner la tecnica filtrado por base
+        return new kendo.data.DataSource({
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        dataType: 'json',
+                        async: false,
+                        url: UrlTec + "/GetbyBase/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            datos.success(result);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    var fn_getInsumos = function () {
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
+                        url: UrlCI + "/Filtrado",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            datos.success(result);
+                        }
+                    });
+                }
+            }
+        });
+
     }
     //#endregion Fin RUD para el grid Rentabilidad
    
@@ -1172,6 +1192,10 @@ function Fn_VerEstados(IdRequerimiento) {
     Fn_VistaConsultaRequerimientoEstadosGet($("#vConsultaEstados"), "null", IdRequerimiento);
 }
 
+function Fn_VerRequerimientoConsulta(idrequerimiento) {
+
+    Fn_VistaConsultaRequerimientoGet($('#vConsulta'), idrequerimiento);
+}
 /**
  * Muestra vista modal consulta analisis
  * @param {number} IdServicio
@@ -1221,13 +1245,9 @@ function getSimulacionGrid(g) {
 
     CargarEtapasProceso(elemento.IdRequerimiento);
 
-    var dataChart = [{
-        data: []
-    }];
 
-    dataChart[0].type = "pie";
-    dataChart[0].startAngle = 150,
-    dataChart[0].data.push(
+    var dataChart = [];
+    dataChart.push(
         {
             category: "Costo de Materia Prima",
             value: elemento.CostoMP,
@@ -1254,30 +1274,13 @@ function getSimulacionGrid(g) {
             color: "#178AB8"
         });
 
-    $("#chart").kendoChart({
-        title: {
-            position: "bottom",
-            text: "Distribución de costos " + elemento.Nombre2
-        },
-        legend: {
-            visible: true
-        },
-        chartArea: {
-            background: ""
-        },
-        seriesDefaults: {
-            labels: {
-                visible: true,
-                background: "transparent",
-                template: "#= category #: \n $#= value# - #= kendo.toString(percentage * 100.0, 'n2')#%"
-            }
-        },
-        series: dataChart,
-        tooltip: {
-            visible: true,
-            format: "${0}"
-        }
-    });
+    CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
+    ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= value# - #= kendo.toString(percentage * 100.0, 'n2')#%");
+    ConfigLeyendaGrafico($("#chart"), PosicionLeyenda.right, true, AlinearLeyenda.center);
+    ConfigTituloGrafico($("#chart"), PosicionTitulo.bottom, true, AlinearLeyenda.center);
+    ConfigTooltipGrafico($("#chart"), true, "${0}");
+    ConfigExportarGrafico($("#chart"), "chartexp2", true, true, true);
+    
 }
 
 function DesHabilitarCamposSim() {

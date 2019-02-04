@@ -1,24 +1,27 @@
 ﻿@{
     ViewBag.Title = "Factores Costos";
-    ViewBag.IdVersion = "TSM0101028|v18072501";
+    ViewBag.IdVersion = "TSM0101028|v19010701";
 }
 @section Scripts {
     <script type="text/javascript">
-        var crudServiceBaseUrl = "@string.Format("{0}FactoresCostos", TSM.Utils.Config.TSM_WebApi)"
-        var VistaUlr = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)"
-        var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)"
+        var crudServiceBaseUrl = "@string.Format("{0}FactoresCostos", TSM.Utils.Config.TSM_WebApi)";
+        var VistaUlr = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUniMed = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
     </script>
     <script src="~/Scripts/js/FactoresCostos.js"></script>
 }
 <div class="form-row">
-    <div class="form-group col-lg-12">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="form-group col-lg-12">
-        <label for="CmbServicio" style="font-size: 1.2em;">Servicios:</label>
-        <input id="CmbServicio" style="width: 450px;" />
-    </div>
-    <div class="form-group col-lg-12">
-        <div id="grid"></div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="CmbServicio" >Servicios:</label>
+                    <input id="CmbServicio"  class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

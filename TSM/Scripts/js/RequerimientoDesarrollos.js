@@ -14,15 +14,17 @@ $(document).ready(function () {
     var DivCarousel = $("#Div_Carousel");
     DivCarousel.append(Fn_Carouselcontent());
     CargarEtapasProceso(0);
-    $("#Nuevo").kendoButton({ icon: "edit" });
-    $("#Copiar").kendoButton({ icon: "copy" });
-    $("#btnCambioEstado").kendoButton({ icon: "gear" });
-    $("#Consultar").kendoButton({ icon: "search" });
-    $("#Guardar").kendoButton({ icon: "save" });
-    $("#Eliminar").kendoButton({ icon: "delete" });
-    $("#myBtnAdjunto").kendoButton({ icon: "attachment" });
-    $("#btnCerrar").kendoButton({ icon: "close-circle" });
-    $("#btnAceptar").kendoButton({ icon: "check-circle" });
+    KdoButton($("#Nuevo"), "edit", "Nuevo registro");
+    KdoButton($("#Copiar"), "copy", "Copiar registro");
+    KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
+    //$("#Consultar").kendoButton({ icon: "search" });
+    KdoButton($("#Guardar"), "save", "Guardar"); 
+    KdoButton($("#Eliminar"), "delete", "Eliminar");  
+    KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseños");  
+    KdoButton($("#btnCerrar"), "cancel", "Cancelar"); 
+    KdoButton($("#btnAceptar"), "check", "Aceptar"); 
+    KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar"); 
+
     // deshabilitar botones en formulario
     //$("#ReqDes").children().addClass("k-state-disabled");
     $("#myBtnAdjunto").data("kendoButton").enable(false);
@@ -47,8 +49,8 @@ $(document).ready(function () {
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%", resizable: true },
-            { collapsible: false, scrollable: true, size: "100%" }
+            { collapsible: true, size: "50%", max: "95%", min: "20%",},
+            { collapsible: true, size: "50%" }
         ]
 
     });
@@ -63,11 +65,17 @@ $(document).ready(function () {
 
         var splElement = $("#splitter"),
             splObject = splElement.data("kendoSplitter");
-        splElement.css({ height: height - "220" + "px" });
-        splObject.resize();
-
+        splElement.css({ height: height - height*0.34}); 
+        setTimeout(function () {
+            splObject.resize(true);
+        }, 300);
     };
 
+    $(".sidebar").hover(function () {
+        resizeSplitter($(window).height());
+    });
+
+   
     resizeSplitter($(window).height());
 
 
@@ -319,7 +327,7 @@ $(document).ready(function () {
             }
         }).data("kendoValidator");
     
-    var ValidConsultar = $("#FrmConsultar").kendoValidator().data("kendoValidator");
+  
     var ValidCopiar = $("#FrmCopiarReq").kendoValidator({
         rules: {
             Mayor0: function (input) {
@@ -361,7 +369,9 @@ $(document).ready(function () {
         height: 550,
         dataSource: DSUnidadMedida("15,16")
     });
+
     //#endregion CmbIdUnidadVelocidad
+
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
         dataTextField: "Abreviatura",
@@ -677,7 +687,7 @@ $(document).ready(function () {
 
     });
 
-    SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 500);
+    SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRDimension").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GRDimension").data("kendoGrid"), DsDimension);
@@ -890,7 +900,7 @@ $(document).ready(function () {
 
     });
 
-    SetGrid($("#GRReqDesTec").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 500);
+    SetGrid($("#GRReqDesTec").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRReqDesTec").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#GRReqDesTec").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GRReqDesTec").data("kendoGrid"), DsReqDesTec);
@@ -910,7 +920,7 @@ $(document).ready(function () {
             //limpiar mensage de validación
             ValidRD.hideMessages();
             //ValidArt.hideMessages();
-            ValidConsultar.hideMessages();
+            //ValidConsultar.hideMessages();
             ValidCopiar.hideMessages();
 
             VarIDReq = getIdReq($("#grid").data("kendoGrid"));
@@ -960,7 +970,7 @@ $(document).ready(function () {
         kendo.ui.progress($("#splitter"), true);
         event.preventDefault();
         //limpiar mensajes de validacion
-        ValidConsultar.hideMessages();
+        //ValidConsultar.hideMessages();
         ValidCopiar.hideMessages();
         // limpiar campos
         LimpiarReq();
@@ -1579,7 +1589,7 @@ $(document).ready(function () {
             autoUpload: true
         },
         localization: {
-            select: "Seleccione Archivo"
+            select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
             e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val();
@@ -1704,7 +1714,7 @@ $(document).ready(function () {
         ]
     });
 
-    SetGrid($("#GridAdjuntos").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 350);
+    SetGrid($("#GridAdjuntos").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true);
     SetGrid_CRUD_ToolbarTop($("#GridAdjuntos").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#GridAdjuntos").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GridAdjuntos").data("kendoGrid"), DsAdj);

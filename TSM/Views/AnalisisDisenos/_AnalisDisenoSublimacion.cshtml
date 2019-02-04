@@ -1,81 +1,85 @@
-﻿<div class="form-group col-lg-12">
-    <div class="row">
-        <div class="form-group col-lg-9">
-            <form id="FrmSublimacion">
-
-                <div class="row">
-                    <input id="IdSeparacionSubli" name="IdSeparacionSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
-                    <input id="IdSeparacionDetalleSubli" name="IdSeparacionDetalleSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
-
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="UbicacionSub" style="font-size: 1.2em;">Tipo Prenda:</label>
-                        <input id="UbicacionSub" name="UbicacionSub" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="FechaSub" style="font-size: 1.2em;">Fecha:</label>
-                        <input id="FechaSub" name="FechaSub" class="form-control" />
-                    </div>
-                    <div class="form-group col-md-4 col-lg-4">
-                        <label for="EstadoSub" style="font-size: 1.2em;">Estado:</label>
-                        <input id="EstadoSub" name="EstadoSub" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                    </div>
-
+﻿
+    <div class="form-row">
+        <div class="form-group col-lg-7">
+            <div class="form-row">
+                <input id="IdSeparacionSubli" name="IdSeparacionSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                <input id="IdSeparacionDetalleSubli" name="IdSeparacionDetalleSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="UbicacionSub">Tipo Prenda:</label>
+                    <input id="UbicacionSub" name="UbicacionSub" class="k-textbox form-control" />
                 </div>
-                <div class="row">
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="FechaSub">Fecha:</label>
+                    <input id="FechaSub" name="FechaSub" class="form-control" />
+                </div>
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="EstadoSub">Estado:</label>
+                    <input id="EstadoSub" name="EstadoSub" class="k-textbox form-control" />
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDirectorioSubli">Directorio Archivos:</label>
+                    <input id="TxtDirectorioSubli" name="TxtDirectorioSubli" type="text" class="k-textbox form-control"/>
+                </div>
+            </div>
+            <form id="FrmSublimacion">
+                <div class="form-row">
                     <div class="form-group col-md-3  col-lg-4">
-                        <label for="AnchoDisenoSub" style="font-size: 1.2em;">Ancho:</label>
+                        <label for="AnchoDisenoSub" >Ancho:</label>
                         <input id="AnchoDisenoSub" name="AnchoDisenoSub" class="form-control" required />
                     </div>
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="AltoDisenoSub" style="font-size: 1.2em;">Alto:</label>
+                        <label for="AltoDisenoSub" >Alto:</label>
                         <input id="AltoDisenoSub" name="AltoDisenoSub" class="form-control" required />
                     </div>
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="IdUnidadDimensionSub" style="font-size: 1.2em;">Unidad Medida:</label>
+                        <label for="IdUnidadDimensionSub" >Unidad Medida:</label>
                         <input id="IdUnidadDimensionSub" name="IdUnidadDimensionSub" class="form-control" required validationMessage="Requerido" />
                     </div>
 
 
                 </div>
-                <div class="row">
+                <div class="form-row">
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="TxtFactorDistribucion" style="font-size: 1.2em;">Factor Distribución:</label>
+                        <label for="TxtFactorDistribucion" >Factor Distribución:</label>
                         <input id="TxtFactorDistribucion" name="TxtFactorDistribucion" class="form-control" required />
                     </div>
+                    
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-3 col-lg-4 align-self-end">
-                        <button type="button" id="GuardarSubli" name="GSublimacion">&nbsp;Guardar</button>
+                        <div class="input-group">
+                            <div style="width:100%">
+                                <button type="button" id="GuardarSubli" name="GSublimacion"></button>
+                                <button type="button" id="btnVerReq1" name="btnVerReq"></button>
+                                <button type="button" id="myBtnAdjunto1" data-toggle="modal" data-target="#myModalAdjunto" onclick=" $('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;"></button>
+                     
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="form-group col-lg-3">
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <label for="TxtDirectorioSubli" style="font-size: 1.2em;">Directorio Archivos:</label>
-                    <input id="TxtDirectorioSubli" name="TxtDirectorioSubli" type="text" class="k-textbox form-control" readonly="readonly" />
-                </div>
-            </div>
-            <div class="row">
+        <div class="form-group col-lg-5">
+            
+            <div class="form-row">
                 <div class="form-group col-lg-12" id="SubliSlide">
                     @* aqui se coloca dinamicamente las imagenes  *@
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <div id="vistaParSubli"></div>
-                </div>
-            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Procesos</label></div>
+    <div class="form-row">
+        <div class="form-group col-lg-12"><label class="font-weight-bold">Procesos</label></div>
     </div>
-    <div class="row">
+    <div class="form-row">
         <div class="form-group col-lg-12">
             <div id="GSublimacion"></div>
         </div>
     </div>
-</div>
+
 
 
 

@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Simulación de Pre-costeo";
-    ViewBag.IdVersion = "TSM0101029|v18112201";
+    ViewBag.IdVersion = "TSM0101029|v19011801";
 }
 
 @section Scripts {
@@ -25,303 +25,318 @@
     <script src="~/Scripts/js/RequerimientoDesarrollosEstados.js"></script>
     <script src="~/Scripts/js/AnalisisDisenosConsulta.js"></script>
     <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js"></script>
+    <script src="~/Scripts/js/RequerimientoDesarrollosConsulta.js"></script>
+    <script src="~/Scripts/Utils/ChartTSMPersonalizar.js"></script>
 }
-
 <style>
-    #splitter,
-    #gridSimulacion {
-        margin: 0;
-        padding: 0;
-        border-width: 0;
+    #gridSimulacion,
+    #gridRentabilidad,
+    #gridSimuConsumo {
         height: 100%;
     }
 </style>
-
-<div class="row">
-    <div class="form-group col-lg-12"> <h5> @ViewBag.Title</h5></div>
-</div>
-
-<div class="row">
-    <div class="form-group col-md-1 col-lg-1">
-        <label for="CmbIdServicio" style="font-size: 1.2em;">Servicio :</label>
-    </div>
-    <div class="form-group col-md-2 col-lg-2">
-        <input id="CmbIdServicio" name="CmbIdServicio" class="form-control" />
-    </div>
-    <div class="form-group  col-md-1 col-lg-1">
-        <label for="CmbIdCliente" style="font-size: 1.2em;">Cliente :</label>
-    </div>
-    <div class="form-group  col-md-2 col-lg-3">
-        <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
-    </div>
-    <div class="form-group  col-md-6 col-lg-3">
-        @Html.Partial("_NuevaSimulacion")
-    </div>
-</div>
-
-<div id="splitter">
-    <div id="Panel1" class="form-control">
-        <div id="gridSimulacion"></div>
-    </div>
-    <div id="Panel2" class="form-control">
-        @Html.Partial("_EstadoRequerimientoDesarrollo")
-        <div class="row">
-            <div class="form-group col-lg-12">
-
-                <div id="TabSimulacion" class="form-group col-lg-12">
-                    <ul>
-                        <li class="k-state-active">
-                            Datos de Simulación
-                        </li>
-                        <li>
-                            Consumos
-                        </li>
-                        <li>
-                            Rentabilidad
-                        </li>
-                    </ul>
-                    <div id="TabPDatos" class="form-group col-lg-12">
-                        <div class="row">
-                            <div class="form-group col-lg-9">
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <input id="chkUsarTermo" type="checkbox" name="chkUsarTermo" class="k-checkbox" disabled />
-                                <label class="k-checkbox-label" for="chkUsarTermo">Utilizar Termofijado</label>
-                            </div>
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="CmbIdServicio">Servicio :</label>
+                            <input id="CmbIdServicio" name="CmbIdServicio" class="form-control" />
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-3">
-                                <label for="TxtNoDocumento" style="font-size: 1.2em;">No Simulación:</label>
-                                <input id="TxtNoDocumento" name="TxtNoDocumento" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="TxtFecha" style="font-size: 1.2em;">Fecha:</label>
-                                <input id="TxtFecha" name="TxtFecha" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="TxtEstado" style="font-size: 1.2em;">Estado:</label>
-                                <input id="TxtEstado" name="TxtEstado" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="TxtCantidadPiezas" style="font-size: 1.2em;">Cantidad de Piezas:</label>
-                                <input id="TxtCantidadPiezas" name="TxtCantidadPiezas" class="form-control" />
-                            </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbIdCliente">Cliente :</label>
+                            <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-3">
-                                <label for="TxtCantidadTecnicas" style="font-size: 1.2em;">Cantidad Tenicas:</label>
-                                <input id="TxtCantidadTecnicas" name="TxtCantidadTecnicas" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="TxtMontajes" style="font-size: 1.2em;">Montajes:</label>
-                                <input id="TxtMontajes" name="TxtMontajes" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtNoPersonalExtra" style="font-size: 1.2em;">Personal Extra:</label>
-                                <input id="txtNoPersonalExtra" name="txtNoPersonalExtra" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtTiempoProyecto" style="font-size: 1.2em;">Horas de Proyecto:</label>
-                                <input id="txtTiempoProyecto" name="txtTiempoProyecto" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-3">
-                                <label for="txtCantidadColores" style="font-size: 1.2em;">Cantidad Colores:</label>
-                                <input id="txtCantidadColores" name="txtCantidadColores" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtCantidadCombos" style="font-size: 1.2em;">Combos:</label>
-                                <input id="txtCantidadCombos" name="txtCantidadCombos" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtCantidadTallas" style="font-size: 1.2em;">Cantidad Tallas:</label>
-                                <input id="txtCantidadTallas" name="txtCantidadTallas" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtVelocidadMaquina" style="font-size: 1.2em;">Velocidad Maquina:</label>
-                                <input id="txtVelocidadMaquina" name="txtVelocidadMaquina" class="form-control" />
-                            </div>
-                        </div>
-                        @*Datos de Costos por Corrida*@
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Costos por Corrida</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoMP" style="font-size: 1.2em;">Costo de Materia Prima Total:</label>
-                                        <input id="TxtCostoMP" name="TxtCostoMP" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoMOD" style="font-size: 1.2em;">Costo de Mano de Obra Directa:</label>
-                                        <input id="TxtCostoMOD" name="TxtCostoMOD" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoPrimo" style="font-size: 1.2em;">Costo Primo:</label>
-                                        <input id="TxtCostoPrimo" name="TxtCostoPrimo" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoFabril" style="font-size: 1.2em;">Costo Fabril Total:</label>
-                                        <input id="TxtCostoFabril" name="TxtCostoFabril" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoProduccion" style="font-size: 1.2em;">Costo Producción:</label>
-                                        <input id="TxtCostoProduccion" name="TxtCostoProduccion" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoOperacion" style="font-size: 1.2em;">Costo Operación:</label>
-                                        <input id="TxtCostoOperacion" name="TxtCostoOperacion" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="txtCostoTermofijado" style="font-size: 1.2em;">Costo Termofijado:</label>
-                                        <input id="txtCostoTermofijado" name="txtCostoTermofijado" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoTotal" style="font-size: 1.2em;">Costo Total:</label>
-                                        <input id="TxtCostoTotal" name="TxtCostoTotal" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            @*Datos de Corridas por Pieza*@
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Corridas por Pieza</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoMPUnitario" style="font-size: 1.2em;">Costo de Materia Prima:</label>
-                                        <input id="TxtCostoMPUnitario" name="TxtCostoMPUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoMODUnitario" style="font-size: 1.2em;">Costo de Mano de Obra Directa:</label>
-                                        <input id="TxtCostoMODUnitario" name="TxtCostoMODUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoPrimoUnitario" style="font-size: 1.2em;">Costo Primo:</label>
-                                        <input id="TxtCostoPrimoUnitario" name="TxtCostoPrimoUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoFabrilUnitario" style="font-size: 1.2em;">Costo Fabril:</label>
-                                        <input id="TxtCostoFabrilUnitario" name="TxtCostoFabrilUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoProduccionUnitario" style="font-size: 1.2em;">Costo Producción:</label>
-                                        <input id="TxtCostoProduccionUnitario" name="TxtCostoProduccionUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoOperacionUnitario" style="font-size: 1.2em;">Costo Operación:</label>
-                                        <input id="TxtCostoOperacionUnitario" name="TxtCostoOperacionUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="txtCostoTermofijadoUnitario" style="font-size: 1.2em;">Costo Unitario Termofijado:</label>
-                                        <input id="txtCostoTermofijadoUnitario" name="txtCostoTermofijadoUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <label for="TxtCostoUnitario" style="font-size: 1.2em;">Costo por pieza:</label>
-                                        <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @*Datos de Utilidad*@
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Datos de Utilidad</label></div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="TxtPorcUtilidadConsiderada" style="font-size: 1.2em;">% Utilidad Considerada:</label>
-                                <input id="TxtPorcUtilidadConsiderada" name="TxtPorcUtilidadConsiderada" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="TxtUtilidadDolares" style="font-size: 1.2em;">Utilidad:</label>
-                                <input id="TxtUtilidadDolares" name="TxtUtilidadDolares" class="form-control" />
-                            </div>
-                        </div>
-                        @*Datos de Precio*@
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12"> <label class="font-weight-bold" style=" font-size:1.2em;">Datos de Precio</label></div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="TxtPrecioCliente" style="font-size: 1.2em;">Precio Cliente:</label>
-                                <input id="TxtPrecioCliente" name="TxtPrecioCliente" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="TxtPrecioTS" style="font-size: 1.2em;">Precio Techno Screen:</label>
-                                <input id="TxtPrecioTS" name="TxtPrecioTS" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="TxtPrecioVenta" style="font-size: 1.2em;">Precio Venta:</label>
-                                <input id="TxtPrecioVenta" name="TxtPrecioVenta" class="form-control" />
-                            </div>
-                        </div>
-                        @*Distribución de Costos*@
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12"><label class="font-weight-bold" style=" font-size:1.2em;">Distribución de Costos</label></div>
-                        </div>
-                        <div class="row">
-                            <div id="chart" class="col"></div>
+                        <div class="form-group col-lg-4 align-self-end">
+                            @Html.Partial("_NuevaSimulacion")
                         </div>
                     </div>
-                    <div id="TabPConsu" class="form-group col-lg-12">
-                        <div class="row">
-                            <div class=" form-group col-lg-12"><div id="gridSimuConsumo"></div></div>
+
+                    <div id="splitter">
+                        <div id="Panel1">
+                            <div id="gridSimulacion"></div>
+                        </div>
+                        <div id="Panel2">
+                            <div class="form-group col-lg-12">
+                                @Html.Partial("_EstadoRequerimientoDesarrollo")
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <div id="TabSimulacion">
+                                    <ul>
+                                        <li class="k-state-active">
+                                            Datos de Simulación
+                                        </li>
+                                        <li>
+                                            Consumos
+                                        </li>
+                                        <li>
+                                            Rentabilidad
+                                        </li>
+                                    </ul>
+                                    <div id="TabPDatos">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-9"></div>
+                                            <div class="form-group col-lg-3">
+                                                <input id="chkUsarTermo" type="checkbox" name="chkUsarTermo" class="k-checkbox" disabled />
+                                                <label class="k-checkbox-label" for="chkUsarTermo">Utilizar Termofijado</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtNoDocumento">No Simulación:</label>
+                                                <input id="TxtNoDocumento" name="TxtNoDocumento" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtFecha">Fecha:</label>
+                                                <input id="TxtFecha" name="TxtFecha" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtEstado">Estado:</label>
+                                                <input id="TxtEstado" name="TxtEstado" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtCantidadPiezas">Cantidad de Piezas:</label>
+                                                <input id="TxtCantidadPiezas" name="TxtCantidadPiezas" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtCantidadTecnicas">Cantidad Tenicas:</label>
+                                                <input id="TxtCantidadTecnicas" name="TxtCantidadTecnicas" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="TxtMontajes">Montajes:</label>
+                                                <input id="TxtMontajes" name="TxtMontajes" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtNoPersonalExtra">Personal Extra:</label>
+                                                <input id="txtNoPersonalExtra" name="txtNoPersonalExtra" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtTiempoProyecto">Horas de Proyecto:</label>
+                                                <input id="txtTiempoProyecto" name="txtTiempoProyecto" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtCantidadColores">Cantidad Colores:</label>
+                                                <input id="txtCantidadColores" name="txtCantidadColores" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtCantidadCombos">Combos:</label>
+                                                <input id="txtCantidadCombos" name="txtCantidadCombos" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtCantidadTallas">Cantidad Tallas:</label>
+                                                <input id="txtCantidadTallas" name="txtCantidadTallas" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="txtVelocidadMaquina">Velocidad Maquina:</label>
+                                                <input id="txtVelocidadMaquina" name="txtVelocidadMaquina" class="form-control" />
+                                            </div>
+                                        </div>
+                                        @*Datos de Costos por Corrida*@
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label class="font-weight-bold">Datos de Costos por Corrida</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoMP">Costo de Materia Prima Total:</label>
+                                                        <input id="TxtCostoMP" name="TxtCostoMP" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoMOD">Costo de Mano de Obra Directa:</label>
+                                                        <input id="TxtCostoMOD" name="TxtCostoMOD" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoPrimo">Costo Primo:</label>
+                                                        <input id="TxtCostoPrimo" name="TxtCostoPrimo" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoFabril">Costo Fabril Total:</label>
+                                                        <input id="TxtCostoFabril" name="TxtCostoFabril" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoProduccion">Costo Producción:</label>
+                                                        <input id="TxtCostoProduccion" name="TxtCostoProduccion" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoOperacion">Costo Operación:</label>
+                                                        <input id="TxtCostoOperacion" name="TxtCostoOperacion" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="txtCostoTermofijado">Costo Termofijado:</label>
+                                                        <input id="txtCostoTermofijado" name="txtCostoTermofijado" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoTotal">Costo Total:</label>
+                                                        <input id="TxtCostoTotal" name="TxtCostoTotal" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*Datos de Corridas por Pieza*@
+                                            <div class="col-md-6">
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label class="font-weight-bold">Datos de Corridas por Pieza</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoMPUnitario">Costo de Materia Prima:</label>
+                                                        <input id="TxtCostoMPUnitario" name="TxtCostoMPUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoMODUnitario">Costo de Mano de Obra Directa:</label>
+                                                        <input id="TxtCostoMODUnitario" name="TxtCostoMODUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoPrimoUnitario">Costo Primo:</label>
+                                                        <input id="TxtCostoPrimoUnitario" name="TxtCostoPrimoUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoFabrilUnitario">Costo Fabril:</label>
+                                                        <input id="TxtCostoFabrilUnitario" name="TxtCostoFabrilUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoProduccionUnitario">Costo Producción:</label>
+                                                        <input id="TxtCostoProduccionUnitario" name="TxtCostoProduccionUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoOperacionUnitario">Costo Operación:</label>
+                                                        <input id="TxtCostoOperacionUnitario" name="TxtCostoOperacionUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="txtCostoTermofijadoUnitario">Costo Unitario Termofijado:</label>
+                                                        <input id="txtCostoTermofijadoUnitario" name="txtCostoTermofijadoUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col">
+                                                        <label for="TxtCostoUnitario">Costo por pieza:</label>
+                                                        <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*Datos de Utilidad*@
+                                        <div class="form-row">
+                                            <div class="col-md-12 col-lg-12"><label class="font-weight-bold">Datos de Utilidad</label></div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label for="TxtPorcUtilidadConsiderada">% Utilidad Considerada:</label>
+                                                <input id="TxtPorcUtilidadConsiderada" name="TxtPorcUtilidadConsiderada" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label for="TxtUtilidadDolares">Utilidad:</label>
+                                                <input id="TxtUtilidadDolares" name="TxtUtilidadDolares" class="form-control" />
+                                            </div>
+                                        </div>
+                                        @*Datos de Precio*@
+                                        <div class="form-row">
+                                            <div class="col-md-12 col-lg-12"> <label class="font-weight-bold">Datos de Precio</label></div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label for="TxtPrecioCliente">Precio Cliente:</label>
+                                                <input id="TxtPrecioCliente" name="TxtPrecioCliente" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label for="TxtPrecioTS">Precio Techno Screen:</label>
+                                                <input id="TxtPrecioTS" name="TxtPrecioTS" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label for="TxtPrecioVenta">Precio Venta:</label>
+                                                <input id="TxtPrecioVenta" name="TxtPrecioVenta" class="form-control" />
+                                            </div>
+                                        </div>
+                                        @*Distribución de Costos*@
+                                        <div class="form-row">
+                                            <div class="col-md-12 col-lg-12"><label class="font-weight-bold">Distribución de Costos</label></div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div id="chart" class="col"></div>
+                                          
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4 align-self-end"> 
+                                                <div class="input-group">
+                                                    <div style = "width: 100%;">
+                                                        <span id="chartexp2"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="TabPConsu">
+                                        <div class="form-row">
+                                            <div class=" form-group col-lg-12"><div id="gridSimuConsumo"></div></div>
+                                        </div>
+                                    </div>
+                                    <div id="TabPSimu">
+                                        <div class="form-row">
+                                            <div class=" form-group col-lg-12"><div id="gridRentabilidad"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div id="TabPSimu" class="form-group col-lg-12">
-                        <div class="row">
-                            <div class=" form-group col-lg-12"><div id="gridRentabilidad"></div></div>
-                        </div>
+                    @* div utilizado para cargar la vista estados *@
+                    <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-12" id="vConsultaEstados"></div>
+                    </div>
+                    @* div utilizado para cargar la vista consulta de analisis *@
+                    <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-12" id="vConsultaAnalisis"></div>
+                    </div>
+                    <div class="form-row">
+                        @*Etiqueta vista parcial cambio de estado*@
+                        <div class="form-control col-md-12 col-lg-12" id="vCambioEstado"></div>
+                    </div>
+                    <div class="form-row">
+                        <div id="vConsulta"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@* div utilizado para cargar la vista estados *@
-<div class="row">
-    <div class="form-group col-md-12 col-lg-12" id="vConsultaEstados"></div>
-</div>
 
-@* div utilizado para cargar la vista consulta de analisis *@
-<div class="row">
-    <div class="form-group col-md-12 col-lg-12" id="vConsultaAnalisis"></div>
-</div>
-<div class="row">
-    @*Etiqueta vista parcial cambio de estado*@
-    <div class="form-control col-md-12 col-lg-12" id="vCambioEstado"></div>
-</div>
+
+
+
+

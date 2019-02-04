@@ -176,6 +176,11 @@ $(document).ready(function () {
         Grid_SelectRow($("#grid"), selectedRows);
     });
 
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+    });
+
+    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
 });
 
 fPermisos = function (datos) {
