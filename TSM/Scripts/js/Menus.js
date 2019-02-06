@@ -49,9 +49,10 @@ $(document).ready(function () {
     KdoButton($("#btnGuardar"),"save","Guardar");
     KdoButton($("#btnEliminar"),"delete","Eliminar");
     KdoButton($("#btnEditar"), "edit" ,"Editar");
-    KdoButton($("#btnCancelar"),"cancel","Cancelar");
-    $("#btnCerrar").kendoButton({ icon: "close-circle" });
-    $("#btnAceptar").kendoButton({ icon: "check-circle" });
+    KdoButton($("#btnCancelar"), "cancel", "Cancelar");
+    KdoButton($("#btnCerrar"), "cancel", "Cancelar");
+    KdoButton($("#btnAceptar"), "check", "Aceptar"); 
+
 
     $("#btnFlechaDerecha").kendoButton({ icon: "arrow-chevron-right" });
     $("#btnFlechaIzq").kendoButton({ icon: "arrow-chevron-left" });
