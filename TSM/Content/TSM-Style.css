@@ -177,11 +177,6 @@ body {
     box-shadow: none !important
 }
 
-.alert, .brand, .btn-simple, .h1, .h2, .h3, .h4, .h5, .h6, .navbar, .td-name, a, body, button.close, h1, h2, h3, h4, h5, h6, p, td {
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-family: "Helvetica Neue"
-}
 
 body {
     font-size: 100%;
