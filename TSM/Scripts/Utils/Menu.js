@@ -222,17 +222,17 @@ function fn_CrearOpcionesMenu(opciones) {
         '<ul class="nav">' +
         '<li>' +
         '<a href="#profile">' +
-        '<span class="link-collapse">Mi Perfil</span>' +
+        '<span class="link-collapse"></span>' +
         '</a>' +
         '</li>' +
         '<li>' +
         '<a href="#edit">' +
-        '<span class="link-collapse">Editar Perfil</span>' +
+        '<span class="link-collapse"></span>' +
         '</a>' +
         '</li>' +
         '<li>' +
         '<a href="#settings">' +
-        '<span class="link-collapse">Ajutes</span>' +
+        '<span class="link-collapse"></span>' +
         '</a>' +
         '</li>' +
         '</ul>' +
@@ -413,8 +413,8 @@ var fn_MostrarPerfil = function (data) {
     $("#MyPosition").append(fn_FiltrarJsonResult(data, "description"));
 
     // mostrar Mail del Usuario
-    $("#btnVerPerfil").children().remove();
-    $("#btnVerPerfil").append("Ver Perfil");
+    //$("#btnVerPerfil").children().remove();
+    //$("#btnVerPerfil").append("Ver Perfil");
 
     // Mostrar Photo
     $("#MyPhoto1").children().remove();
