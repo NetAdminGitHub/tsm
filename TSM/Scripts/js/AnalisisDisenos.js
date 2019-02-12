@@ -2431,7 +2431,7 @@ $(document).ready(function () {
         var validacion = true;
         switch (bServicio) {
             case 1:
-                if ($("#FrmSerigrafia").find(".row.k-state-disabled").length > 0) {
+                if ($("#FrmSerigrafia").find(".form-row.k-state-disabled").length > 0) {
                     validacion = true;
                 } else {
                     validacion = GuardarAnalisis(bServicio);
@@ -2440,7 +2440,7 @@ $(document).ready(function () {
                 break;
 
             case 2:
-                if ($("#FrmSublimacion").find(".row.k-state-disabled").length > 0) {
+                if ($("#FrmSublimacion").find(".form-row.k-state-disabled").length > 0) {
                     validacion = true;
                 } else {
                     validacion = GuardarAnalisis(bServicio);
@@ -2448,7 +2448,7 @@ $(document).ready(function () {
                 break;
 
             case 3:
-                if ($("#FrmPlantillas").find(".row.k-state-disabled").length > 0) {
+                if ($("#FrmPlantillas").find(".form-row.k-state-disabled").length > 0) {
                     validacion = true;
                 } else {
                     validacion = GuardarAnalisis(bServicio);
