@@ -15,11 +15,20 @@ namespace TSM.Controllers
         [HttpGet]
         public JsonResult GetToken(string trama)
         {
+            string newToken;
+
+            newToken = GenerarToken(trama);
+
+            return Json(newToken, JsonRequestBehavior.AllowGet);
+        }
+
+        public static string GenerarToken(string trama)
+        {
             Dictionary<string, string> tramaValores = JsonConvert.DeserializeObject<Dictionary<string, string>>(trama);
 
             string jToken = "";
 
-            HttpBrowserCapabilitiesBase browser = Request.Browser;
+            HttpBrowserCapabilities browser = System.Web.HttpContext.Current.Request.Browser;
 
             string Navegador = browser.Browser + " " + browser.Version;
 
@@ -35,7 +44,7 @@ namespace TSM.Controllers
             else
                 newToken = Ldap.Action(JsonConvert.SerializeObject(tramaValores));
 
-            return Json(newToken, JsonRequestBehavior.AllowGet);
+            return newToken;
         }
 
         [HttpGet]
@@ -53,9 +62,11 @@ namespace TSM.Controllers
                 return RedirectToAction("Index", "Login", new { area = "" });
         }
 
-        private string ObtenerUsuarioLocal(string ip)
+        public static string ObtenerUsuarioLocal(string ip)
         {
-            var client = new WebClient();
+
+
+            var client = new MyWebClient();
             client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
             string url = "http://" + ip.Replace("::1", "localhost") + ":8888/RESTWCFServiceLibrary/LDAPUser";
@@ -71,6 +82,16 @@ namespace TSM.Controllers
             catch
             {
                 return "";
+            }
+        }
+
+        private class MyWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri uri)
+            {
+                WebRequest w = base.GetWebRequest(uri);
+                w.Timeout = 1 * 1000; //4 segundos
+                return w;
             }
         }
     }

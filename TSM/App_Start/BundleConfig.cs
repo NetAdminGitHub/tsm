@@ -11,7 +11,8 @@ namespace TSM
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery/jquery-{version}.js",
                                                                 "~/Scripts/jquery/jquery.sparkline.min.js",
                                                                 "~/Scripts/jquery/jquery.scrollbar.min.js",
-                                                                "~/Scripts/jquery/jquery-ui.min.js"
+                                                                "~/Scripts/jquery/jquery-ui.min.js",
+                                                                "~/Scripts/jquery/jquery-{version}.js", "~/Scripts/js.cookie.js"
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));

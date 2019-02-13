@@ -4,18 +4,19 @@ $(document).ready(function () {
     if (location.pathname === "/" || location.pathname.startsWith("/Home"))
         kendo.ui.progress($("#body"), true);
 
+    if (Cookies.get("user") != undefined)
+        window.sessionStorage.setItem("user", Cookies.get("user"));
+
     vtoken();
 
     // oerde de ejecucion de documentos
     var ReadyList = [];
     ReadyList.push(ReadyMenuJs);
+    ReadyList.push(ReadyMenuPerfil);
 
     $.each(ReadyList, function (index, elemento) {
-        elemento.call(document, jQuery);
-      
+        elemento.call(document, jQuery);      
     });
-
-    fn_getPerfilUsuario(getUser());
 
     //seguridad obtner los permisos 
     if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false) {
@@ -28,12 +29,22 @@ $(document).ready(function () {
             fPermisos(permisos[0]);
             MostrarMapaSitio(permisos[0].IdMenu);
         }
-
-       
     }
     document.addEventListener("click", function () {
         vtoken();
     });
+
+    $("#btnLogout").bind("click", function (e) {
+        e.stopImmediatePropagation();
+        Cookies.remove("t");
+        Cookies.remove("user");
+        window.sessionStorage.removeItem("user");
+        window.sessionStorage.removeItem("l");
+        window.location.href = "/Login";
+    });
+
+    if (sessionStorage.getItem("l") != "1")
+        $("#btnLogout").css("display", "none");
 
 
     //Todos los textos ingresados por el usuario, a mayusculas (excepto passwords)
@@ -59,7 +70,7 @@ $(document).ready(function () {
     XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
     // here "this" points to the XMLHttpRequest Object.
     var newSend = function (vData) {
-        this.setRequestHeader("t", sessionStorage.getItem("t"));
+        this.setRequestHeader("t", Cookies.get("t"));
         this.realSend(vData);
     };
     XMLHttpRequest.prototype.send = newSend;
@@ -69,7 +80,7 @@ $(document).ready(function () {
 var renovar = function () {
     item = {};
     item["Usuario"] = window.sessionStorage.getItem("user");
-    item["t"] = window.sessionStorage.getItem("t");
+    item["t"] = Cookies.get("t");
     item["TipoSolicitud"] = "RENOVARTOKEN";
 
     $.ajax({
@@ -77,13 +88,14 @@ var renovar = function () {
         data: { trama: JSON.stringify(item) }
     }).done(function (data) {
         if (data === null || data === "") window.location.href = "/Token/Redirect";
-        window.sessionStorage.setItem("t", data);
+        Cookies.set("t", data);
         kendo.ui.progress($("#body"), false);
     });
 };
 
 var nuevo = function (u) {
     window.sessionStorage.setItem("user", u);
+    Cookies.set("user", u);
 
     item = {};
     item["Usuario"] = u;
@@ -95,7 +107,7 @@ var nuevo = function (u) {
         url: '/Token/GetToken',
         data: { trama: trama }
     }).done(function (data) {
-        window.sessionStorage.setItem("t", data);
+        Cookies.set("t", data);
         kendo.ui.progress($("#body"), false);
     });
 };
@@ -105,20 +117,19 @@ var getUser = function () {
 };
 
 var vtoken = function () {
-    if (window.sessionStorage.getItem("t") === null || window.sessionStorage.getItem("t") === "") {
+    if (givenOrDefault(Cookies.get("t"), "") != "")
+        renovar();
+
+    if (givenOrDefault(Cookies.get("user"), "") === "") {
         $.ajax({
             url: '/Token/GetUser',
-            data: {},
-            async:false
+            data: {}
         }).done(function (data) {
             if (data === null || data === "")
                 window.location.href = "/Token/Redirect";
             else
                 nuevo(data);
         });
-    }
-    else {
-        renovar();
     }
 };
 
@@ -137,7 +148,6 @@ var fn_getOpcionesMenuPermisos=function (xIdUsuario, xUrl) {
         error: function (respuesta) {
             datos ='[]';
         }
-
     });
 
     return datos;
