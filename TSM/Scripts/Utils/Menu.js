@@ -41,9 +41,12 @@ function MostrarSubMenu() {
 }
 
 var ReadyMenuJs = function () {
-    
     Fn_getOpcionesMenu();
 };
+
+var ReadyMenuPerfil = function () {
+    fn_getPerfilUsuario(getUser());
+}
 
 //#region Generarion de menu primera version 
 function getOpcionesMenu() {
@@ -188,7 +191,7 @@ function Fn_getOpcionesMenu() {
         },
         error: function (respuesta) {
             kendo.ui.progress($("#body"), false);
-            ErrorMsg(respuesta);
+          
         }
 
 
