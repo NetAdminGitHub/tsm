@@ -37,4 +37,18 @@ i[class*="ficonm"] {
     display: inline-block;
 }
 
+
 /*#endregion estilos iconos*/
+
+
+
+.sw-theme-arrows > ul.step-anchor {
+    text-align:center;
+
+}
+span[class*="ficonEtp"] {
+    font-size:25px;
+    line-height: 30px;
+    text-rendering: auto;
+    display: inline-block;
+}
