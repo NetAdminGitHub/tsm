@@ -12,6 +12,7 @@ namespace TSM.AuthFilters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+
             if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Token")
             {
                 string usuario;
@@ -32,10 +33,19 @@ namespace TSM.AuthFilters
                         { "TipoSolicitud", "RENOVARTOKEN" }
                     };
 
-                    filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama))));
+                    string token = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
 
-                    if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
-                        filterContext.RequestContext.HttpContext.Response.Redirect("/");
+                    if (token != "")
+                    {
+                        filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", token));
+
+                        if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
+                            filterContext.RequestContext.HttpContext.Response.Redirect("/");
+                    }
+                    else if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Login")
+                    {
+                        filterContext.RequestContext.HttpContext.Response.Redirect("/Login");
+                    }
                 }
                 else
                 {
@@ -50,10 +60,17 @@ namespace TSM.AuthFilters
                             { "TipoSolicitud", "GENERARTOKEN" }
                         };
 
-                        filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama))));
+                        string token = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
 
-                        if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
-                            filterContext.RequestContext.HttpContext.Response.Redirect("/");
+                        if (token != "")
+                        {
+                            filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", token));
+
+                            if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
+                                filterContext.RequestContext.HttpContext.Response.Redirect("/");
+                        }
+
+   
                     }
                 }
             }

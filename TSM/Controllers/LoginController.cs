@@ -16,12 +16,13 @@ namespace TSM.Controllers
         {
             return View();
         }
-
-        public JsonResult Login(string user, string password)
+        [HttpPost]
+        //string user, string password
+        public JsonResult Login(FormCollection form)
         {
             SeguridadClient seguridad = new SeguridadClient("BasicHttpBinding_ISeguridad");
 
-            string c = seguridad.Encriptar(password, Utils.Config.App);
+            string c = seguridad.Encriptar(form["password"], Utils.Config.App);
 
             HttpBrowserCapabilitiesBase browser = Request.Browser;
 
@@ -29,7 +30,7 @@ namespace TSM.Controllers
 
             Dictionary<string, string> trama = new Dictionary<string, string>()
             {
-                {"Usuario", user },
+                {"Usuario", form["user"] },
                 {"App", Utils.Config.App },
                 {"TipoSolicitud", "VALIDARUSUARIO" },
                 {"Navegador", Navegador },

@@ -3,7 +3,8 @@
         kendo.ui.progress($("#body"), true);
         $.ajax({
             url: 'Login/Login',
-            data: { user: $("#form-username").val(), password: $("#form-password").val() }
+            data: { user: $("#form-username").val(), password: $("#form-password").val() },
+            type:"post"
         }).done(function (data) {
             Cookies.set("t", data);
             window.sessionStorage.setItem("user", $("#form-username").val());
@@ -12,8 +13,13 @@
             kendo.ui.progress($("#body"), false);
             if (data !== null && data !== "")
                 window.location.href = "/";
-            else
+            else {
                 $("<span />").kendoNotification().data("kendoNotification").show("Usuario y/o contraseña incorrectos.", "error");
+                Cookies.remove("t");
+                Cookies.remove("user");
+                window.sessionStorage.removeItem("user");
+                window.sessionStorage.removeItem("l");
+            }
         });
     });
 
