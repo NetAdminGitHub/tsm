@@ -332,7 +332,8 @@ label {
 body {
     min-height: 100vh;
     position: relative;
-    background: #f9fbfd
+    background: #e4e6e7;
+    /*#f9fbfd;*/
 }
 
 .no-bd {
