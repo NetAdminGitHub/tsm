@@ -1,6 +1,4 @@
-﻿
-
-var Permisos;
+﻿var Permisos;
 
 $(document).ready(function () {
     // validar permisos
@@ -175,7 +173,8 @@ $(document).ready(function () {
         loadOnDemand: false,
         dataSource: dataSource,
         dataTextField: "EtiquetaMenu",
-        dataValueField: "IdMenu"
+        dataValueField: "IdMenu",
+        dragAndDrop: true
     });
 
     $("#treeviewRoles").kendoTreeView({
@@ -238,6 +237,52 @@ $(document).ready(function () {
             alert('Nothing selected');
         }
         
+    });
+
+    $("#treeview").data("kendoTreeView").bind("drop", function (e) {
+        var nodoDestino = $("#treeview").data("kendoTreeView").dataItem(e.destinationNode);
+        var nodoOrigen = $("#treeview").data("kendoTreeView").dataItem(e.sourceNode);
+
+        if (e.valid && nodoDestino != undefined && nodoOrigen != undefined) {
+            kendo.ui.progress($("#treeview"), true);
+            $.ajax({
+                url: UrlMenu + "/Menu_Reordenar/",
+                type: "post",
+                async: false,
+                data: JSON.stringify({ IdMenuOrigen: nodoOrigen.IdMenu, IdMenuDestino: nodoDestino.IdMenu, colocarAbajo: e.dropPosition == "after" }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    kendo.ui.progress($("#treeview"), false);
+                    RequestEndMsg(data, "Post");
+                },
+                error: function (data) {
+                    kendo.ui.progress($("#treeview"), false);
+                    e.setValid(false);
+                    ErrorMsg(data);
+                }
+            });
+        }
+        else {
+            e.setValid(false);
+        }
+    });
+
+    $("#treeview").data("kendoTreeView").bind("drag", function (e) {
+        var nodoDestino = $("#treeview").data("kendoTreeView").dataItem(e.dropTarget);
+        var nodoOrigen = $("#treeview").data("kendoTreeView").dataItem(e.sourceNode);
+
+        if (nodoDestino != undefined) {
+            if (nodoDestino.TieneOpciones == true || e.statusClass.indexOf("plus") >= 0) {
+                e.setStatusClass("k-i-cancel");
+            }
+        }
+    });
+
+    $("#treeview").data("kendoTreeView").bind("dragstart", function (e) {
+        var nodo = $("#treeview").data("kendoTreeView").dataItem(e.sourceNode);
+
+        if (nodo.TieneOpciones == true) e.preventDefault();
     });
 
     $("#treeviewRoles").data("kendoTreeView").bind("dataBound", function (e) { //foco en la fila
