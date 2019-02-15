@@ -51,9 +51,10 @@
             }).done(function (data) {
                 if (data === null || data === "")
                     window.location.href = "/Token/Redirect";
-                else {                    
-                    window.sessionStorage.setItem("t", data);
+                else {
                     window.sessionStorage.setItem("user", "@ViewBag.Usuario");
+                    Cookies.set("user", "@ViewBag.Usuario");
+                    Cookies.set("t", data);
                     kendo.ui.progress($("#waitDiv"), false);
                     window.location.href = "/";
                 }
