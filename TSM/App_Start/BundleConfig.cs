@@ -12,7 +12,9 @@ namespace TSM
                                                                 "~/Scripts/jquery/jquery.sparkline.min.js",
                                                                 "~/Scripts/jquery/jquery.scrollbar.min.js",
                                                                 "~/Scripts/jquery/jquery-ui.min.js",
-                                                                "~/Scripts/jquery/jquery-{version}.js", "~/Scripts/js.cookie.js"
+                                                                "~/Scripts/jquery/jquery-{version}.js", 
+                                                                "~/Scripts/js.cookie.js",
+                                                                  "~/Scripts/jquery/jszip.min.js"
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));

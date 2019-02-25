@@ -1,0 +1,44 @@
+﻿<script id="template" type="text/x-kendo-template">
+    <div class="form-group col-lg-12">
+        <button id="btnRegistrar" type="button" name="btnRegistrar" onclick="return Registar_click()"></button>
+        <button id="btnexport" type="button" name="btnRegistrar" onclick="return exportar_click()">&nbsp;Exportar a Excel</button>
+    </div>
+    
+</script>
+<div class="form-row">
+    <div id="TabCI">
+        <ul>
+            <li class="k-state-active">
+                Comparacion AX vrs TSM
+            </li>
+            <li>
+               No existen en TSM
+            </li>
+            <li>
+                No existen en AX
+            </li>
+        </ul>
+        <div id="Tab1">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <div id="gridComparar"> </div>
+                </div>
+            </div>
+        </div>
+        <div id="Tab2">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <div id="gridNoExistenTSM"> </div>
+                </div>
+            </div>
+        </div>
+        <div id="Tab3">
+             <div class="form-row">
+                 <div class="form-group col-lg-12">
+                     <div id="gridNoExistenAX"> </div>
+                 </div>
+             </div>
+            
+        </div>
+    </div>
+</div>

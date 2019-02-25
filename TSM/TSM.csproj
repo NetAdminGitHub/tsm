@@ -241,7 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth11.wsdl" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth12.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -251,13 +251,13 @@
     <None Include="Connected Services\FrwkAuthSrv\Auth32.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\FrwkAuthSrv\Auth33.xsd">
+    <None Include="Connected Services\FrwkAuthSrv\Auth36.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\FrwkAuthSrv\Auth34.xsd">
+    <None Include="Connected Services\FrwkAuthSrv\Auth37.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\FrwkAuthSrv\Auth35.xsd">
+    <None Include="Connected Services\FrwkAuthSrv\Auth38.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\configuration91.svcinfo" />
@@ -274,7 +274,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth1.disco" />
-    <None Include="Connected Services\FrwkAuthSrv\Auth11.disco" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth12.disco" />
     <Content Include="Content\bootstrap\AdjCarousel.css" />
     <Content Include="Content\bootstrap\boostrapKendoMod.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />
@@ -626,6 +626,9 @@
     <Content Include="Content\kendo\Uniform\sprite_kpi_2x.png" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Menu.css" />
+    <Content Include="Content\smart_wizard.css" />
+    <Content Include="Content\smart_wizard_theme_arrows.css" />
+    <Content Include="Content\smart_wizard_theme_circles.css" />
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\UsuariosRoles.css" />
@@ -765,7 +768,9 @@
     <Content Include="Scripts\Jquery\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\Jquery\jquery-ui.min.js" />
     <Content Include="Scripts\Jquery\jquery.scrollbar.min.js" />
+    <Content Include="Scripts\Jquery\jquery.smartWizard.js" />
     <Content Include="Scripts\Jquery\jquery.sparkline.min.js" />
+    <Content Include="Scripts\Jquery\jszip.min.js" />
     <Content Include="Scripts\js.cookie.js" />
     <Content Include="Scripts\js\AnalisisDisenos.js" />
     <Content Include="Scripts\js\AnalisisDisenosConsulta.js" />
@@ -786,6 +791,7 @@
     <Content Include="Scripts\js\DefinicionBusqueda.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
+    <Content Include="Scripts\js\EtapasProcesosModulos.js" />
     <Content Include="Scripts\js\FactoresCostos.js" />
     <Content Include="Scripts\js\FormaTipoInsumos.js" />
     <Content Include="Scripts\js\GradosInsumos.js" />
@@ -1164,6 +1170,7 @@
     <Content Include="Scripts\kendo\kendo.chat.min.js.map" />
     <Content Include="Scripts\kendo\kendo.dropdowntree.min.js.map" />
     <Content Include="Scripts\kendo\kendo.multicolumncombobox.min.js.map" />
+    <Content Include="Views\CatalogoInsumos\_CatalogoInsumosComparar.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

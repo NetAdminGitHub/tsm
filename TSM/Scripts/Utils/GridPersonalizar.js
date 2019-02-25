@@ -12,6 +12,7 @@ function givenOrDefault(given, def ) {
 const ModoEdicion = {
     EnLinea: "inline",
     EnPopup: "popup",
+    Batch:"batch",
     NoEditable: false
 };
 // opciones redimencional.
@@ -32,19 +33,24 @@ var windowMensaje;
  * @param {boolean} ColMenu Activa el menu emergente para las columnas del grid, que contiene las opciones: 1. Columnas: para mostrar o ocultar , 2. Orden Ascendente y  3. Orden Descendente
  * @param {boolean} redimensionable colocar true para que los usuarios puedan cambiar el tamaño de la columna
  * @param {number} Opcheight valor opcional puede colocar alto del grid.
+ * @param {string} selectable Si se establece en trueel usuario sería capaz de seleccionar filas de la cuadrícula. Por defecto la selección está deshabilitada.
+                        También se puede establecer en los siguientes valores de cadena:
+                            "fila": el usuario puede seleccionar una sola fila.
+                             "celda": el usuario puede seleccionar una sola celda.
+                                "multiple, row": el usuario puede seleccionar varias filas.
+                                "múltiple, celda": el usuario puede seleccionar varias celdas.
+ * @param {string} FiltroModo modo de filtros puede ser :"row", "menu", "menu,row" las tres son validas siempre y cuando este activo el filtro.
+
 
  */
-function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redimensionable, Opcheight ) {
-   
-
+function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redimensionable, Opcheight, selectable,FiltroModo) {
+  
     ModoEdicion: givenOrDefault(ModoEdicion, "popup");
-
-      
     OpcGrid={
         sortable: givenOrDefault(Ordenable, true),
-        filterable: givenOrDefault(Filtrable, true),
+        filterable: givenOrDefault(Filtrable, true) === true ? (givenOrDefault(FiltroModo, "") === "" ? true : { mode : FiltroModo }) : false,
         columnMenu: givenOrDefault(ColMenu, true),
-        editable: ModoEdicion !== "popup" ? ModoEdicion : {
+        editable: ModoEdicion !== "popup" ? ModoEdicion ==="batch" ? true : ModoEdicion : {
             mode: ModoEdicion,
             update: true,
             createAt: "bottom",
@@ -55,8 +61,7 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
         scrollable: true,
         navigatable: true,
         resizable: givenOrDefault(redimensionable, true),
-        batch: false,
-        selectable: true,
+        selectable: givenOrDefault(selectable, true),
         pageable: !givenOrDefault(Paginable, true) ? false : {
             input: true,
             refresh: true,
@@ -73,17 +78,17 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
 /**
  *  Activa CRUD en la toolbar de grid (Obsoleto no debe usarse.)
  * @param {kendo.ui.Grid} e  Grid contenedor de la funcion
- * @param {boolean} agregar Muestra boton Agregar.
- * @param {boolean} editar Muestra boton Editar.
- * @param {boolean} borrar Muestra boton Eliminar.
+ * @param {boolean} Create Muestra boton Agregar.
+ * @param {boolean} Save Muestra boton Editar.
+ * @param {boolean} Cancelar Muestra boton cancelar.
  */
-function SetGrid_CRUD_Toolbar(e, agregar, editar, borrar) {
+function SetGrid_CRUD_ToolbarBatch(e, Create, Save, Cancelar) {
     var opciones = [];
-    if (agregar) opciones.push("create");
-    if (editar) opciones.push("save");
-    if (borrar) opciones.push("destroy");
+    if (Create) opciones.push("create");
+    if (Save) opciones.push("save");
+    if (Cancelar) opciones.push("cancel");
     
-    if (agregar === false && editar === false && borrar === false) {
+    if (Create === false && Save === false && Cancelar === false) {
         Opctoolbar = { toolbar: false };
     }
     else {
@@ -182,7 +187,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
         if (editar) {
             Opccommand = {
                 columns: columns.concat([{
-                    field: "cmdEdit", title: "&nbsp;", menu: false,
+                    field: "cmdEdit", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
                     command: opciones[0], width: 70 + "px", attributes: {
 
                         style: "text-align: center"
@@ -195,13 +200,13 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
         if (borrar) {
             Opccommand = {
                 columns:  Opccommand === "" ? columns.concat([{
-                    field: "cmdDel", title: "&nbsp;", menu: false,
+                    field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false }},
                     command: opciones[0], width: 70 + "px", attributes: {
 
                         style: "text-align: center"
                     }
                 }]) : Opccommand.columns.concat([{
-                        field: "cmdDel", title: "&nbsp;", menu: false,
+                        field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
                         command: opciones[1], width: 70 + "px", attributes: {
 
                             style: "text-align: center"

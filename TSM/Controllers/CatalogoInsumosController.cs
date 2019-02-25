@@ -13,5 +13,12 @@ namespace TSM.Controllers
         {
             return View();
         }
+
+        public ActionResult InsumosComparar()
+        {
+
+
+            return PartialView("_CatalogoInsumosComparar");
+        }
     }
 }
