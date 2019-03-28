@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Definición de Notificaciones";
+    ViewBag.IdVersion = "TSM0101057|v19032601";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var UrlTN = "@string.Format("{0}TipoNotificaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlN = "@string.Format("{0}Notificaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlNV = "@string.Format("{0}NotificacionesVariables", TSM.Utils.Config.TSM_WebApi)";
+        var UlrNVD = "@string.Format("{0}NotificacionesDestinatarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlR = "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+        var UrlU = "@string.Format("{0}Usuarios", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/Notificaciones.js"></script>
+    @*<style>
+        div.k-edit-form-container {
+            width: auto;
+        }
+    </style>*@
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="cmbTipoNoti">Notificacion:</label>
+                        <input id="cmbTipoNoti" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-7">
+                        <label for="grid">Notificaciones:</label>
+                        <div id="grid"></div>
+                    </div>
+                    <div class="form-group col-lg-5">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="gridNV">Notificaciones Variables</label>
+                                <div id="gridNV"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="gridND">Notificaciones Destinatarios:</label>
+                                <div id="gridND"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

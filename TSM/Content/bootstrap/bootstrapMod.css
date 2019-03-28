@@ -52,3 +52,34 @@ span[class*="ficonEtp"] {
     text-rendering: auto;
     display: inline-block;
 }
+
+.TSM-notif-icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    border-radius: 50%;
+}
+
+.TSM-notif-Alta {
+    background: #f3545d !important;
+    color: #fff !important;
+}
+
+.TSM-notif-Baja {
+    background: #177dff !important;
+    color: #fff !important;
+}
+
+.TSM-notif-Media {
+    background: #35cd3a !important;
+    color: #fff !important;
+}
+
+.list-group-messages .list-group-item {
+    padding-top: 0.50rem;
+    padding-bottom: 0.50rem;
+}
