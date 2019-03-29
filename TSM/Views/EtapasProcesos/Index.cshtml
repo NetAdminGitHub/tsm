@@ -6,7 +6,12 @@
 @section Scripts {
     <script type="text/javascript">
         var crudServiceBaseUrl = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)";
+        var UlrEps = "@string.Format("{0}EtapasProcesosSiguientes", TSM.Utils.Config.TSM_WebApi)";
+        var UlrEpa = "@string.Format("{0}EtapasProcesosAnteriores", TSM.Utils.Config.TSM_WebApi)";
         var UrlModulos = "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRepest = "@string.Format("{0}RelacionEtapasProcesosEstados", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTbl = "@string.Format("{0}Tablas", TSM.Utils.Config.TSM_WebApi)";
     </script>
     <script src="~/Scripts/js/EtapasProcesos.js"></script>
 }
@@ -15,12 +20,34 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-group">
-                    <label for="cmbModulo">Módulo:</label>
-                    <input id="cmbModulo" class="form-control"/>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="cmbModulo">Módulo:</label>
+                        <input id="cmbModulo" class="form-control" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div id="grid"></div>
+                <div class="form-row">
+                    <div class="form-group col-lg-8">
+                        <label for="grid">Etapas del Proceso:</label>
+                        <div id="grid"></div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="gridsig">Configurar Etapa Siguiente:</label>
+                                <div id="gridsig"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="gridAnt">Configurar Etapa Anterior:</label>
+                                <div id="gridAnt"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    @Html.Partial("_EtapasProcesosEstados")
                 </div>
             </div>
         </div>

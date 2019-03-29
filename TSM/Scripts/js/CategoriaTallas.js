@@ -92,12 +92,12 @@ $(document).ready(function () {
 
 
     $(window).on("resize", function () {
-        Fn_Grid_Resize($("#GkCateTallas"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#GkCateTallas"), $(window).height() - "371");
     });
 
-    Fn_Grid_Resize($("#GkCateTallas"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#GkCateTallas"), $(window).height() - "371");
 });
 
 fPermisos = function (datos) {
     Permisos = datos;
-}
+};

@@ -300,16 +300,16 @@ $(document).ready(function () {
     });
 
     $(window).on("resize", function () {
-        Fn_Grid_Resize($("#gridCd"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#gridCd"), $(window).height() - "371");
     });
 
-    Fn_Grid_Resize($("#gridCd"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#gridCd"), $(window).height() - "371");
 
     $(window).on("resize", function () {
-        Fn_Grid_Resize($("#gridCdvalor"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#gridCdvalor"), $(window).height() - "371");
     });
 
-    Fn_Grid_Resize($("#gridCdvalor"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#gridCdvalor"), $(window).height() - "371");
     //#endregion 
     //#region metodos 
     var fn_Consultar = function () {
