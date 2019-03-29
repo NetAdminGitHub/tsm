@@ -9,23 +9,19 @@ $(document).ready(function () {
         transport: {
             read: {
                 url: function (datos) { return UrlCc + "/GetContactosClienteByIdCliente/" + vIdCliente; },
-                dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
                 url: function (datos) { return UrlCc + "/" + datos.IdContactoCliente + "/" + datos.IdCliente; },
-                dataType: "json",
                 type: "DELETE"
             },
             update: {
                 url: function (datos) { return UrlCc + "/" + datos.IdContactoCliente + "/" + datos.IdCliente; },
-                dataType: "json",
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             create: {
                 url: UrlCc,
-                dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },

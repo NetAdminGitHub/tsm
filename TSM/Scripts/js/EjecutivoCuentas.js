@@ -7,23 +7,19 @@ $(document).ready(function () {
         transport: {
             read: {
                 url: function (datos) { return UrlEC + "/GetEjecutivoCuentasVista"; },
-                dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
                 url: function (datos) { return UrlEC + "/" + datos.IdEjecutivoCuenta; },
-                dataType: "json",
                 type: "DELETE"
             },
             update: {
                 url: function (datos) { return UrlEC + "/" + datos.IdEjecutivoCuenta; },
-                dataType: "json",
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             create: {
                 url: UrlEC,
-                dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
@@ -143,23 +139,19 @@ $(document).ready(function () {
         transport: {
             read: {
                 url: function (datos) { return UrlECC + "/GetEjecutivoCuentasClienteByIdEjecutivoCuenta/" + vIdEjeCta.toString(); },
-                dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
                 url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdCliente; },
-                dataType: "json",
                 type: "DELETE"
             },
             update: {
                 url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdCliente; },
-                dataType: "json",
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             create: {
                 url: UrlECC,
-                dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },

@@ -6,23 +6,19 @@ $(document).ready(function () {
         transport: {
             read: {
                 url: Urltot +"/GetTiposOrdenesTrabajosVista",
-                dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
                 url: function (datos) { return Urltot + "/" + datos.IdTipoOrdenTrabajo; },
-                dataType: "json",
                 type: "DELETE"
             },
             update: {
                 url: function (datos) { return Urltot + "/" + datos.IdTipoOrdenTrabajo; },
-                dataType: "json",
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             create: {
                 url: Urltot,
-                dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },

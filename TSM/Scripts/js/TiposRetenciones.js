@@ -6,23 +6,19 @@ $(document).ready(function () {
         transport: {
             read: {
                 url: UrlTr,
-                dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             update: {
                 url: function (datos) { return UrlTr + "/" + datos.IdTipoRetencion; },
-                dataType: "json",
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
                 url: function (datos) { return UrlTr + "/" + datos.IdTipoRetencion; },
-                dataType: "json",
                 type: "DELETE"
             },
             create: {
                 url: UrlTr,
-                dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
