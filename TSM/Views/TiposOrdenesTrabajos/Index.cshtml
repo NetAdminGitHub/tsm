@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Definición ordenes de trabajo";
+    ViewBag.IdVersion = "TSM0101046|v19032101";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var Urltot = "@string.Format("{0}TiposOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCeo = "@string.Format("{0}ConfiguracionEtapasOrdenes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlEp = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSer = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlE= "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/TiposOrdenesTrabajos.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-8">
+                        <label for="grid">Tipos de Ordenes</label>
+                        <div id="grid"></div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="gridConfEp">Relación Tipo de ordenes - Etapas procesos</label>
+                        <div id="gridConfEp"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
