@@ -221,6 +221,7 @@
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
+    <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\PruebasController.cs" />
@@ -828,6 +829,7 @@
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
     <Content Include="Scripts\js\PersonalizacionErrores.js" />
+    <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Programas.js" />
     <Content Include="Scripts\js\Pruebas.js" />
@@ -1223,6 +1225,7 @@
     <Content Include="Views\Notificaciones\Index.cshtml" />
     <Content Include="Views\MisNotificaciones\Index.cshtml" />
     <Content Include="Views\TiposMaquinas\Index.cshtml" />
+    <Content Include="Views\PlantillasListasVerificaciones\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

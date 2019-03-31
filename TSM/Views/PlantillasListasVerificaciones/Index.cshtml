@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Definición Listas de Verificación";
+    ViewBag.IdVersion = "TSM0101059|v19033101";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlPlv = "@string.Format("{0}PlantillasListasVerificaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlPlvd = "@string.Format("{0}PlantillasListasVerificacionesDetalles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlEP = "@string.Format("{0}EtapasProcesos", TSM.Utils.Config.TSM_WebApi)";
+         var UrlE= "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/PlantillasListasVerificaciones.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="CmbEtapa">Etapa Proceso:</label>
+                        <input class="form-control" id="CmbEtapa" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="gridPlv">Definición de Listas de verificación</label>
+                        <div id="gridPlv"></div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="gridPlvd">Opción de Verificación</label>
+                        <div id="gridPlvd"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
