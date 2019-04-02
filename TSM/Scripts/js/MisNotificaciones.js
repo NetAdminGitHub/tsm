@@ -66,7 +66,7 @@ $(document).ready(function () {
                 '<div class="list-group-item-figure">' +
                 '<div class="' + Noti_Ico + '"> <i class="k-icon k-i-notification"></i> </div>' +
                 '</div>' +
-                '<div class="list-group-item-body pl-3 pl-md-4" IdNoHis = "' + elemento.IdNotificacionHis + '" onclick="fn_MarcarLeido(this)" >' +
+                '<div class="list-group-item-body pl-3 pl-md-4" IdNoHis = "' + elemento.IdNotificacionHis + '"  ItemNoHis = "' + elemento.Item + '" onclick="fn_MarcarLeido(this)" >' +
                 '<div class="form-row">' +
                 '<div class="form-group col-lg-10 ">' +
                 '<h4 class="list-group-item-title">' +
@@ -86,8 +86,8 @@ $(document).ready(function () {
                 '</button>' +
                 '<div class="dropdown-arrow"></div>' +
                 '<div class="dropdown-menu dropdown-menu-right">' +
-                '<a onclick="fn_MarcarLeido(this)"  id="ML-' + elemento.IdNotificacionHis + '"  IdNoHis = "' + elemento.IdNotificacionHis + '" class="dropdown-item" >Marcar como leído</a>' +
-                '<a onclick="fn_MarcarNoLeido(this)"    id="MNL-' + elemento.IdNotificacionHis + '" IdNoHis = "' + elemento.IdNotificacionHis + '" class="dropdown-item">Marcar como no leído</a>' +
+                '<a onclick="fn_MarcarLeido(this)"  id="ML-' + elemento.IdNotificacionHis + '"  IdNoHis = "' + elemento.IdNotificacionHis + '" ItemNoHis = "' + elemento.Item + '" class="dropdown-item" >Marcar como leído</a>' +
+                '<a onclick="fn_MarcarNoLeido(this)"    id="MNL-' + elemento.IdNotificacionHis + '" IdNoHis = "' + elemento.IdNotificacionHis + '" ItemNoHis = "' + elemento.Item + '" class="dropdown-item">Marcar como no leído</a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -102,24 +102,24 @@ $(document).ready(function () {
 });
 var fn_MarcarLeido = function (elemento) {
     var vleido = 0;
-    if (elemento.className == "dropdown-item")
+    if (elemento.className === "dropdown-item")
     {
-        fn_Marcar(elemento.attributes.IdNoHis.value, true);
+        fn_Marcar(elemento.attributes.IdNoHis.value, elemento.attributes.ItemNoHis.value,true);
     } else
     {
         if ($("#List-" + elemento.attributes.IdNoHis.value + "")[0].attributes.notiread.value === "false") {
-            fn_Marcar(elemento.attributes.IdNoHis.value, true);
+            fn_Marcar(elemento.attributes.IdNoHis.value, elemento.attributes.ItemNoHis.value, true);
         }
     }
 };
 var fn_MarcarNoLeido = function (elemento) {
-    fn_Marcar(elemento.attributes.IdNoHis.value, false);
+    fn_Marcar(elemento.attributes.IdNoHis.value, elemento.attributes.ItemNoHis.value, false);
 };
-var fn_Marcar = function (id, leido) {
+var fn_Marcar = function (id, item,leido) {
  
     kendo.ui.progress($("#pager"), true);
     $.ajax({
-        url: UrlNh + "/UpdNotificacionHisMarcar/" + id.toString() + "/" + leido,
+        url: UrlNhD + "/UpdNotificacionHisMarcar/" + id.toString() + "/" + item.toString() + "/" + leido,
         type: "Post",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
