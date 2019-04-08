@@ -16,7 +16,6 @@ namespace TSM.Controllers
         }
 
         [HttpPost]
-        [Route("{controller}/{action}/{id}")]
         public ActionResult SubirArchivo(string id, IEnumerable<HttpPostedFileBase> Adjunto)
         {
             if (Adjunto != null)
@@ -40,7 +39,6 @@ namespace TSM.Controllers
         }
 
         [HttpPost]
-        [Route("{controller}/{action}/{id}/{filename}")]
         public JsonResult BorrarArchivo(string id, string fileName)
         {
             Dictionary<string, bool> respuesta = new Dictionary<string, bool>();
