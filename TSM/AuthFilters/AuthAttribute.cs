@@ -35,12 +35,17 @@ namespace TSM.AuthFilters
 
                     string token = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
 
+                    //toquen renovado
                     if (token != "")
                     {
                         filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", token));
 
                         if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
                             filterContext.RequestContext.HttpContext.Response.Redirect("/");
+                    }
+                    else if (Controllers.TokenController.ObtenerUsuarioLocal(filterContext.RequestContext.HttpContext.Request.UserHostAddress) != "")
+                    {
+                        GenerarNuevoToken(filterContext, Controllers.TokenController.ObtenerUsuarioLocal(filterContext.RequestContext.HttpContext.Request.UserHostAddress));
                     }
                     else if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Login")
                     {
@@ -55,22 +60,7 @@ namespace TSM.AuthFilters
                     }
                     else if (usuario != "")
                     {
-                        Dictionary<string, object> trama = new Dictionary<string, object> {
-                            { "Usuario", usuario },
-                            { "TipoSolicitud", "GENERARTOKEN" }
-                        };
-
-                        string token = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
-
-                        if (token != "")
-                        {
-                            filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", token));
-
-                            if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
-                                filterContext.RequestContext.HttpContext.Response.Redirect("/");
-                        }
-
-   
+                        GenerarNuevoToken(filterContext, usuario);
                     }
                 }
             }
@@ -81,6 +71,24 @@ namespace TSM.AuthFilters
         private bool CookieValida(ActionExecutingContext filterContext, string nombreCookie)
         {
             return !(filterContext.RequestContext.HttpContext.Request.Cookies[nombreCookie] == null || string.IsNullOrWhiteSpace(filterContext.RequestContext.HttpContext.Request.Cookies.Get(nombreCookie).Value));
+        }
+
+        private void GenerarNuevoToken(ActionExecutingContext filterContext, string usuario)
+        {
+            Dictionary<string, object> trama = new Dictionary<string, object> {
+                            { "Usuario", usuario },
+                            { "TipoSolicitud", "GENERARTOKEN" }
+                        };
+
+            string token = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
+
+            if (token != "")
+            {
+                filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("t", token));
+
+                if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
+                    filterContext.RequestContext.HttpContext.Response.Redirect("/");
+            }
         }
     }
 }
