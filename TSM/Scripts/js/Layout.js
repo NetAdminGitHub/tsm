@@ -13,13 +13,14 @@ $(document).ready(function () {
     var ReadyList = [];
     ReadyList.push(ReadyMenuJs);
     ReadyList.push(ReadyMenuPerfil);
+    ReadyList.push(fn_getNotificaciones);
 
     $.each(ReadyList, function (index, elemento) {
-        elemento.call(document, jQuery);      
+        elemento.call(document, jQuery);
     });
 
     //seguridad obtner los permisos 
-    if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false) {
+    if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false && location.pathname.startsWith("/Reportes") === false) {
         var ParamPath = location.pathname.toString();//location.pathname.toUpperCase().endsWith("/INDEX")? location.pathname : location.pathname.toString() +'/' + 'Index'
         var permisos = fn_getOpcionesMenuPermisos(getUser(), ParamPath);
         if (permisos.length === 0) {
@@ -151,4 +152,67 @@ var fn_getOpcionesMenuPermisos=function (xIdUsuario, xUrl) {
     });
 
     return datos;
+}
+
+/**
+ * Función para dibujado de notificaciones de usuarios
+ * */
+var fn_getNotificaciones = function() {
+    $.ajax({
+        url: UrlNotificaciones + "/GetByIdUsuario/" + getUser(),
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            if (respuesta !== null) {
+                fn_CrearNotificaciones(respuesta);
+            }
+        },
+        error: function (e) {
+            ErrorMsg(e)
+        }
+    });
+}
+
+
+/**
+ * Crea las notificaciones del sistema
+ * @param {JSON} opciones
+ */
+var fn_CrearNotificaciones = function(opciones) {
+    $("#divNotificaciones").children().remove();
+    var MPContenedor = $("#divNotificaciones");
+
+    if (opciones.length == 0) {
+        $('#lblCantidadNotificaciones').css("display", "none");
+        $('#lblCantidadNotificaciones').text("0");
+        $("#divCantidadNotificaciones").text("Tienes 0 notificaciones nuevas");
+    }
+    else {
+        $('#lblCantidadNotificaciones').css("display", opciones[0].Nuevos == 0 ? "none" : "block");
+        $('#lblCantidadNotificaciones').text(opciones[0].Nuevos);
+        $("#divCantidadNotificaciones").text("Tienes " + opciones[0].Nuevos + " notificaciones nuevas");
+    }    
+
+    $.each(opciones, function (index, elemento) {
+        MPContenedor.append(
+            `<a href="/MisNotificaciones" class="list-group-item ` + (elemento.Leido == false ? "unread" : "read") + `" ` + (elemento.Leido == false ? "style=\"background-color: #DFE3EE;\"" : "") + `>
+                <div class="list-group-item-figure">
+                    <div class="notif-icon ` + (elemento.Prioridad == "B" ? "notif-primary" : elemento.Prioridad == "M" ? "notif-success" : "notif-danger") + `"> <i class="k-icon k-i-notification"></i> </div>
+                </div>
+                <div class="list-group-item-body pl-3 pl-md-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="list-group-item-title">
+                                <span>` + elemento.Asunto +`</span>
+							</h5>
+                            <p class="list-group-item-text text-truncate">` + elemento.Cuerpo +`</p>
+                        </div>
+                        <div class="col-12 text-lg-right">
+                            <p class="list-group-item-text">Hace ` + elemento.Tiempo + `</p>
+                        </div>
+                    </div>
+                </div>
+            </a>`
+        );
+    });
 }

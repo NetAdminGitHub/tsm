@@ -57,6 +57,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -202,6 +205,7 @@
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
     <Compile Include="Controllers\DefinicionBusquedaController.cs" />
+    <Compile Include="Controllers\EjecutivoCuentasController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
@@ -209,13 +213,13 @@
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
-    <Compile Include="Controllers\EjecutivoCuentasController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
-    <Compile Include="Controllers\ModulosController.cs" />
-    <Compile Include="Controllers\MotivosDesarrollosController.cs" />
-    <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
+    <Compile Include="Controllers\ModulosController.cs" />
+    <Compile Include="Controllers\NotificacionesController.cs" />
+    <Compile Include="Controllers\OrdenesTrabajoController.cs" />
+    <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
@@ -224,8 +228,8 @@
     <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
-    <Compile Include="Controllers\PruebasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosEstadosController.cs" />
     <Compile Include="Controllers\RetencionesController.cs" />
@@ -776,6 +780,9 @@
     <Content Include="Scripts\bootstrap\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js.map" />
+    <Content Include="Scripts\Hubs\Notificaciones.js" />
+    <Content Include="Scripts\Jquery\jquery.signalR-2.4.1.js" />
+    <Content Include="Scripts\Jquery\jquery.signalR-2.4.1.min.js" />
     <Content Include="Scripts\jqueryAjax\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jqueryAjax\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\Jquery\jquery-3.3.1.js" />
@@ -800,6 +807,7 @@
     <Content Include="Scripts\js\CatalogoInsumos.js" />
     <Content Include="Scripts\js\CategoriaConfecciones.js" />
     <Content Include="Scripts\js\CategoriaPrendas.js" />
+    <Content Include="Scripts\js\CategoriaPrendasUbicaciones.js" />
     <Content Include="Scripts\js\CategoriaTallas.js" />
     <Content Include="Scripts\js\Clientes.js" />
     <Content Include="Scripts\js\ColumnasDinamicas.js" />
@@ -812,19 +820,17 @@
     <Content Include="Scripts\js\EjecutivoCuentas.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
-    <Content Include="Scripts\js\EtapasProcesosModulos.js" />
     <Content Include="Scripts\js\FactoresCostos.js" />
     <Content Include="Scripts\js\FormaTipoInsumos.js" />
     <Content Include="Scripts\js\GradosInsumos.js" />
     <Content Include="Scripts\js\Interfaz.js" />
-    <Content Include="Scripts\js\CategoriaPrendasUbicaciones.js" />
     <Content Include="Scripts\js\Layout.js" />
     <Content Include="Scripts\js\Login.js" />
     <Content Include="Scripts\js\Menus.js" />
+    <Content Include="Scripts\js\MisNotificaciones.js" />
     <Content Include="Scripts\js\Modulos.js" />
     <Content Include="Scripts\js\MotivosDesarrollos.js" />
     <Content Include="Scripts\js\Notificaciones.js" />
-    <Content Include="Scripts\js\MisNotificaciones.js" />
     <Content Include="Scripts\js\PapelesInsumos.js" />
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
@@ -832,7 +838,6 @@
     <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Programas.js" />
-    <Content Include="Scripts\js\Pruebas.js" />
     <Content Include="Scripts\js\RentabilidadConfiguraciones.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollosConsulta.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollos.js" />
@@ -861,6 +866,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js.map" />
@@ -1140,6 +1146,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\OrdenesTrabajo\ElementoTrabajo.cshtml" />
     <Content Include="Views\Programas\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1226,6 +1233,8 @@
     <Content Include="Views\MisNotificaciones\Index.cshtml" />
     <Content Include="Views\TiposMaquinas\Index.cshtml" />
     <Content Include="Views\PlantillasListasVerificaciones\Index.cshtml" />
+    <Content Include="Views\Reportes\Visor.cshtml" />
+    <Content Include="Views\Shared\_VerificarSolicitud.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

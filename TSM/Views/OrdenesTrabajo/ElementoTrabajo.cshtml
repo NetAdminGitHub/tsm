@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Ordenes de Trabajo";
+}
+
+<h2 id="lblNomIdEtapaProceso"></h2>
+
+@section Scripts{
+    <script type="text/javascript">
+        var idOrdenTrabajo = @ViewBag.IdOrdenTrabajo;
+        var idEtapaProceso = @ViewBag.IdEtapaProceso;
+        var Permisos;
+
+        fPermisos = function (datos) {
+            Permisos = datos;
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "/OrdenesTrabajo/VistaParcial/@ViewBag.VistaParcial",
+                method: 'POST',
+                success: function (result) {
+                    $("#vistaParcial").append(result);
+                    CargarInfoEtapa();
+                }
+            });
+        });
+
+        /**
+         * Funcion para cargar informacion de cabecera de la etapa.
+         * @@param {boolean} RecargarScriptVista Indica si se volveran a cargar los script de inicio de la vista parcial.
+         */
+        var CargarInfoEtapa = function (RecargarScriptVista = true) {
+            $.ajax({
+                url: TSM_Web_APi + "/OrdenesTrabajosDetalles/" + idOrdenTrabajo + "/" + idEtapaProceso,
+                method: 'GET',
+                success: function (datos) {
+                    if (datos !== null) {
+                        var fecha = new Date(datos.FechaOrdenTrabajo);
+                        $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
+                        $("#txtIdSolicitud").val(datos.IdSolicitud);
+                        $("#txtIdOrdenTrabajo").val(datos.IdOrdenTrabajo);
+                        $("#txtIdSolicitudDisenoPrenda").val(datos.IdSolicitudDisenoPrenda);
+                        $("#txtIdEtapaProceso").val(datos.IdEtapaProceso);
+                        $("#IdCliente").val(datos.IdCliente);
+                        $("#txtEstado").val(datos.Estado);
+                        $("#txtId").val(datos.Id);
+
+                        $("#txtNomServicio").val(datos.NomServicio);
+                        $("#txtNombre").val(datos.Nombre);
+                        $("#txtEstiloDiseno").val(datos.EstiloDiseno);
+                        $("#txtNombreDiseno").val(datos.NombreDiseno);
+                        $("#lblNomIdEtapaProceso").text(datos.NomIdEtapaProceso);
+                        $("#txtEstado").val(datos.Estado);
+                        $("#txtNoDocumentoOT").val(datos.NoDocumento);
+                        $("#txtFechaOrdenTrabajo").val(fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' + fecha.getFullYear());
+                        $("#txtNomEstado").val(datos.NomEstado);
+                        $("#txtNombrePrenda").val(datos.NombrePrenda);
+
+                        if (RecargarScriptVista == true) {
+                            var RList = [];
+                            RList.push(fn_CargarJSEtapa);
+                            $.each(RList, function (index, elemento) {
+                                elemento.call(document, jQuery);
+                            });
+                        }
+
+                        $.ajax({
+                            url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapasByOrdenTrabajo/" + idOrdenTrabajo,
+                            method: 'GET',
+                            success: function (resultado) {
+                                CrearEtapasProcesosModulo($("#smartwizard"), resultado, opcionesFormaSmartWizard.Flechas);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="~/Scripts/js/@(ViewBag.VistaParcial).js"></script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="bottom-panel">
+                    <div class="form-row col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
+                        <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor"></ul>
+                        <div class="sw-container tab-content">
+                            
+                            <div id="vistaParcial" class="tab-pane step-content">
+                                <div class="form-row col-lg-12">
+                                    <div class="col-lg-2">
+                                        <input id="IdServicio" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtId" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitud" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdOrdenTrabajo" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitudDisenoPrenda" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdEtapaProceso" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="IdCliente" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtEstado" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                </div>
+                                <div class="form-row col-lg-12">
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNoDocumentoOT" id="lblNoDocumentoOT">No Orden Trabajo:</label>
+                                        <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNombre" id="lblCliente">Cliente:</label>
+                                        <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNombreDiseno" id="lblNombreDiseno">Nombre Dise&ntilde;o:</label>
+                                        <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtEstiloDiseno" id="lblEstiloDiseno">Estilo Dise&ntilde;o:</label>
+                                        <input id="txtEstiloDiseno" name="EstiloDiseno" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                </div>
+                                <div class="form-row col-lg-12">
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
+                                        <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
+                                        <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
+                                        <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
+                                        <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="vistaParcial">
+</div>*@

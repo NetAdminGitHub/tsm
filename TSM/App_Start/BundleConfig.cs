@@ -12,9 +12,10 @@ namespace TSM
                                                                 "~/Scripts/jquery/jquery.sparkline.min.js",
                                                                 "~/Scripts/jquery/jquery.scrollbar.min.js",
                                                                 "~/Scripts/jquery/jquery-ui.min.js",
-                                                                "~/Scripts/jquery/jquery-{version}.js", 
                                                                 "~/Scripts/js.cookie.js",
-                                                                  "~/Scripts/jquery/jszip.min.js"
+                                                                "~/Scripts/jquery/jszip.min.js",
+                                                                "~/Scripts/jquery/jquery.signalR-{version}.js",
+                                                                "~/Scripts/jquery/jquery.smartWizard.js"
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));
@@ -36,7 +37,8 @@ namespace TSM
                                                                        "~/Scripts/Utils/MltSelectPersonalizar.js",
                                                                        "~/Scripts/Utils/Menu.js",
                                                                         "~/Scripts/js/CambioEstado.js",
-                                                                        "~/Scripts/Utils/TSM-LayoutSet.js"
+                                                                        "~/Scripts/Utils/TSM-LayoutSet.js",
+                                                                        "~/Scripts/Hubs/Notificaciones.js"
                                                                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Login").Include("~/Scripts/js/Login.js"));
@@ -51,7 +53,9 @@ namespace TSM
             bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/Font-HelveticaNeue.css",
                                                                  "~/Content/Font-TS-Icons.css",
                                                                  "~/Content/Font-TSM-General.css",
-                                                                 "~/Content/TSM-Style.css"
+                                                                 "~/Content/TSM-Style.css",
+                                                                 "~/Content/smart_wizard.css",
+                                                                 "~/Content/smart_wizard_theme_arrows.css"
                                                                  ));
             
             bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-v4.min.css",

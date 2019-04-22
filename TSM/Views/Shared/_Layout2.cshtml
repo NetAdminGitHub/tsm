@@ -51,130 +51,93 @@
 
                         @* Inicio revisar para mensajeria*@
                         @*<ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
-                            <li>
-                                <div class="dropdown-title d-flex justify-content-between align-items-center">
-                                    Mensajes
-                                    <a href="#" class="small">Mark all as read</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="message-notif-scroll scrollbar-outer">
-                                    <div class="notif-center">
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="~/Images/MailImg.png" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Nombre # 1</span>
-                                                <span class="block">
-                                                    Mensaje #1
-                                                </span>
-                                                <span class="time">hace 5 minutos</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="~/Images/MailImg.png" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Nombre # 2</span>
-                                                <span class="block">
-                                                    Mensaje #2
-                                                </span>
-                                                <span class="time">hace 12 minutos</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="~/Images/MailImg.png" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Nombre # 3</span>
-                                                <span class="block">
-                                                    Mensaje #3
-                                                </span>
-                                                <span class="time">hace 5 minutos</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="~/Images/MailImg.png" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Nombre # 4</span>
-                                                <span class="block">
-                                                    Mensaje #4
-                                                </span>
-                                                <span class="time">hace 17 minutos</span>
-                                            </div>
-                                        </a>
+                                <li>
+                                    <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                        Mensajes
+                                        <a href="#" class="small">Mark all as read</a>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                    <a class="see-all" href="javascript:void(0);">Mostrar todos los mensajes<i class="k-icon k-i-arrow-60-right"></i> </a>
                                 </li>
-                        </ul>*@
+                                <li>
+                                    <div class="message-notif-scroll scrollbar-outer">
+                                        <div class="notif-center">
+                                            <a href="#">
+                                                <div class="notif-img">
+                                                    <img src="~/Images/MailImg.png" alt="Img Profile">
+                                                </div>
+                                                <div class="notif-content">
+                                                    <span class="subject">Nombre # 1</span>
+                                                    <span class="block">
+                                                        Mensaje #1
+                                                    </span>
+                                                    <span class="time">hace 5 minutos</span>
+                                                </div>
+                                            </a>
+                                            <a href="#">
+                                                <div class="notif-img">
+                                                    <img src="~/Images/MailImg.png" alt="Img Profile">
+                                                </div>
+                                                <div class="notif-content">
+                                                    <span class="subject">Nombre # 2</span>
+                                                    <span class="block">
+                                                        Mensaje #2
+                                                    </span>
+                                                    <span class="time">hace 12 minutos</span>
+                                                </div>
+                                            </a>
+                                            <a href="#">
+                                                <div class="notif-img">
+                                                    <img src="~/Images/MailImg.png" alt="Img Profile">
+                                                </div>
+                                                <div class="notif-content">
+                                                    <span class="subject">Nombre # 3</span>
+                                                    <span class="block">
+                                                        Mensaje #3
+                                                    </span>
+                                                    <span class="time">hace 5 minutos</span>
+                                                </div>
+                                            </a>
+                                            <a href="#">
+                                                <div class="notif-img">
+                                                    <img src="~/Images/MailImg.png" alt="Img Profile">
+                                                </div>
+                                                <div class="notif-content">
+                                                    <span class="subject">Nombre # 4</span>
+                                                    <span class="block">
+                                                        Mensaje #4
+                                                    </span>
+                                                    <span class="time">hace 17 minutos</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                        <a class="see-all" href="javascript:void(0);">Mostrar todos los mensajes<i class="k-icon k-i-arrow-60-right"></i> </a>
+                                    </li>
+                            </ul>*@
                         @* fin revisar para mensajeria*@
                     </li>
 
                     <li class="nav-item dropdown hidden-caret">
                         <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="TS-icon-NOTIFICACION"></i>
-                            @*<span class="notification">4</span>*@
+                            <span class="notification" id="lblCantidadNotificaciones" style="display: none;"></span>
                         </a>
-                        @*Revisar si podemos aplicar notificaciones*@
-                        @*<ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                        @*NOTIFICACIONES*@
+                        <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                             <li>
-                                <div class="dropdown-title">Tienes 4 notificaciones nuevas</div>
+                                <div class="dropdown-title" id="divCantidadNotificaciones"></div>
                             </li>
                             <li>
-                                <div class="notif-center">
-                                    <a href="#">
-                                        <div class="notif-icon notif-primary"> <i class="k-icon k-i-notification"></i> </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Notificacion # 1
-                                            </span>
-                                            <span class="time">hace 5 minutos</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-icon notif-success"> <i class="k-icon k-i-notification"></i> </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Notificacion # 2
-                                            </span>
-                                            <span class="time">hace 12 minutos</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="~/Images/MailImg.png" alt="Img Profile">
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Notificacion # 3
-                                            </span>
-                                            <span class="time">hace 12 minutos</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-icon notif-danger"> <i class="k-icon k-i-notification"></i> </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Notificacion # 4
-                                            </span>
-                                            <span class="time">hace 17 minutos</span>
-                                        </div>
-                                    </a>
+                                <div id="divNotificaciones" class="notif-center list-group list-group-messages list-group-flush">
+                                    @*Espacio para notificaciones dinámicamente*@
                                 </div>
                             </li>
                             <li>
-                                    <a class="see-all" href="javascript:void(0);">Ver todas las notificaciones<i class="k-icon k-i-arrow-60-right"></i> </a>
-                                </li>
-                        </ul>*@
-                        @*fin Revisar si podemos aplicar notificaciones*@
+                                <a class="see-all" href="~/MisNotificaciones">Ver todas las notificaciones<i class="k-icon k-i-arrow-60-right"></i> </a>
+                            </li>
+                        </ul>
+                        @*FIN NOTIFICACIONES*@
                     </li>
 
                     <li class="nav-item dropdown hidden-caret">
@@ -199,11 +162,11 @@
                             <li>
                                 <div class="dropdown-divider"></div>
                                 @*<a class="dropdown-item" href="#">Mi perfil</a>
-                                <a class="dropdown-item" href="#">Mi balance</a>
-                                <a class="dropdown-item" href="#">Inbox</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Configuración de cuenta</a>
-                                <div class="dropdown-divider"></div>*@
+                                    <a class="dropdown-item" href="#">Mi balance</a>
+                                    <a class="dropdown-item" href="#">Inbox</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Configuración de cuenta</a>
+                                    <div class="dropdown-divider"></div>*@
                                 <a id="btnLogout" class="dropdown-item" href="#">Cerrar Sesi&oacute;n</a>
                             </li>
                         </ul>
@@ -266,14 +229,14 @@
     @Scripts.Render("~/bundles/Kendo/culture/js")
     @Scripts.Render("~/bundles/Kendo/messages/js")
     @Scripts.Render("~/bundles/pdfobject")
-    @RenderSection("scripts", required: false)
-
+    <script src="@(TSM.Utils.Config.TSM_WebApi.Replace("api/", ""))/signalr/hubs" type="text/javascript"></script>
     <script type="text/javascript">
         var UrlMenu = "@string.Format("{0}Menus", TSM.Utils.Config.TSM_WebApi)";
+        var UrlNotificaciones = "@string.Format("{0}Notificaciones", TSM.Utils.Config.TSM_WebApi)";
         var UrlMRSeguridad = "@string.Format("{0}MenusRoles", TSM.Utils.Config.TSM_WebApi)";
         var TSM_Web_APi = "@TSM.Utils.Config.TSM_WebApi";
         kendo.culture("es-SV");
     </script>
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>

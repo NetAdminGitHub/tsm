@@ -643,3 +643,63 @@ var KdoShowCampoPopup = function (container, campo) {
     container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
 };
 
+
+var opcionesFormaSmartWizard = {
+    Defecto: "default",
+    Flechas: "arrows",
+    Circulos: "circles",
+    Puntos: "dots"
+};
+
+/**
+ * Proceso encargado de crear el control smartWizard.
+ * @param {HTMLDivElement} DivIdElement Elemento DIV dentro del cual se dibujará el control wizard.
+ * @param {JSON} etapas Listado de etapas y sus propiedades para dibujar el control.
+ * @param {opcionesFormaSmartWizard} forma Forma en la que se dibujarán las etapas en el control.
+ */
+var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
+    let EtapaOpc = $("#EtapaOpc");
+    EtapaOpc.children().remove();
+    
+    var SetEtapa = "vistaParcial";
+
+    $.each(etapas, function (index, elemento) {
+        EtapaOpc.append(
+            "<li class=\"nav-item\">" +
+            "<a href=\"#" + SetEtapa + "\" class=\"nav-link\" etapa=" + elemento.IdEtapaProceso + ">" +
+            "<span class=\"k-icon " + elemento.Icono + " ficonEtp\"></span><br>" +
+            "<small>" + elemento.Nombre + "</small>" +
+            "</a>" +
+            "</li>");
+    });
+
+    // Smart Wizard
+    DivIdElement.smartWizard({
+        selected: etapas[0].EtapaActiva,
+        showStepURLhash: false,
+        theme: givenOrDefault(forma, "arrows"),
+        transitionEffect: 'fade',
+        toolbarSettings: {
+            toolbarPosition: 'top'
+        },
+        lang: {
+            next: '',
+            previous: ''
+        },
+        anchorSettings: {
+            markDoneStep: true,
+            markAllPreviousStepsAsDone: true
+        }
+    });
+
+    DivIdElement.on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
+        let etapa = anchorObject.attr("etapa");
+        window.location.href = window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo  + "/" + etapa;
+    });
+
+    // modificar pluging de acuerdo standar TSM 
+    KdoButton($("#swbtnnext"), "arrow-double-60-right", "Etapa siguiente");
+    KdoButton($("#swbtnprev"), "arrow-double-60-left", "Etapa Previa");
+    $("#swbtnnext").removeClass("btn btn-secondary");
+    $("#swbtnprev").removeClass("btn btn-secondary");
+};
