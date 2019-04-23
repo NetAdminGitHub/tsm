@@ -1,6 +1,7 @@
 ﻿var Permisos;
 $(document).ready(function () {
     var vIdTipoOrdenTrabajo = 0;
+    var vIdEtapaProceso = 0;
     //#region Programacion Tipos de Ordenes de Trabajo
     dataSource = new kendo.data.DataSource({
         transport: {
@@ -247,27 +248,163 @@ $(document).ready(function () {
     var selRows = [];
     $("#gridConfEp").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridConfEp"), selRows);
+        if ($("#gridConfEp").data("kendoGrid").dataSource.total() === 0) {
+            vIdEtapaProceso = 0;
+            $("#gridUsuarios").data("kendoGrid").dataSource.data([]);
+            Grid_HabilitaToolbar($("#gridUsuarios"), false, false, false);
+        }        
     });
 
     $("#gridConfEp").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridConfEp"), selRows);
+        fn_ConsultarGridUsuarios();
     });
 
-    $(window).on("resize", function () {
-        Fn_Grid_Resize($("#gridConfEp"), $(window).height() - "371");
+    $(window).on("resize", function () {        
+        Fn_Grid_Resize($("#gridConfEp"), ($(window).height() - 420) / 2);
     });
 
-    Fn_Grid_Resize($("#gridConfEp"), $(window).height() - "371");
+    Fn_Grid_Resize($("#gridConfEp"), ($(window).height() - 420) / 2);
     //#endregion
 
-    var fn_ConsultarGridConfEP = function () {
+    //#region Programacion Grid Cofiguracion Etapas Ordenes de trabajo y Usuarios
+    //CONFIGURACION DEL CRUD
+    daSUsuarios = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "/ConfiguracionEtapasOrdenesUsuarios/" + vIdTipoOrdenTrabajo + "/" + vIdEtapaProceso; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "/ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + datos.IdEtapaProceso + "/" + datos.IdUsuario; },
+                dataType: "json",
+                type: "DELETE"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "/ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + datos.IdEtapaProceso + "/" + datos.IdUsuario; },
+                dataType: "json",
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            create: {
+                url: TSM_Web_APi + "/ConfiguracionEtapasOrdenesUsuarios/",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdUsuario",
+                fields: {
+                    IdTipoOrdenTrabajo: {
+                        type: "Number",
+                        defaultValue: function (e) { return fn_GetIdTipoOrden($("#grid").data("kendoGrid")); }
+                    },                    
+                    IdEtapaProceso: {
+                        type: "Number",
+                        defaultValue: function (e) { return fn_GetIdEtapaProceso($("#gridConfEp").data("kendoGrid")); }
+                    },
+                    IdUsuario: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='IdIdUsuario']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdUsuario").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL gridConfEp,CAMPOS
+    $("#gridUsuarios").kendoGrid({
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "IdEtapaProceso");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            Grid_Focus(e, "IdUsuario");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdTipoOrdenTrabajo", title: "Cod. tipo orden trabajo", editor: Grid_ColLocked, hidden: true },
+            { field: "IdEtapaProceso", title: "Cod. etapa de proceso", editor: Grid_ColLocked, hidden: true },
+            { field: "IdUsuario", title: "Usuario", values: ["IdUsuario", "Nombre", TSM_Web_APi + "Usuarios", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre", title: "Usuario" },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+        ]
+    });
+
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gridConfEp
+    SetGrid($("#gridUsuarios").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#gridUsuarios").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridUsuarios").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridUsuarios").data("kendoGrid"), daSUsuarios);
+
+    Grid_HabilitaToolbar($("#gridUsuarios"), false, false, false);
+    
+    var seleRows = [];
+    $("#gridUsuarios").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridUsuarios"), seleRows);
+    });
+
+    $("#gridUsuarios").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridUsuarios"), seleRows);
+    });
+
+    $(window).on("resize", function() {
+        Fn_Grid_Resize($("#gridUsuarios"), ($(window).height() - 420) / 2);
+    });
+
+    Fn_Grid_Resize($("#gridUsuarios"), ($(window).height() - 420) / 2);
+    //#endregion
+
+    let fn_ConsultarGridConfEP = function () {
         vIdTipoOrdenTrabajo = fn_GetIdTipoOrden($("#grid").data("kendoGrid"));
         $("#gridConfEp").data("kendoGrid").dataSource.read();
         $("#grid").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridConfEp"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridConfEp"), false, false, false);
     };
-    var fn_GetIdTipoOrden = function (g) {
-        var SelItem = g.dataItem(g.select());
+    let fn_GetIdTipoOrden = function (g) {
+        let SelItem = g.dataItem(g.select());
         return SelItem === null ? 0 : SelItem.IdTipoOrdenTrabajo;
+    };
+
+    let fn_ConsultarGridUsuarios = function () {
+        vIdEtapaProceso = fn_GetIdEtapaProceso($("#gridConfEp").data("kendoGrid"));
+        $("#gridUsuarios").data("kendoGrid").dataSource.read();
+        $("#gridConfEp").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridUsuarios"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridUsuarios"), false, false, false);
+    };
+
+    let fn_GetIdEtapaProceso = function (g) {
+        let SelItem = g.dataItem(g.select());
+        return SelItem === null ? 0 : SelItem.IdEtapaProceso;
     };
 });
 
