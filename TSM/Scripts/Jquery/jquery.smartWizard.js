@@ -329,13 +329,13 @@
             this._showStep(si);
             return true;
         },
-        _showStep: function (idx) {
+        _showStep: function (idx, forced = false) {
             // If step not found, skip
             if (!this.steps.eq(idx)) {
                 return false;
             }
             // If current step is requested again, skip
-            if (idx === this.current_index) {
+            if (idx === this.current_index && !forced) {
                 return false;
             }
             // If it is a disabled step, skip
@@ -566,6 +566,9 @@
         },
         prev: function () {
             this._showPrevious();
+        },
+        goToPage: function (idx) {
+            this._showStep(idx, true);
         },
         reset: function () {
             // Trigger "beginReset" event

@@ -1,39 +1,35 @@
-﻿
-var UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
-var UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
-var StrIdCatalogoInsu = "";
+﻿var Permisos;
+let UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
+let UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
+let StrIdCatalogoInsu = "";
 
-var Permisos;
-var vIdPlan = 0;
-let fn_CargarJSEtapa =function () {
-    fn_IniciarRevision();
-};
+    
+let vIdPlan = 0;
 
-let fn_IniciarRevision = function () {
+//let fn_IniciarRevision = function () {
+//    $.ajax({
+//        url: UrlArf + "/IniciarAnalisisRequerimientoFactibilidades/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtId").val(),
+//        async: false,
+//        type: "POST",
+//        success: function (resultado) {
+//            fn_MostrarGrid();
+//        },
+//        error: function (resultado) {
+//            $("#kendoNotificaciones").data("kendoNotification").show("Error al iniciar revisión técnica", "error");
+//        }
+//    });
+//};
 
-    $.ajax({
-        url: UrlArf + "/IniciarAnalisisRequerimientoFactibilidades/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtId").val(),
-        async: false,
-        type: "POST",
-        success: function (resultado) {
-            fn_MostrarGrid();
-        },
-        error: function (resultado) {
-            $("#kendoNotificaciones").data("kendoNotification").show("Error al iniciar revisión técnica", "error");
-        }
-    });
-};
-
-let fn_MostrarGrid = function () {
-    //#region Programacion Analisis Requerimiento Factibilidad
-    dataSource = new kendo.data.DataSource({
+//#region Programacion Analisis Requerimiento Factibilidad
+var fn_RTCargarConfiguracion = function () {
+    let dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function (datos) { return UrlArf + "/" + $("#txtId").val(); },
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return UrlArf + "/" + datos.IdRequerimiento + "/"+ datos.IdPlantillaListaVerificacion; },
+                url: function (datos) { return UrlArf + "/" + datos.IdRequerimiento + "/" + datos.IdPlantillaListaVerificacion; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
@@ -70,13 +66,14 @@ let fn_MostrarGrid = function () {
                             }
                         }
                     },
-                    Estado: {type:"string"},
+                    Estado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
             }
         }
     });
+
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridRev").kendoGrid({
         edit: function (e) {
@@ -98,7 +95,7 @@ let fn_MostrarGrid = function () {
             { field: "Descripcion", title: "Descripcion de plantilla", hidden: true },
             { field: "FechaAnalisis", title: "Fecha analisis", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "Observaciones", title: "Observaciones" },
-            { field: "Estado", title: "Estado", hidden: true},
+            { field: "Estado", title: "Estado", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -130,13 +127,11 @@ let fn_MostrarGrid = function () {
     });
 
     Fn_Grid_Resize($("#gridRev"), $(window).height() - "371");
-
-    //#endregion 
+    //#endregion
 
     //#region Programacion Grid Cofiguracion Etapas Ordenes de trabajo
-
     //CONFIGURACION DEL CRUD
-    daRevdet = new kendo.data.DataSource({
+    let daRevdet = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function (datos) { return UrlArfDet + "/GetAnalisisRequerimientoFactibilidadesRevisionesByIdReqIdPla/" + $("#txtId").val() + "/" + vIdPlan; },
@@ -156,7 +151,7 @@ let fn_MostrarGrid = function () {
                     IdRequerimiento: {
                         type: "Number"
                     },
-                    IdPlantillaListaVerificacion: { 
+                    IdPlantillaListaVerificacion: {
                         type: "string"
                     },
                     Item: {
@@ -204,7 +199,7 @@ let fn_MostrarGrid = function () {
                 });
             });
         },
-        edit: function() {
+        edit: function () {
             alert('hola')
         },
         columns: [
@@ -215,11 +210,11 @@ let fn_MostrarGrid = function () {
             {
                 field: "Comprobado", title: "Verificado",
                 editor: Grid_ColCheckbox,
-                template: function (dataItem) { return Grid_ColTempCheckBox(dataItem, "Comprobado"); } 
+                template: function (dataItem) { return Grid_ColTempCheckBox(dataItem, "Comprobado"); }
             },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
-            
+
         ]
     });
 
@@ -246,12 +241,17 @@ let fn_MostrarGrid = function () {
     });
 
     Fn_Grid_Resize($("#gridRevDet"), $(window).height() - "371");
-    //#endregion
+    //#endregion};
 
+var fn_RTMostrarGrid = function () {
+    $("#gridRev").data("kendoGrid").dataSource.read();
 };
 
+fun_List.push(fn_RTCargarConfiguracion);
+fun_ListDatos.push(fn_RTMostrarGrid);
+
 let Fn_GetFilaSelect = function (data) {
-    var fila = "";
+    let fila = "";
     fila = {
         IdRequerimiento: data.IdRequerimiento,
         IdPlantillaListaVerificacion: data.IdPlantillaListaVerificacion,
@@ -261,6 +261,7 @@ let Fn_GetFilaSelect = function (data) {
     }
     return fila;
 };
+
 let Grid_ColTempCheckBox = function (data, columna) {
     return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
@@ -271,8 +272,9 @@ let fn_ConsultarGridConfEP = function () {
     $("#gridRevDet").data("kendoGrid").dataSource.read();
     $("#gridRev").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridRevDet"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridRevDet"), false, false, false);
 };
+
 let fn_GetIdPlan = function (g) {
-    var SelItem = g.dataItem(g.select());
+    let SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdPlantillaListaVerificacion;
 };
 

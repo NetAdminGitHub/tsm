@@ -666,11 +666,15 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     $.each(etapas, function (index, elemento) {
         EtapaOpc.append(
             "<li class=\"nav-item\">" +
-            "<a href=\"#" + SetEtapa + "\" class=\"nav-link\" etapa=" + elemento.IdEtapaProceso + ">" +
+            "<a href=\"#" + SetEtapa + elemento.IdEtapaProceso + "\" class=\"nav-link\" etapa=\"" + elemento.IdEtapaProceso + "\" vista=\"" + elemento.VistaFormulario + "\">" +
             "<span class=\"k-icon " + elemento.Icono + " ficonEtp\"></span><br>" +
             "<small>" + elemento.Nombre + "</small>" +
             "</a>" +
             "</li>");
+
+        $("#EtapasVistas").append(
+            "<div id=\"" + SetEtapa + elemento.IdEtapaProceso + "\"></div>"
+        );
     });
 
     // Smart Wizard
@@ -690,12 +694,40 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
             markDoneStep: true,
             markAllPreviousStepsAsDone: true
         }
-    });
+    });    
 
     DivIdElement.on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
         let etapa = anchorObject.attr("etapa");
-        window.location.href = window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo  + "/" + etapa;
+        let vista = anchorObject.attr("vista");
+        window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa)
+
+        if ($("#vistaParcial" + etapa).children().length == 0) {
+            $.ajax({
+                url: "/OrdenesTrabajo/VistaParcial/" + vista,
+                method: 'POST',
+                success: function (result) {
+                    $("#vistaParcial" + etapa).append(result);
+
+                    var script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.src = "/Scripts/js/" + vista + ".js";
+
+                    script.onload = function () {
+                        CargarInfoEtapa();
+                    };
+
+                    document.getElementsByTagName('head')[0].appendChild(script);                    
+                }
+            });
+        }
+        else {
+            CargarInfoEtapa(false);
+        }
     });
+
+    let index = $.grep(etapas, function (n, i) { return n.IdEtapaProceso == window.location.href.split("/")[window.location.href.split("/").length - 1]; });
+
+    $("#smartwizard").smartWizard("goToPage", index[0].Item - 1);
 
     // modificar pluging de acuerdo standar TSM 
     KdoButton($("#swbtnnext"), "arrow-double-60-right", "Etapa siguiente");
