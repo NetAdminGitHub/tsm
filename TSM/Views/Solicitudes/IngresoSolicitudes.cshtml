@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Ingreso de solicitud";
+    ViewBag.IdVersion = "TSM0101060|v19040101";
+
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlSol = "@string.Format("{0}Solicitudes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTot = "@string.Format("{0}TiposOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCli = "@string.Format("{0}Clientes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSer = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCC = "@string.Format("{0}ContactosClientes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlEC = "@string.Format("{0}EjecutivoCuentas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlECC = "@string.Format("{0}EjecutivoCuentasClientes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTem = "@string.Format("{0}Temporadas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlPro = "@string.Format("{0}Programas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSp = "@string.Format("{0}SolicitudesPrendas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSpu = "@string.Format("{0}SolicitudesPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCp = "@string.Format("{0}CategoriaConfecciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCpreUb = "@string.Format("{0}CategoriaPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSdp = "@string.Format("{0}SolicitudesDisenoPrendas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlComTel = "@string.Format("{0}ComposicionTelas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlConsTel = "@string.Format("{0}ConstruccionTelas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTm = "@string.Format("{0}TipoMuestras", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUm = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSdpt = "@string.Format("{0}SolicitudesDisenosPrendasTecnicas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlTec = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMd = "@string.Format("{0}MotivosDesarrollos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlPot = "@string.Format("{0}PrioridadesOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
+        var vIdSolicitud = @ViewData["idsolicitud"];
+
+    </script>
+    <script src="~/Scripts/js/IngresoSolicitudes.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegCliente.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegPrenda.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaPieza.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaTela.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaUbicacion.js"></script>
+    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>
+    <script src="~/Scripts/Jquery/jquery.smartWizard.js"></script>
+    <link href="~/Content/smart_wizard_theme_arrows.css" rel="stylesheet" />
+}
+
+<div class="form-control col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
+    <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor">
+        <li class="nav-item active">
+            <a href="#p-1" class="nav-link">
+                <span class="TS-icon-Asset-281 ficonEtp"></span><br>
+                <small>PASO 01 - SELECCIONE SERVICIO </small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#p-2" class="nav-link">
+                <span class="TS-icon-CAMISA-2 ficonEtp"></span><br>
+                <small>PASO 2 - PRENDA Y CANTIDAD DE DISEÑOS </small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#p-3" class="nav-link">
+                <span class="TS-icon-INFORMACION-2 ficonEtp"></span><br>
+                <small>PASO 3 - INFORMACION GENERAL DE CADA PIEZA </small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#p-4" class="nav-link">
+                <span class="TS-icon-CARNET ficonEtp"></span><br>
+                <small>PASO 4 - INFORMACION DE LA PRENDA + TELA  </small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#p-5" class="nav-link">
+                <span class="TS-icon-CA3 ficonEtp"></span><br>
+                <small>PASO 05 - INGRESA LA INFORMACION DE DISEÑO + UBICACION</small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#p-6" class="nav-link">
+                <span class="TS-icon-AJUSTES ficonEtp"></span><br>
+                <small>PASO 06 - INFORMACION DE CANTIDAD DE MUESTRAS </small>
+            </a>
+        </li>
+    </ul>
+    <div class="sw-container tab-content" >
+        <div id="p-1" class="tab-pane step-content" style="display: block;">
+            @Html.Partial("_SolicitudRegCliente")
+        </div>
+        <div id="p-2" class="tab-pane step-content">
+            @Html.Partial("_SolicitudRegPrenda")
+        </div>
+        <div id="p-3" class="tab-pane step-content">
+            @Html.Partial("_SolicitudRegDisenoPrendaPieza")
+        </div>
+        <div id="p-4" class="tab-pane step-content">
+            @Html.Partial("_SolicitudRegDisenoPrendaTela")
+        </div>
+        <div id="p-5" class="tab-pane step-content">
+            @Html.Partial("_SolicitudRegDisenoPrendaUbicacion")
+        </div>
+        <div id="p-6" class="tab-pane step-content">
+            @Html.Partial("_SolicitudRegDisenoPrendaMuestra")
+        </div>
+    </div>
+</div>
+

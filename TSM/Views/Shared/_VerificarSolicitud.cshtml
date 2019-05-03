@@ -26,11 +26,12 @@
                                     <!-- SECION REQUERIMIENTO y PRENDA -->
                                     <div class="form-row">
                                         <div class="form-group col-lg-12" id="DivFrmRD">
-                                            <!-- SECION FROMULARIO REQUERIMIENTO DE DESARROLLO -->
+                                            <!-- SECION FORMULARIO REQUERIMIENTO DE DESARROLLO -->
                                             <div class="border p-md-1 p-lg-1 ">
                                                 <div class="form-row">
-                                                    <div class="col-lg-4"> <input id="IdRequerimiento" name="IdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                    <div class="col-lg-4"> <input id="Estado" name="Estado" class="k-textbox form-control" , disabled="disabled" value="" hidden="hidden" /></div>
+                                                    <div class="col-lg-2"> <input id="IdRequerimiento" name="IdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                    <div class="col-lg-2"> <input id="Estado" name="Estado" class="k-textbox form-control" , disabled="disabled" value="" hidden="hidden" /></div>
+                                                    <div class="col-lg-2"> <input id="IdEjecutivoCuenta" name="IdEjecutivoCuenta" class="k-textbox form-control" , disabled="disabled" value="" hidden="hidden" /></div>
                                                     <div class="form-group col-md-6 col-lg-9"> <label class="font-weight-bold"></label></div>
                                                     <div class="form-group col-md-6 col-lg-3 ">
                                                         <input type="checkbox" id="chkRevisionTecnica" name="chkRevisionTecnica" class="k-checkbox">
@@ -43,9 +44,19 @@
                                                         <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="TxtEjecutivoCuenta">Ejecutivo (a) Cuenta:</label>
+                                                        <input id="TxtEjecutivoCuenta" name="TxtEjecutivoCuenta" class="k-textbox form-control" , disabled="disabled" />
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
                                                         <label for="Fecha">Fecha:</label>
                                                         <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
                                                     </div>
+                                                    <div class="form-group col-md-6  col-lg-3">
+                                                        <label for="CmbMotivoDesarrollo">Motivo Desarrollo:</label>
+                                                        <input id="CmbMotivoDesarrollo" name="CmbMotivoDesarrollo" required validationMessage="Requerido" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
                                                     <div class="form-group col-md-6  col-lg-3">
                                                         <label for="IdPrograma">Programa:</label>
                                                         <input id="IdPrograma" name="IdPrograma" required validationMessage="Requerido" class="form-control" />
@@ -61,6 +72,14 @@
                                                                 <input id="CmbIdUnidadMedidaCantidad" name="CmbIdUnidadMedidaCantidad" required validationMessage="Requerido" class="form-control" />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="TxtCantidadSTrikeOff">Strike Off:</label>
+                                                        <input id="TxtCantidadSTrikeOff" name="TxtCantidadSTrikeOff" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-md-6  col-lg-3">
+                                                        <label for="CmbTMuestra">Tipo Muestra:</label>
+                                                        <input id="CmbTMuestra" name="CmbTMuestra" required validationMessage="Requerido" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="form-row" id="Row4RD">
@@ -116,14 +135,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-row">
-                                                <br />
-                                            </div>
-                                            <!-- SECION FROMULARIO PRENDA-->
+                                            <div class="form-row"><br /></div>
+                                            <!-- SECION FORMULARIO PRENDA-->
                                             <div class="border p-md-1 p-lg-1">
                                                 <div class="form-row">
                                                     <div class="col-lg-6"><label class="font-weight-bold">Prenda</label></div>
-                                                    @*<div class="col-lg-6"> <input id="IdPrenda" name="IdPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>*@
+                                                    <div class="col-lg-3"> <input id="IdModulo" name="IdModulo" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                    <div class="col-lg-3"> <input id="IdSolicitudDisenoPrenda" name="IdSolicitudDisenoPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6 col-lg-3">
@@ -139,8 +157,8 @@
                                                         <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="Color">Color:</label>
-                                                        <input id="Color" name="Color" required validationMessage="Requerido" class="form-control" />
+                                                        <label for="Color">Color Tela:</label>
+                                                        <input id="Color" name="Color" required validationMessage="Requerido" class="k-textbox form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
@@ -191,18 +209,26 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-row">
-                                                            <div class="form-group col-lg-12">
+                                                            <div class="form-group col-md-6 col-lg-6">
                                                                 <label for="EstiloDiseno">Estilo:</label>
                                                                 <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
                                                             </div>
+                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                <label for="CmbTipoLuz">Tipo de Luz:</label>
+                                                                <input id="CmbTipoLuz" name="CmbTipoLuz" class="form-control" />
+                                                            </div>
                                                         </div>
                                                         <div class="form-row">
-                                                            <div class="form-group col-lg-12">
+                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                <label for="CmbTipoAcabado">Acabado:</label>
+                                                                <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
+                                                            </div>
+                                                            <div class="form-group col-md-6 col-lg-6">
                                                                 <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
                                                                 <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
                                                             </div>
                                                         </div>
-
+                                                   
                                                     </div>
                                                     <div class="form-row"> <div class="form-group"></div></div>
                                                     <div class="form-row">
@@ -249,10 +275,21 @@
                                     <span class="TS-icon-TECNICA-2" style="font-size: 1.7em;">&nbsp</span>
                                     Detallle de Técnicas
 
-                                    <div class="form-row" id="ColorGrid">
+                                    <div class="form-row" id="TecGrid">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <div id="GRReqDesTec"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="TS-icon-LAPIZ" style="font-size: 1.7em;">&nbsp</span>
+                                    Detalle Diseño Color & Técnica
+                                    <div class="form-row" id="ColorTecGrid">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div id="GRReqDesColorTec"></div>
                                             </div>
                                         </div>
                                     </div>

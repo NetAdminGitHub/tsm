@@ -210,6 +210,7 @@
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
+    <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
@@ -229,7 +230,6 @@
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
-    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosEstadosController.cs" />
     <Compile Include="Controllers\RetencionesController.cs" />
@@ -239,6 +239,7 @@
     <Compile Include="Controllers\SimulacionesController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
+    <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\TamanosDimensionesController.cs" />
     <Compile Include="Controllers\TamanosInsumosController.cs" />
     <Compile Include="Controllers\TecnicasController.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Controllers\TiposMaquinasController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
+    <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
@@ -822,6 +824,7 @@
     <Content Include="Scripts\js\EtapasProcesos.js" />
     <Content Include="Scripts\js\FactoresCostos.js" />
     <Content Include="Scripts\js\FormaTipoInsumos.js" />
+    <Content Include="Scripts\js\GestionOT.js" />
     <Content Include="Scripts\js\GradosInsumos.js" />
     <Content Include="Scripts\js\Interfaz.js" />
     <Content Include="Scripts\js\Layout.js" />
@@ -850,6 +853,8 @@
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
     <Content Include="Scripts\js\Sistemas.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
+    <Content Include="Scripts\js\IngresoSolicitudes.js" />
+    <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
     <Content Include="Scripts\js\Tecnicas.js" />
@@ -862,10 +867,19 @@
     <Content Include="Scripts\js\TiposMaquinas.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
+    <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\_RevisionTecnica.js" />
+    <Content Include="Scripts\js\_SolicitudDesarrolloMuestras.js" />
+    <Content Include="Scripts\js\_SolicitudRegCliente.js" />
+    <Content Include="Scripts\js\_SolicitudRegDisenoPrendaMuestra.js" />
+    <Content Include="Scripts\js\_SolicitudRegDisenoPrendaPieza.js" />
+    <Content Include="Scripts\js\_SolicitudRegDisenoPrendaTela.js" />
+    <Content Include="Scripts\js\_SolicitudRegDisenoPrendaUbicacion.js" />
+    <Content Include="Scripts\js\_SolicitudRegPrenda.js" />
     <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
@@ -1233,8 +1247,19 @@
     <Content Include="Views\MisNotificaciones\Index.cshtml" />
     <Content Include="Views\TiposMaquinas\Index.cshtml" />
     <Content Include="Views\PlantillasListasVerificaciones\Index.cshtml" />
-    <Content Include="Views\Reportes\Visor.cshtml" />
+    <Content Include="Views\Solicitudes\IngresoSolicitudes.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegCliente.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegPrenda.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaPieza.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaTela.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaMuestra.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaUbicacion.cshtml" />
+    <Content Include="Views\Solicitudes\Index.cshtml" />
     <Content Include="Views\Shared\_VerificarSolicitud.cshtml" />
+    <Content Include="Views\Shared\_RevisionTecnica.cshtml" />
+    <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
+    <Content Include="Views\GestionOT\Index.cshtml" />
+    <Content Include="Views\TiposSolicitudesDesarrollos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1250,6 +1275,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\PerfilUsuarios\" />
+    <Folder Include="Views\RevisionTecnica\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
   <ItemGroup>

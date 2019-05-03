@@ -54,7 +54,8 @@ $(document).ready(function () {
                                 return true;
                             }
                         }
-                    }
+                    },
+                    Icono: {type:"string"}
                 }
             }
         }
@@ -66,12 +67,14 @@ $(document).ready(function () {
             // S BLOQUEA CAMPO LLAVE ( ID)
             e.container.find("label[for=IdCategoriaPrenda]").parent("div .k-edit-label").hide();
             e.container.find("label[for=IdCategoriaPrenda]").parent().next("div .k-edit-field").hide();
+            $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdCategoriaPrenda", title: "Código Categoría", editor: Grid_ColInt64NumSinDecimal ,hidden:true},
-            { field: "Nombre", title: "Nombre Categoría Prenda" }
+            { field: "Nombre", title: "Nombre Categoría Prenda" },
+            { field: "Icono", title: "Icono" }
         ]
     });
 

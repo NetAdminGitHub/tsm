@@ -1,0 +1,97 @@
+﻿<form id="RSoliMue" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div class="form-row">
+        <div class="form-group col-lg-2"></div>
+        <div class="form-group col-lg-4">
+            @*<div class="form-row">
+                    <div class="input-group">
+                        <div style="width: 100%;">
+                            <button type="button" id="bntIrSolicitud" name="bntIrSolicitud"></button>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="form-row">
+                <div class="col-lg-2"> <input id="TxtIdSolicitudDesarrollo" name="TxtIdSolicitudDesarrollo" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                <div class="col-lg-2"> <input id="TxtEstado" name="TxtEstado" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtNoDocumento">No Requerimiento:</label>
+                    <input id="TxtNoDocumento" name="TxtNoDocumento" class="k-textbox form-control" , disabled="disabled" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbTipoSolicitudDesarrollo">Tipo de Solicitud:</label>
+                    <input name="CmbTipoSolicitudDesarrollo" id="CmbTipoSolicitudDesarrollo" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="dtFechaSolicitudCliente">Fecha Solicitud del Cliente:</label>
+                    <input id="dtFechaSolicitudCliente" name="dtFechaSolicitudCliente" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="dtFechaSolicitudDesarrollo">Fecha Solicitud Desarrollo:</label>
+                    <input id="dtFechaSolicitudDesarrollo" name="dtFechaSolicitudDesarrollo" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12 align-self-lg-end">
+                    <div class="input-group">
+                        <div style="width: 100%;">
+                            <button type="button" id="btnGuardar" name="btnGuardar"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group col-lg-4">
+
+
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="dtFechaEstampado">Fecha Estampado:</label>
+                    <input id="dtFechaEstampado" name="dtFechaEstampado" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbTipoMuestra">Tipo Muestra:</label>
+                    <input name="CmbTipoMuestra" id="CmbTipoMuestra" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbTipoMaquina">Tipo de Maquina:</label>
+                    <input name="CmbTipoMaquina" id="CmbTipoMaquina" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtComentarios">Comentarios:</label>
+                    <input id="TxtComentarios" name="TxtComentarios" class=" k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12 ">
+                    <input type="checkbox" id="chkExisteTela" name="chkExisteTela" class="k-checkbox">
+                    <label class="k-checkbox-label" for="chkExisteTela">Existe Tela</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group col-lg-2"></div>
+    </div>
+</form>
+
+<div class="form-row">
+    <div class="form-group">
+        <div id="gridSolDes"></div>
+    </div>
+</div>
+

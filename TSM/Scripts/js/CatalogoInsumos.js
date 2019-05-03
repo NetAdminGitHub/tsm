@@ -424,7 +424,7 @@ $(document).ready(function () {
                 if (ResultadoAxNoTSM === "[]") {
                     ResultadoAxNoTSM = "[]"
                     datos.success("");
-                    ;
+               
                 } else {
 
                     if (ResultadoAxNoTSM !== "") {

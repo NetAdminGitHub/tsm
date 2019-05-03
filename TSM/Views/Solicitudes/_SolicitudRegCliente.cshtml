@@ -1,0 +1,76 @@
+﻿
+
+<div class="form-row">
+    <div class="form-group col-lg-4">
+        <div class="form-row">
+            <div class="input-group">
+                <div style="width: 100%;">
+                    <button type="button" id="bntIrSolicitud" name="bntIrSolicitud"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-4">
+        <form id="RSolicitud" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtNoNod">No Registro Solicitud</label>
+                    <input id="TxtNoNod" name="TxtNoNod" type="text" class="k-textbox form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtFecha">Fecha Solicitud</label>
+                    <input id="TxtFecha" name="TxtFecha" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbSer">Servicio</label>
+                    <input name="CmbSer" id="CmbSer" required validationMessage="Requerido" class="form-control" >
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbTipoOT">Orden de Trabajo</label>
+                    <input name="CmbTipoOT" id="CmbTipoOT" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbCli">Cliente</label>
+                    <input name="CmbCli" id="CmbCli" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+            @*<div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="TxtNomCli">Nombre del cliente:</label>
+                <input id="TxtNomCli" name="TxtNomCli" type="text" class="k-textbox form-control" />
+            </div>
+        </div>*@
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbEjec">Ejecutivo de Cuenta</label>
+                    <input name="CmbEjec" id="CmbEjec" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbContacto">Contacto</label>
+                    <input name="CmbContacto" id="CmbContacto" required validationMessage="Requerido" class="form-control">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <div style="width: 100%;">
+                        <button type="button" id="btnGuardar" name="btnGuardar"></button>
+                        <button type="button" id="btnCancelar" name="btnCancelar"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="form-group col-lg-4"></div>
+</div>
+
+

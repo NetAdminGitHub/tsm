@@ -29,6 +29,13 @@ var fn_FiltrarJsonResult = function (Data, Keyfilter) {
 function Fhoy() {
     return kendo.toString(kendo.parseDate(new Date()), 's');
 }
+/**
+ * Devuelve la fecha del fin del mes
+ */
+function FechaFinMes() {
+    var dt = new Date(); 
+    return kendo.toString(kendo.parseDate(new Date(dt.getFullYear(), dt.getMonth() + 1, 0)), 's');
+}
 
 function RequestEndMsg(e,type) {
     if (type === "Post" || type === "Put" || type === "Delete") {
@@ -459,7 +466,7 @@ var Fn_VistaCambioEstado = function (e) {
                 content: result,
                 visible: false,
                 actions: [
-                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_Cambio, },
+                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_Cambio },
                     { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar'}
                    
                 ],
@@ -643,6 +650,44 @@ var KdoShowCampoPopup = function (container, campo) {
     container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
 };
 
+/**
+ * devuelve el valor del kendo combo box
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoCmbGetValue = function (InputElem) {
+    var combobox = InputElem.data("kendoComboBox");
+    return combobox.value() === "" ? null : combobox.selectedIndex >= 0 ? combobox.value() : null;
+
+};
+
+
+/**
+ * devuelve el Texto del kendo combo box
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoCmbGetText = function (InputElem) {
+    var combobox = InputElem.data("kendoComboBox");
+    return combobox.text() === "" ? null : combobox.selectedIndex >= 0 ? combobox.text() : null;
+
+};
+
+/**
+ * coloca valor al kendo combobox
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ * @param {any} value valor para setear el combobox
+ */
+var KdoCmbSetValue = function (InputElem, value) {
+    var combobox = InputElem.data("kendoComboBox");
+    combobox.value(value);
+
+};
+/**
+ * coloca el foco en el campo combobox
+ * @param {HTMLInputElement} InputElem recibe el elemento combobox
+ */
+var KdoCmbFocus = function (InputElem) {
+    InputElem.data("kendoComboBox").input.focus().select();
+};
 
 var opcionesFormaSmartWizard = {
     Defecto: "default",

@@ -2030,7 +2030,10 @@ body {
     }
 
     .card .card-body {
-        padding: 1.25rem
+        padding-top: 1.25rem;
+        padding-right:0.25rem;
+        padding-bottom: 1.25rem;
+        padding-left: 0.25rem;
     }
 
     .card .card-footer {

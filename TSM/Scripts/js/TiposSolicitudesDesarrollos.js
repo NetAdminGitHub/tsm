@@ -1,26 +1,23 @@
 ﻿var Permisos;
 $(document).ready(function () {
-    var vidTot = 0;
-    Kendo_CmbFiltrarGrid($("#CmbTot"), UrlTot, "Nombre", "IdTipoOrdenTrabajo", "Seleccione una Prenda ...");
-
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlMd + "/GetMotivosDesarrolloVistasByIdTipoOrdenTrabajo/" + vidTot; },
+                url: UrlTSD,
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return UrlMd + "/" + datos.IdMotivoDesarrollo; },
+                url: function (datos) { return UrlTSD + "/" + datos.IdTipoSolicitudDesarrollo; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return UrlMd + "/" + datos.IdMotivoDesarrollo; },
+                url: function (datos) { return UrlTSD + "/" + datos.IdTipoSolicitudDesarrollo; },
                 type: "DELETE"
             },
             create: {
-                url: UrlMd,
+                url: UrlTSD,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
@@ -36,9 +33,9 @@ $(document).ready(function () {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdMotivoDesarrollo",
+                id: "IdTipoSolicitudDesarrollo",
                 fields: {
-                    IdMotivoDesarrollo: { type: "number" },
+                    IdTipoSolicitudDesarrollo: { type: "number" },
                     Nombre: {
                         type: "string",
                         validation: {
@@ -52,10 +49,6 @@ $(document).ready(function () {
                             }
                         }
                     },
-                    IdTipoOrdenTrabajo: {
-                        type: "Number",
-                        defaultValue: function (e) { return $("#CmbTot").val(); }
-                    },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -66,17 +59,15 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
-            KdoHideCampoPopup(e.container, "IdMotivoDesarrollo");
+            KdoHideCampoPopup(e.container, "IdTipoLuz");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdTipoOrdenTrabajo", title: "Codigo Tipo Orden Trabajo", hidden: true },
-            { field: "IdMotivoDesarrollo", title: "Codigo motivo desarrollo", hidden: true },
-            { field: "Nombre", title: "Nombre motivo " },
+            { field: "IdTipoLuz", title: "Codigo tipo solicitud", hidden: true },
+            { field: "Nombre", title: "Nombre solicitud desarrollo" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -87,29 +78,6 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
-
-    Kendo_CmbFocus($("#CmbTot"));
-    Grid_HabilitaToolbar($("#grid"), false, false, false);
-
-    $("#CmbTot").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            vidTot = this.dataItem(e.item.index()).IdTipoOrdenTrabajo;
-            $("#grid").data("kendoGrid").dataSource.read();
-            Grid_HabilitaToolbar($("#grid"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-        }
-        else {
-            vidTot = 0;
-            Grid_HabilitaToolbar($("#grid"), false, false, false);
-        }
-    });
-
-    $("#CmbTot").data("kendoComboBox").bind("change", function (e) {
-        var value = this.value();
-        if (value === "") {
-            $("#grid").data("kendoGrid").dataSource.data([]);
-            Grid_HabilitaToolbar($("#grid"), false, false, false);
-        }
-    });
 
     var selectedRows = [];
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
