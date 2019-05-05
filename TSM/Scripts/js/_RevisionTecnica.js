@@ -6,20 +6,6 @@ let StrIdCatalogoInsu = "";
     
 let vIdPlan = 0;
 
-//let fn_IniciarRevision = function () {
-//    $.ajax({
-//        url: UrlArf + "/IniciarAnalisisRequerimientoFactibilidades/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtId").val(),
-//        async: false,
-//        type: "POST",
-//        success: function (resultado) {
-//            fn_MostrarGrid();
-//        },
-//        error: function (resultado) {
-//            $("#kendoNotificaciones").data("kendoNotification").show("Error al iniciar revisión técnica", "error");
-//        }
-//    });
-//};
-
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     let dataSource = new kendo.data.DataSource({
@@ -177,27 +163,30 @@ var fn_RTCargarConfiguracion = function () {
     //CONFIGURACION DEL gridConfEp,CAMPOS
     $("#gridRevDet").kendoGrid({
         dataBound: function () {
-            $(".k-checkbox").bind("change", function (e) {
-                var grid = $("#gridRevDet").data("kendoGrid");
-                var row = $(e.target).closest("tr");
-                var data = grid.dataItem(row);
-                data.Comprobado = this.checked;
-                kendo.ui.progress($("#gridRevDet"), true);
-                $.ajax({
-                    type: "Put",
-                    async: false,
-                    data: JSON.stringify(Fn_GetFilaSelect(data)),
-                    url: UrlArfDet + "/" + data.IdRequerimiento + "/" + data.IdPlantillaListaVerificacion + "/" + data.Item,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        RequestEndMsg(result, "Put");
-                        kendo.ui.progress($("#gridRevDet"), false);
-                    },
-                    error: function (data) {
-                        ErrorMsg(data);
-                    }
+            if ($("#txtEstado").val() !== "ACTIVO") {
+                $(".k-checkbox").bind("change", function (e) {
+                    var grid = $("#gridRevDet").data("kendoGrid");
+                    var row = $(e.target).closest("tr");
+                    var data = grid.dataItem(row);
+                    data.Comprobado = this.checked;
+                    kendo.ui.progress($("#gridRevDet"), true);
+                    $.ajax({
+                        type: "Put",
+                        async: false,
+                        data: JSON.stringify(Fn_GetFilaSelect(data)),
+                        url: UrlArfDet + "/" + data.IdRequerimiento + "/" + data.IdPlantillaListaVerificacion + "/" + data.Item,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            RequestEndMsg(result, "Put");
+                            kendo.ui.progress($("#gridRevDet"), false);
+                        },
+                        error: function (data) {
+                            ErrorMsg(data);
+                        }
+                    });
                 });
-            });
+            }
+          
         },
         edit: function () {
             alert('hola')
@@ -245,6 +234,10 @@ var fn_RTCargarConfiguracion = function () {
 
 var fn_RTMostrarGrid = function () {
     $("#gridRev").data("kendoGrid").dataSource.read();
+    if ($("#txtEstado").val() !== "ACTIVO") {
+        Grid_HabilitaToolbar($("#gridRev"), false, false, false);
+    }
+
 };
 
 fun_List.push(fn_RTCargarConfiguracion);
@@ -263,7 +256,7 @@ let Fn_GetFilaSelect = function (data) {
 };
 
 let Grid_ColTempCheckBox = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\"" + (data[columna] ? "checked=\"checked\"" : "") + ""+ ($("#txtEstado").val() !== "ACTIVO" ? "disabled =\"disabled\"" : "") +" />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 

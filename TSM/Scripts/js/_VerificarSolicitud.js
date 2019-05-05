@@ -59,10 +59,10 @@ var fn_VSCargarJSEtapa = function () {
 
     $("#Guardar").data("kendoButton").enable(false);
     $("#Eliminar").data("kendoButton").enable(false);
-    $("#LblUbicacionVer").prop("hidden", "hidden");
-    $("#UbicacionVer").prop("hidden", "hidden");
-    $("#LblUbicacionHor").prop("hidden", "hidden");
-    $("#UbicacionHor").prop("hidden", "hidden");
+    //$("#LblUbicacionVer").prop("hidden", "hidden");
+    //$("#UbicacionVer").prop("hidden", "hidden");
+    //$("#LblUbicacionHor").prop("hidden", "hidden");
+    //$("#UbicacionHor").prop("hidden", "hidden");
 
     PanelBarConfig($("#BarPanel"));
     
@@ -1280,6 +1280,57 @@ var fn_VSCargarJSEtapa = function () {
 
 var fn_VSCargar = function () {
     getRD(UrlRD + "/" + $("#txtId").val());
+    if ($("#txtEstado").val() !== "ACTIVO") {
+    
+        KdoDatePikerEnable($("#Fecha"), false);
+        TextBoxEnable($("#TxtEjecutivoCuenta"), false);
+        
+        KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), false);
+        KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
+        KdoComboBoxEnable($("#IdPrograma"), false);
+        KdoComboBoxEnable($("#IdUbicacion"), false);
+        $("#UbicacionVer").attr("disabled", true);
+        $("#UbicacionHor").attr("disabled", true);
+        KdoComboBoxEnable($("#CmbIdUnidadMedidaCantidad"), false);
+        $("#InstruccionesEspeciales").attr("disabled", true);
+        $("#NumeroDiseno").attr("disabled", true);
+        $("#EstiloDiseno").attr("disabled", true);
+        $("#TxtDirectorioArchivos").attr("disabled", true);
+        KdoComboBoxEnable($("#IdCategoriaConfeccion"), false);
+        KdoComboBoxEnable($("#IdConstruccionTela"), false);
+        KdoComboBoxEnable($("#IdComposicionTela"), false);
+        $("#Color").attr("disabled", true);
+        $("#Nombre").attr("disabled", true);
+        KdoComboBoxEnable($("#CmbTipoAcabado"), false);
+        KdoComboBoxEnable($("#CmbTipoLuz"), false);
+        KdoComboBoxEnable($("#CmbBase"), false);
+        $("#IdSistemaTinta").attr("readonly", true);
+        $("#IdCategoriaPrenda").attr("readonly", true);
+        KdoComboBoxEnable($("#CmbIdUnidadVelocidad"), false);
+        KdoCheckBoxEnable($("#chkRevisionTecnica"), false);
+        KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
+        
+        var multiselect = $("#IdSistemaTinta").data("kendoMultiSelect");
+        multiselect.readonly(true);
+        var mulselect = $("#IdCategoriaPrenda").data("kendoMultiSelect");
+        mulselect.readonly(true);
+
+        KdoNumerictextboxEnable($("#CntPiezas"), false);
+        KdoNumerictextboxEnable($("#TxtVelocidadMaquina"), false);
+        KdoNumerictextboxEnable($("#Combo"), false);
+        KdoNumerictextboxEnable($("#Montaje"), false);
+        KdoNumerictextboxEnable($("#CantidadColores"), false);
+        KdoNumerictextboxEnable($("#CantidadTallas"), false);
+        KdoButtonEnable($("#Guardar"), false);
+        KdoButtonEnable($("#Eliminar"), false);
+        KdoButtonEnable($("#myBtnAdjunto"), false);
+        Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
+        Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
+        Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
+        Grid_HabilitaToolbar($("#GRReqDesColorTec"), false, false, false);
+
+
+    }
 };
 
 fun_List.push(fn_VSCargarJSEtapa);
@@ -1366,6 +1417,8 @@ let getRD = function(UrlRD) {
             getArte(UrlApiArte + "/GetArteByRequerimiento/" + VarIDReq.toString(), UrlApiArteAdj);
             getSisTintas(UrlRtin + "/GetByRequerimiento/" + VarIDReq.toString());
             getPrendasMultiSelec(UrlApiP + "/GetByRequerimiento/" + VarIDReq.toString());
+
+           
         },
         error: function () {
             kendo.ui.progress($("#vistaParcial"), false);
@@ -1373,6 +1426,7 @@ let getRD = function(UrlRD) {
         }
     });
 }
+
 
 let getArte = function(UrlArt, UrlApiArteAdj) {
     kendo.ui.progress($("#vistaParcial"), true);

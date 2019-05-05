@@ -132,8 +132,14 @@ var fn_SDCargarJSEtapa = function () {
 };
 
 var fn_SDCargarDatos = function () {
-
     fn_GetSolicitud();
+    if ($("#txtEstado").val() !== "ACTIVO") {
+        KdoComboBoxEnable($("#CmbTipoMaquina"), false);
+        TextBoxEnable($("#TxtComentarios"), false);
+        KdoCheckBoxEnable($("#chkExisteTela"), false);
+        KdoButtonEnable($("#btnGuardar"), false);
+    }
+
 };
 
 let fn_GetSolicitud = function () {
