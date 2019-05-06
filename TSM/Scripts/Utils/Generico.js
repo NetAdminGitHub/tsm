@@ -784,6 +784,8 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     DivIdElement.on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
         let etapa = anchorObject.attr("etapa");
         let vista = anchorObject.attr("vista");
+        if (idEtapaProceso != undefined)
+            idEtapaProceso = etapa;
         window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa)
 
         if ($("#vistaParcial" + etapa).children().length == 0) {
