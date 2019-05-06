@@ -444,6 +444,44 @@ var Fn_Carouselcontent = function () {
 
     return VarCarousel;
 };
+
+/**
+ * 
+ * @param {any} e objeto o etiqueta  <div> para el cambio de estado
+ */
+var Fn_VistaAsignarUsuario = function (e) {
+    VistaPopup = e;
+
+    $.ajax({
+        url: "/OrdenesTrabajo/AsignacionUsuario",
+        method: 'GET',
+        success: function (result) {
+            var RList = [];
+            VistaPopup.kendoDialog({
+                height: $(window).height() - "510" + "px",
+                width: "20%",
+                title: "Cambio de etapa",
+                closable: true,
+                modal: true,
+                content: result,
+                visible: false,
+                actions: [
+                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_CambiarEtapa, },
+                    { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+                ],
+                close: onCloseCambioEstado
+            });
+
+            RList.push(fn_DocRIniciaVistaCambio);
+            $.each(RList, function (index, elemento) {
+                elemento.call(document, jQuery);
+            });
+        }
+    });
+
+};
+
+
 /**
  * 
  * @param {any} e objeto o etiqueta  <div> para el cambio de estado
@@ -729,7 +767,9 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
         theme: givenOrDefault(forma, "arrows"),
         transitionEffect: 'fade',
         toolbarSettings: {
-            toolbarPosition: 'top'
+            toolbarPosition: 'top',
+            showNextButton: false,
+            showPreviousButton: false
         },
         lang: {
             next: '',
