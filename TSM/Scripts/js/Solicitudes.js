@@ -86,9 +86,9 @@ $(document).ready(function () {
     //KdoButton($("#VerSol"), "hyperlink-open", "Ver Solicitud");
   
     
-    $("#VerSol").data("kendoButton").bind("click", function () {
-        window.location.href = "/Solicitudes/IngresoSolicitudes/" + fn_getIdSolicitud($("#grid").data("kendoGrid"));
-    });
+    //$("#VerSol").data("kendoButton").bind("click", function () {
+    //    window.location.href = "/Solicitudes/IngresoSolicitudes/" + fn_getIdSolicitud($("#grid").data("kendoGrid"));
+    //});
 
     $("#NSol").data("kendoButton").bind("click", function () {
         window.location.href = "/Solicitudes/IngresoSolicitudes/0";

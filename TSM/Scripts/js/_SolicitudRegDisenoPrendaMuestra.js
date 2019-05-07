@@ -147,6 +147,7 @@ $(document).ready(function () {
                 });
             });
 
+            $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(fn_DSudm("9,17"));
 
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -274,6 +275,29 @@ $(document).ready(function () {
             });
     }
 
+    let fn_DSudm = function (filtro) {
+
+        return new kendo.data.DataSource({
+            dataType: 'json',
+            sort: { field: "Nombre", dir: "asc" },
+            transport: {
+                read: function (datos) {
+                    $.ajax({
+                        dataType: 'json',
+                        type: "POST",
+                        async: false,
+                        url: TSM_Web_APi + "UnidadesMedidas/GetUnidadesMedidasByFiltro",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(filtro),
+                        success: function (result) {
+                            datos.success(result);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
     //#endregion Fin Prendas multi select
 
 });
