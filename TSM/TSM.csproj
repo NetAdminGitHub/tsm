@@ -820,6 +820,7 @@
     <Content Include="Scripts\js\CotizacionesPogramas.js" />
     <Content Include="Scripts\js\DefinicionBusqueda.js" />
     <Content Include="Scripts\js\EjecutivoCuentas.js" />
+    <Content Include="Scripts\js\ElementoTrabajo.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
     <Content Include="Scripts\js\FactoresCostos.js" />

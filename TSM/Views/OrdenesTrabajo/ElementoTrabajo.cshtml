@@ -89,7 +89,7 @@
                             <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de Usuarios</button>
                             <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de Etapa</button>
                         </div>
-                        
+
                     </div>
                     <br />
                     <div class="form-row">
@@ -128,9 +128,34 @@
         </div>
         <div class="form-row">
             <div class="form-group col-lg-12">
-                
+
                 <div id="gridUsuarioAsignados"></div>
             </div>
         </div>
     </form>
+</div>
+
+<div id="vCamEtapa">
+    <div class="form-group col-lg-12">
+        <form id="FrmCambioEtapa" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="cmbEtpSigAnt">Etapas:</label>
+                    <input id="cmbEtpSigAnt" name="cmbEtpSigAnt" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="cmbUsuarioEtp">Usuarios:</label>
+                    <input id="cmbUsuarioEtp" name="cmbUsuarioEtp" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtMotivoEtp">Motivo:</label>
+                    <textarea id="TxtMotivoEtp" name="TxtMotivoEtp" type="text" class="form-control" rows="3" required validationMessage="Requerido" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" ></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

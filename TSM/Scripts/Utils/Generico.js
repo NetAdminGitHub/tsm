@@ -749,7 +749,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     $.each(etapas, function (index, elemento) {
         EtapaOpc.append(
             "<li class=\"nav-item\">" +
-            "<a href=\"#" + SetEtapa + elemento.IdEtapaProceso + "\" class=\"nav-link\" etapa=\"" + elemento.IdEtapaProceso + "\" vista=\"" + elemento.VistaFormulario + "\">" +
+            "<a href=\"#" + SetEtapa + elemento.IdEtapaProceso + "\" class=\"nav-link\" etapa=\"" + elemento.IdEtapaProceso + "\" vista=\"" + elemento.VistaFormulario + "\" indice=\"" + (elemento.Item - 1) + "\">" +
             "<span class=\"k-icon " + elemento.Icono + " ficonEtp\"></span><br>" +
             "<small>" + elemento.Nombre + "</small>" +
             "</a>" +

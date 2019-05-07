@@ -163,7 +163,7 @@ var fn_RTCargarConfiguracion = function () {
     //CONFIGURACION DEL gridConfEp,CAMPOS
     $("#gridRevDet").kendoGrid({
         dataBound: function () {
-            if ($("#txtEstado").val() !== "ACTIVO") {
+            if ($("#txtEstado").val() === "ACTIVO") {
                 $(".k-checkbox").bind("change", function (e) {
                     var grid = $("#gridRevDet").data("kendoGrid");
                     var row = $(e.target).closest("tr");

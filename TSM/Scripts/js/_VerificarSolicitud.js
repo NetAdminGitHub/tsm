@@ -32,7 +32,6 @@ var UrlTMues = TSM_Web_APi + "TipoMuestras";
 
 var Permisos;
 let xvUrl = "", xvId = "";
-let EsCambioReg = false;
 let vIdS = 0;
 let vIdCli = 0;
 let VarIDReq = 0;
@@ -1394,8 +1393,9 @@ let getRD = function(UrlRD) {
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
                 $("#Eliminar").data("kendoButton").enable(fn_SNBorrar(true));
                 HabilitaFormObje(true)
-                //elemento.Estado === "EDICION" ? HabilitaFormObje(true) : HabilitaFormObje(false);
-                //elemento.Estado === "EDICION" || elemento.Estado === "CONFIRMADO" ? $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true)) : $("#btnCambioEstado").data("kendoButton").enable(false);
+                Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
+                KdoComboBoxEnable($("#CmbBase"), false);
+                
 
                 if (Kendo_CmbGetvalue($("#IdServicio")) === "1") {
                     elemento.DisenoFullColor === true ? KdoNumerictextboxEnable($("#CantidadColores"), false) : KdoNumerictextboxEnable($("#CantidadColores"), elemento.Estado === "EDICION" ? true : false);
@@ -1708,7 +1708,7 @@ let GuardarRequerimiento = function(UrlRD) {
 
         },
         error: function (data) {
-            EsCambioReg = false;
+         
             kendo.ui.progress($("#vistaParcial"), false);
             ErrorMsg(data);
             $("#Nombre").focus().select();
@@ -1777,12 +1777,10 @@ let ActualizarReq = function() {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            EsCambioReg = true; // activo esta variable para que no ejecute el codigo que esta en el evento change
+           
             Actualizado = true;
             RequestEndMsg(data, "Put");
-            var uid = $("#grid").data("kendoGrid").dataSource.get(data[0].IdRequerimiento).uid;
-            Fn_UpdFilaGridRD($("#grid").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']"), data[0]);
-            EsCambioReg = false; //Inactivo esta variable para que ejecute el codigo que esta en el evento change
+            
         },
         error: function (data) {
             Actualizado = false;

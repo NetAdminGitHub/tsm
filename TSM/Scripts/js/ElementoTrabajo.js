@@ -7,6 +7,28 @@ var idTipoOrdenTrabajo;
 fPermisos = function (datos) {
     Permisos = datos;
 };
+var fn_CambioEtp = function (e) {
+
+    if (ValidarCamEtp.validate()) {
+        kendo.ui.progress($("#body"), true);
+        $.ajax({
+            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa/" + $("#txtIdOrdenTrabajo").val().toString() + "/" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "/" + $("#cmbUsuarioEtp").data("kendoComboBox").value()  + "/" + $("#TxtMotivoEtp").val(),
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                RequestEndMsg(datos, "Post");
+                $("#vCamEtapa").data("kendoDialog").close();
+                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "]").attr("indice"));
+                kendo.ui.progress($("#body"), false);
+            },
+            error: function (data) {
+                ErrorMsg(data);
+            }
+        });
+    }
+
+};
 
 $(document).ready(function () {
     $.ajax({
@@ -16,6 +38,20 @@ $(document).ready(function () {
             CrearEtapasProcesosModulo($("#smartwizard"), resultado, opcionesFormaSmartWizard.Flechas);
         }
     });
+    Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+
+    //Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + datos.IdEtapaProceso, "Nombre", "IdUsuario", "Seleccione...");
+    //Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/" + datos.IdEtapaProceso, "Nombre", "IdEtapaProcesoAS", "Seleccione...");
+    //Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + "0", "Nombre", "IdUsuario", "Seleccione...");
+
+    $("#cmbEtpSigAnt").data("kendoComboBox").bind("change", function (e) {
+        $("#cmbUsuarioEtp").data("kendoComboBox").value("");
+        $("#cmbUsuarioEtp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(idTipoOrdenTrabajo.toString(), this.value() === "" ? 0 : this.value()));
+
+    });
+
 });
 
 window.onpopstate = function (e) {
@@ -58,8 +94,12 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
                 $("#txtNombrePrenda").val(datos.NombrePrenda);
                 $("#txtItem").val(datos.Item);
                 idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
-
-                Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + datos.IdEtapaProceso, "Nombre", "IdUsuario", "Seleccione...");
+             
+                KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() === "ACTIVO" ? true : false);
+                KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() === "ACTIVO" ? true : false);
+            
+                $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
+                $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt( datos.IdEtapaProceso));
 
                 if (RecargarScriptVista == true) {
                     $.each(fun_List, function (index, elemento) {
@@ -71,6 +111,65 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
 
                 $.each(fun_ListDatos, function (index, elemento) {
                     elemento.call(document, jQuery);
+                });
+            }
+        }
+    });
+};
+var get_cmbUsuario = function (tipoOrd, etp) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipoOrd.toString() + "/" + etp.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+var get_cmbEtpSigAnt = function ( etp) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/" + etp.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+var get_cmbUsuarioEtp = function (tipo, etpAS) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipo.toString() + "/" + etpAS.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
                 });
             }
         }
@@ -91,6 +190,34 @@ $("#vAsignarUsuario").kendoDialog({
         if (e.userTriggered)
             CargarInfoEtapa(false);
     }
+});
+
+
+$("#vCamEtapa").kendoDialog({
+    height: $(window).height() - "450" + "px",
+    width: "20%",
+    title: "Cambio de Etapa",
+    visible: false,
+    closable: true,
+    modal: true,
+    actions: [
+        { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: fn_CambioEtp },
+        { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
+    ],
+    close: function (e) {
+        if (e.userTriggered)
+            CargarInfoEtapa(false);
+    }
+});
+
+
+$("#btnCambiarEtapa").click(function (e) {
+    $("#cmbUsuarioEtp").data("kendoComboBox").value("");
+    $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
+    $("#cmbEtpSigAnt").data("kendoComboBox").value("");
+    $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
+    $("#TxtMotivoEtp").val("");
+    $("#vCamEtapa").data("kendoDialog").open();
 });
 
 
@@ -158,7 +285,7 @@ var CargarAsignacionUsuarios = function () {
 $("#btnCambiarAsignado").click(function (e) {
     e.preventDefault();
     CargarAsignacionUsuarios();
-    $("#cmbUsuario").data("kendoComboBox").value(""),
+    $("#cmbUsuario").data("kendoComboBox").value("");
     $("#vAsignarUsuario").data("kendoDialog").open();
 });
 
@@ -175,6 +302,29 @@ var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
         },
         messages: {
             MsgcmbEstados: "Requerido"
+        }
+    }).data("kendoValidator");
+
+var ValidarCamEtp = $("#FrmCambioEtapa").kendoValidator(
+    {
+        rules: {
+
+            Msg1: function (input) {
+                if (input.is("[name='cmbEtpSigAnt']")) {
+                    return $("#cmbEtpSigAnt").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            },
+            Msg2: function (input) {
+                if (input.is("[name='cmbUsuarioEtp']")) {
+                    return $("#cmbUsuarioEtp").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            }
+        },
+        messages: {
+            Msg1: "Requerido",
+            Msg2: "Requerido"
         }
     }).data("kendoValidator");
 
@@ -209,3 +359,7 @@ $("#btnAsignarUsuario").click(function (e) {
         });
     }
 });
+
+
+
+
