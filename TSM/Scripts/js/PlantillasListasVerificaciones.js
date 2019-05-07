@@ -98,6 +98,8 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridPlv").kendoGrid({
         edit: function (e) {
+            if (!e.model.isNew())
+                KdoHideCampoPopup(e.container, "IdPlantillaListaVerificacion");
             KdoHideCampoPopup(e.container, "IdEtapaProceso");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
