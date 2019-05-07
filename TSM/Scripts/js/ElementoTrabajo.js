@@ -12,9 +12,15 @@ var fn_CambioEtp = function (e) {
     if (ValidarCamEtp.validate()) {
         kendo.ui.progress($("#body"), true);
         $.ajax({
-            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa/" + $("#txtIdOrdenTrabajo").val().toString() + "/" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "/" + $("#cmbUsuarioEtp").data("kendoComboBox").value()  + "/" + $("#TxtMotivoEtp").val(),
+            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa" ,
             method: "POST",
             dataType: "json",
+            data: JSON.stringify({
+                idOrdenTrabajo:$("#txtIdOrdenTrabajo").val(),
+                idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
+                idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
+                motivo: $("#TxtMotivoEtp").val()
+            }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 RequestEndMsg(datos, "Post");

@@ -36,6 +36,14 @@ function FechaFinMes() {
     var dt = new Date(); 
     return kendo.toString(kendo.parseDate(new Date(dt.getFullYear(), dt.getMonth() + 1, 0)), 's');
 }
+/**
+ * Devuelve la fecha del Inicio del mes
+ */
+function FechaIniMes() {
+    var dt = new Date();
+    return kendo.toString(kendo.parseDate(new Date(dt.getFullYear(), dt.getMonth(), 1)), 's');
+}
+
 
 function RequestEndMsg(e,type) {
     if (type === "Post" || type === "Put" || type === "Delete") {

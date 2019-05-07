@@ -44,27 +44,16 @@ var fn_VSCargarJSEtapa = function () {
     DivCarousel.append(Fn_Carouselcontent());
     //CargarEtapasProceso(0);
     KdoButton($("#Guardar"), "save", "Guardar");
-    KdoButton($("#Eliminar"), "delete", "Eliminar");
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseños");
     KdoButton($("#btnCerrar"), "cancel", "Cancelar");
     KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
-
     // deshabilitar botones en formulario
-    //$("#ReqDes").children().addClass("k-state-disabled");
     $("#myBtnAdjunto").data("kendoButton").enable(false);
-    
     $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#Fecha").data("kendoDatePicker").value(Fhoy())
-
     $("#Guardar").data("kendoButton").enable(false);
-    $("#Eliminar").data("kendoButton").enable(false);
-    //$("#LblUbicacionVer").prop("hidden", "hidden");
-    //$("#UbicacionVer").prop("hidden", "hidden");
-    //$("#LblUbicacionHor").prop("hidden", "hidden");
-    //$("#UbicacionHor").prop("hidden", "hidden");
-
     PanelBarConfig($("#BarPanel"));
-    
+    KdoDatePikerEnable($("#Fecha"), false);
     Fn_LeerImagenes($("#Mycarousel"), "", null);
 
     // codigo de programas para el splitter
@@ -364,7 +353,6 @@ var fn_VSCargarJSEtapa = function () {
     Kendo_CmbFiltrarGrid($("#IdUbicacion"), UrlApiUEstam, "Nombre", "IdUbicacion", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdCategoriaConfeccion"), UrlApiCConfec, "Nombre", "IdCategoriaConfeccion", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdConstruccionTela"), UrlApiConsTela, "Nombre", "IdConstruccionTela", "Seleccione ...");
-    //Kendo_CmbFiltrarGrid($("#IdComposicionTela"), UrlApiCompTela, "Nombre", "IdComposicionTela", "Seleccione ...");
     KdoCmbComboBox($("#IdComposicionTela"), UrlApiCompTela, "Nombre", "IdComposicionTela", "Seleccione ...", "", "", "", "CmbNuevoItem")
     Kendo_CmbFiltrarGrid($("#CmbTipoLuz"), UrlTL, "Nombre", "IdTipoLuz", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), UrlMD, "Nombre", "IdMotivoDesarrollo", "Seleccione ...");
@@ -973,10 +961,7 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
-    $("#Eliminar").click(function (event) {
-        event.preventDefault();
-        ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return EliminarReq(UrlRD) });
-    });
+
 
     $("#chkDisenoFullColor").click(function () {
         if (this.checked) {
@@ -1286,7 +1271,7 @@ var fn_VSCargar = function () {
         
         KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), false);
         KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
-        KdoComboBoxEnable($("#IdPrograma"), false);
+     
         KdoComboBoxEnable($("#IdUbicacion"), false);
         $("#UbicacionVer").attr("disabled", true);
         $("#UbicacionHor").attr("disabled", true);
@@ -1306,7 +1291,6 @@ var fn_VSCargar = function () {
         $("#IdSistemaTinta").attr("readonly", true);
         $("#IdCategoriaPrenda").attr("readonly", true);
         KdoComboBoxEnable($("#CmbIdUnidadVelocidad"), false);
-        KdoCheckBoxEnable($("#chkRevisionTecnica"), false);
         KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
         
         var multiselect = $("#IdSistemaTinta").data("kendoMultiSelect");
@@ -1321,13 +1305,12 @@ var fn_VSCargar = function () {
         KdoNumerictextboxEnable($("#CantidadColores"), false);
         KdoNumerictextboxEnable($("#CantidadTallas"), false);
         KdoButtonEnable($("#Guardar"), false);
-        KdoButtonEnable($("#Eliminar"), false);
         KdoButtonEnable($("#myBtnAdjunto"), false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColorTec"), false, false, false);
-
+        KdoComboBoxEnable($("#IdPrograma"), false);
 
     }
 };
@@ -1368,7 +1351,6 @@ let getRD = function(UrlRD) {
                 $("#Fecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha), 'dd/MM/yyyy'));
                 $("#InstruccionesEspeciales").val(elemento.InstruccionesEspeciales);
                 $("#Estado").val(elemento.Estado);
-                $('#chkRevisionTecnica').prop('checked', elemento.RevisionTecnica);
                 $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
                 $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(elemento.IdUnidadVelocidad);
                 $('#chkDisenoFullColor').prop('checked', elemento.DisenoFullColor);
@@ -1391,7 +1373,6 @@ let getRD = function(UrlRD) {
 
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
-                $("#Eliminar").data("kendoButton").enable(fn_SNBorrar(true));
                 HabilitaFormObje(true)
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 KdoComboBoxEnable($("#CmbBase"), false);
@@ -1444,7 +1425,7 @@ let getArte = function(UrlArt, UrlApiArteAdj) {
                 kendo.ui.progress($("#vistaParcial"), false);
                 UrlApiArteAdj = UrlApiArteAdj + "/GetByArte/" + respuesta.IdArte;
                 getAdjun(UrlApiArteAdj);
-                $("#myBtnAdjunto").data("kendoButton").enable(true);
+                KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false:true);
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
 
             } else {
@@ -1456,7 +1437,7 @@ let getArte = function(UrlArt, UrlApiArteAdj) {
             }
 
 
-            $("#IdRequerimiento").val() !== "0" && $("#Estado").val() === "EDICION" && $("#IdArte").val() !== "0" ? $("#myBtnAdjunto").data("kendoButton").enable(true) : $("#myBtnAdjunto").data("kendoButton").enable(false);
+            $("#IdRequerimiento").val() !== "0" && $("#Estado").val() === "EDICION" && $("#IdArte").val() !== "0" ? KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false : true) : $("#myBtnAdjunto").data("kendoButton").enable(false);
         },
         error: function () {
             kendo.ui.progress($("#vistaParcial"), false);
@@ -1653,7 +1634,7 @@ let GuardarRequerimiento = function(UrlRD) {
             CantidadTallas: $("#CantidadTallas").val(),
             Montaje: $("#Montaje").val(),
             Combo: $("#Combo").val(),
-            RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
+            RevisionTecnica: false,
             VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
             IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
@@ -1695,7 +1676,6 @@ let GuardarRequerimiento = function(UrlRD) {
             Grid_HabilitaToolbar($("#GRReqDesColorTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
 
             //habilitar botones   
-            $("#Eliminar").data("kendoButton").enable(fn_SNBorrar(true));
             $("#myBtnAdjunto").data("kendoButton").enable(true);
             RequestEndMsg(data, XType);
             kendo.ui.progress($("#vistaParcial"), false);
@@ -1748,7 +1728,7 @@ let ActualizarReq = function() {
             CantidadTallas: $("#CantidadTallas").val(),
             Montaje: $("#Montaje").val(),
             Combo: $("#Combo").val(),
-            RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
+            RevisionTecnica:false,
             VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
             IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
@@ -1792,32 +1772,6 @@ let ActualizarReq = function() {
 
 }
 
-let EliminarReq = function(UrlRD) {
-    kendo.ui.progress($("#vistaParcial"), true);
-    UrlRD = UrlRD + "/" + $("#IdRequerimiento").val();
-    $.ajax({
-        url: UrlRD,//
-        type: "Delete",
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            LimpiarReq();
-            LimpiarArte();
-            $("#IdCategoriaPrenda").data("kendoMultiSelect").value("");
-            $("#IdSistemaTinta").data("kendoMultiSelect").value("");
-            $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
-            $("#Eliminar").data("kendoButton").enable(false);
-            kendo.ui.progress($("#vistaParcial"), false);
-            RequestEndMsg(data, "Delete");
-        },
-        error: function (e) {
-            kendo.ui.progress($("#vistaParcial"), false);
-            ErrorMsg(e)
-            $("#Nombre").focus().select();
-        }
-    });
-}
-
 let LimpiarReq = function() {
 
     $("#IdRequerimiento").val("0");
@@ -1840,7 +1794,6 @@ let LimpiarReq = function() {
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     $("#InstruccionesEspeciales").val("");
     $("#Estado").val("");
-    $('#chkRevisionTecnica').prop('checked', 0);
     $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value("0");
     $("#CmbIdUnidadVelocidad").data("kendoComboBox").value("");
     $('#chkDisenoFullColor').prop('checked', 0);
@@ -1930,7 +1883,7 @@ let getIdArte = function(g) {
 }
 
 let HabilitaFormObje = function(ToF) {
-    KdoDatePikerEnable($("#Fecha"), ToF);
+    //KdoDatePikerEnable($("#Fecha"), ToF);
     KdoNumerictextboxEnable($("#CntPiezas"), ToF);
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
     //KdoNumerictextboxEnable($("#CantidadTallas"), ToF);
@@ -1948,7 +1901,6 @@ let HabilitaFormObje = function(ToF) {
     KdoComboBoxEnable($("#IdUbicacion"), ToF);
     KdoMultiselectEnable($("#IdCategoriaPrenda"), ToF);
     KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
-    KdoCheckBoxEnable($("#chkRevisionTecnica"), ToF);
     KdoCheckBoxEnable($("#chkDisenoFullColor"), ToF);
     TextBoxEnable($("#InstruccionesEspeciales"), ToF);
     TextBoxEnable($("#Color"), ToF);
@@ -1957,7 +1909,6 @@ let HabilitaFormObje = function(ToF) {
     TextBoxEnable($("#EstiloDiseno"), ToF);
     TextBoxReadOnly($("#TxtDirectorioArchivos"), ToF);
     KdoButtonEnable($("#Guardar"), ToF);
-    KdoButtonEnable($("#Eliminar"), ToF);
     KdoComboBoxEnable($("#CmbTipoLuz"), ToF);
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
 

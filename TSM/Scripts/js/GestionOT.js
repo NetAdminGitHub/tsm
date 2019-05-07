@@ -1,10 +1,11 @@
 ﻿var Permisos;
 $(document).ready(function () {
+    let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaDesde").data("kendoDatePicker").value(Fhoy());
+    $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaHasta").data("kendoDatePicker").value(FechaFinMes());
-    KdoButton($("#btnConsular"), "refresh", "Consultar");
+    $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
+    KdoButton($("#btnConsular"), "search", "Consultar");
     Kendo_CmbFiltrarGrid($("#CmbCliente"), UrlCli, "Nombre", "IdCliente", "Opcional cliente ....");
     Kendo_CmbFiltrarGrid($("#CmbPrograma"), UrlPro, "Nombre", "IdPrograma", "Opcional programa ....");
     Kendo_CmbFiltrarGrid($("#CmbEjecutivo"), UrlEC, "Nombre", "IdEjecutivoCuenta", "Opcional ejecutivo de cuenta ....");
@@ -13,7 +14,9 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbUbicacion"), UrlUbi, "Nombre", "IdUbicacion", "Opcional ubicación ....");
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Opcional servicio ....");
 
-    $('#chkRangFechas').prop('checked', 1);
+    $('#chkRangFechas').prop('checked', 0);
+    KdoDatePikerEnable($("#dFechaDesde"), false);
+    KdoDatePikerEnable($("#dFechaHasta"), false);
 
     $("#btnConsular").click(function (e) {
         $("#grid").data("kendoGrid").dataSource.read();
@@ -86,57 +89,59 @@ $(document).ready(function () {
             }
         }
     });
-
+    var selectedRows = [];
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
 
         dataBound: function () {
             for (var i = 0; i < this.columns.length; i++) {
                 this.autoFitColumn(i);
+                this.columnResizeHandleWidth
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
                 fn_VerEtapas("/OrdenesTrabajo/ElementoTrabajo/" + grid.dataItem(this).IdOrdenTrabajo.toString() + "/" + grid.dataItem(this).IdEtapaProceso.toString());
             });
+            Grid_SetSelectRow($("#grid"), selectedRows);
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "NoDocumento", title: "No OT"},
-            { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true },
+            { field: "NoDocumento", title: "No OT", minResizableWidth: 120},
+            { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true},
             { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true},
-            { field: "TipoOrdenTrabajo", title: "Tipo de orden"},
-            { field: "FechaOrdenTrabajo", title: "Fecha orden de trabajo", format: "{0: dd/MM/yyyy}" },
-            { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}" },
-            { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}" },
+            { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120},
+            { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120},
+            { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120},
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },
             { field: "IdPrioridadOrdenTrabajo", title: "Prioridad orden trabajo", hidden: true  },
-            { field: "Prioridad", title: "Prioridad" },
+            { field: "Prioridad", title: "Prioridad", minResizableWidth: 120 },
             { field: "Estado", title: "Estado orden", hidden: true},
             { field: "Comentarios", title: "Comentarios", hidden: true },
-            { field: "IDDocumento", title: "No Documento" },
+            { field: "IDDocumento", title: "No Documento", minResizableWidth: 120 },
             { field: "IdEtapaProceso", title: "Etapa proceso", hidden: true },
-            { field: "Etapa", title: "Etapa" },
+            { field: "Etapa", title: "Etapa", minResizableWidth: 120 },
             { field: "EstadoEtapa", title: "Estado etapa", hidden: true },
             { field: "Tabla", title: "Tabla", hidden: true },
             { field: "IdCliente", title: "Cliente", hidden: true },
-            { field: "NombreCliente", title: "Nombre Cliente" },
+            { field: "NombreCliente", title: "Nombre Cliente", minResizableWidth: 120 },
             { field: "IdServicio", title: "Cod. servicio", hidden: true },
-            { field: "Servicio", title: "Servicio" },
+            { field: "Servicio", title: "Servicio", minResizableWidth: 120},
             { field: "IdPrograma", title: "Cod. programa", hidden: true },
-            { field: "NombrePrograma", title: "Programa" },
+            { field: "NombrePrograma", title: "Programa", minResizableWidth: 120 },
             { field: "IdTemporada", title: "Cod. temporada", hidden: true },
-            { field: "NombreTemp", title: "Temporada" },
+            { field: "NombreTemp", title: "Temporada", minResizableWidth: 120},
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
-            { field: "NombrePrenda", title: "Prenda" },
-            { field: "IdUbicacion", title: "Cod. ubicacion", hidden: true },
-            { field: "NombreUbicacion", title: "Ubicacion" },
-            { field: "UbicacionHorizontal", title: "Ubicacion horizontal" },
-            { field: "UbicacionVertical", title: "Ubicacion vertical" },
-            { field: "NombreDiseño", title: "Nombre diseño" },
-            { field: "EstiloDiseno", title: "Estilo diseño" },
+            { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120},
+            { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },
+            { field: "NombreUbicacion", title: "Ubicación", minResizableWidth: 120 },
+            { field: "UbicacionHorizontal", title: "Ubicación horizontal", minResizableWidth: 150 },
+            { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
+            { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
+            { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150},
             { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta" }
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150}
         ]
     });
 
@@ -145,11 +150,6 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
-
-    var selectedRows = [];
-    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#grid"), selectedRows);
-    });
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);

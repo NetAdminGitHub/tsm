@@ -42,8 +42,15 @@ $(document).ready(function () {
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
+    var selectedRows = [];
     $("#grid").kendoGrid({
-        
+        dataBound: function () {
+            let grid = this;
+            grid.tbody.find("tr").dblclick(function (e) {
+                window.location.href = "/Solicitudes/IngresoSolicitudes/" + grid.dataItem(this).IdSolicitud.toString() 
+            });
+            Grid_SetSelectRow($("#grid"), selectedRows);
+        },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdSolicitud", title: "Código de Solicitud", hidden: true },
@@ -76,8 +83,8 @@ $(document).ready(function () {
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
     KdoButton($("#NSol"), "file-add", "Nuevo Solictud");
-    KdoButton($("#VerSol"), "hyperlink-open", "Ver Solicitud");
-
+    //KdoButton($("#VerSol"), "hyperlink-open", "Ver Solicitud");
+  
     
     $("#VerSol").data("kendoButton").bind("click", function () {
         window.location.href = "/Solicitudes/IngresoSolicitudes/" + fn_getIdSolicitud($("#grid").data("kendoGrid"));
@@ -87,15 +94,15 @@ $(document).ready(function () {
         window.location.href = "/Solicitudes/IngresoSolicitudes/0";
     });
 
-    var selectedRows = [];
-    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#grid"), selectedRows);
-        if ($("#grid").data("kendoGrid").dataSource.total() === 0) {
-            $("#VerSol").data("kendoButton").enable(false);
-        } else {
-            $("#VerSol").data("kendoButton").enable(true);
-        }
-    });
+    //var selectedRows = [];
+    //$("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+    //    Grid_SetSelectRow($("#grid"), selectedRows);
+    //    if ($("#grid").data("kendoGrid").dataSource.total() === 0) {
+    //        $("#VerSol").data("kendoButton").enable(false);
+    //    } else {
+    //        $("#VerSol").data("kendoButton").enable(true);
+    //    }
+    //});
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
