@@ -67,6 +67,7 @@ window.onpopstate = function (e) {
 KdoButton($("#btnCambiarAsignado"), "gear");
 KdoButton($("#btnAsignarUsuario"), "save");
 KdoButton($("#btnCambiarEtapa"), "gear");
+KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
 /**
  * Funcion para cargar informacion de cabecera de la etapa.
@@ -366,6 +367,8 @@ $("#btnAsignarUsuario").click(function (e) {
     }
 });
 
-
+$("#btnIrGOT").click(function () {
+    window.location.href = "/GestionOT";
+});
 
 
