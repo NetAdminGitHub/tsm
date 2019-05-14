@@ -67,8 +67,7 @@ $(document).ready(function () {
                     IdComposicionTela: { type: "string" },
                     Nombre4: { type: "string" },
                     IdConstruccionTela: { type: "string" },
-                    Nombre5: { type: "string" },
-                    NoDocumento: { type: "string" }
+                    Nombre5: { type: "string" }
 
                 }
             }
@@ -89,7 +88,6 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Nombre5");
             KdoHideCampoPopup(e.container, "Combo");
             KdoHideCampoPopup(e.container, "EstiloDiseno");
-            TextBoxEnable($('[name="NoDocumento"]'), false);
             TextBoxEnable($('[name="Nombre"]'), false);
             TextBoxEnable($('[name="Nombre1"]'), false);
             TextBoxEnable($('[name="EstiloDiseno"]'), false);
@@ -99,7 +97,6 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "NoDocumento", title: "No Registro Diseño", hidden: true },
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
             { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
             { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },

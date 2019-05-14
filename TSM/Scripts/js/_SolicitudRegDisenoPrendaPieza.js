@@ -83,7 +83,6 @@ $(document).ready(function () {
                     IdPrograma: { type: "string" },
                     Nombre3: { type: "string" },
                     Combo: { type: "number" },
-                    NoDocumento: { type: "string" },
                     IdMotivoDesarrollo: { type: "string" },
                     Nombre9: { type: "string" },
                     IdPrioridadOrdenTrabajo: { type: "string" },
@@ -109,19 +108,12 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Nombre10");
             TextBoxEnable($('[name="Nombre"]'), false);
             TextBoxEnable($('[name="Nombre1"]'), false);
-            TextBoxEnable($('[name="NoDocumento"]'), false);
             $("[name='IdPrograma']").data("kendoComboBox").setDataSource(fn_getDsPro());
             $("[name='IdMotivoDesarrollo']").data("kendoComboBox").setDataSource(fn_getMd());
             Grid_Focus(e, "IdMotivoDesarrollo");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            {
-                field: "NoDocumento", title: "No Registro Diseño", attributes: {
-                    "class": "table-cell",
-                    style: "background-color:rgba(0,0,0,0.10)"
-                }
-            },
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
             { field: "IdSolicitud", title: "Código Solitud", hidden: true },
             { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },
