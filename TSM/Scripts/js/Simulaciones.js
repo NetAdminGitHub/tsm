@@ -402,7 +402,8 @@ $(document).ready(function () {
                     FechaMod: { type: "date" },
                     Nombre5: { type: "string" },
                     NoDocumento3: { type: "string" },
-                    Tecnicas: { type: "string" }
+                    Tecnicas: { type: "string" },
+                    UsarTermofijado: { type: "boolean" }
                 }
             }
         }
@@ -1314,7 +1315,7 @@ function DesHabilitarCamposSim() {
     $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
     $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
     $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
-    $("#chkUsarTermo").prop("disabled", false);
+    KdoCheckBoxEnable($("#chkUsarTermo"), false);
     $("#TxtFecha").data("kendoDatePicker").enable(false);
 }
 
