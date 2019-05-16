@@ -47,7 +47,7 @@ $(document).ready(function () {
         dataBound: function () {
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
-                window.location.href = "/Solicitudes/IngresoSolicitudes/" + grid.dataItem(this).IdSolicitud.toString() 
+                window.location.href = "/Solicitudes/IngresoSolicitudes/" + grid.dataItem(this).IdSolicitud.toString();
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
         },

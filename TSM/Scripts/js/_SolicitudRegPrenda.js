@@ -262,7 +262,7 @@ var fn_InsertarSolicitudesDisenosPrendas = function () {
         }
     });
 
-    return vinsertado
+    return vinsertado;
 };
 
 var fn_ActualizaElementos = function (ds) {

@@ -3,6 +3,7 @@ var Permisos;
 var vIdUsuario;
 var vEjecutivo = "";
 $(document).ready(function () {
+   
     fn_ConfigVisorEtapas();
 });
 var fn_ConfigVisorEtapas = function () {
@@ -53,7 +54,7 @@ var fn_ConfigVisorEtapas = function () {
             async: false,
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                RequestEndMsg(data, "Post");
+                fn_GetSolicitudesRequerimientos(vIdSolicitud);
                 window.location.href = "/Solicitudes";
             },
             error: function (data) {
@@ -148,6 +149,36 @@ var fn_ConfigVisorEtapas = function () {
 
  
 };
+
+let fn_GetSolicitudesRequerimientos = function (idsol) {
+    $.ajax({
+        url: UrlSdp + "/GetSolicitudesRequerimientos/" + idsol.toString(),
+        type: 'GET',
+        dataType: "json",
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            fn_SubirArchivo(data);
+        },
+        error: function (data) {
+            ErrorMsg(data);
+        }
+    });
+};
+
+let fn_SubirArchivo = function (ds) {
+    $.ajax({
+        type: "Post",
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify(ds),
+        url: "/Solicitudes/SubirArchivoReq",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            RequestEndMsg(result, "Post");
+        }
+    });
+}
 fPermisos = function (datos) {
     Permisos = datos;
 };
