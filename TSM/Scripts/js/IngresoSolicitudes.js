@@ -179,6 +179,24 @@ let fn_SubirArchivo = function (ds) {
         }
     });
 }
+
+let fn_VerImagenModal = function (idcolImg) {
+    var modal = document.getElementById("myModal");
+    var img = document.getElementById(idcolImg);
+    var modalImg = document.getElementById("img01"); 
+    var captionText = document.getElementById("caption"); 
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    captionText.innerHTML = img.alt;
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+}
+let fn_clickImg = function (elemento) {
+    fn_VerImagenModal(elemento.id);
+}
+
 fPermisos = function (datos) {
     Permisos = datos;
 };

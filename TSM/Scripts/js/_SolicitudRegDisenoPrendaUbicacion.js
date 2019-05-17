@@ -111,7 +111,7 @@ $(document).ready(function () {
         columns: [
             { field: "NoDocumento", title: "No Registro Diseño", hidden: true },
             {
-                template: "<div class='customer-photo'><img class='img-fluid mx-auto d-block' style='max-width:50%; max-height:50%' src ='/Adjuntos/#:data.NoDocumento#/#:data.ReferenciaGrafica#'/></div>",
+                template: "<div class='customer-photo'><img class='img-fluid mx-auto d-block' onerror='imgError(this)' onclick='fn_clickImg(this)' id='SDP#:data.IdSolicitudDisenoPrenda#' alt='#:data.ReferenciaGrafica#' style='max-width:50%; max-height:50%' src ='/Adjuntos/#:data.NoDocumento#/#:data.ReferenciaGrafica#'/></div>",
                 field: "ReferenciaGrafica", title: "Referencia Grafica"
             },
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
@@ -274,6 +274,7 @@ function fn_BorrarRefG() {
     });
     return eliminado;
 }
+
 
 fPermisos = function (datos) {
     Permisos = datos;

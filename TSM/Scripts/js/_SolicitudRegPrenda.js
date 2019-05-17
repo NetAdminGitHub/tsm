@@ -51,7 +51,7 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '</form>' +
             '</div>' +
             '</div>' +
-            '<div class="card-footer"><div class="form-row"><div class="input-group"><div style="width: 100%;"><button class="btn-lg btn-block" type="button" id="' + btn + '" name="' + btn + '"> Agregar</button></div></div></div></div>' +
+            '<div class="card-footer"><div class="form-row"><div class="input-group"><div style="width: 100%;"><button class="btn-lg btn-block" type="button" id="' + btn + '" name="' + btn + '"> Actualizar</button></div></div></div></div>' +
             '</div>' +
             '</div>');
 

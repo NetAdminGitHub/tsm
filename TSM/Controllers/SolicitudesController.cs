@@ -77,7 +77,6 @@ namespace TSM.Controllers
         }
 
         [HttpPost]
-      
         public ActionResult BorrarArchivo(FormCollection form)
         {
         
@@ -102,6 +101,41 @@ namespace TSM.Controllers
                 respuesta.Add("Resultado", false);
                 return Json(respuesta);
             }
+        }
+
+        [HttpPost]
+        [Route("Solicitudes/SubirArchivoReq")]
+        public ActionResult SubirArchivoReq(List<Dictionary<string,object>> value)
+        {
+            Dictionary<string, bool> respuesta = new Dictionary<string, bool>();
+            try
+            {
+                foreach (var item in value)
+                {
+                    var rutaFisica = Server.MapPath("~/Adjuntos");
+                    var physicalPath = Path.Combine(rutaFisica, item["NoDocumentoSol"].ToString(), item["ReferenciaGrafica"].ToString());
+                    var physicalPathDestino = Path.Combine(rutaFisica, item["NoDocumento"].ToString());
+
+                    if (!Directory.Exists(physicalPathDestino))
+                        Directory.CreateDirectory(physicalPathDestino);
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        physicalPathDestino = Path.Combine(physicalPathDestino, item["ReferenciaGrafica"].ToString());
+                        System.IO.File.Copy(physicalPath, physicalPathDestino);
+                    }
+                }
+
+                respuesta.Add("Resultado", true);
+                return Json(respuesta);
+            }
+            catch (Exception)
+            {
+
+                respuesta.Add("Resultado", false);
+                return Json(respuesta);
+            }
+            
+           
         }
     }
 }

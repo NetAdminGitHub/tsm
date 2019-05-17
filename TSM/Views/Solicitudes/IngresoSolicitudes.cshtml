@@ -39,7 +39,10 @@
     <script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>
     <script src="~/Scripts/Jquery/jquery.smartWizard.js"></script>
     <link href="~/Content/smart_wizard_theme_arrows.css" rel="stylesheet" />
+    
+    
 }
+    <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
 
 <div class="form-control col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
     <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor">
@@ -80,7 +83,7 @@
             </a>
         </li>
     </ul>
-    <div class="sw-container tab-content" >
+    <div class="sw-container tab-content">
         <div id="p-1" class="tab-pane step-content" style="display: block;">
             @Html.Partial("_SolicitudRegCliente")
         </div>
@@ -101,4 +104,9 @@
         </div>
     </div>
 </div>
-
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close" id="idcloseMod">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
