@@ -9,7 +9,8 @@ $(document).ready(function () {
     Fn_LeerImagenes($("#Mycarousel"), "", null);
 
     KdoButton($("#btnGuardar"), "save", "Guardar");
-    KdoButton($("#btnImprime"),"print","Imprimir");
+    KdoButton($("#btnImprimir"), "print", "Imprimir Reporte de Cotización");
+    KdoButton($("#btnImpRentabilidad"), "print", "Imprimir Reporte de Rentabilidad");
     KdoButton($("#btnGeneraCotiPro"), "gear"," Generar cotización por programa");
     KdoButton($("#btnCambioEstado"),"check","Cambio de estado");
 
@@ -531,64 +532,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#btnImprime").click(function (event) {
-        try {
-            event.preventDefault();
-            kendo.ui.progress($("#splitter"), true);
-            var dataCli;
-
-            $.ajax({
-                url: UrlCTP + "/Reporte/" + fn_getIdCotizacionPrograma($("#gridCotizacion").data("kendoGrid")),
-                async: false,
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    dataCli = data;
-                }
-            });
-
-            var nombreArchivo = "Cliente_" + kendo.toString(kendo.parseDate(new Date()), 'yyyyMMdd') + ".pdf";
-
-            var trama = JSON.stringify({
-                NombreArchivo: nombreArchivo,
-                KeyPath: "rptPreCosteo",
-                TipoReporte: "RDLC",
-                NombreReporte: "rptCotizacionPrograma2.rdlc",
-                Formato: "PDF",
-                data: JSON.stringify(dataCli)
-            });
-
-            $.ajax({
-                url: UrlPrint,
-                type: "POST",
-                data: trama,
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    //var url = "data:" + data.ContentType + ";base64," + data.Content;
-
-                    var binary = atob(data.Content.replace(/\s/g, ''));
-                    var len = binary.length;
-                    var buffer = new ArrayBuffer(len);
-                    var view = new Uint8Array(buffer);
-                    for (var i = 0; i < len; i++) {
-                        view[i] = binary.charCodeAt(i);
-                    }
-
-                    // create the blob object with content-type "application/pdf"               
-                    var blob = new Blob([view], { type: "application/pdf" });
-                    var url = URL.createObjectURL(blob);
-
-                    //$("#frameReporte").attr("data", url);
-                    PDFObject.embed(url, "#frameReporte");
-                    kendo.ui.progress($("#splitter"), false);
-                }
-            });
-        }
-        catch (e) {
-            kendo.ui.progress($("#splitter"), false);
-            ErrorMsg(e);
-        }
-    });
-
     function Fn_GuardarCondiciones(UrlCotizacion) {
         try {
             kendo.ui.progress($("#splitter"), true);
@@ -1105,7 +1048,6 @@ function Fn_LimpiarCotizacionSimulaciones(g) {
     $("#TxtFacturaTotalCliente").data("kendoNumericTextBox").value("0");
     $("#TxtFacturaTotalTS").data("kendoNumericTextBox").value("0");
     $("#TxtFacturaTotalVenta").data("kendoNumericTextBox").value("0");
-    $("#frameReporte").attr("src", "");
 }
 
 function fn_getIdCotizacionPrograma(g) {
@@ -1153,31 +1095,43 @@ function fn_getIdArte(g) {
     return SelItem === null ? 0 : SelItem.IdArte;
 }
 
-fPermisos = function (datos) {
+var fPermisos = function (datos) {
     Permisos = datos;
 };
 
-fn_SNEditar = function (valor) {
+var fn_SNEditar = function (valor) {
     return Permisos.SNEditar ? valor : false;
 };
 
-fn_SNAgregar = function (valor) {
+var fn_SNAgregar = function (valor) {
     return Permisos.SNAgregar ? valor : false;
 };
 
-fn_SNBorrar = function (valor) {
+var fn_SNBorrar = function (valor) {
     return Permisos.SNBorrar ? valor : false;
 };
 
-fn_SNProcesar = function (valor) {
+var fn_SNProcesar = function (valor) {
     return Permisos.SNProcesar ? valor : false;
 };
 
-fn_SNCambiarEstados = function (valor) {
+var fn_SNCambiarEstados = function (valor) {
     return Permisos.SNCambiarEstados ? valor : false;
 };
 
-fn_SNProcesar = function (valor) {
+var fn_SNProcesar = function (valor) {
     return Permisos.SNProcesar ? valor : false;
+};
+
+var fn_UrlReporteCotizacion = function () {
+    let action_src = "/Reportes/" + "CotizacionesProgramas/Cotizacion/" + fn_getIdCotizacionPrograma($("#gridCotizacion").data("kendoGrid"));
+    let form = $("#frmImprimirCot");
+    form.get(0).setAttribute("action", action_src);
+};
+
+var fn_UrlReporteRentabilidad = function () {
+    let action_src = "/Reportes/" + "CotizacionesProgramas/Rentabilidad/" + fn_getIdCotizacionPrograma($("#gridCotizacion").data("kendoGrid"));
+    let form = $("#frmImprimirRen");
+    form.get(0).setAttribute("action", action_src);
 };
 //#endregion Metodos generales

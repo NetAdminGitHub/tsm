@@ -415,11 +415,20 @@
                                     </div>
                                 </div>
                                 <div id="tabImpresion" class="form-group col-lg-12">
-                                    <div class="form-group col-lg-12">
-                                        <button id="btnImprime" name="Eliminar"></button>
+                                    <div class="form-control p-lg-4">
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                <form id="frmImprimirCot" target="_blank" onsubmit="fn_UrlReporteCotizacion()">
+                                                    <button type="submit" id="btnImprimir">Cotización de Programas</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-3">
+                                                <form id="frmImprimirRen" target="_blank" onsubmit="fn_UrlReporteRentabilidad()">
+                                                    <button type="submit" id="btnImpRentabilidad">Rentabilidad de Programas</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-                                    @*<canvas id="canvasReporte"></canvas>*@
-                                    <object id="frameReporte" class="form-group col-lg-12" style="height: 400px; width: 100%;"></object>
                                 </div>
                             </div>
                         </div>
