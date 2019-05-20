@@ -227,6 +227,44 @@ $(document).ready(function () {
 
     Fn_Grid_Resize($("#gridInfMue"), $(window).height() - "371");
 
+    let grid1 = $("#gridInfMue").data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+    $(grid1.element).kendoDropTarget({
+        drop: function (e) {
+            e.draggable.hint.hide();
+            var target = grid1.dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(e.target);
+            //dest = $(document.elementFromPoint(e.clientX, e.clientY));
+            if (dest.is("th") || dest.is("thead") || dest.is("span") || dest.parent().is("th")) {
+                return;
+            }
+            //en caso que contenga imagen
+            else if (dest.is("img")) {
+                dest = grid1.dataSource.getByUid(dest.parent().parent().data("uid"));
+            }
+            else {
+                dest = grid1.dataSource.getByUid(dest.parent().data("uid"));
+            }
+            if (dest !== undefined) {
+                Fn_UpdFilaGridMue(grid1.dataItem("tr[data-uid='" + dest.uid + "']"), target);
+                grid1.saveChanges();
+            }
+
+        },
+        group: "gridGroup"
+    });
     //#region CRUD Prendas multi select
 
     function getSdpmMultiSelec() {
@@ -251,9 +289,6 @@ $(document).ready(function () {
 
 
     }
-
-    
-
 
     function EMulti_Tecnicas(container, options) {
 
@@ -297,10 +332,21 @@ $(document).ready(function () {
                 }
             }
         });
-    }
+    };
     //#endregion Fin Prendas multi select
 
 });
+
+let Fn_UpdFilaGridMue = function (g, data) {
+    g.set("IdTipoMuestra", data.IdTipoMuestra);
+    g.set("Nombre6", data.Nombre6);
+    g.set("Tallas", data.Tallas);
+    g.set("CantidadSTrikeOff", data.CantidadSTrikeOff);
+    g.set("CantidadYardaPieza", data.CantidadYardaPieza);
+    g.set("IdUnidadYdPzs", data.IdUnidadYdPzs);
+    g.set("Nombre7", data.Nombre7);
+    g.set("Comentarios", data.Comentarios);
+};
 
 fPermisos = function (datos) {
     Permisos = datos;

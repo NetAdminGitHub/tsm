@@ -162,9 +162,6 @@ $(document).ready(function () {
         ]
     });
 
-
-   
-   
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridInfUbi").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, false, redimensionable.Si);
     SetGrid_CRUD_Command($("#gridInfUbi").data("kendoGrid"), Permisos.SNEditar, false);
@@ -183,6 +180,45 @@ $(document).ready(function () {
     });
 
     Fn_Grid_Resize($("#gridInfUbi"), $(window).height() - "371");
+
+    let grid1 = $("#gridInfUbi").data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+    $(grid1.element).kendoDropTarget({
+        drop: function (e) {
+            e.draggable.hint.hide();
+            var target = grid1.dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(e.target);
+            //dest = $(document.elementFromPoint(e.clientX, e.clientY));
+            if (dest.is("th") || dest.is("thead") || dest.is("span") || dest.parent().is("th")) {
+                return;
+            }
+            //en caso que contenga imagen
+            else if (dest.is("img")) {
+                dest = grid1.dataSource.getByUid(dest.parent().parent().data("uid"));
+            }
+            else {
+                dest = grid1.dataSource.getByUid(dest.parent().data("uid"));
+            }
+            if (dest !== undefined) {
+                Fn_UpdFilaGridUbi(grid1.dataItem("tr[data-uid='" + dest.uid + "']"), target);
+                grid1.saveChanges();
+            }
+
+        },
+        group: "gridGroup"
+    });
 
 });
 
@@ -275,6 +311,11 @@ function fn_BorrarRefG() {
     return eliminado;
 }
 
+let Fn_UpdFilaGridUbi = function (g, data) {
+    g.set("UbicacionVertical", data.UbicacionVertical);
+    g.set("UbicacionHorizontal", data.UbicacionHorizontal);
+    g.set("DirectorioArchivos", data.DirectorioArchivos);
+};
 
 fPermisos = function (datos) {
     Permisos = datos;

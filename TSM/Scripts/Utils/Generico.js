@@ -402,14 +402,14 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this);">'
+                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)">'
                         + '</div > '
                     );
                 }
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this);">'
+                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)">'
                         + '</div > '
                     );
                 }

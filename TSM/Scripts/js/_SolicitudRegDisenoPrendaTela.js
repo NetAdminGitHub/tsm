@@ -162,8 +162,53 @@ $(document).ready(function () {
 
     Fn_Grid_Resize($("#gridInfTela"), $(window).height() - "371");
 
+    let grid1 = $("#gridInfTela").data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+    $(grid1.element).kendoDropTarget({
+        drop: function (e) {
+            e.draggable.hint.hide();
+            var target = grid1.dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(e.target);
+            //dest = $(document.elementFromPoint(e.clientX, e.clientY));
+            if (dest.is("th") || dest.is("thead") || dest.is("span") || dest.parent().is("th")) {
+                return;
+            }
+            //en caso que contenga imagen
+            else if (dest.is("img")) {
+                dest = grid1.dataSource.getByUid(dest.parent().parent().data("uid"));
+            }
+            else {
+                dest = grid1.dataSource.getByUid(dest.parent().data("uid"));
+            }
+            if (dest !== undefined) {
+                Fn_UpdFilaGridPrenTela(grid1.dataItem("tr[data-uid='" + dest.uid + "']"), target);
+                grid1.saveChanges();
+            }
+
+        },
+        group: "gridGroup"
+    });
+
 });
 
+let Fn_UpdFilaGridPrenTela = function (g, data) {
+    g.set("ColorTela", data.ColorTela);
+    g.set("IdComposicionTela", data.IdComposicionTela);
+    g.set("Nombre4", data.Nombre4);
+    g.set("IdConstruccionTela", data.IdConstruccionTela);
+    g.set("Nombre5", data.Nombre5);
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };

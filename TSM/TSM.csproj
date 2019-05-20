@@ -655,6 +655,7 @@
     <Content Include="Content\smart_wizard_theme_circles.css" />
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
+    <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
