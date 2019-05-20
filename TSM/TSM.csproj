@@ -230,6 +230,7 @@
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosEstadosController.cs" />
     <Compile Include="Controllers\RetencionesController.cs" />
@@ -824,10 +825,12 @@
     <Content Include="Scripts\js\ElementoTrabajo.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
+    <Content Include="Scripts\js\EtapasProcesosModulos.js" />
     <Content Include="Scripts\js\FactoresCostos.js" />
     <Content Include="Scripts\js\FormaTipoInsumos.js" />
     <Content Include="Scripts\js\GestionOT.js" />
     <Content Include="Scripts\js\GradosInsumos.js" />
+    <Content Include="Scripts\js\IngresoSolicitudes.js" />
     <Content Include="Scripts\js\Interfaz.js" />
     <Content Include="Scripts\js\Layout.js" />
     <Content Include="Scripts\js\Login.js" />
@@ -855,7 +858,6 @@
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
     <Content Include="Scripts\js\Sistemas.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
-    <Content Include="Scripts\js\IngresoSolicitudes.js" />
     <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
@@ -1167,6 +1169,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_VisorReportes.aspx" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1230,7 +1233,6 @@
     <Content Include="Scripts\kendo\kendo.dropdowntree.min.js.map" />
     <Content Include="Scripts\kendo\kendo.multicolumncombobox.min.js.map" />
     <Content Include="Views\CatalogoInsumos\_CatalogoInsumosComparar.cshtml" />
-    <Content Include="Views\Pruebas\Index.cshtml" />
     <Content Include="Views\CategoriaPrendasUbicaciones\Index.cshtml" />
     <Content Include="Views\ColumnasDinamicas\Index.cshtml" />
     <Content Include="Views\EtapasProcesos\_EtapasProcesosEstados.cshtml" />
@@ -1249,19 +1251,20 @@
     <Content Include="Views\MisNotificaciones\Index.cshtml" />
     <Content Include="Views\TiposMaquinas\Index.cshtml" />
     <Content Include="Views\PlantillasListasVerificaciones\Index.cshtml" />
-    <Content Include="Views\Solicitudes\IngresoSolicitudes.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegCliente.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegPrenda.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaPieza.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaTela.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaMuestra.cshtml" />
-    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaUbicacion.cshtml" />
-    <Content Include="Views\Solicitudes\Index.cshtml" />
+    <Content Include="Views\Reportes\Visor.cshtml" />
     <Content Include="Views\Shared\_VerificarSolicitud.cshtml" />
     <Content Include="Views\Shared\_RevisionTecnica.cshtml" />
-    <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
-    <Content Include="Views\GestionOT\Index.cshtml" />
+    <Content Include="Views\Solicitudes\Index.cshtml" />
+    <Content Include="Views\Solicitudes\IngresoSolicitudes.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegCliente.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaMuestra.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaPieza.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaTela.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegDisenoPrendaUbicacion.cshtml" />
+    <Content Include="Views\Solicitudes\_SolicitudRegPrenda.cshtml" />
     <Content Include="Views\TiposSolicitudesDesarrollos\Index.cshtml" />
+    <Content Include="Views\GestionOT\Index.cshtml" />
+    <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1277,7 +1280,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\PerfilUsuarios\" />
-    <Folder Include="Views\RevisionTecnica\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
   <ItemGroup>
