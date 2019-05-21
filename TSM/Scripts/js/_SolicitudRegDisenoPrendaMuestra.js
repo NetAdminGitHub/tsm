@@ -44,6 +44,9 @@ $(document).ready(function () {
                     Nombre1: { type: "string" },
                     EstiloDiseno: { type: "string" },
                     NombreDiseno: { type: "string" },
+                    RangoTallas: {
+                        type: "string", validation: { required: true }
+                    },
                     Combo: {
                         type: "number",
                         validation: {
@@ -57,7 +60,14 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdUnidadYdPzs").data("kendoComboBox").text() === "" ? true : $("#IdUnidadYdPzs").data("kendoComboBox").selectedIndex >= 0;
                                 }
-
+                                if (input.is("[name='IdCategoriaTalla']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdCategoriaTalla").data("kendoComboBox").text() === "" ? true : $("#IdCategoriaTalla").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                if (input.is("[name='RangoTallas']") && input.val().length > 200) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    return false;
+                                }
                                 return true;
                             }
                         }
@@ -65,13 +75,15 @@ $(document).ready(function () {
                     ReferenciaGrafica: { type: "string" },
                     IdTipoMuestra: { type: "string" },
                     Nombre6: { type: "string" },
-                    Tallas: { type: "string" },
                     IdTecnica: { type: "string" },
                     CantidadSTrikeOff: { type: "number" },
                     CantidadYardaPieza: { type: "number" },
-                    IdUnidadYdPzs: { type: "string" },
+                    IdUnidadYdPzs: { type: "string"},
                     Nombre7: { type: "string" },
-                    NoDocumento: {type:"string"}
+                    NoDocumento: { type: "string" } ,
+                    IdCategoriaTalla: { type: "string" },
+                    Nombre11: {type :"string"}
+
 
                 }
             }
@@ -89,6 +101,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Nombre6");
             KdoHideCampoPopup(e.container, "Nombre5");
             KdoHideCampoPopup(e.container, "Nombre7");
+            KdoHideCampoPopup(e.container, "Nombre11");
             KdoHideCampoPopup(e.container, "Combo");
             KdoHideCampoPopup(e.container, "EstiloDiseno");
             KdoHideCampoPopup(e.container, "ReferenciaGrafica");
@@ -197,10 +210,12 @@ $(document).ready(function () {
             },
             { field: "IdTipoMuestra", title: "Tipo de muestra", editor: Grid_Combox, values: ["IdTipoMuestra", "Nombre", UrlTm, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "Nombre6", title: "Tipo de muestras" },
-            { field: "Tallas", title: "Tallas" },
+            { field: "RangoTallas", title: "Rango de Tallas" },
+            { field: "IdCategoriaTalla", title: "Talla a desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", UrlCata, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
+            { field: "Nombre11", title: "Talla a desarrollar" },
             { field: "IdTecnica", title: "Tecnicas", editor: EMulti_Tecnicas, values: ["Nombre", "IdTecnica", UrlTec] },
-            { field: "CantidadSTrikeOff", title: "S/O", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
-            { field: "CantidadYardaPieza", title: "Piezas/Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
+            { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
+            { field: "CantidadYardaPieza", title: "Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
             { field: "Nombre7", title: "Unidad de medida" },
             { field: "Comentarios", title: "Comentarios" }
@@ -340,12 +355,13 @@ $(document).ready(function () {
 let Fn_UpdFilaGridMue = function (g, data) {
     g.set("IdTipoMuestra", data.IdTipoMuestra);
     g.set("Nombre6", data.Nombre6);
-    g.set("Tallas", data.Tallas);
+    g.set("RangoTallas", data.RangoTallas);
     g.set("CantidadSTrikeOff", data.CantidadSTrikeOff);
     g.set("CantidadYardaPieza", data.CantidadYardaPieza);
     g.set("IdUnidadYdPzs", data.IdUnidadYdPzs);
     g.set("Nombre7", data.Nombre7);
     g.set("Comentarios", data.Comentarios);
+    g.set("IdCategoriaTalla", data.IdCategoriaTalla)
 };
 
 fPermisos = function (datos) {
