@@ -61,7 +61,7 @@
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6 col-lg-7">
                                                                 <label for="CntPiezas"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Cantidad a Producir:</a></label>
-                                                                <input id="CntPiezas" name="CntPiezas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                <input id="CntPiezas" name="CntPiezas" type="text" required  class="form-control" />
                                                             </div>
                                                             <div class="form-group col-md-6 col-lg-5">
                                                                 <label for="CmbIdUnidadMedidaCantidad">Unidad de Medida:</label>
@@ -71,28 +71,33 @@
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="TxtCantidadSTrikeOff">Strike Off:</label>
-                                                        <input id="TxtCantidadSTrikeOff" name="TxtCantidadSTrikeOff" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                        <input id="TxtCantidadSTrikeOff" name="TxtCantidadSTrikeOff" type="text" required  class="form-control" />
                                                     </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="TxtStrikeOffAdicional">Strike Off Adicional:</label>
+                                                        <input id="TxtStrikeOffAdicional" name="TxtStrikeOffAdicional" type="text" required class="form-control" />
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-row" id="Row4RD">
+                                                    <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
                                                     <div class="form-group col-md-6  col-lg-3">
                                                         <label for="CmbTMuestra">Tipo Muestra:</label>
                                                         <input id="CmbTMuestra" name="CmbTMuestra" required validationMessage="Requerido" class="form-control" />
                                                     </div>
-                                                </div>
-                                                <div class="form-row" id="Row4RD">
-                                                    <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="TallaPrincipal" id="lblTallas">Tallas:</label>
                                                         <input id="TallaPrincipal" name="TallaPrincipal" class="k-textbox form-control" disabled="disabled" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="CantidadTallas" id="lblCantidadTallas">Cantidad Tallas:</label>
-                                                        <input id="CantidadTallas" name="CantidadTallas" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                        <input id="CantidadTallas" name="CantidadTallas" type="text" required  class="form-control" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <div class="form-row">
                                                             <div class="form-group col-md-7 col-lg-8">
                                                                 <label for="CantidadColores" id="lblCantidadColores">Cantidad Colores:</label>
-                                                                <input id="CantidadColores" name="CantidadColores" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
+                                                                <input id="CantidadColores" name="CantidadColores" type="text" required  class="form-control" />
                                                             </div>
                                                             <div class="form-group col-md-5 col-lg-4 align-self-end">
                                                                 <input type="checkbox" id="chkDisenoFullColor" name="chkDisenoFullColor" class="k-checkbox">
@@ -100,24 +105,17 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="Montaje" id="lblMontaje"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Montajes:</a></label>
-                                                        <input id="Montaje" name="Montaje" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                                    </div>
+                                                   
                                                 </div>
                                                 <div class="form-row" id="Row5RD">
-                                                    <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio-->
+                                                    <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio--> 
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="Montaje" id="lblMontaje"><a href="~/Support/IT_PreCosteo_Requerimientos_Cantidades_Montajes.pdf" target="_blank">Montajes:</a></label>
+                                                        <input id="Montaje" name="Montaje" type="text" required class="form-control" />
+                                                    </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="Combo" id="lblCombo">Combo:</label>
-                                                        <input id="Combo" name="Combo" type="text" required data-max-msg="ingrese el valor entre 1 y 999999999" class="form-control" />
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="TxtVelocidadMaquina" id="lblVelocidadMaq"><a href="~/Support/IT_PreCosteo_Requerimientos_Velocidad.pdf" target="_blank">Velocidad Maquina:</a></label>
-                                                        <input id="TxtVelocidadMaquina" name="TxtVelocidadMaquina" class="form-control" required value="0" />
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="CmbIdUnidadVelocidad" id="lblIdUnidadVelocidad">Unidad Velocidad:</label>
-                                                        <input id="CmbIdUnidadVelocidad" name="CmbIdUnidadVelocidad" class="form-control" />
+                                                        <input id="Combo" name="Combo" type="text" required  class="form-control" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="CmbBase" id="lblBase"><a href="~/Support/IT_PreCosteo_Requerimientos_Bases.pdf" target="_blank">Base:</a></label>
@@ -262,18 +260,6 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <div id="GRDimension"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li id="BPGRReqDesTec">
-                                    <span class="TS-icon-TECNICA-2" style="font-size: 1.7em;">&nbsp</span>
-                                    Detallle de Técnicas
-
-                                    <div class="form-row" id="TecGrid">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <div id="GRReqDesTec"></div>
                                             </div>
                                         </div>
                                     </div>

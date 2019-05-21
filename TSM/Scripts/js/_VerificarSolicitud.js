@@ -77,6 +77,15 @@ var fn_VSCargarJSEtapa = function () {
         value: 0
     });
 
+    $("#TxtStrikeOffAdicional").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#Combo").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -117,15 +126,6 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
-    $("#TxtVelocidadMaquina").kendoNumericTextBox({
-        min: 0,
-        max: 99999999999999,
-        format: "#",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-
     $("#TxtNoVeces").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -144,13 +144,7 @@ var fn_VSCargarJSEtapa = function () {
                         return $("#CntPiezas").data("kendoNumericTextBox").value() > 0;
                     }
                     return true;
-                },
-                VelocidadMaquinaRuler: function (input) {
-                    if (input.is("[name='TxtVelocidadMaquina']") && Kendo_CmbGetvalue($("#IdServicio")) === "1") {
-                        return $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value() > 0;
-                    }
-                    return true;
-                },
+                },        
                 InstruccionesEspecialesRuler: function (input) {
                     if (input.is("[name='InstruccionesEspeciales']")) {
                         return input.val().length <= 2000;
@@ -166,12 +160,6 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbUbicacion: function (input) {
                     if (input.is("[name='IdUbicacion']")) {
                         return $("#IdUbicacion").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
-                MsgCmbIdUnidadVelocidad: function (input) {
-                    if (input.is("[name='CmbIdUnidadVelocidad']") && Kendo_CmbGetvalue($("#IdServicio")) === "1") {
-                        return $("#CmbIdUnidadVelocidad").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 },
@@ -294,7 +282,6 @@ var fn_VSCargarJSEtapa = function () {
 
             },
             messages: {
-                VelocidadMaquinaRuler: "Debe ser mayor a 0",
                 Mayor0: "Debe ser mayor a 0",
                 MsgLongitud: "Debe ser mayor a 0",
                 InstruccionesEspecialesRuler: "Longitud máxima del campo es 2000",
@@ -302,7 +289,6 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbPro: "Requerido",
                 MsgCmbIdPrograma: "Requerido",
                 MsgCmbUbicacion: "Requerido",
-                MsgCmbIdUnidadVelocidad: "Requerido",
                 UbicacionVerRuler: "Longitud máxima del campo es 200",
                 UbicacionHorRuler: "Longitud máxima del campo es 200",
                 MsgCmbIdUnidadMedidaCantidad: "Requerido",
@@ -358,21 +344,6 @@ var fn_VSCargarJSEtapa = function () {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), UrlMD, "Nombre", "IdMotivoDesarrollo", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTipoAcabado"), UrlTA, "Nombre", "IdTipoAcabado", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTMuestra"), UrlTMues, "Nombre", "IdTipoMuestra", "Seleccione ...");
-    //#region CmbIdUnidadVelocidad
-
-    $("#CmbIdUnidadVelocidad").kendoComboBox({
-        dataTextField: "Abreviatura",
-        dataValueField: "IdUnidad",
-        autoWidth: true,
-        filter: "contains",
-        autoBind: false,
-        clearButton: true,
-        placeholder: "Seleccione...",
-        height: 550,
-        dataSource: DSUnidadMedida("15,16")
-    });
-
-    //#endregion CmbIdUnidadVelocidad
 
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
@@ -390,8 +361,7 @@ var fn_VSCargarJSEtapa = function () {
 
     Kendo_CmbFiltrarGrid($("#CmbBase"), UrlApiBase, "Nombre", "IdBase", "Seleccione...");
     KdoNumerictextboxEnable($("#CantidadTallas"), false);
-    KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
-    KdoComboBoxEnable($("#CmbTMuestra"), false);
+
 
     HabilitaFormObje(false)
 
@@ -648,186 +618,7 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion Fin CRUD Programación GRID Dimensiones
 
-    //#region CRUD Programación GRID Costo y tecnicas
-
-    var DsReqDesTec = new kendo.data.DataSource({
-        transport: {
-            read: {
-                url: function (datos) { return UrlReqDesTec + "/GetByRequerimiento/" + VarIDReq; },
-                contentType: "application/json; charset=utf-8"
-            },
-            update: {
-                url: function (datos) { return UrlReqDesTec + "/" + datos.IdRequerimientoTecnica; },
-                type: "PUT",
-                contentType: "application/json; charset=utf-8"
-            },
-            destroy: {
-                url: function (datos) { return UrlReqDesTec + "/" + datos.IdRequerimientoTecnica; },
-                type: "DELETE"
-            },
-            create: {
-                url: UrlReqDesTec,
-                type: "POST",
-                contentType: "application/json; charset=utf-8"
-
-            },
-            parameterMap: function (data, type) {
-                if (type !== "read") {
-                    return kendo.stringify(data);
-                }
-            }
-        },
-
-        //FINALIZACIÓN DE UNA PETICIÓN
-        requestEnd: Grid_requestEnd,
-        // VALIDAR ERROR
-        error: Grid_error,
-        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
-        schema: {
-            model: {
-                id: "IdRequerimientoTecnica",
-                fields: {
-                    IdRequerimientoTecnica: {
-                        type: "number"
-
-                    },
-                    IdRequerimiento: {
-                        type: "number", defaultValue: function () {
-                            return $("#IdRequerimiento").val();
-                        }
-                    },
-                    IdTecnica: {
-                        type: "string"
-                    },
-                    Nombre1: {
-                        type: "string"
-                    },
-                    IdCostoTecnica: {
-                        type: "string",
-                        validation: {
-                            required: true,
-                            maxlength: function (input) {
-
-                                if (input.is("[name='IdTecnica']")) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
-                                }
-
-                                if (input.is("[name='IdCostoTecnica']")) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdCostoTecnica").data("kendoComboBox").selectedIndex >= 0;
-                                }
-
-                                return true;
-                            }
-                        }
-
-                    },
-                    Nombre: {
-                        type: "string"
-                    }
-
-                }
-            }
-        }
-
-
-
-    });
-
-    $("#GRReqDesTec").kendoGrid({
-        autoBind: false,
-        edit: function (e) {
-            // Ocultar
-            KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
-            KdoHideCampoPopup(e.container, "Nombre");
-            KdoHideCampoPopup(e.container, "IdRequerimiento");
-            KdoHideCampoPopup(e.container, "Nombre1");
-            KdoHideCampoPopup(e.container, "Nombre2");
-
-            //preparar crear DataSource filtrado por base
-            var CmbDSTec = new kendo.data.DataSource({
-                dataType: 'json',
-                sort: { field: "Nombre", dir: "asc" },
-                transport: {
-                    read: function (datos) {
-                        $.ajax({
-                            dataType: 'json',
-                            url: UrlApiVTec + "/GetbyBase/" + $("#CmbBase").data("kendoComboBox").value().toString(),
-                            async: false,
-                            contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                datos.success(result);
-                            }
-                        });
-                    }
-                }
-            });
-
-
-
-            $('[name="IdTecnica"]').on('change', function (e, dtmodel) {
-                IdTec = Kendo_CmbGetvalue($('[name="IdTecnica"]'));
-                $('[name="IdCostoTecnica"]').data("kendoComboBox").value("");
-                var DsCostoTec = new kendo.data.DataSource({
-                    dataType: 'json',
-                    sort: { field: "Nombre", dir: "asc" },
-                    transport: {
-                        read: function (datos) {
-                            $.ajax({
-                                dataType: 'json',
-                                url: UrlApiCoTec + "/" + $("#CmbBase").data("kendoComboBox").value().toString() + "/" + IdTec.toString(),
-                                async: false,
-                                contentType: "application/json; charset=utf-8",
-                                success: function (result) {
-                                    datos.success(result);
-
-                                }
-                            });
-                        }
-                    }
-                });
-
-                // asignar DataSource al combobox tecnica
-                $('[name="IdCostoTecnica"]').data("kendoComboBox").setDataSource(DsCostoTec);
-
-            });
-
-
-            // asignar DataSource al combobox tecnica
-            $('[name="IdTecnica"]').data("kendoComboBox").setDataSource(CmbDSTec);
-
-
-
-
-            Grid_Focus(e, "IdTecnica");
-        },
-        //DEFICNICIÓN DE LOS CAMPOS
-
-        columns: [
-            { field: "IdRequerimientoTecnica", title: "Color Requerimiento Técnica", hidden: true },
-            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "IdTecnica", title: "Técnicas", editor: Grid_Combox, values: ["IdTecnica", "Nombre", UrlApiVTec, "", "Seleccione un Técnica....", "required", "", "Requerido"], hidden: true },
-            { field: "Nombre1", title: "Nombre técnica" },
-            { field: "IdCostoTecnica", title: "Costo técnica", editor: Grid_Combox, values: ["IdCostoTecnica", "Nombre", UrlApiCoTec, "", "Seleccione un Costo Tec...", "required", "IdTecnica", "Requerido"], hidden: true },
-            { field: "Nombre", title: "Nombre costo técnica" }
-
-        ]
-
-    });
-
-    SetGrid($("#GRReqDesTec").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
-    SetGrid_CRUD_ToolbarTop($("#GRReqDesTec").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#GRReqDesTec").data("kendoGrid"), false, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#GRReqDesTec").data("kendoGrid"), DsReqDesTec);
-
-
-    var selectedRowsColoTec = [];
-    $("#GRReqDesTec").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-
-        Grid_SetSelectRow($("#GRReqDesTec"), selectedRowsColoTec);
-    });
-    //#endregion fin CRUD Programación GRID Colores tecnicas
+ 
 
     //#region CRUD Programación GRID Tecnicas y colores
 
@@ -960,9 +751,6 @@ var fn_VSCargarJSEtapa = function () {
         }
 
     });
-
-
-
     $("#chkDisenoFullColor").click(function () {
         if (this.checked) {
             $("#CantidadColores").data("kendoNumericTextBox").value(12);
@@ -972,32 +760,7 @@ var fn_VSCargarJSEtapa = function () {
             $("#CantidadColores").data("kendoNumericTextBox").enable(true);
         }
     });
-    //#region Actualizar Base
-    var ExecActBase = true
-    $("#CmbBase").data("kendoComboBox").bind("change", function (e) {
-        if ($("#IdRequerimiento").val() > 0) {
-            event.preventDefault();
-            if (ExecActBase == true) {
-                if (ValidRD.validate()) {
-                    if (ActualizarReq() === false) {
-                        $("#CmbBase").data("kendoComboBox").value(getIdBase($("#grid").data("kendoGrid")));
-                        ExecActBase = false;
-                    } else {
-                        ExecActBase = true;
-                    };
-                } else {
-                    $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-                    ExecActBase = true;
-                }
-            } else {
-                ExecActBase = true;
-            }
-        }
 
-
-    });
-
-    //#endregion Fin actualizar Base
 
     //#endregion FIN CRUD manejo de requerimiento de Desarrollo
 
@@ -1268,10 +1031,9 @@ var fn_VSCargar = function () {
     
         KdoDatePikerEnable($("#Fecha"), false);
         TextBoxEnable($("#TxtEjecutivoCuenta"), false);
-        
         KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), false);
+        KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), false);
         KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
-     
         KdoComboBoxEnable($("#IdUbicacion"), false);
         $("#UbicacionVer").attr("disabled", true);
         $("#UbicacionHor").attr("disabled", true);
@@ -1290,16 +1052,16 @@ var fn_VSCargar = function () {
         KdoComboBoxEnable($("#CmbBase"), false);
         $("#IdSistemaTinta").attr("readonly", true);
         $("#IdCategoriaPrenda").attr("readonly", true);
-        KdoComboBoxEnable($("#CmbIdUnidadVelocidad"), false);
         KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
-        
+        KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
+        KdoComboBoxEnable($("#CmbTMuestra"), false);
+
         var multiselect = $("#IdSistemaTinta").data("kendoMultiSelect");
         multiselect.readonly(true);
         var mulselect = $("#IdCategoriaPrenda").data("kendoMultiSelect");
         mulselect.readonly(true);
 
         KdoNumerictextboxEnable($("#CntPiezas"), false);
-        KdoNumerictextboxEnable($("#TxtVelocidadMaquina"), false);
         KdoNumerictextboxEnable($("#Combo"), false);
         KdoNumerictextboxEnable($("#Montaje"), false);
         KdoNumerictextboxEnable($("#CantidadColores"), false);
@@ -1308,7 +1070,6 @@ var fn_VSCargar = function () {
         KdoButtonEnable($("#myBtnAdjunto"), false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
-        Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColorTec"), false, false, false);
         KdoComboBoxEnable($("#IdPrograma"), false);
 
@@ -1343,7 +1104,8 @@ let getRD = function(UrlRD) {
                 $("#UbicacionHor").val(elemento.UbicacionHorizontal);
                 $("#UbicacionVer").val(elemento.UbicacionVertical);
                 $("#CntPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
-                $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value(elemento.CantidadSTrikeOff);
+                $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value(elemento.CantidadStrikeOff);
+                $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value(elemento.StrikeOffAdicional);
                 $("#CantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
                 $("#CantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
                 $("#Montaje").data("kendoNumericTextBox").value(elemento.Montaje);
@@ -1351,8 +1113,6 @@ let getRD = function(UrlRD) {
                 $("#Fecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha), 'dd/MM/yyyy'));
                 $("#InstruccionesEspeciales").val(elemento.InstruccionesEspeciales);
                 $("#Estado").val(elemento.Estado);
-                $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
-                $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(elemento.IdUnidadVelocidad);
                 $('#chkDisenoFullColor').prop('checked', elemento.DisenoFullColor);
                 $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(elemento.IdUnidadMedidaCantidad);
                 $("#TallaPrincipal").val(elemento.TallaPrincipal);
@@ -1368,20 +1128,19 @@ let getRD = function(UrlRD) {
                 //consultar grid
                 VarIDReq = elemento.IdRequerimiento;
                 $("#GRDimension").data("kendoGrid").dataSource.read();
-                $("#GRReqDesTec").data("kendoGrid").dataSource.read();
                 $("#GRReqDesColorTec").data("kendoGrid").dataSource.read();
 
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
                 HabilitaFormObje(true)
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
-                KdoComboBoxEnable($("#CmbBase"), false);
                 
 
-                if (Kendo_CmbGetvalue($("#IdServicio")) === "1") {
+                if (elemento.IdServicio=== 1) {
                     elemento.DisenoFullColor === true ? KdoNumerictextboxEnable($("#CantidadColores"), false) : KdoNumerictextboxEnable($("#CantidadColores"), elemento.Estado === "EDICION" ? true : false);
                 } else {
                     KdoNumerictextboxEnable($("#CantidadColores"), false);
+                    KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
                 }
                 // foco en la fecha
                 $("#Fecha").data("kendoDatePicker").element.focus();
@@ -1625,7 +1384,8 @@ let GuardarRequerimiento = function(UrlRD) {
             UbicacionHorizontal: $("#UbicacionHor").val(),
             UbicacionVertical: $("#UbicacionVer").val(),
             CantidadPiezas: $("#CntPiezas").val(),
-            CantidadSTrikeOff: $("#TxtCantidadSTrikeOff").val(),
+            CantidadStrikeOff: $("#TxtCantidadSTrikeOff").val(),
+            StrikeOffAdicional: $("#TxtStrikeOffAdicional").val(),
             TallaPrincipal: $("#TallaPrincipal").val(),
             Estado: XEstado,
             Fecha: XFecha,
@@ -1635,8 +1395,8 @@ let GuardarRequerimiento = function(UrlRD) {
             Montaje: $("#Montaje").val(),
             Combo: $("#Combo").val(),
             RevisionTecnica: false,
-            VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-            IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+            VelocidadMaquina: null,
+            IdUnidadVelocidad:null,
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
             IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1672,7 +1432,6 @@ let GuardarRequerimiento = function(UrlRD) {
                 $("#Estado").val(data[0].Estado);
 
             Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-            Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Grid_HabilitaToolbar($("#GRReqDesColorTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
 
             //habilitar botones   
@@ -1719,7 +1478,8 @@ let ActualizarReq = function() {
             UbicacionHorizontal: $("#UbicacionHor").val(),
             UbicacionVertical: $("#UbicacionVer").val(),
             CantidadPiezas: $("#CntPiezas").val(),
-            CantidadSTrikeOff: $("#TxtCantidadSTrikeOff").val(),
+            CantidadStrikeOff: $("#TxtCantidadSTrikeOff").val(),
+            StrikeOffAdicional: $("#TxtStrikeOffAdicional").val(),
             TallaPrincipal: $("#TallaPrincipal").val(),
             Estado: XEstado,
             Fecha: XFecha,
@@ -1729,8 +1489,8 @@ let ActualizarReq = function() {
             Montaje: $("#Montaje").val(),
             Combo: $("#Combo").val(),
             RevisionTecnica:false,
-            VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-            IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+            VelocidadMaquina: null,
+            IdUnidadVelocidad: null,
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
             IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1786,6 +1546,7 @@ let LimpiarReq = function() {
     $("#UbicacionVer").val("");
     $("#CntPiezas").data("kendoNumericTextBox").value("0");
     $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value("0");
+    $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value("0");
     $("#CantidadColores").data("kendoNumericTextBox").value("0");
     $("#CantidadTallas").data("kendoNumericTextBox").value("0");
     $("#Montaje").data("kendoNumericTextBox").value("0");
@@ -1794,8 +1555,6 @@ let LimpiarReq = function() {
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     $("#InstruccionesEspeciales").val("");
     $("#Estado").val("");
-    $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value("0");
-    $("#CmbIdUnidadVelocidad").data("kendoComboBox").value("");
     $('#chkDisenoFullColor').prop('checked', 0);
     $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value("");
     $("#CmbBase").data("kendoComboBox").value("");
@@ -1886,14 +1645,13 @@ let HabilitaFormObje = function(ToF) {
     //KdoDatePikerEnable($("#Fecha"), ToF);
     KdoNumerictextboxEnable($("#CntPiezas"), ToF);
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
+    KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), ToF);
     //KdoNumerictextboxEnable($("#CantidadTallas"), ToF);
     KdoNumerictextboxEnable($("#Montaje"), ToF);
     KdoNumerictextboxEnable($("#Combo"), ToF);
-    KdoNumerictextboxEnable($("#TxtVelocidadMaquina"), ToF);
     KdoNumerictextboxEnable($("#CantidadColores"), ToF);
     KdoComboBoxEnable($("#CmbIdUnidadMedidaCantidad"), ToF);
     KdoComboBoxEnable($("#IdPrograma"), ToF);
-    KdoComboBoxEnable($("#CmbIdUnidadVelocidad"), ToF);
     KdoComboBoxEnable($("#CmbBase"), ToF);
     KdoComboBoxEnable($("#IdComposicionTela"), ToF);
     KdoComboBoxEnable($("#IdCategoriaConfeccion"), ToF);

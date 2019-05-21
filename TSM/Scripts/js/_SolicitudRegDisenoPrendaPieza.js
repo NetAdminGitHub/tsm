@@ -94,7 +94,6 @@ $(document).ready(function () {
         }
     });
 
-
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridInfPieza").kendoGrid({
         edit: function (e) {
@@ -111,6 +110,7 @@ $(document).ready(function () {
             $("[name='IdPrograma']").data("kendoComboBox").setDataSource(fn_getDsPro());
             $("[name='IdMotivoDesarrollo']").data("kendoComboBox").setDataSource(fn_getMd());
             Grid_Focus(e, "IdMotivoDesarrollo");
+     
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -156,9 +156,6 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridInfPieza").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gridInfPieza").data("kendoGrid"), dataSource);
 
-
-
-
     var selectedRows = [];
     $("#gridInfPieza").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridInfPieza"), selectedRows);
@@ -172,7 +169,62 @@ $(document).ready(function () {
     });
 
     Fn_Grid_Resize($("#gridInfPieza"), $(window).height() - "371");
+
+    let grid1 = $("#gridInfPieza").data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+    $(grid1.element).kendoDropTarget({
+        drop: function (e) {
+            e.draggable.hint.hide();
+            var target = grid1.dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(e.target);
+                //dest = $(document.elementFromPoint(e.clientX, e.clientY));
+            if (dest.is("th") || dest.is("thead") || dest.is("span") || dest.parent().is("th")) {
+                return;
+            }
+            //en caso que contenga imagen
+            else if (dest.is("img")) {
+                dest = grid1.dataSource.getByUid(dest.parent().parent().data("uid"));
+            }
+            else {
+                dest = grid1.dataSource.getByUid(dest.parent().data("uid"));
+            }
+            if (dest !== undefined) {
+                Fn_UpdFilaGrid(grid1.dataItem("tr[data-uid='" + dest.uid + "']"), target);
+                grid1.saveChanges();
+            }
+
+        },
+        group: "gridGroup"
+    });
+
 });
+
+let Fn_UpdFilaGrid = function (g, data) {
+    g.set("IdMotivoDesarrollo", data.IdMotivoDesarrollo);
+    g.set("Nombre9", data.Nombre9);
+    g.set("IdPrioridadOrdenTrabajo", data.IdPrioridadOrdenTrabajo);
+    g.set("Nombre10", data.Nombre10);
+    g.set("EstiloDiseno", data.EstiloDiseno);
+    g.set("NombreDiseno", data.NombreDiseno);
+    g.set("IdTemporada", data.IdTemporada);
+    g.set("Nombre2", data.Nombre2);
+    g.set("IdPrograma", data.IdPrograma);
+    g.set("Nombre3", data.Nombre3);
+    g.set("Combo", data.Combo);
+};
+
 
 var fn_getDsPro = function () {
     return new kendo.data.DataSource({
@@ -211,6 +263,16 @@ var fn_getMd = function () {
         }
     });
 };
+
+let Fn_GetRow = function (ds, IdCategoriaPrenda) {
+    var dset = JSON.parse(JSON.stringify(ds)).filter(function (entry) {
+        return entry.IdMotivoDesarrollo !== null;
+    });
+    return dset.length - 1 < 0 ? null : dset[dset.length - 1];
+};
+
+
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
