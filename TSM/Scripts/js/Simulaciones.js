@@ -6,6 +6,7 @@ $(document).ready(function () {
     var VIdSer = 0;
     var VIdCliente = 0;
     var VIDSim = 0;
+    let vIdModulo = 1;
     Fn_VistaConsultaRequerimiento($('#vConsulta'));
     KdoButton($("#btnRecalcular"),"gears","Recalcular simulación");
     KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
@@ -334,7 +335,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlApiSimu + "/GetSimulacionesAnalisis/" + VIdSer + "/" + VIdCliente; },
+                url: function (datos) { return UrlApiSimu + "/GetSimulacionesAnalisis/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },

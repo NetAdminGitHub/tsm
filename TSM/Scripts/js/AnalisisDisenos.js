@@ -5,7 +5,7 @@ var vEspapel = true;
 var vEstampado = true;
 var RowAct = ""; // guarda la fila activa del grid.
 $(document).ready(function () {
-
+    let vIdModulo = 1;
     Fn_VistaConsultaRequerimiento($('#vConsulta'));
 
     //#region Inicializacion de controles Kendo
@@ -387,7 +387,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlAD + "/GetAnalisisDisenosRequerimientos/" + IdSer + "/" + EST + "/" + IdClie; },
+                url: function (datos) { return UrlAD + "/GetAnalisisDisenosRequerimientos/" + IdSer + "/" + EST + "/" + IdClie + "/" + vIdModulo; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {

@@ -9,6 +9,7 @@ $(document).ready(function () {
     var vIdS = 0;
     var vIdCli = 0;
     var VarIDReq = 0;
+    let vIdModulo = 1;
 
     // carga carrousel de imagenes 
     var DivCarousel = $("#Div_Carousel");
@@ -400,7 +401,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlRD + "/GetByServicioCliente/" + vIdS + "/" + vIdCli; },
+                url: function (datos) { return UrlRD + "/GetByServicioCliente/" + vIdS + "/" + vIdCli + "/" + vIdModulo; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -1165,7 +1166,16 @@ $(document).ready(function () {
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
-                DirectorioArchivos: $("#TxtDirectorioArchivos").val()
+                DirectorioArchivos: $("#TxtDirectorioArchivos").val(),
+                IdModulo: vIdModulo,
+                IdSolicitudDisenoPrenda: null,
+                IdEjecutivoCuenta: null,
+                IdTipoLuz: null,
+                IdMotivoDesarrollo: null,
+                IdTipoAcabado: null,
+                IdTipoMuestra: null,
+                CantidadStrikeOff: 0,
+                StrikeOffAdicional: 0
 
             }),
             contentType: 'application/json; charset=utf-8',
@@ -1298,7 +1308,17 @@ $(document).ready(function () {
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
-                DirectorioArchivos: $("#TxtDirectorioArchivos").val()
+                DirectorioArchivos: $("#TxtDirectorioArchivos").val(),
+                IdModulo: vIdModulo,
+                IdSolicitudDisenoPrenda : null,
+                IdEjecutivoCuenta :null,
+                IdTipoLuz : null,
+                IdMotivoDesarrollo :null,
+                IdTipoAcabado :null,
+                IdTipoMuestra :null,
+                CantidadStrikeOff: 0,
+                StrikeOffAdicional:0
+               
 
             }),
             contentType: 'application/json; charset=utf-8',
