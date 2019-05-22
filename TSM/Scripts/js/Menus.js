@@ -543,6 +543,7 @@ $(document).ready(function () {
                 $("#TxtAccion").val(respuesta.Accion);
                 $("#TxtEtiquetaMenu").val(respuesta.EtiquetaMenu);
                 $("#CmbIdCatalogoFuente").data("kendoComboBox").value(respuesta.IdCatalogoFuente);
+                $("#TxtEstado").val(respuesta.Estado);
                 kendo.ui.progress($("#treeview"), false);
                 RequestEndMsg(respuesta, "Get");
             },
@@ -741,12 +742,15 @@ $(document).ready(function () {
         kendo.ui.progress($("#treeview"), true);
         var XType = "";
         var Url = "";
+        let estado = "";
         if ($("#TxtIdMenu").val() === "") {
             XType = "Post";
             Url = UrlMenu;
+            estado = "REGISTRADO";
         } else {
             XType = "Put";
             Url = UrlMenu + "/" + $("#TxtIdMenu").val();
+            estado = $("#TxtEstado").val();
         }
 
         $.ajax({
@@ -762,13 +766,14 @@ $(document).ready(function () {
                 Accion: $("#TxtAccion").val(),
                 IdCatalogoFuente: $("#CmbIdCatalogoFuente").data("kendoComboBox").value(),
                 IdModulo: $("#cmbModulo").data("kendoComboBox").value(),
-                Estado: "REGISTRADO"
+                Estado: estado
 
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 $("#TxtIdMenu").val(data[0].IdMenu);
                 $("#TxtNivel").val(data[0].Nivel);
+                $("#TxtEstado").val(data[0].Estado);
                 fn_getSetCodigoMenuPadre(data[0].IdMenuPadre);
                 fn_Habilitar(false);
                 $("#btnGuardar").data("kendoButton").enable(false);
