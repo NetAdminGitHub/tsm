@@ -84,6 +84,7 @@ $(document).ready(function () {
             } else {
                 Grid_Focus(e, "IdUsuario");
             }
+            $('[name="IdUsuario"').attr('mayus', 'no');
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
