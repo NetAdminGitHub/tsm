@@ -2,10 +2,7 @@
 let UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
 let UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
 let StrIdCatalogoInsu = "";
-
-    
 let vIdPlan = 0;
-
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     let dataSource = new kendo.data.DataSource({
@@ -188,9 +185,6 @@ var fn_RTCargarConfiguracion = function () {
             }
           
         },
-        edit: function () {
-            alert('hola')
-        },
         columns: [
             { field: "IdRequerimiento", title: "Cod. requerimiento", editor: Grid_ColLocked, hidden: true },
             { field: "IdPlantillaListaVerificacion", title: "Cod. Plantilla", editor: Grid_ColLocked, hidden: true },
@@ -215,7 +209,6 @@ var fn_RTCargarConfiguracion = function () {
 
     Grid_HabilitaToolbar($("#gridRevDet"), false, false, false);
 
-
     var selRows = [];
     $("#gridRevDet").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridRevDet"), selRows);
@@ -230,14 +223,13 @@ var fn_RTCargarConfiguracion = function () {
     });
 
     Fn_Grid_Resize($("#gridRevDet"), $(window).height() - "371");
-    //#endregion};
+    //#endregion
+};
 
 var fn_RTMostrarGrid = function () {
     $("#gridRev").data("kendoGrid").dataSource.read();
-    if ($("#txtEstado").val() !== "ACTIVO") {
-        Grid_HabilitaToolbar($("#gridRev"), false, false, false);
-    }
-
+    let vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
+    Grid_HabilitaToolbar($("#gridRev"), vhb, vhb, vhb);
 };
 
 fun_List.push(fn_RTCargarConfiguracion);
@@ -251,12 +243,12 @@ let Fn_GetFilaSelect = function (data) {
         Item: data.Item,
         Descripcion: data.Descripcion,
         Comprobado: data.Comprobado
-    }
+    };
     return fila;
 };
 
 let Grid_ColTempCheckBox = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\"" + (data[columna] ? "checked=\"checked\"" : "") + ""+ ($("#txtEstado").val() !== "ACTIVO" ? "disabled =\"disabled\"" : "") +" />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\"" + (data[columna] ? "checked=\"checked\"" : "") + "" + ($("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? "disabled =\"disabled\"" : "") +" />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 

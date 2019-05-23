@@ -133,13 +133,12 @@ var fn_SDCargarJSEtapa = function () {
 
 var fn_SDCargarDatos = function () {
     fn_GetSolicitud();
-    if ($("#txtEstado").val() !== "ACTIVO") {
-        KdoComboBoxEnable($("#CmbTipoMaquina"), false);
-        TextBoxEnable($("#TxtComentarios"), false);
-        KdoCheckBoxEnable($("#chkExisteTela"), false);
-        KdoButtonEnable($("#btnGuardar"), false);
-    }
-
+    let vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
+    KdoComboBoxEnable($("#CmbTipoMaquina"), vhb);
+    TextBoxEnable($("#TxtComentarios"), vhb);
+    KdoCheckBoxEnable($("#chkExisteTela"), vhb);
+    KdoButtonEnable($("#btnGuardar"), vhb);
+    if (vhb) KdoCmbFocus($("#CmbTipoMaquina"));
 };
 
 let fn_GetSolicitud = function () {
@@ -160,10 +159,7 @@ let fn_GetSolicitud = function () {
                 $("#dtFechaEstampado").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaEstampado), 'dd/MM/yyyy'));
                 KdoCmbSetValue($("#CmbTipoMaquina"), respuesta.IdTipoMaquina);
                 $("#TxtComentarios").val(respuesta.Comentarios);
-                $('#chkExisteTela').prop('checked', respuesta.ExisteTela);
-                KdoCmbFocus($("#CmbTipoMaquina"));
-               
-               
+                $('#chkExisteTela').prop('checked', respuesta.ExisteTela); 
             } else {
                 $("#TxtIdSolicitudDesarrollo").val(0);
                 $("#TxtEstado").val("");

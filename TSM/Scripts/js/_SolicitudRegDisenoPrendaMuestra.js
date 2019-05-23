@@ -361,7 +361,7 @@ let Fn_UpdFilaGridMue = function (g, data) {
     g.set("IdUnidadYdPzs", data.IdUnidadYdPzs);
     g.set("Nombre7", data.Nombre7);
     g.set("Comentarios", data.Comentarios);
-    g.set("IdCategoriaTalla", data.IdCategoriaTalla)
+    g.set("IdCategoriaTalla", data.IdCategoriaTalla);
 };
 
 fPermisos = function (datos) {

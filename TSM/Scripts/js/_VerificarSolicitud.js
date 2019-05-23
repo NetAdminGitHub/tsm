@@ -361,8 +361,6 @@ var fn_VSCargarJSEtapa = function () {
 
     Kendo_CmbFiltrarGrid($("#CmbBase"), UrlApiBase, "Nombre", "IdBase", "Seleccione...");
     KdoNumerictextboxEnable($("#CantidadTallas"), false);
-
-
     HabilitaFormObje(false)
 
     //#endregion FIN Inicialización de variables y controles Kendo
@@ -465,11 +463,6 @@ var fn_VSCargarJSEtapa = function () {
         },
         // VALIDAR ERROR
         error: Grid_error,
-
-        //change: function (e) {
-        //    $("#Estado").val() === "EDICION" ? Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
-        //    Grid_SelectRow($("#GRDimension"), selectedRowsDimen);
-        //},
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         schema: {
             model: {
@@ -543,13 +536,9 @@ var fn_VSCargarJSEtapa = function () {
                         type: "bool"
                     },
                     DimensionesRelativas: { type: "string" }
-
                 }
             }
         }
-        //aggregate: [{ field: "Tallas", aggregate: "count" }]
-
-
     });
 
     $("#GRDimension").kendoGrid({
@@ -584,7 +573,6 @@ var fn_VSCargarJSEtapa = function () {
             Grid_Focus(e, "IdCategoriaTalla");
         },
 
-
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "Id", title: "Id", hidden: true },
@@ -599,9 +587,6 @@ var fn_VSCargarJSEtapa = function () {
             { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Abreviatura", title: "Unidad de Medida" },
             { field: "DimensionesRelativas", title: "Medidas Relativas" }
-
-
-
         ]
 
     });
@@ -761,7 +746,6 @@ var fn_VSCargarJSEtapa = function () {
         }
     });
 
-
     //#endregion FIN CRUD manejo de requerimiento de Desarrollo
 
     //#region CRUD Manejo de Arte
@@ -890,7 +874,6 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "IdArte");
             KdoHideCampoPopup(e.container, "NombreArchivo");
             KdoHideCampoPopup(e.container, "Id");
-
             Grid_Focus(e, "Descripción");
         },
         columns: [
@@ -1027,7 +1010,7 @@ var fn_VSCargarJSEtapa = function () {
 
 var fn_VSCargar = function () {
     getRD(UrlRD + "/" + $("#txtId").val());
-    if ($("#txtEstado").val() !== "ACTIVO") {
+    if ($("#txtEstado").val() !== "ACTIVO" || EtpSeguidor===true || EtpAsignado===false) {
     
         KdoDatePikerEnable($("#Fecha"), false);
         TextBoxEnable($("#TxtEjecutivoCuenta"), false);
@@ -1166,7 +1149,6 @@ let getRD = function(UrlRD) {
         }
     });
 }
-
 
 let getArte = function(UrlArt, UrlApiArteAdj) {
     kendo.ui.progress($("#vistaParcial"), true);

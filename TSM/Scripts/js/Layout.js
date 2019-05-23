@@ -7,6 +7,9 @@ $(document).ready(function () {
     if (Cookies.get("user") != undefined)
         window.sessionStorage.setItem("user", Cookies.get("user"));
 
+    if (Cookies.get("UserStateGrid") === undefined)
+        Cookies.set("UserStateGrid", "[]");
+ 
     vtoken();
 
     // oerde de ejecucion de documentos

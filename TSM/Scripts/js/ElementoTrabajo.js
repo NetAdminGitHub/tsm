@@ -1,8 +1,11 @@
-﻿var fun_List = [];
+﻿
+var fun_List = [];
 var fun_ListDatos = [];
 var Permisos;
 var item;
 var idTipoOrdenTrabajo;
+var EtpAsignado = false;
+var EtpSeguidor = false;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -79,50 +82,68 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         method: 'GET',
         success: function (datos) {
             if (datos !== null) {
-                var fecha = new Date(datos.FechaOrdenTrabajo);
-                $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
-                $("#txtIdSolicitud").val(datos.IdSolicitud);
-                $("#txtIdOrdenTrabajo").val(datos.IdOrdenTrabajo);
-                $("#txtIdSolicitudDisenoPrenda").val(datos.IdSolicitudDisenoPrenda);
-                $("#txtIdEtapaProceso").val(datos.IdEtapaProceso);
-                $("#IdCliente").val(datos.IdCliente);
-                $("#txtEstado").val(datos.Estado);
-                $("#txtId").val(datos.Id);
+                fn_CompletarInfEtapa(datos, RecargarScriptVista);
 
-                $("#txtNomServicio").val(datos.NomServicio);
-                $("#txtNombre").val(datos.Nombre);
-                $("#txtEstiloDiseno").val(datos.EstiloDiseno);
-                $("#txtNombreDiseno").val(datos.NombreDiseno);
-                $("#lblNomIdEtapaProceso").text(datos.NomIdEtapaProceso);
-                $("#txtEstado").val(datos.Estado);
-                $("#txtNoDocumentoOT").val(datos.NoDocumento);
-                $("#txtFechaOrdenTrabajo").val(fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' + fecha.getFullYear());
-                $("#txtNomEstado").val(datos.NomEstado);
-                $("#txtNombrePrenda").val(datos.NombrePrenda);
-                $("#txtItem").val(datos.Item);
-                idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
-             
-                KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() === "ACTIVO" ? true : false);
-                KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() === "ACTIVO" ? true : false);
-            
-                $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
-                $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt( datos.IdEtapaProceso));
-
-                if (RecargarScriptVista == true) {
-                    $.each(fun_List, function (index, elemento) {
-                        elemento.call(document, jQuery);
-                    });
-
-                    fun_List = [];
-                }
-
-                $.each(fun_ListDatos, function (index, elemento) {
-                    elemento.call(document, jQuery);
+            } else {
+                $.ajax({
+                    url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapaNoActivaDetalle/" + idOrdenTrabajo + "/" + idEtapaProceso,
+                    method: 'GET',
+                    success: function (datos) {
+                        fn_CompletarInfEtapa(datos, RecargarScriptVista);
+                    }
                 });
             }
         }
     });
 };
+var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
+    EtpAsignado = datos.Asignado;
+    EtpSeguidor = datos.Seguidor;
+    if (datos.Asignado === false && datos.Seguidor === false) {
+        window.location.href = "/GestionOT";
+        return;
+    }
+    var fecha = new Date(datos.FechaOrdenTrabajo);
+    $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
+    $("#txtIdSolicitud").val(datos.IdSolicitud);
+    $("#txtIdOrdenTrabajo").val(datos.IdOrdenTrabajo);
+    $("#txtIdSolicitudDisenoPrenda").val(datos.IdSolicitudDisenoPrenda);
+    $("#txtIdEtapaProceso").val(datos.IdEtapaProceso);
+    $("#IdCliente").val(datos.IdCliente);
+    $("#txtEstado").val(datos.Estado);
+    $("#txtId").val(datos.Id);
+    $("#txtNomServicio").val(datos.NomServicio);
+    $("#txtNombre").val(datos.Nombre);
+    $("#txtEstiloDiseno").val(datos.EstiloDiseno);
+    $("#txtNombreDiseno").val(datos.NombreDiseno);
+    $("#lblNomIdEtapaProceso").text(datos.NomIdEtapaProceso);
+    $("#txtEstado").val(datos.Estado);
+    $("#txtNoDocumentoOT").val(datos.NoDocumento);
+    $("#txtFechaOrdenTrabajo").val(fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' + fecha.getFullYear());
+    $("#txtNomEstado").val(datos.NomEstado);
+    $("#txtNombrePrenda").val(datos.NombrePrenda);
+    $("#txtItem").val(datos.Item);
+    idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
+
+    KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+
+    $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
+    $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
+
+    if (RecargarScriptVista === true) {
+        $.each(fun_List, function (index, elemento) {
+            elemento.call(document, jQuery);
+        });
+
+        fun_List = [];
+    }
+
+    $.each(fun_ListDatos, function (index, elemento) {
+        elemento.call(document, jQuery);
+    });
+};
+
 var get_cmbUsuario = function (tipoOrd, etp) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -229,7 +250,7 @@ $("#btnCambiarEtapa").click(function (e) {
 
 
 var CargarAsignacionUsuarios = function () {
-    if ($("#gridUsuarioAsignados").data("kendoGrid") == undefined) {
+    if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
         $("#gridUsuarioAsignados").kendoGrid({
             dataSource: {
                 transport: {
@@ -305,7 +326,7 @@ var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
                     return $("#cmbUsuario").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
-            },            
+            }         
         },
         messages: {
             MsgcmbEstados: "Requerido"
