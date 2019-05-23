@@ -195,24 +195,24 @@ var fn_CrearNotificaciones = function(opciones) {
 
     $.each(opciones, function (index, elemento) {
         MPContenedor.append(
-            `<a href="/MisNotificaciones" class="list-group-item ` + (elemento.Leido == false ? "unread" : "read") + `" ` + (elemento.Leido == false ? "style=\"background-color: #DFE3EE;\"" : "") + `>
+            `<div class="position-relative list-group-item ` + (elemento.Leido == false ? "unread" : "read") + `" ` + (elemento.Leido == false ? "style=\"background-color: #DFE3EE;\"" : "") + `>
                 <div class="list-group-item-figure">
-                    <div class="notif-icon ` + (elemento.Prioridad == "B" ? "notif-primary" : elemento.Prioridad == "M" ? "notif-success" : "notif-danger") + `"> <i class="k-icon k-i-notification"></i> </div>
+                    <div class="TSM-notif-icon ` + (elemento.Prioridad == "B" ? "TSM-notif-Baja" : elemento.Prioridad == "M" ? "TSM-notif-Media" : "TSM-notif-Alta") + `"> <i class="k-icon k-i-notification"></i> </div>
                 </div>
                 <div class="list-group-item-body pl-3 pl-md-4">
                     <div class="row">
-                        <div class="col-12">
-                            <h5 class="list-group-item-title">
+                        <div class="col-12 position-static">
+                            <h4 class="list-group-item-title">
                                 <span>` + elemento.Asunto +`</span>
-							</h5>
+							</h4>
                             <p class="list-group-item-text text-truncate">` + elemento.Cuerpo +`</p>
                         </div>
-                        <div class="col-12 text-lg-right">
+                        <div class="col-12 text-lg-right position-static">
                             <p class="list-group-item-text">Hace ` + elemento.Tiempo + `</p>
                         </div>
                     </div>
                 </div>
-            </a>`
+            </div>`
         );
     });
 }
