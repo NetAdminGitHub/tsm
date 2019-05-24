@@ -165,13 +165,13 @@ var fn_VSCargarJSEtapa = function () {
                 },
                 UbicacionVerRuler: function (input) {
                     if (input.is("[name='UbicacionVer']")) {
-                        return input.val().length <= 200;
+                        return input.val().length <= 2000;
                     }
                     return true;
                 },
                 UbicacionHorRuler: function (input) {
                     if (input.is("[name='UbicacionHor']")) {
-                        return input.val().length <= 200;
+                        return input.val().length <= 2000;
                     }
                     return true;
                 },
@@ -1005,6 +1005,10 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion Fin Prendas multi select
     $("#IdRequerimiento").val($("#txtId").val());
+    $("#UbicacionVer").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#UbicacionHor").autogrow({ vertical: true, horizontal: false, flickering: false });
+
+ 
   
 }; // FIN DOCUMENT READY
 

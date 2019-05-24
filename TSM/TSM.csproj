@@ -785,6 +785,8 @@
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js.map" />
     <Content Include="Scripts\Hubs\Notificaciones.js" />
+    <Content Include="Scripts\Jquery\jquery.ns-autogrow.js" />
+    <Content Include="Scripts\Jquery\jquery.ns-autogrow.min.js" />
     <Content Include="Scripts\Jquery\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\Jquery\jquery.signalR-2.4.1.min.js" />
     <Content Include="Scripts\jqueryAjax\jquery.unobtrusive-ajax.js" />

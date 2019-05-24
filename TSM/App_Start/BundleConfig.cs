@@ -15,7 +15,8 @@ namespace TSM
                                                                 "~/Scripts/js.cookie.js",
                                                                 "~/Scripts/jquery/jszip.min.js",
                                                                 "~/Scripts/jquery/jquery.signalR-{version}.js",
-                                                                "~/Scripts/jquery/jquery.smartWizard.js"
+                                                                "~/Scripts/jquery/jquery.smartWizard.js",
+                                                                "~/Scripts/jquery/jquery.ns-autogrow.min.js"
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));

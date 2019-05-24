@@ -53,12 +53,12 @@ $(document).ready(function () {
                         validation: {
                             required: true,
                             maxlength: function (input) {
-                                if (input.is("[name='UbicacionVertical']") && input.val().length > 200) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                if (input.is("[name='UbicacionVertical']") && input.val().length > 2000) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
                                     return false;
                                 }
-                                if (input.is("[name='UbicacionHorizontal']") && input.val().length > 200) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                if (input.is("[name='UbicacionHorizontal']") && input.val().length > 2000) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
                                     return false;
                                 }
                                 if (input.is("[name='DirectorioArchivos']") && input.val().length > 2000) {
