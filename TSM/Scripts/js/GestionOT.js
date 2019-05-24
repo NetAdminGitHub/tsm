@@ -28,7 +28,7 @@ $(document).ready(function () {
             KdoDatePikerEnable($("#dFechaHasta"), true);
 
         } else {
-           
+
             KdoDatePikerEnable($("#dFechaDesde"), false);
             KdoDatePikerEnable($("#dFechaHasta"), false);
         }
@@ -37,7 +37,7 @@ $(document).ready(function () {
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
-            read: function(datos){
+            read: function (datos) {
                 datos.success(fn_GestionOT());
             }
         },
@@ -63,7 +63,7 @@ $(document).ready(function () {
                     Comentarios: { type: "string" },
                     IDDocumento: { type: "number" },
                     IdEtapaProceso: { type: "number" },
-                    Etapa: { type:"string"},
+                    Etapa: { type: "string" },
                     EstadoEtapa: { type: "string" },
                     Tabla: { type: "string" },
                     IdCliente: { type: "number" },
@@ -106,17 +106,27 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "NoDocumento", title: "No OT", minResizableWidth: 120},
-            { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true},
-            { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true},
-            { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120},
+            { field: "NoDocumento", title: "No. O.T", minResizableWidth: 120 },
+            { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true },
+            { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
+            { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },
+            { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
+            { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
+            { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },
+            { field: "NombreUbicacion", title: "Ubicación", minResizableWidth: 120 },
+            { field: "IdPrograma", title: "Cod. programa", hidden: true },
+            { field: "NombrePrograma", title: "Programa", minResizableWidth: 120 },
+            { field: "IdTemporada", title: "Cod. temporada", hidden: true },
+            { field: "NombreTemp", title: "Temporada", minResizableWidth: 120 },
+            { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true },
+            { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120 },
             { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
-            { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120},
-            { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120},
+            { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },
-            { field: "IdPrioridadOrdenTrabajo", title: "Prioridad orden trabajo", hidden: true  },
+            { field: "IdPrioridadOrdenTrabajo", title: "Prioridad orden trabajo", hidden: true },
             { field: "Prioridad", title: "Prioridad", minResizableWidth: 120 },
-            { field: "Estado", title: "Estado orden", hidden: true},
+            { field: "Estado", title: "Estado orden", hidden: true },
             { field: "Comentarios", title: "Comentarios", hidden: true },
             { field: "IDDocumento", title: "No Documento", minResizableWidth: 120 },
             { field: "IdEtapaProceso", title: "Etapa proceso", hidden: true },
@@ -126,22 +136,12 @@ $(document).ready(function () {
             { field: "IdCliente", title: "Cliente", hidden: true },
             { field: "NombreCliente", title: "Nombre Cliente", minResizableWidth: 120 },
             { field: "IdServicio", title: "Cod. servicio", hidden: true },
-            { field: "Servicio", title: "Servicio", minResizableWidth: 120},
-            { field: "IdPrograma", title: "Cod. programa", hidden: true },
-            { field: "NombrePrograma", title: "Programa", minResizableWidth: 120 },
-            { field: "IdTemporada", title: "Cod. temporada", hidden: true },
-            { field: "NombreTemp", title: "Temporada", minResizableWidth: 120},
-            { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
-            { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120},
-            { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },
-            { field: "NombreUbicacion", title: "Ubicación", minResizableWidth: 120 },
+            { field: "Servicio", title: "Servicio", minResizableWidth: 120 },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", minResizableWidth: 150 },
             { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
-            { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
-            { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150},
             { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150}
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 }
         ]
     });
 
@@ -157,8 +157,9 @@ $(document).ready(function () {
 
 });
 
+
 let fn_GestionOT = function () {
-    kendo.ui.progress($("#grid"), true);
+     kendo.ui.progress($("[class='card-body']"), true);
     let DSOt = "[]";
     $.ajax({
         type: "POST",
@@ -180,11 +181,11 @@ let fn_GestionOT = function () {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             DSOt = result;
-            kendo.ui.progress($("#grid"), false);
+            kendo.ui.progress($("[class='card-body']"), false);
         },
         error: function() {
             DSOt = "[]";
-            kendo.ui.progress($("#grid"), false);
+            kendo.ui.progress($("[class='card-body']"), false);
         }
     });
 
