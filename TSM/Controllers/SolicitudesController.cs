@@ -45,10 +45,12 @@ namespace TSM.Controllers
             return pv;
         }
         [HttpGet]
-        public ActionResult IngresoSolicitudes(long id)
+        [Route("Solicitudes/IngresoSolicitudes/{id}/{idServicio}/{NombreServ}")]
+        public ActionResult IngresoSolicitudes(long id,long idServicio,string NombreServ)
         {
             ViewData["idsolicitud"] = id;
-
+            ViewData["idServicio"] = idServicio;
+            ViewData["NombreServ"] = NombreServ;
             return View("IngresoSolicitudes");
         }
 

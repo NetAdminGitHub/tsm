@@ -5,31 +5,32 @@
 }
 @section Scripts {
     <script type="text/javascript">
-        var UrlSol = "@string.Format("{0}Solicitudes", TSM.Utils.Config.TSM_WebApi)";
-        var UrlTot = "@string.Format("{0}TiposOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
-        var UrlCli = "@string.Format("{0}Clientes", TSM.Utils.Config.TSM_WebApi)";
-        var UrlSer = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
-        var UrlCC = "@string.Format("{0}ContactosClientes", TSM.Utils.Config.TSM_WebApi)";
-        var UrlEC = "@string.Format("{0}EjecutivoCuentas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlECC = "@string.Format("{0}EjecutivoCuentasClientes", TSM.Utils.Config.TSM_WebApi)";
-        var UrlTem = "@string.Format("{0}Temporadas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlPro = "@string.Format("{0}Programas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlSp = "@string.Format("{0}SolicitudesPrendas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlSpu = "@string.Format("{0}SolicitudesPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
-        var UrlCp = "@string.Format("{0}CategoriaConfecciones", TSM.Utils.Config.TSM_WebApi)";
-        var UrlCpreUb = "@string.Format("{0}CategoriaPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
-        var UrlSdp = "@string.Format("{0}SolicitudesDisenoPrendas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlComTel = "@string.Format("{0}ComposicionTelas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlConsTel = "@string.Format("{0}ConstruccionTelas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlTm = "@string.Format("{0}TipoMuestras", TSM.Utils.Config.TSM_WebApi)";
-        var UrlUm = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlSdpt = "@string.Format("{0}SolicitudesDisenosPrendasTecnicas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlTec = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)";
-        var UrlMd = "@string.Format("{0}MotivosDesarrollos", TSM.Utils.Config.TSM_WebApi)";
-        var UrlPot = "@string.Format("{0}PrioridadesOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
-        var UrlCata = "@string.Format("{0}CategoriaTallas", TSM.Utils.Config.TSM_WebApi)";
-        var vIdSolicitud = @ViewData["idsolicitud"];
-
+    var UrlSol = "@string.Format("{0}Solicitudes", TSM.Utils.Config.TSM_WebApi)";
+    var UrlTot = "@string.Format("{0}TiposOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
+    var UrlCli = "@string.Format("{0}Clientes", TSM.Utils.Config.TSM_WebApi)";
+    var UrlSer = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+    var UrlCC = "@string.Format("{0}ContactosClientes", TSM.Utils.Config.TSM_WebApi)";
+    var UrlEC = "@string.Format("{0}EjecutivoCuentas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlECC = "@string.Format("{0}EjecutivoCuentasClientes", TSM.Utils.Config.TSM_WebApi)";
+    var UrlTem = "@string.Format("{0}Temporadas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlPro = "@string.Format("{0}Programas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlSp = "@string.Format("{0}SolicitudesPrendas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlSpu = "@string.Format("{0}SolicitudesPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
+    var UrlCp = "@string.Format("{0}CategoriaConfecciones", TSM.Utils.Config.TSM_WebApi)";
+    var UrlCpreUb = "@string.Format("{0}CategoriaPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
+    var UrlSdp = "@string.Format("{0}SolicitudesDisenoPrendas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlComTel = "@string.Format("{0}ComposicionTelas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlConsTel = "@string.Format("{0}ConstruccionTelas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlTm = "@string.Format("{0}TipoMuestras", TSM.Utils.Config.TSM_WebApi)";
+    var UrlUm = "@string.Format("{0}UnidadesMedidas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlSdpt = "@string.Format("{0}SolicitudesDisenosPrendasTecnicas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlTec = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)";
+    var UrlMd = "@string.Format("{0}MotivosDesarrollos", TSM.Utils.Config.TSM_WebApi)";
+    var UrlPot = "@string.Format("{0}PrioridadesOrdenesTrabajos", TSM.Utils.Config.TSM_WebApi)";
+    var UrlCata = "@string.Format("{0}CategoriaTallas", TSM.Utils.Config.TSM_WebApi)";
+    var vIdSolicitud = @ViewData["idsolicitud"];
+    var vIdServSol = @ViewData["idServicio"];
+    var vNombreServ ="@ViewData["NombreServ"]";
     </script>
     <script src="~/Scripts/js/IngresoSolicitudes.js"></script>
     <script src="~/Scripts/js/_SolicitudRegCliente.js"></script>
@@ -40,10 +41,8 @@
     <script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>
     <script src="~/Scripts/Jquery/jquery.smartWizard.js"></script>
     <link href="~/Content/smart_wizard_theme_arrows.css" rel="stylesheet" />
-    
-    
 }
-    <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
+<link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
 
 <div class="form-control col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
     <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor">
@@ -111,3 +110,6 @@
     <img class="modal-content" id="img01">
     <div id="caption"></div>
 </div>
+
+
+

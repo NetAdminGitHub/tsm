@@ -2,6 +2,9 @@
 $(document).ready(function () {
     var UrlcmbCli = "";
     //#region Programación 
+    TextBoxEnable($("#TxtServNombre"), false);
+    $("#TxtServNombre").val(vNombreServ.toString());
+
     vIdUsuario = getUser();
     fn_idEjecutivoCuenta();
 
@@ -13,8 +16,8 @@ $(document).ready(function () {
     KdoButton($("#btnCancelar"), "cancel", "Cancelar solicitud");
     KdoButton($("#bntIrSolicitud"), "hyperlink-open-sm", "Regresar a lista de solicitudes");
     TextBoxEnable($("#TxtNoNod"), false);
-    Kendo_CmbFiltrarGrid($("#CmbSer"), UrlSer, "Nombre", "IdServicio", "Seleccione...");
-    Kendo_CmbFiltrarGrid($("#CmbTipoOT"), UrlTot, "Nombre", "IdTipoOrdenTrabajo", "Seleccione...", 0, "CmbSer");
+    UrlTot = UrlTot + "/GetTiposOrdenesTrabajoByServicioVista/" + vIdServSol.toString();
+    Kendo_CmbFiltrarGrid($("#CmbTipoOT"), UrlTot , "Nombre", "IdTipoOrdenTrabajo", "Seleccione...", 0 );
 
     UrlcmbCli = vEjecutivo !== "" ? UrlECC + "/GetEjecutivoCuentasClienteActivos/" + vIdUsuario : UrlCC + "/GetContactosClienteActivos/" + vIdUsuario;
     Kendo_CmbFiltrarGrid($("#CmbCli"), UrlcmbCli, "Nombre", "IdCliente", "Seleccione...");
@@ -48,7 +51,7 @@ $(document).ready(function () {
         });
     }
 
-    KdoCmbFocus($("#CmbSer"));
+
     if (vIdSolicitud !== 0) { fn_GetSolicitud(); }
     //#endregion 
 
@@ -74,12 +77,6 @@ $(document).ready(function () {
     $("#RSolicitud").kendoValidator(
         {
             rules: {
-                MsgSer: function (input) {
-                    if (input.is("[name='CmbSer']")) {
-                        return $("#CmbSer").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
                 MsgOT: function (input) {
                     if (input.is("[name='CmbTipoOT']")) {
                         return $("#CmbTipoOT").data("kendoComboBox").selectedIndex >= 0;
@@ -152,9 +149,8 @@ var fn_GuardarSolictud = function () {
     }
 
     $.ajax({
-        url: xUrl,//
+        url: xUrl,
         type: xType,
-        //dataType: "json",
         data: JSON.stringify({
             IdSolicitud: vIdSolicitud,
             NoDocumento: $("#TxtNoNod").val(),
@@ -163,7 +159,7 @@ var fn_GuardarSolictud = function () {
             FechaSolicitud: xFecha,
             Estado: xEstado,
             IdTipoOrdenTrabajo: KdoCmbGetValue($("#CmbTipoOT")),
-            IdServicio: KdoCmbGetValue($("#CmbSer")),
+            IdServicio: vIdServSol,
             IdContactoCliente: KdoCmbGetValue($("#CmbContacto")),
             IdModulo: 2,
             IdEjecutivoCuenta: KdoCmbGetValue($("#CmbEjec")),
@@ -192,10 +188,9 @@ var fn_EliminarSolictud = function () {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             vIdSolicitud = 0;
-            fn_Limpiar();
             kendo.ui.progress($("#body"), false);
             RequestEndMsg(data, "Delete");
-
+            window.location.href = "/Solicitudes";
         },
         error: function (data) {
             kendo.ui.progress($("#body"), false);
@@ -215,12 +210,10 @@ var fn_GetSolicitud = function () {
             if (respuesta !== null) {
                 vIdSolicitud = respuesta.IdSolicitud;
                 $("#TxtNoNod").val(respuesta.NoDocumento);
-                KdoCmbSetValue($("#CmbSer"), respuesta.IdServicio);
                 KdoCmbSetValue($("#CmbCli"), respuesta.IdCliente);
                 KdoCmbSetValue($("#CmbTipoOT"), respuesta.IdTipoOrdenTrabajo);
                 KdoCmbSetValue($("#CmbEjec"), respuesta.IdEjecutivoCuenta);
                 KdoCmbSetValue($("#CmbContacto"), respuesta.IdContactoCliente);
-                KdoCmbFocus($("#CmbSer"));
                 $("#TxtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaSolicitud), 'dd/MM/yyyy'));
             } else {
                 vIdSolicitud = 0;
@@ -235,11 +228,10 @@ var fn_GetSolicitud = function () {
 
 var fn_Limpiar = function () {
     KdoCmbSetValue($("#CmbCli"), "");
-    KdoCmbSetValue($("#CmbSer"), "");
     KdoCmbSetValue($("#CmbEjec"), "");
     KdoCmbSetValue($("#CmbContacto"), "");
     KdoCmbSetValue($("#CmbTipoOT"), "");
-    KdoCmbFocus($("#CmbSer"));
+    KdoCmbFocus($("#CmbTipoOT"));
     $("#TxtNoNod").val("");
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
 };

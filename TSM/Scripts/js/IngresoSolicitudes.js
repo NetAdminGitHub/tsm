@@ -3,7 +3,6 @@ var Permisos;
 var vIdUsuario;
 var vEjecutivo = "";
 $(document).ready(function () {
-   
     fn_ConfigVisorEtapas();
 });
 var fn_ConfigVisorEtapas = function () {

@@ -311,7 +311,7 @@ $(document).ready(function () {
             dataType: "json",
             transport: {
                 read: {
-                    url: options.values[2] + "/GetbyServicio/" + KdoCmbGetValue($("#CmbSer"))
+                    url: options.values[2] + "/GetbyServicio/" + vIdServSol
 
                 }
             }

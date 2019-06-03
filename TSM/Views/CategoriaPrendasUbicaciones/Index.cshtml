@@ -7,6 +7,7 @@
         var UrlCpu = "@string.Format("{0}CategoriaPrendasUbicaciones", TSM.Utils.Config.TSM_WebApi)";
         var UrlCp = "@string.Format("{0}CategoriaPrendas", TSM.Utils.Config.TSM_WebApi)";
         var UrlU = "@string.Format("{0}Ubicaciones", TSM.Utils.Config.TSM_WebApi)";
+        var Urle = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
     </script>
     <script src="~/Scripts/js/CategoriaPrendasUbicaciones.js"></script>
 }
@@ -14,13 +15,22 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-group ">
-                    <label for="CmbPrenda">Categoría Prenda:</label>
-                    <input class="form-control" id="CmbPrenda" />
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="CmbServicio">Servicio:</label>
+                        <input class="form-control" id="CmbServicio" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div id="grid"></div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <div id="gridServPre"></div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <div id="grid"></div>
+                    </div>
                 </div>
+              
+               
             </div>
         </div>
     </div>

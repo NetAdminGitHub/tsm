@@ -55,7 +55,8 @@ $(document).ready(function () {
                                 return true;
                             }
                         }
-                    }
+                    },
+                    Icono: {type:"string"}
                 }
             }
         }
@@ -67,6 +68,7 @@ $(document).ready(function () {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
             e.container.find("label[for=IdServicio]").parent("div .k-edit-label").hide();
             e.container.find("label[for=IdServicio]").parent().next("div .k-edit-field").hide();
+            $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
         detailInit: detailInit,
@@ -76,7 +78,8 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdServicio", title: "Codigo de Servicio", editor: Grid_ColInt64NumSinDecimal,hidden:true },
-            { field: "Nombre", title: "Nombre del Servicio" }
+            { field: "Nombre", title: "Nombre del Servicio" },
+            { field: "Icono", title:"Icono"}
         ]
     });
 
@@ -214,12 +217,12 @@ $(document).ready(function () {
     }
 
     $(window).on("resize", function () {
-        Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+        Fn_Grid_Resize($("#grid"), $(window).height() - "371");
     });
 
-    Fn_Grid_Resize($("#grid"), ($(window).height() - "371"));
+    Fn_Grid_Resize($("#grid"),$(window).height() - "371");
 });
 
 fPermisos = function (datos) {
     Permisos = datos;
-}
+};

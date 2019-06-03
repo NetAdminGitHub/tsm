@@ -152,6 +152,9 @@ var fn_DibujarUbicaciones = function (ds, IdCategoriaPrenda, spanId) {
     });
 
     $.each(filtro, function (index, elemento) {
+        if (elemento.IdUbicacion === null)
+            return;
+
         var TxtCant = 'TxtCantDis_' + (elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud) + elemento.IdCategoriaPrenda.toString() + elemento.IdUbicacion.toString();
         UbicacionPren.append(
             '<div class="form-group row">' +
