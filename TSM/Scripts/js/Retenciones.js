@@ -7,8 +7,9 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbModulo"), UrlM, "Nombre", "IdModulo", "Seleccione un Modulo ...");
     Kendo_CmbFiltrarGrid($("#CmbTipo"), UrlTr, "Nombre", "IdTipoRetencion", "Seleccione una retencion ...");
 
+    //#region Retenciones
     //CONFIGURACION DEL CRUD
-    dataSource = new kendo.data.DataSource({
+    var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function (datos) { return UrlRe + "/GetRetencionByIdServicioIdModuloVista/" + vIdSer + "/" + vIdMod + "/" + vIdTre; },
@@ -136,8 +137,139 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
+    var selectedRows = [];
+    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#grid"), selectedRows);
+        if ($("#grid").data("kendoGrid").dataSource.total() === 0) {
+            $("#gridAut").data("kendoGrid").dataSource.data([]);
+            Grid_HabilitaToolbar($("#gridAut"), false, false, false);
+        }
+    });
+
+    $("#grid").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#grid"), selectedRows);
+        fn_ConsultarGridAut();
+    });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+    });
+
+    Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+    //#endregion Retenciones
+
+    //#region Retenciones Roles Autorizaciones
+    //CONFIGURACION DEL CRUD
+    var dsRetencionesAut = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function (datos) { return UrlRRA + "/GetRetencionesRolesAutVista/" + getIdRetencion($("#grid").data("kendoGrid")); },
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return UrlRRA + "/" + datos.IdRetencion + "/" + datos.IdRol; },
+                type: "DELETE"
+            },
+            update: {
+                url: function (datos) { return UrlRRA + "/" + datos.IdRetencion + "/" + datos.IdRol; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            create: {
+                url: UrlRRA,
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdRol",
+                fields: {
+                    IdRetencion: {
+                        type: "Number",
+                        defaultValue: function (e) { return getIdRetencion($("#grid").data("kendoGrid")); }
+                    },
+                    IdRol: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='IdRol']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdRol").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Nombre: { type: "string" },                    
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#gridAut").kendoGrid({
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "IdRetencion");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            Grid_Focus(e, "IdRol");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRetencion", title: "Cod. Retención", hidden: true },
+            { field: "IdRol", title: "Rol", values: ["IdRol", "Nombre", UrlRo, "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre", title: "Rol" },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+        ]
+    });
+
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridAut").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#gridAut").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridAut").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridAut").data("kendoGrid"), dsRetencionesAut);
+
+    var selectedRowsAut = [];
+    $("#gridAut").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridAut"), selectedRowsAut);
+    });
+
+    $("#gridAut").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridAut"), selectedRowsAut);
+    });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridAut"), $(window).height() - "371");
+    });
+
+    Fn_Grid_Resize($("#gridAut"), $(window).height() - "371");
+    //#endregion Retenciones
+    
     Kendo_CmbFocus($("#CmbModulo"));
     Grid_HabilitaToolbar($("#grid"), false, false, false);
+    Grid_HabilitaToolbar($("#gridAut"), false, false, false);
+
+    let fn_ConsultarGridAut = function () {
+        $("#gridAut").data("kendoGrid").dataSource.read();
+        $("#grid").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridAut"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridAut"), false, false, false);
+    };
 
     $("#CmbModulo").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
@@ -194,32 +326,19 @@ $(document).ready(function () {
             $("#grid").data("kendoGrid").dataSource.data([]);
             Grid_HabilitaToolbar($("#grid"), false, false, false);
         }
-    });
+    });    
 
-    var selectedRows = [];
-    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#grid"), selectedRows);
-    });
-
-    $("#grid").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#grid"), selectedRows);
-    });
-
-    $(window).on("resize", function () {
-        Fn_Grid_Resize($("#grid"), $(window).height() - "371");
-    });
-
-    Fn_Grid_Resize($("#grid"), $(window).height() - "371");
-
-    var fn_Consultar = function () {
-        if (vIdSer > 0 && vIdMod > 0  && vIdTre > 0) {
+    let fn_Consultar = function () {
+        if (vIdSer > 0 && vIdMod > 0 && vIdTre > 0) {
             $("#grid").data("kendoGrid").dataSource.read();
             Grid_HabilitaToolbar($("#grid"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
         }
     };
+});
 
-    function SeveridadDropDownEditor(container, options) {
-        var ddlDataSource = [{
+let SeveridadDropDownEditor = function (container, options) {
+    var ddlDataSource = [
+        {
             value: "L",
             displayValue: "Leve"
         },
@@ -231,17 +350,27 @@ $(document).ready(function () {
             value: "C",
             displayValue: "Critica"
         }
-        ];
+    ];
 
-        $('<input required name="' + options.field + '"/>')
-            .appendTo(container)
-            .kendoDropDownList({
-                dataTextField: "displayValue",
-                dataValueField: "value",
-                dataSource: ddlDataSource
-            });
-    }
-});
+    $('<input required name="' + options.field + '"/>')
+        .appendTo(container)
+        .kendoComboBox({
+            dataTextField: "displayValue",
+            dataValueField: "value",
+            autoWidth: true,
+            filter: "contains",
+            autoBind: false,
+            clearButton: true,
+            placeholder: "Seleccione....",
+            height: 550,
+            dataSource: ddlDataSource
+        });
+};
+
+let getIdRetencion = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdRetencion;
+};
 
 fPermisos = function (datos) {
     Permisos = datos;

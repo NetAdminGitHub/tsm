@@ -1,15 +1,17 @@
 ﻿@{
     ViewBag.Title = "Definición de retenciones";
-    ViewBag.IdVersion = "TSM0101055|v19032501";
+    ViewBag.IdVersion = "TSM0101055|v19052701";
 }
 @section Scripts {
-    <script type="text/javascript">
-        var UrlRe = "@string.Format("{0}Retenciones", TSM.Utils.Config.TSM_WebApi)";
-        var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
-        var UrlTr = "@string.Format("{0}TiposRetenciones", TSM.Utils.Config.TSM_WebApi)";
-        var UrlM = "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)";
-         var UrlS = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
-    </script>
+<script type="text/javascript">
+    var UrlRe = "@string.Format("{0}Retenciones", TSM.Utils.Config.TSM_WebApi)";
+    var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+    var UrlTr = "@string.Format("{0}TiposRetenciones", TSM.Utils.Config.TSM_WebApi)";
+    var UrlM = "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)";
+    var UrlS = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+    var UrlRRA = "@string.Format("{0}RetencionesRolesAut", TSM.Utils.Config.TSM_WebApi)";
+    var UrlRo = "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)";
+</script>
     <script src="~/Scripts/js/Retenciones.js"></script>
 }
 <div class="form-row">
@@ -31,8 +33,13 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-12">
+                    <div class="form-group col-lg-8">
+                        <label for="grid">Retenciones</label>
                         <div id="grid"></div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="gridAut">Roles Autorizados</label>
+                        <div id="gridAut"></div>
                     </div>
                 </div>
                
