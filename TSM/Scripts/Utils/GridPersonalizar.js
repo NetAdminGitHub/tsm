@@ -628,3 +628,12 @@ function Fn_Grid_Resize(e, height) {
     gridWidget.wrapper.height(height);
     gridWidget.resize();
 }
+/**
+ * 
+ * @param {any} container contenedor
+ * @param {any} options opxion del campo
+ */
+var Grid_ColTextArea = function (container, options) {
+    $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="'+ options.values[0]+ '" style="width: 100%;" class="k-textarea"></textarea>')
+        .appendTo(container);
+};
