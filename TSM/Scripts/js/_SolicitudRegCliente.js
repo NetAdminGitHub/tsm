@@ -14,11 +14,11 @@ $(document).ready(function () {
 
     KdoButton($("#btnGuardar"), "save", "Crear Solicitud");
     KdoButton($("#btnCancelar"), "cancel", "Cancelar solicitud");
-    KdoButton($("#bntIrSolicitud"), "hyperlink-open-sm", "Regresar a lista de solicitudes");
+    //KdoButton($("#bntIrSolicitud"), "hyperlink-open-sm", "Regresar a lista de solicitudes");
     TextBoxEnable($("#TxtNoNod"), false);
     UrlTot = UrlTot + "/GetTiposOrdenesTrabajoByServicioVista/" + vIdServSol.toString();
     Kendo_CmbFiltrarGrid($("#CmbTipoOT"), UrlTot , "Nombre", "IdTipoOrdenTrabajo", "Seleccione...", 0 );
-
+    KdoButtonEnable($("#btnCancelar"),false);
     UrlcmbCli = vEjecutivo !== "" ? UrlECC + "/GetEjecutivoCuentasClienteActivos/" + vIdUsuario : UrlCC + "/GetContactosClienteActivos/" + vIdUsuario;
     Kendo_CmbFiltrarGrid($("#CmbCli"), UrlcmbCli, "Nombre", "IdCliente", "Seleccione...");
 
@@ -52,7 +52,7 @@ $(document).ready(function () {
     }
 
 
-    if (vIdSolicitud !== 0) { fn_GetSolicitud(); }
+    if (vIdSolicitud !== 0) { fn_GetSolicitudCli(); }
     //#endregion 
 
     //#region CRUD SOLICITUD
@@ -70,9 +70,9 @@ $(document).ready(function () {
         ConfirmacionMsg("Está seguro de que desea cancelar esta solicitud", function () { return fn_EliminarSolictud(); });
 
     });
-    $("#bntIrSolicitud").data("kendoButton").bind("click", function () {
-        window.location.href = "/Solicitudes";
-    });
+    //$("#bntIrSolicitud").data("kendoButton").bind("click", function () {
+    //    window.location.href = "/Solicitudes";
+    //});
     // kendo validador
     $("#RSolicitud").kendoValidator(
         {
@@ -171,6 +171,8 @@ var fn_GuardarSolictud = function () {
             $("#TxtNoNod").val(data[0].NoDocumento);
             kendo.ui.progress($("#body"), false);
             RequestEndMsg(data, xType);
+            KdoButtonEnable($("#btnCancelar"), true);
+            $("#smartwizard").smartWizard("goToPage", 1);
         },
         error: function (data) {
             kendo.ui.progress($("#body"), false);
@@ -190,6 +192,7 @@ var fn_EliminarSolictud = function () {
             vIdSolicitud = 0;
             kendo.ui.progress($("#body"), false);
             RequestEndMsg(data, "Delete");
+            KdoButtonEnable($("#btnCancelar"), false);
             window.location.href = "/Solicitudes";
         },
         error: function (data) {
@@ -200,7 +203,7 @@ var fn_EliminarSolictud = function () {
 
 };
 
-var fn_GetSolicitud = function () {
+let fn_GetSolicitudCli = function () {
     kendo.ui.progress($("#body"), true);
     $.ajax({
         url: UrlSol + "/" + vIdSolicitud,
@@ -215,6 +218,7 @@ var fn_GetSolicitud = function () {
                 KdoCmbSetValue($("#CmbEjec"), respuesta.IdEjecutivoCuenta);
                 KdoCmbSetValue($("#CmbContacto"), respuesta.IdContactoCliente);
                 $("#TxtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaSolicitud), 'dd/MM/yyyy'));
+                KdoButtonEnable($("#btnCancelar"), true);
             } else {
                 vIdSolicitud = 0;
             }
