@@ -4,6 +4,7 @@ var Permisos;
 var vNoDocumento = "";
 var Fila = "";
 var Md = "";
+let SeAdj = false;
 $(document).ready(function () {
 
     var dataSourceUbi = new kendo.data.DataSource({
@@ -104,9 +105,17 @@ $(document).ready(function () {
             $('[name="DirectorioArchivos"').attr('mayus', 'no');
             Grid_Focus(e, "UbicacionVertical");
             Md = e.model;
-          
-        },
 
+        },
+        cancel: function (e) {
+            if (SeAdj === true)
+                this.dataSource.read();
+
+        },
+        save: function () {
+            if (SeAdj === true)
+                SeAdj = false;
+        },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "NoDocumento", title: "No Registro Diseño", hidden: true },
@@ -150,10 +159,10 @@ $(document).ready(function () {
                     style: "background-color:rgba(0,0,0,0.10)"
                 }
             },
-            { field: "UbicacionVertical", title: "Ubicacion Vertical" },
-            { field: "UbicacionHorizontal", title: "Ubicacion Horizontal" },
-            { field: "DirectorioArchivos", title: "Directorio Archivos" },
-            { field: "Referencia", title: "Referencia Grafica", editor: AdjuntoEditor, hidden: true , menu:false},
+            { field: "UbicacionVertical", title: "Ubicacion Vertical", editor: Grid_ColTextArea, values:["4"]},
+            { field: "UbicacionHorizontal", title: "Ubicacion Horizontal", editor: Grid_ColTextArea, values: ["4"] },
+            { field: "DirectorioArchivos", title: "Directorio Archivos", editor: Grid_ColTextArea, values: ["2"]},
+            { field: "Referencia", title: "Referencia Grafica", editor: AdjuntoEditor, hidden: true, menu: false },
             {
                 field: "NombreRefGrafica", title: " ", hidden: true, menu: false, editor: fn_BotonEliminarRG
             }
@@ -234,7 +243,7 @@ function AdjuntoEditor(container, options) {
             async: {
                 saveUrl: "/Solicitudes/SubirArchivo",
                 autoUpload: true,
-                type:"post"
+                type: "post"
             },
             localization: {
                 select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntar referencia grafica'
@@ -252,7 +261,7 @@ function AdjuntoEditor(container, options) {
 }
 
 function GuardarNombreAdj(row, NameRef) {
- 
+
     $.ajax({
         url: UrlSdp + "/ActualizarSolicitud/" + row.IdSolicitudDisenoPrenda + "/A",
         type: "Put",
@@ -276,9 +285,7 @@ function GuardarNombreAdj(row, NameRef) {
             $('[name="ReferenciaGrafica"]').trigger("change");
             $('[name="NombreRefGrafica"]').val(data[0].ReferenciaGrafica);
             $('[name="NombreRefGrafica"]').trigger("change");
-            var grid = $("#gridInfUbi").data("kendoGrid");
-            grid.saveRow();
-            LimpiaMarcaCelda();
+            SeAdj = true;
             RequestEndMsg(data, "PUT");
         },
         error: function (data) {
@@ -295,7 +302,7 @@ function LimpiaMarcaCelda() {
 function fn_BorrarRefG() {
     var eliminado = false;
     $.ajax({
-        url: "/Solicitudes/BorrarArchivo" ,
+        url: "/Solicitudes/BorrarArchivo",
         type: "post",
         data: { id: Md.NoDocumento, fileName: Md.NombreRefGrafica },
         async: false,

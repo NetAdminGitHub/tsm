@@ -14,7 +14,6 @@ $(document).ready(function () {
 
     KdoButton($("#btnGuardar"), "save", "Crear Solicitud");
     KdoButton($("#btnCancelar"), "cancel", "Cancelar solicitud");
-    //KdoButton($("#bntIrSolicitud"), "hyperlink-open-sm", "Regresar a lista de solicitudes");
     TextBoxEnable($("#TxtNoNod"), false);
     UrlTot = UrlTot + "/GetTiposOrdenesTrabajoByServicioVista/" + vIdServSol.toString();
     Kendo_CmbFiltrarGrid($("#CmbTipoOT"), UrlTot , "Nombre", "IdTipoOrdenTrabajo", "Seleccione...", 0 );
@@ -70,9 +69,7 @@ $(document).ready(function () {
         ConfirmacionMsg("Está seguro de que desea cancelar esta solicitud", function () { return fn_EliminarSolictud(); });
 
     });
-    //$("#bntIrSolicitud").data("kendoButton").bind("click", function () {
-    //    window.location.href = "/Solicitudes";
-    //});
+ 
     // kendo validador
     $("#RSolicitud").kendoValidator(
         {
