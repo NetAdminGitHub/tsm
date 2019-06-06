@@ -12,16 +12,24 @@ var fn_ConfigVisorEtapas = function () {
         theme:  "arrows",
         transitionEffect: 'fade',
         showStepURLhash: false,
+        //cycleSteps:true,
         toolbarSettings: {
             toolbarPosition: 'top',
             toolbarExtraButtons: [
-                $('<button></button>').text('Finalizar Solicitud')
+                $('<button></button>').text('')
                     .prop("id","btnFinSol")
                     .on('click', function () {
                         ConfirmacionMsg("Está seguro que desea finalizar el registro de solicitudes?", function () { return fn_finsolicitud(); });
-                    })
-            ]
+                    }),
 
+                 $('<button></button>').text('')
+                     .prop("id", "bntIrSolicitud")
+                    .on('click', function () {
+                        window.location.href = "/Solicitudes";
+                    })
+            ],
+            showNextButton: false,
+            showPreviousButton: false
         },
         lang: {
             next: 'Siguiente',
@@ -30,9 +38,7 @@ var fn_ConfigVisorEtapas = function () {
         anchorSettings: {
             markDoneStep: true,
             markAllPreviousStepsAsDone: true,
-            removeDoneStepOnNavigateBack: true,
-            enableAnchorOnDoneStep: true
-           
+            enableAllAnchors: true
         }
         //contentURL: '/Solicitudes/getstep'
     });
@@ -41,6 +47,7 @@ var fn_ConfigVisorEtapas = function () {
     KdoButton($("#swbtnnext"), "arrow-double-60-right", "Etapa siguiente");
     KdoButton($("#swbtnprev"), "arrow-double-60-left", "Etapa Previa");
     KdoButton($("#btnFinSol"), "file-config", "Finalizar Solicitud");
+    KdoButton($("#bntIrSolicitud"), "hyperlink-open-sm", "Regresar a lista de solicitudes");
     $("#swbtnnext").removeClass("btn btn-secondary");
     $("#swbtnprev").removeClass("btn btn-secondary");
     KdoButtonEnable($("#btnFinSol"), false);
@@ -93,7 +100,7 @@ var fn_ConfigVisorEtapas = function () {
     // Initialize the showStep event
     $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
         if (stepNumber === 0) {
-            fn_GetSolicitud();
+            fn_GetSolicitudCli();
             KdoButtonEnable($("#btnFinSol"), false);
         }
         if (stepNumber === 1) {

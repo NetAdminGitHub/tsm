@@ -186,6 +186,7 @@ var fn_GuardarPrendaDiseño = function (formulario) {
     var Lista = [];
     event.preventDefault();
     if ($("#" + formulario + "").data("kendoValidator").validate()) {
+        kendo.ui.progress($("#body"), true);
         $.each(Obj, function (item, elemento) {
             if (elemento.id !== "") {
                 if (fn_CreaRegistro(elemento.id) !== "") {
@@ -203,8 +204,10 @@ var fn_GuardarPrendaDiseño = function (formulario) {
             success: function (result) {
                 fn_ActualizaElementos(result[0]);
                 RequestEndMsg(result, "Post");
+                kendo.ui.progress($("#body"), false);
             }
         });
+        kendo.ui.progress($("#body"), false);
     } else {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
     }
