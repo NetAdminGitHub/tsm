@@ -23,11 +23,16 @@ namespace TSM.Controllers
 
             string result = Utils.Config.GetData(Utils.Config.TSM_WebApi + "EtapasProcesos/" + idEtapaProceso.ToString());
 
-            Dictionary<string, object> etapa = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
+            if (result == null)
+                return View("Views\\GestionOT");
+            else
+            {
+                Dictionary<string, object> etapa = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
 
-            ViewBag.VistaParcial = etapa["VistaFormulario"].ToString();
+                ViewBag.VistaParcial = etapa["VistaFormulario"].ToString();
 
-            return View();
+                return View();
+            }
         }
 
         [HttpPost]
