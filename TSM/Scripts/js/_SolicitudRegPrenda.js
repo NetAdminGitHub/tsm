@@ -1,4 +1,7 @@
 ﻿
+$(document).ready(function () {
+    fn_GetSolictudPrenda();
+});
 var fn_GetSolictudPrenda = function () {
     kendo.ui.progress($("#body"), true);
     $.ajax({

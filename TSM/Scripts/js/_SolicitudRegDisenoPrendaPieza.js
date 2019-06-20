@@ -1,5 +1,6 @@
 ﻿var Permisos;
 $(document).ready(function () {
+   
     var dataSource = new kendo.data.DataSource({
         dataType: "json",
         //CONFIGURACION DEL CRUD
@@ -59,15 +60,11 @@ $(document).ready(function () {
                                 }
                                 if (input.is("[name='IdPrograma']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdPrograma").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdPrograma").data("kendoComboBox").text() === "" ? true : $("#IdPrograma").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='IdMotivoDesarrollo']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
-                                }
-                                if (input.is("[name='IdPrioridadOrdenTrabajo']")) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdPrioridadOrdenTrabajo").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 return true;
                             }
@@ -133,13 +130,11 @@ $(document).ready(function () {
             },
             { field: "IdMotivoDesarrollo", title: "Código motivo desarrollo", editor: Grid_Combox, values: ["IdMotivoDesarrollo", "Nombre", UrlMd, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "Nombre9", title: "Motivo de desarrollo" },
-            { field: "IdPrioridadOrdenTrabajo", title: "Prioridad", editor: Grid_Combox, values: ["IdPrioridadOrdenTrabajo", "Nombre", UrlPot, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
-            { field: "Nombre10", title: "Prioridad" },
             { field: "EstiloDiseno", title: "Estilo diseño " },
             { field: "NombreDiseno", title: "Nombre diseño " },
             { field: "IdTemporada", title: "Temporada", editor: Grid_Combox, values: ["IdTemporada", "Nombre", UrlTem, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "Nombre2", title: "Temporada" },
-            { field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "IdTemporada", "Requerido"], hidden: true },
+            { field: "IdPrograma", title: "Programa", editor: fn_CmbPrograma, values: ["IdPrograma", "Nombre", UrlPro,"0", "Seleccione....", "", "IdTemporada", "","fn_NuevoItem"], hidden: true },
             { field: "Nombre3", title: "Programa" },
             {
                 field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0],
@@ -227,22 +222,57 @@ let Fn_UpdFilaGrid = function (g, data) {
 
 
 var fn_getDsPro = function () {
-    return new kendo.data.DataSource({
-        sort: { field: "Nombre", dir: "asc" },
+
+    return  new kendo.data.DataSource({
+        batch: true,
         transport: {
+            sort: { field: "Nombre", dir: "asc" },
             read: function (datos) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: UrlPro + "/GetByCliente/" + KdoCmbGetValue($("#CmbCli")),
+                    url: UrlPro + "/GetByCliente/" + vIdClienteSol,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
                     }
                 });
+            },
+            create: function (datos) {
+                $.ajax({
+                    type: "post",
+                    dataType: 'json',
+                    data: kendo.stringify(datos.data.models[0]),
+                    url: UrlPro,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data.models[0]);
+                }
+            }
+        },
+        schema: {
+            total: "count",
+            model: {
+                id: "IdPrograma",
+                fields: {
+                    IdPrograma: { type: "number" },
+                    Nombre: { type: "string" },
+                    Fecha: { type: "date" },
+                    IdCliente: { type: "number" },
+                    NoDocumento: { type: "string" },
+                    IdTemporada: { type: "number" }
+                }
             }
         }
     });
+    
+   
 };
 
 var fn_getMd = function () {
@@ -253,7 +283,7 @@ var fn_getMd = function () {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: UrlMd + "/GetMotivosDesarrolloVistasByIdTipoOrdenTrabajo/" + KdoCmbGetValue($("#CmbTipoOT")),
+                    url: UrlMd + "/GetMotivosDesarrolloVistasByIdTipoOrdenTrabajo/" + 1,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -270,6 +300,104 @@ let Fn_GetRow = function (ds, IdCategoriaPrenda) {
     });
     return dset.length - 1 < 0 ? null : dset[dset.length - 1];
 };
+let fn_NuevoItem = function (widgetId, value) {
+    var widget = $("#" + widgetId).getKendoComboBox();
+    var dsProN = widget.dataSource;
+   
+    ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
+        dsProN.add({
+            IdPrograma: 0,
+            Nombre: value,
+            Fecha: Fhoy(),
+            IdCliente: vIdClienteSol,
+            IdTemporada: KdoCmbGetValue($("[name='IdTemporada']")),
+            NoDocumento: "",
+            Nombre1: ""
+        });
+        
+        dsProN.bind("sync", function () {
+            widget.select(dsProN.view().length - 1);
+            widget.trigger("change");
+        });
+
+        dsProN.sync();
+    });
+};
+
+let fn_CmbPrograma = function (container, options) {
+
+    $.ajax({
+        url: options.values[2],
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            //var model = generateModel(result, options.values[0]);
+            var dsPro = new kendo.data.DataSource({
+                batch: true,
+                transport: {
+                    sort: { field: options.values[1], dir: "asc" },
+                    read: {
+                        url: options.values[3] === "" ? options.values[2] : options.values[2] + "/" + options.values[3],
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    create: function (datos) {
+                        $.ajax({
+                            type: "post",
+                            dataType: 'json',
+                            data: kendo.stringify(datos.data.models[0]),
+                            url: options.values[2],
+                            contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                              
+                                datos.success(result);
+                            }
+                        });
+                    },
+                    parameterMap: function (data, type) {
+                        if (type !== "read") {
+                            return kendo.stringify(data.models[0]);
+                        }
+                    }
+                },
+                schema: {
+                    total: "count",
+                    model: {
+                        id: "IdPrograma",
+                        fields: {
+                            IdPrograma: { type: "number" },
+                            Nombre: { type: "string" },
+                            Fecha: { type: "date" },
+                            IdCliente: { type: "number" },
+                            NoDocumento: { type: "string" },
+                            IdTemporada: {type:"number"}
+                        }
+                    }
+                }
+            });
+
+            var required = givenOrDefault(options.values[5], "");
+            var Message = givenOrDefault(options.values[7], "");
+            var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+            $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoComboBox({
+                    valuePrimitive: true,
+                    autoBind: false,
+                    dataTextField: options.values[1],
+                    dataValueField: options.values[0],
+                    autoWidth: true,
+                    cascadeFrom: givenOrDefault(options.values[6], ""),
+                    placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
+                    filter: "contains",
+                    dataSource: dsPro,
+                    noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + options.values[8] + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")
+
+                });
+        }
+    });
+
+}
 
 
 

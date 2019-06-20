@@ -6,7 +6,7 @@ $(document).ready(function () {
     $("#TxtServNombre").val(vNombreServ.toString());
 
     vIdUsuario = getUser();
-    fn_idEjecutivoCuenta();
+    
 
     $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
@@ -113,23 +113,6 @@ $(document).ready(function () {
 
 });
 
-var fn_idEjecutivoCuenta = function () {
-    kendo.ui.progress($("#body"), true);
-    $.ajax({
-        url: UrlEC + "/GetEjecutivoCuentaByIdEjecutivoCuentaVista/" + vIdUsuario,
-        async: false,
-        type: 'GET',
-        success: function (respuesta) {
-            if (respuesta !== null) {
-                vEjecutivo = respuesta.IdEjecutivoCuenta;
-            }
-            kendo.ui.progress($("#body"), false);
-        },
-        error: function (respuesta) {
-            kendo.ui.progress($("#body"), false);
-        }
-    });
-};
 
 var fn_GuardarSolictud = function () {
     kendo.ui.progress($("#body"), true);
@@ -236,6 +219,7 @@ var fn_Limpiar = function () {
     $("#TxtNoNod").val("");
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
 };
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
