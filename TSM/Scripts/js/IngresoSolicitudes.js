@@ -71,15 +71,15 @@ var fn_ConfigVisorEtapas = function () {
 
     $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
         //return confirm("Do you want to leave the step " + stepNumber + "?");
-        if (stepDirection === 'forward' && stepNumber ===0) {
+        //if (stepDirection === 'forward' && stepNumber ===0) {
 
-            if (vIdSolicitud === 0) {
-                $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos y crear el registro", "error");
-                return false;
-            }
-        }
+        //    if (vIdSolicitud === 0) {
+        //        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos y crear el registro", "error");
+        //        return false;
+        //    }
+        //}
 
-        if (stepDirection === 'forward' && stepNumber === 1) {
+        if (stepDirection === 'forward' && stepNumber === 0) {
 
             if (fn_GetPrendaUbicacion(vIdSolicitud) === null) {
                 $("#kendoNotificaciones").data("kendoNotification").show("Debe completar y agregar al menos una opción de prenda", "error");
@@ -99,36 +99,36 @@ var fn_ConfigVisorEtapas = function () {
 
     // Initialize the showStep event
     $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
+        //if (stepNumber === 0) {
+        //    fn_GetSolicitudCli();
+        //    KdoButtonEnable($("#btnFinSol"), false);
+        //}
         if (stepNumber === 0) {
-            fn_GetSolicitudCli();
-            KdoButtonEnable($("#btnFinSol"), false);
-        }
-        if (stepNumber === 1) {
             fn_GetSolictudPrenda();
             KdoButtonEnable($("#btnFinSol"), false);
         }
-        if (stepNumber === 2) {
+        if (stepNumber === 1) {
             $("#gridInfPieza").data("kendoGrid").dataSource.read();
             setTimeout(function () {
                 Fn_Grid_Resize($("#gridInfPieza"), $(window).height() - "371");
             }, 300);
             KdoButtonEnable($("#btnFinSol"), false);
         }
-        if (stepNumber === 3) {
+        if (stepNumber === 2) {
             $("#gridInfTela").data("kendoGrid").dataSource.read();
             setTimeout(function () {
                 Fn_Grid_Resize($("#gridInfTela"), $(window).height() - "371");
             }, 300);
             KdoButtonEnable($("#btnFinSol"), false);
         }
-        if (stepNumber === 4) {
+        if (stepNumber === 3) {
             $("#gridInfUbi").data("kendoGrid").dataSource.read();
             setTimeout(function () {
                 Fn_Grid_Resize($("#gridInfUbi"), $(window).height() - "371");
             }, 300);
             KdoButtonEnable($("#btnFinSol"), false);
         }
-        if (stepNumber === 5) {
+        if (stepNumber === 4) {
             $("#gridInfMue").data("kendoGrid").dataSource.read();
             setTimeout(function () {
                 Fn_Grid_Resize($("#gridInfMue"), $(window).height() - "371");
@@ -138,22 +138,6 @@ var fn_ConfigVisorEtapas = function () {
         }
     });
 
-    // Initialize the beginReset event
-    $("#smartwizard").on("beginReset", function (e) {
-        return confirm("Do you want to reset the wizard?");
-    });
-
-    // Initialize the endReset event
-    $("#smartwizard").on("endReset", function (e) {
-        alert("endReset called");
-    });
-
-    // Initialize the themeChanged event
-    $("#smartwizard").on("themeChanged", function (e, theme) {
-        alert("Theme changed. New theme name: " + theme);
-    });
-
- 
 };
 
 let fn_GetSolicitudesRequerimientos = function (idsol) {
