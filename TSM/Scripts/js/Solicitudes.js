@@ -415,7 +415,7 @@ let fn_idEjecutivoCuenta = function () {
                         let dsclien = fn_GetEjecutivoCuentasClientes();
                         if (dsclien !== null && dsclien.length === 1) {
                             xpnIdcliente = dsclien[0].IdCliente;
-                            xpnNombreClie = dsCli[0].Nombre;
+                            xpnNombreClie = dsclien[0].Nombre;
                             $("#CmbCliSol").data("kendoComboBox").setDataSource(dsclien);
                             KdoCmbSetValue($("#CmbCliSol"), xpnIdcliente);
                             KdoComboBoxEnable($("#CmbCliSol"), false);
