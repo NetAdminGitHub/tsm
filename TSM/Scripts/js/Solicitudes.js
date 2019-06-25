@@ -415,7 +415,7 @@ let fn_idEjecutivoCuenta = function () {
                         let dsclien = fn_GetEjecutivoCuentasClientes();
                         if (dsclien !== null && dsclien.length === 1) {
                             xpnIdcliente = dsclien[0].IdCliente;
-                            xpnNombreClie = dsCli[1].Nombre;
+                            xpnNombreClie = dsCli[0].Nombre;
                             $("#CmbCliSol").data("kendoComboBox").setDataSource(dsclien);
                             KdoCmbSetValue($("#CmbCliSol"), xpnIdcliente);
                             KdoComboBoxEnable($("#CmbCliSol"), false);
@@ -480,7 +480,7 @@ let fn_idEjecutivoCuenta = function () {
                         let dsclien = fn_GetRelacionContactosClienteActivos();
                         if (dsclien !== null && dsclien.length === 1) {
                             xpnIdcliente = dsclien[0].IdCliente;
-                            xpnNombreClie = dsclien[1].Nombre;
+                            xpnNombreClie = dsclien[0].Nombre;
                             $("#CmbCliCont").data("kendoComboBox").setDataSource(dsclien);
                             KdoCmbSetValue($("#CmbCliCont"), xpnIdcliente);
                             KdoComboBoxEnable($("#CmbCliCont"), false);
