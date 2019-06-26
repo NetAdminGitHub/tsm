@@ -188,8 +188,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
             Opccommand = {
                 columns: columns.concat([{
                     field: "cmdEdit", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
-                    command: opciones[0], width: 70 + "px", attributes: {
-
+                    command: opciones[0], width: (e.options.editable === "inline" ? 120 : 70) + "px", attributes: {
                         style: "text-align: center"
                     }
                 }])
@@ -427,38 +426,6 @@ function Grid_Combox(container, options) {
         });
 }
 
-/**
- * Crea un ComboBox para ser utlizado en un editor de un Kendo.UI.Grid.
- * @param {kendo.ui.Grid} container Grid contenedor de la funcion.
- * @param {string[]} options Listado de opciones: 0 - dataValue, 1 - dataText, 2 - urlRead, 3 - Columns, 4- filter field 5 - placeHolder, 6 - required, 7 - cascadeFrom, 8- validationMessage
- */
-function Grid_MultiComboBox(container, options) {
-    var required = givenOrDefault(options.values[6], "");
-    var Message = givenOrDefault(options.values[8], "");
-    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
-    $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
-        .appendTo(container)
-        .kendoMultiColumnComboBox({
-            valuePrimitive: true,
-            autoBind: true,
-            dataTextField: options.values[1],
-            dataValueField: options.values[0],
-            columns: options.values[3],
-            //footerTemplate: 'Total #: instance.dataSource.total() # items encontados',
-            filter: "contains",
-            //filterFields: options.values[4],
-            autoWidth: true,
-            cascadeFrom: givenOrDefault(options.values[7], ""),
-            placeholder: givenOrDefault(options.values[5], "Seleccione un valor ...."),
-            dataSource: {
-                sort: { field: options.values[1], dir: "asc" },
-                transport: {
-                    read: options.values[2] 
-                }
-            }
-        });
-}
-
 function Grid_requestEnd(e) {
     if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) {
         let mensaje, tipo;
@@ -514,8 +481,25 @@ function Grid_error(e) {
 // Colocar el foco en ventana modal del kendo grid.
 function Grid_Focus(e, NombreCampo) {
     var arg = e;
-    arg.container.data('kendoWindow').bind('activate', function () {
 
+    if (arg.sender.options.editable === "popup") {
+        arg.container.data('kendoWindow').bind('activate', function () {
+            ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
+
+            if (ArgCampo.siblings('input:visible').length > 0) {
+                ArgCampo.siblings('input:visible').focus().select();
+            }
+            else {
+                if (ArgCampo.data("kendoComboBox")) {
+                    ArgCampo.data("kendoComboBox").input.focus().select();
+                }
+                else {
+                    ArgCampo.focus().select();
+                }
+            }
+        });
+    }
+    else {
         ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
 
         if (ArgCampo.siblings('input:visible').length > 0) {
@@ -525,16 +509,12 @@ function Grid_Focus(e, NombreCampo) {
             if (ArgCampo.data("kendoComboBox")) {
                 ArgCampo.data("kendoComboBox").input.focus().select();
             }
-           else {
+            else {
                 ArgCampo.focus().select();
-
             }
-
         }
-    });
-
-    
-} 
+    }
+}
 
 // Habilitar o Deshabilitar botones de la toolbar
 /**
