@@ -105,6 +105,9 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Combo");
             KdoHideCampoPopup(e.container, "EstiloDiseno");
             KdoHideCampoPopup(e.container, "ReferenciaGrafica");
+            KdoHideCampoPopup(e.container, "IdCategoriaTalla");
+            KdoHideCampoPopup(e.container, "RangoTallas");
+
             TextBoxEnable($('[name="NoDocumento"]'), false);
             TextBoxEnable($('[name="Nombre"]'), false);
             TextBoxEnable($('[name="Nombre1"]'), false);
@@ -167,21 +170,7 @@ $(document).ready(function () {
         columns: [
             { field: "NoDocumento", title: "No Registro Diseño", hidden: true },
             {
-                template: "<div class='customer-photo'><img class='img-fluid mx-auto d-block' onerror='imgError(this)' onclick='fn_clickImg(this)' id='SDP#:data.IdSolicitudDisenoPrenda#' alt='#:data.ReferenciaGrafica#' style='max-width:70%; max-height: 70%' src ='/Adjuntos/#:data.NoDocumento#/#:data.ReferenciaGrafica#'/></div>",
-                field: "ReferenciaGrafica", title: "Referencia Grafica"
-            },
-            { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
-            { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
-            { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },
-            {
-                field: "Nombre", title: "Prenda", attributes: {
-                    "class": "table-cell",
-                    style: "background-color:rgba(0,0,0,0.10)"
-                }
-            },
-            { field: "IdUbicacion", title: "Cod. Ubicación", hidden: true },
-            {
-                field: "Nombre1", title: "Ubicacion/Pieza",
+                field: "NombreDiseno", title: "Nombre diseño ",
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10)"
@@ -195,24 +184,41 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0],
-                attributes: {
+                field: "Nombre", title: "Prenda", attributes: {
                     "class": "table-cell",
-                    style: "background-color:rgba(0,0,0,0.10);text-align: right"
+                    style: "background-color:rgba(0,0,0,0.10)"
                 }
             },
             {
-                field: "NombreDiseno", title: "Nombre diseño ",
+                field: "Nombre1", title: "Parte",
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10)"
                 }
             },
+            {
+                template: "<div class='customer-photo'><img class='img-fluid mx-auto d-block' onerror='imgError(this)' onclick='fn_clickImg(this)' id='SDP#:data.IdSolicitudDisenoPrenda#' alt='#:data.ReferenciaGrafica#' style='max-width:70%; max-height: 70%' src ='/Adjuntos/#:data.NoDocumento#/#:data.ReferenciaGrafica#'/></div>",
+                field: "ReferenciaGrafica", title: "Referencia Grafica"
+            },
+            { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
+            { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
+            { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },
+          
+            { field: "IdUbicacion", title: "Cod. Ubicación", hidden: true },
+           
+            {
+                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true ,
+                attributes: {
+                    "class": "table-cell",
+                    style: "background-color:rgba(0,0,0,0.10);text-align: right"
+                }
+            },
+            
             { field: "IdTipoMuestra", title: "Tipo de muestra", editor: Grid_Combox, values: ["IdTipoMuestra", "Nombre", UrlTm, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "Nombre6", title: "Tipo de muestras" },
-            { field: "RangoTallas", title: "Rango de Tallas" },
+            { field: "RangoTallas", title: "Rango de Tallas" ,hidden: true },
             { field: "IdCategoriaTalla", title: "Talla a desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", UrlCata, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
-            { field: "Nombre11", title: "Talla a desarrollar" },
+            { field: "Nombre11", title: "Talla a desarrollar",hidden: true },
             { field: "IdTecnica", title: "Tecnicas", editor: EMulti_Tecnicas, values: ["Nombre", "IdTecnica", UrlTec] },
             { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
             { field: "CantidadYardaPieza", title: "Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
@@ -362,6 +368,7 @@ let Fn_UpdFilaGridMue = function (g, data) {
     g.set("Nombre7", data.Nombre7);
     g.set("Comentarios", data.Comentarios);
     g.set("IdCategoriaTalla", data.IdCategoriaTalla);
+   
 };
 
 fPermisos = function (datos) {

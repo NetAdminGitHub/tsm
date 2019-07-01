@@ -101,14 +101,7 @@ $(document).ready(function () {
             { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
             { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },
             {
-                field: "Nombre", title: "Prenda", attributes: {
-                    "class": "table-cell",
-                    style: "background-color:rgba(0,0,0,0.10)"
-                }
-            },
-            { field: "IdUbicacion", title: "Cod Ubicación", hidden: true },
-            {
-                field: "Nombre1", title: "Ubicación/Pieza",
+                field: "NombreDiseno", title: "Nombre diseño ",
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10)"
@@ -122,17 +115,25 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0],
-                attributes: {
+                field: "Nombre", title: "Prenda", attributes: {
                     "class": "table-cell",
-                    style: "background-color:rgba(0,0,0,0.10);text-align: right"
+                    style: "background-color:rgba(0,0,0,0.10)"
                 }
             },
+            { field: "IdUbicacion", title: "Cod Ubicación", hidden: true },
             {
-                field: "NombreDiseno", title: "Nombre diseño ",
+                field: "Nombre1", title: "Parte",
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10)"
+                }
+            },
+           
+            {
+                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true,
+                attributes: {
+                    "class": "table-cell",
+                    style: "background-color:rgba(0,0,0,0.10);text-align: right"
                 }
             },
             { field: "ColorTela", title: "Color Tela" },

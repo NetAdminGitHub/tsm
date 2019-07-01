@@ -2,8 +2,18 @@
 var Permisos;
 var vIdUsuario;
 var vEjecutivo = "";
+var xpNodocSol = "";
 $(document).ready(function () {
     fn_ConfigVisorEtapas();
+
+    $("#btnCloseMsg").click(function () {
+        window.location.href = "/Solicitudes";
+    });
+
+    $("#idcloseMod").click(function () {
+        $("#myModal").modal('toggle');
+        $("#myModal").modal('hide');
+    });
 });
 var fn_ConfigVisorEtapas = function () {
     // Smart Wizard
@@ -61,7 +71,15 @@ var fn_ConfigVisorEtapas = function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 fn_GetSolicitudesRequerimientos(vIdSolicitud);
-                window.location.href = "/Solicitudes";
+                $("#ModalMsgSol").modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $("#ModalMsgSol").find('.modal-title').text("Solicitud finalizada");
+                $("#ModalMsgSol").find('.modal-body h2').text('Su solicitud ha sido recibida. Numero de solicitud : ' + xpNodocSol.toString());
+
+              
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -107,35 +125,37 @@ var fn_ConfigVisorEtapas = function () {
             fn_GetSolictudPrenda();
             KdoButtonEnable($("#btnFinSol"), false);
         }
+        //if (stepNumber === 1) {
+        //    $("#gridInfPieza").data("kendoGrid").dataSource.read();
+        //    setTimeout(function () {
+        //        Fn_Grid_Resize($("#gridInfPieza"), $(window).height() - "371");
+        //    }, 300);
+        //    KdoButtonEnable($("#btnFinSol"), false);
+        //}
+        //if (stepNumber === 1) {
+        //    $("#gridInfTela").data("kendoGrid").dataSource.read();
+        //    setTimeout(function () {
+        //        Fn_Grid_Resize($("#gridInfTela"), $(window).height() - "371");
+        //    }, 300);
+        //    KdoButtonEnable($("#btnFinSol"), false);
+        //}
         if (stepNumber === 1) {
-            $("#gridInfPieza").data("kendoGrid").dataSource.read();
-            setTimeout(function () {
-                Fn_Grid_Resize($("#gridInfPieza"), $(window).height() - "371");
-            }, 300);
-            KdoButtonEnable($("#btnFinSol"), false);
-        }
-        if (stepNumber === 2) {
-            $("#gridInfTela").data("kendoGrid").dataSource.read();
-            setTimeout(function () {
-                Fn_Grid_Resize($("#gridInfTela"), $(window).height() - "371");
-            }, 300);
-            KdoButtonEnable($("#btnFinSol"), false);
-        }
-        if (stepNumber === 3) {
-            $("#gridInfUbi").data("kendoGrid").dataSource.read();
+            $("#gridInfUbi").data("kendoGrid").dataSource.read().then(function (e) {
+                xpNodocSol = $("#gridInfUbi").data("kendoGrid").dataSource.data()[0].NoDocSol;
+            });
             setTimeout(function () {
                 Fn_Grid_Resize($("#gridInfUbi"), $(window).height() - "371");
-            }, 300);
-            KdoButtonEnable($("#btnFinSol"), false);
-        }
-        if (stepNumber === 4) {
-            $("#gridInfMue").data("kendoGrid").dataSource.read();
-            setTimeout(function () {
-                Fn_Grid_Resize($("#gridInfMue"), $(window).height() - "371");
-            }, 300);
-           
+            }, 400);
             KdoButtonEnable($("#btnFinSol"), true);
         }
+        //if (stepNumber === 2) {
+        //    $("#gridInfMue").data("kendoGrid").dataSource.read();
+        //    setTimeout(function () {
+        //        Fn_Grid_Resize($("#gridInfMue"), $(window).height() - "371");
+        //    }, 300);
+           
+        //    KdoButtonEnable($("#btnFinSol"), true);
+        //}
     });
 
 };
@@ -163,10 +183,7 @@ let fn_SubirArchivo = function (ds) {
         async: false,
         data: JSON.stringify(ds),
         url: "/Solicitudes/SubirArchivoReq",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            RequestEndMsg(result, "Post");
-        }
+        contentType: "application/json; charset=utf-8"
     });
 };
 

@@ -144,9 +144,6 @@ $(document).ready(function () {
         $("#ModalClieEje").modal('hide');
         //window.location.href = "/HOME";
     });
-    $("#idverClie").click(function () {
-        alert("prurba");
-    });
 
     //fn_idEjecutivoCuenta();
 
@@ -285,10 +282,29 @@ let fn_MostrarPendientes = function () {
         transport: {
             read: function (datos) {
                 datos.success(fn_GetSolicitudesRegistradas());
+            },
+            destroy: function (datos) {
+                $.ajax({
+                    type: "delete",
+                    dataType: 'json',
+                    url: TSM_Web_APi + "Solicitudes/" + datos.data.IdSolicitud,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
             }
         },
         //FINALIZACIÓN DE UNA PETICIÓN
-        requestEnd: Grid_requestEnd,
+        requestEnd: function (e) {
+            Grid_requestEnd;
+            fn_MostraPanelServicios();
+        },
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
         schema: {
@@ -364,7 +380,7 @@ let fn_MostrarPendientes = function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
+    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, true);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
 
@@ -383,11 +399,12 @@ let fn_filtrarSolicitud = function (ds, idServicio) {
 let fn_MostrarModaC = function (e) {
     xpnIdSevicio = $(e).data('IdServicio');
     xpnEstado = $(e).data('Estado');
-    $("#grid").data("kendoGrid").dataSource.read();
+
     xTitleModal = "Solicitudes con estatus: " + e.text;
     $("#CSolicitudes").modal('show');
     setTimeout(function () {
         Fn_Grid_Resize($("#grid"), $("#CSolicitudes").height() - "371");
+        $("#grid").data("kendoGrid").dataSource.read();
     }, 300);
    
 };
@@ -682,6 +699,7 @@ let fn_crearServ = function () {
     });
 
 };
+
 
 fPermisos = function (datos) {
     Permisos = datos;
