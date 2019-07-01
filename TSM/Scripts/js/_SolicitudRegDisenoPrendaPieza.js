@@ -349,7 +349,7 @@ let fn_CmbPrograma = function (container, options) {
                             url: options.values[2],
                             contentType: "application/json; charset=utf-8",
                             success: function (result) {
-                              
+
                                 datos.success(result);
                             }
                         });
@@ -370,7 +370,7 @@ let fn_CmbPrograma = function (container, options) {
                             Fecha: { type: "date" },
                             IdCliente: { type: "number" },
                             NoDocumento: { type: "string" },
-                            IdTemporada: {type:"number"}
+                            IdTemporada: { type: "number" }
                         }
                     }
                 }
@@ -397,7 +397,7 @@ let fn_CmbPrograma = function (container, options) {
         }
     });
 
-}
+};
 
 
 

@@ -35,10 +35,10 @@
     <script src="~/Scripts/js/IngresoSolicitudes.js"></script>
     @*<script src="~/Scripts/js/_SolicitudRegCliente.js"></script>*@
     <script src="~/Scripts/js/_SolicitudRegPrenda.js"></script>
-    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaPieza.js"></script>
-    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaTela.js"></script>
+    @*<script src="~/Scripts/js/_SolicitudRegDisenoPrendaPieza.js"></script>*@
+    @*<script src="~/Scripts/js/_SolicitudRegDisenoPrendaTela.js"></script>*@
     <script src="~/Scripts/js/_SolicitudRegDisenoPrendaUbicacion.js"></script>
-    <script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>
+    @*<script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>*@
     <script src="~/Scripts/Jquery/jquery.smartWizard.js"></script>
     <link href="~/Content/smart_wizard_theme_arrows.css" rel="stylesheet" />
     <script src="~/Scripts/kendo/kendo.multicolumncombobox.min.js"></script>
@@ -56,33 +56,33 @@
         <li class="nav-item">
             <a href="#p-2" class="nav-link">
                 <span class="TS-icon-CAMISA-2 ficonEtp"></span><br>
-                <small>PASO 2 - PRENDA Y CANTIDAD DE DISEÑOS </small>
+                <small>PASO 01 - PRENDA Y CANTIDAD DE DISEÑOS </small>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#p-3" class="nav-link">
-                <span class="TS-icon-INFORMACION-2 ficonEtp"></span><br>
-                <small>PASO 3 - INFORMACION GENERAL DE CADA PIEZA </small>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#p-4" class="nav-link">
-                <span class="TS-icon-CARNET ficonEtp"></span><br>
-                <small>PASO 4 - INFORMACION DE LA PRENDA + TELA  </small>
-            </a>
-        </li>
+        @*<li class="nav-item">
+                <a href="#p-3" class="nav-link">
+                    <span class="TS-icon-INFORMACION-2 ficonEtp"></span><br>
+                    <small>PASO 3 - INFORMACION GENERAL DE CADA PIEZA </small>
+                </a>
+            </li>*@
+        @*<li class="nav-item">
+                <a href="#p-4" class="nav-link">
+                    <span class="TS-icon-CARNET ficonEtp"></span><br>
+                    <small>PASO 4 - INFORMACION DE LA PRENDA + TELA  </small>
+                </a>
+            </li>*@
         <li class="nav-item">
             <a href="#p-5" class="nav-link">
                 <span class="TS-icon-CA3 ficonEtp"></span><br>
-                <small>PASO 05 - INGRESA LA INFORMACION DE DISEÑO + UBICACION</small>
+                <small>PASO 02- INGRESA LA INFORMACION DE DISEÑO + UBICACION</small>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#p-6" class="nav-link">
-                <span class="TS-icon-AJUSTES ficonEtp"></span><br>
-                <small>PASO 06 - INFORMACION DE CANTIDAD DE MUESTRAS </small>
-            </a>
-        </li>
+        @*<li class="nav-item">
+                <a href="#p-6" class="nav-link">
+                    <span class="TS-icon-AJUSTES ficonEtp"></span><br>
+                    <small>PASO 06 - INFORMACION DE CANTIDAD DE MUESTRAS </small>
+                </a>
+            </li>*@
     </ul>
     <div class="sw-container tab-content">
         @*<div id="p-1" class="tab-pane step-content" style="display: block;">
@@ -91,25 +91,49 @@
         <div id="p-2" class="tab-pane step-content">
             @Html.Partial("_SolicitudRegPrenda")
         </div>
-        <div id="p-3" class="tab-pane step-content">
-            @Html.Partial("_SolicitudRegDisenoPrendaPieza")
-        </div>
-        <div id="p-4" class="tab-pane step-content">
-            @Html.Partial("_SolicitudRegDisenoPrendaTela")
-        </div>
+        @*<div id="p-3" class="tab-pane step-content">
+                @Html.Partial("_SolicitudRegDisenoPrendaPieza")
+            </div>*@
+        @*<div id="p-4" class="tab-pane step-content">
+                @Html.Partial("_SolicitudRegDisenoPrendaTela")
+            </div>*@
         <div id="p-5" class="tab-pane step-content">
             @Html.Partial("_SolicitudRegDisenoPrendaUbicacion")
         </div>
-        <div id="p-6" class="tab-pane step-content">
-            @Html.Partial("_SolicitudRegDisenoPrendaMuestra")
-        </div>
+        @*<div id="p-6" class="tab-pane step-content">
+                @Html.Partial("_SolicitudRegDisenoPrendaMuestra")
+            </div>*@
     </div>
 </div>
 <!-- The Modal -->
-<div id="myModal" class="modal">
-    <span class="close" id="idcloseMod">&times;</span>
-    <img class="modal-content" id="img01">
+<div id="myModal" class="modal-img">
+    <span class="close-img" id="idcloseMod">&times;</span>
+    <img class="modal-content-img" id="img01">
     <div id="caption"></div>
+</div>
+
+<div id="ModalMsgSol" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="ModalClieEjeLabel"></h3>
+                <button type="button" class="close" data-dismiss="modal" id="btnCloseMsg" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="MshSol">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4 text-center">
+                            <i class="k-icon k-i-check" style="font-size:120px;"></i>
+                        </div>
+                        <div class="form-group col-lg-8">
+                            <h2></h2>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
