@@ -188,8 +188,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
             Opccommand = {
                 columns: columns.concat([{
                     field: "cmdEdit", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
-                    command: opciones[0], width: 70 + "px", attributes: {
-
+                    command: opciones[0], width: (e.options.editable === "inline" ? 120 : 70) + "px", attributes: {
                         style: "text-align: center"
                     }
                 }])
@@ -482,8 +481,25 @@ function Grid_error(e) {
 // Colocar el foco en ventana modal del kendo grid.
 function Grid_Focus(e, NombreCampo) {
     var arg = e;
-    arg.container.data('kendoWindow').bind('activate', function () {
 
+    if (arg.sender.options.editable === "popup") {
+        arg.container.data('kendoWindow').bind('activate', function () {
+            ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
+
+            if (ArgCampo.siblings('input:visible').length > 0) {
+                ArgCampo.siblings('input:visible').focus().select();
+            }
+            else {
+                if (ArgCampo.data("kendoComboBox")) {
+                    ArgCampo.data("kendoComboBox").input.focus().select();
+                }
+                else {
+                    ArgCampo.focus().select();
+                }
+            }
+        });
+    }
+    else {
         ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
 
         if (ArgCampo.siblings('input:visible').length > 0) {
@@ -493,16 +509,12 @@ function Grid_Focus(e, NombreCampo) {
             if (ArgCampo.data("kendoComboBox")) {
                 ArgCampo.data("kendoComboBox").input.focus().select();
             }
-           else {
+            else {
                 ArgCampo.focus().select();
-
             }
-
         }
-    });
-
-    
-} 
+    }
+}
 
 // Habilitar o Deshabilitar botones de la toolbar
 /**

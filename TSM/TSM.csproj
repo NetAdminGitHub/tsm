@@ -217,6 +217,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosEstadosController.cs" />
     <Compile Include="Controllers\RetencionesController.cs" />
@@ -837,6 +839,7 @@
     <Content Include="Scripts\js\Interfaz.js" />
     <Content Include="Scripts\js\Layout.js" />
     <Content Include="Scripts\js\Login.js" />
+    <Content Include="Scripts\js\Marcas.js" />
     <Content Include="Scripts\js\Menus.js" />
     <Content Include="Scripts\js\MisNotificaciones.js" />
     <Content Include="Scripts\js\Modulos.js" />
@@ -1268,6 +1271,7 @@
     <Content Include="Views\TiposSolicitudesDesarrollos\Index.cshtml" />
     <Content Include="Views\GestionOT\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
+    <Content Include="Views\Marcas\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

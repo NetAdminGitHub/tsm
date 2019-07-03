@@ -52,7 +52,7 @@ $(document).ready(function () {
     //Todos los textos ingresados por el usuario, a mayusculas (excepto passwords)
     $(document).on("input", function (e) {
         if ((e.target.tagName.toUpperCase() === "INPUT" || e.target.tagName.toUpperCase() === "TEXTAREA") && e.target.type.toUpperCase() !== "PASSWORD" && (e.target.attributes["mayus"] === undefined || e.target.attributes["mayus"].value !== "no"))
-            if (!(e.target.type === 'file' || e.target.type === 'email' || e.target.type === 'checkbox' ))
+            if (!(e.target.type === 'file' || e.target.type === 'email' || e.target.type === 'checkbox' || e.target.type === 'radio' ))
                 fn_ForzarInputUppercase(e);
     });
 

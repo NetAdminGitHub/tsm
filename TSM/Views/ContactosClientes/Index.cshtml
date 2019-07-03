@@ -1,13 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Relación Clientes - Contactos";
+    ViewBag.Title = "Definición Clientes Contactos";
     ViewBag.IdVersion = "TSM0101052|v19032201";
 }
 @section Scripts {
     <script type="text/javascript">
         var UrlU = "@string.Format("{0}Usuarios", TSM.Utils.Config.TSM_WebApi)";
-        var UrlC = "@string.Format("{0}Clientes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRcc = "@string.Format("{0}RelacionContactosClientes", TSM.Utils.Config.TSM_WebApi)";
         var UrlCc = "@string.Format("{0}ContactosClientes", TSM.Utils.Config.TSM_WebApi)";
-         var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+        var UrlE = "@string.Format("{0}Estados", TSM.Utils.Config.TSM_WebApi)";
+             var UrlCli = "@string.Format("{0}Clientes", TSM.Utils.Config.TSM_WebApi)";
     </script>
     <script src="~/Scripts/js/ContactosClientes.js"></script>
 }
@@ -15,12 +16,15 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-group ">
-                    <label for="CmbCli">Cliente:</label>
-                    <input class="form-control" id="CmbCli" />
-                </div>
-                <div class="form-group">
-                    <div id="grid"></div>
+                <div class="form-row">
+                    <div class="form-group col-lg-7">
+                        <label for="grid">Creación de Contactos:</label>
+                        <div id="grid"></div>
+                    </div>
+                    <div class="form-group col-lg-5">
+                        <label for="gridCli">Asignación de cuentas:</label>
+                        <div id="gridCli"></div>
+                    </div>
                 </div>
             </div>
         </div>
