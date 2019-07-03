@@ -23,7 +23,6 @@ var UrlRtin = TSM_Web_APi + "RequerimientoTintas";
 var UrlUniMed = TSM_Web_APi + "UnidadesMedidas";
 var UrlEP = TSM_Web_APi + "EtapasProcesos";
 var UrlApiCoTec = TSM_Web_APi + "CostoTecnicas";
-var UrlApiBase = TSM_Web_APi + "Bases";
 var UrlTL = TSM_Web_APi + "TiposLuces";
 var UrlMD = TSM_Web_APi + "MotivosDesarrollos";
 var UrlTA = TSM_Web_APi + "TiposAcabados";
@@ -116,16 +115,6 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
-    $("#Montaje").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-
-    });
-
     $("#TxtNoVeces").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -188,12 +177,6 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                MsgCmbBase: function (input) {
-                    if (input.is("[name='CmbBase']") && Kendo_CmbGetvalue($("#IdServicio")) === "1") {
-                        return $("#CmbBase").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
                 ColorRuler: function (input) {
                     if (input.is("[name='Color']")) {
                         return input.val().length <= 200;
@@ -215,12 +198,6 @@ var fn_VSCargarJSEtapa = function () {
                 MsgIdComposicionTela: function (input) {
                     if (input.is("[name='IdComposicionTela']")) {
                         return $("#IdComposicionTela").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
-                MsgMontaje: function (input) {
-                    if (input.is("[name='Montaje']") && Kendo_CmbGetvalue($("#IdServicio")) === "1") {
-                        return $("#Montaje").data("kendoNumericTextBox").value() > 0;
                     }
                     return true;
                 },
@@ -292,13 +269,11 @@ var fn_VSCargarJSEtapa = function () {
                 UbicacionVerRuler: "Longitud máxima del campo es 200",
                 UbicacionHorRuler: "Longitud máxima del campo es 200",
                 MsgCmbIdUnidadMedidaCantidad: "Requerido",
-                MsgCmbBase: "Requerido",
                 CantidadColoresMsg: "requerido",
                 ColorRuler: "Longitud máxima del campo es 200",
                 MsgIdCategoriaConfeccion: "Requerido",
                 MsgIdComposicionTela: "Requerido",
                 MsgIdConstruccionTela: "Requerido",
-                MsgMontaje: "Requerido",
                 MsgCombo: "Requerido",
                 NombreRuler: "Longitud máxima del campo es 200",
                 NumeroDisenoRuler: "Longitud máxima del campo es 200",
@@ -359,7 +334,6 @@ var fn_VSCargarJSEtapa = function () {
     });
     //#endregion fin CmbIdUnidadMedidaCantidad
 
-    Kendo_CmbFiltrarGrid($("#CmbBase"), UrlApiBase, "Nombre", "IdBase", "Seleccione...");
     KdoNumerictextboxEnable($("#CantidadTallas"), false);
     HabilitaFormObje(false)
 
@@ -407,7 +381,6 @@ var fn_VSCargarJSEtapa = function () {
                     EstiloDiseno: { type: "string" },
                     NumeroDiseno: { type: "string" },
                     Nombre3: { type: "string" },
-                    IdBase: { type: "number" },
                     Nombre5: { type: "string" },
                     IdCategoriaConfeccion: { type: "number" },
                     Nombre6: { type: "string" },
@@ -1036,7 +1009,6 @@ var fn_VSCargar = function () {
         $("#Nombre").attr("disabled", true);
         KdoComboBoxEnable($("#CmbTipoAcabado"), false);
         KdoComboBoxEnable($("#CmbTipoLuz"), false);
-        KdoComboBoxEnable($("#CmbBase"), false);
         $("#IdSistemaTinta").attr("readonly", true);
         $("#IdCategoriaPrenda").attr("readonly", true);
         KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
@@ -1050,7 +1022,6 @@ var fn_VSCargar = function () {
 
         KdoNumerictextboxEnable($("#CntPiezas"), false);
         KdoNumerictextboxEnable($("#Combo"), false);
-        KdoNumerictextboxEnable($("#Montaje"), false);
         KdoNumerictextboxEnable($("#CantidadColores"), false);
         KdoNumerictextboxEnable($("#CantidadTallas"), false);
         KdoButtonEnable($("#Guardar"), false);
@@ -1095,7 +1066,6 @@ let getRD = function(UrlRD) {
                 $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value(elemento.StrikeOffAdicional);
                 $("#CantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
                 $("#CantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
-                $("#Montaje").data("kendoNumericTextBox").value(elemento.Montaje);
                 $("#Combo").data("kendoNumericTextBox").value(elemento.Combo);
                 $("#Fecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha), 'dd/MM/yyyy'));
                 $("#InstruccionesEspeciales").val(elemento.InstruccionesEspeciales);
@@ -1103,7 +1073,6 @@ let getRD = function(UrlRD) {
                 $('#chkDisenoFullColor').prop('checked', elemento.DisenoFullColor);
                 $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(elemento.IdUnidadMedidaCantidad);
                 $("#TallaPrincipal").val(elemento.TallaPrincipal);
-                $("#CmbBase").data("kendoComboBox").value(elemento.IdBase);
                 $("#IdCategoriaConfeccion").data("kendoComboBox").value(elemento.IdCategoriaConfeccion);
                 $("#IdConstruccionTela").data("kendoComboBox").value(elemento.IdConstruccionTela);
                 $("#IdComposicionTela").data("kendoComboBox").value(elemento.IdComposicionTela);
@@ -1378,14 +1347,14 @@ let GuardarRequerimiento = function(UrlRD) {
             InstruccionesEspeciales: $("#InstruccionesEspeciales").val(),
             CantidadColores: $("#CantidadColores").val(),
             CantidadTallas: $("#CantidadTallas").val(),
-            Montaje: $("#Montaje").val(),
+            Montaje: 0,
             Combo: $("#Combo").val(),
             RevisionTecnica: false,
             VelocidadMaquina: null,
             IdUnidadVelocidad:null,
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
-            IdBase: $("#CmbBase").data("kendoComboBox").value(),
+            IdBase: "",
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
             IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
@@ -1472,14 +1441,14 @@ let ActualizarReq = function() {
             InstruccionesEspeciales: $("#InstruccionesEspeciales").val(),
             CantidadColores: $("#CantidadColores").val(),
             CantidadTallas: $("#CantidadTallas").val(),
-            Montaje: $("#Montaje").val(),
+            Montaje: 0,
             Combo: $("#Combo").val(),
             RevisionTecnica:false,
             VelocidadMaquina: null,
             IdUnidadVelocidad: null,
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
-            IdBase: $("#CmbBase").data("kendoComboBox").value(),
+            IdBase: "",
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
             IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
@@ -1535,7 +1504,6 @@ let LimpiarReq = function() {
     $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value("0");
     $("#CantidadColores").data("kendoNumericTextBox").value("0");
     $("#CantidadTallas").data("kendoNumericTextBox").value("0");
-    $("#Montaje").data("kendoNumericTextBox").value("0");
     $("#Combo").data("kendoNumericTextBox").value("0");
     $("#TallaPrincipal").val("");
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
@@ -1543,7 +1511,6 @@ let LimpiarReq = function() {
     $("#Estado").val("");
     $('#chkDisenoFullColor').prop('checked', 0);
     $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value("");
-    $("#CmbBase").data("kendoComboBox").value("");
     $("#IdCategoriaConfeccion").data("kendoComboBox").value("");
     $("#IdConstruccionTela").data("kendoComboBox").value("");
     $("#IdComposicionTela").data("kendoComboBox").value("");
@@ -1586,8 +1553,6 @@ let Fn_UpdFilaGridRD = function(g, data) {
     g.set("UbicacionVertical", data.UbicacionVertical);
     g.set("CantidadPiezas", data.CantidadPiezas);
     g.set("Fecha", kendo.toString(kendo.parseDate(data.Fecha), 'dd/MM/yyyy'));
-    g.set("IdBase", data.IdBase);
-    g.set("Nombre5", data.Nombre5);
     g.set("Nombre4", data.Nombre4);
     g.set("Nombre3", data.Nombre3);
     g.set("IdCategoriaConfeccion", data.IdCategoriaConfeccion);
@@ -1617,11 +1582,6 @@ let getIdReq = function (g) {
     return $("Id").val();
 }
 
-let getIdBase = function(g) {
-    var SelItem = g.dataItem(g.select());
-    return SelItem === null ? 0 : SelItem.IdBase;
-}
-
 let getIdArte = function(g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdArte;
@@ -1633,12 +1593,10 @@ let HabilitaFormObje = function(ToF) {
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
     KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), ToF);
     //KdoNumerictextboxEnable($("#CantidadTallas"), ToF);
-    KdoNumerictextboxEnable($("#Montaje"), ToF);
     KdoNumerictextboxEnable($("#Combo"), ToF);
     KdoNumerictextboxEnable($("#CantidadColores"), ToF);
     KdoComboBoxEnable($("#CmbIdUnidadMedidaCantidad"), ToF);
     KdoComboBoxEnable($("#IdPrograma"), ToF);
-    KdoComboBoxEnable($("#CmbBase"), ToF);
     KdoComboBoxEnable($("#IdComposicionTela"), ToF);
     KdoComboBoxEnable($("#IdCategoriaConfeccion"), ToF);
     KdoComboBoxEnable($("#IdConstruccionTela"), ToF);

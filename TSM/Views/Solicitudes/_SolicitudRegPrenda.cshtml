@@ -1,4 +1,65 @@
 ﻿
-<div class="form-row"></div>
+<div class="form-row">
+    <div class="form-group col-lg-12 text-lg-left"><a class="btn-link stretched-link" data-idser="1" onclick="fn_PrendaNueva(this)"><span class="k-icon k-i-plus-circle" style="vertical-align: baseline;"></span>&nbsp;Nuevo Diseño</a></div>
+</div>
 <div class="form-row" id="ViewPrenda">
 </div>
+
+<form id="FrmModalPrenda" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div id="ModalPrenda" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="ModalPrendaLabel"></h3>
+                    <button type="button" class="close" data-dismiss="modal" id="btnCloseMD" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12">
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbTemporada">Temporada</label>
+                                <input name="CmbTemporada" id="CmbTemporada" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbPrograma">Programas</label>
+                                <input name="CmbPrograma" id="CmbPrograma" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbPrenda">Prenda</label>
+                                <input name="CmbPrenda" id="CmbPrenda" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="TxtNombreDiseno">Nombre Diseño</label>
+                                <input name="TxtNombreDiseno" id="TxtNombreDiseno" type="text" class="k-textbox form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="TxtEstiloDiseno">Estilo Diseño</label>
+                                <input name="TxtEstiloDiseno" id="TxtEstiloDiseno" type="text" class="k-textbox form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="TxtNumeroDiseno">Numero Diseño</label>
+                                <input name="TxtNumeroDiseno" id="TxtNumeroDiseno" type="text" class="k-textbox form-control">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class=" k-primary" id="btnAddPrenda">Inciar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
