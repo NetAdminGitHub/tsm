@@ -24,6 +24,23 @@ function Kendo_MultiSelect(e, WebApi, TextField, ValueField, OpcPlaceholder, Opc
 
 
 }
+function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Opcheight) {
+    e.kendoMultiSelect({
+        dataTextField: TextField,
+        dataValueField: ValueField,
+        dataSource: datos,
+        placeholder: OpcPlaceholder,
+        autoWidth: true,
+        filter: "contains",
+        height: givenOrDefault(Opcheight, 550),
+        tagMode: "multiple",
+        autoBind: false,
+        clearButton: false
+
+    });
+
+
+}
 /**
  * Habilita o Inhabilita campo Kendo Multi select
  * @param {HTMLInputElement} InputElem elemento div que contiene la funcion Multi select.

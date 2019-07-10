@@ -1,10 +1,13 @@
 ﻿
 let UTemp = TSM_Web_APi + "/Temporadas";
 let UPro = TSM_Web_APi + "/Programas/GetByCliente/" + vIdClienteSol;
+let DsUbicaciones = "";
+let SolUbicaciones = "";
 
 $(document).ready(function () {
 
     KdoButton($("#btnAddPrenda"), "check", "Agregar");
+    DsUbicaciones=fn_GetMulSUbicaciones();
 
     let UrlRPS = TSM_Web_APi + "/RelacionCategoriaPrendasServicios/GetRelacionCategoriaPrendasServicioByidServ/" + vIdServSol;
     Kendo_CmbFiltrarGrid($("#CmbPrenda"), UrlRPS, "Nombre", "IdCategoriaPrenda", "Seleccione...");
@@ -12,8 +15,6 @@ $(document).ready(function () {
    
     Kendo_CmbFiltrarGrid($("#CmbTemporada"), UTemp, "Nombre", "IdTemporada", "Seleccione...");
 
-
-    //Kendo_CmbFiltrarGrid($("#CmbPrograma"), UPro, "Nombre", "IdPrograma", "Seleccione...", "", "CmbTemporada");
     KdoCmbComboBoxPrograma($("#CmbPrograma"), "Nombre", "IdPrograma", "Seleccione ...", "", "CmbTemporada", "", "fn_NuevoItemProm");
 
     $("#FrmModalPrenda").kendoValidator({
@@ -135,27 +136,39 @@ var fn_GetSolictudPrenda = function () {
 var fn_DibujarSeccionPrenda = function (ds) {
     var ViewPren = $("#ViewPrenda");
     ViewPren.children().remove();
-    var PrendaUbicacion = fn_PrendaUbicacion(vIdSolicitud);
-    let PrendaTallas= fn_PrendaTallas(vIdSolicitud);
+    var PrendaUbicacion = vIdServSol !== 2 ? fn_PrendaUbicacion(vIdSolicitud) : null;
+    let PrendaTallas = fn_PrendaTallas(vIdSolicitud);
+    SolUbicaciones = vIdServSol === 2 ? fn_getUbicacionesEstamp() : null;
+
+    let DsProg = fn_GetDatos(UPro);
+    let DsTemp = fn_GetDatos(UTemp);
+    let DsConf = fn_GetDatos(UrlCp);
+
     $.each(ds, function (item, elemento) {
-        var form = 'Form_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
-        var CmbConfeccion = 'Cmb_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
-        var spanId = 'U_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
-        var spanId2 = 'Ta_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
-        var btn = 'btn_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let btnLink = 'btnLink_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let form = 'Form_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let CmbConfeccion = 'Cmb_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let spanId = 'U_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let spanId2 = 'Ta_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
+        let btn = 'btn_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let CmbTemporada = 'CmbTemp_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let CmbPrograma = 'CmbPro_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let TxtNombreDiseno = 'TxtNomDise_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let TxtEstiloDiseno = 'TxtEstDise_'+ elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let TxtNumeroDiseno = 'TxtNumDise_' + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
         let panelbar = "panelbar_" + elemento.IdSolicitud.toString() + elemento.IdCategoriaPrenda.toString() + elemento.Item.toString();
-        var vIcon = elemento.Icono === "" || elemento.Icono === null ? "k-icon k-i-image" : elemento.Icono;
+        let vIcon = elemento.Icono === "" || elemento.Icono === null ? "k-icon k-i-image" : elemento.Icono;
         ViewPren.append(
             '<div class="col-lg-2">' +
             '<div class="card" style="height: 100%;">' +
             '<div class="card-body" >' +
             '<div class="form-group col-lg-12">' +
             '<form id="' + form + '" method="POST" enctype="multipart/form-data" autocomplete="off">' +
+            '<div class= "form-row" >' +
+            '<a class="btn-link stretched-link" id="' + btnLink + '"  onclick="fn_DeletePren(this)" >' +
+            '<span class="k-icon k-i-delete"></span>' +
+            '</a>' +
+            '</div > ' +
             '<div class= "form-row" >' +
             '<div class="form-group col-lg-12 text-center">' +
             '<i class="' + vIcon + '" style="font-size:100px;"></i>' +
@@ -244,14 +257,21 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '</div>' +
             '</div>');
 
-        Kendo_CmbFiltrarGrid($("#" + CmbConfeccion + ""), UrlCp, "Nombre", "IdCategoriaConfeccion", "Seleccione...");
-        Kendo_CmbFiltrarGrid($("#" + CmbTemporada + ""), UTemp, "Nombre", "IdTemporada", "Seleccione...");
-        Kendo_CmbFiltrarGrid($("#" + CmbPrograma + ""), UPro, "Nombre", "IdPrograma", "Seleccione...", "", "" + CmbTemporada + "");
 
+        KdoComboBoxbyData($("#" + CmbConfeccion + ""), DsConf, "Nombre", "IdCategoriaConfeccion", "Seleccione...");
+        KdoComboBoxbyData($("#" + CmbTemporada + ""), DsTemp, "Nombre", "IdTemporada", "Seleccione...");
+        KdoComboBoxbyData($("#" + CmbPrograma + ""), DsProg, "Nombre", "IdPrograma", "Seleccione...", "", "" + CmbTemporada + "");
+
+        //Kendo_CmbFiltrarGrid($("#" + CmbConfeccion + ""), UrlCp, "Nombre", "IdCategoriaConfeccion", "Seleccione...");
+        //Kendo_CmbFiltrarGrid($("#" + CmbTemporada + ""), UTemp, "Nombre", "IdTemporada", "Seleccione...");
+        //Kendo_CmbFiltrarGrid($("#" + CmbPrograma + ""), UPro, "Nombre", "IdPrograma", "Seleccione...", "", "" + CmbTemporada + "");
 
         KdoButton($("#" + btn + ""), "save", "Agregar");
-
         $("#" + btn + "").data('Formulario', form);
+
+        $("#" + btnLink + "").data('IdSolicitud', elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud);
+        $("#" + btnLink + "").data('IdCategoriaPrenda', elemento.IdCategoriaPrenda);
+        $("#" + btnLink + "").data('Item', elemento.Item);
 
         $("#" + CmbConfeccion + "").data("kendoComboBox").value(elemento.IdCategoriaPrenda === null ? 0 : elemento.IdCategoriaConfeccion);
         $("#" + CmbConfeccion + "").data("Tipo", "cmb");
@@ -296,8 +316,14 @@ var fn_DibujarSeccionPrenda = function (ds) {
         $("#" + TxtNumeroDiseno + "").data('Item', elemento.Item);
         $("#" + TxtNumeroDiseno + "").data('columna', 'NumDis');
       
-        
-        fn_DibujarUbicaciones(PrendaUbicacion, elemento.IdCategoriaPrenda, elemento.Item, spanId);
+        if (vIdServSol !== 2) {
+            fn_DibujarUbicaciones(PrendaUbicacion, elemento.IdCategoriaPrenda, elemento.Item, spanId);
+        }
+        else
+        {
+            fn_UbicacionSubli(elemento.IdCategoriaPrenda, elemento.Item, spanId,form);
+        }
+       
         fn_DibujarTallas(PrendaTallas, elemento.IdCategoriaPrenda, elemento.Item, spanId2);
 
         $("#" + panelbar + "").kendoPanelBar({
@@ -460,6 +486,123 @@ var fn_DibujarUbicaciones = function (ds, IdCategoriaPrenda, item,spanId) {
        
 
     });
+};
+
+var fn_UbicacionSubli = function (IdCategoriaPrenda, Item, spanId,form) {
+    let UbicacionPren = $("#" + spanId + "");
+    UbicacionPren.children().remove();
+    var CmbMltUbi = 'CmbMltUbi_' + vIdSolicitud.toString() + IdCategoriaPrenda.toString() + Item.toString();
+    UbicacionPren.append(
+        '<div class="form-row">' +
+        '<div class="form-group col-lg-12 ">' +
+        '<label for="' + CmbMltUbi + '">Partes:</label>' +
+        '<input name="' + CmbMltUbi + '" id="' + CmbMltUbi + '"  class="form-control">' +
+        '</div>' +
+        '</div>'
+    );
+
+    KdoMultiSelectDatos($("#" + CmbMltUbi + ""), DsUbicaciones, "Nombre", "IdUbicacion", "Seleccione ...");
+    $("#" + CmbMltUbi + "").data("Tipo", "Mlt");
+    //$("#" + CmbMltUbi + "").data('IdUbicacion', elemento.IdUbicacion);
+    $("#" + CmbMltUbi + "").data('Item', Item);
+    $("#" + CmbMltUbi + "").data('IdSolicitud', vIdSolicitud);
+    $("#" + CmbMltUbi + "").data('IdCategoriaPrenda', IdCategoriaPrenda);
+    $("#" + CmbMltUbi + "").data('formulario', form);
+
+    fn_getUbiSeleccionadas($("#" + CmbMltUbi + ""), SolUbicaciones, $("#" + CmbMltUbi + "").data("IdCategoriaPrenda").toString(), $("#" + CmbMltUbi + "").data("Item").toString());
+
+    $("#" + CmbMltUbi + "").data("kendoMultiSelect").bind("deselect", function (e) {
+       
+        kendo.ui.progress($("#body"), true);
+        $.ajax({
+            url: TSM_Web_APi + "SolicitudesPrendasUbicaciones/DelSolicitudesPrendasUbicacionSubli/" + vIdSolicitud.toString() + "/" + this.element.data("IdCategoriaPrenda").toString() + "/" + e.dataItem.IdUbicacion + "/" + this.element.data("Item").toString(),//
+            type: "Delete",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                RequestEndMsg(data, "Delete");
+                kendo.ui.progress($("#body"), false);
+            },
+            error: function (data) {
+                kendo.ui.progress($("#body"), false);
+                ErrorMsg(data);
+            }
+        });
+    });
+
+    $("#" + CmbMltUbi + "").data("kendoMultiSelect").bind("select", function (e) {
+
+        if ($("#" + this.element.data("formulario") + "").data("kendoValidator").validate()) {
+            kendo.ui.progress($("#body"), true);
+            $.ajax({
+                url: TSM_Web_APi + "SolicitudesPrendasUbicaciones",//
+                type: "Post",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdSolicitud: vIdSolicitud.toString(),
+                    IdCategoriaPrenda: this.element.data("IdCategoriaPrenda").toString(),
+                    IdUbicacion: e.dataItem.IdUbicacion,
+                    Cantidad: 1,
+                    Item: this.element.data("Item").toString()
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    RequestEndMsg(data, "Post");
+                    kendo.ui.progress($("#body"), false);
+                },
+                error: function (data) {
+                   
+                    fn_getUbiSeleccionadas(this.element, SolUbicaciones, this.element.data("IdCategoriaPrenda"), this.element.data("Item"));
+                    kendo.ui.progress($("#body"), false);
+                    ErrorMsg(data);
+                }
+            });
+        }
+        else
+        {
+            e.preventDefault();
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+        }
+       
+    });
+
+};
+
+var fn_getUbiSeleccionadas = function (e, SolUbicaciones, IdCategoriaPrenda, item) {
+
+    let filtro = [];
+    let data = JSON.parse(JSON.stringify(SolUbicaciones), function (key, value) {
+        if (value !== null) {
+            if (value.IdCategoriaPrenda === Number(IdCategoriaPrenda) && value.Item === Number(item)) filtro.push(value);
+
+        }
+        return value;
+    });
+    var lista = "";
+    $.each(filtro, function (index, elemento) {
+        lista = lista + elemento.IdUbicacion + ",";
+    });
+    e.data("kendoMultiSelect").value(lista.split(","));
+
+};
+   
+var fn_getUbicacionesEstamp = function () {
+    let vUbi = "";
+    $.ajax({
+        url: TSM_Web_APi + "SolicitudesPrendasUbicaciones/GetbyUbicaciones/" + vIdSolicitud.toString() ,
+        async: false,
+        type: 'GET',
+        success: function (respuesta) {
+            vUbi = respuesta;
+            kendo.ui.progress($("#body"), false);
+        },
+        error: function () {
+            vUbi = null;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+
+    return vUbi;
 };
 
 var fn_DibujarTallas = function (ds, IdCategoriaPrenda, item, spanId) {
@@ -843,4 +986,52 @@ var KdoCmbComboBoxPrograma = function (e,  textField, valueField, opcPlaceHolder
 
         }
     });
+};
+
+let fn_GetMulSUbicaciones = function () {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "ubicaciones",
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        }
+    });
+
+    return result;
+};
+
+let fn_GetDatos = function (WebApi) {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: WebApi,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        }
+    });
+
+    return result;
+};
+let fn_DeletePren = function (e) {
+    let obj = $(e);
+    kendo.ui.progress($("#body"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SolicitudesPrendas/" + obj.data("IdSolicitud").toString() + "/" + obj.data("IdCategoriaPrenda").toString() + "/" + obj.data("Item").toString(),
+        type: "delete",
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            fn_GetSolictudPrenda();
+            kendo.ui.progress($("#body"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#body"), false);
+            ErrorMsg(data);
+        }
+    });
+
 };

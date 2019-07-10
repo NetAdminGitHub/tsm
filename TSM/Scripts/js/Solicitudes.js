@@ -11,7 +11,7 @@ let xpnNombreClie = "";
 let xpnIdEjecutivo = "";
 let xpnIdContactoCliente = "";
 let xpnIdMarca = "";
-let xpNodocumento=""
+let xpNodocumento = "";
 let vIdSoli = 0;
 let xpnEsEjec = false;
 
@@ -657,7 +657,7 @@ let fn_GetRelacionContactosClienteActivos = function () {
 let fn_IniciarServ = function (e) {
     let obj = $(e);
     xpnIdSevicio = obj.data("idser").toString();
-    fn_idEjecutivoCuenta()
+    fn_idEjecutivoCuenta();
 };
 
 let fn_crearServ = function () {
@@ -690,7 +690,7 @@ let fn_crearServ = function () {
             xpNodocumento = data[0].NoDocumento;
             kendo.ui.progress($("#body"), false);
             RequestEndMsg(data, xType);
-            window.location.href = "/Solicitudes/IngresoSolicitudes/" + vIdSoli.toString() + "/" + xpnIdSevicio.toString() + "/" + xpnIdcliente
+            window.location.href = "/Solicitudes/IngresoSolicitudes/" + vIdSoli.toString() + "/" + xpnIdSevicio.toString() + "/" + xpnIdcliente;
         },
         error: function (data) {
             kendo.ui.progress($("#body"), false);
