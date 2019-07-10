@@ -234,6 +234,7 @@
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosEstadosController.cs" />
     <Compile Include="Controllers\RetencionesController.cs" />
