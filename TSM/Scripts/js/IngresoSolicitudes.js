@@ -117,28 +117,11 @@ var fn_ConfigVisorEtapas = function () {
 
     // Initialize the showStep event
     $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
-        //if (stepNumber === 0) {
-        //    fn_GetSolicitudCli();
-        //    KdoButtonEnable($("#btnFinSol"), false);
-        //}
+       
         if (stepNumber === 0) {
             fn_GetSolictudPrenda();
             KdoButtonEnable($("#btnFinSol"), false);
         }
-        //if (stepNumber === 1) {
-        //    $("#gridInfPieza").data("kendoGrid").dataSource.read();
-        //    setTimeout(function () {
-        //        Fn_Grid_Resize($("#gridInfPieza"), $(window).height() - "371");
-        //    }, 300);
-        //    KdoButtonEnable($("#btnFinSol"), false);
-        //}
-        //if (stepNumber === 1) {
-        //    $("#gridInfTela").data("kendoGrid").dataSource.read();
-        //    setTimeout(function () {
-        //        Fn_Grid_Resize($("#gridInfTela"), $(window).height() - "371");
-        //    }, 300);
-        //    KdoButtonEnable($("#btnFinSol"), false);
-        //}
         if (stepNumber === 1) {
             $("#gridInfUbi").data("kendoGrid").dataSource.read().then(function (e) {
                 xpNodocSol = $("#gridInfUbi").data("kendoGrid").dataSource.data()[0].NoDocSol;
@@ -148,14 +131,6 @@ var fn_ConfigVisorEtapas = function () {
             }, 400);
             KdoButtonEnable($("#btnFinSol"), true);
         }
-        //if (stepNumber === 2) {
-        //    $("#gridInfMue").data("kendoGrid").dataSource.read();
-        //    setTimeout(function () {
-        //        Fn_Grid_Resize($("#gridInfMue"), $(window).height() - "371");
-        //    }, 300);
-           
-        //    KdoButtonEnable($("#btnFinSol"), true);
-        //}
     });
 
 };

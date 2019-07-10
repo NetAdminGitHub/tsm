@@ -41,68 +41,36 @@
     @*<script src="~/Scripts/js/_SolicitudRegDisenoPrendaMuestra.js"></script>*@
     <script src="~/Scripts/Jquery/jquery.smartWizard.js"></script>
     <link href="~/Content/smart_wizard_theme_arrows.css" rel="stylesheet" />
-    <script src="~/Scripts/kendo/kendo.multicolumncombobox.min.js"></script>
+    @*<script src="~/Scripts/kendo/kendo.multicolumncombobox.min.js"></script>*@
 }
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
 
 <div class="form-control col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
     <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor">
-        @*<li class="nav-item active">
-                <a href="#p-1" class="nav-link">
-                    <span class="TS-icon-Asset-281 ficonEtp"></span><br>
-                    <small>PASO 01 - SELECCIONE SERVICIO </small>
-                </a>
-            </li>*@
+   
         <li class="nav-item">
-            <a href="#p-2" class="nav-link">
+            <a href="#p-1" class="nav-link">
                 <span class="TS-icon-CAMISA-2 ficonEtp"></span><br>
-                <small>PASO 01 - PRENDA Y CANTIDAD DE DISEÑOS </small>
+                <small>PASO 01 - PRENDA Y PARTES DE DISEÑOS </small>
             </a>
         </li>
-        @*<li class="nav-item">
-                <a href="#p-3" class="nav-link">
-                    <span class="TS-icon-INFORMACION-2 ficonEtp"></span><br>
-                    <small>PASO 3 - INFORMACION GENERAL DE CADA PIEZA </small>
-                </a>
-            </li>*@
-        @*<li class="nav-item">
-                <a href="#p-4" class="nav-link">
-                    <span class="TS-icon-CARNET ficonEtp"></span><br>
-                    <small>PASO 4 - INFORMACION DE LA PRENDA + TELA  </small>
-                </a>
-            </li>*@
         <li class="nav-item">
-            <a href="#p-5" class="nav-link">
+            <a href="#p-2" class="nav-link">
                 <span class="TS-icon-CA3 ficonEtp"></span><br>
                 <small>PASO 02- INGRESA LA INFORMACION DE DISEÑO + UBICACION</small>
             </a>
         </li>
-        @*<li class="nav-item">
-                <a href="#p-6" class="nav-link">
-                    <span class="TS-icon-AJUSTES ficonEtp"></span><br>
-                    <small>PASO 06 - INFORMACION DE CANTIDAD DE MUESTRAS </small>
-                </a>
-            </li>*@
+      
     </ul>
     <div class="sw-container tab-content">
-        @*<div id="p-1" class="tab-pane step-content" style="display: block;">
-                @Html.Partial("_SolicitudRegCliente")
-            </div>*@
-        <div id="p-2" class="tab-pane step-content">
+      
+        <div id="p-1" class="tab-pane step-content">
             @Html.Partial("_SolicitudRegPrenda")
         </div>
-        @*<div id="p-3" class="tab-pane step-content">
-                @Html.Partial("_SolicitudRegDisenoPrendaPieza")
-            </div>*@
-        @*<div id="p-4" class="tab-pane step-content">
-                @Html.Partial("_SolicitudRegDisenoPrendaTela")
-            </div>*@
-        <div id="p-5" class="tab-pane step-content">
+ 
+        <div id="p-2" class="tab-pane step-content">
             @Html.Partial("_SolicitudRegDisenoPrendaUbicacion")
         </div>
-        @*<div id="p-6" class="tab-pane step-content">
-                @Html.Partial("_SolicitudRegDisenoPrendaMuestra")
-            </div>*@
     </div>
 </div>
 <!-- The Modal -->

@@ -5,6 +5,7 @@ var Fila = "";
 var Md = "";
 let SeAdj = false;
 var IdSolDisPrenda = 0;
+let IdImgSolDisPrenda = 0;
 $(document).ready(function () {
 
     var dataSourceUbi = new kendo.data.DataSource({
@@ -105,16 +106,12 @@ $(document).ready(function () {
                     CantidadYardaPieza: { type: "number" },
                     IdUnidadYdPzs: { type: "string" },
                     Nombre7: { type: "string" },
-                    NoDocumento: { type: "string" },
-                    IdCategoriaTalla: { type: "string" },
                     Nombre11: { type: "string" },
                     IdComposicionTela: { type: "string" },
                     Nombre4: { type: "string" },
                     IdConstruccionTela: { type: "string" },
-                    Nombre5: { type: "string" },
-                    IdCategoriaTalla: { type: "number" },
-                    Nombre11: { type: "string" },
-                    NoDocSol: { type: "string"}
+                    Nombre5: { type: "string" },            
+                    NoDocSol: { type: "string" }
 
 
                 }
@@ -128,6 +125,18 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridInfUbi").kendoGrid({
+        dataBound: function (e) {
+            let grid = this;
+            grid.tbody.find("tr").mousedown("tr[role='row']", function (e) {
+                if (e.which === 3) {
+                    //$(this).addClass("k-state-selected");
+                    let gview = $('#gridInfUbi').data("kendoGrid");
+                    let selectedRow = gview.dataItem($(this));
+                    IdImgSolDisPrenda = selectedRow.IdSolicitudDisenoPrenda;
+                }
+            });
+
+        },
         edit: function (e) {
             KdoHideCampoPopup(e.container, "NoDocumento");
             KdoHideCampoPopup(e.container, "IdSolicitud");
@@ -148,11 +157,8 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombreDiseno");
             KdoHideCampoPopup(e.container, "Nombre");
             TextBoxEnable($('[name="NoDocumento"]'), false);
-            //TextBoxEnable($('[name="Nombre"]'), false);
             TextBoxEnable($('[name="Nombre1"]'), false);
             TextBoxEnable($('[name="EstiloDiseno"]'), false);
-            //TextBoxEnable($('[name="NombreDiseno"]'), false);
-            //TextBoxEnable($('[name="NombreRefGrafica"]'), false);
             KdoHideCampoPopup(e.container, "IdSolicitud");
             KdoNumerictextboxEnable($('[name="Combo"]'), false);
             $('[name="DirectorioArchivos"').attr('mayus', 'no');
@@ -184,7 +190,6 @@ $(document).ready(function () {
 
             $("#IdTecnica").data("kendoMultiSelect").bind("select", function (e) {
                 kendo.ui.progress($("#body"), true);
-                //var item = e.item;
                 $.ajax({
                     url: UrlSdpt,//
                     type: "Post",
@@ -206,7 +211,7 @@ $(document).ready(function () {
                 });
             });
 
-            $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(fn_DSudm("9,17"));
+            $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(fn_DSudm(vIdServSol));
 
         },
         cancel: function (e) {
@@ -218,6 +223,11 @@ $(document).ready(function () {
             if (SeAdj === true)
                 SeAdj = false;
         },
+        //change: function () {
+        //    var row = this.select();
+        //    var id = row.data("uid");   
+        //    alert(id);
+        //},
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "NoDocumento", title: "No Registro Diseño", hidden: true },
@@ -226,7 +236,7 @@ $(document).ready(function () {
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10)"
-                }, hidden: true,menu:false
+                }, hidden: true, menu: false
             },
             {
                 field: "EstiloDiseno", title: "Estilo diseño ", attributes: {
@@ -253,10 +263,10 @@ $(document).ready(function () {
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
             { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
             { field: "IdCategoriaPrenda", title: "Prenda", hidden: true },
-            
+
             { field: "IdUbicacion", title: "Prenda", hidden: true },
             {
-                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true ,
+                field: "Combo", title: "Combo", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true,
                 attributes: {
                     "class": "table-cell",
                     style: "background-color:rgba(0,0,0,0.10);text-align: right"
@@ -269,12 +279,12 @@ $(document).ready(function () {
             { field: "Nombre5", title: "Construcción tela" },
             { field: "IdTipoMuestra", title: "Tipo de muestra", editor: Grid_Combox, values: ["IdTipoMuestra", "Nombre", UrlTm, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "Nombre6", title: "Tipo de muestras" },
-            { field: "UbicacionVertical", title: "Ubicacion Vertical", editor: Grid_ColTextArea, values:["4"],hidden:true, menu:false},
+            { field: "UbicacionVertical", title: "Ubicacion Vertical", editor: Grid_ColTextArea, values: ["4"], hidden: true, menu: false },
             { field: "UbicacionHorizontal", title: "Ubicacion Horizontal", editor: Grid_ColTextArea, values: ["4"], hidden: true, menu: false },
             { field: "DirectorioArchivos", title: "Directorio Archivos", editor: Grid_ColTextArea, values: ["2"] },
             { field: "IdTecnica", title: "Tecnicas", editor: EMulti_Tecnicas, values: ["Nombre", "IdTecnica", UrlTec] },
             { field: "CantidadSTrikeOff", title: "S.O", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
-            { field: "CantidadYardaPieza", title: "Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
+            { field: "CantidadYardaPieza", title: "Piezas O Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
             { field: "Nombre7", title: "Unidad M." },
             { field: "Referencia", title: "Referencia Grafica", editor: AdjuntoEditor, hidden: true, menu: false },
@@ -282,12 +292,100 @@ $(document).ready(function () {
                 field: "NombreRefGrafica", title: " ", hidden: true, menu: false, editor: fn_BotonEliminarRG
             },
             { field: "Comentarios", title: "Comentario" },
-            { field: "Nombre11", title: "Tallas a Desarrollar", hidden: true,menu:false}
+            { field: "Nombre11", title: "Tallas a Desarrollar", hidden: true, menu: false }
 
 
         ]
     });
 
+    //    .on('contextmenu', function (e) {
+    //    // avoid the grid pager, headers and toolbar
+    //    if ($(e.target).is(".k-link, .k-grid-toolbar, .k-grid-pager")) {
+    //        return;
+    //    }
+    //    // Get the position of the Grid.
+    //    var offset = $(this).find("table").offset();
+    //    // Crete a textarea element which will act as a clipboard.
+    //    var textarea = $("<textarea>");
+    //    // Position the textarea on top of the Grid and make it transparent.
+    //    textarea.css({
+    //        position: 'absolute',
+    //        opacity: 0,
+    //        top: offset.top,
+    //        left: offset.left,
+    //        border: 'none',
+    //        width: $(this).find("table").width(),
+    //        height: $(this).find(".k-grid-content").height()
+    //    })
+    //        .appendTo('body')
+    //        .on("click", function (e) {
+    //            // in case user clicks to edit but the context menu is open and the textarea is over the grid's body
+    //            textarea.remove();
+    //            $(document.elementFromPoint(e.clientX, e.clientY)).click();
+    //        })
+    //        .on('paste', function (event) {
+
+    //            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+              
+
+    //            console.log(JSON.stringify(items)); // will give you the mime types
+    //            // find pasted image among pasted items
+    //            var blob = null;
+    //            for (var i = 0; i < items.length; i++) {
+    //                if (items[i].type.indexOf("image") === 0) {
+    //                    blob = items[i].getAsFile();
+    //                }
+    //            }
+    //            // load image if there is a pasted image
+    //            if (blob !== null) {
+    //                var reader = new FileReader();
+    //                reader.onload = function (event) {
+    //                    //console.log(event.target.result); // data url!
+    //                    document.getElementById("" + IdImgSolDisPrenda +"").src = event.target.result;
+    //                };
+    //                reader.readAsDataURL(blob);
+    //            }
+    //            textarea.remove();
+
+    //            //setTimeout(function (){
+    //            //    var value = $.trim(textarea.val());
+    //            //    //var grid = $("[data-role='grid']").data("kendoGrid");
+    //            //    //var rows = value.split('\n');
+    //            //    //var data = [];
+
+    //            //    //for (var i = 0; i < rows.length; i++) {
+    //            //    //    var cells = rows[i].split('\t');
+    //            //    //    var newItem = {
+    //            //    //        ProductName: cells[0],
+    //            //    //        UnitPrice: cells[1]
+    //            //    //    }
+    //            //    //    grid.dataSource.insert(0, newItem);
+    //            //    //}
+
+    //            //    var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    //            //    console.log(JSON.stringify(items)); // will give you the mime types
+    //            //    // find pasted image among pasted items
+    //            //    var blob = null;
+    //            //    for (var i = 0; i < items.length; i++) {
+    //            //        if (items[i].type.indexOf("image") === 0) {
+    //            //            blob = items[i].getAsFile();
+    //            //        }
+    //            //    }
+    //            //    // load image if there is a pasted image
+    //            //    if (blob !== null) {
+    //            //        var reader = new FileReader();
+    //            //        reader.onload = function (event) {
+    //            //            console.log(event.target.result); // data url!
+    //            //            document.getElementById("pastedImage").src = event.target.result;
+    //            //        };
+    //            //        reader.readAsDataURL(blob);
+    //            //    }
+    //            //    textarea.remove();
+    //            //});
+    //        }).focus();
+    //});
+
+    
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridInfUbi").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, false, redimensionable.Si);
     SetGrid_CRUD_Command($("#gridInfUbi").data("kendoGrid"), Permisos.SNEditar, false);
@@ -389,8 +487,19 @@ $(document).ready(function () {
             });
     }
 
-    let fn_DSudm = function (filtro) {
-
+    let fn_DSudm = function (IdServ) {
+        let filtro = "";
+        switch (IdServ) {
+            case 1:
+                filtro ="9";
+                break;
+            case 2:
+                filtro = "9,17";
+                break;
+            default:
+                filtro = "9,17";
+                break;
+        }
         return new kendo.data.DataSource({
             dataType: 'json',
             sort: { field: "Nombre", dir: "asc" },
@@ -412,6 +521,35 @@ $(document).ready(function () {
             }
         });
     };
+
+    //document.getElementById('pasteArea').onpaste = function (event) {
+    //    // use event.originalEvent.clipboard for newer chrome versions
+    //    var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    //    console.log(JSON.stringify(items)); // will give you the mime types
+    //    // find pasted image among pasted items
+    //    var blob = null;
+    //    for (var i = 0; i < items.length; i++) {
+    //        if (items[i].type.indexOf("image") === 0) {
+    //            blob = items[i].getAsFile();
+    //        }
+    //    }
+    //    // load image if there is a pasted image
+    //    if (blob !== null) {
+    //        var reader = new FileReader();
+    //        reader.onload = function (event) {
+    //            console.log(event.target.result); // data url!
+    //            document.getElementById("pastedImage").src = event.target.result;
+    //        };
+    //        reader.readAsDataURL(blob);
+    //    }
+    //}
+
+    //$(".k-grid").on("mousedown", "tr[role='row']", function (e) {
+    //    if (e.which === 3) {
+    //        $(this).siblings().removeClass("k-state-selected");
+    //        $(this).addClass("k-state-selected");
+    //    }
+    //});
 
 });
 
