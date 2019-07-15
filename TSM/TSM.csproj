@@ -224,6 +224,7 @@
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
+    <Compile Include="Controllers\OrientacionPositivosController.cs" />
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="Controllers\TiposMaquinasController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
+    <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
@@ -845,6 +847,7 @@
     <Content Include="Scripts\js\Modulos.js" />
     <Content Include="Scripts\js\MotivosDesarrollos.js" />
     <Content Include="Scripts\js\Notificaciones.js" />
+    <Content Include="Scripts\js\OrientacionPositivos.js" />
     <Content Include="Scripts\js\PapelesInsumos.js" />
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
@@ -877,6 +880,7 @@
     <Content Include="Scripts\js\TiposMaquinas.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
+    <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
@@ -1275,6 +1279,8 @@
     <Content Include="Views\GestionOT\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
     <Content Include="Views\Marcas\Index.cshtml" />
+    <Content Include="Views\OrientacionPositivos\Index.cshtml" />
+    <Content Include="Views\TiposSeparaciones\Index.cshtml" />
     <Content Include="Views\Shared\_MaqSR22.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
