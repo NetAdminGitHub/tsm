@@ -224,6 +224,11 @@ var fn_RTCargarConfiguracion = function () {
 
     Fn_Grid_Resize($("#gridRevDet"), $(window).height() - "371");
     //#endregion
+
+    //Metodo para cargar data a pasar a maquina canvas
+    $("#divMaquina").on("dragstart", function (e) {
+        e.originalEvent.dataTransfer.setData("perfil", JSON.stringify({ Edad: 30, Nombre: "Omar Rivas" }));
+    });
 };
 
 var fn_RTMostrarGrid = function () {
@@ -233,6 +238,7 @@ var fn_RTMostrarGrid = function () {
 };
 
 fun_List.push(fn_RTCargarConfiguracion);
+fun_List.push(fn_RTCargarMaquina);
 fun_ListDatos.push(fn_RTMostrarGrid);
 
 let Fn_GetFilaSelect = function (data) {
