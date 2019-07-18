@@ -917,7 +917,7 @@ $(document).ready(function () {
     //#region CRUD manejo de requerimiento de Desarrollo
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
-        if (EsCambioReg == false) {
+        if (EsCambioReg === false) {
             //limpiar mensage de validación
             ValidRD.hideMessages();
             //ValidArt.hideMessages();
@@ -1088,7 +1088,7 @@ $(document).ready(function () {
 
                 });
 
-                if (respuesta.length == 0) {
+                if (respuesta.length === 0) {
                 
                     HabilitaFormObje(false);
                     $("#Copiar").data("kendoButton").enable(false);
@@ -1147,8 +1147,8 @@ $(document).ready(function () {
                 Montaje: $("#Montaje").val(),
                 Combo: $("#Combo").val(),
                 RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
-                VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-                IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+                VelocidadMaquina:  $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
+                IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
                 IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
                 IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1162,7 +1162,6 @@ $(document).ready(function () {
                 IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
                 //entidad Artes
                 IdArte: $("#IdArte").val(),
-                IdRequerimiento: $("#IdRequerimiento").val(),
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
@@ -1183,7 +1182,7 @@ $(document).ready(function () {
                 //inserto registro en la grilla y obligo aque el evento change no haga su funcion de leer
 
                 EsCambioReg = true;
-                if (XType == "Post") {
+                if (XType === "Post") {
                     selectedRows = [];
                     $("#grid").data("kendoGrid").dataSource.insert(0, {
                         IdRequerimiento: data[0].IdRequerimiento,
@@ -1290,7 +1289,7 @@ $(document).ready(function () {
                 Combo: $("#Combo").val(),
                 RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
                 VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-                IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+                IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
                 IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
                 IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1304,7 +1303,6 @@ $(document).ready(function () {
                 IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
                 //entidad Artes
                 IdArte: $("#IdArte").val(),
-                IdRequerimiento: $("#IdRequerimiento").val(),
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
