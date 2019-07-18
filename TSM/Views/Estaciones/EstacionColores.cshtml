@@ -1,0 +1,55 @@
+﻿
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title text-center" id="MColorEstacionLabel"></h3>
+            <button type="button" class="close" data-dismiss="modal" id="btnClosMCE" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="FrmGenEColor" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-group col-lg-12">
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label for="TxtOpcSelec" id="OpcSelec"></label>
+                            <input id="TxtOpcSelec" name="TxtOpcSelec" type="text" class="k-textbox form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label for="CmbTipoTinta_color">Tipo de Tintas</label>
+                            <input name="CmbTipoTinta_color" id="CmbTipoTinta_color" required validationMessage="Requerido" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label for="CmbSistema_color">Sistema Tintas</label>
+                            <input name="CmbSistema_color" id="CmbSistema_color" required validationMessage="Requerido" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="CmbSedas_color">Seda:</label>
+                            <input id="CmbSedas_color" name="CmbSedas_color" required validationMessage="Requerido" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="NumCapilar">Capilar:</label>
+                            <input id="NumCapilar" name="NumCapilar" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="NumPasadas">Seda:</label>
+                            <input id="NumPasadas" name="NumPasadas" type="text" class="form-control" />
+                        </div>  
+                    </div>
+                    <div class="form-row">
+                        <label for="TxtFormulaSug">Formulacion Sugerida </label>
+                        <input id="TxtFormulaSug" name="TxtFormulaSug" type="text" class="k-textbox form-control" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer ">
+            <button type="button" class=" k-primary" id="btnAddMCE">Guardar</button>
+        </div>
+    </div>
+</div>
+ 
