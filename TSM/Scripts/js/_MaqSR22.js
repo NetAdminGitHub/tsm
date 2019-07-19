@@ -6,6 +6,9 @@ let InicioAcce = false;
 var TxtIdsec = "";
 var TxtSecName = "";
 var Titulo = "";
+var ModalEstacion = "";
+var ModalEstacionJS = "";
+let TipoEstacion = "";
 var fn_RTCargarMaquina = function () {
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -98,8 +101,7 @@ var fn_RTCargarMaquina = function () {
             strokeWidth: 1,
             id: "brazo" + (i + 12),
             IdSeteo: 0,
-            IdTipoFormulacion: "",
-            Modal:""
+            IdTipoFormulacion: ""
 
         });
 
@@ -152,7 +154,10 @@ var fn_RTCargarMaquina = function () {
         });
 
         textbt1.on('click', function () {
-            alert(this.id());
+            let xidb = this.id().replace("txtEdit", "");
+            var a = stage.find("#brazo" + idBra);
+            a.IdTipoFormulacion;
+            fn_verEidtar(a.IdTipoFormulacion, xidb);
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
@@ -242,6 +247,7 @@ var fn_RTCargarMaquina = function () {
             IdSeteo: 0,
             IdTipoFormulacion: ""
         
+        
         });
 
         text.position({ x: 100 + (i - 11) * 100, y: 355 });
@@ -289,7 +295,10 @@ var fn_RTCargarMaquina = function () {
         });
 
         textbt1.on('click', function () {
-            alert(this.IdSeteo());
+            let xidb = this.id().replace("txtEdit", "");
+            var a = stage.find("#brazo" + idBra);
+            a.IdTipoFormulacion;
+            fn_verEidtar(a.IdTipoFormulacion,xidb);
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
@@ -424,12 +433,12 @@ var dropElemento = function (e, grid) {
           
    
             // obtener el nombre de vista modal estacion
-            let ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
+            ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
             // Obtener el JS
-            let ModalEstacionJS = $("#" + e.draggable.element[0].id + "").data("EstacionJS");
+            ModalEstacionJS = $("#" + e.draggable.element[0].id + "").data("EstacionJS");
 
             // Tipo de estacion 
-            let TipoEstacion = $("#" + e.draggable.element[0].id + "").data("TipoEstacion");
+             TipoEstacion = $("#" + e.draggable.element[0].id + "").data("TipoEstacion");
 
             // obtener la Url de la vista parcial.
             let Url = $("#" + ModalEstacion + "").data("url");
@@ -462,7 +471,6 @@ var dropElemento = function (e, grid) {
                     Titulo = "ESTACION";
                     break;
             }
-
 
             if(Url !== undefined){
                 $.get(Url, function (data) {
@@ -521,15 +529,12 @@ var dropElemento = function (e, grid) {
                         if (TipoEstacion === 'ACCESORIO') {
                             $("#TxtOpcSelecAcce").data("name",TxtSecName);
                             $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("Modal", ModalEstacion);
                             $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", ""));
 
                         } else {
                             $("#TxtOpcSelec").data("name",TxtSecName);
                             $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("Modal", ModalEstacion);
                             $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo",""));
-        
                           
                         }
 
@@ -565,6 +570,132 @@ var dropElemento = function (e, grid) {
         }
     }
     kendo.ui.progress($("#body"), false);
+};
+
+var fn_verEidtar = function (IdTipoFormulacion,xidB) {
+
+    switch (IdTipoFormulacion) {
+        case "COLOR":
+            Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+            ModalEstacion: "MEstacionColor";
+            TipoEstacion: "COLOR";
+            ModalEstacionJS: "EstacionColores.js";
+            break;
+        case "TECNICA":
+            Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+            ModalEstacion: "MEstacionColor";
+            TipoEstacion: "TECNICAS";
+            ModalEstacionJS: "EstacionColores.js";
+            break;
+        case "BASE":
+            Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+            ModalEstacion: "MEstacionColor";
+            TipoEstacion: "BASE";
+            ModalEstacionJS: "EstacionColores.js";
+            break;
+        default:
+            Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+            ModalEstacion: "MEstacionAccesorios";
+            ModalEstacionJS: "EstacionAccesorios.js";
+            TipoEstacion: "ACCESORIO";
+            break;
+    }
+    let Url = $("#" + ModalEstacion + "").data("url");
+    if (Url !== undefined) {
+        $.get(Url, function (data) {
+
+            var script;
+
+            if (TipoEstacion === 'ACCESORIO') {
+                if (InicioAcce === true) {
+                    fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                    $.each(fn_PWList, function (index, elemento) {
+                        elemento.call(document, jQuery);
+                    });
+                } else {
+                    script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.src = "/Scripts/js/" + ModalEstacionJS;
+                    script.onload = function () {
+                        fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                        $.each(fn_PWList, function (index, elemento) {
+                            elemento.call(document, jQuery);
+                        });
+                    };
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                }
+
+            }
+            else {
+
+                if (InicioColor === true) {
+                    fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                    $.each(fn_PWList, function (index, elemento) {
+                        elemento.call(document, jQuery);
+                    });
+
+                }
+                else {
+                    script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.src = "/Scripts/js/" + ModalEstacionJS;
+
+                    script.onload = function () {
+                        fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                        $.each(fn_PWList, function (index, elemento) {
+                            elemento.call(document, jQuery);
+                        });
+
+                    };
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                }
+            }
+
+            //$("#" + ModalEstacion + "").on('show.bs.modal', function (e) {
+
+
+            //    if (TipoEstacion === 'ACCESORIO') {
+            //        $("#TxtOpcSelecAcce").data("name", "");
+            //        $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
+            //        $("#TxtOpcSelecAcce").data("IdBrazo", xidB);
+
+            //    } else {
+            //        $("#TxtOpcSelec").data("name", "");
+            //        $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
+            //        $("#TxtOpcSelec").data("IdBrazo", xidB);
+
+
+            //    }
+
+
+            //    switch (TipoEstacion) {
+            //        case "COLOR":
+            //            //guardo en Memoria la llave del tipo de selección
+            //            $("#TxtOpcSelec").data("IdRequerimientoColor", "");
+            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
+            //            break;
+            //        case "TECNICAS":
+            //            //guardo en Memoria la llave del tipo de selección
+            //            $("#TxtOpcSelec").data("IdTecnica", "");
+            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
+            //            break;
+            //        case "BASES":
+            //            //guardo en Memoria la llave del tipo de selección
+            //            $("#TxtOpcSelec").data("IdBase", "");
+            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
+            //            break;
+            //        case "ACCESORIO":
+            //            //guardo en Memoria la llave del tipo de selección
+            //            $("#TxtOpcSelecAcce").data("IdAccesorio", "");
+            //            $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
+            //            break;
+            //        default:
+            //    }
+            //    //fn_PWList = [];
+            //});
+        });
+    }
+
 };
 
 let fn_ShowModalPW = function (m, data, titulo) {
