@@ -310,27 +310,4 @@ let fn_Estaciones = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
-let fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
-        type: "Delete",
-        contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            var a = stage.find("#TxtInfo" + xIdestacion);
-            a.text("");
-            var b = stage.find("#brazo" + xIdestacion);
-            b.IdSeteo = 0;
-            b.IdTipoFormulacion = "";
-            layer.draw();
-            kendo.ui.progress($("#MEstacionColor"), false);
-        },
-        error: function (data) {
-            kendo.ui.progress($("#MEstacionColor"), false);
-            ErrorMsg(data);
-        }
-    });
-};
-
-
 fn_PWList.push(fn_VistaEstacionColor);
