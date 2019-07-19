@@ -363,7 +363,7 @@ let fn_GetMaquinas = function () {
     kendo.ui.progress($("#body"), true);
     let result = null;
     $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinas/GetbyOrdenTrabajo/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
+        url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
         async: false,
         type: 'GET',
         success: function (datos) {
@@ -374,6 +374,30 @@ let fn_GetMaquinas = function () {
 
     return result;
 };
+
+let fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#MEstacionColor"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
+        type: "Delete",
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Delete");
+            var a = stage.find("#TxtInfo" + xIdestacion);
+            a.text("");
+            var b = stage.find("#brazo" + xIdestacion);
+            b.IdSeteo = 0;
+            b.IdTipoFormulacion = "";
+            layer.draw();
+            kendo.ui.progress($("#MEstacionColor"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#MEstacionColor"), false);
+            ErrorMsg(data);
+        }
+    });
+};
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
