@@ -25,14 +25,23 @@ var fn_RTCargarMaquina = function () {
     var cambioColor = "";
 
     //Brazos Superiores
-    for (var i = 0; i < 11; i++) {
+    for (let i = 0; i < 11; i++) {
+        let estacionInfo;
+        let estacionTexto;
+        estacionInfo = maq.find(q => q.IdEstacion === i + 12);
+
+        if (estacionInfo)
+            estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
+        else
+            estacionTexto = "";
+
         let textInfo = new Konva.Text({
             x: 150,
             y: 55,
             width: 70,
             height: 70,
             id: "TxtInfo" + (i + 12),
-            text:""
+            text: estacionTexto
         });
 
         textInfo.align('center');
@@ -161,19 +170,30 @@ var fn_RTCargarMaquina = function () {
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
-            ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+            
+            if (maq.find(q => q.IdEstacion == xidb))
+                ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
    
     }
 
     for (let i = 12; i < 23; i++) {
+        let estacionInfo;
+        let estacionTexto;
+        estacionInfo = maq.find(q => q.IdEstacion === 23 - i);
+
+        if (estacionInfo)
+            estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
+        else
+            estacionTexto = "";
+
         let textInfo = new Konva.Text({
             x: 150,
             y: 55,
             width: 70,
             height: 70,
             id: "TxtInfo" + (23 - i),
-            text: ""
+            text: estacionTexto
         });
 
         textInfo.align('center');
@@ -302,7 +322,9 @@ var fn_RTCargarMaquina = function () {
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
-            ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+
+            if (maq.find(q => q.IdEstacion == xidb))
+                ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
 
        
