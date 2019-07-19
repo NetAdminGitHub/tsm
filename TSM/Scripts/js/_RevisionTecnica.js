@@ -1,9 +1,11 @@
 ﻿var Permisos;
+var maq;
 let UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
 let UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
 let StrIdCatalogoInsu = "";
 let vIdPlan = 0;
 let gAlto = 200;
+
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnAddEsta"), "check", "Agregar");
@@ -11,7 +13,8 @@ var fn_RTCargarConfiguracion = function () {
     fn_gridTecnica();
     fn_gridBases();
     fn_gridAccesorios();
-
+    maq = fn_GetMaquinas();
+    
     //hablitar el Drop Target de las maquinas
     let vContenedor = $("#container");
     $(vContenedor).kendoDropTarget({
@@ -175,7 +178,7 @@ let fn_gridBases = function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: TSM_Web_APi + "Bases",
+                url: TSM_Web_APi + "BasesMuestras",
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -355,6 +358,22 @@ let fn_GetIdPlan = function (g) {
     return SelItem === null ? 0 : SelItem.IdPlantillaListaVerificacion;
 };
 
+
+let fn_GetMaquinas = function () {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/GetbyOrdenTrabajo/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+
+    return result;
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };
