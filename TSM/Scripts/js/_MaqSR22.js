@@ -3,7 +3,9 @@ var layer;
 var fn_PWList = [];
 let InicioColor = false;
 let InicioAcce = false;
-
+var TxtIdsec = "";
+var TxtSecName = "";
+var Titulo = "";
 var fn_RTCargarMaquina = function () {
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -48,9 +50,6 @@ var fn_RTCargarMaquina = function () {
             y: 35,
             text: 'E',
             id: "txtEdit" + (i + 12)
-            //fontSize: 16,
-            //fontFamily: 'Calibri',
-            //fill: 'green',
         
         });
 
@@ -63,17 +62,17 @@ var fn_RTCargarMaquina = function () {
             radius: 10,
             fill: 'white',
             stroke: 'black',
-            strokeWidth: 1
+            strokeWidth: 1,
+            id: "btnborrar" + (i + 12)
         });
 
 
         let textbt2 = new Konva.Text({
             x: 151,
             y: 10,
-            text: 'X'
-            //fontSize: 16,
-            //fontFamily: 'Calibri',
-            //fill: 'green',
+            text: 'X',
+            id: "txtBorrar" + (i + 12)
+       
         });
 
         textbt2.align('center');
@@ -97,7 +96,11 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "brazo" + (i + 12)
+            id: "brazo" + (i + 12),
+            IdSeteo: 0,
+            IdTipoFormulacion: "",
+            Modal:""
+
         });
 
        
@@ -152,7 +155,8 @@ var fn_RTCargarMaquina = function () {
             alert(this.id());
         });
         textbt2.on('click', function () {
-            alert(this.id());
+            let xidb = this.id().replace("txtBorrar", "");
+            ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
    
     }
@@ -200,17 +204,17 @@ var fn_RTCargarMaquina = function () {
             radius: 10,
             fill: 'white',
             stroke: 'black',
-            strokeWidth: 1
+            strokeWidth: 1,
+            id: "btnBorrar" + (23 - i)
+
         });
 
 
         let textbt2 = new Konva.Text({
             x: 151,
             y: 10,
-            text: 'X'
-            //fontSize: 16,
-            //fontFamily: 'Calibri',
-            //fill: 'green',
+            text: 'X',
+            id: "txtBorrar" + (23 - i)
         });
 
         textbt2.align('center');
@@ -234,7 +238,9 @@ var fn_RTCargarMaquina = function () {
             stroke: 'black',
             strokeWidth: 1,
             draggable: true,
-            id: "brazo" + (23 - i)
+            id: "brazo" + (23 - i),
+            IdSeteo: 0,
+            IdTipoFormulacion: ""
         
         });
 
@@ -283,10 +289,11 @@ var fn_RTCargarMaquina = function () {
         });
 
         textbt1.on('click', function () {
-            alert(this.id());
+            alert(this.IdSeteo());
         });
         textbt2.on('click', function () {
-            alert(this.id());
+            let xidb = this.id().replace("txtBorrar", "");
+            ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
 
        
@@ -415,9 +422,7 @@ var dropElemento = function (e, grid) {
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
         if ("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id) {
           
-            var TxtIdsec="";
-            var TxtSecName = "";
-            var Titulo = "";
+   
             // obtener el nombre de vista modal estacion
             let ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
             // Obtener el JS
@@ -428,28 +433,30 @@ var dropElemento = function (e, grid) {
 
             // obtener la Url de la vista parcial.
             let Url = $("#" + ModalEstacion + "").data("url");
+
+            let gDrag = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid"));
       
 
             switch (TipoEstacion) {
                 case "COLOR":
                     Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
-                    TxtIdsec = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).IdRequerimientoColor;
-                    TxtSecName = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).Color;
+                    TxtIdsec = gDrag.IdRequerimientoColor;
+                    TxtSecName = gDrag.Color;
                     break;
                 case "TECNICAS":
                     Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
-                    TxtIdsec = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).IdTecnica;
-                    TxtSecName = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).Nombre;
+                    TxtIdsec = gDrag.IdTecnica;
+                    TxtSecName = gDrag.Nombre;
                     break;
                 case "BASES":
                     Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
-                    TxtIdsec = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).IdBase;
-                    TxtSecName = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).Nombre;
+                    TxtIdsec = gDrag.IdBase;
+                    TxtSecName = gDrag.Nombre;
                     break;
                 case "ACCESORIO":
                     Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-                    TxtIdsec = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).IdAccesorio;
-                    TxtSecName = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid")).Nombre;
+                    TxtIdsec = gDrag.IdAccesorio;
+                    TxtSecName = gDrag.Nombre;
                     break;
                 default:
                     Titulo = "ESTACION";
@@ -470,7 +477,7 @@ var dropElemento = function (e, grid) {
                                 elemento.call(document, jQuery);
                             });
                         } else {
-                            vscript = document.createElement("script");
+                            script = document.createElement("script");
                             script.type = "text/javascript";
                             script.src = "/Scripts/js/" + ModalEstacionJS;
                             script.onload = function () {
@@ -482,7 +489,8 @@ var dropElemento = function (e, grid) {
                             document.getElementsByTagName('head')[0].appendChild(script);
                         }
                         
-                    } else {
+                    }
+                    else {
 
                         if (InicioColor === true) {
                             fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
@@ -490,7 +498,8 @@ var dropElemento = function (e, grid) {
                                 elemento.call(document, jQuery);
                             });
 
-                        } else {
+                        }
+                        else {
                             script = document.createElement("script");
                             script.type = "text/javascript";
                             script.src = "/Scripts/js/" + ModalEstacionJS;
@@ -510,13 +519,16 @@ var dropElemento = function (e, grid) {
 
                         
                         if (TipoEstacion === 'ACCESORIO') {
-                            $("#TxtOpcSelecAcce").val(TxtSecName);
+                            $("#TxtOpcSelecAcce").data("name",TxtSecName);
                             $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id);
+                            $("#TxtOpcSelecAcce").data("Modal", ModalEstacion);
+                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", ""));
+
                         } else {
-                            $("#TxtOpcSelec").val(TxtSecName);
+                            $("#TxtOpcSelec").data("name",TxtSecName);
                             $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextIndo"));
+                            $("#TxtOpcSelec").data("Modal", ModalEstacion);
+                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo",""));
         
                           
                         }
