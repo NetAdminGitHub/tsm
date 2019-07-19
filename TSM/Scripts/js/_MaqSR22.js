@@ -413,8 +413,7 @@ var dropElemento = function (e, grid) {
     if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs) {
    
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
-        if ("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id) {
-          
+        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {          
             var TxtIdsec="";
             var TxtSecName = "";
             var Titulo = "";
@@ -470,7 +469,7 @@ var dropElemento = function (e, grid) {
                                 elemento.call(document, jQuery);
                             });
                         } else {
-                            vscript = document.createElement("script");
+                            script = document.createElement("script");
                             script.type = "text/javascript";
                             script.src = "/Scripts/js/" + ModalEstacionJS;
                             script.onload = function () {
@@ -512,11 +511,11 @@ var dropElemento = function (e, grid) {
                         if (TipoEstacion === 'ACCESORIO') {
                             $("#TxtOpcSelecAcce").val(TxtSecName);
                             $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id);
+                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
                         } else {
                             $("#TxtOpcSelec").val(TxtSecName);
                             $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextIndo"));
+                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
         
                           
                         }
