@@ -245,6 +245,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            maq = fn_GetMaquinas();
             $("#MEstacionColor").modal('hide');
             RequestEndMsg(data, xType);
         },

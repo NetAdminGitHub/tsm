@@ -164,9 +164,12 @@ var fn_RTCargarMaquina = function () {
 
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
-            var a = stage.find("#brazo" + idBra);
-            a.IdTipoFormulacion;
-            fn_verEidtar(a.IdTipoFormulacion, xidb);
+
+            if (maq.find(q => q.IdEstacion == xidb)) {
+                let data = maq.find(q => q.IdEstacion == xidb);
+
+                fn_verEidtar(data.IdTipoFormulacion, xidb);
+            }
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
@@ -316,9 +319,12 @@ var fn_RTCargarMaquina = function () {
 
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
-            var a = stage.find("#brazo" + idBra);
-            a.IdTipoFormulacion;
-            fn_verEidtar(a.IdTipoFormulacion,xidb);
+
+            if (maq.find(q => q.IdEstacion == xidb)) {
+                let data = maq.find(q => q.IdEstacion == xidb);
+
+                fn_verEidtar(data.IdTipoFormulacion, xidb);
+            }
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
@@ -551,12 +557,12 @@ var dropElemento = function (e, grid) {
                         if (TipoEstacion === 'ACCESORIO') {
                             $("#TxtOpcSelecAcce").data("name",TxtSecName);
                             $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", ""));
+                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("txtEdit", ""));
 
                         } else {
                             $("#TxtOpcSelec").data("name",TxtSecName);
                             $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo",""));
+                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("txtEdit", ""));
                           
                         }
 
@@ -599,29 +605,31 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
     switch (IdTipoFormulacion) {
         case "COLOR":
             Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
-            ModalEstacion: "MEstacionColor";
-            TipoEstacion: "COLOR";
-            ModalEstacionJS: "EstacionColores.js";
+            ModalEstacion= "MEstacionColor";
+            TipoEstacion= "COLOR";
+            ModalEstacionJS = "EstacionColores.js";
             break;
         case "TECNICA":
             Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
-            ModalEstacion: "MEstacionColor";
-            TipoEstacion: "TECNICAS";
-            ModalEstacionJS: "EstacionColores.js";
+            ModalEstacion= "MEstacionColor";
+            TipoEstacion= "TECNICAS";
+            ModalEstacionJS= "EstacionColores.js";
             break;
         case "BASE":
             Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
-            ModalEstacion: "MEstacionColor";
-            TipoEstacion: "BASE";
-            ModalEstacionJS: "EstacionColores.js";
+            ModalEstacion= "MEstacionColor";
+            TipoEstacion= "BASE";
+            ModalEstacionJS= "EstacionColores.js";
             break;
         default:
             Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-            ModalEstacion: "MEstacionAccesorios";
-            ModalEstacionJS: "EstacionAccesorios.js";
-            TipoEstacion: "ACCESORIO";
+            ModalEstacion= "MEstacionAccesorios";
+            ModalEstacionJS= "EstacionAccesorios.js";
+            TipoEstacion = "ACCESORIO";
+          
             break;
     }
+
     let Url = $("#" + ModalEstacion + "").data("url");
     if (Url !== undefined) {
         $.get(Url, function (data) {
@@ -631,6 +639,7 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
             if (TipoEstacion === 'ACCESORIO') {
                 if (InicioAcce === true) {
                     fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+             
                     $.each(fn_PWList, function (index, elemento) {
                         elemento.call(document, jQuery);
                     });
@@ -652,6 +661,7 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
 
                 if (InicioColor === true) {
                     fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                    $("#TxtOpcSelec").data("IdBrazo", xidB);
                     $.each(fn_PWList, function (index, elemento) {
                         elemento.call(document, jQuery);
                     });
@@ -664,6 +674,7 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
 
                     script.onload = function () {
                         fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
+                        $("#TxtOpcSelec").data("IdBrazo", xidB);
                         $.each(fn_PWList, function (index, elemento) {
                             elemento.call(document, jQuery);
                         });
