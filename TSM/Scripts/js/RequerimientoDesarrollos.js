@@ -34,7 +34,7 @@ $(document).ready(function () {
     $("#Nuevo").data("kendoButton").enable(false);
 
     $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#Fecha").data("kendoDatePicker").value(Fhoy())
+    $("#Fecha").data("kendoDatePicker").value(Fhoy());
 
     $("#Guardar").data("kendoButton").enable(false);
     $("#Eliminar").data("kendoButton").enable(false);
@@ -50,7 +50,7 @@ $(document).ready(function () {
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%",},
+            { collapsible: true, size: "50%", max: "95%", min: "20%"},
             { collapsible: true, size: "50%" }
         ]
 
@@ -59,7 +59,7 @@ $(document).ready(function () {
     PanelBarConfig($("#BarPanel"));
    
     $(window).resize(function () {
-        resizeSplitter($(window).height())
+        resizeSplitter($(window).height());
     });
 
     resizeSplitter = function (height) {
@@ -89,7 +89,7 @@ $(document).ready(function () {
         if (!isNaN(index) && index < panes.length) {
             return panes[index];
         }
-    }
+    };
 
 
     $("#CntPiezas").kendoNumericTextBox({
@@ -355,7 +355,7 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#IdCategoriaConfeccion"), UrlApiCConfec, "Nombre", "IdCategoriaConfeccion", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdConstruccionTela"), UrlApiConsTela, "Nombre", "IdConstruccionTela", "Seleccione ...");
     //Kendo_CmbFiltrarGrid($("#IdComposicionTela"), UrlApiCompTela, "Nombre", "IdComposicionTela", "Seleccione ...");
-    KdoCmbComboBox($("#IdComposicionTela"), UrlApiCompTela, "Nombre", "IdComposicionTela", "Seleccione ...", "", "", "","CmbNuevoItem")
+    KdoCmbComboBox($("#IdComposicionTela"), UrlApiCompTela, "Nombre", "IdComposicionTela", "Seleccione ...", "", "", "", "CmbNuevoItem");
 
     //#region CmbIdUnidadVelocidad
      
@@ -392,7 +392,7 @@ $(document).ready(function () {
     $("#CantidadTallas").data("kendoNumericTextBox").enable(false);
     $("#IdServicio").data("kendoComboBox").input.focus();
 
-    HabilitaFormObje(false)
+    HabilitaFormObje(false);
     //#endregion FIN Inicialización de variables y controles Kendo
 
     //#region Programacion GRID REQUERIMIENTO DE DESARROLLO
@@ -543,7 +543,7 @@ $(document).ready(function () {
             if (e.type === "create" || e.type === "destroy") {
                 ObtenerTallas();
             }
-            Grid_requestEnd(e)
+            Grid_requestEnd(e);
         },
         // VALIDAR ERROR
         error: Grid_error,
@@ -995,8 +995,8 @@ $(document).ready(function () {
         Kendo_CmbGetvalue($("#IdServicio")) === "1" ? $("#CantidadColores").data("kendoNumericTextBox").enable(true) : $("#CantidadColores").data("kendoNumericTextBox").enable(false);
 
         //asignar valores a campos.
-        $("#IdSistemaTinta").data("kendoMultiSelect").value("")
-        $("#IdCategoriaPrenda").data("kendoMultiSelect").value("")
+        $("#IdSistemaTinta").data("kendoMultiSelect").value("");
+        $("#IdCategoriaPrenda").data("kendoMultiSelect").value("");
         $("#Fecha").data("kendoDatePicker").value(Fhoy());
         $('#chkRevisionTecnica').prop('checked', 0);
         $('#chkDisenoFullColor').prop('checked', 0);
@@ -1025,7 +1025,7 @@ $(document).ready(function () {
 
     $("#Eliminar").click(function (event) {
         event.preventDefault();
-        ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return EliminarReq(UrlRD) });
+        ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return EliminarReq(UrlRD); });
     });
 
     function getRD(UrlRD) {
@@ -1095,7 +1095,7 @@ $(document).ready(function () {
                     $("#btnCambioEstado").data("kendoButton").enable(false);
                     $("#Nuevo").data("kendoButton").enable(fn_SNAgregar(true));
                     Fn_LeerImagenes($("#Mycarousel"), "", null);
-                };
+                }
                 CargarEtapasProceso(VarIDReq);
                 kendo.ui.progress($("#splitter"), false);
                 getArte(UrlApiArte + "/GetArteByRequerimiento/" + VarIDReq.toString(), UrlApiArteAdj);
@@ -1148,7 +1148,7 @@ $(document).ready(function () {
                 Combo: $("#Combo").val(),
                 RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
                 VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-                IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+                IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
                 IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
                 IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1162,7 +1162,6 @@ $(document).ready(function () {
                 IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
                 //entidad Artes
                 IdArte: $("#IdArte").val(),
-                IdRequerimiento: $("#IdRequerimiento").val(),
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
@@ -1216,7 +1215,7 @@ $(document).ready(function () {
                         Nombre7: data[0].Nombre7,
                         IdComposicionTela: data[0].IdComposicionTela,
                         Nombre8: data[0].Nombre8,
-                        Color: data[0].Color,
+                        Color: data[0].Color
                        
                     });
                     CargarEtapasProceso(data[0].IdRequerimiento);
@@ -1262,7 +1261,7 @@ $(document).ready(function () {
     }
 
     function ActualizarReq() {
-        var Actualizado= false
+        var Actualizado = false;
         var XEstado = "EDICION";
         var XFecha = kendo.toString(kendo.parseDate($("#Fecha").val()), 's');
         $.ajax({
@@ -1290,7 +1289,7 @@ $(document).ready(function () {
                 Combo: $("#Combo").val(),
                 RevisionTecnica: $("#chkRevisionTecnica").is(':checked'),
                 VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
-                IdUnidadVelocidad: $("#CmbIdUnidadVelocidad").data("kendoComboBox").value(),
+                IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
                 IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
                 IdBase: $("#CmbBase").data("kendoComboBox").value(),
@@ -1304,7 +1303,6 @@ $(document).ready(function () {
                 IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
                 //entidad Artes
                 IdArte: $("#IdArte").val(),
-                IdRequerimiento: $("#IdRequerimiento").val(),
                 Nombre: $("#Nombre").val(),
                 EstiloDiseno: $("#EstiloDiseno").val(),
                 NumeroDiseno: $("#NumeroDiseno").val(),
@@ -1370,7 +1368,7 @@ $(document).ready(function () {
             },
             error: function (e) {
                 kendo.ui.progress($("#splitter"), false);
-                ErrorMsg(e)
+                ErrorMsg(e);
                 $("#Nombre").focus().select();
             }
         });
@@ -1411,7 +1409,7 @@ $(document).ready(function () {
     function Consultar(IdServicio, IdCliente) {
 
         vIdS = IdServicio;
-        vIdCli = IdCliente
+        vIdCli = IdCliente;
 
        
         $("#Copiar").data("kendoButton").enable(false);
@@ -1436,8 +1434,8 @@ $(document).ready(function () {
 
      
         // contraer barra  Dimensiones y Tecnicas
-        Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRDimension")) 
-        Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRReqDesTec")) 
+        Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRDimension"));
+        Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRReqDesTec")); 
 
         // habilitar panel de acuerdo al servicio.
         vIdS == 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), false);
@@ -1518,7 +1516,7 @@ $(document).ready(function () {
         }
     });
     //#region Actualizar Base
-    var ExecActBase=true
+    var ExecActBase = true;
     $("#CmbBase").data("kendoComboBox").bind("change", function (e) {
         if ($("#IdRequerimiento").val() > 0) {
             event.preventDefault();
@@ -1529,7 +1527,7 @@ $(document).ready(function () {
                         ExecActBase = false;
                     } else {
                         ExecActBase = true;
-                    };
+                    }
                 } else {
                     $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
                     ExecActBase = true;
@@ -1760,7 +1758,7 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
-                getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val())
+                getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val());
                 kendo.ui.progress($("#splitter"), false);
                 RequestEndMsg(data, XType);
 
@@ -1818,7 +1816,7 @@ $(document).ready(function () {
 
     $("#btnAceptar").click(function (event) {
         event.preventDefault();
-        if (ValidCopiar.validate()) { ConfirmacionMsg("¿Está seguro de que desea copiar el Requerimiento de Desarrollo N°: " + $("#NoDocumento").val().toString() + " y crear nuevo (s) registro?", function () { return fn_CopiarRequerimiento(UrlRD) }); }
+        if (ValidCopiar.validate()) { ConfirmacionMsg("¿Está seguro de que desea copiar el Requerimiento de Desarrollo N°: " + $("#NoDocumento").val().toString() + " y crear nuevo (s) registro?", function () { return fn_CopiarRequerimiento(UrlRD); }); }
 
     });
 
@@ -1851,7 +1849,8 @@ $(document).ready(function () {
         $("#TxtNoVeces").data("kendoNumericTextBox").focus();
         $("#TxtNoVeces").data("kendoNumericTextBox").value(1);
 
-    })
+    });
+
 
     //#endregion fin copiar registro
 
@@ -1935,17 +1934,17 @@ $(document).ready(function () {
 
     // carga vista para el cambio de estado
     // 1. configurar vista.
-    Fn_VistaCambioEstado($("#vCambioEstado"))
+    Fn_VistaCambioEstado($("#vCambioEstado"));
      // 2. boton cambio de estado.
     $("#btnCambioEstado").click(function () {
         Fn_VistaCambioEstadoMostrar("RequerimientoDesarrollos", $("#Estado").val(), UrlRD + "/RequerimientoDesarrollos_CambiarEstado", "Sp_CambioEstado", getIdReq($("#grid").data("kendoGrid")));
-    })
+    });
 
     //#endregion cambio estado
 
     //#region vista consulta estados
 
-    Fn_VistaConsultaRequerimientoEstados(($("#vConsultaEstados")));
+    Fn_VistaConsultaRequerimientoEstados($("#vConsultaEstados"));
 
     //#endregion fin vista consulta estados
 
@@ -2097,31 +2096,31 @@ function HabilitaObje(e, ToF){
 
 fPermisos = function (datos) {
     Permisos = datos;
-}
+};
 
-fn_SNEditar = function ( valor) {
-   return Permisos.SNEditar ? valor : false;
-}
+fn_SNEditar = function (valor) {
+    return Permisos.SNEditar ? valor : false;
+};
 
 fn_SNAgregar = function (valor) {
     return Permisos.SNAgregar ? valor : false;
-}
+};
 
 fn_SNBorrar = function (valor) {
     return Permisos.SNBorrar ? valor : false;
-}
-
-fn_SNProcesar = function (valor) {
-   return Permisos.SNProcesar ? valor : false;
-}
-
-fn_SNCambiarEstados = function (valor) {
-   return Permisos.SNCambiarEstados ? valor : false;
-}
+};
 
 fn_SNProcesar = function (valor) {
     return Permisos.SNProcesar ? valor : false;
-}
+};
+
+fn_SNCambiarEstados = function (valor) {
+    return Permisos.SNCambiarEstados ? valor : false;
+};
+
+fn_SNProcesar = function (valor) {
+    return Permisos.SNProcesar ? valor : false;
+};
 
 function LimpiaMarcaCelda () {
     $(".k-dirty-cell", $("#grid")).removeClass("k-dirty-cell");
@@ -2138,7 +2137,7 @@ var DSUnidadMedida = function (filtro) {
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
-                    async:false,
+                    async: false,
                     url: UrlUniMed + "/GetUnidadesMedidasByFiltro",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(filtro),
@@ -2150,7 +2149,7 @@ var DSUnidadMedida = function (filtro) {
             }
         }
     });
-}
+};
 
 function CmbNuevoItem(widgetId, value) {
     var widget = $("#" + widgetId).getKendoComboBox();
@@ -2166,7 +2165,7 @@ function CmbNuevoItem(widgetId, value) {
 
         dataSource.sync();
     });
-};
+}
 
 
 //#endregion Fin metods Generales
