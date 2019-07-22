@@ -8,25 +8,6 @@ var fn_VistaEstacionColor = function () {
 
     TextBoxEnable($("#TxtOpcSelec"), false);
     KdoButton($("#btnAddMCE"), "check", "Agregar");
-
-    $("#TxtOpcSelec").val($("#TxtOpcSelec").data("name"));
-
-    let UrlTT = TSM_Web_APi + "TiposTintas";
-    Kendo_CmbFiltrarGrid($("#CmbTipoTinta_color"), UrlTT, "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
-
-    let UrlST = TSM_Web_APi + "SistemasTintas";
-    Kendo_CmbFiltrarGrid($("#CmbSistema_color"), UrlST, "Nombre", "IdSistemasTinta", "Seleccione un sitema tintas ....", "", "CmbTipoTinta_color");
-
-    let UrlSed = TSM_Web_APi + "Sedas";
-    Kendo_CmbFiltrarGrid($("#CmbSedas_color"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
-
-
-    idBra = $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "");
-    Te = $("#TxtOpcSelec").data("TipoEstacion");
-    setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
-    estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
-    EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
-
     $("#NumPasadas").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -48,6 +29,56 @@ var fn_VistaEstacionColor = function () {
         step: 50
 
     });
+
+
+    $("#TxtOpcSelec").val($("#TxtOpcSelec").data("name"));
+
+    let UrlTT = TSM_Web_APi + "TiposTintas";
+    Kendo_CmbFiltrarGrid($("#CmbTipoTinta_color"), UrlTT, "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
+
+    let UrlST = TSM_Web_APi + "SistemasTintas";
+    Kendo_CmbFiltrarGrid($("#CmbSistema_color"), UrlST, "Nombre", "IdSistemasTinta", "Seleccione un sitema tintas ....", "", "CmbTipoTinta_color");
+
+    let UrlSed = TSM_Web_APi + "Sedas";
+    Kendo_CmbFiltrarGrid($("#CmbSedas_color"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
+
+
+    idBra = $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit","");
+
+    Te = $("#TxtOpcSelec").data("TipoEstacion");
+    setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
+    estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
+    EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
+
+    if (setFor !== null) {
+        switch (Te) {
+            case "COLOR":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
+                break;
+            case "TECNICAS":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdTecnica", setFor.IdTecnica === undefined ? "" : setFor.IdTecnica );
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
+                break;
+            case "BASES":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdBase", setFor.IdBase === undefined ? "" : setFor.IdBase);
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
+                break;
+        }
+        $("#TxtFormulaSug").val(setFor.SugerenciaFormula);
+        //KdoCmbSetValue($("#CmbTipoTinta_color"), estaMarco[0].idt);
+        KdoCmbSetValue($("#CmbSistema_color"), setFor.IdSistemasTinta);
+    }
+
+    if (estaMarco !== null) {
+        $("#NumCapilar").data("kendoNumericTextBox").value(estaMarco.Capilar);
+        $("#NumPasadas").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
+        KdoCmbSetValue($("#CmbSedas_color"), estaMarco.IdSeda);
+    }
+
 
 
     let frmColor = $("#FrmGenEColor").kendoValidator({
@@ -89,7 +120,6 @@ var fn_VistaEstacionColor = function () {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         }
 
-        //ConfirmacionMsg("¿Esta seguro de guardar la información en la estación?", function () { return $("#MEstacionColores").modal('hide'); });
     });
 
 
@@ -215,6 +245,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            maq = fn_GetMaquinas();
             $("#MEstacionColor").modal('hide');
             RequestEndMsg(data, xType);
         },

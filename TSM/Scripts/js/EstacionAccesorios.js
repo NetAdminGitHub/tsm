@@ -53,6 +53,7 @@ let fn_GuardarEstacionAcce = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
+            maq = fn_GetMaquinas();
             $("#MEstacionAccesorios").modal('hide');
             RequestEndMsg(data, xType);
         },

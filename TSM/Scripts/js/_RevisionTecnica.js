@@ -385,6 +385,7 @@ let fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
             RequestEndMsg(data, "Delete");
             var a = stage.find("#TxtInfo" + xIdestacion);
             a.text("");
+            maq = fn_GetMaquinas();
             var b = stage.find("#brazo" + xIdestacion);
             b.IdSeteo = 0;
             b.IdTipoFormulacion = "";
