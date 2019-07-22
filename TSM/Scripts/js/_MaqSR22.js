@@ -457,9 +457,7 @@ var dropElemento = function (e, grid) {
     if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs) {
    
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
-        if ("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id) {
-          
-   
+        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {          
             // obtener el nombre de vista modal estacion
             ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
             // Obtener el JS
@@ -557,12 +555,15 @@ var dropElemento = function (e, grid) {
                         if (TipoEstacion === 'ACCESORIO') {
                             $("#TxtOpcSelecAcce").data("name",TxtSecName);
                             $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("txtEdit", ""));
+                            $("#TxtOpcSelecAcce").data("Modal", ModalEstacion);
+                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
 
                         } else {
                             $("#TxtOpcSelec").data("name",TxtSecName);
                             $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("txtEdit", ""));
+                            $("#TxtOpcSelec").data("Modal", ModalEstacion);
+                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
+        
                           
                         }
 
