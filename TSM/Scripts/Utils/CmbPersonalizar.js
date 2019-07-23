@@ -121,6 +121,7 @@ function generateModel(response, valueField) {
 
     var model = {};
     var fields = {};
+    var isDateField = {};
     for (var property in sampleDataItem) {
         if (property=== valueField) {
             model["id"] = property;
@@ -170,5 +171,20 @@ function generateModel(response, valueField) {
 
     return model;
 }
+
+var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+    e.kendoComboBox({
+        dataTextField: textField,
+        dataValueField: valueField,
+        autoWidth: true,
+        filter: "contains",
+        autoBind: false,
+        clearButton: givenOrDefault(clearButton, true),
+        placeholder: givenOrDefault(opcPlaceHolder, "Seleccione un valor ...."),
+        height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
+        cascadeFrom: givenOrDefault(parentCascade, ""),
+        dataSource: datos
+    });
+};
 
 

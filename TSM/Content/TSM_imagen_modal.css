@@ -10,7 +10,7 @@
     }
 
 /* The Modal (background) */
-.modal {
+.modal-img {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 2; /* Sit on top */
@@ -25,7 +25,7 @@
 }
 
 /* Modal Content (Image) */
-.modal-content {
+.modal-content-img {
     margin: auto;
     display: block;
     width: 80%;
@@ -45,7 +45,7 @@
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content, #caption {
+.modal-content-img, #caption {
     animation-name: zoom;
     animation-duration: 0.6s;
 }
@@ -61,7 +61,7 @@
 }
 
 /* The Close Button */
-.close {
+.close-img {
     position: absolute;
     top: 70px;
     right: 45px;
@@ -71,8 +71,8 @@
     transition: 0.3s;
 }
 
-    .close:hover,
-    .close:focus {
+    .close-img:hover,
+    .close-img:focus {
         color: #bbb;
         text-decoration: none;
         cursor: pointer;
@@ -80,7 +80,7 @@
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
-    .modal-content {
+    .modal-content-img {
         width: 100%;
     }
 }

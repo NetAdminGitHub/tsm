@@ -9,82 +9,20 @@
     <script src="~/Scripts/js/Solicitudes.js"></script>
 }
 <div class="form-row">
+    @*<div class="col-lg-2">
+        <div class="card">
+            <div class="card-body">
+
+                @Html.Partial("_SolicitudOpciones")
+
+            </div>
+        </div>
+
+    </div>*@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <div class="form-row" id="PanServicios">
-                    @*<div class="col-lg-4">
-                            <div class="card" style="height: 100%;">
-                                <div class="card-body">
-                                    <div class="form-group col-lg-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12 text-center">
-                                                <i class="TS-icon-PR3" style="font-size:150px;"></i>
-                                                <p></p><h3>CAMISETA MANGA CORTA</h3><p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-row">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card" style="height: 100%;">
-                                <div class="card-body">
-                                    <div class="form-group col-lg-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12 text-center">
-                                                <i class="TS-icon-PR3" style="font-size:150px;"></i>
-                                                <p></p><h3>CAMISETA MANGA CORTA</h3><p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-row">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card" style="height: 100%;">
-                                <div class="card-body">
-                                    <div class="form-group col-lg-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12 text-center">
-                                                <i class="TS-icon-PR3" style="font-size:150px;"></i>
-                                                <p></p><h3>CAMISETA MANGA CORTA</h3><p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-row">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card" style="height: 100%;">
-                                <div class="card-body">
-                                    <div class="form-group col-lg-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12 text-center">
-                                                <i class="TS-icon-PR3" style="font-size:150px;"></i>
-                                                <p></p><h3>CAMISETA MANGA CORTA</h3><p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-row">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
             </div>
         </div>
@@ -92,7 +30,7 @@
 </div>
 <!-- Modal HTML -->
 <div id="CSolicitudes" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="CSolicitudesModalLabel"></h3>
@@ -104,4 +42,83 @@
         </div>
     </div>
 </div>
+
+<!-- Modal HTML -->
+<form id="FrmModalClieEje" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div id="ModalClieEje" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="ModalClieEjeLabel"></h3>
+                    <button type="button" class="close" data-dismiss="modal" id="btnCloseCJ" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbCliSol">Cliente</label>
+                                <input name="CmbCliSol" id="CmbCliSol" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row" id="divContacto">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbContactoSol">Contacto</label>
+                                <input name="CmbContactoSol" id="CmbContactoSol" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbMarcaSol">Marca</label>
+                                <input name="CmbMarcaSol" id="CmbMarcaSol" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class=" k-primary" id="btnAClieEje">Iniciar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form id="FrmModalClieCont" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div id="ModalClieCont" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="ModalClieEjeLabel"></h3>
+                    <button type="button" class="close" data-dismiss="modal" id="btnCloseCC" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbCliCont">Cliente</label>
+                                <input name="CmbCliCont" id="CmbCliCont" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row" id="divEje">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbEjecSol">Ejecutivo(a) de cuentas</label>
+                                <input name="CmbEjecSol" id="CmbEjecSol" required validationMessage="Requerido" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="CmbMarcaCont">Marca</label>
+                                <input name="CmbMarcaCont" id="CmbMarcaCont" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class=" k-primary" id="btnAClieCont">Inciar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 
