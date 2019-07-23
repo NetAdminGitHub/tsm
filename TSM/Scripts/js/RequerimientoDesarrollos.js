@@ -917,7 +917,7 @@ $(document).ready(function () {
     //#region CRUD manejo de requerimiento de Desarrollo
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
-        if (EsCambioReg == false) {
+        if (EsCambioReg === false) {
             //limpiar mensage de validación
             ValidRD.hideMessages();
             //ValidArt.hideMessages();
@@ -1088,7 +1088,7 @@ $(document).ready(function () {
 
                 });
 
-                if (respuesta.length == 0) {
+                if (respuesta.length === 0) {
                 
                     HabilitaFormObje(false);
                     $("#Copiar").data("kendoButton").enable(false);
@@ -1182,7 +1182,7 @@ $(document).ready(function () {
                 //inserto registro en la grilla y obligo aque el evento change no haga su funcion de leer
 
                 EsCambioReg = true;
-                if (XType == "Post") {
+                if (XType === "Post") {
                     selectedRows = [];
                     $("#grid").data("kendoGrid").dataSource.insert(0, {
                         IdRequerimiento: data[0].IdRequerimiento,
@@ -1520,7 +1520,7 @@ $(document).ready(function () {
     $("#CmbBase").data("kendoComboBox").bind("change", function (e) {
         if ($("#IdRequerimiento").val() > 0) {
             event.preventDefault();
-            if (ExecActBase == true) {
+            if (ExecActBase === true) {
                 if (ValidRD.validate()) {
                     if (ActualizarReq() === false) {
                         $("#CmbBase").data("kendoComboBox").value(getIdBase($("#grid").data("kendoGrid")));
@@ -1654,7 +1654,7 @@ $(document).ready(function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type == "destroy") { getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val());}
+            if (e.type === "destroy") { getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val());}
            
         },
         error: Grid_error,
@@ -2091,7 +2091,7 @@ function HabilitaFormObje(ToF) {
 }
 
 function HabilitaObje(e, ToF){
-    ToF == true ? e.removeClass("k-state-disabled") : e.addClass("k-state-disabled");
+    ToF === true ? e.removeClass("k-state-disabled") : e.addClass("k-state-disabled");
 }
 
 fPermisos = function (datos) {
