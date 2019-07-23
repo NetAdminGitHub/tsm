@@ -1408,10 +1408,10 @@ $(document).ready(function () {
 
     function Consultar(IdServicio, IdCliente) {
 
-        vIdS = IdServicio;
-        vIdCli = IdCliente;
+        vIdS =  Number(IdServicio);
+        vIdCli = Number(IdCliente);
 
-       
+
         $("#Copiar").data("kendoButton").enable(false);
         $("#btnCambioEstado").data("kendoButton").enable(false);
         $("#myBtnAdjunto").data("kendoButton").enable(false);
@@ -1428,11 +1428,11 @@ $(document).ready(function () {
         vIdS === 2 ? $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("15")) : $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("16"));
         // llenar grid principal de consulta
         $("#grid").data("kendoGrid").dataSource.read();
-       
+
         $("#Estado").val() === "EDICION" ? Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         $("#Estado").val() === "EDICION" ? Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
 
-     
+
         // contraer barra  Dimensiones y Tecnicas
         Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRDimension"));
         Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRReqDesTec"));
@@ -1442,7 +1442,7 @@ $(document).ready(function () {
         vIdS === 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
         vIdS === 1 ? OcultarCamposReq(true) : OcultarCamposReq(false);
 
-      
+
 
         //construye y muestra la seccion carrousel de imagenes.
         Fn_LeerImagenes($("#Mycarousel"), "", null);
@@ -1454,7 +1454,7 @@ $(document).ready(function () {
             HabilitaFormObje(false);
         }
 
-       
+
 
     }
 
