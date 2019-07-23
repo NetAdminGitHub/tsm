@@ -1408,8 +1408,8 @@ $(document).ready(function () {
 
     function Consultar(IdServicio, IdCliente) {
 
-        vIdS = IdServicio;
-        vIdCli = IdCliente;
+        vIdS =  Number(IdServicio);
+        vIdCli = Number(IdCliente);
 
 
         $("#Copiar").data("kendoButton").enable(false);
@@ -1425,7 +1425,7 @@ $(document).ready(function () {
         CargarEtapasProceso(0);
         $("#IdCategoriaPrenda").data("kendoMultiSelect").value("");
         $("#IdSistemaTinta").data("kendoMultiSelect").value("");
-        vIdS == 2 ? $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("15")) : $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("16"));
+        vIdS === 2 ? $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("15")) : $('[name="CmbIdUnidadVelocidad"]').data("kendoComboBox").setDataSource(DSUnidadMedida("16"));
         // llenar grid principal de consulta
         $("#grid").data("kendoGrid").dataSource.read();
 
@@ -1438,16 +1438,16 @@ $(document).ready(function () {
         Fn_ContraerPanelBar($("#BarPanel"), $("#BPGRReqDesTec"));
 
         // habilitar panel de acuerdo al servicio.
-        vIdS == 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), false);
-        vIdS == 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
-        vIdS == 1 ? OcultarCamposReq(true) : OcultarCamposReq(false);
+        vIdS === 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRDimension"), false);
+        vIdS === 1 ? Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), true) : Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
+        vIdS === 1 ? OcultarCamposReq(true) : OcultarCamposReq(false);
 
 
 
         //construye y muestra la seccion carrousel de imagenes.
         Fn_LeerImagenes($("#Mycarousel"), "", null);
 
-        vIdS != 0 && vIdCli != 0 ? $("#Nuevo").data("kendoButton").enable(fn_SNAgregar(true)) : $("#Nuevo").data("kendoButton").enable(false);
+        vIdS !== 0 && vIdCli !== 0 ? $("#Nuevo").data("kendoButton").enable(fn_SNAgregar(true)) : $("#Nuevo").data("kendoButton").enable(false);
 
         if ($("#grid").data("kendoGrid").dataSource.total() === 0) {
             //deshabilitar objetos
