@@ -14,6 +14,10 @@ $(document).ready(function () {
     // carga carrousel de imagenes 
     var DivCarousel = $("#Div_Carousel");
     DivCarousel.append(Fn_Carouselcontent());
+    $("#idcloseMod").click(function () {
+        $("#myModal").modal('toggle');
+        $("#myModal").modal('hide');
+    });
     CargarEtapasProceso(0);
     KdoButton($("#Nuevo"), "edit", "Nuevo registro");
     KdoButton($("#Copiar"), "copy", "Copiar registro");
@@ -166,7 +170,7 @@ $(document).ready(function () {
         {
             rules: {
                 Mayor0: function (input) {
-                    if (input.is("[name='CntPiezas']")) {
+                    if (input.is("[name='CntPiezas']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#CntPiezas").data("kendoNumericTextBox").value() > 0;
                     }
                     return true;
@@ -183,12 +187,7 @@ $(document).ready(function () {
                     }
                     return true;
                 },
-                MsgCmbPro: function (input) {
-                    if (input.is("[name='IdPrograma']")) {
-                        return $("#IdPrograma").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+      
                 MsgCmbIdPrograma: function (input) {
                     if (input.is("[name='IdPrograma']")) {
                         return $("#IdPrograma").data("kendoComboBox").selectedIndex >= 0;
@@ -196,7 +195,7 @@ $(document).ready(function () {
                     return true;
                 },
                 MsgCmbUbicacion: function (input) {
-                    if (input.is("[name='IdUbicacion']")) {
+                    if (input.is("[name='IdUbicacion']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#IdUbicacion").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
@@ -220,12 +219,11 @@ $(document).ready(function () {
                     return true;
                 },
                 MsgCmbIdUnidadMedidaCantidad: function (input) {
-                    if (input.is("[name='CmbIdUnidadMedidaCantidad']")) {
+                    if (input.is("[name='CmbIdUnidadMedidaCantidad']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 },
-
                 CantidadColoresMsg: function (input) {
                     if (input.is("[name='CantidadColores']") && Kendo_CmbGetvalue($("#IdServicio")) === "1") {
                         return $("#CantidadColores").data("kendoNumericTextBox").value() > 0;
@@ -239,25 +237,25 @@ $(document).ready(function () {
                     return true;
                 },
                 ColorRuler: function (input) {
-                    if (input.is("[name='Color']")) {
-                        return input.val().length <= 200;
+                    if (input.is("[name='Color']") && KdoCmbGetValue($("#IdServicio")) === "1") {
+                        return input.val().length > 0 &&  input.val().length <= 200;
                     }
                     return true;
                 },
                 MsgIdCategoriaConfeccion: function (input) {
-                    if (input.is("[name='IdCategoriaConfeccion']")) {
+                    if (input.is("[name='IdCategoriaConfeccion']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#IdCategoriaConfeccion").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 },
                 MsgIdConstruccionTela: function (input) {
-                    if (input.is("[name='IdConstruccionTela']")) {
+                    if (input.is("[name='IdConstruccionTela']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#IdConstruccionTela").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 },
                 MsgIdComposicionTela: function (input) {
-                    if (input.is("[name='IdComposicionTela']")) {
+                    if (input.is("[name='IdComposicionTela']") && KdoCmbGetValue($("#IdServicio")) === "1") {
                         return $("#IdComposicionTela").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
@@ -306,7 +304,6 @@ $(document).ready(function () {
                 MsgLongitud: "Debe ser mayor a 0",
                 InstruccionesEspecialesRuler: "Longitud máxima del campo es 2000",
                 required: "Requerido",
-                MsgCmbPro: "Requerido",
                 MsgCmbIdPrograma: "Requerido",
                 MsgCmbUbicacion: "Requerido",
                 MsgCmbIdUnidadVelocidad: "Requerido",
@@ -1131,9 +1128,9 @@ $(document).ready(function () {
             data: JSON.stringify({
                 IdRequerimiento: $("#IdRequerimiento").val(),
                 IdCliente: $("#IdCliente").val(),
-                IdPrograma: $("#IdPrograma").val(),
-                IdServicio: $("#IdServicio").val(),
-                IdUbicacion: $("#IdUbicacion").val(),
+                IdPrograma: KdoCmbGetValue($("#IdPrograma")),
+                IdServicio: KdoCmbGetValue($("#IdServicio")),
+                IdUbicacion: KdoCmbGetValue($("#IdUbicacion")),
                 NoDocumento: $("#NoDocumento").val(),
                 UbicacionHorizontal: $("#UbicacionHor").val(),
                 UbicacionVertical: $("#UbicacionVer").val(),
@@ -1150,11 +1147,11 @@ $(document).ready(function () {
                 VelocidadMaquina:  $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
                 IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
-                IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
-                IdBase: $("#CmbBase").data("kendoComboBox").value(),
-                IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
-                IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
-                IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
+                IdUnidadMedidaCantidad: KdoCmbGetValue($("#CmbIdUnidadMedidaCantidad")),
+                IdBase: KdoCmbGetValue($("#CmbBase")),
+                IdCategoriaConfeccion: KdoCmbGetValue($("#IdCategoriaConfeccion")),
+                IdConstruccionTela: KdoCmbGetValue($("#IdConstruccionTela")),
+                IdComposicionTela: KdoCmbGetValue($("#IdComposicionTela")),
                 Color: $("#Color").val(),
                 //Entidad prendas
                 IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
@@ -1271,10 +1268,10 @@ $(document).ready(function () {
             async: false,
             data: JSON.stringify({
                 IdRequerimiento: $("#IdRequerimiento").val(),
-                IdCliente: $("#IdCliente").val(),
-                IdPrograma: $("#IdPrograma").val(),
-                IdServicio: $("#IdServicio").val(),
-                IdUbicacion: $("#IdUbicacion").val(),
+                IdCliente: KdoCmbGetValue($("#IdCliente")),
+                IdPrograma: KdoCmbGetValue($("#IdPrograma")),
+                IdServicio: KdoCmbGetValue($("#IdServicio")),
+                IdUbicacion: KdoCmbGetValue($("#IdUbicacion")),
                 NoDocumento: $("#NoDocumento").val(),
                 UbicacionHorizontal: $("#UbicacionHor").val(),
                 UbicacionVertical: $("#UbicacionVer").val(),
@@ -1291,11 +1288,11 @@ $(document).ready(function () {
                 VelocidadMaquina: $("#TxtVelocidadMaquina").data("kendoNumericTextBox").value(),
                 IdUnidadVelocidad: KdoCmbGetValue($("#CmbIdUnidadVelocidad")),
                 DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
-                IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
-                IdBase: $("#CmbBase").data("kendoComboBox").value(),
-                IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
-                IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
-                IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
+                IdUnidadMedidaCantidad: KdoCmbGetValue($("#CmbIdUnidadMedidaCantidad")),
+                IdBase: KdoCmbGetValue($("#CmbBase")),
+                IdCategoriaConfeccion: KdoCmbGetValue($("#IdCategoriaConfeccion")),
+                IdConstruccionTela: KdoCmbGetValue($("#IdConstruccionTela")),
+                IdComposicionTela: KdoCmbGetValue($("#IdComposicionTela")),
                 Color: $("#Color").val(),
                 //Entidad prendas
                 IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
@@ -1466,6 +1463,26 @@ $(document).ready(function () {
             //el servisio de Serigrafia
             $('#Row4RD').prop('hidden', false);
             $('#Row5RD').prop('hidden', false);
+            KdoNumericShow($("#CntPiezas"));
+            $('[for="CntPiezas"]').prop('hidden', false);
+            $("[for='CmbIdUnidadMedidaCantidad']").prop('hidden', false);
+            KdoCmbShow($("#CmbIdUnidadMedidaCantidad"));
+            $("[for='IdComposicionTela']").prop('hidden', false);
+            KdoCmbShow($("#IdComposicionTela"));
+            $("[for='IdCategoriaConfeccion']").prop('hidden', false);
+            KdoCmbShow($("#IdCategoriaConfeccion"));
+            $("[for='IdConstruccionTela']").prop('hidden', false);
+            KdoCmbShow($("#IdConstruccionTela"));
+            $("[for='Color']").prop('hidden', false);
+            TextBoxHidden($("#Color"), false);
+            $("[for='IdUbicacion']").prop('hidden', false);
+            KdoCmbShow($("#IdUbicacion"));
+            $("[for='IdSistemaTinta']").prop('hidden', false);
+            KdoMultiSelectShow($("#IdSistemaTinta"));
+            $("#colND").removeClass().addClass("form-group col-md-6 col-lg-3");
+            $("#colFecha").removeClass().addClass("form-group col-md-6 col-lg-3");
+            $("#colPro").removeClass().addClass("form-group col-md-6 col-lg-3");
+            $("#colTp").removeClass().addClass("form-group col-md-6 col-lg-3");
 
         } else {
             // ocultar fila donde estan los campos, tallas,cantidad de colores, cantidad de tallas,
@@ -1473,6 +1490,26 @@ $(document).ready(function () {
             //el servisio de Serigrafia
             $('#Row4RD').prop('hidden', true);
             $('#Row5RD').prop('hidden', true);
+            KdoNumericHide($("#CntPiezas"));
+            $("[for='CntPiezas']").prop('hidden', true);
+            $("[for='CmbIdUnidadMedidaCantidad']").prop('hidden', true);
+            KdoCmbHide($("#CmbIdUnidadMedidaCantidad"));
+            $("[for='IdComposicionTela']").prop('hidden', true);
+            KdoCmbHide($("#IdComposicionTela"));
+            $("[for='IdCategoriaConfeccion']").prop('hidden', true);
+            KdoCmbHide($("#IdCategoriaConfeccion"));
+            $("[for='IdConstruccionTela']").prop('hidden', true);
+            KdoCmbHide($("#IdConstruccionTela"));
+            $("[for='Color']").prop('hidden', true);
+            TextBoxHidden($("#Color"), true);
+            $("[for='IdUbicacion']").prop('hidden', true);
+            KdoCmbHide($("#IdUbicacion"));
+            $("[for='IdSistemaTinta']").prop('hidden', true);
+            KdoMultiSelectHide($("#IdSistemaTinta"));
+            $("#colND").removeClass().addClass("form-group col-md-6 col-lg-4");
+            $("#colFecha").removeClass().addClass("form-group col-md-6 col-lg-4");
+            $("#colPro").removeClass().addClass("form-group col-md-6 col-lg-4");
+            $("#colTp").removeClass().addClass("form-group col-md-6 col-lg-12");
         }
         
     }
