@@ -22,15 +22,18 @@ var fn_FiltrarJsonResult = function (Data, Keyfilter) {
     } else {
         return "";
     }
-}
+};
+
 /**
  * Devuelve fecha y hora actual.
+ * @returns {date} retorna fecha
  */
 function Fhoy() {
     return kendo.toString(kendo.parseDate(new Date()), 's');
 }
 /**
  * Devuelve la fecha del fin del mes
+ * @returns {Date} retorna fecha
  */
 function FechaFinMes() {
     var dt = new Date(); 
@@ -38,6 +41,7 @@ function FechaFinMes() {
 }
 /**
  * Devuelve la fecha del Inicio del mes
+ * @returns {Date} retorna fecha
  */
 function FechaIniMes() {
     var dt = new Date();
@@ -116,11 +120,15 @@ function ErrorMsg(e) {
 
 var windowConfirmar;
 var ResultadoYes;
-function ConfirmacionMsg(Mensaje , funcion) {
+function ConfirmacionMsg(Mensaje , funcion,functionNo) {
 
+    if (functionNo === undefined || functionNo === "") {
+        functionNo = function () { return true; };
+    }
     ResultadoYes = function () { return funcion(); };
+    ResultadoNO = function () { return functionNo(); };
 
-    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button' id='noButton'onclick='windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
+    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
     windowConfirmar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -144,6 +152,7 @@ function MostrarTab(e, index) {
  * funcion de redondeo
  * @param {number} Valor valor a redondear.
  * @param {number} Decimales precision, cantidad decimales aredondear
+ * @returns {number} retiorna el valor
  */
 function fn_RoundToUp(Valor, Decimales) {
     var ValorSignificativo;
@@ -394,7 +403,7 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
         if (DataSource.length === 0) {
             lista.append(
                 '<div class="carousel-item col-md-6 col-lg-6 active">'
-                + '<img class="img-fluid mx-auto d-block" src="' + srcDefault + '" >'
+                + '<img class="img-fluid mx-auto d-block" id="Img_N0" src="' + srcDefault + '" onclick="fn_click_Imagen(this)">'
                 + '</div > '
             );
         } else {
@@ -402,14 +411,14 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
@@ -431,6 +440,7 @@ var imgError = function (image) {
 
 /**
  * VISTA CARROUSEL, hTML CARROUSEL.
+ * @returns {string} retorna una cadena de carateres
  */
 var Fn_Carouselcontent = function () {
 
@@ -448,11 +458,34 @@ var Fn_Carouselcontent = function () {
         '</a>' +
         '</div>' +
         '</div>' +
+        '</div>' +
+        '<div class="form-row">' +
+        '<div id="myModal" class="modal-img">' +
+        '<span class="close-img" id = "idcloseMod" >&times;</span >' +
+        '<img class="modal-content-img" id="img01">' +
+        '<div id="caption"></div>' +
+        '</div>' +
         '</div>';
 
     return VarCarousel;
 };
 
+var fn_Ver_Img_Modal = function (idcolImg) {
+    let modal = document.getElementById("myModal");
+    let img = document.getElementById(idcolImg);
+    let modalImg = document.getElementById("img01");
+    let captionText = document.getElementById("caption");
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    captionText.innerHTML = img.alt;
+    let span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    };
+};
+var fn_click_Imagen = function (elemento) {
+    fn_Ver_Img_Modal(elemento.id);
+};
 /**
  * 
  * @param {any} e objeto o etiqueta  <div> para el cambio de estado
@@ -474,7 +507,7 @@ var Fn_VistaAsignarUsuario = function (e) {
                 content: result,
                 visible: false,
                 actions: [
-                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_CambiarEtapa, },
+                    { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_CambiarEtapa },
                     { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
                 ],
                 close: onCloseCambioEstado
@@ -620,7 +653,7 @@ var KdoDatePikerEnable = function (InputElem, enable) {
  */
 var KdoNumerictextboxEnable = function (InputElem, enable) {
     var numerictextbox = InputElem.data("kendoNumericTextBox");
-    numerictextbox .enable(enable);
+    numerictextbox.enable(enable);
 };
 
 /**
@@ -629,7 +662,7 @@ var KdoNumerictextboxEnable = function (InputElem, enable) {
  * @param {boolean} enable true o false
  */
 var KdoCheckBoxEnable = function (InputElem, enable) {
-    enable === true ? InputElem.prop("disabled", false) : InputElem.prop("disabled", true);
+    InputElem.prop("disabled", !enable);
 };
 
 /**
@@ -639,7 +672,7 @@ var KdoCheckBoxEnable = function (InputElem, enable) {
  */
 
 var TextBoxEnable = function (InputElem, enable) {
-    enable === true ? InputElem.prop("disabled", false) : InputElem.prop("disabled", true);
+    InputElem.prop("disabled", !enable);
 };
 
 /**
@@ -649,7 +682,17 @@ var TextBoxEnable = function (InputElem, enable) {
  */
 
 var TextBoxReadOnly = function (InputElem, enable) {
-    enable === true ? InputElem.prop("readonly", false) : InputElem.prop("readonly", true);
+    InputElem.prop("readonly", !enable);
+};
+
+/**
+ * meutsra u Oculta campo Text Box
+ * @param {HTMLInputElement} InputElem elemento div que contiene la funcion Text Box
+ * @param {boolean} enable true o false
+ */
+
+var TextBoxHidden = function (InputElem, enable) {
+    InputElem.prop("hidden",enable);
 };
 
 /**
@@ -699,6 +742,7 @@ var KdoShowCampoPopup = function (container, campo) {
 /**
  * devuelve el valor del kendo combo box
  * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ * @returns {string} string
  */
 var KdoCmbGetValue = function (InputElem) {
     var combobox = InputElem.data("kendoComboBox");
@@ -710,6 +754,7 @@ var KdoCmbGetValue = function (InputElem) {
 /**
  * devuelve el Texto del kendo combo box
  * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ * @returns {string} string
  */
 var KdoCmbGetText = function (InputElem) {
     var combobox = InputElem.data("kendoComboBox");
@@ -735,6 +780,67 @@ var KdoCmbFocus = function (InputElem) {
     InputElem.data("kendoComboBox").input.focus().select();
 };
 
+/**
+ *  oculta campo kendo numerico
+ * @param {HTMLInputElement} InputElem recibe el elemento numeric
+ */
+var KdoNumericHide = function (InputElem) {
+    InputElem.data("kendoNumericTextBox").wrapper.hide();
+};
+
+/**
+ *  muestra campo kendo numerico
+ * @param {HTMLInputElement} InputElem recibe el elemento numeric
+ */
+var KdoNumericShow = function (InputElem) {
+    InputElem.data("kendoNumericTextBox").wrapper.show();
+};
+/**
+ * coloca un valor en el campo numerico
+ * @param {any} InputElem recibe el elemento numerico
+ * @param {any} value el valor a colocar en el campo
+ */
+var kdoNumericSetValue = function (InputElem,value) {
+    InputElem.data("kendoNumericTextBox").value(value);
+};
+/**
+ * obtiene el valor de un campo numerico
+ * @param {any} InputElem recibe el elemento numerico
+ * @returns {numeric} retorna el valor numerico
+ */
+var kdoNumericGetValue = function (InputElem) {
+    return InputElem.data("kendoNumericTextBox").value();
+};
+
+/**
+ * oculta el campo combobox en la vista
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoCmbHide = function (InputElem) {
+    InputElem.data("kendoComboBox").wrapper.hide();
+};
+/**
+ * muestra el elemento combo box en la vista
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoCmbShow = function (InputElem) {
+    InputElem.data("kendoComboBox").wrapper.show();
+};
+
+/**
+ * oculta el campo multiselect en la vista
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoMultiSelectHide = function (InputElem) {
+    InputElem.data("kendoMultiSelect").wrapper.hide();
+};
+/**
+ * muestra el campo multiselect en la vista
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ */
+var KdoMultiSelectShow = function (InputElem) {
+    InputElem.data("kendoMultiSelect").wrapper.show();
+};
 var opcionesFormaSmartWizard = {
     Defecto: "default",
     Flechas: "arrows",
@@ -794,7 +900,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
         let vista = anchorObject.attr("vista");
         if (idEtapaProceso != undefined)
             idEtapaProceso = etapa;
-        window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa)
+        window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa);
 
         if ($("#vistaParcial" + etapa).children().length == 0) {
             $.ajax({
@@ -830,3 +936,21 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     $("#swbtnnext").removeClass("btn btn-secondary");
     $("#swbtnprev").removeClass("btn btn-secondary");
 };
+
+/**
+ * obtiene el valor del campo checkbox
+ * @param {HTMLInputElement} InputElem  recibe el elemento checkbox
+ * @returns {boolean} retorna el valor del ckeckbox
+ */
+var KdoChkGetValue = function (InputElem) {
+    return InputElem.is(':checked');
+};
+
+/**
+ * coloca un valor en el campo checkbox
+ * @param {HTMLInputElement} InputElem recibe el elemento checkbox
+ * @param {boolean} value valor que recibira el checkbox
+ */
+var kdoChkSetValue = function (InputElem,value) {
+    InputElem.prop('checked', value);
+}

@@ -427,6 +427,31 @@ function Grid_Combox(container, options) {
         });
 }
 
+/**
+ * Crea un ComboBox para ser utlizado en un editor de un Kendo.UI.Grid.
+ * @param {kendo.ui.Grid} container Grid contenedor de la funcion.
+ * @param {string[]} options Listado de opciones: 0 - dataValue, 1 - dataText, 2 - urlRead,  3 - placeHolder, 4- required, 5 - cascadeFrom, 6 - validationMessage
+ */
+function Grid_ComboxData(container, options) {
+    var required = givenOrDefault(options.values[4], "");
+    var Message = givenOrDefault(options.values[6], "");
+    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+    $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+        .appendTo(container)
+        .kendoComboBox({
+            valuePrimitive: true,
+            autoBind: true,
+            dataTextField: options.values[1],
+            dataValueField: options.values[0],
+            autoWidth: true,
+            cascadeFrom: givenOrDefault(options.values[5], ""),
+            placeholder: givenOrDefault(options.values[3], "Seleccione un valor ...."),
+            filter: "contains",
+            dataSource: options.values[2]
+            
+        });
+}
+
 function Grid_requestEnd(e) {
     if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) {
         let mensaje, tipo;
