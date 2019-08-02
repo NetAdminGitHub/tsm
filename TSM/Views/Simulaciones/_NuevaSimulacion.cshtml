@@ -1,53 +1,81 @@
-﻿
-    <div class="input-group">
-        <div style="width: 100%;">
-            <button type="button" id="btnRecalcular" name="btnRecalcular"></button>
-            <button type="button" id="btnSimulacion" name="btnSimulacion" data-toggle="modal" data-target="#NuevaSimulacion"></button>
-            <button type="button" id="btnCambioEstado" name="btnCambioEstado"></button>
-        </div>
+﻿@*data-toggle="modal" data-target="#NuevaSimulacion"*@
+<div class="input-group">
+    <div style="width: 100%;">
+        <button type="button" id="btnRecalcular" name="btnRecalcular"></button>
+        <button type="button" id="btnSimulacion" name="btnSimulacion"></button>
+        <button type="button" id="btnCambioEstado" name="btnCambioEstado"></button>
     </div>
-    <form id="FrmNuevoSim" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <div class="modal fade" id="NuevaSimulacion" role="document">
-            <div class="modal-dialog ">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Generar nueva simulación</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body" role="document">
-                        <div class="form-row">
-                            <div class="form-group col-lg-12">
-                                <label for="TxtNuevaCantidadPiezas">Cantidad de Piezas:</label>
-                                <input id="TxtNuevaCantidadPiezas" name="TxtNuevaCantidadPiezas" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <label for="TxtNoMontaje">Montajes:</label>
-                                <input id="TxtNoMontaje" name="TxtNoMontaje" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <label for="txtPersonalExtra">Personal Extra:</label>
-                                <input id="txtPersonalExtra" name="txtPersonalExtra" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <label for="txtCombos">Cantidad de Combos:</label>
-                                <input id="txtCombos" name="txtCombos" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <label for="txtVeloMaquina">Velocidad Maquina:</label>
-                                <input id="txtVeloMaquina" name="txtVeloMaquina" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <input id="chkUsarTermofijado" type="checkbox" name="chkUsarTermofijado" class="k-checkbox" />
-                                <label class="k-checkbox-label" for="chkUsarTermofijado">Utilizar Termofijado</label>
-                            </div>
+</div>
+<form id="FrmNuevoSim" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div class="modal fade" id="NuevaSimulacion" role="document">
+        <div class="modal-dialog modal-dialog-centered ">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Generar nueva simulación</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" role="document">
+                    <div class="form-row" id="row1">
+                        <div class="form-group col-lg-12" id="row1">
+                            <label for="CmbInsuImp">Insumo Impresion :</label>
+                            <input id="CmbInsuImp" name="CmbInsuImp" class="form-control" />
                         </div>
                     </div>
-                    <div class="modal-footer ">
-                        <button type="button"   class="k-primary" id="btnAceptar">Aceptar</button>
-                        <button type="button"  data-dismiss="modal" id="btnCerrar">Cancelar</button>
+                    <div class="form-row" id="row2">
+                        <div class="form-group col-lg-12">
+                            <label for="CmbInsuTrans">Insumo Transferencia</label>
+                            <input id="CmbInsuTrans" name="CmbInsuTrans" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row3">
+                        <div class="form-group col-lg-12">
+                            <label for="CmbInsuTinta">Insumo Tinta</label>
+                            <input id="CmbInsuTinta" name="CmbInsuTinta" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row4">
+                        <div class="form-group col-lg-12">
+                            <label for="TxtNuevaCantidadPiezas">Cantidad de Piezas:</label>
+                            <input id="TxtNuevaCantidadPiezas" name="TxtNuevaCantidadPiezas" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row5">
+                        <div class="form-group col-lg-12">
+                            <label for="TxtNoMontaje">Montajes:</label>
+                            <input id="TxtNoMontaje" name="TxtNoMontaje" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row6">
+                        <div class="form-group col-lg-12">
+                            <label for="txtPersonalExtra">Personal Extra:</label>
+                            <input id="txtPersonalExtra" name="txtPersonalExtra" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row7">
+                        <div class="form-group col-lg-12">
+                            <label for="txtCombos">Cantidad de Combos:</label>
+                            <input id="txtCombos" name="txtCombos" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row8">
+                        <div class="form-group col-lg-12">
+                            <label for="txtVeloMaquina">Velocidad Maquina:</label>
+                            <input id="txtVeloMaquina" name="txtVeloMaquina" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-row" id="row9">
+                        <div class="form-group col-lg-12">
+                            <input id="chkUsarTermofijado" type="checkbox" name="chkUsarTermofijado" class="k-checkbox" />
+                            <label class="k-checkbox-label" for="chkUsarTermofijado">Utilizar Termofijado</label>
+                        </div>
                     </div>
                 </div>
-            </div>
+                    <div class="modal-footer ">
+                        <button type="button" class="k-primary" id="btnAceptar">Aceptar</button>
+                        <button type="button" data-dismiss="modal" id="btnCerrar">Cancelar</button>
+                    </div>
+                </div>
         </div>
-    </form>
+    </div>
+</form>

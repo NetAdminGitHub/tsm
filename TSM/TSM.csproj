@@ -1269,6 +1269,8 @@
     <Content Include="Views\TiposSolicitudesDesarrollos\Index.cshtml" />
     <Content Include="Views\GestionOT\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitudDesarrolloMuestras.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatos.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatosSubli.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
