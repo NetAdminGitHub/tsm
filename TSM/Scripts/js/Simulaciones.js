@@ -1,33 +1,51 @@
 ﻿
+let VIdSer = 0;
+let VIdCliente = 0;
+let VIDSim = 0;
+let vIdModulo = 1;
+let S_IdA = 0;
+let DsInsuImpre;
+let DsInsumTrans;
+let DsInsuTin;
 var Permisos;
+let xIdCataInsuTrans;
+let xIdCataInsuImpre;
+let xIdCataConsu;
 
 $(document).ready(function () {
     //#region Inicializacion de variables
-    var VIdSer = 0;
-    var VIdCliente = 0;
-    var VIDSim = 0;
-    let vIdModulo = 1;
     Fn_VistaConsultaRequerimiento($('#vConsulta'));
-    KdoButton($("#btnRecalcular"),"gears","Recalcular simulación");
+    KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
-    KdoButton($("#btnCerrar"),"cancel","Cancelar");
-    KdoButton($("#btnAceptar"), "check","Aceptar");
-    KdoButton($("#btnCambioEstado"), "check","Cambio de estado");
+    KdoButton($("#btnCerrar"), "cancel", "Cancelar");
+    KdoButton($("#btnAceptar"), "check", "Aceptar");
+    KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
     Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlApiServ, "Nombre", "IdServicio", "Selecione un Servicio...");
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlApiClient, "Nombre", "IdCliente", "Selecione un Cliente...");
+
+    KdoComboBoxbyData($("#CmbInsuImp"), "[]", "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
+    KdoComboBoxbyData($("#CmbInsuTrans"), "[]", "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
+    KdoComboBoxbyData($("#CmbInsuTinta"), "[]", "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
+
+    DsInsuImpre = fn_Insum(2);
+    DsInsumTrans = fn_Insum(1);
+    DsInsuTin = fn_Insum(90);
+    KdoComboBoxbyData($("#CmbInsuImp"), DsInsuImpre, "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
+    KdoComboBoxbyData($("#CmbInsuTrans"), DsInsumTrans, "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
+    KdoComboBoxbyData($("#CmbInsuTinta"), DsInsuTin, "Nombre", "IdCatalogoInsumo", "Seleccione Insumo..");
 
     //Programacion del splitter
     $("#splitter").kendoSplitter({
         orientation: "vertical",
         panes: [
-            { collapsible: true, size: "50%", max: "95%", min: "20%", },
+            { collapsible: true, size: "50%", max: "95%", min: "20%" },
             { collapsible: true, size: "50%" }
         ]
 
     });
 
     $(window).resize(function () {
-        resizeSplitter($(window).height())
+        resizeSplitter($(window).height());
     });
 
     resizeSplitter = function (height) {
@@ -52,40 +70,54 @@ $(document).ready(function () {
         animation: { open: { effects: "fadeIn" } }
     });
 
-    //var splitterElement = $("#splitter"),
-    //    splitterObject = splitterElement.data("kendoSplitter");
-    //splitterElement.css({ height: "760px" });
-    //splitterObject.resize();
 
-    var ValidNuevoSim = $("#FrmNuevoSim").kendoValidator({
+    let ValidNuevoSim = $("#FrmNuevoSim").kendoValidator({
         rules: {
             Mayor0: function (input) {
-                if (input.is("[name='TxtNuevaCantidadPiezas']")) {
+                if (input.is("[name='TxtNuevaCantidadPiezas']") && VIdSer !== 2) {
                     return input.val() > 0;
                 }
                 return true;
             },
             NoMontajeMayor0: function (input) {
-                if (input.is("[name='TxtNoMontaje']")) {
+                if (input.is("[name='TxtNoMontaje']") && VIdSer !== 2) {
                     return input.val() > 0;
                 }
                 return true;
             },
             PersonalMayorIgual0: function (input) {
-                if (input.is("[name='txtPersonalExtra']")) {
+                if (input.is("[name='txtPersonalExtra']") && VIdSer !== 2) {
                     return input.val() >= 0;
                 }
                 return true;
             },
             CombosMayorIgual0: function (input) {
-                if (input.is("[name='txtCombos']")) {
+                if (input.is("[name='txtCombos']") && VIdSer !== 2) {
                     return input.val() > 0;
                 }
                 return true;
             },
             VeloMayorIgual0: function (input) {
-                if (input.is("[name='txtVeloMaquina']")) {
+                if (input.is("[name='txtVeloMaquina']") && VIdSer !== 2) {
                     return input.val() > 0;
+                }
+                return true;
+            },
+            MsgCmbInsuImp: function (input) {
+                if (input.is("[name='CmbInsuImp']") && VIdSer === 2 && kdoNumericGetValue($("#NumYardaImpHora")) !== null) {
+                    return $("#CmbInsuImp").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            },
+            MsgCmbInsuTrans: function (input) {
+                if (input.is("[name='CmbInsuTrans']") && VIdSer === 2 && kdoNumericGetValue($("#NumYardaTransHora")) !== null) {
+                    return $("#CmbInsuTrans").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            },
+            MsgCmbInsuTinta: function (input) {
+                if (input.is("[name='CmbInsuTinta']") && VIdSer === 2 && kdoNumericGetValue($("#NumConsumoTintas")) !== null) {
+                    return $("#CmbInsuTinta").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
             }
@@ -96,7 +128,10 @@ $(document).ready(function () {
             PersonalMayorIgual0: "La cantidad de personal extra no puede ser negativo.",
             CombosMayorIgual0: "La cantidad de combos no puede ser cero.",
             VeloMayorIgual0: "La velocidad de la maquina no puede ser cero",
-            required:"requerido"
+            MsgCmbInsuImp: "requerido",
+            MsgCmbInsuTrans: "requerido",
+            MsgCmbInsuTinta:"requerido",
+            required: "requerido"
         }
     }).data("kendoValidator");
 
@@ -113,6 +148,7 @@ $(document).ready(function () {
         decimals: 0,
         value: 0
     });
+
     $("#txtPersonalExtra").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -120,6 +156,7 @@ $(document).ready(function () {
         min: 0,
         value: 0
     });
+
     $("#txtCombos").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -127,6 +164,7 @@ $(document).ready(function () {
         min: 1,
         value: 1
     });
+
     $("#txtVeloMaquina").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -134,203 +172,28 @@ $(document).ready(function () {
         min: 1,
         value: 1
     });
-    $("#TxtCostoMP").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoMOD").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoPrimo").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoFabril").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoProduccion").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoOperacion").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoMPUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCostoMODUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCostoPrimoUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCostoFabrilUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCostoProduccionUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCostoOperacionUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#txtCostoTermofijado").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#txtCostoTermofijadoUnitario").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoTotal").kendoNumericTextBox({
-        format: "c",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
-    $("#TxtCostoUnitario").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals:4,
-        value: 0
-    });
-    $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
-        format: "P2",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtUtilidadDolares").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtPrecioCliente").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtPrecioTS").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtPrecioVenta").kendoNumericTextBox({
-        format: "c4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-    $("#TxtCantidadTecnicas").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
-    $("#TxtMontajes").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
-    $("#TxtCantidadPiezas").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
-    $("#txtNoPersonalExtra").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        min: 0,
-        value: 0
-    });
-    $("#txtCantidadColores").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        min: 0,
-        value: 0
-    });
-    $("#txtCantidadCombos").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        min: 0,
-        value: 0
-    });
-    $("#txtCantidadTallas").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        min: 0,
-        value: 0
-    });
-    $("#txtVelocidadMaquina").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        min: 0,
-        value: 0
+
+    let Url = $("#pvSimulacion").data("url");
+    $.ajax({
+        url: Url,
+        async: false,
+        type: 'GET',
+        contentType:"text/html; charset=utf-8",
+        success: function (resultado) {
+            $("#pvSimulacion").html(resultado);
+            fn_SetCamposSimulacion();
+            DesHabilitarCamposSim();
+        }
     });
 
-    $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
-    $("#txtTiempoProyecto").kendoNumericTextBox({
-        format: "n4",
-        restrictDecimals: false,
-        decimals: 4,
-        value: 0
-    });
-
-    DesHabilitarCamposSim();
     $("#btnSimulacion").data("kendoButton").enable(false);
     $("#btnRecalcular").data("kendoButton").enable(false);
     $("#btnCambioEstado").data("kendoButton").enable(false);
+
     //#endregion  fin Inicializacion de variABLES
 
     //#region PROGRAMACION GRID PRINCIPAL PARA SIMULACION
-    var DsRD = new kendo.data.DataSource({
+    let DsRD = new kendo.data.DataSource({
         dataType: "json",
         //CONFIGURACION DEL CRUD
         transport: {
@@ -404,7 +267,27 @@ $(document).ready(function () {
                     Nombre5: { type: "string" },
                     NoDocumento3: { type: "string" },
                     Tecnicas: { type: "string" },
-                    UsarTermofijado: { type: "boolean" }
+                    UsarTermofijado: { type: "boolean" },
+                    IdTipoOperacionSublimado: { type: "number" },
+                    OperacionTela: { type: "string" },
+                    AnchoDiseno: { type: "number" },
+                    IdUnidadDiseno: { type: "number" },
+                    UnidadMedAncho: { type: "string" },
+                    NombreVeloTransf: { type: "string" },
+                    VelocidadTransf: { type: "number" },
+                    UnidVeloTran: { type: "string" },
+                    IdCataInsuTrans: { type: "number" },
+                    NombreInsuTrans: { type: "string" },
+                    PerfilImpresion: { type: "string" },
+                    VelocidadImpre: { type: "number" },
+                    UniVeloImpre: { type: "string" },
+                    IdCataInsuImpre: { type: "number" },
+                    NombreInsuImpre: { type: "string" },
+                    Consumo: { type: "number" },
+                    IdUnidadConsumo: { type: "number" },
+                    UniConsumo: { type: "string" },
+                    IdCataConsu: { type: "number" },
+                    NombreCataConsumo: {type:"string"}
                 }
             }
         }
@@ -483,35 +366,12 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridSimulacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridSimulacion").data("kendoGrid"), DsRD);
 
-    function Fn_Consultar(IdServicio, IdCliente) {
-        VIdSer = IdServicio;
-        VIdCliente = IdCliente;
-        VIdCliente === 0 ? $("#gridSimulacion").data("kendoGrid").showColumn("Nombre4") : $("#gridSimulacion").data("kendoGrid").hideColumn("Nombre4");
-        // limpiar etapas del proceso
-        CargarEtapasProceso(0);
-
-        $("#gridSimulacion").data("kendoGrid").dataSource.data([]);
-        $("#gridSimulacion").data("kendoGrid").dataSource.read();
-        if ($("#gridSimulacion").data("kendoGrid").dataSource.total() === 0) {
-            $("#gridRentabilidad").data("kendoGrid").dataSource.data([]);
-            $("#gridSimuConsumo").data("kendoGrid").dataSource.data([]);
-            Grid_HabilitaToolbar($("#gridSimuConsumo"), false, false, false);
-            Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false);
-            LimpiarCamposSim();
-            $("#btnSimulacion").data("kendoButton").enable(false);
-            $("#btnRecalcular").data("kendoButton").enable(false);
-            $("#btnCambioEstado").data("kendoButton").enable(false);
-        } else {
-            $("#btnSimulacion").data("kendoButton").enable(fn_SNProcesar(true));
-            $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
-            $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
-        }
-    }
+   
 
     $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
-        event.preventDefault();
+        kendo.ui.progress($("#CmbIdServicio"), true);
         if (e.item) {
-            if (this.dataItem(e.item.index()).IdServicio == 1)
+            if (this.dataItem(e.item.index()).IdServicio === 1)
                 $("#gridSimuConsumo").data("kendoGrid").showColumn("Nombre1");
             else
                 $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre1");
@@ -524,14 +384,14 @@ $(document).ready(function () {
     });
 
     $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
-        var value = this.value();
+        kendo.ui.progress($("#CmbIdServicio"), true);
+        let value = this.value();
         if (value === "") {
             Fn_Consultar(0, Kendo_CmbGetvalue($("#CmbIdCliente")));
         }
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
-        event.preventDefault();
         if (e.item) {
             Fn_Consultar(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString());
         } else {
@@ -540,7 +400,7 @@ $(document).ready(function () {
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
-        var value = this.value();
+        let value = this.value();
         if (value === "") {
             Fn_Consultar(Kendo_CmbGetvalue($("#CmbIdServicio")), 0);
         }
@@ -554,10 +414,15 @@ $(document).ready(function () {
     $("#gridSimulacion").data("kendoGrid").bind("change", function (e) {
         getSimulacionGrid($("#gridSimulacion").data("kendoGrid"));
         VIDSim = getIdSimulacion($("#gridSimulacion").data("kendoGrid"));
+        S_IdA = getIdAD($("#gridSimulacion").data("kendoGrid"));
         $("#gridRentabilidad").data("kendoGrid").dataSource.data([]);
         $("#gridRentabilidad").data("kendoGrid").dataSource.read();
         $("#gridSimuConsumo").data("kendoGrid").dataSource.data([]);
         $("#gridSimuConsumo").data("kendoGrid").dataSource.read();
+        if (VIdSer === 2) {
+            $("#dbgPartesSub").data("kendoGrid").dataSource.data([]);
+            $("#dbgPartesSub").data("kendoGrid").dataSource.read();
+        }
         Grid_HabilitaToolbar($("#gridSimuConsumo"), Permisos.SNAgregar ? true : false, Permisos.SNEditar ? true : false, Permisos.SNBorrar ? true : false);
         Grid_HabilitaToolbar($("#gridRentabilidad"), Permisos.SNAgregar ? true : false, Permisos.SNEditar ? true : false, Permisos.SNBorrar ? true : false);
         $("#btnSimulacion").data("kendoButton").enable(fn_SNProcesar(true));
@@ -568,7 +433,7 @@ $(document).ready(function () {
     //#endregion FIN GRID PRINCIPAL
 
     //#region CRUD para el grid Rentabilidad
-    var DsRent = new kendo.data.DataSource({
+    let DsRent = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
@@ -599,37 +464,37 @@ $(document).ready(function () {
 
         requestEnd: function (e) {
             if (e.type === "update") {               
-                var Rentabilidad = 0;
-                var Utilidad = 0;
-                var PrecioCliente = 0;
-                var PrecioTS = 0;
-                var PrecioVenta = 0;
+                let Rentabilidad = 0;
+                let Utilidad = 0;
+                let PrecioCliente = 0;
+                let PrecioTS = 0;
+                let PrecioVenta = 0;
 
                 if (e.response[0].Aprobado) {
                     PrecioVenta = e.response[0].PrecioVenta;
                     Rentabilidad = e.response[0].Rentabilidad;
                     PrecioTS = e.response[0].PrecioTS;
                     PrecioCliente = e.response[0].PrecioCliente;
-                    Utilidad = e.response[0].Utilidad
+                    Utilidad = e.response[0].Utilidad;
                 } else {
                     PrecioVenta =0;
                     Rentabilidad =0;
                     PrecioTS = 0;
                     PrecioCliente =0;
-                    Utilidad =0
+                    Utilidad =0;
                 }
-                var uid = $("#gridSimulacion").data("kendoGrid").dataSource.get(e.response[0].IdSimulacion).uid;
+                let uid = $("#gridSimulacion").data("kendoGrid").dataSource.get(e.response[0].IdSimulacion).uid;
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("PrecioVenta", PrecioVenta);
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("PorcUtilidadConsiderada",Rentabilidad);
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("UtilidadDolares", Utilidad);
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("PrecioCliente", PrecioCliente);
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("PrecioTS",PrecioTS);
 
-                $("#TxtPrecioCliente").data("kendoNumericTextBox").value(PrecioCliente)
-                $("#TxtPrecioTS").data("kendoNumericTextBox").value(PrecioTS)
-                $("#TxtPrecioVenta").data("kendoNumericTextBox").value(PrecioVenta)
-                $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(Rentabilidad)
-                $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(Utilidad)
+                $("#TxtPrecioCliente").data("kendoNumericTextBox").value(PrecioCliente);
+                $("#TxtPrecioTS").data("kendoNumericTextBox").value(PrecioTS);
+                $("#TxtPrecioVenta").data("kendoNumericTextBox").value(PrecioVenta);
+                $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(Rentabilidad);
+                $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(Utilidad);
                 $(".k-dirty-cell", $("#gridSimulacion")).removeClass("k-dirty-cell");
                 $(".k-dirty", $("#gridSimulacion")).remove();
             }
@@ -662,7 +527,7 @@ $(document).ready(function () {
                                     return $("[name='PrecioVenta']").data("kendoNumericTextBox").value() >0;
                                 }
 
-                                return true
+                                return true;
                             }
                         }
                     },
@@ -671,7 +536,7 @@ $(document).ready(function () {
                     PrecioVenta: { type: "number" },
                     Aprobado: { type: "bool" },
                     CU: {
-                        type: "number", defaultValue: function (e) { return $("#TxtCostoUnitario").data("kendoNumericTextBox").value();}
+                        type: "number", defaultValue: function (e) { return VIdSer !== 2 ? $("#TxtCostoUnitario").data("kendoNumericTextBox").value() : 0;}
 
                     }
 
@@ -708,7 +573,7 @@ $(document).ready(function () {
                     $('[name="PrecioVenta"]').data("kendoNumericTextBox").enable(false);
                 }
                 else {
-                    if ((e.model.Descripcion.toUpperCase() == "CLIENTE") || (e.model.Descripcion.toUpperCase() == "TECHNO SCREEN")) {
+                    if ((e.model.Descripcion.toUpperCase() === "CLIENTE") || (e.model.Descripcion.toUpperCase() === "TECHNO SCREEN")) {
                         $('[name="Descripcion"]').addClass("k-input k-textbox").attr("disabled", "disabled");
                     }
 
@@ -717,9 +582,9 @@ $(document).ready(function () {
             }
 
             $('[name="Rentabilidad"]').on("change", function (e) {
-                var CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
-                var Utilidad = CU / (1 - parseFloat(this.value)) - CU;
-                var PrecioVenta = fn_RoundToUp( (Utilidad + CU),4);
+                let CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
+                let Utilidad = CU / (1 - parseFloat(this.value)) - CU;
+                let PrecioVenta = fn_RoundToUp((Utilidad + CU),4);
                 $('[name="Utilidad"]').data("kendoNumericTextBox").value(Utilidad);
                 $('[name="PrecioVenta"]').data("kendoNumericTextBox").value(PrecioVenta);
 
@@ -728,12 +593,12 @@ $(document).ready(function () {
             });
 
             $('[name="PrecioVenta"]').on("change", function (e) {
-                var CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
-                var Rentabilidad = (parseFloat(this.value) - CU) / parseFloat(this.value);
+                let CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
+                let Rentabilidad = (parseFloat(this.value) - CU) / parseFloat(this.value);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").value(Rentabilidad);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").trigger("change");
 
-                var Utilidad = CU / (1 - Rentabilidad) - CU;
+                let Utilidad = CU / (1 - Rentabilidad) - CU;
             
                 $('[name="Utilidad"]').data("kendoNumericTextBox").value(Utilidad);
                 $('[name="Utilidad"]').data("kendoNumericTextBox").trigger("change");
@@ -761,7 +626,7 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridRentabilidad").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gridRentabilidad").data("kendoGrid"), DsRent);
 
-    Grid_HabilitaToolbar($("#gridRentabilidad"),false,false,false)
+    Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false);
 
     var selectedRowsRentabilidad = [];
     $("#gridRentabilidad").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -775,7 +640,7 @@ $(document).ready(function () {
 
     //#region CRUD para el grid simulacion Consumo
 
-    var DsSimConsu = new kendo.data.DataSource({
+    let DsSimConsu = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
@@ -799,7 +664,7 @@ $(document).ready(function () {
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
-                    if (type === "PUT" && data.EsBase == true)
+                    if (type === "PUT" && data.EsBase === true)
                         data.idTecnica = null;
 
                     return kendo.stringify(data);
@@ -891,7 +756,7 @@ $(document).ready(function () {
 
             if (!e.model.isNew()) {
                 MostrarCamposxTecnica();
-            };
+            }
 
                  
         },
@@ -930,186 +795,153 @@ $(document).ready(function () {
     $("#gridSimuConsumo").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridSimuConsumo"), selectedRowsConsumos);
     });
-
-    var MostrarCamposxTecnica = function() {
-        kendo.ui.progress($("#splitter"), true);
-
-        $.ajax({
-            url: UrlTec + "/" + Kendo_CmbGetvalue($('[name="IdTecnica"]')),
-            dataType: 'json',
-            type: 'GET',
-            success: function (respuesta) {
-                if (respuesta !== null) {
-
-                    if ((Kendo_CmbGetvalue($("#CmbIdServicio")) === "1") || (Kendo_CmbGetvalue($("#CmbIdServicio")) === "2")) {
-                        if (respuesta.EsPapel === true || respuesta.EsImpresion === true || respuesta.EsSublimacion === true) {
-
-                            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
-                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
-                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
-                        }
-
-                        if (respuesta.EsEstampado === true) {
-                            KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
-                            $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
-                        }
-                    }
-
-                   
-                    if (Kendo_CmbGetvalue($("#CmbIdServicio")) === "3") {
-                    
-                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
-
-                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
-                    }
-
-               
-                } else {
-                    KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
-                }
-            },
-            error: function () {
-                kendo.ui.progress($("#splitter"), false);
-            }
-        });
-    }
-
-    var getDsCostoTec = function (idtecnica) {
-        return new kendo.data.DataSource({
-            dataType: 'json',
-            sort: { field: "Nombre", dir: "asc" },
-            transport: {
-                read: function (datos) {
-                    $.ajax({
-                        dataType: 'json',
-                        url: UrlCosTec + "/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")) + "/" + idtecnica.toString(),
-                        async: false,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            datos.success(result);
-
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    var GetNewDSTec = function () {
-        return new kendo.data.DataSource({
-            dataType: 'json',
-            sort: { field: "Nombre", dir: "asc" },
-            transport: {
-                read: function (datos) {
-                    $.ajax({
-                        type: "GET",
-                        dataType: 'json',
-                        url: UrlTec + "/GetbyServicio/" + Kendo_CmbGetvalue($("#CmbIdServicio")),
-                        contentType: "application/json; charset=utf-8",
-                        async: false,
-                        success: function (result) {
-                            datos.success(result);
-                        }
-                    });
-                }
-            }
-        });
-
-    }
-    function getDsComboTenica() {
-        //preparar crear datasource para obtner la tecnica filtrado por base
-        return new kendo.data.DataSource({
-            sort: { field: "Nombre", dir: "asc" },
-            transport: {
-                read: function (datos) {
-                    $.ajax({
-                        dataType: 'json',
-                        async: false,
-                        url: UrlTec + "/GetbyBase/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            datos.success(result);
-                        }
-                    });
-                }
-            }
-        });
-    }
-    var fn_getInsumos = function () {
-        return new kendo.data.DataSource({
-            dataType: 'json',
-            sort: { field: "Nombre", dir: "asc" },
-            transport: {
-                read: function (datos) {
-                    $.ajax({
-                        type: "POST",
-                        dataType: 'json',
-                        data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
-                        url: UrlCI + "/Filtrado",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            datos.success(result);
-                        }
-                    });
-                }
-            }
-        });
-
-    }
+ 
     //#endregion Fin RUD para el grid Rentabilidad
    
     //#region Precotizar una nueva
     $("#btnAceptar").click(function (event) {
         event.preventDefault();
-        if (ValidNuevoSim.validate()) { ConfirmacionMsg("¿Está seguro de generar una nueva simulación de pre-costeo para el requerimiento : " + fn_NoRequerimiento($("#gridSimulacion").data("kendoGrid")).toString(), function () { return fn_NuevaSimulacion() }); }       
+        if (ValidNuevoSim.validate()) { ConfirmacionMsg("¿Está seguro de generar una nueva simulación de pre-costeo para el requerimiento : " + fn_NoRequerimiento($("#gridSimulacion").data("kendoGrid")).toString(), function () { return fn_NuevaSimulacion();}); } 
     });
 
     $("#btnRecalcular").click(function (event) {
         event.preventDefault();
-        ConfirmacionMsg("¿Está seguro de volver a generar la simulación de pre-costeo para la simulación: " + fn_getNoSimulacion($("#gridSimulacion").data("kendoGrid")).toString() + "?", function () { return fn_RecalcularSimulacion() });
+        ConfirmacionMsg("¿Está seguro de volver a generar la simulación de pre-costeo para la simulación: " + fn_getNoSimulacion($("#gridSimulacion").data("kendoGrid")).toString() + "?", function () { return fn_RecalcularSimulacion();});
     });
 
-    function fn_NuevaSimulacion() {       
-        kendo.ui.progress($("#splitter"), true);
-        $.ajax({
-            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
-            type: "Post",
-            dataType: "json",
-            data: JSON.stringify({ IdAnalisisDiseno: null }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                $("#gridSimulacion").data("kendoGrid").dataSource.read();
-                $("#NuevaSimulacion").modal('hide');
-                kendo.ui.progress($("#splitter"), false);
-                RequestEndMsg(data, "Post");
-            },
-            error: function (data) {
-                kendo.ui.progress($("#splitter"), false);
-                ErrorMsg(data);
-            }
-        });        
-    }
+    $("#btnSimulacion").click(function () {
+        ValidNuevoSim.hideMessages();
+        switch (VIdSer) {
+            case 1:
+                $('[for="TxtNoMontaje"]').prop('hidden', false);
+                KdoNumericShow($("#TxtNoMontaje"));
+                $('[for="txtCombos"]').prop('hidden', false);
+                KdoNumericShow($("#txtCombos"));
+                $('[for="txtVeloMaquina"]').prop('hidden', false);
+                KdoNumericShow($("#txtVeloMaquina"));
+                $('[for="TxtNuevaCantidadPiezas"]').prop('hidden', false);
+                KdoNumericShow($("#TxtNuevaCantidadPiezas"));
+                $('[for="txtPersonalExtra"]').prop('hidden', false);
+                KdoNumericShow($("#txtPersonalExtra"));
+                $('[for="chkUsarTermofijado"]').prop('hidden', false);
+                $('#chkUsarTermofijado').prop('hidden', false);
+                $('#chkUsarTermofijado').prop('disabled', false);
 
-    function fn_RecalcularSimulacion() {
-        kendo.ui.progress($("#splitter"), true);
-        $.ajax({
-            url: UrlApiSimu + "/Recalcular/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(),
-            type: "Post",
-            dataType: "json",
-            data: { },
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                $("#gridSimulacion").data("kendoGrid").dataSource.read();
-                kendo.ui.progress($("#splitter"), false);
-                RequestEndMsg(data, "Post");
-            },
-            error: function (data) {
-                kendo.ui.progress($("#splitter"), false);
-                ErrorMsg(data);
-            }
+                $('[for="CmbInsuImp"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuImp"));
+                $('[for="CmbInsuTrans"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuTrans"));
+                $('[for="CmbInsuTinta"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuTinta"));
+                $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").focus();
+
+
+                $("#row1").prop('hidden', true);
+                $("#row2").prop('hidden', true);
+                $("#row3").prop('hidden', true);
+
+                $("#row4").prop('hidden', false);
+                $("#row5").prop('hidden', false);
+                $("#row6").prop('hidden', false);
+                $("#row7").prop('hidden', false);
+                $("#row8").prop('hidden', false);
+                $("#row9").prop('hidden', false);
+
+                KdoCmbSetValue($("#CmbInsuImp"), 0);
+                KdoCmbSetValue($("#CmbInsuTrans"), 0);
+                KdoCmbSetValue($("#CmbInsuTinta"), 0);
+
+                break;
+            case 2:
+                //$("#CmbInsuImp").data("kendoComboBox").setDataSource(DsInsuImpre);
+                //$("#CmbInsuTrans").data("kendoComboBox").setDataSource(DsInsumTrans);
+                //$("#CmbInsuTinta").data("kendoComboBox").setDataSource(DsInsuTin);
+
+                $('[for="TxtNoMontaje"]').prop('hidden', true);
+                KdoNumericHide($("#TxtNoMontaje"));
+                $('[for="txtCombos"]').prop('hidden', true);
+                KdoNumericHide($("#txtCombos"));
+                $('[for="txtVeloMaquina"]').prop('hidden', true);
+                KdoNumericHide($("#txtVeloMaquina"));
+                $('[for="TxtNuevaCantidadPiezas"]').prop('hidden', true);
+                KdoNumericHide($("#TxtNuevaCantidadPiezas"));
+                $('[for="txtPersonalExtra"]').prop('hidden', true);
+                KdoNumericHide($("#txtPersonalExtra"));
+                $('[for="chkUsarTermofijado"]').prop('hidden', true);
+                $('#chkUsarTermofijado').prop('hidden', true);
+                $('#chkUsarTermofijado').prop('disabled', true);
+
+                KdoCmbShow($("#CmbInsuImp"));
+                kdoNumericGetValue($("#NumYardaImpHora")) === null ? KdoComboBoxEnable($("#CmbInsuImp"), false) : KdoComboBoxEnable($("#CmbInsuImp"), true);
+
+                KdoCmbShow($("#CmbInsuTrans"));
+                kdoNumericGetValue($("#NumYardaTransHora")) === null ? KdoComboBoxEnable($("#CmbInsuTrans"), false) : KdoComboBoxEnable($("#CmbInsuTrans"), true);
+
+                KdoCmbShow($("#CmbInsuTinta"));
+                kdoNumericGetValue($("#NumConsumoTintas")) === null ? KdoComboBoxEnable($("#CmbInsuTinta"), false) : KdoComboBoxEnable($("#CmbInsuTinta"), true);
+
+                $("#row1").prop('hidden', false);
+                $("#row2").prop('hidden', false);
+                $("#row3").prop('hidden', false);
+
+                $("#row4").prop('hidden', true);
+                $("#row5").prop('hidden', true);
+                $("#row6").prop('hidden', true);
+                $("#row7").prop('hidden', true);
+                $("#row8").prop('hidden', true);
+                $("#row9").prop('hidden', true);
+
+                KdoCmbSetValue($("#CmbInsuImp"), xIdCataInsuImpre);
+                KdoCmbSetValue($("#CmbInsuTrans"), xIdCataInsuTrans);
+                KdoCmbSetValue($("#CmbInsuTinta"), xIdCataConsu);
+
+                break;
+            default:
+                $('[for="TxtNoMontaje"]').prop('hidden', true);
+                KdoNumericHide($("#TxtNoMontaje"));
+                $('[for="txtCombos"]').prop('hidden', true);
+                KdoNumericHide($("#txtCombos"));
+                $('[for="txtVeloMaquina"]').prop('hidden', true);
+                KdoNumericHide($("#txtVeloMaquina"));
+                $('[for="TxtNuevaCantidadPiezas"]').prop('hidden', false);
+                KdoNumericShow($("#TxtNuevaCantidadPiezas"));
+                $('[for="txtPersonalExtra"]').prop('hidden', true);
+                KdoNumericHide($("#txtPersonalExtra"));
+                $('[for="chkUsarTermofijado"]').prop('hidden', true);
+                $('#chkUsarTermofijado').prop('hidden', true);
+                $('#chkUsarTermofijado').prop('disabled', false);
+
+                $('[for="CmbInsuImp"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuImp"));
+                $('[for="CmbInsuTrans"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuTrans"));
+                $('[for="CmbInsuTinta"]').prop('hidden', true);
+                KdoCmbHide($("#CmbInsuTinta"));
+
+                $("#row1").prop('hidden', true);
+                $("#row2").prop('hidden', true);
+                $("#row3").prop('hidden', true);
+
+                $("#row4").prop('hidden', false);
+                $("#row5").prop('hidden', true);
+                $("#row6").prop('hidden', true);
+                $("#row7").prop('hidden', true);
+                $("#row8").prop('hidden', true);
+                $("#row9").prop('hidden', true);
+                $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").focus();
+
+                KdoCmbSetValue($("#CmbInsuImp"), 0);
+                KdoCmbSetValue($("#CmbInsuTrans"), 0);
+                KdoCmbSetValue($("#CmbInsuTinta"), 0);
+        }
+        $("#NuevaSimulacion").modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
         });
-    }
+
+        
+    });
 
     $('#NuevaSimulacion').on('hidden.bs.modal', function (e) {
         $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value(0);
@@ -1118,15 +950,15 @@ $(document).ready(function () {
         $("#txtCombos").data("kendoNumericTextBox").value(0);
         $("#txtVeloMaquina").data("kendoNumericTextBox").value(0);
         $("#chkUsarTermofijado").prop("checked", false);
-    })
+    });
 
     $('#NuevaSimulacion').on('shown.bs.modal', function (e) {
         getRDS();
-    })
+    });
 
     //#region vista consulta estados
 
-    Fn_VistaConsultaRequerimientoEstados(($("#vConsultaEstados")));
+    Fn_VistaConsultaRequerimientoEstados($("#vConsultaEstados"));
 
     //#endregion fin vista consulta estados
 
@@ -1137,51 +969,585 @@ $(document).ready(function () {
     //#endregion fin vista consulta analisis
 
     // carga vista para el cambio de estado
-    Fn_VistaCambioEstado($("#vCambioEstado"))
+    Fn_VistaCambioEstado($("#vCambioEstado"));
 
     $("#btnCambioEstado").click(function () {
-
         Fn_VistaCambioEstadoMostrar("Simulaciones", fn_getEstadoActual($("#gridSimulacion").data("kendoGrid")), UrlApiSimu + "/Simulaciones_CambiarEstado", "Sp_CambioEstado", getIdSimulacion($("#gridSimulacion").data("kendoGrid")));
-    })
+    });
+
+   
 
     //#endregion 
-
-
-    //#region get requeriento desarrollo
-
-    function getRDS() {
-        kendo.ui.progress($("#NuevaSimulacion"), true);
-        $.ajax({
-            url: UrlRequeDesarrollo + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() ,
-            dataType: 'json',
-            type: 'GET',
-            async: false,
-            success: function (respuesta) {
-                $.each(respuesta, function (index, elemento) {
-                    elemento.IdServicio == 1 ? $("#TxtNoMontaje").data("kendoNumericTextBox").enable(true) : $("#TxtNoMontaje").data("kendoNumericTextBox").enable(false);
-                    elemento.IdServicio == 1 ? $("#txtCombos").data("kendoNumericTextBox").enable(true) : $("#txtCombos").data("kendoNumericTextBox").enable(false);
-                    elemento.IdServicio == 1 ? $("#txtVeloMaquina").data("kendoNumericTextBox").enable(true) : $("#txtVeloMaquina").data("kendoNumericTextBox").enable(false);
-                    elemento.IdServicio == 1 ? $('#chkUsarTermofijado').prop('disabled', false) : $('#chkUsarTermofijado').prop('disabled', true);
-                    
-                    $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").focus();
-                    $("#TxtNoMontaje").data("kendoNumericTextBox").value(elemento.Montaje);
-                    $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
-                    $("#txtCombos").data("kendoNumericTextBox").value(elemento.Combo);
-                    $("#txtVeloMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
-                    $('#chkUsarTermofijado').prop('checked', false);
-                });
-
-                kendo.ui.progress($("#NuevaSimulacion"), false);
-            },
-            error: function () {
-                kendo.ui.progress($("#NuevaSimulacion"), false);
-            }
-        });
-    }
-    //#endregion 
-
 });
+
+let getDsComboTenica = function () {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: UrlTec + "/GetbyBase/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+let GetNewDSTec = function () {
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    type: "GET",
+                    dataType: 'json',
+                    url: UrlTec + "/GetbyServicio/" + Kendo_CmbGetvalue($("#CmbIdServicio")),
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+
+};
+
+let getDsCostoTec = function (idtecnica) {
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    url: UrlCosTec + "/" + fn_getIdBase($("#gridSimulacion").data("kendoGrid")) + "/" + idtecnica.toString(),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
+};
+
+let MostrarCamposxTecnica = function () {
+    kendo.ui.progress($("#splitter"), true);
+
+    $.ajax({
+        url: UrlTec + "/" + Kendo_CmbGetvalue($('[name="IdTecnica"]')),
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            if (respuesta !== null) {
+
+                if ((Kendo_CmbGetvalue($("#CmbIdServicio")) === "1") || (Kendo_CmbGetvalue($("#CmbIdServicio")) === "2")) {
+                    if (respuesta.EsPapel === true || respuesta.EsImpresion === true || respuesta.EsSublimacion === true) {
+
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
+                    }
+
+                    if (respuesta.EsEstampado === true) {
+                        KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+                        $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+                    }
+                }
+
+
+                if (Kendo_CmbGetvalue($("#CmbIdServicio")) === "3") {
+
+                    KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), true);
+                    $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+
+                    $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(fn_getInsumos());
+                }
+
+
+            } else {
+                KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
+            }
+        },
+        error: function () {
+            kendo.ui.progress($("#splitter"), false);
+        }
+    });
+};
+
+let fn_getInsumos = function () {
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: JSON.stringify({ idTecnica: Kendo_CmbGetvalue($('[name="IdTecnica"]')), EsPapel: true, EsRhinestone: false }),
+                    url: UrlCI + "/Filtrado",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+let fn_NuevaSimulacion = function () {
+    kendo.ui.progress($("#splitter"), true);
+    $.ajax({
+        url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({ IdAnalisisDiseno: null }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            $("#NuevaSimulacion").modal('hide');
+            kendo.ui.progress($("#splitter"), false);
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            kendo.ui.progress($("#splitter"), false);
+            ErrorMsg(data);
+        }
+    });
+};
+
+let fn_RecalcularSimulacion = function () {
+    kendo.ui.progress($("#splitter"), true);
+    $.ajax({
+        url: UrlApiSimu + "/Recalcular/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(),
+        type: "Post",
+        dataType: "json",
+        data: {},
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($("#splitter"), false);
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            kendo.ui.progress($("#splitter"), false);
+            ErrorMsg(data);
+        }
+    });
+};
+
+//#region get requeriento desarrollo
+let getRDS = function () {
+    kendo.ui.progress($("#NuevaSimulacion"), true);
+    $.ajax({
+        url: UrlRequeDesarrollo + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString(),
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (respuesta) {
+            $.each(respuesta, function (index, elemento) {
+                $("#TxtNoMontaje").data("kendoNumericTextBox").value(elemento.Montaje);
+                $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
+                $("#txtCombos").data("kendoNumericTextBox").value(elemento.Combo);
+                $("#txtVeloMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+                $('#chkUsarTermofijado').prop('checked', false);
+            });
+
+            kendo.ui.progress($("#NuevaSimulacion"), false);
+        },
+        error: function () {
+            kendo.ui.progress($("#NuevaSimulacion"), false);
+        }
+    });
+};
+//#endregion
 //#region Metodos Generales
+let Fn_Consultar = function (IdServicio, IdCliente) {
+    kendo.ui.progress($("#splitter"), true);
+    VIdSer = Number(IdServicio);
+    VIdCliente = Number(IdCliente);
+    vistaP = $("#pvSimulacion");
+    let Url = VIdSer === 2 ? "/Simulaciones/SimulacionDatosSubli" : "/Simulaciones/SimulacionDatos";
+    $.ajax({
+        url: Url,
+        async: false,
+        type: 'GET',
+        contentType: "text/html; charset=utf-8",
+        datatype: "html", 
+        success: function (resultado) {
+            $("#pvSimulacion").html(resultado);
+            fn_SetCamposSimulacion();
+            DesHabilitarCamposSim();
+        }
+    });
+
+    VIdCliente === 0 ? $("#gridSimulacion").data("kendoGrid").showColumn("Nombre4") : $("#gridSimulacion").data("kendoGrid").hideColumn("Nombre4");
+    // limpiar etapas del proceso
+    CargarEtapasProceso(0);
+    //leer grid
+    $("#gridSimulacion").data("kendoGrid").dataSource.data([]);
+    $("#gridSimulacion").data("kendoGrid").dataSource.read();
+
+    if ($("#gridSimulacion").data("kendoGrid").dataSource.total() === 0) {
+        $("#gridRentabilidad").data("kendoGrid").dataSource.data([]);
+        $("#gridSimuConsumo").data("kendoGrid").dataSource.data([]);
+        Grid_HabilitaToolbar($("#gridSimuConsumo"), false, false, false);
+        Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false);
+        fn_LimpiarCamposSim();
+        $("#btnSimulacion").data("kendoButton").enable(false);
+        $("#btnRecalcular").data("kendoButton").enable(false);
+        $("#btnCambioEstado").data("kendoButton").enable(false);
+    } else {
+        $("#btnSimulacion").data("kendoButton").enable(fn_SNProcesar(true));
+        $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
+        $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
+    }
+    kendo.ui.progress($("#splitter"), false);
+};
+
+let fn_SetCamposSimulacion = function () {
+    $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
+    $("#TxtCantidadPiezas").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#TxtCostoMOD").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoFabril").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoProduccion").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoOperacion").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoTotal").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
+        format: "P2",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtUtilidadDolares").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtPrecioCliente").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtPrecioTS").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtPrecioVenta").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+
+    $("#TxtCantidadTecnicas").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#TxtMontajes").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#txtNoPersonalExtra").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtCantidadColores").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtCantidadCombos").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtCantidadTallas").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+    $("#txtVelocidadMaquina").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+
+    $("#txtTiempoProyecto").kendoNumericTextBox({
+        format: "n4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+
+    if (VIdSer !==2 ) {
+        fn_SeteoCampos();
+    }
+    if (VIdSer === 2) {
+        fn_SeteoCamposSublimacion();
+    }
+   
+};
+
+let fn_SeteoCampos = function () {
+    $("#TxtCostoMP").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+   
+    $("#TxtCostoPrimo").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+   
+    $("#TxtCostoMPUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtCostoMODUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtCostoPrimoUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtCostoFabrilUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtCostoProduccionUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#TxtCostoOperacionUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    $("#txtCostoTermofijado").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#txtCostoTermofijadoUnitario").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+
+    $("#TxtCostoUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+    
+};
+
+let fn_SeteoCamposSublimacion = function () {
+    $("#NumAnchoimp").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumPeronalTransferencia").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#NumPeronalImpresion").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#NumYardaImpHora").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumConsumoTintas").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumYardaTransHora").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumCostoPapelImp").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumCostoTinta").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoTotalRes").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumCostoPapelProtec").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumCostoAdicionales").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumCostoTotalTransRes").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoTotalMasTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoMODTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoFabrilTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoProduccionTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoOperacionTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtCostoTotalTrans").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#TxtComentariosTecnicos").autogrow({ vertical: true, horizontal: false, flickering: false });
+    fn_GridPartes();
+
+};
+
+
 function onCloseCambioEstado(e) {
     $("#gridSimulacion").data("kendoGrid").dataSource.read();
 }
@@ -1200,8 +1566,7 @@ function Fn_VerRequerimientoConsulta(idrequerimiento) {
 }
 /**
  * Muestra vista modal consulta analisis
- * @param {number} IdServicio
- * @param {number} IdAnalisisDiseno
+ * @param {number} IdAnalisisDiseno codigo  de analisis de diseño
  */
 function Fn_VerAnalisis(IdAnalisisDiseno) {
     Fn_VistaConsultaAnalisisDisenosGet($("#vConsultaAnalisis"), parseInt($("#CmbIdServicio").data("kendoComboBox").value()), IdAnalisisDiseno);
@@ -1209,45 +1574,63 @@ function Fn_VerAnalisis(IdAnalisisDiseno) {
 
 function getSimulacionGrid(g) {
     var elemento = g.dataItem(g.select());
-    
-    $("#TxtNoDocumento").val(elemento.NoDocumento2);
-    $("#TxtCostoMP").data("kendoNumericTextBox").value(elemento.CostoMP);
+    $("#TxtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha2), 'dd/MM/yyyy'));
+    $("#TxtCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
     $("#TxtCostoMOD").data("kendoNumericTextBox").value(elemento.CostoMOD);
-    $("#TxtCostoPrimo").data("kendoNumericTextBox").value(elemento.CostoPrimo);
     $("#TxtCostoFabril").data("kendoNumericTextBox").value(elemento.CostoFabril);
     $("#TxtCostoProduccion").data("kendoNumericTextBox").value(elemento.CostoProduccion);
     $("#TxtCostoOperacion").data("kendoNumericTextBox").value(elemento.CostoOperacion);
-    $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
     $("#TxtCostoTotal").data("kendoNumericTextBox").value(elemento.CostoTotal);
-    $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMP / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMOD / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoPrimo / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoFabril / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoProduccion / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoOperacion / elemento.CantidadPiezas * 10000) / 10000);
-    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTermofijado / elemento.CantidadPiezas * 10000) / 10000);
-    $("#TxtCostoUnitario").data("kendoNumericTextBox").value(elemento.CostoUnitario);
-    $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
-    $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
-    $("#TxtPrecioCliente").data("kendoNumericTextBox").value(elemento.PrecioCliente);
-    $("#TxtPrecioTS").data("kendoNumericTextBox").value(elemento.PrecioTS);
-    $("#TxtPrecioVenta").data("kendoNumericTextBox").value(elemento.PrecioVenta);
-    $("#TxtCantidadTecnicas").data("kendoNumericTextBox").value(elemento.CantidadTecnicas);
-    $("#TxtMontajes").data("kendoNumericTextBox").value(elemento.Montajes);
-    $("#TxtCantidadPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
-    $("#txtNoPersonalExtra").data("kendoNumericTextBox").value(elemento.PersonalExtra);
-    $("#txtCantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
-    $("#txtCantidadCombos").data("kendoNumericTextBox").value(elemento.CantidadCombos);
-    $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
-    $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
     $("#chkUsarTermo").prop("checked", elemento.UsarTermofijado);
+    $("#TxtNoDocumento").val(elemento.NoDocumento2);
     $("#TxtEstado").val(elemento.Estado);
-    $("#TxtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha2), 'dd/MM/yyyy'));
-    $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
+    if (VIdSer !== 2) {
+        $("#TxtCostoMP").data("kendoNumericTextBox").value(elemento.CostoMP);
+        $("#TxtCostoPrimo").data("kendoNumericTextBox").value(elemento.CostoPrimo);
+        $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
+        $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMP / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMOD / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoPrimo / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoFabril / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoProduccion / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoOperacion / elemento.CantidadPiezas * 10000) / 10000);
+        $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTermofijado / elemento.CantidadPiezas * 10000) / 10000);
+        $("#TxtCostoUnitario").data("kendoNumericTextBox").value(elemento.CostoUnitario);
+        $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
+        $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
+        $("#TxtPrecioCliente").data("kendoNumericTextBox").value(elemento.PrecioCliente);
+        $("#TxtPrecioTS").data("kendoNumericTextBox").value(elemento.PrecioTS);
+        $("#TxtPrecioVenta").data("kendoNumericTextBox").value(elemento.PrecioVenta);
+        $("#TxtCantidadTecnicas").data("kendoNumericTextBox").value(elemento.CantidadTecnicas);
+        $("#TxtMontajes").data("kendoNumericTextBox").value(elemento.Montajes);
+        $("#txtNoPersonalExtra").data("kendoNumericTextBox").value(elemento.PersonalExtra);
+        $("#txtCantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
+        $("#txtCantidadCombos").data("kendoNumericTextBox").value(elemento.CantidadCombos);
+        $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
+        $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+        $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
+        xIdCataInsuTrans = "";
+        xIdCataInsuImpre = "";
+        xIdCataConsu = "";
+    }
 
+    if (VIdSer === 2) {
+        $("#TxtOperTela").val(elemento.OperacionTela);
+        kdoNumericSetValue($("#NumAnchoimp"), elemento.AnchoDiseno);
+        $("#TxtUniAnchoimp").val(elemento.UnidadMedAncho);
+        $("#TxtPerfilImpresion").val(elemento.PerfilImpresion);
+        $("#TxtVelocidadTransferencia").val(elemento.NombreVeloTransf);
+        $("#TxtPapelSelecionado").val(elemento.NombreInsuImpre);
+        kdoNumericSetValue($("#NumYardaImpHora"), elemento.VelocidadImpre);
+        kdoNumericSetValue($("#NumYardaTransHora"), elemento.VelocidadTransf);
+        kdoNumericSetValue($("#NumConsumoTintas"), elemento.Consumo);
+        $("#TxtConsumoTinta").val(elemento.UniConsumo);
+        xIdCataInsuTrans = elemento.IdCataInsuTrans;
+        xIdCataInsuImpre = elemento.IdCataInsuImpre;
+        xIdCataConsu = elemento.IdCataConsu;
+        $("#dbgPartesSub").data("kendoGrid").dataSource.read();
+    }
     CargarEtapasProceso(elemento.IdRequerimiento);
-
-
     var dataChart = [];
     dataChart.push(
         {
@@ -1286,78 +1669,237 @@ function getSimulacionGrid(g) {
 }
 
 function DesHabilitarCamposSim() {
-    $("#TxtCostoMP").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoMOD").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoPrimo").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoFabril").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoProduccion").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoOperacion").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoMPUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoMODUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").enable(false);
-    $("#txtCostoTermofijado").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoTotal").data("kendoNumericTextBox").enable(false);
-    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").enable(false);
-    $("#TxtCostoUnitario").data("kendoNumericTextBox").enable(false);
+    $("#TxtFecha").data("kendoDatePicker").enable(false);
+    KdoCheckBoxEnable($("#chkUsarTermo"), false);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").enable(false);
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").enable(false);
     $("#TxtPrecioCliente").data("kendoNumericTextBox").enable(false);
     $("#TxtPrecioTS").data("kendoNumericTextBox").enable(false);
     $("#TxtPrecioVenta").data("kendoNumericTextBox").enable(false);
-    $("#TxtCantidadTecnicas").data("kendoNumericTextBox").enable(false);
-    $("#TxtMontajes").data("kendoNumericTextBox").enable(false);
-    $("#txtTiempoProyecto").data("kendoNumericTextBox").enable(false);
+    $("#TxtCostoMOD").data("kendoNumericTextBox").enable(false);
+    $("#TxtCostoFabril").data("kendoNumericTextBox").enable(false);
+    $("#TxtCostoProduccion").data("kendoNumericTextBox").enable(false);
+    $("#TxtCostoOperacion").data("kendoNumericTextBox").enable(false);
+    $("#TxtCostoTotal").data("kendoNumericTextBox").enable(false);
     $("#TxtCantidadPiezas").data("kendoNumericTextBox").enable(false);
-    $("#txtNoPersonalExtra").data("kendoNumericTextBox").enable(false);
-    $("#txtCantidadColores").data("kendoNumericTextBox").enable(false);
-    $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
-    $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
-    $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
-    KdoCheckBoxEnable($("#chkUsarTermo"), false);
-    $("#TxtFecha").data("kendoDatePicker").enable(false);
+
+    if (VIdSer !== 2) {
+        $("#TxtCostoMP").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoPrimo").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoMPUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoMODUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").enable(false);
+        $("#txtCostoTermofijado").data("kendoNumericTextBox").enable(false);
+        $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCostoUnitario").data("kendoNumericTextBox").enable(false);
+        $("#TxtCantidadTecnicas").data("kendoNumericTextBox").enable(false);
+        $("#TxtMontajes").data("kendoNumericTextBox").enable(false);
+        $("#txtTiempoProyecto").data("kendoNumericTextBox").enable(false);
+        $("#txtNoPersonalExtra").data("kendoNumericTextBox").enable(false);
+        $("#txtCantidadColores").data("kendoNumericTextBox").enable(false);
+        $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
+        $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
+        $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
+    }
+  
+    if (VIdSer === 2) {
+        KdoNumerictextboxEnable($("#NumAnchoimp"), false);
+        KdoNumerictextboxEnable($("#NumPeronalTransferencia"), false);
+        KdoNumerictextboxEnable($("#NumPeronalImpresion"), false);
+        TextBoxEnable($("#TxtVelocidadTransferencia"), false);
+        KdoNumerictextboxEnable($("#NumYardaImpHora"), false);
+        KdoNumerictextboxEnable($("#NumConsumoTintas"), false);
+        KdoNumerictextboxEnable($("#NumYardaTransHora"), false);
+        KdoNumerictextboxEnable($("#NumCostoPapelImp"), false);
+        KdoNumerictextboxEnable($("#NumCostoTinta"), false);
+        KdoNumerictextboxEnable($("#TxtCostoTotalRes"), false);
+        KdoNumerictextboxEnable($("#NumCostoPapelProtec"), false);
+        KdoNumerictextboxEnable($("#NumCostoAdicionales"), false);
+        KdoNumerictextboxEnable($("#NumCostoTotalTransRes"), false);
+        KdoNumerictextboxEnable($("#TxtCostoTotalMasTrans"), false);
+        KdoNumerictextboxEnable($("#TxtCostoMODTrans"), false);
+        KdoNumerictextboxEnable($("#TxtCostoFabrilTrans"), false);
+        KdoNumerictextboxEnable($("#TxtCostoProduccionTrans"), false);
+        KdoNumerictextboxEnable($("#TxtCostoOperacionTrans"), false);
+        KdoNumerictextboxEnable($("#TxtCostoTotalTrans"), false);
+        $("#TxtComentariosTecnicos").attr("disabled", true);
+        TextBoxEnable($("#TxtOperTela"), false);
+        TextBoxEnable($("#TxtUniAnchoimp"), false);
+        TextBoxEnable($("#TxtPerfilImpresion"), false);
+        TextBoxEnable($("#TxtVelociTrans"), false);
+        TextBoxEnable($("#TxtPapelSelecionado"), false);
+        TextBoxEnable($("#TxtConsumoTinta"), false);
+    }
 }
 
-function LimpiarCamposSim() {
-    $("#TxtCostoMP").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoMOD").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoPrimo").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoFabril").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoProduccion").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoOperacion").data("kendoNumericTextBox").value("0");
-    $("#txtCostoTermofijado").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoTotal").data("kendoNumericTextBox").value("0");
-    $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoUnitario").data("kendoNumericTextBox").value("0");
+let fn_LimpiarCamposSim = function () {
+    $("#chkUsarTermo").prop("checked", false);
+    $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
+    $("#TxtCantidadPiezas").data("kendoNumericTextBox").value("0");
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value("0");
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").value("0");
     $("#TxtPrecioCliente").data("kendoNumericTextBox").value("0");
     $("#TxtPrecioTS").data("kendoNumericTextBox").value("0");
     $("#TxtPrecioVenta").data("kendoNumericTextBox").value("0");
-    $("#TxtCantidadTecnicas").data("kendoNumericTextBox").value("0");
-    $("#TxtMontajes").data("kendoNumericTextBox").value("0");
-    $("#TxtCantidadPiezas").data("kendoNumericTextBox").value("0");
-    $("#txtNoPersonalExtra").data("kendoNumericTextBox").value("0");
-    $("#txtCantidadColores").data("kendoNumericTextBox").value("0");
-    $("#txtCantidadCombos").data("kendoNumericTextBox").value("0");
-    $("#txtCantidadTallas").data("kendoNumericTextBox").value("0");
-    $("#txtVelocidadMaquina").data("kendoNumericTextBox").value("0");
-    $("#chkUsarTermo").prop("checked", false);
-    $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
-    $("#TxtNoDocumento").val("");
-    $("#TxtEstado").val("");
-    $("#txtTiempoProyecto").data("kendoNumericTextBox").value("0");
+    $("#TxtCostoMOD").data("kendoNumericTextBox").value("0");
+    $("#TxtCostoFabril").data("kendoNumericTextBox").value("0");
+    $("#TxtCostoProduccion").data("kendoNumericTextBox").value("0");
+    $("#TxtCostoOperacion").data("kendoNumericTextBox").value("0");
+    $("#TxtCostoTotal").data("kendoNumericTextBox").value("0");
 
-    $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value("0");
-    $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value("0");
-}
+    if (VIdSer !== 2) {
+        $("#TxtCostoMP").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoPrimo").data("kendoNumericTextBox").value("0");
+        $("#txtCostoTermofijado").data("kendoNumericTextBox").value("0");
+        $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCantidadTecnicas").data("kendoNumericTextBox").value("0");
+        $("#TxtMontajes").data("kendoNumericTextBox").value("0");
+        $("#txtNoPersonalExtra").data("kendoNumericTextBox").value("0");
+        $("#txtCantidadColores").data("kendoNumericTextBox").value("0");
+        $("#txtCantidadCombos").data("kendoNumericTextBox").value("0");
+        $("#txtCantidadTallas").data("kendoNumericTextBox").value("0");
+        $("#txtVelocidadMaquina").data("kendoNumericTextBox").value("0");
+        $("#TxtNoDocumento").val("");
+        $("#TxtEstado").val("");
+        $("#txtTiempoProyecto").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoFabrilUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value("0");
+        $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value("0");
+    } 
 
+    if (VIdSer === 2) {
+        kdoNumericSetValue($("#NumAnchoimp"), 0);
+        kdoNumericSetValue($("#NumPeronalTransferencia"), 0);
+        kdoNumericSetValue($("#NumPeronalImpresion"), 0);
+        kdoNumericSetValue($("#NumYardaImpHora"), 0);
+        kdoNumericSetValue($("#NumConsumoTintas"), 0);
+        kdoNumericSetValue($("#NumYardaTransHora"), 0);
+        kdoNumericSetValue($("#NumCostoPapelImp"), 0);
+        kdoNumericSetValue($("#NumCostoTinta"), 0);
+        kdoNumericSetValue($("#TxtCostoTotalRes"), 0);
+        kdoNumericSetValue($("#NumCostoPapelProtec"), 0);
+        kdoNumericSetValue($("#NumCostoAdicionales"), 0);
+        kdoNumericSetValue($("#NumCostoTotalTransRes"), 0);
+        kdoNumericSetValue($("#TxtCostoTotalMasTrans"), 0);
+        kdoNumericSetValue($("#TxtCostoMODTrans"), 0);
+        kdoNumericSetValue($("#TxtCostoFabrilTrans"), 0);
+        kdoNumericSetValue($("#TxtCostoProduccionTrans"), 0);
+        kdoNumericSetValue($("#TxtCostoOperacionTrans"), 0);
+        kdoNumericSetValue($("#TxtCostoTotalTrans"), 0);
+        $("#TxtComentariosTecnicos").val("");
+        $("#TxtOperTela").val(""); 
+        $("#TxtUniAnchoimp").val("");
+        $("#TxtPerfilImpresion").val(""); 
+        $("#TxtVelocidadTransferencia").val("");
+        $("#TxtVelociTrans").val("");
+        $("#TxtPapelSelecionado").val("");
+        $("#TxtConsumoTinta").val("");
+    }
+};
+
+let  fn_GridPartes = function () {
+    let UrlAParte = TSM_Web_APi + "AnalisisDisenosPartes";
+    let dset = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) { return UrlAParte + "/GetAnalisisDisenosParteByAnalisisDiseno/" + S_IdA; },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdUbicacion",
+                fields: {
+                    IdAnalisisDiseno: { type: "number" },
+                    IdUbicacion: { type: "string" },
+                    Nombre: { type: "string" },
+                    PorcAreaLienzo: { type: "number"},
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#dbgPartesSub").kendoGrid({
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "IdAnalisisDiseno");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdAnalisisDiseno", title: "Codigo Analisis", hidden: true },
+            { field: "IdUbicacion", title: "Codigo Parte", hidden: true },
+            { field: "Nombre", title: "Parte" },
+            { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}", hidden: true },
+            {
+                field: "PrecioParte", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2],format: "{0:c2}" ,template: function (dataItem) {
+                    return "<strong>" + kendo.htmlEncode(dataItem.PorcAreaLienzo * kdoNumericGetValue($("#TxtCostoTotalMasTrans"))) + "</strong>";
+                }
+            }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#dbgPartesSub").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 200);
+    Set_Grid_DataSource($("#dbgPartesSub").data("kendoGrid"), dset);
+
+    var selRo = [];
+    $("#dbgPartesSub").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#dbgPartesSub"), selRo);
+    });
+
+    $("#dbgPartesSub").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#dbgPartesSub"), selRo);
+    });
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#dbgPartesSub"), $(window).height() - "700");
+    });
+
+    Fn_Grid_Resize($("#dbgPartesSub"), $(window).height() - "700");
+
+};
+
+let fn_Insum = function (idTecnica) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: JSON.stringify({ idTecnica: idTecnica, EsPapel: true, EsRhinestone: false }),
+                    url: UrlCI + "/Filtrado",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
 function getIdSimulacion(g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdSimulacion;
@@ -1381,25 +1923,28 @@ function fn_NoRequerimiento(g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.NoDocumento1;
 }
-
+let getIdAD = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdAnalisisDiseno;
+};
 fPermisos = function (datos) {
     Permisos = datos;
-}
+};
 fn_SNEditar = function (valor) {
     return Permisos.SNEditar ? valor : false;
-}
+};
 fn_SNAgregar = function (valor) {
     return Permisos.SNAgregar ? valor : false;
-}
+};
 fn_SNBorrar = function (valor) {
     return Permisos.SNBorrar ? valor : false;
-}
+};
 fn_SNProcesar = function (valor) {
     return Permisos.SNProcesar ? valor : false;
-}
+};
 fn_SNCambiarEstados = function (valor) {
     return Permisos.SNCambiarEstados ? valor : false;
-}
+};
 
 function fn_getEstadoActual(g) {
     var SelItem = g.dataItem(g.select());
