@@ -49,11 +49,12 @@ $(document).ready(function () {
                             }
                         }
                     },
-                    NoOperarios: { type: "numeric" },
+                    NoOperariosImpre: { type: "numeric" },
                     CostoManoObraImpresion: { type: "numeric" },
                     CostoManoObraTrans: { type: "numeric" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    NoOperariosTrans: { type: "numeric" }
                 }
             }
         }
@@ -71,11 +72,12 @@ $(document).ready(function () {
         columns: [
             { field: "IdTipoOperacionSublimado", title: "Codigo Tipo Operacion", hidden: true },
             { field: "Nombre", title: "Nombre" },
-            { field: "NoOperarios", title: "No Operarios", editor: Grid_ColNumeric, values: ["required", "0", "999", "#", 0] },
+            { field: "NoOperariosImpre", title: "No Operarios Impresión", editor: Grid_ColNumeric, values: ["required", "0", "999", "#", 0] },
             { field: "CostoManoObraImpresion", title: "Costo Mano Obra Impresion", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:c2}", 2] },
             { field: "CostoManoObraTrans", title: "Costo Mano Obra Trans", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "{0:c2}", 2] },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "NoOperariosTrans", title: "No Operarios Transferencia", editor: Grid_ColNumeric, values: ["required", "0", "999", "#", 0] }
         ]
     });
 

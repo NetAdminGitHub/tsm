@@ -294,7 +294,10 @@ $(document).ready(function () {
                     CostoFabrilTrans: { type: "number" },
                     CostoProduccionTrans: { type: "number" },
                     CostoOperacionTrans: { type: "number" },
-                    CostoTotalTrans: { type: "number" }
+                    CostoTotalTrans: { type: "number" },
+                    CostoPapelProtec: { type: "number" },
+                    CostoPapelImp: { type: "number" },
+                    CostoTinta: { type: "number" }
                 }
             }
         }
@@ -1644,7 +1647,11 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
         $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
-        
+        kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
+        kdoNumericSetValue($("#NumCostoTinta"), elemento.CostoTinta);
+        kdoNumericSetValue($("#NumCostoPapelProtec"), elemento.CostoPapelProtec);
+        kdoNumericSetValue($("#NumPeronalTransferencia"), elemento.NoOperariosTrans);
+        kdoNumericSetValue($("#NumPeronalImpresion"), elemento.NoOperariosImpre);
         $("#dbgPartesSub").data("kendoGrid").dataSource.read();
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
@@ -1868,10 +1875,10 @@ let  fn_GridPartes = function () {
             { field: "IdAnalisisDiseno", title: "Codigo Analisis", hidden: true },
             { field: "IdUbicacion", title: "Codigo Parte", hidden: true },
             { field: "Nombre", title: "Parte" },
-            { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}", hidden: true },
+            { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
             {
                 field: "PrecioParte", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2],format: "{0:c2}" ,template: function (dataItem) {
-                    return "<strong>" + kendo.htmlEncode(dataItem.PorcAreaLienzo * kdoNumericGetValue($("#TxtCostoTotalMasTrans"))) + "</strong>";
+                    return "<strong>" + kendo.htmlEncode(Number.parseFloat(dataItem.PorcAreaLienzo * kdoNumericGetValue($("#TxtCostoTotalMasTrans"))).toFixed(2)) + "</strong>";
                 }
             }
         ]
