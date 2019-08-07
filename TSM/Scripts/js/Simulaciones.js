@@ -287,7 +287,14 @@ $(document).ready(function () {
                     IdUnidadConsumo: { type: "number" },
                     UniConsumo: { type: "string" },
                     IdCataConsu: { type: "number" },
-                    NombreCataConsumo: {type:"string"}
+                    NombreCataConsumo: { type: "string" },
+                    CostoMPTrans: { type: "number" },
+                    CostoMODTrans: { type: "number" },
+                    CostoPrimoTrans: { type: "number" },
+                    CostoFabrilTrans: { type: "number" },
+                    CostoProduccionTrans: { type: "number" },
+                    CostoOperacionTrans: { type: "number" },
+                    CostoTotalTrans: { type: "number" }
                 }
             }
         }
@@ -1628,6 +1635,16 @@ function getSimulacionGrid(g) {
         xIdCataInsuTrans = elemento.IdCataInsuTrans;
         xIdCataInsuImpre = elemento.IdCataInsuImpre;
         xIdCataConsu = elemento.IdCataConsu;
+        kdoNumericSetValue($("#TxtCostoMODTrans"), elemento.CostoMODTrans);
+        //CostoMPTrans
+        kdoNumericSetValue($("#TxtCostoFabrilTrans"), elemento.CostoFabrilTrans);
+        //CostoPrimoTrans
+        kdoNumericSetValue($("#TxtCostoProduccionTrans"), elemento.CostoProduccionTrans);
+        kdoNumericSetValue($("#TxtCostoOperacionTrans"), elemento.CostoOperacionTrans);
+        kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
+        kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
+        $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
+        
         $("#dbgPartesSub").data("kendoGrid").dataSource.read();
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
