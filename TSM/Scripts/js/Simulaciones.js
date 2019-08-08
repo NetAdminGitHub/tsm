@@ -900,9 +900,11 @@ $(document).ready(function () {
                 $("#row7").prop('hidden', true);
                 $("#row8").prop('hidden', true);
                 $("#row9").prop('hidden', true);
-
+                $('[for="CmbInsuImp"]').prop('hidden', false);
                 KdoCmbSetValue($("#CmbInsuImp"), xIdCataInsuImpre);
+                $('[for="CmbInsuTrans"]').prop('hidden', false);
                 KdoCmbSetValue($("#CmbInsuTrans"), xIdCataInsuTrans);
+                $('[for="CmbInsuTinta"]').prop('hidden', false);
                 KdoCmbSetValue($("#CmbInsuTinta"), xIdCataConsu);
 
                 break;
@@ -1120,29 +1122,56 @@ let fn_getInsumos = function () {
 
 let fn_NuevaSimulacion = function () {
     kendo.ui.progress($("#splitter"), true);
-    $.ajax({
-        url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
-        type: "Post",
-        dataType: "json",
-        data: JSON.stringify({ IdAnalisisDiseno: null }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            $("#gridSimulacion").data("kendoGrid").dataSource.read();
-            $("#NuevaSimulacion").modal('hide');
-            kendo.ui.progress($("#splitter"), false);
-            RequestEndMsg(data, "Post");
-        },
-        error: function (data) {
-            kendo.ui.progress($("#splitter"), false);
-            ErrorMsg(data);
-        }
-    });
+    if (VIdSer !== 2) {
+        $.ajax({
+            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
+            type: "Post",
+            dataType: "json",
+            data: JSON.stringify({ IdAnalisisDiseno: null }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $("#gridSimulacion").data("kendoGrid").dataSource.read();
+                $("#NuevaSimulacion").modal('hide');
+                kendo.ui.progress($("#splitter"), false);
+                RequestEndMsg(data, "Post");
+            },
+            error: function (data) {
+                kendo.ui.progress($("#splitter"), false);
+                ErrorMsg(data);
+            }
+        });
+    }
+    if (VIdSer === 2) {
+        $.ajax({
+            url: UrlApiSimu + "/ProcesarSublimado/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbInsuImp")) + "/" + KdoCmbGetValue($("#CmbInsuTinta")) + "/" + KdoCmbGetValue($("#CmbInsuTrans")),
+            type: "Post",
+            dataType: "json",
+            data: JSON.stringify({ IdAnalisisDiseno: null }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $("#gridSimulacion").data("kendoGrid").dataSource.read();
+                $("#NuevaSimulacion").modal('hide');
+                kendo.ui.progress($("#splitter"), false);
+                RequestEndMsg(data, "Post");
+            },
+            error: function (data) {
+                kendo.ui.progress($("#splitter"), false);
+                ErrorMsg(data);
+            }
+        });
+
+
+    }
+   
 };
 
 let fn_RecalcularSimulacion = function () {
     kendo.ui.progress($("#splitter"), true);
+
+    let UrlRecal = UrlApiSimu + "/" + (VIdSer !== 2 ? "Recalcular" : "RecalcularSublimado" ) + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(); 
+
     $.ajax({
-        url: UrlApiSimu + "/Recalcular/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(),
+        url: UrlRecal,
         type: "Post",
         dataType: "json",
         data: {},
@@ -1656,32 +1685,55 @@ function getSimulacionGrid(g) {
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
     var dataChart = [];
-    dataChart.push(
-        {
-            category: "Costo de Materia Prima",
-            value: elemento.CostoMP,
-            color: "#011F4B"
-        },
-        {
-            category: "Costo de Mano de Obra Directa",
-            value: elemento.CostoMOD,
-            color: "#03396C"
-        },
-        {
-            category: "Costo Fabril",
-            value: elemento.CostoFabril,
-            color: "#005B96"
-        },
-        {
-            category: "Costo Operación",
-            value: elemento.CostoOperacion,
-            color: "#6497B1"
-        },
-        {
-            category: "Costo Termofijado",
-            value: elemento.CostoTermofijado,
-            color: "#178AB8"
-        });
+
+    if (VIdSer !== 2) {
+        dataChart.push(
+            {
+                category: "Costo de Materia Prima",
+                value: elemento.CostoMP,
+                color: "#011F4B"
+            },
+            {
+                category: "Costo de Mano de Obra Directa",
+                value: elemento.CostoMOD,
+                color: "#03396C"
+            },
+            {
+                category: "Costo Fabril",
+                value: elemento.CostoFabril,
+                color: "#005B96"
+            },
+            {
+                category: "Costo Operación",
+                value: elemento.CostoOperacion,
+                color: "#6497B1"
+            },
+            {
+                category: "Costo Termofijado",
+                value: elemento.CostoTermofijado,
+                color: "#178AB8"
+            });
+    }
+
+    if (VIdSer === 2) {
+        dataChart.push(
+            {
+                category: "Costo de Mano de Obra Directa (Imp + Trans)",
+                value: elemento.CostoMOD + elemento.CostoMODTrans,
+                color: "#03396C"
+            },
+            {
+                category: "Costo Fabril (Imp + Trans)",
+                value: elemento.CostoFabril + elemento.CostoFabrilTrans,
+                color: "#005B96"
+            },
+            {
+                category: "Costo Operación (Imp + Trans)",
+                value: elemento.CostoOperacion + elemento.CostoOperacionTrans,
+                color: "#6497B1"
+            });
+    }
+   
 
     CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
     ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= value# - #= kendo.toString(percentage * 100.0, 'n2')#%");
