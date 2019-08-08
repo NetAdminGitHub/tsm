@@ -658,7 +658,7 @@ $(document).ready(function () {
                 $("#ReqDes").data("kendoGrid").dataSource.total() === 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? Grid_HabilitaToolbar($("#GSublimacion"), false, false, false) : Grid_HabilitaToolbar($("#GSublimacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 $("#ReqDes").data("kendoGrid").dataSource.total() === 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" ? $("#FrmSublimacion").children().addClass("k-state-disabled") : $("#FrmSublimacion").children().removeClass("k-state-disabled");
                 $("#ReqDes").data("kendoGrid").dataSource.total() === 0 ? $("#btnCambioEstado").data("kendoButton").enable(false) : $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
-                $("#ReqDes").data("kendoGrid").dataSource.total() === 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" || KdoCmbGetValue($("#cmbTipoOptela"))!=="1" ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                $("#ReqDes").data("kendoGrid").dataSource.total() === 0 || getEstadoAD($("#ReqDes").data("kendoGrid")) !== "EDICION" || KdoCmbGetValue($("#cmbTipoOptela"))!=="1" ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, false, Permisos.SNBorrar);
                 $("#gridPartes").data("kendoGrid").dataSource.read();
                
                 break;
@@ -1422,7 +1422,7 @@ $(document).ready(function () {
 
     $("#chkDetallarPieza").click(function () {
         if (this.checked) {
-            Grid_HabilitaToolbar($("#gridPartes"), true, true, true);
+            Grid_HabilitaToolbar($("#gridPartes"), true, false, true);
 
         } else {
             Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
@@ -1451,7 +1451,7 @@ $(document).ready(function () {
                     kdoChkSetValue($("#chkDetallarPieza"), respuesta.DetallarPiezas);
                     kdoNumericSetValue($("#NumConsmoYar"), respuesta.AltoDiseno !== 0 ? respuesta.AltoDiseno / 36 : 0);
                     respuesta.IdTipoOperacionSublimado === 1 || respuesta.IdTipoOperacionSublimado=== null ? KdoCheckBoxEnable($("#chkDetallarPieza"), false) : KdoCheckBoxEnable($("#chkDetallarPieza"), true);
-                    respuesta.IdTipoOperacionSublimado === 1 || respuesta.IdTipoOperacionSublimado === null ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : respuesta.DetallarPiezas === true ? Grid_HabilitaToolbar($("#gridPartes"), true, true, true) : Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
+                    respuesta.IdTipoOperacionSublimado === 1 || respuesta.IdTipoOperacionSublimado === null ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : respuesta.DetallarPiezas === true ? Grid_HabilitaToolbar($("#gridPartes"), true, false, true) : Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
 
                 } else {
 
@@ -1904,7 +1904,7 @@ $(document).ready(function () {
             let fno = function () {
                 KdoCmbSetValue($("#cmbTipoOptela"), "");
                 kdoNumericSetValue($("#TxtFactorDistribucion"), 0);
-                Grid_HabilitaToolbar($("#gridPartes"), true, true, true);
+                Grid_HabilitaToolbar($("#gridPartes"), true, false, true);
                 KdoNumerictextboxEnable($("#TxtFactorDistribucion"), true);
             };
             if ($("#gridPartes").data("kendoGrid").dataSource.total() !== 0) {
@@ -1924,7 +1924,7 @@ $(document).ready(function () {
             kdoNumericSetValue($("#TxtFactorDistribucion"), 0);
             KdoNumerictextboxEnable($("#TxtFactorDistribucion"), true);
             KdoCheckBoxEnable($("#chkDetallarPieza"),true);
-            KdoChkGetValue($("#chkDetallarPieza")) === false? Grid_HabilitaToolbar($("#gridPartes"), false, false, false): Grid_HabilitaToolbar($("#gridPartes"), true, true, true);
+            KdoChkGetValue($("#chkDetallarPieza")) === false? Grid_HabilitaToolbar($("#gridPartes"), false, false, false): Grid_HabilitaToolbar($("#gridPartes"), true, false, true);
        
         }
 
@@ -2702,8 +2702,8 @@ var fn_MostrarGrid = function () {
             Grid_requestEnd(e);
             if (e.type === "destroy") {
                 if ($("#gridPartes").data("kendoGrid").dataSource.total() === 0) {
-
                     kdoChkSetValue($("#chkDetallarPieza"), false);
+                    Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
                 }
 
             }
@@ -2735,7 +2735,10 @@ var fn_MostrarGrid = function () {
                     FechaMod: { type: "date" }
                 }
             }
-        }
+        },
+        aggregate: [
+            { field: "PorcAreaLienzo", aggregate: "sum" }
+        ]
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -2755,7 +2758,7 @@ var fn_MostrarGrid = function () {
             { field: "IdAnalisisDiseno", title: "Codigo Analisis", hidden: true },
             { field: "IdUbicacion", title: "Codigo Parte", editor: Grid_Combox, values: ["IdUbicacion", "Nombre", UrlUbic, "", "Seleccione...."], hidden: true },
             { field: "Nombre", title: "Parte" },
-            { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
+            { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4,"0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcAreaLienzo ? sum*100: 0 #"},
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -2764,7 +2767,7 @@ var fn_MostrarGrid = function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridPartes").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si,200);
     SetGrid_CRUD_ToolbarTop($("#gridPartes").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridPartes").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridPartes").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridPartes").data("kendoGrid"), dset);
 
     var selectedRows = [];
