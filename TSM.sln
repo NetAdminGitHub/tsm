@@ -22,22 +22,13 @@ Global
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.PRD|Any CPU.Build.0 = PRD|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.ActiveCfg = Debug|Any CPU
-		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.Build.0 = Debug|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.ActiveCfg = UAT|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.Build.0 = UAT|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39A0D69E-223C-4848-BB13-422ED4648A8A}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://dev.azure.com/technoscreen
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = TSM\\TSM.csproj
-		SccProjectName1 = TSM
-		SccLocalPath1 = TSM
 	EndGlobalSection
 EndGlobal
