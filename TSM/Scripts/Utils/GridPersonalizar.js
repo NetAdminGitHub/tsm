@@ -293,7 +293,8 @@ var Grid_ColNumeric = function (container, options) {
             format: options.values[3],
             restrictDecimals: options.values[4] === 0,
             decimals: options.values[4],
-            valuePrimitive: true
+            valuePrimitive: true,
+            step: options.values[5] === undefined || options.values[5] === "" ? 1 : options.values[5]
         });
 };
 

@@ -297,7 +297,8 @@ $(document).ready(function () {
                     CostoTotalTrans: { type: "number" },
                     CostoPapelProtec: { type: "number" },
                     CostoPapelImp: { type: "number" },
-                    CostoTinta: { type: "number" }
+                    CostoTinta: { type: "number" },
+                    CostoLimpieza: { type: "number" }
                 }
             }
         }
@@ -575,7 +576,7 @@ $(document).ready(function () {
 
             } else {
 
-                $('[name="CU"]').data("kendoNumericTextBox").value($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
+                $('[name="CU"]').data("kendoNumericTextBox").value(VIdSer === 2 ? kdoNumericGetValue($("#TxtCostoTotalMasTrans")):  $("#TxtCostoUnitario").data("kendoNumericTextBox").value());
 
                 if (e.model.Aprobado) {
                     $('[name="Rentabilidad"]').data("kendoNumericTextBox").enable(false);
@@ -592,7 +593,7 @@ $(document).ready(function () {
             }
 
             $('[name="Rentabilidad"]').on("change", function (e) {
-                let CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
+                let CU = parseFloat(VIdSer === 2 ? kdoNumericGetValue($("#TxtCostoTotalMasTrans")) : $("#TxtCostoUnitario").data("kendoNumericTextBox").value());
                 let Utilidad = CU / (1 - parseFloat(this.value)) - CU;
                 let PrecioVenta = fn_RoundToUp((Utilidad + CU),4);
                 $('[name="Utilidad"]').data("kendoNumericTextBox").value(Utilidad);
@@ -603,7 +604,7 @@ $(document).ready(function () {
             });
 
             $('[name="PrecioVenta"]').on("change", function (e) {
-                let CU = parseFloat($("#TxtCostoUnitario").data("kendoNumericTextBox").value());
+                let CU = parseFloat(VIdSer === 2 ? kdoNumericGetValue($("#TxtCostoTotalMasTrans")) : $("#TxtCostoUnitario").data("kendoNumericTextBox").value());
                 let Rentabilidad = (parseFloat(this.value) - CU) / parseFloat(this.value);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").value(Rentabilidad);
                 $('[name="Rentabilidad"]').data("kendoNumericTextBox").trigger("change");
@@ -1674,6 +1675,8 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoProduccionTrans"), elemento.CostoProduccionTrans);
         kdoNumericSetValue($("#TxtCostoOperacionTrans"), elemento.CostoOperacionTrans);
         kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
+        kdoNumericSetValue($("#TxtCostoTotalRes"), elemento.CostoTotal);
+        kdoNumericSetValue($("#NumCostoTotalTransRes"), elemento.CostoTotalTrans);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
         $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
         kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
@@ -1681,6 +1684,7 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#NumCostoPapelProtec"), elemento.CostoPapelProtec);
         kdoNumericSetValue($("#NumPeronalTransferencia"), elemento.NoOperariosTrans);
         kdoNumericSetValue($("#NumPeronalImpresion"), elemento.NoOperariosImpre);
+        kdoNumericSetValue($("#NumCostoAdicionales"), elemento.CostoLimpieza);
         $("#dbgPartesSub").data("kendoGrid").dataSource.read();
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
@@ -1736,7 +1740,7 @@ function getSimulacionGrid(g) {
    
 
     CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
-    ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= value# - #= kendo.toString(percentage * 100.0, 'n2')#%");
+    ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= kendo.toString(value,'n2')# - #= kendo.toString(percentage * 100.0, 'n2')#%");
     ConfigLeyendaGrafico($("#chart"), PosicionLeyenda.right, true, AlinearLeyenda.center);
     ConfigTituloGrafico($("#chart"), PosicionTitulo.bottom, true, AlinearLeyenda.center);
     ConfigTooltipGrafico($("#chart"), true, "${0}");
