@@ -260,9 +260,3 @@ paket-files/
 __pycache__/
 *.pyc
 *.js
-/TSM/Connected Services/FrwkAuthSrv
-/TSM/Adjuntos
-/TSM/Controllers
-/TSM/Models
-/TSM/Views/Estaciones
-/TSM/Views/Shared/_SolictudRegCliente.cshtml
