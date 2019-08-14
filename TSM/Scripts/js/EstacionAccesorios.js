@@ -1,25 +1,27 @@
 ﻿var EstacionBraAcce;
 var TeAcce;
 var idBraAcce;
-
-var fn_VistaEstacionAccesorios = function () {
-    InicioAcce = true;
-    TextBoxEnable($("#TxtOpcSelecAcce"), false);
+var fn_VistaEstacionAccesoriosDocuReady = function () {
     KdoButton($("#btnAddMEA"), "check", "Agregar");
-
-    $("#TxtOpcSelecAcce").val($("#TxtOpcSelecAcce").data("name"));
-
-    idBraAcce = $("#TxtOpcSelecAcce").data("IdBrazo").replace("TxtInfo", "");
-    TeAcce = $("#TxtOpcSelecAcce").data("TipoEstacion");
-    EstacionBraAcce = fn_GetEstacion(maq[0].IdSeteo, idBraAcce);
-
     $("#btnAddMEA").data("kendoButton").bind("click", function (e) {
         e.preventDefault();
         fn_GuardarEstacionAccesorio();
     });
 };
 
-fn_PWList.push(fn_VistaEstacionAccesorios);
+var fn_VistaEstacionAccesorios = function () {
+    //InicioAcce = true;
+    TextBoxEnable($("#TxtOpcSelecAcce"), false);
+    $("#TxtOpcSelecAcce").val($("#TxtOpcSelecAcce").data("name"));
+    idBraAcce = $("#TxtOpcSelecAcce").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
+    TeAcce = $("#TxtOpcSelecAcce").data("TipoEstacion");
+    EstacionBraAcce = fn_GetEstacion(maq[0].IdSeteo, idBraAcce);
+
+    if (EstacionBraAcce !== null) {
+        $("#TxtOpcSelecAcce").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
+        $("#TxtOpcSelecAcce").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    }
+};
 
 let fn_GuardarEstacionAccesorio = function () {
 
@@ -68,7 +70,7 @@ let fn_GetEstacion = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($("#MEstacionAccesorios"), true);
     let result = null;
     $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/GetSeteoMaquinasEstacionVista/" + xIdSeteo + "/" + xIdestacion,
         async: false,
         type: 'GET',
         success: function (datos) {
@@ -79,3 +81,8 @@ let fn_GetEstacion = function (xIdSeteo, xIdestacion) {
 
     return result;
 };
+
+
+
+fn_PWList.push(fn_VistaEstacionAccesorios);
+fn_PWConfList.push(fn_VistaEstacionAccesoriosDocuReady);

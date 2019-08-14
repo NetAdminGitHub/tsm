@@ -1,6 +1,7 @@
 ﻿var stage;
 var layer;
 var fn_PWList = [];
+var fn_PWConfList = [];
 let InicioColor = false;
 let InicioAcce = false;
 var TxtIdsec = "";
@@ -12,7 +13,7 @@ let TipoEstacion = "";
 var fn_RTCargarMaquina = function () {
     var width = window.innerWidth;
     var height = window.innerHeight;
-
+    maq = fn_GetMaquinas();
     stage = new Konva.Stage({
         container: 'container',
         width: width,
@@ -174,7 +175,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
-            if (maq.find(q => Number(q.IdEstacion) === xidb))
+            if (maq.find(q => q.IdEstacion === Number(xidb)))
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
     }
@@ -328,7 +329,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
 
-            if (maq.find(q => Number(q.IdEstacion) === xidb))
+            if (maq.find(q => q.IdEstacion === Number(xidb)))
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });       
     }
@@ -446,7 +447,7 @@ var fn_RTCargarMaquina = function () {
     }, false);    
 };
 
-var dropElemento = function (e, grid) {
+var dropElemento = function (e) {
     e.preventDefault();
 
     stage.setPointersPositions(e);
@@ -468,6 +469,7 @@ var dropElemento = function (e, grid) {
 
             let gDrag = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid"));
       
+            let xEstacionBra = stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", "");
 
             switch (TipoEstacion) {
                 case "COLOR":
@@ -475,12 +477,12 @@ var dropElemento = function (e, grid) {
                     TxtIdsec = gDrag.IdRequerimientoColor;
                     TxtSecName = gDrag.Color;
                     break;
-                case "TECNICAS":
+                case "TECNICA":
                     Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
-                    TxtIdsec = gDrag.IdTecnica;
+                    TxtIdsec = gDrag.IdRequerimientoTecnica;
                     TxtSecName = gDrag.Nombre;
                     break;
-                case "BASES":
+                case "BASE":
                     Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
                     TxtIdsec = gDrag.IdBase;
                     TxtSecName = gDrag.Nombre;
@@ -495,110 +497,59 @@ var dropElemento = function (e, grid) {
                     break;
             }
 
-            if(Url !== undefined){
-                $.get(Url, function (data) {
-
-                    var script;
-
-                    if (TipoEstacion === 'ACCESORIO')
-                    {
-                        if (InicioAcce === true) {
-                            fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                            $.each(fn_PWList, function (index, elemento) {
-                                elemento.call(document, jQuery);
-                            });
-                        } else {
-                            script = document.createElement("script");
-                            script.type = "text/javascript";
-                            script.src = "/Scripts/js/" + ModalEstacionJS;
-                            script.onload = function () {
-                                fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                                $.each(fn_PWList, function (index, elemento) {
-                                    elemento.call(document, jQuery);
-                                });
-                            };
-                            document.getElementsByTagName('head')[0].appendChild(script);
-                        }
-                        
+            if ($("#" + ModalEstacion + "").children().length === 0) {
+                $.ajax({
+                    url: Url,
+                    async: false,
+                    type: 'GET',
+                    contentType: "text/html; charset=utf-8",
+                    datatype: "html",
+                    success: function (resultado) {
+                        fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
                     }
-                    else {
-
-                        if (InicioColor === true) {
-                            fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                            $.each(fn_PWList, function (index, elemento) {
-                                elemento.call(document, jQuery);
-                            });
-
-                        }
-                        else {
-                            script = document.createElement("script");
-                            script.type = "text/javascript";
-                            script.src = "/Scripts/js/" + ModalEstacionJS;
-
-                            script.onload = function () {
-                                fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                                $.each(fn_PWList, function (index, elemento) {
-                                    elemento.call(document, jQuery);
-                                });
-
-                            };
-                            document.getElementsByTagName('head')[0].appendChild(script);
-                        }
-                    }
-                 
-                    $("#" + ModalEstacion + "").on('show.bs.modal', function (e) {
-
-                        
-                        if (TipoEstacion === 'ACCESORIO') {
-                            $("#TxtOpcSelecAcce").data("name",TxtSecName);
-                            $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelecAcce").data("Modal", ModalEstacion);
-                            $("#TxtOpcSelecAcce").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
-
-                        } else {
-                            $("#TxtOpcSelec").data("name",TxtSecName);
-                            $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-                            $("#TxtOpcSelec").data("Modal", ModalEstacion);
-                            $("#TxtOpcSelec").data("IdBrazo", stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", ""));
-        
-                          
-                        }
-
-             
-                        switch (TipoEstacion) {
-                            case "COLOR":
-                                //guardo en Memoria la llave del tipo de selección
-                                $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
-                                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
-                                break;
-                            case "TECNICAS":
-                                //guardo en Memoria la llave del tipo de selección
-                                $("#TxtOpcSelec").data("IdTecnica", TxtIdsec);
-                                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
-                                break;
-                            case "BASES":
-                                //guardo en Memoria la llave del tipo de selección
-                                $("#TxtOpcSelec").data("IdBase", TxtIdsec);
-                                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
-                                break;
-                            case "ACCESORIO":
-                                //guardo en Memoria la llave del tipo de selección
-                                $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
-                                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
-                                break;
-                            default:
-                        }
-                        //fn_PWList = [];
-                    });
                 });
+            } else {
+
+                fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
             }
-           
+          
         }
     }
     kendo.ui.progress($("#body"), false);
 };
 
-var fn_verEidtar = function (IdTipoFormulacion,xidB) {
+/**
+ * funcion carga vista modal
+ * @param {string} ViewP Html vista parcial
+ * @param {string} ViewTitulo titulo a mostrar envista parcial
+ * @param {string} xViewEstacionBra Etsacion o Brazo
+ * @param {HTMLDivElement} ViewModal Nombre vista modal
+ * @param {string} ViewModalJs Nombre Js Vista modal
+  *@param {string} ViewTipoEstacion tipo de estacion
+ */
+let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewModal, ViewModalJs, ViewTipoEstacion) {
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith(ViewModalJs)).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/" + ViewModalJs;
+        script.onload = function () {
+            fn_ShowModalPW(ViewModal, ViewP, Titulo, xViewEstacionBra, ViewModal, true, ViewTipoEstacion);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalPW(ViewModal, ViewP, ViewTitulo, xViewEstacionBra, ViewModal, false, ViewTipoEstacion);
+    }
+
+
+};
+
+var fn_verEidtar = function (IdTipoFormulacion, xEstacionBra) {
 
     switch (IdTipoFormulacion) {
         case "COLOR":
@@ -610,7 +561,7 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
         case "TECNICA":
             Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
             ModalEstacion= "MEstacionColor";
-            TipoEstacion= "TECNICAS";
+            TipoEstacion= "TECNICA";
             ModalEstacionJS= "EstacionColores.js";
             break;
         case "BASE":
@@ -629,112 +580,83 @@ var fn_verEidtar = function (IdTipoFormulacion,xidB) {
     }
 
     let Url = $("#" + ModalEstacion + "").data("url");
-    if (Url !== undefined) {
-        $.get(Url, function (data) {
 
-            var script;
-
-            if (TipoEstacion === 'ACCESORIO') {
-                if (InicioAcce === true) {
-                    fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-             
-                    $.each(fn_PWList, function (index, elemento) {
-                        elemento.call(document, jQuery);
-                    });
-                } else {
-                    script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.src = "/Scripts/js/" + ModalEstacionJS;
-                    script.onload = function () {
-                        fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                        $.each(fn_PWList, function (index, elemento) {
-                            elemento.call(document, jQuery);
-                        });
-                    };
-                    document.getElementsByTagName('head')[0].appendChild(script);
-                }
-
+    if ($("#" + ModalEstacion + "").children().length === 0) {
+        $.ajax({
+            url: Url,
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
             }
-            else {
-
-                if (InicioColor === true) {
-                    fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                    $("#TxtOpcSelec").data("IdBrazo", xidB);
-                    $.each(fn_PWList, function (index, elemento) {
-                        elemento.call(document, jQuery);
-                    });
-
-                }
-                else {
-                    script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.src = "/Scripts/js/" + ModalEstacionJS;
-
-                    script.onload = function () {
-                        fn_ShowModalPW($("#" + ModalEstacion + ""), data, Titulo);
-                        $("#TxtOpcSelec").data("IdBrazo", xidB);
-                        $.each(fn_PWList, function (index, elemento) {
-                            elemento.call(document, jQuery);
-                        });
-
-                    };
-                    document.getElementsByTagName('head')[0].appendChild(script);
-                }
-            }
-
-            //$("#" + ModalEstacion + "").on('show.bs.modal', function (e) {
-
-
-            //    if (TipoEstacion === 'ACCESORIO') {
-            //        $("#TxtOpcSelecAcce").data("name", "");
-            //        $("#TxtOpcSelecAcce").data("TipoEstacion", TipoEstacion);
-            //        $("#TxtOpcSelecAcce").data("IdBrazo", xidB);
-
-            //    } else {
-            //        $("#TxtOpcSelec").data("name", "");
-            //        $("#TxtOpcSelec").data("TipoEstacion", TipoEstacion);
-            //        $("#TxtOpcSelec").data("IdBrazo", xidB);
-
-
-            //    }
-
-
-            //    switch (TipoEstacion) {
-            //        case "COLOR":
-            //            //guardo en Memoria la llave del tipo de selección
-            //            $("#TxtOpcSelec").data("IdRequerimientoColor", "");
-            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
-            //            break;
-            //        case "TECNICAS":
-            //            //guardo en Memoria la llave del tipo de selección
-            //            $("#TxtOpcSelec").data("IdTecnica", "");
-            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
-            //            break;
-            //        case "BASES":
-            //            //guardo en Memoria la llave del tipo de selección
-            //            $("#TxtOpcSelec").data("IdBase", "");
-            //            $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
-            //            break;
-            //        case "ACCESORIO":
-            //            //guardo en Memoria la llave del tipo de selección
-            //            $("#TxtOpcSelecAcce").data("IdAccesorio", "");
-            //            $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
-            //            break;
-            //        default:
-            //    }
-            //    //fn_PWList = [];
-            //});
         });
-    }
+    } else {
 
+        fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
+    }
+ 
 };
 
-let fn_ShowModalPW = function (m, data, titulo) {
-    m.html(data);
+let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig, ViewTipoEstacion) {
+    ViewModal.on('show.bs.modal', function (e) {
+        switch (TipoEstacion) {
+            case "COLOR":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
+                break;
+            case "TECNICA":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
+                break;
+            case "BASE":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelec").data("IdBase", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
+                break;
+            case "ACCESORIO":
+                //guardo en Memoria la llave del tipo de selección
+                $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
+                break;
+            default:
+        }
+    });
+
+    if (data !== undefined) { m.html(data); }
     m.modal({
         show: true,
         keyboard: false,
         backdrop: 'static'
     });
     m.find('.modal-title').text(titulo);
+
+    if (ViewTipoEstacion === 'ACCESORIO') {
+        $("#TxtOpcSelecAcce").data("name", TxtSecName);
+        $("#TxtOpcSelecAcce").data("TipoEstacion", ViewTipoEstacion);
+        $("#TxtOpcSelecAcce").data("IdBrazo", xvbrazo);
+
+    } else {
+        $("#TxtOpcSelec").data("name", TxtSecName);
+        $("#TxtOpcSelec").data("TipoEstacion", ViewTipoEstacion);
+        $("#TxtOpcSelec").data("IdBrazo", xvbrazo);
+
+
+    }
+    if (CargarConfig === true) {
+        $.each(fn_PWConfList, function (index, elemento) {
+            elemento.call(document, jQuery);
+        });
+        fn_PWConfList = [];
+    }
+  
+    $.each(fn_PWList, function (index, elemento) {
+        elemento.call(document, jQuery);
+    });
+
+
+
 };

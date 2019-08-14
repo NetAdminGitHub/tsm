@@ -4,11 +4,11 @@ let UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
 let UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
 let StrIdCatalogoInsu = "";
 let vIdPlan = 0;
-let gAlto = 200;
+let gAlto = 300;
 
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
-    KdoButton($("#btnAddEsta"), "check", "Agregar");
+    KdoButton($("#btnBT"), "delete", "Limpiar");
     fn_gridColor();
     fn_gridTecnica();
     fn_gridBases();
@@ -20,6 +20,11 @@ var fn_RTCargarConfiguracion = function () {
     $(vContenedor).kendoDropTarget({
         drop: function (e) { dropElemento(e); },
         group: "gridGroup"
+    });
+
+    $("#btnBT").data("kendoButton").bind('click', function () {
+        ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
+        
     });
 };
 
@@ -34,6 +39,21 @@ let fn_gridColor = function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosColores",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -44,9 +64,34 @@ let fn_gridColor = function () {
             model: {
                 id: "IdRequerimientoColor",
                 fields: {
-                    IdRequerimientoColor: { type: "number" },
-                    IdRequerimiento: { type: "number" },
-                    Color: { type: "string" }
+                    IdRequerimientoColor: {
+                        type: "number"
+
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function () {
+                            return $("#txtId").val();
+                        }
+                    },
+                    Color: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='Color']") && input.val().length > 200) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    return false;
+                                }
+                                return true;
+                            }
+                        }
+
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
                 }
             }
         }
@@ -55,15 +100,26 @@ let fn_gridColor = function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#dgColor").kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdRequerimientoColor");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "Color");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdRequerimientoColor", title: "Requerimiento", hidden: true },
-            { field: "IdRequerimiento", title: "Requerimiento", hidden: true },
-            { field: "Color", title: "Color" }
+            { field: "IdRequerimientoColor", title: "Código. Desarrollo Color", hidden: true },
+            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "Color", title: "Color Diseño" }
+
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#dgColor").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gAlto);
+    SetGrid_CRUD_ToolbarTop($("#dgColor").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#dgColor").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#dgColor").data("kendoGrid"), dsColor);
 
     var srow1 = [];
@@ -83,12 +139,11 @@ let fn_gridColor = function () {
             top: 10,
             left: 10
         },
-        //dragstart: function (e) {
-        //    e.originalEvent.dataTransfer.setData("GridData", this.element);
-        //},
         hint: function (e) {
-            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Color: ' + dataItem.Color  + '</tr></tbody></table></div>');
             return item;
+
         },
         group: "gridGroup"
     });
@@ -109,6 +164,21 @@ let fn_gridTecnica = function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -119,28 +189,66 @@ let fn_gridTecnica = function () {
             model: {
                 id: "IdRequerimientoTecnica",
                 fields: {
-                    IdRequerimientoTecnica: { type: "number" },
-                    IdRequerimiento: { type: "number" },
-                    IdTecnica: { type: "string" },
-                    Nombre: { type: "string" }
+                    IdRequerimientoTecnica: {
+                        type: "number"
+
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function () {
+                            return $("#txtId").val();
+                        }
+                    },
+                    IdTecnica: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='IdTecnica']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
                 }
             }
         }
 
     });
 
+    let Urltec = TSM_Web_APi + "Tecnicas";
     //CONFIGURACION DEL GRID,CAMPOS
     $("#dgTecnica").kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "IdTecnica");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdRequerimientoTecnica", title: "IdRequerimientoTecnica", hidden: true },
-            { field: "IdRequerimiento", title: "Requerimiento", hidden: true },
-            { field: "IdTecnica", title: "IdTecnica", hidden: true },
-            { field: "Nombre", title: "Técnica" }
+            { field: "IdRequerimientoTecnica", title: "Código. Muestra Técnica", hidden: true },
+            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "IdTecnica", title: "Técnicas", editor: Grid_Combox, values: ["IdTecnica", "Nombre", Urltec, "GetbyServicio/" + $("#IdServicio").val(), "Seleccione un Técnica....", "", "", ""], hidden: true },
+            { field: "Nombre", title: "Nombre técnica" }
+
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#dgTecnica").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gAlto);
+    SetGrid_CRUD_ToolbarTop($("#dgTecnica").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#dgTecnica").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#dgTecnica").data("kendoGrid"), dsTecnica);
 
     var srow2 = [];
@@ -160,7 +268,8 @@ let fn_gridTecnica = function () {
             left: 10
         },
         hint: function (e) {
-            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Técnica: ' + dataItem.Nombre + '</tr></tbody></table></div>');
             return item;
         },
         group: "gridGroup"
@@ -169,7 +278,7 @@ let fn_gridTecnica = function () {
 
     $("#dgTecnica").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgTecnica").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
-    $("#dgTecnica").data("TipoEstacion", "TECNICAS"); // guardar nombre archivo JS
+    $("#dgTecnica").data("TipoEstacion", "TECNICA"); // guardar nombre archivo JS
 };
 
 let fn_gridBases = function () {
@@ -232,7 +341,8 @@ let fn_gridBases = function () {
             left: 10
         },
         hint: function (e) {
-            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Base: ' + dataItem.Nombre + '</tr></tbody></table></div>');
             return item;
         },
         group: "gridGroup"
@@ -240,7 +350,7 @@ let fn_gridBases = function () {
 
     $("#dgBases").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgBases").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
-    $("#dgBases").data("TipoEstacion", "BASES"); // guardar nombre archivo JS
+    $("#dgBases").data("TipoEstacion", "BASE"); // guardar nombre archivo JS
 };
 
 
@@ -304,7 +414,8 @@ let fn_gridAccesorios = function () {
             left: 10
         },
         hint: function (e) {
-            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Accesorio: ' + dataItem.Nombre + '</tr></tbody></table></div>');
             return item;
         },
         group: "gridGroup"
@@ -359,7 +470,7 @@ let fn_GetIdPlan = function (g) {
 };
 
 
-let fn_GetMaquinas = function () {
+var fn_GetMaquinas = function () {
     kendo.ui.progress($("#body"), true);
     let result = null;
     $.ajax({
@@ -377,19 +488,25 @@ let fn_GetMaquinas = function () {
 
 let fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($("#MEstacionColor"), true);
+    let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
     $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
+        url: Urldel,
         type: "Delete",
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             RequestEndMsg(data, "Delete");
             var a = stage.find("#TxtInfo" + xIdestacion);
-            a.text("");
-            maq = fn_GetMaquinas();
-            var b = stage.find("#brazo" + xIdestacion);
-            b.IdSeteo = 0;
-            b.IdTipoFormulacion = "";
-            layer.draw();
+            if (xIdestacion !== undefined) {
+                a.text("");
+                maq = fn_GetMaquinas();
+                var b = stage.find("#brazo" + xIdestacion);
+                b.IdSeteo = 0;
+                b.IdTipoFormulacion = "";
+                layer.draw();
+
+            } else {
+                fn_RTCargarMaquina();
+            }
             kendo.ui.progress($("#MEstacionColor"), false);
         },
         error: function (data) {
@@ -398,6 +515,7 @@ let fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
         }
     });
 };
+
 
 fPermisos = function (datos) {
     Permisos = datos;
