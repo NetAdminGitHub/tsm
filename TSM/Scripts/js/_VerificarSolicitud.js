@@ -28,6 +28,7 @@ let UrlMD = TSM_Web_APi + "MotivosDesarrollos";
 let UrlTA = TSM_Web_APi + "TiposAcabados";
 let UrlColor = TSM_Web_APi + "RequerimientoDesarrollosColores";
 let UrlTMues = TSM_Web_APi + "TipoMuestras"; 
+let UrlQuimi = TSM_Web_APi + "Quimicas"; 
 
 var Permisos;
 let xvUrl = "", xvId = "";
@@ -38,10 +39,6 @@ let VarIDReq = 0;
 var fn_VSCargarJSEtapa = function () {
     //#region Inicialización de variables y controles Kendo
  
-    // carga carrousel de imagenes 
-    var DivCarousel = $("#Div_Carousel");
-    DivCarousel.append(Fn_Carouselcontent());
-    //CargarEtapasProceso(0);
     KdoButton($("#Guardar"), "save", "Guardar");
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseños");
     KdoButton($("#btnCerrar"), "cancel", "Cancelar");
@@ -53,7 +50,6 @@ var fn_VSCargarJSEtapa = function () {
     $("#Guardar").data("kendoButton").enable(false);
     PanelBarConfig($("#BarPanel"));
     KdoDatePikerEnable($("#Fecha"), false);
-    Fn_LeerImagenes($("#Mycarousel"), "", null);
 
     // codigo de programas para el splitter
     //*******************************************************************
@@ -254,8 +250,13 @@ var fn_VSCargarJSEtapa = function () {
                         return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
+                },
+                vQui: function (input) {
+                    if (input.is("[name='CmbQuimica']")) {
+                        return $("#CmbQuimica").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
                 }
-
 
             },
             messages: {
@@ -282,27 +283,13 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbTipoLuz: "Requerido",
                 MsgCmbMotivo: "Requerido",
                 MsgCmbAcabado: "Requerido",
-                MsgCmbTMuestra:"Requerido"
+                MsgCmbTMuestra: "Requerido",
+                vQui:"Requerido"
             }
         }
     ).data("kendoValidator");
 
-    let ValidCopiar = $("#FrmCopiarReq").kendoValidator({
-        rules: {
-            Mayor0: function (input) {
-                if (input.is("[name='TxtNoVeces']")) {
-                    return input.val() > 0;
-                }
-                return true;
-            }
-
-        },
-        messages: {
-            Mayor0: "La cantidad de copias no puede ser 0",
-            required: "requerido"
-        }
-    }).data("kendoValidator");
-    status = $(".status");
+  
 
     Kendo_CmbFiltrarGrid($("#IdServicio"), UrlApiServ, "Nombre", "IdServicio", "Seleccione un Servicio ....");
     $("#IdServicio").data("kendoComboBox").wrapper.hide();
@@ -310,7 +297,6 @@ var fn_VSCargarJSEtapa = function () {
     $("#IdCliente").data("kendoComboBox").dataSource.read();
     $("#IdCliente").data("kendoComboBox").wrapper.hide();
     Kendo_CmbFiltrarGrid($("#IdPrograma"), UrlApiPro, "Nombre", "IdPrograma", "Seleccione ...", "", "IdCliente");
-    Kendo_MultiSelect($("#IdSistemaTinta"), UrlApiSisT, "Nombre", "IdSistemaTinta", "Seleccione ...");
     Kendo_MultiSelect($("#IdCategoriaPrenda"), UrlApiCPre, "Nombre", "IdCategoriaPrenda", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdUbicacion"), UrlApiUEstam, "Nombre", "IdUbicacion", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdCategoriaConfeccion"), UrlApiCConfec, "Nombre", "IdCategoriaConfeccion", "Seleccione ...");
@@ -320,6 +306,7 @@ var fn_VSCargarJSEtapa = function () {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), UrlMD, "Nombre", "IdMotivoDesarrollo", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTipoAcabado"), UrlTA, "Nombre", "IdTipoAcabado", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTMuestra"), UrlTMues, "Nombre", "IdTipoMuestra", "Seleccione ...");
+    Kendo_CmbFiltrarGrid($("#CmbQuimica"), UrlQuimi, "Nombre", "IdQuimica", "Seleccione ...");
 
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
@@ -959,59 +946,6 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion Fin Manejo de Adjunto
 
-    //#region CRUD Sistema de Tintas 
-
-    $("#IdSistemaTinta").data("kendoMultiSelect").bind("deselect", function (e) {
-        if ($("#IdRequerimiento").val() > 0) {
-            kendo.ui.progress($("#vistaParcial"), true);
-            $.ajax({
-                url: UrlRtin + "/" + $("#IdRequerimiento").val() + "," + e.dataItem.IdSistemaTinta,//
-                type: "Delete",
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    RequestEndMsg(data, "Delete");
-                    kendo.ui.progress($("#vistaParcial"), false);
-                },
-                error: function (data) {
-                    kendo.ui.progress($("#vistaParcial"), false);
-                    ErrorMsg(data);
-                }
-            });
-        }
-
-    });
-
-    $("#IdSistemaTinta").data("kendoMultiSelect").bind("select", function (e) {
-        //si el requerimiento de Desarrollo existe 
-        //se permite agregar un nuevo registro de sistema de tintas
-        if ($("#IdRequerimiento").val() > 0) {
-            kendo.ui.progress($("#vistaParcial"), true);
-            $.ajax({
-                url: UrlRtin,//
-                type: "Post",
-                dataType: "json",
-                data: JSON.stringify({
-                    IdRequerimiento: $("#IdRequerimiento").val(),
-                    IdSistemaTinta: e.dataItem.IdSistemaTinta
-                }),
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    RequestEndMsg(data, "Post");
-                    kendo.ui.progress($("#vistaParcial"), false);
-                },
-                error: function (data) {
-                    getSisTintas(UrlRtin + "/GetByRequerimiento/" + $("#IdRequerimiento").val());
-                    kendo.ui.progress($("#vistaParcial"), false);
-                    ErrorMsg(data);
-                }
-            });
-        }
-
-    });
-
-    //#endregion Fin sistema de Tintas
-
     //#region CRUD Prendas multi select
 
     $("#IdCategoriaPrenda").data("kendoMultiSelect").bind("deselect", function (e) {
@@ -1103,14 +1037,11 @@ var fn_VSCargar = function () {
         $("#Nombre").attr("disabled", true);
         KdoComboBoxEnable($("#CmbTipoAcabado"), false);
         KdoComboBoxEnable($("#CmbTipoLuz"), false);
-        $("#IdSistemaTinta").attr("readonly", true);
         $("#IdCategoriaPrenda").attr("readonly", true);
         KdoCheckBoxEnable($("#chkDisenoFullColor"), false);
         KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
         KdoComboBoxEnable($("#CmbTMuestra"), false);
-
-        var multiselect = $("#IdSistemaTinta").data("kendoMultiSelect");
-        multiselect.readonly(true);
+        KdoComboBoxEnable($("#CmbQuimica"), false);
         var mulselect = $("#IdCategoriaPrenda").data("kendoMultiSelect");
         mulselect.readonly(true);
 
@@ -1176,6 +1107,7 @@ let getRD = function (UrlRD) {
                 $("#CmbMotivoDesarrollo").data("kendoComboBox").value(elemento.IdMotivoDesarrollo);
                 $("#CmbTipoAcabado").data("kendoComboBox").value(elemento.IdTipoAcabado);
                 $("#CmbTMuestra").data("kendoComboBox").value(elemento.IdTipoMuestra);
+                KdoCmbSetValue($("#CmbQuimica"), elemento.IdQuimica);
                 //consultar grid
                 VarIDReq = elemento.IdRequerimiento;
                 $("#GRDimension").data("kendoGrid").dataSource.read();
@@ -1203,10 +1135,8 @@ let getRD = function (UrlRD) {
                 HabilitaFormObje(false);
                 Fn_LeerImagenes($("#Mycarousel"), "", null);
             }
-            //CargarEtapasProceso(VarIDReq);
             kendo.ui.progress($("#vistaParcial"), false);
             getArte(UrlApiArte + "/GetArteByRequerimiento/" + VarIDReq.toString(), UrlApiArteAdj);
-            getSisTintas(UrlRtin + "/GetByRequerimiento/" + VarIDReq.toString());
             getPrendasMultiSelec(UrlApiP + "/GetByRequerimiento/" + VarIDReq.toString());
 
 
@@ -1260,9 +1190,6 @@ let LimpiarArte = function () {
     $("#EstiloDiseno").val("");
     $("#NumeroDiseno").val("");
     $("#TxtDirectorioArchivos").val("");
-    $("#Mycarousel").children().remove();
-    //limpiar mensajes de validacion
-    //ValidArt.hideMessages();
 };
 
 let GuardarArtAdj = function (UrlAA, e) {
@@ -1334,29 +1261,6 @@ let getAdjun = function (UrlAA) {
             kendo.ui.progress($("#vistaParcial"), false);
         }
     });
-};
-
-let getSisTintas = function (UrlST) {
-    kendo.ui.progress($("#vistaParcial"), true);
-    $.ajax({
-        url: UrlST,
-        dataType: 'json',
-        type: 'GET',
-        success: function (respuesta) {
-            var lista = "";
-            $.each(respuesta, function (index, elemento) {
-                lista = lista + elemento.IdSistemaTinta + ",";
-            });
-            $("#IdSistemaTinta").data("kendoMultiSelect").value(lista.split(","));
-            kendo.ui.progress($("#vistaParcial"), false);
-        },
-        error: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
-        }
-    });
-
-
-
 };
 
 let getPrendasMultiSelec = function (Url) {
@@ -1457,7 +1361,7 @@ let GuardarRequerimiento = function (UrlRD) {
             //Entidad prendas
             IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
             // Entidad sistema de tintas.....
-            IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
+            IdSistemaTinta: null,
             //entidad Artes
             IdArte: $("#IdArte").val(),
             Nombre: $("#Nombre").val(),
@@ -1467,8 +1371,8 @@ let GuardarRequerimiento = function (UrlRD) {
             IdTipoLuz: $("#CmbTipoLuz").val(),
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
             IdTipoAcabado: $("#CmbTipoAcabado").val(),
-            IdTipoMuestra: $("#CmbTMuestra").val()
-
+            IdTipoMuestra: $("#CmbTMuestra").val(),
+            IdQuimica: KdoCmbGetValue($("#CmbQuimica"))
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1552,7 +1456,7 @@ let ActualizarReq = function () {
             //Entidad prendas
             IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
             // Entidad sistema de tintas.....
-            IdSistemaTinta: $("#IdSistemaTinta").data("kendoMultiSelect").value().toString(),
+            IdSistemaTinta: null,
             //entidad Artes
             IdArte: $("#IdArte").val(),
             Nombre: $("#Nombre").val(),
@@ -1562,7 +1466,8 @@ let ActualizarReq = function () {
             IdTipoLuz: $("#CmbTipoLuz").val(),
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
             IdTipoAcabado: $("#CmbTipoAcabado").val(),
-            IdTipoMuestra: $("#CmbTMuestra").val()
+            IdTipoMuestra: $("#CmbTMuestra").val(),
+            IdQuimica: KdoCmbGetValue($("#CmbQuimica"))
 
         }),
         contentType: 'application/json; charset=utf-8',
@@ -1614,6 +1519,7 @@ let LimpiarReq = function () {
     $("#CmbMotivoDesarrollo").data("kendoComboBox").value("");
     $("#CmbTMuestra").data("kendoComboBox").value("");
     $("#CmbTipoAcabado").data("kendoComboBox").value("");
+    KdoCmbSetValue($("#CmbQuimica"), "");
     //limpiar mensajes de validacion
     ValidRD.hideMessages();
 
@@ -1626,14 +1532,14 @@ let OcultarCamposReq = function (ToF) {
         //Montaje, combo, Velocidad Maquina, Unidad Velocidad, Base. estos campos son input para 
         //el servisio de Serigrafia
         $('#Row4RD').prop('hidden', false);
-        $('#Row5RD').prop('hidden', false);
+        //$('#Row5RD').prop('hidden', false);
 
     } else {
         // ocultar fila donde estan los campos, tallas,cantidad de colores, cantidad de tallas,
         //Montaje, combo, Velocidad Maquina, Unidad Velocidad, Base. estos campos son input para 
         //el servisio de Serigrafia
         $('#Row4RD').prop('hidden', true);
-        $('#Row5RD').prop('hidden', true);
+        //$('#Row5RD').prop('hidden', true);
     }
 
 };
@@ -1697,7 +1603,7 @@ let HabilitaFormObje = function (ToF) {
     KdoComboBoxEnable($("#IdConstruccionTela"), ToF);
     $("#IdServicio").val() !== "2" ? KdoComboBoxEnable($("#IdUbicacion"), ToF) : KdoComboBoxEnable($("#IdUbicacion"), false);
     KdoMultiselectEnable($("#IdCategoriaPrenda"), ToF);
-    KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
+    //KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
     KdoCheckBoxEnable($("#chkDisenoFullColor"), ToF);
     TextBoxEnable($("#InstruccionesEspeciales"), ToF);
     TextBoxEnable($("#Color"), ToF);

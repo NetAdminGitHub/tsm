@@ -9,12 +9,17 @@ let gAlto = 300;
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnBT"), "delete", "Limpiar");
+
     fn_gridColor();
     fn_gridTecnica();
     fn_gridBases();
     fn_gridAccesorios();
     maq = fn_GetMaquinas();
-    
+
+    let UrlMq = TSM_Web_APi + "Maquinas";
+    Kendo_CmbFiltrarGrid($("#CmbMaquina"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
+    KdoComboBoxEnable($("#CmbMaquina"), false);
+    KdoCmbSetValue($("#CmbMaquina"), maq[0].IdMaquina);
     //hablitar el Drop Target de las maquinas
     let vContenedor = $("#container");
     $(vContenedor).kendoDropTarget({

@@ -25,7 +25,8 @@ var fn_VistaEstacionColorDocuReady = function () {
         step: 50
 
     });
-    let UrlTT = TSM_Web_APi + "TiposTintas";
+    $("#TxtNombreQui").val(NombreQui);
+    let UrlTT = TSM_Web_APi + "TiposTintas/GetbyIdQuimica/"+xIdQuimica.toString();
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_color"), UrlTT, "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
 
     let UrlST = TSM_Web_APi + "SistemasTintas";
@@ -34,6 +35,8 @@ var fn_VistaEstacionColorDocuReady = function () {
     let UrlSed = TSM_Web_APi + "Sedas";
     Kendo_CmbFiltrarGrid($("#CmbSedas_color"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
 
+    let UrlTemul = TSM_Web_APi + "TiposEmulsiones";
+    Kendo_CmbFiltrarGrid($("#CmbTipoEmulsion_color"), UrlTemul, "Nombre", "IdTipoEmulsion", "Seleccione una emulsión ....");
 
     let frmColor = $("#FrmGenEColor").kendoValidator({
         rules: {
@@ -54,13 +57,21 @@ var fn_VistaEstacionColorDocuReady = function () {
                     return $("#CmbTipoTinta_color").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            vTemul: function (input) {
+                if (input.is("[id='CmbTipoEmulsion_color']")) {
+                    return $("#CmbTipoEmulsion_color").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
             }
+
 
         },
         messages: {
             vST: "Requerido",
             vTT: "Requerido",
-            vTSed: "Requerido"
+            vTSed: "Requerido",
+            vTemul:"Requerido"
         }
     }).data("kendoValidator");
 
@@ -80,6 +91,7 @@ var fn_VistaEstacionColorDocuReady = function () {
 var fn_VistaEstacionColor = function () {
     //InicioColor = true;
     TextBoxEnable($("#TxtOpcSelec"), false);
+    TextBoxEnable($("#TxtNombreQui"), false);
     $("#TxtOpcSelec").val($("#TxtOpcSelec").data("name"));
     idBra = $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit","");
     Te = $("#TxtOpcSelec").data("TipoEstacion");
@@ -123,10 +135,12 @@ var fn_VistaEstacionColor = function () {
         $("#NumCapilar").data("kendoNumericTextBox").value(estaMarco.Capilar);
         $("#NumPasadas").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         KdoCmbSetValue($("#CmbSedas_color"), estaMarco.IdSeda);
+        KdoCmbSetValue($("#CmbTipoEmulsion_color"), estaMarco.IdTipoEmulsion);
     } else {
         $("#NumCapilar").data("kendoNumericTextBox").value(0);
         $("#NumPasadas").data("kendoNumericTextBox").value(0);
         KdoCmbSetValue($("#CmbSedas_color"), "");
+        KdoCmbSetValue($("#CmbTipoEmulsion_color"), "");
     }
 
 
@@ -184,7 +198,7 @@ let fn_GuardarEstaMarco = function (xIdBrazo) {
             FechaMod: xFecha,
             IdEscurridor: null,
             SerieMarco: null,
-            IdTipoEmulsion: null,
+            IdTipoEmulsion: KdoCmbGetValue($("#CmbTipoEmulsion_color")),
             IdSeteo: maq[0].IdSeteo
 
         }),
