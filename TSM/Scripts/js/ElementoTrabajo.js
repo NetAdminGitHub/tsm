@@ -7,8 +7,8 @@ var idTipoOrdenTrabajo;
 var EtpAsignado = false;
 var EtpSeguidor = false;
 let vpImgDis;
-let xIdQuimica;
-let NombreQui;
+var xIdQuimica;
+var NombreQui;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -60,16 +60,18 @@ $(document).ready(function () {
 
     });
 
+    KdoButton($("#btnCambiarAsignado"), "gear");
+    KdoButton($("#btnAsignarUsuario"), "save");
+    KdoButton($("#btnCambiarEtapa"), "gear");
+    KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
+
 });
 
 window.onpopstate = function (e) {
     $("#smartwizard").smartWizard("goToPage", e.state);
 };
 
-KdoButton($("#btnCambiarAsignado"), "gear");
-KdoButton($("#btnAsignarUsuario"), "save");
-KdoButton($("#btnCambiarEtapa"), "gear");
-KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
+
 
 /**
  * Funcion para cargar informacion de cabecera de la etapa.

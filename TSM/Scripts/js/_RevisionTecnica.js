@@ -9,7 +9,7 @@ let gAlto = 300;
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnBT"), "delete", "Limpiar");
-
+    KdoButtonEnable($("#btnBT"), false);
     fn_gridColor();
     fn_gridTecnica();
     fn_gridBases();
@@ -434,12 +434,16 @@ let fn_gridAccesorios = function () {
 
 
 var fn_RTMostrarGrid = function () {
+    let vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
+    Grid_HabilitaToolbar($("#dgColor"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgTecnica"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgBases"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgAccesorios"), vhb, vhb, vhb);
+    KdoButtonEnable($("#btnBT"), vhb);
     $("#dgTecnica").data("kendoGrid").dataSource.read();
     $("#dgColor").data("kendoGrid").dataSource.read();
     $("#dgBases").data("kendoGrid").dataSource.read();
     $("#dgAccesorios").data("kendoGrid").dataSource.read();
-    //let vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
-    //Grid_HabilitaToolbar($("#gridRev"), vhb, vhb, vhb);
 };
 
 fun_List.push(fn_RTCargarConfiguracion);

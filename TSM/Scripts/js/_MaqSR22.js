@@ -10,10 +10,13 @@ var Titulo = "";
 var ModalEstacion = "";
 var ModalEstacionJS = "";
 let TipoEstacion = "";
+let vhb;
 var fn_RTCargarMaquina = function () {
     var width = window.innerWidth;
     var height = window.innerHeight;
+    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     maq = fn_GetMaquinas();
+
     stage = new Konva.Stage({
         container: 'container',
         width: width,
@@ -166,8 +169,8 @@ var fn_RTCargarMaquina = function () {
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
 
-            if (maq.find(q => q.IdEstacion == xidb)) {
-                let data = maq.find(q => q.IdEstacion == xidb);
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                let data = maq.find(q => q.IdEstacion === Num(xidb));
 
                 fn_verEidtar(data.IdTipoFormulacion, xidb);
             }
@@ -175,7 +178,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
-            if (maq.find(q => q.IdEstacion === Number(xidb)))
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
     }
@@ -320,8 +323,8 @@ var fn_RTCargarMaquina = function () {
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
 
-            if (maq.find(q => q.IdEstacion == xidb)) {
-                let data = maq.find(q => q.IdEstacion == xidb);
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                let data = maq.find(q => q.IdEstacion === Number(xidb));
 
                 fn_verEidtar(data.IdTipoFormulacion, xidb);
             }
@@ -329,7 +332,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
 
-            if (maq.find(q => q.IdEstacion === Number(xidb)))
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });       
     }
@@ -449,10 +452,10 @@ var fn_RTCargarMaquina = function () {
 
 var dropElemento = function (e) {
     e.preventDefault();
-
+    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     stage.setPointersPositions(e);
     kendo.ui.progress($("#body"), true);
-    if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs) {
+    if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs && vhb===true) {
    
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
         if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {          
