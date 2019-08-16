@@ -170,7 +170,7 @@ var fn_RTCargarMaquina = function () {
             let xidb = this.id().replace("txtEdit", "");
 
             if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
-                let data = maq.find(q => q.IdEstacion === Num(xidb));
+                let data = maq.find(q => q.IdEstacion === Number(xidb));
 
                 fn_verEidtar(data.IdTipoFormulacion, xidb);
             }
