@@ -1174,7 +1174,8 @@ $(document).ready(function () {
                 IdTipoAcabado: null,
                 IdTipoMuestra: null,
                 CantidadStrikeOff: 0,
-                StrikeOffAdicional: 0
+                StrikeOffAdicional: 0,
+                IdQuimica:null
 
             }),
             contentType: 'application/json; charset=utf-8',
@@ -1315,7 +1316,8 @@ $(document).ready(function () {
                 IdTipoAcabado :null,
                 IdTipoMuestra :null,
                 CantidadStrikeOff: 0,
-                StrikeOffAdicional:0
+                StrikeOffAdicional: 0,
+                IdQuimica: null
                
 
             }),
