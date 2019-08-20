@@ -229,6 +229,7 @@
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\PerfilesImpresionesController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
     <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="Controllers\TiposAcabadosController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
+    <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
@@ -264,6 +266,7 @@
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
+    <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -854,6 +857,7 @@
     <Content Include="Scripts\js\PapelesInsumos.js" />
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
+    <Content Include="Scripts\js\PerfilesImpresiones.js" />
     <Content Include="Scripts\js\PersonalizacionErrores.js" />
     <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
@@ -881,6 +885,7 @@
     <Content Include="Scripts\js\TiposAcabados.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
+    <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
@@ -888,6 +893,7 @@
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
+    <Content Include="Scripts\js\VelocidadesTransferencias.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
@@ -1287,6 +1293,11 @@
     <Content Include="Views\Shared\_MaqSR22.cshtml" />
     <Content Include="Views\Estaciones\EstacionAccesorios.cshtml" />
     <Content Include="Views\Estaciones\EstacionColores.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatos.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatosSubli.cshtml" />
+    <Content Include="Views\PerfilesImpresiones\Index.cshtml" />
+    <Content Include="Views\VelocidadesTransferencias\Index.cshtml" />
+    <Content Include="Views\TiposOperacionesSublimaciones\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

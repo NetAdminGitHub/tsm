@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Tipos de Operaciones Sublimación";
+    ViewBag.IdVersion = "TSM0101069|v19080701";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlTpo = "@string.Format("{0}TiposOperacionesSublimaciones", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/TiposOperacionesSublimaciones.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
