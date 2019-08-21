@@ -208,6 +208,7 @@
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
     <Compile Include="Controllers\DefinicionBusquedaController.cs" />
     <Compile Include="Controllers\EjecutivoCuentasController.cs" />
+    <Compile Include="Controllers\EstacionesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\PerfilesImpresionesController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
     <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="Controllers\TiposAcabadosController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
+    <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
@@ -263,6 +266,7 @@
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
+    <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -830,6 +834,8 @@
     <Content Include="Scripts\js\DefinicionBusqueda.js" />
     <Content Include="Scripts\js\EjecutivoCuentas.js" />
     <Content Include="Scripts\js\ElementoTrabajo.js" />
+    <Content Include="Scripts\js\EstacionAccesorios.js" />
+    <Content Include="Scripts\js\EstacionColores.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
     <Content Include="Scripts\js\EtapasProcesosModulos.js" />
@@ -851,6 +857,7 @@
     <Content Include="Scripts\js\PapelesInsumos.js" />
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
+    <Content Include="Scripts\js\PerfilesImpresiones.js" />
     <Content Include="Scripts\js\PersonalizacionErrores.js" />
     <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
@@ -878,6 +885,7 @@
     <Content Include="Scripts\js\TiposAcabados.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
+    <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
@@ -885,7 +893,9 @@
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
+    <Content Include="Scripts\js\VelocidadesTransferencias.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
     <Content Include="Scripts\js\_SolicitudDesarrolloMuestras.js" />
     <Content Include="Scripts\js\_SolicitudRegCliente.js" />
@@ -1161,6 +1171,8 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.es-ES.min.js" />
     <Content Include="Scripts\kendo\messages\kendo.messages.es-ES.min.js.map" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
+    <Content Include="Scripts\konva.js" />
+    <Content Include="Scripts\konva.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\pdfobject.min.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
@@ -1278,6 +1290,14 @@
     <Content Include="Views\Marcas\Index.cshtml" />
     <Content Include="Views\OrientacionPositivos\Index.cshtml" />
     <Content Include="Views\TiposSeparaciones\Index.cshtml" />
+    <Content Include="Views\Shared\_MaqSR22.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesorios.cshtml" />
+    <Content Include="Views\Estaciones\EstacionColores.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatos.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatosSubli.cshtml" />
+    <Content Include="Views\PerfilesImpresiones\Index.cshtml" />
+    <Content Include="Views\VelocidadesTransferencias\Index.cshtml" />
+    <Content Include="Views\TiposOperacionesSublimaciones\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

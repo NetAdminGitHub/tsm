@@ -42,6 +42,7 @@
 }
 
 <link href="~/Content/bootstrap/AdjCarousel.css" rel="stylesheet" />
+<link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
 <style>
     #GRReqDesTec,
     #GRDimension,
@@ -115,16 +116,16 @@
 
                                                                     </div>
                                                                     <div class="form-row">
-                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                        <div class="form-group col-md-6 col-lg-3" id="colND">
                                                                             <label for="NoDocumento">No Requerimiento:</label>
                                                                             <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" />
                                                                         </div>
 
-                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                        <div class="form-group col-md-6 col-lg-3" id="colFecha">
                                                                             <label for="Fecha">Fecha:</label>
                                                                             <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
                                                                         </div>
-                                                                        <div class="form-group col-md-6  col-lg-3">
+                                                                        <div class="form-group col-md-6 col-lg-3" id="colPro">
                                                                             <label for="IdPrograma">Programa:</label>
                                                                             <input id="IdPrograma" name="IdPrograma" required validationMessage="Requerido" class="form-control" />
                                                                         </div>
@@ -136,7 +137,7 @@
                                                                                 </div>
                                                                                 <div class="form-group col-md-6 col-lg-5">
                                                                                     <label for="CmbIdUnidadMedidaCantidad">Unidad de Medida:</label>
-                                                                                    <input id="CmbIdUnidadMedidaCantidad" name="CmbIdUnidadMedidaCantidad" required validationMessage="Requerido" class="form-control" />
+                                                                                    <input id="CmbIdUnidadMedidaCantidad" name="CmbIdUnidadMedidaCantidad" class="form-control" />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -191,7 +192,7 @@
                                                                     <div class="form-row">
                                                                         <div class="form-group col-md-12 col-lg-12">
                                                                             <label for="InstruccionesEspeciales"> Instrucciones Especiales:</label>
-                                                                            <input id="InstruccionesEspeciales" name="InstruccionesEspeciales" class="form-control" />
+                                                                            <input id="InstruccionesEspeciales" name="InstruccionesEspeciales" class="k-textbox form-control" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -207,30 +208,30 @@
                                                                     <div class="form-row">
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label for="IdComposicionTela">Composición Tela:</label>
-                                                                            <input id="IdComposicionTela" name="IdComposicionTela" required validationMessage="Requerido" class="form-control" />
+                                                                            <input id="IdComposicionTela" name="IdComposicionTela"  class="form-control" />
                                                                         </div>
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label for="IdCategoriaConfeccion">Confección:</label>
-                                                                            <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion" required validationMessage="Requerido" class="form-control" />
+                                                                            <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion"  class="form-control" />
                                                                         </div>
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label for="IdConstruccionTela">Construcción Tela:</label>
-                                                                            <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
+                                                                            <input id="IdConstruccionTela" name="IdConstruccionTela"  class="form-control" />
                                                                         </div>
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label for="Color">Color:</label>
-                                                                            <input id="Color" name="Color" required validationMessage="Requerido" class="form-control" />
+                                                                            <input id="Color" name="Color"  class="k-textbox form-control" />
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="form-row">
-                                                                        <div class="form-group col-md-6 col-lg-3">
+                                                                        <div class="form-group col-md-6 col-lg-3" id="colTp">
                                                                             <label for="IdCategoriaPrenda">Tipo Prenda:</label>
                                                                             <input id="IdCategoriaPrenda" name="IdCategoriaPrenda" class="form-control" />
                                                                         </div>
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label for="IdUbicacion">Ubicación del Estampado:</label>
-                                                                            <input id="IdUbicacion" name="IdUbicacion" required validationMessage="Requerido" class="form-control" />
+                                                                            <input id="IdUbicacion" name="IdUbicacion"  class="form-control" />
                                                                         </div>
                                                                         <div class="form-group col-md-6 col-lg-3">
                                                                             <label id="LblUbicacionVer" for="UbicacionVer">Ubicación Vertical: </label>

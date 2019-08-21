@@ -90,8 +90,17 @@
                                                         <input id="TallaPrincipal" name="TallaPrincipal" class="k-textbox form-control" disabled="disabled" />
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="CantidadTallas" id="lblCantidadTallas">Cantidad Tallas:</label>
-                                                        <input id="CantidadTallas" name="CantidadTallas" type="text" required  class="form-control" />
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                <label for="CantidadTallas" id="lblCantidadTallas">Cantidad Tallas:</label>
+                                                                <input id="CantidadTallas" name="CantidadTallas" type="text" required class="form-control" />
+                                                            </div>
+                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                <label for="Combo" id="lblCombo">Combo:</label>
+                                                                <input id="Combo" name="Combo" type="text" required class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                      
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <div class="form-row">
@@ -106,17 +115,6 @@
                                                         </div>
                                                     </div>
                                                    
-                                                </div>
-                                                <div class="form-row" id="Row5RD">
-                                                    <!-- Row5RD este id se utiliza para oculatar la fila dependiendo del servicio-->
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="Combo" id="lblCombo">Combo:</label>
-                                                        <input id="Combo" name="Combo" type="text" required class="form-control" />
-                                                    </div>
-                                                    <div class="form-group col-md-12 col-lg-9">
-                                                        <label for="IdSistemaTinta">Sistemas de Tintas:</label>
-                                                        <input id="IdSistemaTinta" name="IdSistemaTinta" class="form-control" />
-                                                    </div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-12 col-lg-12">
@@ -165,11 +163,11 @@
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6 col-lg-6">
                                                         <label id="LblUbicacionVer" for="UbicacionVer">Ubicación Vertical: </label>
-                                                        <textarea id="UbicacionVer" rows="4" name="UbicacionVer" type="text" class="form-control" ></textarea>
+                                                        <textarea id="UbicacionVer" rows="2" name="UbicacionVer" type="text" class="form-control" ></textarea>
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-6">
                                                         <label id="LblUbicacionHor" for="UbicacionHor">Ubicación Horizontal:</label>
-                                                        <textarea id="UbicacionHor" rows="4" name="UbicacionHor" type="text" class="form-control"></textarea>
+                                                        <textarea id="UbicacionHor" rows="2" name="UbicacionHor" type="text" class="form-control"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -177,67 +175,54 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-lg-12">
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-7">
-                                                    <!-- SECION FROMULARIO ARTE-->
-                                                    <div class="border p-md-1 p-lg-1">
-                                                        <div class="form-row">
-                                                            <div class="col-lg-6"><label class="font-weight-bold">Diseño</label></div>
-                                                            <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="Nombre">Nombre del Diseño:</label>
-                                                                <input id="Nombre" name="Nombre" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
-                                                            </div>
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="NumeroDiseno">Numero del Diseño:</label>
-                                                                <input id="NumeroDiseno" name="NumeroDiseno" type="text" class="k-textbox form-control" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="EstiloDiseno">Estilo:</label>
-                                                                <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
-                                                            </div>
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="CmbTipoLuz">Tipo de Luz:</label>
-                                                                <input id="CmbTipoLuz" name="CmbTipoLuz" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="CmbTipoAcabado">Acabado:</label>
-                                                                <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
-                                                            </div>
-                                                            <div class="form-group col-md-6 col-lg-6">
-                                                                <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
-                                                                <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
-                                                            </div>
-                                                        </div>
-                                                   
+                                            <!-- SECION FROMULARIO ARTE-->
+                                            <div class="border p-md-1 p-lg-1">
+                                                <div class="form-row">
+                                                    <div class="col-lg-6"><label class="font-weight-bold">Diseño</label></div>
+                                                    <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="Nombre">Nombre del Diseño:</label>
+                                                        <input id="Nombre" name="Nombre" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
                                                     </div>
-                                                    <div class="form-row"> <div class="form-group"></div></div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12 col-lg-4 align-self-lg-end">
-                                                            <div class="input-group">
-                                                                <div style="width: 100%;">
-                                                                    <button type="button" id="Guardar" name="Guardar"></button>
-                                                                    @Html.Partial("~/Views/RequerimientoDesarrollos/_ArteAdjuntos.cshtml")
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="NumeroDiseno">Numero del Diseño:</label>
+                                                        <input id="NumeroDiseno" name="NumeroDiseno" type="text" class="k-textbox form-control" />
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="EstiloDiseno">Estilo:</label>
+                                                        <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="CmbTipoLuz">Tipo de Luz:</label>
+                                                        <input id="CmbTipoLuz" name="CmbTipoLuz" class="form-control" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-5">
-                                                    <!-- SECION ADJUNTOS-->
-                                                    <div class="form-row">
-                                                        <div class="form-group col-lg-12" id="Div_Carousel">
-                                                            @* aqui se coloca dinamicamente las imagenes  *@
-                                                        </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="CmbTipoAcabado">Acabado:</label>
+                                                        <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
                                                     </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-lg-3">
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <label for="CmbQuimica">Química a Utilizar</label>
+                                                        <input name="CmbQuimica" id="CmbQuimica" required validationMessage="Requerido" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-12 col-lg-6">
+                                                        <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
+                                                        <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
+                                                    </div>
+                                                </div>
+                                               
+
+                                            </div>
+                                            <div class="form-row"> <div class="form-group"></div></div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12 col-lg-4 align-self-lg-end">
+                                                    <div class="input-group">
+                                                        <div style="width: 100%;">
+                                                            <button type="button" id="Guardar" name="Guardar"></button>
+                                                            @Html.Partial("~/Views/RequerimientoDesarrollos/_ArteAdjuntos.cshtml")
                                                         </div>
                                                     </div>
                                                 </div>
@@ -261,9 +246,18 @@
                                     <span class="TS-icon-LAPIZ" style="font-size: 1.7em;">&nbsp</span>
                                     Detalle Diseño Color & Técnica
                                     <div class="form-row" id="ColorTecGrid">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <div id="GRReqDesColorTec"></div>
+                                        <div class="form-group col-lg-12">
+                                            <div class="form-row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <div id="GRReqDesColor"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <div id="GRReqDesTec"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

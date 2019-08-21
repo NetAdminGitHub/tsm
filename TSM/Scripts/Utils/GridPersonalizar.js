@@ -1,5 +1,5 @@
 ﻿//funcion opcion default.
-function givenOrDefault(given, def ) {
+function givenOrDefault(given, def) {
     if (typeof given !== "undefined") {
         return given;
     } else {
@@ -12,7 +12,7 @@ function givenOrDefault(given, def ) {
 const ModoEdicion = {
     EnLinea: "inline",
     EnPopup: "popup",
-    Batch:"batch",
+    Batch: "batch",
     NoEditable: false
 };
 // opciones redimencional.
@@ -43,19 +43,19 @@ var windowMensaje;
 
 
  */
-function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redimensionable, Opcheight, selectable,FiltroModo) {
-  
+function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redimensionable, Opcheight, selectable, FiltroModo) {
+
     ModoEdicion: givenOrDefault(ModoEdicion, "popup");
-    OpcGrid={
+    OpcGrid = {
         sortable: givenOrDefault(Ordenable, true),
-        filterable: givenOrDefault(Filtrable, true) === true ? (givenOrDefault(FiltroModo, "") === "" ? true : { mode : FiltroModo }) : false,
+        filterable: givenOrDefault(Filtrable, true) === true ? (givenOrDefault(FiltroModo, "") === "" ? true : { mode: FiltroModo }) : false,
         columnMenu: givenOrDefault(ColMenu, true),
-        editable: ModoEdicion !== "popup" ? ModoEdicion ==="batch" ? true : ModoEdicion : {
+        editable: ModoEdicion !== "popup" ? ModoEdicion === "batch" ? true : ModoEdicion : {
             mode: ModoEdicion,
             update: true,
             createAt: "bottom",
             window: {
-                title:"Editar"
+                title: "Editar"
             }
         },
         scrollable: true,
@@ -68,7 +68,7 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
             pageSizes: [20, 50, 100, "all"]
         },
         height: Opcheight === 0 ? "100 %" : givenOrDefault(Opcheight, 600)
-        
+
     };
 
     e.setOptions($.extend({}, e.getOptions(), OpcGrid));
@@ -87,14 +87,14 @@ function SetGrid_CRUD_ToolbarBatch(e, Create, Save, Cancelar) {
     if (Create) opciones.push("create");
     if (Save) opciones.push("save");
     if (Cancelar) opciones.push("cancel");
-    
+
     if (Create === false && Save === false && Cancelar === false) {
         Opctoolbar = { toolbar: false };
     }
     else {
         Opctoolbar = { toolbar: opciones };
     }
-   
+
     e.setOptions($.extend({}, e.getOptions(), Opctoolbar));
 
 }
@@ -135,9 +135,9 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
 
     $("#" + Id_GridDetalle + "").children().remove();
 
-    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button' id='noButton_" + e.element.attr('id') +"' style='width: 75px;'>No</button></div></span>");
+    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button' id='noButton_" + e.element.attr('id') + "' style='width: 75px;'>No</button></div></span>");
     var windowEliminar = $("<div />").kendoWindow({
-        title: "Confirmación" ,
+        title: "Confirmación",
         visible: false,
         width: "400px",
         height: "200px",
@@ -175,7 +175,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
         // grdi maestro.
         if (borrar) opciones.push({ name: "Eliminar", click: EliminarClick, iconClass: "k-icon k-i-delete", text: "" });
     }
-   
+
     // habilitar o deshabilitar el modo edicion cuando el usuario presiona <enter> en la fila
     e.options.editable.update = editar;
 
@@ -198,18 +198,18 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
 
         if (borrar) {
             Opccommand = {
-                columns:  Opccommand === "" ? columns.concat([{
-                    field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false }},
+                columns: Opccommand === "" ? columns.concat([{
+                    field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
                     command: opciones[0], width: 70 + "px", attributes: {
 
                         style: "text-align: center"
                     }
                 }]) : Opccommand.columns.concat([{
-                        field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
-                        command: opciones[1], width: 70 + "px", attributes: {
+                    field: "cmdDel", title: "&nbsp;", menu: false, filterable: { cell: { enabled: false } },
+                    command: opciones[1], width: 70 + "px", attributes: {
 
-                            style: "text-align: center"
-                        }
+                        style: "text-align: center"
+                    }
                 }])
             };
         }
@@ -244,8 +244,8 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
         }
     });
 
-    $("#" + e.element.attr('id')+"").kendoTooltip({
-        filter: ".k-grid-Eliminar",  
+    $("#" + e.element.attr('id') + "").kendoTooltip({
+        filter: ".k-grid-Eliminar",
         content: function (e) {
             return "Eliminar";
         }
@@ -284,7 +284,7 @@ var Grid_ColTemplateCheckBox = function (data, columna) {
 
 // FORMATO NUMERICO CON DECIMALES.
 var Grid_ColNumeric = function (container, options) {
-    $('<input ' + options.values[0] +' data-bind="value:' + options.field + '" name="' + options.field + '" />')
+    $('<input ' + options.values[0] + ' data-bind="value:' + options.field + '" name="' + options.field + '" />')
         .appendTo(container)
         .kendoNumericTextBox({
             min: options.values[1],
@@ -292,7 +292,8 @@ var Grid_ColNumeric = function (container, options) {
             format: options.values[3],
             restrictDecimals: options.values[4] === 0,
             decimals: options.values[4],
-            valuePrimitive: true
+            valuePrimitive: true,
+            step: options.values[5] === undefined || options.values[5] === "" ? 1 : options.values[5]
         });
 };
 
@@ -307,7 +308,7 @@ var Grid_ColInt64NumSinDecimal = function (container, options) {
             min: 0,
             max: 999999999999999999
         });
-      
+
 };
 
 // FORMATO NUMERICO SIN DECIMALES.
@@ -331,7 +332,7 @@ var Grid_ColLocked = function (container, options) {
         .appendTo(container)
         .attr("disabled", "disabled")
         .addClass("k-input k-textbox");
-  
+
 };
 
 // funcion para lista desplegables
@@ -344,14 +345,14 @@ function Grid_CmbEditor(container, options) {
             dataTextField: options.values[0],
             dataValueField: options.field,
             autoWidth: true,
-            placeholder: givenOrDefault(options.values[3],"Seleccione un valor ...."),
+            placeholder: givenOrDefault(options.values[3], "Seleccione un valor ...."),
             filter: "contains",
             dataSource: {
                 sort: { field: options.values[0], dir: "asc" },
                 transport: {
                     read: options.values[2] === "" ? options.values[1] : options.values[1] + "/" + options.values[2]
 
-                  
+
                 }
             }
         });
@@ -426,6 +427,31 @@ function Grid_Combox(container, options) {
         });
 }
 
+/**
+ * Crea un ComboBox para ser utlizado en un editor de un Kendo.UI.Grid.
+ * @param {kendo.ui.Grid} container Grid contenedor de la funcion.
+ * @param {string[]} options Listado de opciones: 0 - dataValue, 1 - dataText, 2 - urlRead,  3 - placeHolder, 4- required, 5 - cascadeFrom, 6 - validationMessage
+ */
+function Grid_ComboxData(container, options) {
+    var required = givenOrDefault(options.values[4], "");
+    var Message = givenOrDefault(options.values[6], "");
+    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+    $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+        .appendTo(container)
+        .kendoComboBox({
+            valuePrimitive: true,
+            autoBind: true,
+            dataTextField: options.values[1],
+            dataValueField: options.values[0],
+            autoWidth: true,
+            cascadeFrom: givenOrDefault(options.values[5], ""),
+            placeholder: givenOrDefault(options.values[3], "Seleccione un valor ...."),
+            filter: "contains",
+            dataSource: options.values[2]
+
+        });
+}
+
 function Grid_requestEnd(e) {
     if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) {
         let mensaje, tipo;
@@ -463,7 +489,7 @@ function Grid_error(e) {
         let mensaje = ((e.xhr.responseJSON.Mensaje === null || e.xhr.responseJSON.Mensaje === undefined) ? e.xhr.responseJSON.ExceptionMessage : e.xhr.responseJSON.Mensaje) + ((e.xhr.responseJSON.Output === null || e.xhr.responseJSON.Output === undefined) ? "" : " " + e.xhr.responseJSON.Output);
         let icono = e.xhr.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
         let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
-         windowMensaje = $("<div />").kendoWindow({
+        windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
             width: "500px",
@@ -529,7 +555,7 @@ function Grid_HabilitaToolbar(e, agregar, editar, borrar) {
 
 
     if (agregar) {
-       
+
         $(".k-grid-add", e).removeClass("k-state-disabled")
             .attr("href");
 
@@ -538,7 +564,7 @@ function Grid_HabilitaToolbar(e, agregar, editar, borrar) {
 
         $(".k-grid-add", e)
             .addClass("k-state-disabled")
-           .removeAttr("href");
+            .removeAttr("href");
     }
     if (editar) {
 
@@ -571,7 +597,7 @@ function Grid_HabilitaToolbar(e, agregar, editar, borrar) {
             .attr("href");
 
         e.data("kendoGrid").showColumn("cmdDel");
-        
+
     }
     else {
 
@@ -586,7 +612,7 @@ function Grid_HabilitaToolbar(e, agregar, editar, borrar) {
         e.data("kendoGrid").hideColumn("cmdDel");
     }
 
-  
+
 }
 // selecciona fila
 
@@ -617,7 +643,7 @@ function Grid_SetSelectRow(e, selectedRows) {
     if (itemsToSelect.length === 0) {
         grid.select("tr:eq(0)");
         $("tr:eq(1) td:eq(0)", e).closest('table').focus();
-    }            
+    }
     else
         grid.select(itemsToSelect);
 }
@@ -646,6 +672,6 @@ function Fn_Grid_Resize(e, height) {
  * @param {any} options opxion del campo
  */
 var Grid_ColTextArea = function (container, options) {
-    $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="'+ options.values[0]+ '" style="width: 100%;" class="k-textarea"></textarea>')
+    $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-textarea"></textarea>')
         .appendTo(container);
 };
