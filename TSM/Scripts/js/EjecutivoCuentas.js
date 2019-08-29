@@ -138,15 +138,15 @@ $(document).ready(function () {
     dsCli = new kendo.data.DataSource({
         transport: {
             read: {
-                url: function (datos) { return UrlECC + "/GetEjecutivoCuentasClienteByIdEjecutivoCuenta/" + vIdEjeCta.toString(); },
+                url: function (datos) { return UrlECC + "/GetEjecutivoCuentasContactosMarcaByIdEjecutivoCuenta/" + vIdEjeCta.toString(); },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdCliente; },
+                url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdContactoCliente + "/" + datos.Item; },
                 type: "DELETE"
             },
             update: {
-                url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdCliente; },
+                url: function (datos) { return UrlECC + "/" + datos.IdEjecutivoCuenta + "/" + datos.IdContactoCliente + "/" + datos.Item; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
@@ -168,7 +168,7 @@ $(document).ready(function () {
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         schema: {
             model: {
-                id: "IdCliente",
+                id: "IdContactoCliente",
                 fields: {
                     IdEjecutivoCuenta: {
                         type: "string",
@@ -176,8 +176,14 @@ $(document).ready(function () {
                             return fn_GetIdEjecutivoCuenta($("#grid").data("kendoGrid"));
                         }
                     },
-                    IdCliente: { type: "string" },
-                    NoCuenta: { type: "string" },
+                    IdMarca: { type: "string" },
+                    Nombre2: { type: "string" },
+                    IdContactoCliente: { type: "string" },
+                    Item: {
+                        type: "number", defaultValue: function (e) {
+                            return 0;
+                        }
+                    },
                     Nombre: {
                         type: "string"
                     },
@@ -190,9 +196,13 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#Estado").data("kendoComboBox").selectedIndex >= 0;
                                 }
-                                if (input.is("[name='IdCliente']")) {
+                                if (input.is("[name='IdMarca']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdCliente").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdMarca").data("kendoComboBox").text() === "" ? true : $("#IdMarca").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                if (input.is("[name='IdContactoCliente']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdContactoCliente").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 return true;
                             }
@@ -216,28 +226,36 @@ $(document).ready(function () {
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IdEjecutivoCuenta");
             KdoHideCampoPopup(e.container, "Nombre");
-            KdoHideCampoPopup(e.container, "NoCuenta");
             KdoHideCampoPopup(e.container, "Nombre1");
+            KdoHideCampoPopup(e.container, "Nombre2");
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
-            if (!e.model.isNew()) {
-                KdoHideCampoPopup(e.container, "IdCliente");
-                Grid_Focus(e, "IdUsuarioMod");
-            } else {
-                Grid_Focus(e, "IdCliente");
-            }
+            KdoHideCampoPopup(e.container, "Item");
+            $('[name="IdContactoCliente"]').on('change', function (e) {
+                let Idcc = Kendo_CmbGetvalue($('[name="IdContactoCliente"]'));
+                KdoCmbGetValue($('[name="IdMarca"]'), "");
+                $('[name="IdMarca"]').data("kendoComboBox").setDataSource(getDsIdContacto(Idcc));
 
+            });
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdContactoCliente");
+                Grid_Focus(e, "Estado");
+            } else {
+                Grid_Focus(e, "IdContactoCliente");
+            }
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdEjecutivoCuenta", title: "Ejecutiva Cuenta", hidden: true },
-            { field: "IdCliente", title: "Cliente", values: ["IdCliente", "Nombre", UrlC, "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true},
-            { field: "Nombre", title: "Nombre Cliente" },
-            { field: "NoCuenta", title: "NoCuenta" },
-            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "EjecutivoCuentasClientes", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
-            { field: "Nombre1", title: "Estado" },
+            { field: "IdEjecutivoCuenta", title: "Cod. Ejecutiva Cuenta", hidden: true },
+            { field: "IdContactoCliente", title: "Contacto", values: ["IdContactoCliente", "Nombre", UrlCc, "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Item", title: "item", hidden: true},
+            { field: "Nombre", title: "Contacto" },
+            { field: "IdMarca", title: "Marca", values: ["IdMarca", "Nombre", UrlCMc + "/GetClientesMarcabyIdContactoCliente/nothing", "", "Seleccione....", "", "", ""], editor: Grid_Combox, hidden: true },
+            { field: "Nombre2", title: "Marca" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "EjecutivoCuentasContactosMarcas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre1", title: "Estado" }
         ]
     });
 
@@ -267,10 +285,34 @@ $(document).ready(function () {
         $("#gridCli").data("kendoGrid").dataSource.read();
         $("#grid").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridCli"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridCli"), false, false, false);
     };
+
+    
     //#endregion 
 });
 
-var fn_GetIdEjecutivoCuenta = function (g) {
+let getDsIdContacto=function(idcontacto) {
+
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    url: UrlCMc + "/GetClientesMarcabyIdContactoCliente/" + idcontacto.toString(),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
+}
+
+let fn_GetIdEjecutivoCuenta = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdEjecutivoCuenta;
 

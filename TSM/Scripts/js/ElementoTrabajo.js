@@ -6,7 +6,9 @@ var item;
 var idTipoOrdenTrabajo;
 var EtpAsignado = false;
 var EtpSeguidor = false;
-
+let vpImgDis;
+var xIdQuimica;
+var NombreQui;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -40,6 +42,7 @@ var fn_CambioEtp = function (e) {
 };
 
 $(document).ready(function () {
+    PanelBarConfig($("#BarPanelInfo"));
     $.ajax({
         url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapasByOrdenTrabajo/" + idOrdenTrabajo,
         method: 'GET',
@@ -51,15 +54,16 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
 
-    //Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + datos.IdEtapaProceso, "Nombre", "IdUsuario", "Seleccione...");
-    //Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/" + datos.IdEtapaProceso, "Nombre", "IdEtapaProcesoAS", "Seleccione...");
-    //Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + datos.IdTipoOrdenTrabajo + "/" + "0", "Nombre", "IdUsuario", "Seleccione...");
-
     $("#cmbEtpSigAnt").data("kendoComboBox").bind("change", function (e) {
         $("#cmbUsuarioEtp").data("kendoComboBox").value("");
         $("#cmbUsuarioEtp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(idTipoOrdenTrabajo.toString(), this.value() === "" ? 0 : this.value()));
 
     });
+
+    KdoButton($("#btnCambiarAsignado"), "gear");
+    KdoButton($("#btnAsignarUsuario"), "save");
+    KdoButton($("#btnCambiarEtapa"), "gear");
+    KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
 });
 
@@ -67,16 +71,21 @@ window.onpopstate = function (e) {
     $("#smartwizard").smartWizard("goToPage", e.state);
 };
 
-KdoButton($("#btnCambiarAsignado"), "gear");
-KdoButton($("#btnAsignarUsuario"), "save");
-KdoButton($("#btnCambiarEtapa"), "gear");
-KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
+
 
 /**
  * Funcion para cargar informacion de cabecera de la etapa.
  * @param {boolean} RecargarScriptVista Indica si se volveran a cargar los script de inicio de la vista parcial.
  */
 var CargarInfoEtapa = function (RecargarScriptVista = true) {
+    // carar imagen modal
+    vpImgDis = $("#OTSlide");
+    vpImgDis.children().remove();
+    vpImgDis.append(Fn_Carouselcontent());
+    $("#idcloseMod").click(function () {
+        $("#myModal").modal('toggle');
+        $("#myModal").modal('hide');
+    });
     $.ajax({
         url: TSM_Web_APi + "/OrdenesTrabajosDetalles/" + idOrdenTrabajo + "/" + idEtapaProceso,
         method: 'GET',
@@ -123,8 +132,16 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNomEstado").val(datos.NomEstado);
     $("#txtNombrePrenda").val(datos.NombrePrenda);
     $("#txtItem").val(datos.Item);
-    idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
 
+    $("#TxtColor").val(datos.Color);
+    $("#TxtNombreCPT").val(datos.NombreCPT);
+    $("#TxtNombreCCT").val(datos.NombreCCT);
+    $("#TxtNombreCFT").val(datos.NombreCFT);
+    $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
+
+    idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
+    xIdQuimica = datos.IdQuimica;
+    NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
 
@@ -142,8 +159,26 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $.each(fun_ListDatos, function (index, elemento) {
         elemento.call(document, jQuery);
     });
-};
 
+    fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
+
+};
+var fn_getImagen = function (xUrl,xNodocumentoReq) {
+    //LLena Splitter de imagenes
+    kendo.ui.progress($("#splitter"), true);
+    $.ajax({
+        url: xUrl,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + xNodocumentoReq.toString(), respuesta);
+            kendo.ui.progress($("#splitter"), false);
+        },
+        error: function () {
+            kendo.ui.progress($("#splitter"), false);
+        }
+    });
+};
 var get_cmbUsuario = function (tipoOrd, etp) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
