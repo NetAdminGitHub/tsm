@@ -9,6 +9,9 @@ var EtpSeguidor = false;
 let vpImgDis;
 var xIdQuimica;
 var NombreQui;
+var xVistaFormulario;
+var gridAlto = 300;
+var xvNodocReq;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -132,22 +135,22 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNomEstado").val(datos.NomEstado);
     $("#txtNombrePrenda").val(datos.NombrePrenda);
     $("#txtItem").val(datos.Item);
-
+    $("#txtIdRequerimiento").val(datos.IdRequerimiento);
     $("#TxtColor").val(datos.Color);
     $("#TxtNombreCPT").val(datos.NombreCPT);
     $("#TxtNombreCCT").val(datos.NombreCCT);
     $("#TxtNombreCFT").val(datos.NombreCFT);
     $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
-
+    xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-
+    xvNodocReq = datos.NodocReq;
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
-
+    fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
@@ -159,9 +162,6 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $.each(fun_ListDatos, function (index, elemento) {
         elemento.call(document, jQuery);
     });
-
-    fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
-
 };
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
     //LLena Splitter de imagenes
@@ -422,6 +422,496 @@ $("#btnAsignarUsuario").click(function (e) {
         });
     }
 });
+
+var fn_GetMaquinas = function () {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+
+    return result;
+};
+
+var fn_gridColorEstacion = function (gd) {
+
+    var dsColor = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/GetRequerimientoDesarrollosColoresByIdRequerimiento/" + $("#txtIdRequerimiento").val(); },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosColores",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdRequerimientoColor",
+                fields: {
+                    IdRequerimientoColor: {
+                        type: "number"
+
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function () {
+                            return $("#txtIdRequerimiento").val();
+                        }
+                    },
+                    Color: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='Color']") && input.val().length > 200) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    return false;
+                                }
+                                return true;
+                            }
+                        }
+
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdRequerimientoColor");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "Color");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRequerimientoColor", title: "Código. Desarrollo Color", hidden: true },
+            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "Color", title: "Color Diseño" }
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
+    SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsColor);
+
+    var srow1 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow1);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow1);
+    });
+
+
+    let grid1 = gd.data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Color: ' + dataItem.Color + '</tr></tbody></table></div>');
+            return item;
+
+        },
+        group: "gridGroup"
+    });
+
+};
+
+var fn_gridTecnicaEstacion = function (gd) {
+
+    var dsTecnica = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/GetRequerimientoDesarrollosColoresTecnicaByIdRequerimiento/" + $("#txtIdRequerimiento").val(); },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdRequerimientoTecnica",
+                fields: {
+                    IdRequerimientoTecnica: {
+                        type: "number"
+
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function () {
+                            return $("#txtIdRequerimiento").val();
+                        }
+                    },
+                    IdTecnica: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='IdTecnica']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+    });
+
+    let Urltec = TSM_Web_APi + "Tecnicas";
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "IdTecnica");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRequerimientoTecnica", title: "Código. Muestra Técnica", hidden: true },
+            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "IdTecnica", title: "Técnicas", editor: Grid_Combox, values: ["IdTecnica", "Nombre", Urltec, "GetbyServicio/" + $("#IdServicio").val(), "Seleccione un Técnica....", "", "", ""], hidden: true },
+            { field: "Nombre", title: "Nombre técnica" }
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
+    SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsTecnica);
+
+    var srow2 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow2);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow2);
+    });
+
+    let grid1 = gd.data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Técnica: ' + dataItem.Nombre + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+};
+
+var fn_gridBasesEstacion = function (gd) {
+
+    var dsBase = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: TSM_Web_APi + "BasesMuestras",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdBase",
+                fields: {
+                    IdBase: { type: "number" },
+                    Nombre: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdBase", title: "Código base", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "Nombre", title: "Bases" }
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsBase);
+
+    var srow3 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow3);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow3);
+    });
+
+
+    let grid1 = gd.data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Base: ' + dataItem.Nombre + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+};
+
+var fn_gridAccesoriosEstacion = function (gd) {
+
+    var dsAcce = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: TSM_Web_APi + "AccesoriosMaquinas",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdAccesorio",
+                fields: {
+                    IdAccesorio: { type: "number" },
+                    Nombre: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdAccesorio", title: "Código Accesorios", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "Nombre", title: "Accesorios" }
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsAcce);
+
+    var srow4 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow4);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow4);
+    });
+
+
+    let grid1 = gd.data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let dataItem = grid1.dataItem(e);
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>Accesorio: ' + dataItem.Nombre + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+
+};
+
+var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#body"), true);
+    let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
+    $.ajax({
+        url: Urldel,
+        type: "Delete",
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Delete");
+            var a = stage.find("#TxtInfo" + xIdestacion);
+            if (xIdestacion !== undefined) {
+                a.text("");
+                maq = fn_GetMaquinas();
+                var b = stage.find("#brazo" + xIdestacion);
+                b.IdSeteo = 0;
+                b.IdTipoFormulacion = "";
+                layer.draw();
+
+            } else {
+                fn_RTCargarMaquina();
+            }
+            kendo.ui.progress($("#body"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#body"), false);
+            ErrorMsg(data);
+        }
+    });
+};
+
+var fn_Estaciones = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+
+    return result;
+};
+
+var fn_GetEstacion = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/GetSeteoMaquinasEstacionVista/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+    return result;
+};
+
+var fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+    return result;
+};
+
+var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#body"), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+            kendo.ui.progress($("#body"), false);
+        }
+    });
+
+    return result;
+};
 
 $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";

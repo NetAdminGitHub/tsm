@@ -187,7 +187,7 @@ let fn_GuardarSolictudDesarrollo = function () {
         data: JSON.stringify({
             IdSolicitudDesarrollo: $("#TxtIdSolicitudDesarrollo").val(),
             IdTipoSolicitudDesarrollo: KdoCmbGetValue($("#CmbTipoSolicitudDesarrollo")),
-            IdRequerimiento: $("#txtId").val(),
+            IdRequerimiento: $("#txtIdRequerimiento").val(),
             IdCliente: $("#IdCliente").val(),
             FechaSolicitudCliente: xFechaSolicitudCliente,
             FechaSolicitudDesarrollo: xFechaSolicitudDesarrollo,
