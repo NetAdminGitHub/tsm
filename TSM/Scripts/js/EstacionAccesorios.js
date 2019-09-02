@@ -66,23 +66,5 @@ let fn_GuardarEstacionAcce = function (xIdBrazo) {
     });
 };
 
-let fn_GetEstacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionAccesorios"), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/GetSeteoMaquinasEstacionVista/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-            kendo.ui.progress($("#MEstacionAccesorios"), false);
-        }
-    });
-
-    return result;
-};
-
-
-
 fn_PWList.push(fn_VistaEstacionAccesorios);
 fn_PWConfList.push(fn_VistaEstacionAccesoriosDocuReady);

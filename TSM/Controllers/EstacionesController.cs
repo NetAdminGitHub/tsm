@@ -21,6 +21,14 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult EstacionDisenos()
+        {
+            return PartialView();
+        }
+        public ActionResult EstacionAccesoriosDis()
+        {
+            return PartialView();
+        }
 
 
     }
