@@ -29,7 +29,10 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
-
+        public ActionResult EstacionFormulas()
+        {
+            return PartialView();
+        }
 
     }
 }

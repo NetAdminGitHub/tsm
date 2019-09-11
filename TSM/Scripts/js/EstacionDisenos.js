@@ -130,7 +130,7 @@ var fn_VistaEstacionDiseno = function () {
     TextBoxEnable($("#TxtNombreQui_Dis"), false);
     $("#TxtOpcSelec_Dis").val($("#TxtOpcSelec_Dis").data("name"));
     idBra = $("#TxtOpcSelec_Dis").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
-    Te = $("#TxtOpcSelec_Dis").data("TipoEstacion");
+    Te = $("#TxtOpcSelec_Dis").data("Formulacion");
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
     estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
@@ -286,7 +286,8 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            $("#MEstacionDisenos").modal('hide');
+            //$("#MEstacionDisenos").modal('hide');
+            $("#MEstacionDisenos").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {

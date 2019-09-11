@@ -165,9 +165,8 @@ let fn_GetSolicitud = function () {
                 $("#TxtEstado").val("");
                 KdoButtonEnable($("#btnGuardar"), false);
             }
-            kendo.ui.progress($("#body"), false);
         },
-        error: function (respuesta) {
+        complete: function () {
             kendo.ui.progress($("#body"), false);
         }
     });
@@ -201,13 +200,14 @@ let fn_GuardarSolictudDesarrollo = function () {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            kendo.ui.progress($("#body"), false);
             $("#gridSolDes").data("kendoGrid").dataSource.read();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
-            kendo.ui.progress($("#body"), false);
             ErrorMsg(data);
+        },
+        complete: function () {
+            kendo.ui.progress($("#body"), false);
         }
     });
 

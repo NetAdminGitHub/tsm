@@ -45,25 +45,28 @@ var fn_DMCargarConfiguracion = function () {
     fn_gridColorEstacion($("#dgColorDis"));
     $("#dgColorDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
     $("#dgColorDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgColorDis").data("TipoEstacion", "COLOR"); // guardar nombre archivo JS
+    $("#dgColorDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgColorDis").data("Formulacion", "COLOR"); // guardar nombre archivo JS
 
     fn_gridTecnicaEstacion($("#dgTecnicaDis"));
     $("#dgTecnicaDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
     $("#dgTecnicaDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgTecnicaDis").data("TipoEstacion", "TECNICA"); // guardar nombre archivo JS
+    $("#dgTecnicaDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgTecnicaDis").data("Formulacion", "TECNICA"); //guarda el idformulacion
 
     fn_gridBasesEstacion($("#dgBasesDis"));
     $("#dgBasesDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
     $("#dgBasesDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgBasesDis").data("TipoEstacion", "BASE"); // guardar nombre archivo JS
+    $("#dgBasesDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgBasesDis").data("Formulacion", "BASE"); // guarda el idformulacion
 
     fn_gridAccesoriosEstacion($("#dgAccesoriosDis"));
     $("#dgAccesoriosDis").data("Estacion", "MEstacionAccesoriosDis"); // guardar nombre vista modal
     $("#dgAccesoriosDis").data("EstacionJS", "EstacionAccesoriosDis.js"); // guardar nombre archivo JS
     $("#dgAccesoriosDis").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
-
+    $("#dgAccesoriosDis").data("Formulacion", ""); // guarda el idformulacion
     maq = fn_GetMaquinas();
-
+    TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
     Kendo_CmbFiltrarGrid($("#CmbMaquinaDis"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
     KdoComboBoxEnable($("#CmbMaquinaDis"), false);

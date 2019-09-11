@@ -12,13 +12,15 @@ var NombreQui;
 var xVistaFormulario;
 var gridAlto = 300;
 var xvNodocReq;
+var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
+var TiEst; // guarda los tipos de estaciones
 fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_CambioEtp = function (e) {
 
     if (ValidarCamEtp.validate()) {
-        kendo.ui.progress($("#body"), true);
+        kendo.ui.progress($(document.body), true);
         $.ajax({
             url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa" ,
             method: "POST",
@@ -34,10 +36,12 @@ var fn_CambioEtp = function (e) {
                 RequestEndMsg(datos, "Post");
                 $("#vCamEtapa").data("kendoDialog").close();
                 $("#smartwizard").smartWizard("goToPage", $("[etapa=" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "]").attr("indice"));
-                kendo.ui.progress($("#body"), false);
             },
             error: function (data) {
                 ErrorMsg(data);
+            },
+            complete: function () {
+                kendo.ui.progress($(document.body), false);
             }
         });
     }
@@ -46,11 +50,15 @@ var fn_CambioEtp = function (e) {
 
 $(document).ready(function () {
     PanelBarConfig($("#BarPanelInfo"));
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapasByOrdenTrabajo/" + idOrdenTrabajo,
         method: 'GET',
         success: function (resultado) {
             CrearEtapasProcesosModulo($("#smartwizard"), resultado, opcionesFormaSmartWizard.Flechas);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
     Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
@@ -89,6 +97,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         $("#myModal").modal('toggle');
         $("#myModal").modal('hide');
     });
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/OrdenesTrabajosDetalles/" + idOrdenTrabajo + "/" + idEtapaProceso,
         method: 'GET',
@@ -97,14 +106,21 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
                 fn_CompletarInfEtapa(datos, RecargarScriptVista);
 
             } else {
+                kendo.ui.progress($(document.body), true);
                 $.ajax({
                     url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapaNoActivaDetalle/" + idOrdenTrabajo + "/" + idEtapaProceso,
                     method: 'GET',
                     success: function (datos) {
                         fn_CompletarInfEtapa(datos, RecargarScriptVista);
+                    },
+                    complete: function () {
+                        kendo.ui.progress($(document.body), false);
                     }
                 });
             }
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
@@ -165,6 +181,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
 };
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
     //LLena Splitter de imagenes
+    kendo.ui.progress($(document.body), true);
     kendo.ui.progress($("#splitter"), true);
     $.ajax({
         url: xUrl,
@@ -176,6 +193,9 @@ var fn_getImagen = function (xUrl,xNodocumentoReq) {
         },
         error: function () {
             kendo.ui.progress($("#splitter"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
@@ -395,7 +415,7 @@ var ValidarCamEtp = $("#FrmCambioEtapa").kendoValidator(
 $("#btnAsignarUsuario").click(function (e) {
     e.preventDefault();
     if (ValidarUsuario.validate()) {
-        kendo.ui.progress($("#body"));
+        kendo.ui.progress($(document.body), true);
         $.ajax({
             url: TSM_Web_APi + "/OrdenesTrabajosDetallesUsuarios/",
             method: "POST",
@@ -413,18 +433,20 @@ $("#btnAsignarUsuario").click(function (e) {
             success: function (datos) {
                 RequestEndMsg(datos, "Post");
                 $("#gridUsuarioAsignados").data("kendoGrid").dataSource.read();
-                kendo.ui.progress($("#body"), false);
                 $("#vAsignarUsuario").data("kendoDialog").close();
             },
             error: function (data) {
                 ErrorMsg(data);
+            },
+            complete: function () {
+                kendo.ui.progress($(document.body), false);
             }
         });
     }
 });
 
 var fn_GetMaquinas = function () {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
@@ -432,7 +454,9 @@ var fn_GetMaquinas = function () {
         type: 'GET',
         success: function (datos) {
             result = datos;
-            kendo.ui.progress($("#body"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 
@@ -822,7 +846,7 @@ var fn_gridAccesoriosEstacion = function (gd) {
 };
 
 var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
     $.ajax({
         url: Urldel,
@@ -842,17 +866,18 @@ var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
             } else {
                 fn_RTCargarMaquina();
             }
-            kendo.ui.progress($("#body"), false);
         },
         error: function (data) {
-            kendo.ui.progress($("#body"), false);
             ErrorMsg(data);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
 
 var fn_Estaciones = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
@@ -860,7 +885,9 @@ var fn_Estaciones = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (datos) {
             result = datos;
-            kendo.ui.progress($("#body"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 
@@ -868,7 +895,7 @@ var fn_Estaciones = function (xIdSeteo, xIdestacion) {
 };
 
 var fn_GetEstacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinasEstaciones/GetSeteoMaquinasEstacionVista/" + xIdSeteo + "/" + xIdestacion,
@@ -876,14 +903,16 @@ var fn_GetEstacion = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (datos) {
             result = datos;
-            kendo.ui.progress($("#body"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
     return result;
 };
 
 var fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/" + xIdSeteo + "/" + xIdestacion,
@@ -891,14 +920,16 @@ var fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (datos) {
             result = datos;
-            kendo.ui.progress($("#body"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
     return result;
 };
 
 var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#body"), true);
+    kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + xIdSeteo + "/" + xIdestacion,
@@ -906,10 +937,29 @@ var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (datos) {
             result = datos;
-            kendo.ui.progress($("#body"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 
+    return result;
+};
+
+var fn_GetTipoEstaciones = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "TipoEstaciones",
+        type: 'GET',
+        async: false,
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
     return result;
 };
 

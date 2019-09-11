@@ -1,5 +1,4 @@
 ﻿var Permisos;
-var maq;
 let UrlArf = TSM_Web_APi + "AnalisisRequerimientoFactibilidades";
 let UrlArfDet = TSM_Web_APi + "AnalisisRequerimientoFactibilidadesRevisiones";
 let StrIdCatalogoInsu = "";
@@ -14,25 +13,29 @@ var fn_RTCargarConfiguracion = function () {
     fn_gridColorEstacion($("#dgColor"));
     $("#dgColor").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgColor").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
-    $("#dgColor").data("TipoEstacion", "COLOR"); // guardar nombre archivo JS
+    $("#dgColor").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgColor").data("Formulacion", "COLOR"); // guarda el idformulacion
 
     fn_gridTecnicaEstacion($("#dgTecnica"));
     $("#dgTecnica").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgTecnica").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
-    $("#dgTecnica").data("TipoEstacion", "TECNICA"); // guardar nombre archivo JS
+    $("#dgTecnica").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgTecnica").data("Formulacion", "TECNICA"); // guarda el idformulacion
 
     fn_gridBasesEstacion($("#dgBases"));
     $("#dgBases").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgBases").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
-    $("#dgBases").data("TipoEstacion", "BASE"); // guardar nombre archivo JS
+    $("#dgBases").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
+    $("#dgBases").data("Formulacion", "BASE"); //guarda el idformulacion
 
     fn_gridAccesoriosEstacion($("#dgAccesorios"));
     $("#dgAccesorios").data("Estacion", "MEstacionAccesorios"); // guardar nombre vista modal
     $("#dgAccesorios").data("EstacionJS", "EstacionAccesorios.js"); // guardar nombre archivo JS
     $("#dgAccesorios").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
+    $("#dgAccesorios").data("Formulacion", ""); //guarda el idformulacion
 
     maq = fn_GetMaquinas();
-
+    TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
     Kendo_CmbFiltrarGrid($("#CmbMaquina"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
     KdoComboBoxEnable($("#CmbMaquina"), false);

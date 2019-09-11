@@ -159,7 +159,7 @@ $(document).ready(function () {
 
 
 let fn_GestionOT = function () {
-     kendo.ui.progress($("[class='card-body']"), true);
+    kendo.ui.progress($(document.body), true);
     let DSOt = "[]";
     $.ajax({
         type: "POST",
@@ -181,11 +181,12 @@ let fn_GestionOT = function () {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             DSOt = result;
-            kendo.ui.progress($("[class='card-body']"), false);
         },
         error: function() {
             DSOt = "[]";
-            kendo.ui.progress($("[class='card-body']"), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 
