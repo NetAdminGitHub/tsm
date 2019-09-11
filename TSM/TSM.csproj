@@ -677,6 +677,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -921,6 +922,7 @@
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaTela.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaUbicacion.js" />
     <Content Include="Scripts\js\_SolicitudRegPrenda.js" />
+    <Content Include="Scripts\js\_TintasFormulaciones.js" />
     <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
@@ -1325,6 +1327,8 @@
     <Content Include="Views\TipoEstaciones\Index.cshtml" />
     <Content Include="Views\Sedas\Index.cshtml" />
     <Content Include="Views\AccesoriosMaquinas\Index.cshtml" />
+    <Content Include="Views\Shared\_TintasFormulaciones.cshtml" />
+    <Content Include="Views\Estaciones\EstacionFormulas.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

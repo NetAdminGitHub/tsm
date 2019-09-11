@@ -1,74 +1,70 @@
 ﻿
-<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title text-center" id="MColorEstacionLabel"></h3>
-            <button type="button" class="close" data-dismiss="modal" id="btnClosMCE_Dis" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="FrmGenEDiseno" method="POST" enctype="multipart/form-data" autocomplete="off">
-                <div class="form-group col-lg-12">
-                    <div class="form-row">
-                        <div class="form-group col-lg-6">
-                            <label for="TxtOpcSelec_Dis" id="OpcSelec_Dis"></label>
-                            <input id="TxtOpcSelec_Dis" name="TxtOpcSelec_Dis" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="TxtNombreQui_Dis">Quimica Utilizar</label>
-                            <input id="TxtNombreQui_Dis" name="TxtNombreQui_Dis" type="text" class="k-textbox form-control" />
-                        </div>
+<div class="card">
+    <div class="card-body">
+        <form id="FrmGenEDiseno" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-group col-lg-12">
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="TxtOpcSelec_Dis" id="OpcSelec_Dis"></label>
+                        <input id="TxtOpcSelec_Dis" name="TxtOpcSelec_Dis" type="text" class="k-textbox form-control" />
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="CmbTipoTinta_Dis">Tipo de Tintas</label>
-                            <input name="CmbTipoTinta_Dis" id="CmbTipoTinta_Dis" required validationMessage="Requerido" type="text" class="form-control">
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbSistema_color">Sistema Tintas</label>
-                            <input name="CmbSistema_color" id="CmbSistema_color" required validationMessage="Requerido" type="text" class="form-control">
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbSedas_Dis">Seda:</label>
-                            <input id="CmbSedas_Dis" name="CmbSedas_Dis" required validationMessage="Requerido" type="text" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="CmbTipoEmulsion_Dis">Emulsiones:</label>
-                            <input id="CmbTipoEmulsion_Dis" name="CmbTipoEmulsion_Dis" required validationMessage="Requerido" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumCapilar_Dis">Capilar:</label>
-                            <input id="NumCapilar_Dis" name="NumCapilar_Dis" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumPasadas_Dis">Numero de Pasadas:</label>
-                            <input id="NumPasadas_Dis" name="NumPasadas_Dis" type="text" class="form-control" />
-                        </div>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="NumArea_Dis">Area:</label>
-                            <input id="NumArea_Dis" name="NumArea_Dis" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmdIdUnidadArea_Dis">Unidad Area:</label>
-                            <input id="CmdIdUnidadArea_Dis" name="CmdIdUnidadArea_Dis" required validationMessage="Requerido" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="TxtLetra">Letras</label>
-                            <input id="TxtLetra" name="TxtLetra" type="text" class="k-textbox form-control" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="TxtFormulaSug_Dis">Formulacion Sugerida </label>
-                        <input id="TxtFormulaSug_Dis" name="TxtFormulaSug_Dis" type="text" class="k-textbox form-control" />
+                    <div class="form-group col-lg-6">
+                        <label for="TxtNombreQui_Dis">Quimica Utilizar</label>
+                        <input id="TxtNombreQui_Dis" name="TxtNombreQui_Dis" type="text" class="k-textbox form-control" />
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer ">
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="CmbTipoTinta_Dis">Tipo de Tintas</label>
+                        <input name="CmbTipoTinta_Dis" id="CmbTipoTinta_Dis" required validationMessage="Requerido" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="CmbSistema_color">Sistema Tintas</label>
+                        <input name="CmbSistema_color" id="CmbSistema_color" required validationMessage="Requerido" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="CmbSedas_Dis">Seda:</label>
+                        <input id="CmbSedas_Dis" name="CmbSedas_Dis" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="CmbTipoEmulsion_Dis">Emulsiones:</label>
+                        <input id="CmbTipoEmulsion_Dis" name="CmbTipoEmulsion_Dis" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="NumCapilar_Dis">Capilar:</label>
+                        <input id="NumCapilar_Dis" name="NumCapilar_Dis" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="NumPasadas_Dis">Numero de Pasadas:</label>
+                        <input id="NumPasadas_Dis" name="NumPasadas_Dis" type="text" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="NumArea_Dis">Area:</label>
+                        <input id="NumArea_Dis" name="NumArea_Dis" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="CmdIdUnidadArea_Dis">Unidad Area:</label>
+                        <input id="CmdIdUnidadArea_Dis" name="CmdIdUnidadArea_Dis" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="TxtLetra">Letras</label>
+                        <input id="TxtLetra" name="TxtLetra" type="text" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="TxtFormulaSug_Dis">Formulacion Sugerida </label>
+                    <input id="TxtFormulaSug_Dis" name="TxtFormulaSug_Dis" type="text" class="k-textbox form-control" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <div class="form-row">
             <button type="button" class=" k-primary" id="btnAddMCE_Dis">Guardar</button>
         </div>
     </div>

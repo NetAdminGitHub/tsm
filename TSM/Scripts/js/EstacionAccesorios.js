@@ -1,5 +1,4 @@
 ﻿var EstacionBraAcce;
-var TeAcce;
 var idBraAcce;
 var fn_VistaEstacionAccesoriosDocuReady = function () {
     KdoButton($("#btnAddMEA"), "check", "Agregar");
@@ -10,11 +9,12 @@ var fn_VistaEstacionAccesoriosDocuReady = function () {
 };
 
 var fn_VistaEstacionAccesorios = function () {
+
+    $("#MEstacionFormulas").data("kendoDialog").setOptions({ width: "75%" });
     //InicioAcce = true;
     TextBoxEnable($("#TxtOpcSelecAcce"), false);
     $("#TxtOpcSelecAcce").val($("#TxtOpcSelecAcce").data("name"));
     idBraAcce = $("#TxtOpcSelecAcce").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
-    TeAcce = $("#TxtOpcSelecAcce").data("TipoEstacion");
     EstacionBraAcce = fn_GetEstacion(maq[0].IdSeteo, idBraAcce);
 
     if (EstacionBraAcce !== null) {
@@ -56,7 +56,7 @@ let fn_GuardarEstacionAcce = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesorios").modal('hide');
+            $("#MEstacionAccesorios").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
