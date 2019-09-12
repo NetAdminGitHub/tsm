@@ -10,7 +10,7 @@ var fn_VistaEstacionAccesoriosDocuReady = function () {
 
 var fn_VistaEstacionAccesorios = function () {
 
-    $("#MEstacionFormulas").data("kendoDialog").setOptions({ width: "75%" });
+ 
     //InicioAcce = true;
     TextBoxEnable($("#TxtOpcSelecAcce"), false);
     $("#TxtOpcSelecAcce").val($("#TxtOpcSelecAcce").data("name"));
