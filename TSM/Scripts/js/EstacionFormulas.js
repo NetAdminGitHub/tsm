@@ -98,7 +98,10 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFAjuste").bind("click", function () {
         $("#MbtnAjuste").data("kendoDialog").open();
-    });  
+    });
+
+    let urtMo = TSM_Web_APi + "MotivosAjustesTintas";
+    Kendo_CmbFiltrarGrid($("#CmbMotivoAjus"), urtMo, "Nombre", "IdMotivo", "Seleccione un motivo de ajuste ....");
 };
 
 var fn_VistaEstacionFormulas = function () {
@@ -135,14 +138,21 @@ var fn_VistaEstacionFormulas = function () {
     let frmNajus = $("#FrmNuevoAjuste").kendoValidator({
         rules: {
             vcnt: function (input) {
-                if (input.is("[id='NumCntRecibida']")) {
+                if (input.is("[id='NumCntRecibida']") && KdoRbGetValue($("#rbAjuste"))===true) {
                     return kdoNumericGetValue($("#NumCntRecibida")) > 0;
+                }
+                return true;
+            },
+            vMtAjus: function (input) {
+                if (input.is("[id='CmbMotivoAjus']")) {
+                    return $("#CmbMotivoAjus").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
             }
         },
         messages: {
-            vcnt: "Cantidad recibida debe ser mayor a 0"
+            vcnt: "Cantidad recibida debe ser mayor a 0",
+            vMtAjus: "Requerido"
         }
     }).data("kendoValidator");
 
@@ -155,6 +165,18 @@ var fn_VistaEstacionFormulas = function () {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar la cantidad devuelta", "error");
         }
        
+    });
+    $("#rbAjusteLimpio").click(function () {
+        KdoNumerictextboxEnable($("#NumCntRecibida"), false);
+        kdoNumericSetValue($("#NumCntRecibida"), 0.00);
+        KdoCmbFocus($("#CmbMotivoAjus"));
+        frmNajus.hideMessages();
+
+    });
+    $("#rbAjuste").click(function () {
+        KdoNumerictextboxEnable($("#NumCntRecibida"), true);
+        $("#NumCntRecibida").data("kendoNumericTextBox").focus();
+        frmNajus.hideMessages();
     });
 
 
@@ -367,7 +389,7 @@ let fn_getIdFormula = function (g) {
 let fn_Ajuste = function () {
     kendo.ui.progress($(document.body), true);
         $.ajax({
-            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntRecibida")) + "/" + (KdoRbGetValue($("#rbvAjusteForm")) ? "1" : "0"),
+            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntRecibida")) + "/" + (KdoRbGetValue($("#rbvAjusteForm")) ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ id: null }),
