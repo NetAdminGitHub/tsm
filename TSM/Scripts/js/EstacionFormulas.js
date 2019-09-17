@@ -11,14 +11,14 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     kdoRbSetValue($("#rbAjuste"), true);
 
-    $("#NumCntRecibidoAjus").kendoNumericTextBox({
-        min: 0.00,
-        max: 99999999999999.99,
-        format: "{0:n2}",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
+    //$("#NumCntRecibidoAjus").kendoNumericTextBox({
+    //    min: 0.00,
+    //    max: 99999999999999.99,
+    //    format: "{0:n2}",
+    //    restrictDecimals: false,
+    //    decimals: 2,
+    //    value: 0
+    //});
     $("#NumCntRecibida").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -92,6 +92,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     });
 
     $("#btnAddMFEditar").bind("click", function () {
+        $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read();
         $("#MbtnEditForm").data("kendoDialog").open();
     });
 
@@ -242,8 +243,10 @@ var fn_gridFormulas = function (gd) {
                     }
                 }
             }
-        }
-     
+        },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        }     
     });
 
     let Urltec = TSM_Web_APi + "Tecnicas";
@@ -268,7 +271,7 @@ var fn_gridFormulas = function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si,250);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,250);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsFormulas);
     var srow2 = [];
     gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -334,8 +337,10 @@ var fn_gridMateriaPrima = function (gd) {
         },
         aggregate: [
             { field: "PorcentajeInicial", aggregate: "sum" }
-        ]
-
+        ],
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        }
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -346,15 +351,15 @@ var fn_gridMateriaPrima = function (gd) {
             { field: "Item", title: "Item", hidden: true },
             { field: "IdArticulo", title: "Articulo"},
             { field: "Nombre", title: "Nombre"},
-            { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}"},
-            { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? sum*100: 0 # %" },
+            { field: "MasaInicial", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}"},
+            { field: "PorcentajeInicial", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? sum*100: 0 # %" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si,250);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,250);
     SetGrid_CRUD_Command(gd.data("kendoGrid"), false, false);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
@@ -408,25 +413,24 @@ var fn_gridAjustePrima = function (gd) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: "https://www.mocky.io/v2/5d7588af3100004b3395063f",
+                url: function (data) { return TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdFormula/" + fn_getIdFormula($("#gridFormulas").data("kendoGrid")); },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
-            //update: {
-            //    url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
-            //    type: "PUT",
-            //    contentType: "application/json; charset=utf-8"
-            //},
-            //destroy: {
-            //    url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
-            //    type: "DELETE"
-            //},
-            //create: {
-            //    url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas",
-            //    type: "POST",
-            //    contentType: "application/json; charset=utf-8"
-
-            //},
+            update: {
+                url: function (datos) { return TSM_Web_APi + "TintasFormulacionesDetalles/" + datos.IdFormula + "/" + datos.Item; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "TintasFormulacionesDetalles/" + datos.IdFormula + "/" + datos.Item; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "TintasFormulacionesDetalles",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -435,41 +439,38 @@ var fn_gridAjustePrima = function (gd) {
         },
         schema: {
             model: {
-                id: "Articulo",
+                id: "IdArticulo",
                 fields: {
-                    Articulo: {
+                    IdFormula: {
+                        type: "number"
+                    },
+                    Item: {
+                        type: "number"
+                    },
+                    IdArticulo: {
                         type: "string"
-
                     },
                     Nombre: {
                         type: "string"
-
                     },
-                    MasInicial: {
+                    MasaInicial: {
                         type: "number"
-
                     },
                     Porcentaje: {
                         type: "number"
-
                     },
-                    MasaAdicional: {
+                    MasaAgregada: {
                         type: "number"
-
                     },
-                    PorcentajeAd: {
+                    PorcentajeAgregado: {
                         type: "number"
-
                     },
                     MasaFinal: {
                         type: "number"
-
                     },
                     PorcentajeFinal: {
                         type: "number"
-
                     }
-
                 }
             }
         },
@@ -477,8 +478,11 @@ var fn_gridAjustePrima = function (gd) {
             { field: "Porcentaje", aggregate: "sum" },
             { field: "PorcentajeAd", aggregate: "sum" },
             { field: "PorcentajeFinal", aggregate: "sum" }
-        ]
-
+        ],
+        requestEnd: function (e) {
+            if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) e.sender.read();
+            Grid_requestEnd(e);
+        }
     });
 
     let Urltec = TSM_Web_APi + "Tecnicas";
@@ -486,24 +490,40 @@ var fn_gridAjustePrima = function (gd) {
     gd.kendoGrid({
         edit: function (e) {
             // Ocultar
-            KdoHideCampoPopup(e.container, "Nombre");
-            Grid_Focus(e, "Articulo");
+            KdoHideCampoPopup(e.container, "IdArticulo");
+            Grid_Focus(e, "MasaAgregada");
+
+            TextBoxEnable($('[name="Nombre"]'), false);            
+            $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(false);
+            $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(false);
+            $('[name="MasaFinal"]').data("kendoNumericTextBox").enable(false);
+            $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").enable(false);
+
+            $('[name="MasaAgregada"]').on("change", function (e) {
+                let xMasaInicial = $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
+                let xMasaAgregada = this.value;
+
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(xMasaInicial) + parseFloat(xMasaAgregada));
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
+                //$('[name="PrecioVenta"]').data("kendoNumericTextBox").trigger("change");
+            });
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "Articulo", title: "Materia Prima" },
+            { field: "IdArticulo", title: "Materia Prima" },
             { field: "Nombre", title: "Nombre" },
-            { field: "MasInicial", title: "MasInicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "Porcentaje", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.Porcentaje ? sum*100: 0 #" },
-            { field: "MasaAdicional", title: "MasaAdicional", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "PorcentajeAd", title: "PorcentajeAd", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.MasaAdicional ? sum*100: 0 #" },
-            { field: "MasaFinal", title: "MasaFinal", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "PorcentajeFinal", title: "PorcentajeFinal", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeFinal ? sum*100: 0 #" }
+            { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? sum*100: 0 #" },
+            { field: "MasaAgregada", title: "Masa Agregada", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "PorcentajeAgregado", title: "% Agregado", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeAgregado ? sum*100: 0 #" },
+            { field: "MasaFinal", title: "Masa Final", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "PorcentajeFinal", title: "% Final", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeFinal ? sum*100: 0 #" }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 300);
+    SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsAjusMp);
 
