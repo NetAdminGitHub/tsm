@@ -508,7 +508,7 @@ function Grid_error(e) {
 function Grid_Focus(e, NombreCampo) {
     var arg = e;
 
-    if (arg.sender.options.editable === "popup") {
+    if (arg.sender.options.editable.mode === "popup") {
         arg.container.data('kendoWindow').bind('activate', function () {
             ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
 

@@ -13,8 +13,14 @@
                     </div>
                     <div class="form-group col-lg-6 align-self-lg-end">
                         <button type="button" id="btnAddMFAjuste" data-toggle="modal" data-target="#MNuevoAjustes">Nuevo Ajuste</button>
-                        <button type="button" id="btnAddMFEditar" data-toggle="modal" data-target="#MAjustes" >Editar Ajuste</button>
+                        <button type="button" id="btnAddMFEditar" data-toggle="modal" data-target="#MAjustes">Editar Ajuste</button>
                         <button type="button" id="btnAddMFAHistori" data-toggle="modal" data-target="#MHitorico" hidden="hidden">Historicas</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="TxtFormulaSugTint">Formulacion Sugerida </label>
+                        <input id="TxtFormulaSugTint" name="TxtFormulaSugTint" type="text" class="k-textbox form-control" />
                     </div>
                 </div>
                 <div class="form-row">
@@ -34,20 +40,9 @@
 
 <div id="MbtnEditForm">
     <form id="FrmAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
-        @*<div class="form-row">
-            <div class="form-group col-lg-12">
-                <label for="NumCntRecibidoAjus">Cantidad Recibida:</label>
-                <input id="NumCntRecibidoAjus" name="NumCntRecibidoAjus" class="form-control" required />
-            </div>
-        </div>*@
         <div class="form-row">
             <div class="form-group cl-lg-12">
                 <div id="gridFormulasAjusMP"></div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group cl-lg-12">
-                <button type="button" class=" k-primary" id="btnConfirAjuste">Confirmar</button>
             </div>
         </div>
     </form>
