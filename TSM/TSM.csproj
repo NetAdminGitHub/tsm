@@ -88,6 +88,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.1\lib\net45\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -189,6 +192,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
@@ -235,6 +239,7 @@
     <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
+    <Compile Include="Controllers\QuimicasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
@@ -242,6 +247,7 @@
     <Compile Include="Controllers\RetencionesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecuenciasNumericasController.cs" />
+    <Compile Include="Controllers\SedasController.cs" />
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
@@ -252,9 +258,12 @@
     <Compile Include="Controllers\TecnicasController.cs" />
     <Compile Include="Controllers\TelasController.cs" />
     <Compile Include="Controllers\TemporadasController.cs" />
+    <Compile Include="Controllers\TipoEstacionesController.cs" />
     <Compile Include="Controllers\TipoMuestrasController.cs" />
     <Compile Include="Controllers\TipoNotificacionesController.cs" />
     <Compile Include="Controllers\TiposAcabadosController.cs" />
+    <Compile Include="Controllers\TiposEmulsionesController.cs" />
+    <Compile Include="Controllers\TiposFormulacionesController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
@@ -667,6 +676,9 @@
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\EstacionFormulas.js" />
+    <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -835,7 +847,9 @@
     <Content Include="Scripts\js\EjecutivoCuentas.js" />
     <Content Include="Scripts\js\ElementoTrabajo.js" />
     <Content Include="Scripts\js\EstacionAccesorios.js" />
+    <Content Include="Scripts\js\EstacionAccesoriosDis.js" />
     <Content Include="Scripts\js\EstacionColores.js" />
+    <Content Include="Scripts\js\EstacionDisenos.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
     <Content Include="Scripts\js\EtapasProcesosModulos.js" />
@@ -862,6 +876,7 @@
     <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Programas.js" />
+    <Content Include="Scripts\js\Quimicas.js" />
     <Content Include="Scripts\js\RentabilidadConfiguraciones.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollosConsulta.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollos.js" />
@@ -880,9 +895,11 @@
     <Content Include="Scripts\js\Tecnicas.js" />
     <Content Include="Scripts\js\Telas.js" />
     <Content Include="Scripts\js\Temporadas.js" />
+    <Content Include="Scripts\js\TipoEstaciones.js" />
     <Content Include="Scripts\js\TipoMuestras.js" />
     <Content Include="Scripts\js\TipoNotificaciones.js" />
     <Content Include="Scripts\js\TiposAcabados.js" />
+    <Content Include="Scripts\js\TiposFormulaciones.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
     <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
@@ -894,6 +911,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
@@ -904,6 +922,7 @@
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaTela.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaUbicacion.js" />
     <Content Include="Scripts\js\_SolicitudRegPrenda.js" />
+    <Content Include="Scripts\js\_TintasFormulaciones.js" />
     <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
@@ -1175,6 +1194,7 @@
     <Content Include="Scripts\konva.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\pdfobject.min.js" />
+    <Content Include="Scripts\js\TiposEmulsiones.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
     <Content Include="Scripts\Utils\CmbPersonalizar.js" />
     <Content Include="Scripts\Utils\Generico.js" />
@@ -1298,6 +1318,17 @@
     <Content Include="Views\PerfilesImpresiones\Index.cshtml" />
     <Content Include="Views\VelocidadesTransferencias\Index.cshtml" />
     <Content Include="Views\TiposOperacionesSublimaciones\Index.cshtml" />
+    <Content Include="Views\Shared\_DisenoMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionDisenos.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesoriosDis.cshtml" />
+    <Content Include="Views\Quimicas\Index.cshtml" />
+    <Content Include="Views\TiposEmulsiones\Index.cshtml" />
+    <Content Include="Views\TiposFormulaciones\Index.cshtml" />
+    <Content Include="Views\TipoEstaciones\Index.cshtml" />
+    <Content Include="Views\Sedas\Index.cshtml" />
+    <Content Include="Views\AccesoriosMaquinas\Index.cshtml" />
+    <Content Include="Views\Shared\_TintasFormulaciones.cshtml" />
+    <Content Include="Views\Estaciones\EstacionFormulas.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

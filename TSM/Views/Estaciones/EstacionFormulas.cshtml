@@ -1,0 +1,84 @@
+﻿<div class="card">
+    <div class="card-body">
+        <form id="FrmGenEFormulas" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-group col-lg-12">
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="TxtOpcSelecFormulas" id="OpcSelecFormulas"></label>
+                        <input id="TxtOpcSelecFormulas" name="TxtOpcSelecFormulas" type="text" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="TxtNombreQuiForm">Quimica Utilizar</label>
+                        <input id="TxtNombreQuiForm" name="TxtNombreQuiForm" type="text" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-6 align-self-lg-end">
+                        <button type="button" id="btnAddMFAjuste" data-toggle="modal" data-target="#MNuevoAjustes">Nuevo Ajuste</button>
+                        <button type="button" id="btnAddMFEditar" data-toggle="modal" data-target="#MAjustes">Editar Ajuste</button>
+                        <button type="button" id="btnAddMFAHistori" data-toggle="modal" data-target="#MHitorico" hidden="hidden">Historicas</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="TxtFormulaSugTint">Formulacion Sugerida </label>
+                        <input id="TxtFormulaSugTint" name="TxtFormulaSugTint" type="text" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridFormulas"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridFormulasMP"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="MbtnEditForm">
+    <form id="FrmAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <div id="gridFormulasAjusMP"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="MbtnAjuste">
+    <form id="FrmNuevoAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbAjuste" name="rbvAjusteForm" class="k-radio form-control">
+                <label class="k-radio-label" for="rbAjuste">Ajustar</label>
+            </div>
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbAjusteLimpio" name="rbvAjusteForm" class="k-radio form-control">
+                <label class="k-radio-label" for="rbAjusteLimpio">Ajuste en Limpio</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="NumCntRecibida">Cantidad Recibida:</label>
+                <input id="NumCntRecibida" name="NumCntRecibida" class="form-control" required />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="CmbMotivoAjus">Motivo del Ajutes:</label>
+                <input id="CmbMotivoAjus" name="CmbMotivoAjus" required validationMessage="Requerido" type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <button type="button" class=" k-primary" id="btnAcepAjuste">Aceptar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+

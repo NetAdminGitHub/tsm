@@ -902,7 +902,8 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
             idEtapaProceso = etapa;
         window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa);
 
-        if ($("#vistaParcial" + etapa).children().length == 0) {
+        if ($("#vistaParcial" + etapa).children().length === 0) {
+            kendo.ui.progress($(document.body), true);
             $.ajax({
                 url: "/OrdenesTrabajo/VistaParcial/" + vista,
                 method: 'POST',
@@ -918,6 +919,9 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
                     };
 
                     document.getElementsByTagName('head')[0].appendChild(script);
+                },
+                complete: function () {
+                    kendo.ui.progress($(document.body), false);
                 }
             });
         }
@@ -952,5 +956,23 @@ var KdoChkGetValue = function (InputElem) {
  * @param {boolean} value valor que recibira el checkbox
  */
 var kdoChkSetValue = function (InputElem, value) {
+    InputElem.prop('checked', value);
+};
+
+/**
+ * obtiene el valor del campo  radio button
+ * @param {HTMLInputElement} InputElem  recibe el elemento  radio button
+ * @returns {boolean} retorna el valor del  radio button
+ */
+var KdoRbGetValue = function (InputElem) {
+    return InputElem.is(':checked');
+};
+
+/**
+ * coloca un valor en el campo radio button
+ * @param {HTMLInputElement} InputElem recibe el elemento  radio button
+ * @param {boolean} value valor que recibira el radio button
+ */
+var kdoRbSetValue = function (InputElem, value) {
     InputElem.prop('checked', value);
 };

@@ -63,6 +63,12 @@ var fn_VistaEstacionColorDocuReady = function () {
                     return $("#CmbTipoEmulsion_color").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            vsuge: function (input) {
+                if (input.is("[name='TxtFormulaSug']")) {
+                    return input.val().length <= 200;
+                }
+                return true;
             }
 
 
@@ -71,7 +77,8 @@ var fn_VistaEstacionColorDocuReady = function () {
             vST: "Requerido",
             vTT: "Requerido",
             vTSed: "Requerido",
-            vTemul:"Requerido"
+            vTemul: "Requerido",
+            vsuge: "Longitud máxima del campo es 200"
         }
     }).data("kendoValidator");
 
@@ -94,7 +101,7 @@ var fn_VistaEstacionColor = function () {
     TextBoxEnable($("#TxtNombreQui"), false);
     $("#TxtOpcSelec").val($("#TxtOpcSelec").data("name"));
     idBra = $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit","");
-    Te = $("#TxtOpcSelec").data("TipoEstacion");
+    Te = $("#TxtOpcSelec").data("Formulacion");
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
     estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
@@ -244,7 +251,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            $("#MEstacionColor").modal('hide');
+            $("#MEstacionColor").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
@@ -289,54 +296,6 @@ let fn_GuardarEstacion = function (xIdBrazo) {
         }
     });
 
-};
-
-let fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-            kendo.ui.progress($("#MEstacionColor"), false);
-        }
-    });
-
-    return result;
-};
-
-let fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-            kendo.ui.progress($("#MEstacionColor"), false);
-        }
-    });
-
-    return result;
-};
-
-let fn_Estaciones = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-            kendo.ui.progress($("#MEstacionColor"), false);
-        }
-    });
-
-    return result;
 };
 
 fn_PWList.push(fn_VistaEstacionColor);
