@@ -553,8 +553,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
-    SetGrid_CRUD_ToolbarTop($("#GRDimension").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,false);
     Set_Grid_DataSource($("#GRDimension").data("kendoGrid"), DsDimension);
    
     var selectedRowsDimen = [];
@@ -959,7 +958,7 @@ var fn_VSCargarJSEtapa = function () {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    CargarInfoEtapa(false);
+                    //CargarInfoEtapa(false);
                     RequestEndMsg(data, "Delete");
                     kendo.ui.progress($("#vistaParcial"), false);
                 },
@@ -989,7 +988,7 @@ var fn_VSCargarJSEtapa = function () {
                 }),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    CargarInfoEtapa(false);
+                    //CargarInfoEtapa(false);
                     RequestEndMsg(data, "Post");
                     kendo.ui.progress($("#vistaParcial"), false);
                 },
