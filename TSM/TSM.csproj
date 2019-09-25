@@ -252,6 +252,7 @@
     <Compile Include="Controllers\SimulacionesController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
+    <Compile Include="Controllers\SolicitudesClientesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\TamanosDimensionesController.cs" />
     <Compile Include="Controllers\TamanosInsumosController.cs" />
@@ -678,6 +679,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
+    <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -890,6 +892,8 @@
     <Content Include="Scripts\js\Sistemas.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
     <Content Include="Scripts\js\Solicitudes.js" />
+    <Content Include="Scripts\js\SolicitudesClientes.js" />
+    <Content Include="Scripts\js\SolicitudesPendientes.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
     <Content Include="Scripts\js\Tecnicas.js" />
@@ -1329,6 +1333,9 @@
     <Content Include="Views\AccesoriosMaquinas\Index.cshtml" />
     <Content Include="Views\Shared\_TintasFormulaciones.cshtml" />
     <Content Include="Views\Estaciones\EstacionFormulas.cshtml" />
+    <Content Include="Views\SolicitudesClientes\IngresoSolicitudesClientes.cshtml" />
+    <Content Include="Views\SolicitudesClientes\Index.cshtml" />
+    <Content Include="Views\SolicitudesClientes\SolicitudesPendientes.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
