@@ -458,20 +458,13 @@ var Fn_Carouselcontent = function () {
         '</a>' +
         '</div>' +
         '</div>' +
-        '</div>' +
-        '<div class="form-row">' +
-        '<div id="myModal" class="modal-img">' +
-        '<span class="close-img" id = "idcloseMod" >&times;</span >' +
-        '<img class="modal-content-img" id="img01">' +
-        '<div id="caption"></div>' +
-        '</div>' +
         '</div>';
 
     return VarCarousel;
 };
 
 var fn_Ver_Img_Modal = function (idcolImg) {
-    let modal = document.getElementById("myModal");
+    let modal = document.getElementById("ModalImgeZoom");
     let img = document.getElementById(idcolImg);
     let modalImg = document.getElementById("img01");
     let captionText = document.getElementById("caption");
@@ -482,6 +475,7 @@ var fn_Ver_Img_Modal = function (idcolImg) {
     span.onclick = function () {
         modal.style.display = "none";
     };
+    fn_CustomTemplateClose();
 };
 var fn_click_Imagen = function (elemento) {
     fn_Ver_Img_Modal(elemento.id);

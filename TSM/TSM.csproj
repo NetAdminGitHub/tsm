@@ -676,6 +676,7 @@
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\TSM_imagen_modal.css" />
+    <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
@@ -911,6 +912,7 @@
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
+    <Content Include="Scripts\js\TSM_VerDiseno.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />

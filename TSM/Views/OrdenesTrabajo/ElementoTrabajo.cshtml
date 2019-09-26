@@ -12,121 +12,127 @@
     </script>
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
 }
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
-
+<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
 <div class="form-row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-
                 <ul id="BarPanelInfo">
                     <li>
                         <span class="TS-icon-INFO1" style="font-size: 1.7em;">&nbsp</span>
                         Información Orden de Trabajo
                         <div class="form-row">
                             <div class="form-group col-lg-12">
-                                <br />
                                 <div class="form-row">
-                                    <div class="form-group col-lg-8">
-                                        <div class="form-row">
-                                            <div class="col-lg-2">
-                                                <input id="IdServicio" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtId" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtIdRequerimiento" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtIdSolicitud" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtIdOrdenTrabajo" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtIdSolicitudDisenoPrenda" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtIdEtapaProceso" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtItem" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="IdCliente" disabled="disabled" hidden="hidden" />
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input id="txtEstado" disabled="disabled" hidden="hidden" />
-                                            </div>
+                                    <div class="col-lg-2">
+                                        <input id="IdServicio" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtId" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdRequerimiento" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitud" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdOrdenTrabajo" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitudDisenoPrenda" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdEtapaProceso" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtItem" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="IdCliente" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtEstado" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                </div>
+                                
+                                <div class="border p-md-1 p-lg-1">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12"><label class="font-weight-bold">ORDEN DE TRABAJO</label></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNoDocumentoOT" id="lblNoDocumentoOT">No Orden Trabajo:</label>
+                                            <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNoDocumentoOT" id="lblNoDocumentoOT">No Orden Trabajo:</label>
-                                                <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNombre" id="lblCliente">Cliente:</label>
-                                                <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNombreDiseno" id="lblNombreDiseno">Nombre Dise&ntilde;o:</label>
-                                                <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtEstiloDiseno" id="lblEstiloDiseno">Estilo Dise&ntilde;o:</label>
-                                                <input id="txtEstiloDiseno" name="EstiloDiseno" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
+                                            <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
-                                                <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
-                                                <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
-                                                <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
-                                                <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombre" id="lblCliente">Cliente:</label>
+                                            <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="TxtColor">Color Tela:</label>
-                                                <input id="TxtColor" name="TxtColor" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="TxtNombreCPT">Compocici&ntilde;on Tela:</label>
-                                                <input id="TxtNombreCPT" name="TxtNombreCPT" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="TxtNombreCCT">Construcci&ntilde;on:</label>
-                                                <input id="TxtNombreCCT" name="TxtNombreCCT" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
-                                            <div class="form-group col-lg-3 col-md-6">
-                                                <label for="TxtNombreCFT">Confec&ntilde;on:</label>
-                                                <input id="TxtNombreCFT" name="TxtNombreCFT" class="k-textbox form-control" , disabled="disabled" />
-                                            </div>
+
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
+                                            <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12 col-md-12">
-                                                <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
-                                                <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
-                                            </div>
+
+                                    </div>
+                                </div>
+                               
+                                <div class="border p-md-1 p-lg-1 ">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12"><label class="font-weight-bold">INFORMACION DEL DISEÑO A DESAROLLAR</label></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
+                                            <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombreDiseno" id="lblNombreDiseno">Nombre Dise&ntilde;o:</label>
+                                            <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtEstiloDiseno" id="lblEstiloDiseno">Estilo Dise&ntilde;o:</label>
+                                            <input id="txtEstiloDiseno" name="EstiloDiseno" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
+                                            <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                     </div>
-                                    <div class="form-group col-lg-4">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-12" id="OTSlide">
-                                                @* aqui se coloca dinamicamente las imagenes  *@
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtColor">Color Tela:</label>
+                                            <input id="TxtColor" name="TxtColor" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCPT">Compocic&iacute;on Tela:</label>
+                                            <input id="TxtNombreCPT" name="TxtNombreCPT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCCT">Construcc&iacute;on:</label>
+                                            <input id="TxtNombreCCT" name="TxtNombreCCT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCFT">Confec&iacute;on:</label>
+                                            <input id="TxtNombreCFT" name="TxtNombreCFT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-3">
+                                            <label for="TxtNomQuimica">Qui&iacute;mica:</label>
+                                            <input id="TxtNomQuimica" name="TxtNomQuimica" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-9 col-md-9">
+                                            <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
+                                            <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
                                         </div>
                                     </div>
                                 </div>
@@ -211,5 +217,20 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<div class="custom-template">
+    <div class="title">Arte a desarollar</div>
+    <div class="custom-content">
+        <div class="form-group col-lg-12">
+            <div class="form-row">
+                <div class="form-group col-lg-12" id="OTSlide">
+                    @* aqui se coloca dinamicamente las imagenes  *@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="custom-toggle">
+        <i class="TS-icon-PLUMA-1"></i>
     </div>
 </div>
