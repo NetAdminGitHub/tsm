@@ -30,7 +30,48 @@ var fn_RTCargarMaquina = function () {
     layer = new Konva.Layer();
     var con = stage.container();
 
+    var tooltipLayer = new Konva.Layer();
+    var tooltip = new Konva.Label({
+        opacity: 0.75,
+        visible: false,
+        listening: false
+    });
 
+    tooltip.add(
+        new Konva.Tag({
+            fill: 'black',
+            pointerDirection: 'down',
+            //pointerWidth: 10,
+            //pointerHeight: 10,
+            lineJoin: 'round',
+            shadowColor: 'black',
+            shadowBlur: 10,
+            shadowOffset: 10,
+            shadowOpacity: 0.2
+        })
+    );
+
+    tooltip.add(
+        new Konva.Text({
+            text: '',
+            fontFamily: 'Calibri',
+            fontSize: 18,
+            padding: 5,
+            fill: 'white'
+        })
+    );
+    //var tooltip = new Konva.Text({
+    //    text: '',
+    //    fontFamily: 'Calibri',
+    //    fontSize: 12,
+    //    padding: 5,
+    //    visible: false,
+    //    fill: 'black',
+    //    opacity: 0.75,
+    //    textFill: 'white'
+    //});
+
+    tooltipLayer.add(tooltip);
     //Brazos Superiores
     for (let i = 0; i < 11; i++) {
         let estacionInfo;
@@ -183,6 +224,34 @@ var fn_RTCargarMaquina = function () {
             
             if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+        });
+
+        textInfo.on('mousemove', function (e) {
+            var node = e.target;
+            let xidb = node.id().replace("TxtInfo", "");
+
+            if (node) {
+
+                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                    let data = maq.find(q => q.IdEstacion === Number(xidb));
+                    // update tooltip
+                    var mousePos = node.getStage().getPointerPosition();
+                    tooltip.position({
+                        x: mousePos.x+200,
+                        y: mousePos.y +200
+                    });
+                    tooltip
+                        .getText()
+                        .text(data.ToolTips);
+                    tooltip.show();
+                    tooltipLayer.batchDraw();
+                }
+
+            }
+        });
+        textInfo.on('mouseout', function () {
+            tooltip.hide();
+            tooltipLayer.draw();
         });
     }
 
@@ -337,7 +406,35 @@ var fn_RTCargarMaquina = function () {
 
             if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
-        });       
+        });   
+
+        textInfo.on('mousemove', function (e) {
+            var node = e.target;
+            let xidb = node.id().replace("TxtInfo", "");
+
+            if (node) {
+
+                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                    let data = maq.find(q => q.IdEstacion === Number(xidb));
+                    // update tooltip
+                    var mousePos = node.getStage().getPointerPosition();
+                    tooltip.position({
+                        x: mousePos.x+200,
+                        y: mousePos.y +200
+                    });
+                    tooltip
+                        .getText()
+                        .text(data.ToolTips);
+                    tooltip.show();
+                    tooltipLayer.batchDraw();
+                }
+
+            }
+        });
+        textInfo.on('mouseout', function () {
+            tooltip.hide();
+            tooltipLayer.draw();
+        });
     }
 
 
@@ -447,6 +544,7 @@ var fn_RTCargarMaquina = function () {
 
 
     stage.add(layer);
+    stage.add(tooltipLayer);
 
     con.addEventListener("dragover", function (event) {
         event.preventDefault();
