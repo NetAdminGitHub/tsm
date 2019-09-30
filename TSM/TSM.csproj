@@ -679,6 +679,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
+    <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -915,6 +916,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
@@ -1336,6 +1338,8 @@
     <Content Include="Views\SolicitudesClientes\IngresoSolicitudesClientes.cshtml" />
     <Content Include="Views\SolicitudesClientes\Index.cshtml" />
     <Content Include="Views\SolicitudesClientes\SolicitudesPendientes.cshtml" />
+    <Content Include="Views\Shared\_DesarrolloMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

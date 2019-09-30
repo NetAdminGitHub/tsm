@@ -35,7 +35,7 @@ var fn_RTCargarMaquina = function () {
     for (let i = 0; i < 11; i++) {
         let estacionInfo;
         let estacionTexto;
-        estacionInfo = maq.find(q => q.IdEstacion === i + 12);
+        estacionInfo = maq.find(q => q.IdEstacion === i + 1);
 
         if (estacionInfo)
             estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
@@ -47,7 +47,7 @@ var fn_RTCargarMaquina = function () {
             y: 55,
             width: 70,
             height: 70,
-            id: "TxtInfo" + (i + 12),
+            id: "TxtInfo" + (i + 1),
             text: estacionTexto
         });
 
@@ -61,14 +61,14 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnEdit" + (i + 12)
+            id: "btnEdit" + (i + 1)
         });
 
         let textbt1 = new Konva.Text({
             x: 111,
             y: 35,
             text: 'E',
-            id: "txtEdit" + (i + 12)
+            id: "txtEdit" + (i + 1)
         
         });
 
@@ -82,7 +82,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnborrar" + (i + 12)
+            id: "btnborrar" + (i + 1)
         });
 
 
@@ -90,7 +90,7 @@ var fn_RTCargarMaquina = function () {
             x: 151,
             y: 10,
             text: 'X',
-            id: "txtBorrar" + (i + 12)
+            id: "txtBorrar" + (i + 1)
        
         });
 
@@ -101,7 +101,7 @@ var fn_RTCargarMaquina = function () {
         let text = new Konva.Text({
             width: 70,
             height: 20,
-            text: "#" + (i + 12)
+            text: "#" + (i + 1)
         });
 
         text.align('center');
@@ -115,7 +115,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "brazo" + (i + 12),
+            id: "brazo" + (i + 1),
             IdSeteo: 0,
             IdTipoFormulacion: ""
 
@@ -189,7 +189,7 @@ var fn_RTCargarMaquina = function () {
     for (let i = 12; i < 23; i++) {
         let estacionInfo;
         let estacionTexto;
-        estacionInfo = maq.find(q => q.IdEstacion === 23 - i);
+        estacionInfo = maq.find(q => q.IdEstacion === (34 - i));
 
         if (estacionInfo)
             estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
@@ -201,7 +201,7 @@ var fn_RTCargarMaquina = function () {
             y: 55,
             width: 70,
             height: 70,
-            id: "TxtInfo" + (23 - i),
+            id: "TxtInfo" + (34 - i),
             text: estacionTexto
         });
 
@@ -215,14 +215,14 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnEdit" + (23 - i)
+            id: "btnEdit" + (34 - i)
         });
 
         let textbt1 = new Konva.Text({
             x: 111,
             y: 35,
             text: 'E',
-            id: "txtEdit" + (23 - i)
+            id: "txtEdit" + (34 - i)
             //fontSize: 16,
             //fontFamily: 'Calibri',
             //fill: 'green',
@@ -239,8 +239,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnBorrar" + (23 - i)
-
+            id: "btnBorrar" + (34 - i)
         });
 
 
@@ -248,7 +247,7 @@ var fn_RTCargarMaquina = function () {
             x: 151,
             y: 10,
             text: 'X',
-            id: "txtBorrar" + (23 - i)
+            id: "txtBorrar" + (34 - i)
         });
 
         textbt2.align('center');
@@ -257,7 +256,7 @@ var fn_RTCargarMaquina = function () {
         let text = new Konva.Text({
             width: 70,
             height: 20,
-            text: "#" + (23 - i)
+            text: "#" + (34 - i)
         });
 
         text.align('center');
@@ -272,7 +271,7 @@ var fn_RTCargarMaquina = function () {
             stroke: 'black',
             strokeWidth: 1,
             draggable: true,
-            id: "brazo" + (23 - i),
+            id: "brazo" + (34 - i),
             IdSeteo: 0,
             IdTipoFormulacion: ""
         
@@ -661,10 +660,39 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 Formulacion = "";
                 break;
         }
-
-
     }
-
+    if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                ModalEstacion = "MEstacionMuestra";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionMuestra.js";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                ModalEstacion = "MEstacionMuestra";
+                ModalEstacionJS = "EstacionMuestra.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                ModalEstacion = "MEstacionMuestra";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionMuestra.js";
+                Formulacion = "BASE";
+                break;
+            //default:
+            //    Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+            //    ModalEstacion = "MEstacionAccesoriosDis";
+            //    ModalEstacionJS = "EstacionAccesoriosDis.js";
+            //    TipoEstacion = "ACCESORIO";
+            //    Formulacion = "";
+            //    break;
+        }
+    }
     if (ModalEstacion !== undefined) {
 
         let Url = $("#" + ModalEstacion + "").data("url");
@@ -756,6 +784,26 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 }
             }
 
+            if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
         }
 
         if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
@@ -840,6 +888,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             $("#TxtOpcSelecFormulas").data("TipoEstacion", ViewTipoEstacion);
             $("#TxtOpcSelecFormulas").data("Formulacion", ViewFormulacion);
             $("#TxtOpcSelecFormulas").data("IdBrazo", xvbrazo);
+        }
+    }
+
+    if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec_Mues").data("name", TxtSecName);
+            $("#TxtOpcSelec_Mues").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec_Mues").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec_Mues").data("IdBrazo", xvbrazo);
         }
     }
 
