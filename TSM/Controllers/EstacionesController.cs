@@ -33,6 +33,9 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
-
+        public ActionResult EstacionMuestra()
+        {
+            return PartialView();
+        }
     }
 }
