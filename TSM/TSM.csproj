@@ -682,6 +682,7 @@
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
+    <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -919,6 +920,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
@@ -946,8 +948,6 @@
     <Content Include="Scripts\kendo\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\kendo.angular.min.js" />
     <Content Include="Scripts\kendo\kendo.angular.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js" />
-    <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\kendo.autocomplete.min.js" />
     <Content Include="Scripts\kendo\kendo.autocomplete.min.js.map" />
     <Content Include="Scripts\kendo\kendo.binder.min.js" />
@@ -1060,8 +1060,6 @@
     <Content Include="Scripts\kendo\kendo.mediaplayer.min.js.map" />
     <Content Include="Scripts\kendo\kendo.menu.min.js" />
     <Content Include="Scripts\kendo\kendo.menu.min.js.map" />
-    <Content Include="Scripts\kendo\Kendo.messages.es-ES.min.js" />
-    <Content Include="Scripts\kendo\kendo.messages.es-ES.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.actionsheet.min.js" />
     <Content Include="Scripts\kendo\kendo.mobile.actionsheet.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.application.min.js" />
@@ -1102,7 +1100,6 @@
     <Content Include="Scripts\kendo\kendo.mobile.tabstrip.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.view.min.js" />
     <Content Include="Scripts\kendo\kendo.mobile.view.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.modernizr.custom.js" />
     <Content Include="Scripts\kendo\kendo.multicolumncombobox.min.js" />
     <Content Include="Scripts\kendo\kendo.multiselect.min.js" />
     <Content Include="Scripts\kendo\kendo.multiselect.min.js.map" />
@@ -1190,7 +1187,6 @@
     <Content Include="Scripts\kendo\kendo.virtuallist.min.js.map" />
     <Content Include="Scripts\kendo\kendo.web.min.js" />
     <Content Include="Scripts\kendo\kendo.web.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.webcomponents.js" />
     <Content Include="Scripts\kendo\kendo.window.min.js" />
     <Content Include="Scripts\kendo\kendo.window.min.js.map" />
     <Content Include="Scripts\kendo\messages\kendo.messages.en-US.min.js" />
@@ -1340,6 +1336,8 @@
     <Content Include="Views\SolicitudesClientes\IngresoSolicitudesClientes.cshtml" />
     <Content Include="Views\SolicitudesClientes\Index.cshtml" />
     <Content Include="Views\SolicitudesClientes\SolicitudesPendientes.cshtml" />
+    <Content Include="Views\Shared\_DesarrolloMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
     <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1370,14 +1368,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Scripts\Jquery\jquery-3.3.1.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.all-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.dataviz-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.dataviz.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.mobile-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.mobile.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.web-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.web.min.intellisense.js" />
     <Content Include="Views\BitacoraErrores\Index.cshtml" />
     <Content Include="Views\Boards\Index.cshtml" />
     <Content Include="Views\DefinicionBusqueda\Index.cshtml" />
