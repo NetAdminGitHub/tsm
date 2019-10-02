@@ -964,6 +964,24 @@ var fn_GetTipoEstaciones = function () {
     return result;
 };
 
+var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
 $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";
 });

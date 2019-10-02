@@ -970,3 +970,70 @@ var KdoRbGetValue = function (InputElem) {
 var kdoRbSetValue = function (InputElem, value) {
     InputElem.prop('checked', value);
 };
+//#region Cosulta Historica
+var fn_FormulaHistorica = function (divCcf) {
+
+    if ($("#" + divCcf + "").children().length === 0) {
+        $.ajax({
+            url: "/AXFormulaciones/ConsultaHistoricaFormulas",
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalFormulacion(resultado, divCcf);
+            }
+        });
+    } else {
+
+        fn_CargarVistaModalFormulacion("", divCcf);
+    }
+};
+
+var fn_CargarVistaModalFormulacion = function (data, divCcf) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("ConsultaHistoricaFormulas.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/ConsultaHistoricaFormulas.js";
+        script.onload = function () {
+            fn_ShowModalFH(true, data, divCcf);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalFH(false, data, divCcf);
+    }
+};
+
+var fn_ShowModalFH = function (cargarJs, data, divCcf) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_DRLoadConsultaHis(divCcf);
+        }
+    };
+    let onClose = function () {
+        //$("#" + divCcf + "").children().remove();
+    };
+    $("#" + divCcf + "").kendoDialog({
+        height: "auto",// $(window).height() - "300" + "px",
+        width: "70%",
+        title: "Formulas Historicas",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divCcf + "").data("kendoDialog").open();
+};
+//#endregion 

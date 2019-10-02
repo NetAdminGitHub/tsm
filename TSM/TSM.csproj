@@ -194,6 +194,7 @@
     </Compile>
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
+    <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
@@ -679,6 +680,7 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
@@ -1338,6 +1340,7 @@
     <Content Include="Views\SolicitudesClientes\IngresoSolicitudesClientes.cshtml" />
     <Content Include="Views\SolicitudesClientes\Index.cshtml" />
     <Content Include="Views\SolicitudesClientes\SolicitudesPendientes.cshtml" />
+    <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
