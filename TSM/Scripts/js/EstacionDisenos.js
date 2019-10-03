@@ -46,7 +46,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     let UrlTemul = TSM_Web_APi + "TiposEmulsiones";
     Kendo_CmbFiltrarGrid($("#CmbTipoEmulsion_Dis"), UrlTemul, "Nombre", "IdTipoEmulsion", "Seleccione una emulsión ....");
 
-    KdoComboBoxbyData($("#CmdIdUnidadArea_Dis"), "[]", "Abreviatura", "IdUnidad", "Seleccione una emulsión ....");
+    KdoComboBoxbyData($("#CmdIdUnidadArea_Dis"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
     $("#CmdIdUnidadArea_Dis").data("kendoComboBox").setDataSource(fn_UnidadMedida(6));
     KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
 
@@ -206,6 +206,7 @@ var fn_VistaEstacionDiseno = function () {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(estaMarco.Capilar);
         $("#NumPasadas_Dis").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         $("#NumArea_Dis").data("kendoNumericTextBox").value(estaMarco.Area);
+        KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), estaMarco.IdUnidadArea);
         KdoCmbSetValue($("#CmbSedas_Dis"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), estaMarco.IdTipoEmulsion);
         $("#TxtLetra").val(estaMarco.Letra);
@@ -213,6 +214,7 @@ var fn_VistaEstacionDiseno = function () {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(0);
         $("#NumPasadas_Dis").data("kendoNumericTextBox").value(0);
         $("#NumArea_Dis").data("kendoNumericTextBox").value(0);
+        KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
         KdoCmbSetValue($("#CmbSedas_Dis"), "");
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), "");
         $("#TxtLetra").val("");
