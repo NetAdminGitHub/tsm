@@ -3,10 +3,14 @@ var EstaMarco;
 var EstacionBra;
 var Te;
 var idBra;
+var EstaTintasFormula;
 
 var fn_VistaEstacionColorDocuReady = function () {
     KdoButton($("#btnccc"), "search", "Buscar en formula historicas..");
+    KdoButtonEnable($("#btnccc"), false);
     KdoButton($("#btnDelFT"), "delete", "Borrar formula..");
+    KdoButtonEnable($("#btnDelFT"), false);
+
     KdoButton($("#btnAddMCE"), "check", "Agregar");
     $("#NumPasadas").kendoNumericTextBox({
         min: 0,
@@ -50,10 +54,6 @@ var fn_VistaEstacionColorDocuReady = function () {
 
     let UrlBMezcla = TSM_Web_APi + "BasesMuestras";
     Kendo_CmbFiltrarGrid($("#CmbBaseMezcla_color"), UrlBMezcla, "Nombre", "IdBase", "Seleccione un Base Mezcla ....", "", "");
-
-
-
-
 
     let frmColor = $("#FrmGenEColor").kendoValidator({
         rules: {
@@ -119,7 +119,6 @@ var fn_VistaEstacionColorDocuReady = function () {
         }
     }).data("kendoValidator");
 
-
     $("#btnAddMCE").data("kendoButton").bind("click", function (e) {
         e.preventDefault();
         if (frmColor.validate()) {
@@ -134,9 +133,12 @@ var fn_VistaEstacionColorDocuReady = function () {
     $("#btnccc").data("kendoButton").bind("click", function () {
         fn_FormulaHistorica("FormulaHist");
     });
+    $("#btnDelFT").data("kendoButton").bind("click", function () {
+        fn_DelFormulaHis();
+    });
 
     $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarEstacionFormulaHis(idBra, CodigoColor);
+        fn_GuardarEstacionFormula(idBra, CodigoColor);
     });
 
 };
@@ -204,7 +206,9 @@ var fn_VistaEstacionColor = function () {
         $("#TxtFormulaSug").val("");
         KdoCmbSetValue($("#CmbTipoTinta_color"), "");
         KdoCmbSetValue($("#CmbSistema_color"), "");
-        KdoCmbSetValue($("#CmbPigmento_color"),"");
+        KdoCmbSetValue($("#CmbPigmento_color"), "");
+        KdoButtonEnable($("#btnccc"), false);
+        KdoButtonEnable($("#btnDelFT"), false);
 
         switch (Te) {
             case "COLOR":
@@ -250,23 +254,32 @@ var fn_VistaEstacionColor = function () {
     if (EstaTintasFormula.length >0) {
         $("#TxtIdform").val(EstaTintasFormula[0].IdFormula);
         $("#NumMasaEntre").val(EstaTintasFormula[0].MasaEntregada);
-        let xformula = $("#TablaPorc");
-        xformula.children().remove();
-        $.each(EstaTintasFormula, function (index, elemento) {
-
-            xformula.append('<tr>' +
-                '<td>' + elemento.IdArticulo + '</td>' +
-                '<td>' + elemento.Nombre + '</td>' +
-                '<td>' + elemento.MasaFinal + '</td>' +
-                '<td>' + elemento.PorcentajeFinal*100.00 + '</td>' +
-                '</tr>')
-        });
-
+        fn_MostraTablaFormula(EstaTintasFormula);
+        KdoButtonEnable($("#btnccc"), false);
+        KdoButtonEnable($("#btnDelFT"), true);
         
     } else {
         $("#TxtIdform").val(0);
+        KdoButtonEnable($("#btnccc"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnDelFT"), false);
+        fn_MostraTablaFormula(null);
+        $("#NumMasaEntre").val(0);
     }
 
+};
+
+let fn_MostraTablaFormula = function (ds) {
+    let xformula = $("#TablaPorc");
+    xformula.children().remove();
+    $.each(ds, function (index, elemento) {
+
+        xformula.append('<tr>' +
+            '<td>' + elemento.IdArticulo + '</td>' +
+            '<td>' + elemento.Nombre + '</td>' +
+            '<td>' + elemento.MasaFinal + '</td>' +
+            '<td>' + elemento.PorcentajeFinal * 100.00 + '</td>' +
+            '</tr>');
+    });
 };
 //// funciones
 let fn_GuardarEstacionColor = function () {
@@ -368,7 +381,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            $("#MEstacionColor").data("kendoDialog").close();
+            //$("#MEstacionColor").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
@@ -405,6 +418,7 @@ let fn_GuardarEstacion = function (xIdBrazo) {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            KdoButtonEnable($("#btnccc"), true);
             fn_GuardarEstaMarco(xIdBrazo);
         },
         error: function (data) {
@@ -415,7 +429,7 @@ let fn_GuardarEstacion = function (xIdBrazo) {
 
 };
 
-let fn_GuardarEstacionFormulaHis = function (xIdBrazo, xCodigoColor) {
+let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionColor"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
@@ -430,7 +444,43 @@ let fn_GuardarEstacionFormulaHis = function (xIdBrazo, xCodigoColor) {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            $("#TxtIdform").val(data.IdFormula);
+            $("#TxtIdform").val(data[0].IdFormula);
+            EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo);
+            fn_MostraTablaFormula(EstaTintasFormula);
+            $("#NumMasaEntre").val(EstaTintasFormula[0].MasaEntregada);
+            KdoButtonEnable($("#btnccc"), false);
+            KdoButtonEnable($("#btnDelFT"), true);
+            RequestEndMsg(data, xType);
+        },
+        complete: function () {
+            kendo.ui.progress($("#MEstacionColor"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#MEstacionColor"), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
+
+let fn_DelFormulaHis = function () {
+    kendo.ui.progress($("#MEstacionColor"), true);
+    let xType = "Delete";
+    xUrl = TSM_Web_APi + "TintasFormulaciones/" + $("#TxtIdform").val();
+    $.ajax({
+        url: xUrl,
+        type: xType,
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#TxtIdform").val(0);
+            $("#NumMasaEntre").val(0);
+            KdoButtonEnable($("#btnccc"), true);
+            KdoButtonEnable($("#btnDelFT"), false);
+            fn_MostraTablaFormula(null);
+            RequestEndMsg(data, xType);
+        },
+        complete: function () {
+            kendo.ui.progress($("#MEstacionColor"), false);
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionColor"), false);

@@ -1015,6 +1015,8 @@ var fn_ShowModalFH = function (cargarJs, data, divCcf) {
     let onShow = function () {
         if (cargarJs === true) {
             fn_DRLoadConsultaHis(divCcf);
+        } else {
+            fn_ConsultaHis();
         }
     };
     let onClose = function () {

@@ -1,20 +1,96 @@
-﻿var fn_DRLoadConsultaHis = function (divCcf) {
+﻿var FilNombreColor = 0;
+var FilColorTela = 0;
+var FilComposicionTela = 0;
+var PeticionFormula = false;
+var fn_DRLoadConsultaHis = function (divCcf) {
   
     KdoButton($("#btnCCFH"), "search", "buscar..");
     $("#TxtNombreColor").focus().select();
-    fn_gCHForBusqueda(divCcf);
- 
-};
-var fn_gCHForBusqueda = function (divCcf) {
 
+    fn_gCHForBusqueda(divCcf);
+
+    let FrmCCH = $("#FrmCCH").kendoValidator({
+        rules: {
+            vnc: function (input) {
+                if (input.is("[id='TxtNombreColor']")) {
+                    return input.val().length > 0 && input.val().length <= 100;
+                }
+                return true;
+            },
+            vct: function (input) {
+                if (input.is("[id='TxtColorTela']")) {
+                    return input.val().length === 0 ? true : input.val().length >= 3 && input.val().length <= 200;
+                }
+                return true;
+            },
+            vcpt: function (input) {
+                if (input.is("[id='TxtCompoTela']")) {
+                    return input.val().length === 0 ? true : input.val().length >= 3 && input.val().length <= 200;
+                }
+                return true;
+            }
+           
+
+        },
+        messages: {
+            vnc: "Requerido nombre del color",
+            vct: "Requerido como minimo 3 caracteres",
+            vcpt: "Requerido como minimo 3 caracteres"
+        
+        }
+    }).data("kendoValidator");
+
+    $("#btnCCFH").data("kendoButton").bind("click", function (e) {
+        e.preventDefault();
+        if (FrmCCH.validate()) {
+            FilColorTela = $("#TxtColorTela").val();
+            FilNombreColor = $("#TxtNombreColor").val();
+            FilComposicionTela = $("#TxtCompoTela").val();
+            PeticionFormula = true;
+            $("#gCHFor").data("kendoGrid").dataSource.read();
+
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+        }       
+    });
+};
+var fn_ConsultaHis = function () {
+    PeticionFormula = false;
+    $("#TxtNombreColor").val("");
+    $("#TxtColorTela").val("");
+    $("#TxtCompoTela").val("");
+    $("#gCHFor").data("kendoGrid").dataSource.read();
+
+}
+let fn_gCHForBusqueda = function (divCcf) {
     var dataSource = new kendo.data.DataSource({
-        dataType: "json",
-        //CONFIGURACION DEL CRUD
+       
         transport: {
-            read: {
-                url: function () { return TSM_Web_APi + "AXFormulaciones/GetbyCodigoColor/FC-0086881"; },
-                dataType: "json",
-                contentType: "application/json; charset=utf-8"
+            read: function (options) {
+                if (PeticionFormula === true) {
+                    $.ajax({
+                        url: TSM_Web_APi + "TintasFormulaciones/BusquedaHistorica",
+                        dataType: "json",
+                        type: "post",
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify({
+                            NombreColor: FilNombreColor.toString(),
+                            ColorTela: FilColorTela.toString(),
+                            ComposicionTela: FilComposicionTela.toString()
+                        }),
+                        success: function (result) {
+                            options.success(result);
+                            PeticionFormula = false;
+                        },
+                        error: function (result) {
+                            options.error(result);
+                            PeticionFormula = false;
+                        }
+                    });
+                } else {
+                    options.success("");
+                }
+                
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -44,10 +120,10 @@ var fn_gCHForBusqueda = function (divCcf) {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "CodigoColor", title: "Codigo Color", hidden: true },
-            { field: "CodigoDiseno", title: "Codigo Diseno" },
-            { field: "FechaFormula", title: "Fecha Formula", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
-            { field: "NombreColor", title: "Nombre del Color" },
+            { field: "CodigoColor", title: "Codigo color", hidden: true },
+            { field: "CodigoDiseno", title: "Codigo Diseño", hidden: true,menu:false},
+            { field: "NombreColor", title: "Nombre del color" },
+            { field: "FechaFormula", title: "Fecha formula", format: "{0: dd/MM/yyyy}" },
             { field: "ColorTela", title: "Color Tela" },
             { field: "ComposicionTela", title: "Composicion Tela" }
         ]
@@ -137,3 +213,4 @@ var fn_gCHForBusqueda = function (divCcf) {
 
 
 };
+
