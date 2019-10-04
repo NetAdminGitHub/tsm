@@ -3,8 +3,9 @@ var EstaMarco;
 var EstacionBra;
 var Te;
 var idBra;
-
-var fn_VistaEstacionDisenoDocuReady = function () {
+let xAreaDis;
+let xIdUnidadAreaDis;
+var fn_VistaEstacionMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_Mues"), "check", "Agregar");
     $("#NumPasadas_Mues").kendoNumericTextBox({
         min: 0,
@@ -90,7 +91,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
                 return true;
             },
             vletra: function (input) {
-                if (input.is("[name='TxtLetras']")) {
+                if (input.is("[name='TxtLetra_Mues']")) {
                     return input.val().length <= 5;
                 }
                 return true;
@@ -116,7 +117,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     $("#btnAddMCE_Mues").data("kendoButton").bind("click", function (e) {
         e.preventDefault();
         if (frmDiseno.validate()) {
-            fn_GuardarEstacionDiseno();
+            fn_GuardarEstacionMues();
 
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
@@ -125,7 +126,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     });
 };
 
-var fn_VistaEstacionDiseno = function () {
+var fn_VistaEstacionMuestra = function () {
     //InicioColor = true;
     TextBoxEnable($("#TxtOpcSelec_Mues"), false);
     TextBoxEnable($("#TxtNombreQui_Mues"), false);
@@ -172,11 +173,12 @@ var fn_VistaEstacionDiseno = function () {
         $("#NumCapilar_Mues").data("kendoNumericTextBox").value(estaMarco.Capilar);
         $("#NumPasadas_Mues").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         $("#NumPeso_Mues").data("kendoNumericTextBox").value(estaMarco.Peso);
-        $("#NumPeso_Mues").data("kendoNumericTextBox").value(estaMarco);
         KdoCmbSetValue($("#CmbSedas_Mues"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmdIdUnidadPeso_Mues"), estaMarco.IdUnidadPeso);
         KdoCmbSetValue($("#CmbTipoEmulsion_Mues"), estaMarco.IdTipoEmulsion);
-        $("#TxtLetra").val(estaMarco.Letra);
+        $("#TxtLetra_Mues").val(estaMarco.Letra);
+        xAreaDis = estaMarco.Area;
+        xIdUnidadAreaDis = estaMarco.IdUnidadArea;
     } else {
         $("#NumCapilar_Mues").data("kendoNumericTextBox").value(0);
         $("#NumPasadas_Mues").data("kendoNumericTextBox").value(0);
@@ -184,7 +186,10 @@ var fn_VistaEstacionDiseno = function () {
         KdoCmbSetValue($("#CmdIdUnidadPeso_Mues"), 21);
         KdoCmbSetValue($("#CmbSedas_Mues"), "");
         KdoCmbSetValue($("#CmbTipoEmulsion_Mues"), "");
-        $("#TxtLetra").val("");
+        $("#TxtLetra_Mues").val("");
+        xAreaDis = 0;
+        xIdUnidadAreaDis = 0;
+        
     }
 
 
@@ -193,9 +198,9 @@ var fn_VistaEstacionDiseno = function () {
 
 };
 //// funciones
-let fn_GuardarEstacionDiseno = function () {
+let fn_GuardarEstacionMues = function () {
 
-    fn_GuardarEstacionDisArea(idBra);
+    GuardarEstacionDesaMues(idBra);
     var a = stage.find("#TxtInfo" + idBra);
     a.text($("#TxtOpcSelec_Mues").val());
     var b = stage.find("#brazo" + idBra);
@@ -205,9 +210,9 @@ let fn_GuardarEstacionDiseno = function () {
     layer.draw();
 };
 
-let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
+let fn_GuardarEstaMarcoMues = function (xIdBrazo) {
 
-    kendo.ui.progress($("#MEstacionDisenos"), true);
+    kendo.ui.progress($("#MEstacionMuestra"), true);
     let xIdTipoFormulacion;
     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
     xIdTipoFormulacion = Te;
@@ -237,32 +242,33 @@ let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             Presion: null,
             Tension: null,
             OffContact: null,
-            Letra: $("#TxtLetra").val(),
+            Letra: $("#TxtLetra_Mues").val(),
             IdUsuarioMod: getUser(),
             FechaMod: xFecha,
             IdEscurridor: null,
             SerieMarco: null,
             IdTipoEmulsion: KdoCmbGetValue($("#CmbTipoEmulsion_Mues")),
             IdSeteo: maq[0].IdSeteo,
-            Area: maq[0].Area,
+            Area: xAreaDis,
+            IdUnidadArea: xIdUnidadAreaDis,
             Peso: kdoNumericGetValue($("#NumPeso_Mues")),
-            IdUnidadArea: KdoCmbGetValue($("#CmdIdUnidadPeso_Mues"))
+            IdUnidadPeso: KdoCmbGetValue($("#CmdIdUnidadPeso_Mues"))
 
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            fn_GuardarMarcoFormuDis(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoColor") : null, Te === "TECNICA" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica") : null, Te === "BASE" ? $("#TxtOpcSelec_Mues").data("IdBase") : null);
+            fn_GuardarMarcoFormuMues(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoColor") : null, Te === "TECNICA" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica") : null, Te === "BASE" ? $("#TxtOpcSelec_Mues").data("IdBase") : null);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionMuestra"), false);
             ErrorMsg(data);
         }
     });
 
 };
 
-let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
-    kendo.ui.progress($("#MEstacionDisenos"), true);
+let fn_GuardarMarcoFormuMues = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
+    kendo.ui.progress($("#MEstacionMuestra"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
 
@@ -291,20 +297,19 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionDisenos").modal('hide');
-            $("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionMuestra").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionMuestra"), false);
             ErrorMsg(data);
         }
     });
 
 };
 
-let fn_GuardarEstacionDisArea = function (xIdBrazo) {
-    kendo.ui.progress($("#MEstacionDisenos"), true);
+let GuardarEstacionDesaMues = function (xIdBrazo) {
+    kendo.ui.progress($("#MEstacionMuestra"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
 
@@ -329,10 +334,10 @@ let fn_GuardarEstacionDisArea = function (xIdBrazo) {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            fn_GuardarEstaMarcoDis(xIdBrazo);
+            fn_GuardarEstaMarcoMues(xIdBrazo);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionMuestra"), false);
             ErrorMsg(data);
         }
     });
@@ -363,5 +368,5 @@ let fn_UnidadMedida = function (filtro) {
     });
 };
 
-fn_PWList.push(fn_VistaEstacionDiseno);
-fn_PWConfList.push(fn_VistaEstacionDisenoDocuReady);
+fn_PWList.push(fn_VistaEstacionMuestra);
+fn_PWConfList.push(fn_VistaEstacionMuestraDocuReady);
