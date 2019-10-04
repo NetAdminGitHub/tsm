@@ -277,7 +277,7 @@ let fn_MostraTablaFormula = function (ds) {
             '<td>' + elemento.IdArticulo + '</td>' +
             '<td>' + elemento.Nombre + '</td>' +
             '<td>' + elemento.MasaFinal + '</td>' +
-            '<td>' + elemento.PorcentajeFinal * 100.00 + '</td>' +
+            '<td>' + Math.round(elemento.PorcentajeFinal * 100.00) + '</td>' +
             '</tr>');
     });
 };
