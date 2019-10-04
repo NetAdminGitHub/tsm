@@ -160,10 +160,10 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         }
     });
 
-    $("#btnccc").data("kendoButton").bind("click", function () {
+    $("#btnccc_Dis").data("kendoButton").bind("click", function () {
         fn_FormulaHistorica("FormulaHist");
     });
-    $("#btnDelFT").data("kendoButton").bind("click", function () {
+    $("#btnDelFT_Dis").data("kendoButton").bind("click", function () {
         fn_DelFormulaHis();
     });
 
@@ -296,7 +296,7 @@ var fn_VistaEstacionDiseno = function () {
         KdoButtonEnable($("#btnDelFT_Dis"), true);
     } else {
         $("#TxtIdform_Dis").val(0);
-        KdoButtonEnable($("#btnccc_Dis"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnccc_Dis"), true);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
         fn_MostraTablaFormula(null);
         $("#NumMasaEntre_Dis").val(0);
@@ -361,7 +361,7 @@ let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             let vIdtec = Te === "TECNICA" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica") : Te === "COLOR" ? KdoCmbGetValue($("#CmbTecnica_Dis")) : null;
-            let vIdBase = Te === "BASE" ? $("#TxtOpcSelec").data("IdBase") : Te === "COLOR" ? KdoCmbGetValue($("#CmbBaseMezcla_color")) : null;
+            let vIdBase = Te === "BASE" ? $("#TxtOpcSelec_Dis").data("IdBase") : Te === "COLOR" ? KdoCmbGetValue($("#CmbBaseMezcla_Dis")) : null;
 
             fn_GuardarMarcoFormuDis(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoColor") : null, vIdtec, vIdBase);
         },
@@ -404,7 +404,7 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionDisenos").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {

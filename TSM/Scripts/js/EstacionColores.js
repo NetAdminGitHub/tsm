@@ -260,7 +260,7 @@ var fn_VistaEstacionColor = function () {
         
     } else {
         $("#TxtIdform").val(0);
-        KdoButtonEnable($("#btnccc"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnccc"), true );
         KdoButtonEnable($("#btnDelFT"), false);
         fn_MostraTablaFormula(null);
         $("#NumMasaEntre").val(0);
@@ -381,7 +381,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionColor").data("kendoDialog").close();
+            $("#MEstacionColor").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
