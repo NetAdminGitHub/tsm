@@ -18,8 +18,9 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_CambioEtp = function (e) {
-
     if (ValidarCamEtp.validate()) {
+        // obtener indice de la etapa siguiente
+        let xindice = KdoCmbGetValue($("#cmbEtpSigAnt"));
         kendo.ui.progress($(document.body), true);
         $.ajax({
             url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa" ,
@@ -35,7 +36,7 @@ var fn_CambioEtp = function (e) {
             success: function (datos) {
                 RequestEndMsg(datos, "Post");
                 $("#vCamEtapa").data("kendoDialog").close();
-                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "]").attr("indice"));
+                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
             },
             error: function (data) {
                 ErrorMsg(data);

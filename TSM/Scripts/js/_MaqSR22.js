@@ -887,17 +887,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
-                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Color');
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
-                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Técnica');
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
-                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Base');
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Base');
                         break;
                     default:
                 }
