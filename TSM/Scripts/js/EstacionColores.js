@@ -381,7 +381,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionColor").data("kendoDialog").close();
+            $("#MEstacionColor").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {

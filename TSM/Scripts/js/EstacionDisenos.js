@@ -296,7 +296,7 @@ var fn_VistaEstacionDiseno = function () {
         KdoButtonEnable($("#btnDelFT_Dis"), true);
     } else {
         $("#TxtIdform_Dis").val(0);
-        KdoButtonEnable($("#btnccc_Dis"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnccc_Dis"), true);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
         fn_MostraTablaFormula(null);
         $("#NumMasaEntre_Dis").val(0);
@@ -404,7 +404,7 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionDisenos").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
