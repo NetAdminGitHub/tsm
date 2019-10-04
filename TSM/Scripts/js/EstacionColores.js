@@ -260,7 +260,7 @@ var fn_VistaEstacionColor = function () {
         
     } else {
         $("#TxtIdform").val(0);
-        KdoButtonEnable($("#btnccc"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnccc"), true );
         KdoButtonEnable($("#btnDelFT"), false);
         fn_MostraTablaFormula(null);
         $("#NumMasaEntre").val(0);
