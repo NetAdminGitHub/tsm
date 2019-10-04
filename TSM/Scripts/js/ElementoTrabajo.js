@@ -18,8 +18,9 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_CambioEtp = function (e) {
-
     if (ValidarCamEtp.validate()) {
+        // obtener indice de la etapa siguiente
+        let xindice = KdoCmbGetValue($("#cmbEtpSigAnt"));
         kendo.ui.progress($(document.body), true);
         $.ajax({
             url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa" ,
@@ -35,7 +36,7 @@ var fn_CambioEtp = function (e) {
             success: function (datos) {
                 RequestEndMsg(datos, "Post");
                 $("#vCamEtapa").data("kendoDialog").close();
-                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + $("#cmbEtpSigAnt").data("kendoComboBox").value() + "]").attr("indice"));
+                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -156,6 +157,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#TxtNombreCPT").val(datos.NombreCPT);
     $("#TxtNombreCCT").val(datos.NombreCCT);
     $("#TxtNombreCFT").val(datos.NombreCFT);
+    $("#TxtNomQuimica").val(datos.NombreQui);
     $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
@@ -962,6 +964,65 @@ var fn_GetTipoEstaciones = function () {
     });
     return result;
 };
+
+var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
+var Fn_GetSistemaTintas = function () {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "SistemasTintas",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+var Fn_GetTipoTinta = function () {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "TiposTintas/GetbyIdQuimica/" + xIdQuimica.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+
 
 $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";

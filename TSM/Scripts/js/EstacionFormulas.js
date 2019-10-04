@@ -130,6 +130,8 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 };
 
 var fn_VistaEstacionFormulas = function () {
+    $("#gridFormulas").data("kendoGrid").dataSource.data([]);
+    $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
     TextBoxEnable($("#TxtNombreQuiForm"), false);
     TextBoxEnable($("#TxtFormulaSugTint"), false);
@@ -161,6 +163,7 @@ var fn_VistaEstacionFormulas = function () {
         $("#TxtFormulaSugTint").val(setFor.SugerenciaFormula);
     }
     $("#gridFormulas").data("kendoGrid").dataSource.read();
+
 
 };
 let fn_EditClose = function () {
