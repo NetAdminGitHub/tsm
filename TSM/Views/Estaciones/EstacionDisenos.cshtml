@@ -47,8 +47,6 @@
                         <label for="CmbTecnica_Dis">Tecnica a Aplicar:</label>
                         <input id="CmbTecnica_Dis" name="CmbTecnica_Dis" type="text" class="form-control" />
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group col-lg-4">
                         <label for="NumArea_Dis">Area:</label>
                         <input id="NumArea_Dis" name="NumArea_Dis" type="text" class="form-control" />
@@ -57,14 +55,58 @@
                         <label for="CmdIdUnidadArea_Dis">Unidad Area:</label>
                         <input id="CmdIdUnidadArea_Dis" name="CmdIdUnidadArea_Dis" required validationMessage="Requerido" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
                         <label for="TxtLetra">Letras</label>
                         <input id="TxtLetra" name="TxtLetra" type="text" class="k-textbox form-control" />
                     </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbBaseMezcla_Dis">Base Mezcla</label>
+                        <input id="CmbBaseMezcla_Dis" name="CmbBaseMezcla_Dis" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label for="NumMasaEntre_Dis">Masa entregada</label>
+                                <input id="NumMasaEntre_Dis" name="NumMasaEntre_Dis" type="text" class="k-textbox form-control" />
+                            </div>
+                            <div class="form-group col-lg-4 align-self-lg-end">
+                                <button type="button" id="btnccc_Dis"></button>
+                                <button type="button" id="btnDelFT_Dis"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-row">
-                    <label for="TxtFormulaSug_Dis">Formulacion Sugerida </label>
-                    <input id="TxtFormulaSug_Dis" name="TxtFormulaSug_Dis" type="text" class="k-textbox form-control" />
+                    <div class="form-group col-lg-6">
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label for="CmbPigmento_Dis">Pigmentos</label>
+                                <input id="CmbPigmento_Dis" name="CmbPigmento_Dis" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="TxtFormulaSug_Dis">Formulación Sugerida</label>
+                                <input id="TxtFormulaSug_Dis" name="TxtFormulaSug_Dis" type="text" class="k-textbox form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <input id="TxtIdform_Dis" name="TxtIdform" type="text" class="k-textbox form-control" , hidden="hidden" />
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    @*<th scope="col">#</th>*@
+                                    <th scope="col">Articulo</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Masa Final</th>
+                                    <th scope="col">% Final</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TablaPorc_Dis">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </form>
