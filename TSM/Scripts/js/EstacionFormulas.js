@@ -109,6 +109,13 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         frmNajus.hideMessages();
     });
 
+    $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
+        fn_FormulaHistorica("FormulaEstacionTinta");
+    });
+
+    $("#FormulaEstacionTinta").on("ObtenerFormula", function (event, CodigoColor) {
+        fn_GuardarFormulaEst(xidEstacion, CodigoColor);
+    });
 };
 
 var fn_VistaEstacionFormulas = function () {
@@ -157,7 +164,8 @@ let fn_EditClose = function () {
 
 let fn_ShowAjus = function () {
     $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read().then(function () {
-        fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? fn_getIdMotivo($("#gridFormulas").data("kendoGrid")) !== null ? Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
+        //fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? fn_getIdMotivo($("#gridFormulas").data("kendoGrid")) !== null ? Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
+        fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ?  Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true)  : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
     });
 };
 
@@ -628,5 +636,36 @@ var fn_gridAjustePrima = function (gd) {
     });
 
 };
+let fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
+    kendo.ui.progress($(document.body), true);
+    let xType = "Post";
+    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
+    $.ajax({
+        url: xUrl,
+        type: xType,
+        data: JSON.stringify({
+            IdFormula: 0,
+            IdSeteo: maq[0].IdSeteo,
+            IdEstacion: xIdBrazo,
+            CodigoColor: xCodigoColor
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridFormulas").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($(document.body), false);
+            $("#MbtnAjuste").data("kendoDialog").close();
+            RequestEndMsg(data, "Post");
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
+
 fn_PWList.push(fn_VistaEstacionFormulas);
 fn_PWConfList.push(fn_VistaEstacionFormulasDocuReady);
