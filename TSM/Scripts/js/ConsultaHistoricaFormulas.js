@@ -56,9 +56,11 @@ var fn_DRLoadConsultaHis = function (divCcf) {
 };
 var fn_ConsultaHis = function () {
     PeticionFormula = false;
+    $("#FrmCCH").data("kendoValidator").hideMessages();
     $("#TxtNombreColor").val("");
     $("#TxtColorTela").val("");
     $("#TxtCompoTela").val("");
+    $("#TxtNombreColor").focus().select();
     $("#gCHFor").data("kendoGrid").dataSource.read();
 
 };
