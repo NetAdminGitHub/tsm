@@ -14,6 +14,7 @@ var gridAlto = 300;
 var xvNodocReq;
 var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
 var TiEst; // guarda los tipos de estaciones
+var SisTintas;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -201,6 +202,7 @@ var fn_getImagen = function (xUrl,xNodocumentoReq) {
         }
     });
 };
+
 var get_cmbUsuario = function (tipoOrd, etp) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -983,16 +985,17 @@ var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
-var Fn_GetSistemaTintas = function () {
+var Fn_GetSistemaTintas = function (vid) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
         transport: {
             read: function (datos) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "SistemasTintas",
+                    url: TSM_Web_APi + "SistemasTintas/GetbyTipoTintas/" + (vid !== null ? vid.toString() : 0),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -1002,30 +1005,74 @@ var Fn_GetSistemaTintas = function () {
         }
     });
 };
-var Fn_GetTipoTinta = function () {
-    //preparar crear datasource para obtner la tecnica filtrado por base
-    return new kendo.data.DataSource({
-        sort: { field: "Nombre", dir: "asc" },
-        transport: {
-            read: function (datos) {
-                $.ajax({
-                    dataType: 'json',
-                    async: false,
-                    url: TSM_Web_APi + "TiposTintas/GetbyIdQuimica/" + xIdQuimica.toString(),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        datos.success(result);
-                    }
-                });
-            }
-        }
-    });
-};
-
-
 
 $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";
 });
 
+var fn_MostraTablaFormula = function (ds, div) {
+
+    let xformula = $("#" + div + "");
+    xformula.children().remove();
+    xformula.append('<table class="table mt-3" >' +
+        '<thead>' +
+        '<tr>' +
+        '<th scope="col">Articulo</th>' +
+        '<th scope="col">Nombre</th>' +
+        '<th scope="col">Masa Final</th>' +
+        '<th scope="col">% Final</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tfoot id="' + div + '_Foot">' +
+        '</tfoot>' +
+        '<tbody id="' + div + '_Det">' +
+        '</tbody>' +
+        '</table>'
+    );
+
+    let xformulaDet = $("#" + div + "_Det");
+    xformulaDet.children().remove();
+    $.each(ds, function (index, elemento) {
+
+        xformulaDet.append('<tr>' +
+            '<td>' + elemento.IdArticulo + '</td>' +
+            '<td>' + elemento.Nombre + '</td>' +
+            '<td>' + kendo.format("{0:n2}",elemento.MasaFinal) + '</td>' +
+            '<td>' + kendo.format("{0:n2}", elemento.PorcFinal) + '</td>' +
+            '</tr>');
+    });
+
+    xformulaDet.append('<tr>' +
+        '< th rowspan = "1" colspan = "1" ></th > ' +
+        '<th rowspan="1" colspan="1"></th>' +
+        '<th rowspan="1" colspan="1"></th>' +
+        '<th rowspan="1" colspan="1">Total:</th>' +
+        '<th rowspan="1" colspan="1">'+( ds !==null ? kendo.format("{0:n2}", ds[0].TotalPorc): 0.00) +' %</th>' +
+        '</tr>');
+
+    //xformulaDet.append('<tr>' +
+    //    '<td></td>' +
+    //    '<td></td>' +
+    //    '<td>Total:</td>' +
+    //    '<td>' +( ds !==null ? ds[0].TotalPorc.toFixed(4): 0.00) + '</td>' +
+    //    '</tr>');
+
+};
+
+var fn_SistemasTintas = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SistemasTintas",
+        type: 'GET',
+        async: false,
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return result;
+};
 

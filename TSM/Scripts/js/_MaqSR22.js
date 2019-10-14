@@ -20,6 +20,7 @@ var fn_RTCargarMaquina = function () {
     var height = window.innerHeight;
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     maq = fn_GetMaquinas();
+    SisTintas = fn_SistemasTintas();
 
     stage = new Konva.Stage({
         container: 'container',
@@ -222,7 +223,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
-            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
 
@@ -403,7 +404,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
 
-            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10) ) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });   
 
@@ -929,7 +930,7 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
         modal: true,
         content: data,
         visible: false,
-        maxHeight: 900,
+        maxHeight: 800,
         //actions: [
         //    { text: '<span class="k-icon k-i-check"></span>&nbspAceptar', primary: true },
         //    { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
