@@ -4,25 +4,6 @@ let vIdIdDisenoMuestra;
 var fn_DMCargarConfiguracion = function () {
     KdoButton($("#btnBTDis"), "delete", "Limpiar");
     KdoButtonEnable($("#btnBTDis"), false);
-    $("#NumResolucionDPI").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-
-    });
-
-    $("#NumLineajeLPI").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
-
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -31,7 +12,6 @@ var fn_DMCargarConfiguracion = function () {
         decimals: 2,
         value: 0
     });
-
     $("#NumAnchoDiseno").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -110,20 +90,6 @@ var fn_DMCargarConfiguracion = function () {
                 }
                 return true;
             },
-            rdpi: function (input) {
-
-                if (input.is("[name='NumResolucionDPI']")) {
-                    return $("#NumResolucionDPI").data("kendoNumericTextBox").value() > 0;
-                }
-                return true;
-            },
-            ldpi: function (input) {
-
-                if (input.is("[name='NumLineajeLPI']")) {
-                    return $("#NumLineajeLPI").data("kendoNumericTextBox").value() > 0;
-                }
-                return true;
-            },
             anchod: function (input) {
 
                 if (input.is("[name='NumAnchoDiseno']")) {
@@ -143,7 +109,6 @@ var fn_DMCargarConfiguracion = function () {
             cmop: "Requerido",
             cmTs: "Requerido",
             rdpi: "Requerido",
-            ldpi: "Requerido",
             anchod: "Requerido",
             altod: "Requerido",
             cmUm:"Requerido"
@@ -189,8 +154,6 @@ let fn_GetDisenoMuestra = function () {
             if (respuesta !== null) {
                 vIdIdDisenoMuestra = respuesta.IdDisenoMuestra;
                 kendo.ui.progress($("#vistaParcial"), true);
-                kdoNumericSetValue($("#NumResolucionDPI"), respuesta.ResolucionDPI);
-                kdoNumericSetValue($("#NumLineajeLPI"), respuesta.LineajeLPI);
                 kdoNumericSetValue($("#NumAltoDiseno"), respuesta.Alto);
                 kdoNumericSetValue($("#NumAnchoDiseno"), respuesta.Ancho);
                 KdoCmbSetValue($("#CmbIdUnidad"), respuesta.IdUnidad);
@@ -220,8 +183,6 @@ let fn_GuardarDM = function () {
             Alto: kdoNumericGetValue($("#NumAltoDiseno")),
             Ancho: kdoNumericGetValue($("#NumAnchoDiseno")),
             IdUnidad: KdoCmbGetValue($("#CmbIdUnidad")),
-            ResolucionDPI: kdoNumericGetValue($("#NumResolucionDPI")),
-            LineajeLPI: kdoNumericGetValue($("#NumLineajeLPI")),
             RutaArchivos: $("#TxtDirectorio").val(),
             IdOrientacionPositivo: KdoCmbGetValue($("#CmbIdOrientacionPositivo")),
             IdTipoSeparacion: KdoCmbGetValue($("#CmbIdTipoSeparacion")),

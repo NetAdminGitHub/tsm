@@ -9,7 +9,7 @@
                         <input id="TxtOpcSelec_Dis" name="TxtOpcSelec_Dis" type="text" class="k-textbox form-control" />
                     </div>
                     <div class="form-group col-lg-6">
-                        <label for="TxtNombreQui_Dis">Quimica Utilizar</label>
+                        <label for="TxtNombreQui_Dis">Química Utilizar</label>
                         <input id="TxtNombreQui_Dis" name="TxtNombreQui_Dis" type="text" class="k-textbox form-control" />
                     </div>
                 </div>
@@ -29,31 +29,45 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-4">
-                        <label for="CmbTipoEmulsion_Dis">Emulsiones:</label>
+                        <label for="CmbTipoEmulsion_Dis">Emulsiones</label>
                         <input id="CmbTipoEmulsion_Dis" name="CmbTipoEmulsion_Dis" required validationMessage="Requerido" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-4">
-                        <label for="NumCapilar_Dis">Capilar:</label>
+                        <label for="NumCapilar_Dis">Capilar</label>
                         <input id="NumCapilar_Dis" name="NumCapilar_Dis" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-4">
-                        <label for="NumPasadas_Dis">Numero de Pasadas:</label>
+                        <label for="NumPasadas_Dis">Número de Pasadas</label>
                         <input id="NumPasadas_Dis" name="NumPasadas_Dis" type="text" class="form-control" />
                     </div>
 
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-4">
-                        <label for="CmbTecnica_Dis">Tecnica a Aplicar:</label>
+                        <label for="CmbTecnica_Dis">Técnica a Aplicar</label>
                         <input id="CmbTecnica_Dis" name="CmbTecnica_Dis" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-4">
-                        <label for="NumArea_Dis">Area:</label>
+                        <label for="NumArea_Dis">Área</label>
                         <input id="NumArea_Dis" name="NumArea_Dis" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-4">
-                        <label for="CmdIdUnidadArea_Dis">Unidad Area:</label>
+                        <label for="CmdIdUnidadArea_Dis">Unidad área</label>
                         <input id="CmdIdUnidadArea_Dis" name="CmdIdUnidadArea_Dis" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="NumResolucionDPI_Dis">Resolución</label>
+                        <input id="NumResolucionDPI_Dis" name="NumResolucionDPI_Dis" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="NumLineajeLPI_Dis">Lineaje</label>
+                        <input id="NumLineajeLPI_Dis" name="NumLineajeLPI_Dis" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="NumPixeles_Dis">Pixeles</label>
+                        <input id="NumPixeles_Dis" name="NumPixeles_Dis" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="form-row">
@@ -93,19 +107,7 @@
                     </div>
                     <div class="form-group col-lg-6">
                         <input id="TxtIdform_Dis" name="TxtIdform" type="text" class="k-textbox form-control" , hidden="hidden" />
-                        <table class="table mt-3">
-                            <thead>
-                                <tr>
-                                    @*<th scope="col">#</th>*@
-                                    <th scope="col">Articulo</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Masa Final</th>
-                                    <th scope="col">% Final</th>
-                                </tr>
-                            </thead>
-                            <tbody id="TablaPorc_Dis">
-                            </tbody>
-                        </table>
+                        <div id="TablaFormulaDis"></div>
                     </div>
                 </div>
             </div>
@@ -115,5 +117,10 @@
         <div class="form-row">
             <button type="button" class=" k-primary" id="btnAddMCE_Dis">Guardar</button>
         </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="FormulaHistDis"></div>
     </div>
 </div>
