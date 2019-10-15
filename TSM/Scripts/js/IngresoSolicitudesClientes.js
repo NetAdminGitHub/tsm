@@ -756,7 +756,7 @@ let fn_CreaItemProm = function (widgetId, value) {
         dsProN.one("sync", function () {
             widget.select(dsProN.view().length - 1);
             widget.trigger("change");
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "success");
+            $("#kendoNotificaciones").data("kendoNotification").show("Programa creado satisfactoriamente!!", "success");
         });
 
         dsProN.sync();
