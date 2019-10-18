@@ -564,8 +564,7 @@ let fn_gridSolDet = function () {
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
             { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
             { field: "NombreDiseno", title: "Nombre del Diseño" },
-            {
-                field: "IdPrograma", title: "Programa", editor: fn_ComboPrograma, values: ["IdPrograma", "Nombre", "", "", "Seleccione....", "required", "", "Requerido","fn_CreaItemProm"], hidden: true },
+            { field: "IdPrograma", title: "Programa", editor: fn_ComboPrograma, values: ["IdPrograma", "Nombre", "", "", "Seleccione....", "required", "", "Requerido","fn_CreaItemProm"], hidden: true },
             { field: "NombrePro", title: "Nombre del Programa" },
             { field: "IdTipoMuestra", title: "Tipo de muestra", editor: Grid_Combox, values: ["IdTipoMuestra", "Nombre", UrlTm, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreTipoM", title: "Tipo de muestras" },
@@ -577,7 +576,7 @@ let fn_gridSolDet = function () {
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
             { field: "NombreUN", title: "Unidad de medida" },
             { field: "Estado", title: "Cod. Estado", hidden: true},
-            { field: "NombreEstado", title: "Estado"}
+            { field: "NombreEstado", title: "Estado", hidden: true}
         ]
     });
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
@@ -585,8 +584,6 @@ let fn_gridSolDet = function () {
     SetGrid_CRUD_ToolbarTop($("#gridDet").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridDet").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDet").data("kendoGrid"), dataSourceMue);
-
-
     var selectedRows = [];
     $("#gridDet").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridDet"), selectedRows);
@@ -608,8 +605,44 @@ let fn_gridSolDet = function () {
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#gridDet"), $(window).height() - "371");
     });
-
     Fn_Grid_Resize($("#gridDet"), $(window).height() - "371");
+
+    let grid1 = $("#gridDet").data("kendoGrid");
+    $(grid1.element).kendoDraggable({
+        filter: "tbody > tr",
+        cursorOffset: {
+            top: 10,
+            left: 10
+        },
+        hint: function (e) {
+            let item = $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            return item;
+        },
+        group: "gridGroup"
+    });
+    $(grid1.element).kendoDropTarget({
+        drop: function (e) {
+            e.draggable.hint.hide();
+            let target = grid1.dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(e.target);
+            if (dest.is("th") || dest.is("thead") || dest.is("span") || dest.parent().is("th")) {
+                return;
+            }
+            //en caso que contenga imagen
+            else if (dest.is("img")) {
+                dest = grid1.dataSource.getByUid(dest.parent().parent().data("uid"));
+            }
+            else {
+                dest = grid1.dataSource.getByUid(dest.parent().data("uid"));
+            }
+            if (dest === undefined) {
+                fn_InsFilaGrid(grid1, target);
+                grid1.saveChanges();
+            }
+
+        },
+        group: "gridGroup"
+    });
 };
 let fn_DSudm = function (filtro) {
 
@@ -737,7 +770,6 @@ let fn_GuadarCliente = function () {
     }
     return snGuardo;
 };
-
 let fn_CreaItemProm = function (widgetId, value) {
     var widget = $("#" + widgetId).getKendoComboBox();
     var dsProN = widget.dataSource;
@@ -816,8 +848,27 @@ let fn_ComboPrograma = function (container, options) {
         }
     });
 };
+let fn_InsFilaGrid = function (g, data) {
+    g.dataSource.insert(0, {
+        IdSolicitudDisenoPrenda: 0,
+        IdSolicitud: data.IdSolicitud,
+        NombreDiseno: data.NombreDiseno,
+        IdPrograma: data.IdPrograma,
+        NombrePro: data.NombrePro,
+        IdTipoMuestra: data.IdTipoMuestra,
+        NombreTipoM: data.NombreTipoM,
+        IdCategoriaTalla: data.IdCategoriaTalla,
+        NombreTamano: data.NombreTamano,
+        ColorTela: data.ColorTela,
+        CantidadSTrikeOff: data.CantidadSTrikeOff,
+        CantidadYardaPieza: data.CantidadYardaPieza,
+        IdUnidadYdPzs: data.IdUnidadYdPzs,
+        NombreUN: data.NombreUN,
+        Estado: data.Estado,
+        NombreEstado: data.NombreEstado
 
-
+    });
+};
 
 fPermisos = function (datos) {
     Permisos = datos;
