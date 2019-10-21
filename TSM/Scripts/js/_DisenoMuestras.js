@@ -59,8 +59,12 @@ var fn_DMCargarConfiguracion = function () {
         group: "gridGroup"
     });
     //*****************************
-    let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
-    Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
+    //let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
+    //Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
+    KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
+    $("#CmbIdUnidad").data("kendoComboBox").setDataSource(fn_UnidadMedida("14,5,19,22"));
+    KdoCmbSetValue($("#CmbIdUnidad"), 5);
+
     let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
     Kendo_CmbFiltrarGrid($("#CmbIdOrientacionPositivo"), UrlDM_OP, "Nombre", "IdOrientacionPositivo", "Seleccione...");
     let UrlDM_TS = TSM_Web_APi + "TiposSeparaciones";

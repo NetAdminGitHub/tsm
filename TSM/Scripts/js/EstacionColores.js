@@ -44,7 +44,7 @@ var fn_VistaEstacionColorDocuReady = function () {
     let UrlTemul = TSM_Web_APi + "TiposEmulsiones";
     Kendo_CmbFiltrarGrid($("#CmbTipoEmulsion_color"), UrlTemul, "Nombre", "IdTipoEmulsion", "Seleccione una emulsión ....");
 
-    let UrlRqTec = TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/GetRequerimientoDesarrollosColoresTecnicaByIdRequerimiento/" + $("#txtIdRequerimiento").val();
+    let UrlRqTec = TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + maq[0].IdSeteo;
     Kendo_CmbFiltrarGrid($("#CmbTecnica_color"), UrlRqTec, "Nombre", "IdRequerimientoTecnica", "Seleccione una Tecnica ....");
     KdoComboBoxEnable($("#CmbTecnica_color"), false);
 
@@ -451,6 +451,7 @@ let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             $("#TxtIdform").val(data[0].IdFormula);
+            EstacionBra = fn_Estaciones(maq[0].IdSeteo, xIdBrazo);
             EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo);
             fn_MostraTablaFormula(EstaTintasFormula,"TablaFormula");
             $("#NumMasaEntre").val(EstaTintasFormula[0].MasaEntregada);
