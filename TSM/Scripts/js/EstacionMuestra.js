@@ -389,29 +389,5 @@ let GuardarEstacionDesaMues = function (xIdBrazo) {
 
 };
 
-let fn_UnidadMedida = function (filtro) {
-    let urlUM_Est = TSM_Web_APi + "UnidadesMedidas";
-    return new kendo.data.DataSource({
-        dataType: 'json',
-        sort: { field: "Nombre", dir: "asc" },
-        transport: {
-            read: function (datos) {
-                $.ajax({
-                    dataType: 'json',
-                    type: "POST",
-                    async: false,
-                    url: urlUM_Est + "/GetUnidadesMedidasByFiltro",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(filtro),
-                    success: function (result) {
-                        datos.success(result);
-
-                    }
-                });
-            }
-        }
-    });
-};
-
 fn_PWList.push(fn_VistaEstacionMuestra);
 fn_PWConfList.push(fn_VistaEstacionMuestraDocuReady);
