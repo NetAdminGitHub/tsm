@@ -13,7 +13,6 @@ var fn_TintasFCargarConfiguracion = function () {
 };
 var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
-    KdoButtonEnable($("#btnBTDis"), vhb);
 };
 
 fun_List.push(fn_TintasFCargarConfiguracion);

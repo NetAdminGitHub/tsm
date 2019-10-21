@@ -10,13 +10,14 @@ var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnBT"), "delete", "Limpiar");
     KdoButtonEnable($("#btnBT"), false);
 
-    fn_gridColorEstacion($("#dgColor"));
+    maq = fn_GetMaquinas();
+    fn_gridColorEstacion($("#dgColor"),maq[0].IdSeteo);
     $("#dgColor").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgColor").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
     $("#dgColor").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
     $("#dgColor").data("Formulacion", "COLOR"); // guarda el idformulacion
 
-    fn_gridTecnicaEstacion($("#dgTecnica"));
+    fn_gridTecnicaEstacion($("#dgTecnica"),maq[0].IdSeteo);
     $("#dgTecnica").data("Estacion", "MEstacionColor"); // guardar nombre vista modal
     $("#dgTecnica").data("EstacionJS", "EstacionColores.js"); // guardar nombre archivo JS
     $("#dgTecnica").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
@@ -34,7 +35,6 @@ var fn_RTCargarConfiguracion = function () {
     $("#dgAccesorios").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
     $("#dgAccesorios").data("Formulacion", ""); //guarda el idformulacion
 
-    maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
     Kendo_CmbFiltrarGrid($("#CmbMaquina"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");

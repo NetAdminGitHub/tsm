@@ -38,7 +38,30 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: function (datos) {
-                datos.success(fn_GestionOT());
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: UrlOT + "/GetGestionOTAsignadas",
+                    data: JSON.stringify({
+                        FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                        FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                        IdCliente: KdoCmbGetValue($("#CmbCliente")),
+                        NoOt: $("#TxtNoOrdeTrabajo").val() === "" ? null : $("#TxtNoOrdeTrabajo").val(),
+                        IdejecutivoCuenta: KdoCmbGetValue($("#CmbEjecutivo")),
+                        IdPrograma: KdoCmbGetValue($("#CmbPrograma")),
+                        IdTemporada: KdoCmbGetValue($("#CmbTemporada")),
+                        IdCategoriaPrenda: KdoCmbGetValue($("#CmbCategoriaPrenda")),
+                        IdUbicacion: KdoCmbGetValue($("#CmbUbicacion")),
+                        IdServicio: KdoCmbGetValue($("#CmbServicio"))
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    },
+                    error: function () {
+                        options.error(result);
+                    }
+                });
             }
         },
         //FINALIZACIÓN DE UNA PETICIÓN
@@ -96,7 +119,7 @@ $(document).ready(function () {
         dataBound: function () {
             for (var i = 0; i < this.columns.length; i++) {
                 this.autoFitColumn(i);
-                this.columnResizeHandleWidth
+                this.columnResizeHandleWidth;
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
@@ -157,45 +180,9 @@ $(document).ready(function () {
 
 });
 
-
-let fn_GestionOT = function () {
-    kendo.ui.progress($(document.body), true);
-    let DSOt = "[]";
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        async: false,
-        url: UrlOT + "/GetGestionOTAsignadas",
-        data: JSON.stringify({
-            FechaDesde: $("#chkRangFechas").is(':checked')===false?null: kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            FechaHasta: $("#chkRangFechas").is(':checked') === false ? null :kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
-            IdCliente: KdoCmbGetValue( $("#CmbCliente")),
-            NoOt: $("#TxtNoOrdeTrabajo").val() === "" ? null: $("#TxtNoOrdeTrabajo").val(),
-            IdejecutivoCuenta: KdoCmbGetValue($("#CmbEjecutivo")),
-            IdPrograma: KdoCmbGetValue($("#CmbPrograma")),
-            IdTemporada: KdoCmbGetValue($("#CmbTemporada")),
-            IdCategoriaPrenda: KdoCmbGetValue($("#CmbCategoriaPrenda")),
-            IdUbicacion: KdoCmbGetValue($("#CmbUbicacion")),
-            IdServicio: KdoCmbGetValue($("#CmbServicio"))
-        }),
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            DSOt = result;
-        },
-        error: function() {
-            DSOt = "[]";
-        },
-        complete: function () {
-            kendo.ui.progress($(document.body), false);
-        }
-    });
-
-    return DSOt;
-};
-
 let fn_VerEtapas = function (url) {
-    window.location.href = url; 
-}
+    window.location.href = url;
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };

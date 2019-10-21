@@ -18,46 +18,54 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group col-lg-12">
-                    <form id="FrmClieCont" method="POST" enctype="multipart/form-data" autocomplete="off">
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-lg-3">
-                                <label for="NoDocumento" hidden="hidden">No Solicitud:</label>
-                                <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" hidden="hidden" />
-                            </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6">
+                          <div class="border p-md-3 p-lg-3">
+                              <form id="FrmClieCont" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-lg-3">
+                                          <label for="NoDocumento" hidden="hidden">No Solicitud:</label>
+                                          <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" hidden="hidden" />
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-8">
+                                          <label for="CmbCliCont">Cliente</label>
+                                          <input name="CmbCliCont" id="CmbCliCont" required validationMessage="Requerido" class="form-control">
+                                      </div>
+                                      <div class="form-group col-lg-4">
+                                          <label for="Fecha">Fecha</label>
+                                          <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-12">
+                                          <label for="CmbContactoSol">Contacto</label>
+                                          <input name="CmbContactoSol" id="CmbContactoSol" class="form-control">
+                                      </div>
+                                  </div>
+                                  <div class="form-row" id="divEje">
+                                      <div class="form-group col-lg-12">
+                                          <label for="CmbEjecSol">Ejecutivo(a) de cuentas</label>
+                                          <input name="CmbEjecSol" id="CmbEjecSol" class="form-control">
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-9 align-self-lg-end">
+                                          <button type="button" id="btnAClieCont" hidden="hidden"></button>
+                                          <button type="button" id="btnDelClieCont"></button>
+                                          <button type="button" id="btnFinClieCont"></button>
+                                      </div>
+                                      <div class="form-group col-lg-3 align-self-lg-end">
+                                          <button type="button" id="btnProClieCont" hidden="hidden"></button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div> 
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-10">
-                                <label for="CmbCliCont">Cliente</label>
-                                <input name="CmbCliCont" id="CmbCliCont" required validationMessage="Requerido" class="form-control">
-                            </div>
-                            <div class="form-group col-lg-2">
-                                <label for="Fecha">Fecha</label>
-                                <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-12">
-                                <label for="CmbContactoSol">Contacto</label>
-                                <input name="CmbContactoSol" id="CmbContactoSol" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row" id="divEje">
-                            <div class="form-group col-lg-12">
-                                <label for="CmbEjecSol">Ejecutivo(a) de cuentas</label>
-                                <input name="CmbEjecSol" id="CmbEjecSol" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-9 align-self-lg-end">
-                                <button type="button" id="btnAClieCont"></button>
-                                <button type="button" id="btnDelClieCont"></button>
-                                <button type="button" id="btnFinClieCont"></button>
-                            </div>
-                            <div class="form-group col-lg-3 align-self-lg-end">
-                                <button type="button" id="btnProClieCont"></button>
-                            </div>
-                        </div>
-                    </form>
+                        <div class="form-group col-lg-3"></div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-lg-12">
                             <div id="gridDet"></div>

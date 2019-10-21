@@ -39,12 +39,39 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumResolucionDPI_Dis").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+    $("#NumLineajeLPI_Dis").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+    $("#NumPixeles_Dis").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
     $("#TxtNombreQui_Dis").val(NombreQui);
     let UrlTT = TSM_Web_APi + "TiposTintas/GetbyIdQuimica/" + xIdQuimica.toString();
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Dis"), UrlTT, "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
 
-    let UrlST = TSM_Web_APi + "SistemasTintas";
-    Kendo_CmbFiltrarGrid($("#CmbSistema_Dis"), UrlST, "Nombre", "IdSistemasTinta", "Seleccione un sitema tintas ....", "", "CmbTipoTinta_Dis");
+    let UrlST = TSM_Web_APi + "SistemasTintas/GetbyTipoTintas/0";
+    Kendo_CmbFiltrarGrid($("#CmbSistema_Dis"), UrlST, "Nombre", "IdSistemasTinta", "Seleccione un sitema tintas ....", "", "");
 
     let UrlSed = TSM_Web_APi + "Sedas";
     Kendo_CmbFiltrarGrid($("#CmbSedas_Dis"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
@@ -106,7 +133,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
                 return true;
             },
             vletra: function (input) {
-                if (input.is("[name='TxtLetras']")) {
+                if (input.is("[name='TxtLetra']")) {
                     return input.val().length <= 5;
                 }
                 return true;
@@ -134,6 +161,27 @@ var fn_VistaEstacionDisenoDocuReady = function () {
                     return $("#CmbPigmento_Dis").data("kendoComboBox").text() === "" ? true : $("#CmbPigmento_Dis").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            vres: function (input) {
+
+                if (input.is("[name='NumResolucionDPI_Dis']")) {
+                    return $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
+            },
+            vlin: function (input) {
+
+                if (input.is("[name='NumLineajeLPI_Dis']")) {
+                    return $("#NumLineajeLPI_Dis").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
+            },
+            vpix: function (input) {
+
+                if (input.is("[name='NumPixeles_Dis']")) {
+                    return $("#NumPixeles_Dis").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -146,7 +194,12 @@ var fn_VistaEstacionDisenoDocuReady = function () {
             vsuge: "Longitud máxima del campo es 200",
             vtecapli: "Requerido",
             vbmez: "Requerido",
-            vPig: "Requerido"
+            vPig: "Requerido",
+            vArea: "requerido",
+            vres: "requerido",
+            vlin: "requerido",
+            vpix:"requerido"
+
         }
     }).data("kendoValidator");
 
@@ -160,16 +213,33 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         }
     });
 
-    $("#btnccc").data("kendoButton").bind("click", function () {
-        fn_FormulaHistorica("FormulaHist");
+    $("#btnccc_Dis").data("kendoButton").bind("click", function () {
+        fn_FormulaHistorica("FormulaHistDis");
     });
-    $("#btnDelFT").data("kendoButton").bind("click", function () {
+    $("#btnDelFT_Dis").data("kendoButton").bind("click", function () {
         fn_DelFormulaHis();
     });
 
-    $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarEstacionFormula(idBra, CodigoColor);
+    $("#FormulaHistDis").on("ObtenerFormula", function (event, CodigoColor) {
+        fn_GuardarEstacionFormulaDis(idBra, CodigoColor);
     });
+
+    $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("change", function () {
+        let TipoTin = KdoCmbGetValue($("#CmbTipoTinta_Dis"));
+        KdoCmbSetValue($("#CmbSistema_Dis"), "");
+        $("#CmbSistema_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaTintas(TipoTin));
+    });
+
+    $("#CmbSistema_Dis").data("kendoComboBox").bind("change", function () {
+        // obtener el numero de pasadas por sistema de tintas
+        if (KdoCmbGetValue($("#CmbSistema_Dis")) !== null) {
+            let data = SisTintas.find(q => q.IdSistemasTinta === Number(KdoCmbGetValue($("#CmbSistema_Dis"))));
+            kdoNumericSetValue($("#NumPasadas_Dis"), data.NoPasadas);
+        } else {
+            kdoNumericSetValue($("#NumPasadas_Dis"), 1);
+        }
+    });
+
 };
 
 var fn_VistaEstacionDiseno = function () {
@@ -229,11 +299,13 @@ var fn_VistaEstacionDiseno = function () {
 
         $("#TxtFormulaSug_Dis").val(setFor.SugerenciaFormula);
         KdoCmbSetValue($("#CmbTipoTinta_Dis"), setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta);
+        $("#CmbSistema_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaTintas(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
         KdoCmbSetValue($("#CmbSistema_Dis"), setFor.IdSistemasTinta === undefined ? "" : setFor.IdSistemasTinta);
         KdoCmbSetValue($("#CmbPigmento_Dis"), setFor.IdSistemasTintaPigmento === undefined ? "" : setFor.IdSistemasTintaPigmento);
     } else {
         $("#TxtFormulaSug_Dis").val("");
         KdoCmbSetValue($("#CmbTipoTinta_Dis"), "");
+        $("#CmbSistema_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaTintas(0));
         KdoCmbSetValue($("#CmbSistema_Dis"), "");
         KdoCmbSetValue($("#CmbPigmento_Dis"), "");
         KdoButtonEnable($("#btnccc_Dis"), false);
@@ -278,10 +350,16 @@ var fn_VistaEstacionDiseno = function () {
         KdoCmbSetValue($("#CmbSedas_Dis"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), estaMarco.IdTipoEmulsion);
         $("#TxtLetra").val(estaMarco.Letra);
+        kdoNumericSetValue($("#NumResolucionDPI_Dis"), estaMarco.ResolucionDPI);
+        kdoNumericSetValue($("#NumLineajeLPI_Dis"), estaMarco.LineajeLPI);
+        kdoNumericSetValue($("#NumPixeles_Dis"), estaMarco.Pixeles);
     } else {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(0);
         $("#NumPasadas_Dis").data("kendoNumericTextBox").value(0);
         $("#NumArea_Dis").data("kendoNumericTextBox").value(0);
+        kdoNumericSetValue($("#NumResolucionDPI_Dis"), 0);
+        kdoNumericSetValue($("#NumLineajeLPI_Dis"), 0);
+        kdoNumericSetValue($("#NumPixeles_Dis"), 0);
         KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
         KdoCmbSetValue($("#CmbSedas_Dis"), "");
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), "");
@@ -291,14 +369,14 @@ var fn_VistaEstacionDiseno = function () {
     if (EstaTintasFormula.length > 0) {
         $("#TxtIdform_Dis").val(EstaTintasFormula[0].IdFormula);
         $("#NumMasaEntre_Dis").val(EstaTintasFormula[0].MasaEntregada);
-        fn_MostraTablaFormula(EstaTintasFormula);
+        fn_MostraTablaFormula(EstaTintasFormula,"TablaFormulaDis");
         KdoButtonEnable($("#btnccc_Dis"), false);
         KdoButtonEnable($("#btnDelFT_Dis"), true);
     } else {
         $("#TxtIdform_Dis").val(0);
-        KdoButtonEnable($("#btnccc_Dis"), setFor !== null ? true : false);
+        KdoButtonEnable($("#btnccc_Dis"), true);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
-        fn_MostraTablaFormula(null);
+        fn_MostraTablaFormula(null,"TablaFormulaDis");
         $("#NumMasaEntre_Dis").val(0);
     }
 };
@@ -355,13 +433,16 @@ let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             IdTipoEmulsion: KdoCmbGetValue($("#CmbTipoEmulsion_Dis")),
             IdSeteo: maq[0].IdSeteo,
             Area: kdoNumericGetValue($("#NumArea_Dis")),
-            IdUnidadArea: KdoCmbGetValue($("#CmdIdUnidadArea_Dis"))
+            IdUnidadArea: KdoCmbGetValue($("#CmdIdUnidadArea_Dis")),
+            ResolucionDPI: kdoNumericGetValue($("#NumResolucionDPI_Dis")),
+            LineajeLPI: kdoNumericGetValue($("#NumLineajeLPI_Dis")),
+            Pixeles: kdoNumericGetValue($("#NumPixeles_Dis"))
 
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             let vIdtec = Te === "TECNICA" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica") : Te === "COLOR" ? KdoCmbGetValue($("#CmbTecnica_Dis")) : null;
-            let vIdBase = Te === "BASE" ? $("#TxtOpcSelec").data("IdBase") : Te === "COLOR" ? KdoCmbGetValue($("#CmbBaseMezcla_color")) : null;
+            let vIdBase = Te === "BASE" ? $("#TxtOpcSelec_Dis").data("IdBase") : Te === "COLOR" ? KdoCmbGetValue($("#CmbBaseMezcla_Dis")) : null;
 
             fn_GuardarMarcoFormuDis(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoColor") : null, vIdtec, vIdBase);
         },
@@ -404,7 +485,7 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionDisenos").data("kendoDialog").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
@@ -475,21 +556,7 @@ let fn_UnidadMedida = function (filtro) {
     });
 };
 
-let fn_MostraTablaFormula = function (ds) {
-    let xformula = $("#TablaPorc_Dis");
-    xformula.children().remove();
-    $.each(ds, function (index, elemento) {
-
-        xformula.append('<tr>' +
-            '<td>' + elemento.IdArticulo + '</td>' +
-            '<td>' + elemento.Nombre + '</td>' +
-            '<td>' + elemento.MasaFinal + '</td>' +
-            '<td>' + elemento.PorcentajeFinal * 100.00 + '</td>' +
-            '</tr>');
-    });
-};
-
-let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
+let fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
@@ -506,7 +573,7 @@ let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
         success: function (data) {
             $("#TxtIdform_Dis").val(data[0].IdFormula);
             EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo);
-            fn_MostraTablaFormula(EstaTintasFormula);
+            fn_MostraTablaFormula(EstaTintasFormula,"TablaFormulaDis");
             $("#NumMasaEntre_Dis").val(EstaTintasFormula[0].MasaEntregada);
             KdoButtonEnable($("#btnccc_Dis"), false);
             KdoButtonEnable($("#btnDelFT_Dis"), true);
@@ -536,7 +603,7 @@ let fn_DelFormulaHis = function () {
             $("#NumMasaEntre_Dis").val(0);
             KdoButtonEnable($("#btnccc_Dis"), true);
             KdoButtonEnable($("#btnDelFT_Dis"), false);
-            fn_MostraTablaFormula(null);
+            fn_MostraTablaFormula(null,"TablaFormulaDis");
             RequestEndMsg(data, xType);
         },
         complete: function () {
