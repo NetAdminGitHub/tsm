@@ -124,12 +124,12 @@ var fn_VSCargarJSEtapa = function () {
     let ValidRD = $("#ReqDes").kendoValidator(
         {
             rules: {
-                Mayor0: function (input) {
-                    if (input.is("[name='CntPiezas']")) {
-                        return $("#CntPiezas").data("kendoNumericTextBox").value() > 0;
-                    }
-                    return true;
-                },        
+                //Mayor0: function (input) {
+                //    if (input.is("[name='CntPiezas']")) {
+                //        return $("#CntPiezas").data("kendoNumericTextBox").value() > 0;
+                //    }
+                //    return true;
+                //},        
                 InstruccionesEspecialesRuler: function (input) {
                     if (input.is("[name='InstruccionesEspeciales']")) {
                         return input.val().length <= 2000;
@@ -260,7 +260,7 @@ var fn_VSCargarJSEtapa = function () {
 
             },
             messages: {
-                Mayor0: "Debe ser mayor a 0",
+                //Mayor0: "Debe ser mayor a 0",
                 MsgLongitud: "Debe ser mayor a 0",
                 InstruccionesEspecialesRuler: "Longitud máxima del campo es 2000",
                 required: "Requerido",

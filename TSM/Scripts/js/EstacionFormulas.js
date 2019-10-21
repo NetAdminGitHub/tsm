@@ -9,7 +9,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
     kdoRbSetValue($("#rbAjuste"), true);
 
-    $("#NumCntRecibida").kendoNumericTextBox({
+    $("#NumCntIni_Recibida").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -27,54 +27,36 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#MbtnAjuste").kendoDialog({
         height: "auto",
-        width: "60%",
-        title: "Crear Ajuste",
+        width: "20%",
+        title: "Crear ajuste",
         closable: true,
         modal: true,
         visible: false,
         maxHeight: 900
-        //show: onShow
-        //initOpen: onInitOpen,
-        //open: onOpen,
-        //close: onClose
-        //show: onShow,
-        //hide: onHide
-
     });
     $("#MbtnEditForm").kendoDialog({
         height: "auto",
         width: "60%",
-        title: "Ajuste de formulas",
+        title: "Ajuste de fórmulas",
         closable: true,
         modal: true,
         visible: false,
         maxHeight: 900,
-        //actions: [
-        //    { text: '<span class="k-icon k-i-check"></span>&nbspAceptar', primary: true },
-        //    { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
-
-        //],
-        //show: onShow
-        //initOpen: onInitOpen,
-        //open: onOpen,
-        close: fn_EditClose
-        //show: onShow,
-        //hide: onHide
-
+        close: fn_EditClose,
+        show: fn_ShowAjus
     });
 
     $("#btnAddMFEditar").bind("click", function () {
-        $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read();
+    
         $("#MbtnEditForm").data("kendoDialog").open();
     });
 
     $("#btnAddMFAjuste").bind("click", function () {
-        kdoNumericSetValue($("#NumCntRecibida"), 0.00);
+        kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
         KdoCmbSetValue($("#CmbMotivoAjus"), "");
         kdoRbSetValue($("#rbAjuste"), true);
-        KdoNumerictextboxEnable($("#NumCntRecibida"),true);
         $("#MbtnAjuste").data("kendoDialog").open();
-        $("#NumCntRecibida").data("kendoNumericTextBox").focus();
+        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
         frmNajus.hideMessages();
     });
 
@@ -84,8 +66,8 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     let frmNajus = $("#FrmNuevoAjuste").kendoValidator({
         rules: {
             vcnt: function (input) {
-                if (input.is("[id='NumCntRecibida']") && KdoRbGetValue($("#rbAjuste")) === true) {
-                    return kdoNumericGetValue($("#NumCntRecibida")) > 0;
+                if (input.is("[id='NumCntIni_Recibida']") ) {
+                    return kdoNumericGetValue($("#NumCntIni_Recibida")) > 0 && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
                 }
                 return true;
             },
@@ -97,7 +79,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
             }
         },
         messages: {
-            vcnt: "Cantidad recibida debe ser mayor a 0",
+            vcnt: "Cantidad no mayor a 500",
             vMtAjus: "Requerido"
         }
     }).data("kendoValidator");
@@ -114,22 +96,31 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     });
 
     $("#rbAjusteLimpio").click(function () {
-        KdoNumerictextboxEnable($("#NumCntRecibida"), false);
-        kdoNumericSetValue($("#NumCntRecibida"), 0.00);
-        KdoCmbFocus($("#CmbMotivoAjus"));
+        kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
+        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
+        $('[for= "NumCntIni_Recibida"]').text("Cantidad Inicial:");
         frmNajus.hideMessages();
-
     });
 
     $("#rbAjuste").click(function () {
-        KdoNumerictextboxEnable($("#NumCntRecibida"), true);
-        $("#NumCntRecibida").data("kendoNumericTextBox").focus();
+        KdoNumerictextboxEnable($("#NumCntIni_Recibida"), true);
+        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
+        $('[for= "NumCntIni_Recibida"]').text("Cantidad Recibida:");
         frmNajus.hideMessages();
     });
 
+    $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
+        fn_FormulaHistorica("FormulaEstacionTinta");
+    });
+
+    $("#FormulaEstacionTinta").on("ObtenerFormula", function (event, CodigoColor) {
+        fn_GuardarFormulaEst(xidEstacion, CodigoColor);
+    });
 };
 
 var fn_VistaEstacionFormulas = function () {
+    $("#gridFormulas").data("kendoGrid").dataSource.data([]);
+    $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
     TextBoxEnable($("#TxtNombreQuiForm"), false);
     TextBoxEnable($("#TxtFormulaSugTint"), false);
@@ -162,10 +153,23 @@ var fn_VistaEstacionFormulas = function () {
     }
     $("#gridFormulas").data("kendoGrid").dataSource.read();
 
+
 };
 let fn_EditClose = function () {
-    $("#gridFormulasMP").data("kendoGrid").dataSource.read();
+    $("#gridFormulas").data("kendoGrid").dataSource.read().then(function () {
+        $("#gridFormulasMP").data("kendoGrid").dataSource.read();
+    });
+
 };
+
+let fn_ShowAjus = function () {
+    $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read().then(function () {
+        //fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? fn_getIdMotivo($("#gridFormulas").data("kendoGrid")) !== null ? Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
+        fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ?  Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true)  : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
+    });
+};
+
+
 var fn_gridFormulas = function (gd) {
 
     var dsFormulas = new kendo.data.DataSource({
@@ -174,6 +178,11 @@ var fn_gridFormulas = function (gd) {
             read: {
                 url: function () { return TSM_Web_APi + "TintasFormulaciones/GetbySeteoEstacion/" + maq[0].IdSeteo + "/" + xidEstacion; },
                 dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "TintasFormulaciones/" + datos.IdFormula; },
+                type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -204,7 +213,7 @@ var fn_gridFormulas = function (gd) {
                     MasaDevuelta: {
                         type: "number"
                     },
-                    C1: {
+                    C2: {
                         type: "number" // total = Masadevuelta + MasaEntregada
                     },
                     IdMotivo: {
@@ -224,6 +233,24 @@ var fn_gridFormulas = function (gd) {
                     },
                     FechaMod: {
                         type: "date"
+                    },
+                    CIELAB_L: {
+                        type: "number",
+                        defaultValue: function () {
+                            return 0;
+                        }
+                    },
+                    CIELAB_A: {
+                        type: "number",
+                        defaultValue: function () {
+                            return 0;
+                        }
+                    },
+                    CIELAB_B: {
+                        type: "number",
+                        defaultValue: function () {
+                            return 0;
+                        }
                     }
                 }
             }
@@ -233,29 +260,57 @@ var fn_gridFormulas = function (gd) {
         }     
     });
 
-    let Urltec = TSM_Web_APi + "Tecnicas";
+
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
+        edit: function(e) {
+            KdoHideCampoPopup(e.container, "Fecha");
+            KdoHideCampoPopup(e.container, "MasaEntregada");
+            KdoHideCampoPopup(e.container, "MasaDevuelta");
+            KdoHideCampoPopup(e.container, "C2");
+            KdoHideCampoPopup(e.container, "IdMotivo");
+            KdoHideCampoPopup(e.container, "Nombre1");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "IdSeteo");
+            KdoHideCampoPopup(e.container, "IdFormula");
+            KdoHideCampoPopup(e.container, "IdEstacion");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "Estado");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            if (e.model.Estado !== "CREADA") {
+                KdoNumerictextboxEnable($('[name="CIELAB_L"]'), false);
+                KdoNumerictextboxEnable($('[name="CIELAB_A"]'), false);
+                KdoNumerictextboxEnable($('[name="CIELAB_B"]'), false);
+            } else {
+                Grid_Focus(e, "CIELAB_L");
+            }
+      
+        },
         columns: [
             { field: "IdFormula", title: "Código. Formula", hidden: true  },
             { field: "IdSeteo", title: "Código. IdSeteo", hidden: true  },
             { field: "IdEstacion", title: "N° Estacion", hidden: true },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "MasaEntregada", title: "Masa Entregada", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}"},
             { field: "MasaDevuelta", title: "Masa Devuelta", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}"},
-            { field: "C1", title: "Masa Total", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}" },
+            { field: "C2", title: "Masa Total", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}" },
             { field: "IdMotivo", title: "Motivo", hidden:true },
+            { field: "CIELAB_L", title: "CIELAB L", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_A", title: "CIELAB A", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_B", title: "CIELAB B", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
             { field: "Nombre", title: "Nombre Motivo" },
             { field: "Estado", title: "Estado", hidden: true  },
             { field: "Nombre1", title: "Estado" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true}
+            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+          
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,250);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 250);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsFormulas);
     var srow2 = [];
     gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -345,10 +400,10 @@ var fn_gridMateriaPrima = function (gd) {
             { field: "Item", title: "Item", hidden: true },
             { field: "IdArticulo", title: "Articulo"},
             { field: "Nombre", title: "Nombre"},
-            { field: "MasaInicial", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? sum : 0 #", hidden: true},
-            { field: "PorcentajeInicial", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? sum*100: 0 # %", hidden: true },
-            { field: "MasaFinal", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Final: #: data.MasaFinal ? sum : 0 #"},
-            { field: "PorcentajeFinal", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeFinal ? sum*100: 0 # %" },
+            { field: "MasaInicial", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}', sum) : 0 #", hidden: true},
+            { field: "PorcentajeInicial", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? kendo.format('{0:n2}', sum)*100: 0 # %", hidden: true },
+            { field: "MasaFinal", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Final: #: data.MasaFinal ? kendo.format('{0:n2}', sum) : 0 #"},
+            { field: "PorcentajeFinal", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeFinal ? kendo.format('{0:n2}', sum)*100: 0 # %" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -356,7 +411,6 @@ var fn_gridMateriaPrima = function (gd) {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,250);
-    SetGrid_CRUD_Command(gd.data("kendoGrid"), false, false);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
     var srow3 = [];
@@ -382,10 +436,22 @@ let fn_getIdFormula = function (g) {
 
 };
 
+let fn_getIdMotivo = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdMotivo;
+
+};
+
+let fn_getEstado = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.Estado;
+
+};
+
 let fn_Ajuste = function () {
     kendo.ui.progress($(document.body), true);
         $.ajax({
-            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntRecibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
+            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntIni_Recibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ id: null }),
@@ -479,7 +545,9 @@ var fn_gridAjustePrima = function (gd) {
                     },
                     PorcentajeFinal: {
                         type: "number"
-                    }
+                    },
+                    Masatotal: { type: "number"}
+
                 }
             }
         },
@@ -504,11 +572,15 @@ var fn_gridAjustePrima = function (gd) {
             // Ocultar
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "IdFormula");
+            KdoHideCampoPopup(e.container, "Masatotal");
             Grid_Focus(e, "IdArticulo");
+            var MasaTot = e.model.Masatotal;
+
             $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(false);
             $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(false);
             $('[name="MasaFinal"]').data("kendoNumericTextBox").enable(false);
             $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").enable(false);
+            $('[name="Masatotal"]').data("kendoNumericTextBox").enable(false);
 
             $('[name="MasaAgregada"]').on("change", function (e) {
                 let xMasaInicial = $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
@@ -518,25 +590,40 @@ var fn_gridAjustePrima = function (gd) {
                 $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
                 //$('[name="PrecioVenta"]').data("kendoNumericTextBox").trigger("change");
             });
+            $('[name="PorcentajeAgregado"]').on("change", function (e) {
+                let xPorcenMasaFinal = $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").value();
+                let xPorcentajeAgregado = this.value;
+                $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").value(parseFloat(xPorcentajeAgregado) + parseFloat(xPorcenMasaFinal));
+                $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").trigger("change");
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(MasaTot) * (parseFloat(xPorcentajeAgregado) + parseFloat(xPorcenMasaFinal)));
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
+                let xMasaAgre = $('[name="MasaFinal"]').data("kendoNumericTextBox").value() - $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
+
+                $('[name="MasaAgregada"]').data("kendoNumericTextBox").value(xMasaAgre);
+                $('[name="MasaAgregada"]').data("kendoNumericTextBox").trigger("change");
+
+                //$('[name="PrecioVenta"]').data("kendoNumericTextBox").trigger("change");
+            });
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdFormula", title: "Código. Formula", hidden: true },
             { field: "IdArticulo", title: "Materia Prima", values: ["IdArticulo", "Nombre", UrlARt, "", "Seleccione....", "required", "", "Requerido"], editor: Grid_Combox},
             { field: "Nombre", title: "Nombre" },
-            { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? sum : 0 #"},
-            { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeInicial ? sum*100: 0 # %" },
-            { field: "MasaAgregada", title: "Masa Agregada", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}",footerTemplate: "Agregada: #: data.MasaAgregada ? sum : 0 #"},
-            { field: "PorcentajeAgregado", title: "% Agregado", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeAgregado ? sum*100: 0 # %" },
-            { field: "MasaFinal", title: "Masa Final", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}",footerTemplate: "Final: #: data.MasaFinal ? sum : 0 #"},
-            { field: "PorcentajeFinal", title: "% Final", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeFinal ? sum*100: 0 # %" }
+            { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}',sum ): 0 #"},
+            { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeInicial ? kendo.format('{0:n2}',sum)*100: 0 # %" },
+            { field: "MasaAgregada", title: "Masa Agregada", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Agregada: #: data.MasaAgregada ? kendo.format('{0:n2}',sum) : 0 #"},
+            { field: "PorcentajeAgregado", title: "% Agregado", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeAgregado ? kendo.format('{0:n2}',sum)*100: 0 # %" },
+            { field: "MasaFinal", title: "Masa Final", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Final: #: data.MasaFinal ? kendo.format('{0:n2}',sum ): 0 #"},
+            { field: "PorcentajeFinal", title: "% Final", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeFinal ? kendo.format('{0:n2}', sum)*100: 0 # %" },
+            { field: "Masatotal", title: "Masatotal", menu: false, hidden: true }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 300);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 500);
     SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, false);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsAjusMp);
 
     var srow3 = [];
@@ -549,5 +636,36 @@ var fn_gridAjustePrima = function (gd) {
     });
 
 };
+let fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
+    kendo.ui.progress($(document.body), true);
+    let xType = "Post";
+    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
+    $.ajax({
+        url: xUrl,
+        type: xType,
+        data: JSON.stringify({
+            IdFormula: 0,
+            IdSeteo: maq[0].IdSeteo,
+            IdEstacion: xIdBrazo,
+            CodigoColor: xCodigoColor
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridFormulas").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($(document.body), false);
+            $("#MbtnAjuste").data("kendoDialog").close();
+            RequestEndMsg(data, "Post");
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
+
 fn_PWList.push(fn_VistaEstacionFormulas);
 fn_PWConfList.push(fn_VistaEstacionFormulasDocuReady);

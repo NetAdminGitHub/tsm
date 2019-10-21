@@ -56,12 +56,14 @@ var fn_DRLoadConsultaHis = function (divCcf) {
 };
 var fn_ConsultaHis = function () {
     PeticionFormula = false;
+    $("#FrmCCH").data("kendoValidator").hideMessages();
     $("#TxtNombreColor").val("");
     $("#TxtColorTela").val("");
     $("#TxtCompoTela").val("");
+    $("#TxtNombreColor").focus().select();
     $("#gCHFor").data("kendoGrid").dataSource.read();
 
-}
+};
 let fn_gCHForBusqueda = function (divCcf) {
     var dataSource = new kendo.data.DataSource({
        
@@ -174,6 +176,9 @@ let fn_gCHForBusqueda = function (divCcf) {
                     }
                 }
             },
+            aggregate: [
+                { field: "Porcentaje", aggregate: "sum" }
+            ],
             filter: { field: "CodigoColor", operator: "eq", value: e.data.CodigoColor }
         };
 
@@ -183,7 +188,7 @@ let fn_gCHForBusqueda = function (divCcf) {
                 { field: "CodigoColor", title: "Codigo Color", hidden: true },
                 { field: "ItemId", title: "Articulo" },
                 { field: "Nombre", title: "Nombre" },
-                { field: "Porcentaje", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}" }
+                { field: "Porcentaje", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.Porcentaje ? kendo.format('{0:n2}', sum*100) : 0 # %"  }
             ]
         });
 
