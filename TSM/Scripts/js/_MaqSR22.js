@@ -20,7 +20,7 @@ var fn_RTCargarMaquina = function () {
     var height = window.innerHeight;
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     maq = fn_GetMaquinas();
-    SisTintas = fn_SistemasTintas();
+    TipoTintas = fn_TipoTintas();
 
     stage = new Konva.Stage({
         container: 'container',
