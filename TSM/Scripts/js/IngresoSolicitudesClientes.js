@@ -552,11 +552,11 @@ let fn_gridSolDet = function () {
             Grid_Focus(e, "NombreDiseno");
 
             $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(vIdServSol === 1 ? fn_DSudm("9") : fn_DSudm("9,17"));
-            if (vIdSoli === 0) {
+            //if (vIdSoli === 0) {
                 fn_GuadarCliente();
                 $('[name="IdSolicitud"]').data("kendoNumericTextBox").value(vIdSoli);
                 $('[name="IdSolicitud"]').data("kendoNumericTextBox").trigger("change");
-            }
+            //}
      
         },
         //DEFICNICIÓN DE LOS CAMPOS

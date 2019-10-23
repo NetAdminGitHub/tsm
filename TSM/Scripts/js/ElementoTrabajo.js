@@ -14,7 +14,7 @@ var gridAlto = 300;
 var xvNodocReq;
 var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
 var TiEst; // guarda los tipos de estaciones
-var SisTintas;
+var TipoTintas;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -1021,7 +1021,7 @@ var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
-var Fn_GetSistemaTintas = function (vid) {
+var Fn_GetSistemaPigmentos = function (vid) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
@@ -1031,7 +1031,27 @@ var Fn_GetSistemaTintas = function (vid) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "SistemasTintas/GetbyTipoTintas/" + (vid !== null ? vid.toString() : 0),
+                    url: TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+var Fn_GetSistemaBases = function (vid) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -1095,11 +1115,11 @@ var fn_MostraTablaFormula = function (ds, div) {
 
 };
 
-var fn_SistemasTintas = function () {
+var fn_TipoTintas = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
-        url: TSM_Web_APi + "SistemasTintas",
+        url: TSM_Web_APi + "TiposTintas",
         type: 'GET',
         async: false,
         success: function (datos) {
