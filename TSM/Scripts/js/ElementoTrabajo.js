@@ -537,7 +537,10 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
 
                     },
                     ColorHex: {
-                        type: "string"
+                        type: "string",
+                        defaultValue: function () {
+                            return "#FFF";
+                        }
                     },
                     IdTipoPantonera: {
                         type: "string"
@@ -570,25 +573,57 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
             KdoHideCampoPopup(e.container, "IdSeteo");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Item");
-            Grid_Focus(e, "Color");
+
+            $('[name="IdTipoPantonera"]').on("change", function (e) {
+                if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
+                    var data = $(this).data("kendoMultiColumnComboBox").dataItem();
+
+                    $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
+                    $('[name="Color"]').val(data.Codigo);
+                    $('[name="Item"]').val(data.Item);
+                    $('[name="ColorHex"]').data("kendoColorPicker").trigger("change");
+                    $('[name="Color"]').trigger("change");
+                    $('[name="Item"]').trigger("change");
+                }
+            });
+
+            if (!e.model.isNew() && e.model.Item !== null) {
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").text(e.model.Color);
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").trigger("change");
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").search(e.model.Color);
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").refresh();
+            }
+
+            Grid_Focus(e, "IdTipoPantonera");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRequerimientoColor", title: "Código. Desarrollo Color", hidden: true },
             { field: "IdSeteo", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "Item", title: "Item",hidden:true },
+            
+            {
+                field: "IdTipoPantonera", title: "Código Pantone",
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantones();
+                },
+                hidden: true
+            },
+            { field: "Item", title: "Item", hidden: true },
             { field: "Color", title: "Color Diseño" },
-            { field: "IdTipoPantonera", title: "IdTipoPantonera", hidden: true },
-            { field: "ColorHex", title: "Color Hex" },
-            { field: "Nombre", title: "Nombre" }
-
+            {
+                field: "ColorHex", title: "Muestra",
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>',
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).kendoColorPicker();
+                }
+            }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
     SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsColor);
 
     var srow1 = [];
