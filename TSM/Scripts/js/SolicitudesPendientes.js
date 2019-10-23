@@ -27,9 +27,9 @@ let fn_MostrarPendientes = function () {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd;
-            if (e.type === "destroy") {
-                window.location.href = "/SolicitudesClientes";
-            }
+            //if (e.type === "destroy") {
+            //    window.location.href = "/SolicitudesClientes";
+            //}
     
         },
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS

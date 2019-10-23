@@ -14,30 +14,33 @@ var gridAlto = 300;
 var xvNodocReq;
 var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
 var TiEst; // guarda los tipos de estaciones
-var SisTintas;
+var TipoTintas;
 fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_CambioEtp = function (e) {
+    let Realizado = false;
     if (ValidarCamEtp.validate()) {
         // obtener indice de la etapa siguiente
         let xindice = KdoCmbGetValue($("#cmbEtpSigAnt"));
         kendo.ui.progress($(document.body), true);
         $.ajax({
-            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa" ,
+            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa",
             method: "POST",
             dataType: "json",
             data: JSON.stringify({
-                idOrdenTrabajo:$("#txtIdOrdenTrabajo").val(),
+                idOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
                 idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
                 idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
                 motivo: $("#TxtMotivoEtp").val()
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
+                Realizado = true;
                 RequestEndMsg(datos, "Post");
                 $("#vCamEtapa").data("kendoDialog").close();
                 $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
+
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -46,8 +49,10 @@ var fn_CambioEtp = function (e) {
                 kendo.ui.progress($(document.body), false);
             }
         });
+    } else {
+        Realizado = false;
     }
-
+    return Realizado;
 };
 
 $(document).ready(function () {
@@ -281,14 +286,15 @@ $("#vAsignarUsuario").kendoDialog({
 
 
 $("#vCamEtapa").kendoDialog({
-    height: $(window).height() - "450" + "px",
+    height: "auto",
     width: "20%",
+    maxHeight: "600 px",
     title: "Cambio de Etapa",
     visible: false,
     closable: true,
     modal: true,
     actions: [
-        { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: fn_CambioEtp },
+        { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_CambioEtp(); } },
         { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
     ],
     close: function (e) {
@@ -305,6 +311,8 @@ $("#btnCambiarEtapa").click(function (e) {
     $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
     $("#TxtMotivoEtp").val("");
     $("#vCamEtapa").data("kendoDialog").open();
+    $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
+    KdoCmbFocus($("#cmbEtpSigAnt"));
 });
 
 
@@ -467,27 +475,27 @@ var fn_GetMaquinas = function () {
     return result;
 };
 
-var fn_gridColorEstacion = function (gd) {
+var fn_gridColorEstacion = function (gd, xvIdSeteo) {
 
     var dsColor = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/GetRequerimientoDesarrollosColoresByIdRequerimiento/" + $("#txtIdRequerimiento").val(); },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaColores/GetSeteoMaquinaColoresByIdSeteo/" + xvIdSeteo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaColores/" + datos.IdSeteo + "/"+ datos.IdRequerimientoColor; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosColores/" + datos.IdRequerimientoColor; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaColores/" + datos.IdSeteo + "/" + datos.IdRequerimientoColor; },
                 type: "DELETE"
             },
             create: {
-                url: TSM_Web_APi + "RequerimientoDesarrollosColores",
+                url: TSM_Web_APi + "SeteoMaquinaColores",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
 
@@ -498,18 +506,22 @@ var fn_gridColorEstacion = function (gd) {
                 }
             }
         },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
         schema: {
             model: {
                 id: "IdRequerimientoColor",
                 fields: {
-                    IdRequerimientoColor: {
-                        type: "number"
+                    IdSeteo: {
+                        type: "number", defaultValue: function () {
+                            return xvIdSeteo;
+                        }
 
                     },
-                    IdRequerimiento: {
-                        type: "number", defaultValue: function () {
-                            return $("#txtIdRequerimiento").val();
-                        }
+                    IdRequerimientoColor: {
+                        type: "number"
                     },
                     Color: {
                         type: "string",
@@ -524,8 +536,25 @@ var fn_gridColorEstacion = function (gd) {
                         }
 
                     },
+                    ColorHex: {
+                        type: "string",
+                        defaultValue: function () {
+                            return "#FFF";
+                        }
+                    },
+                    IdTipoPantonera: {
+                        type: "string"
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
                     FechaMod: {
                         type: "date"
+                    },
+                    Item: {
+                        type: "number", defaultValue: function () {
+                            return null;
+                        }
                     },
                     IdUsuarioMod: {
                         type: "string"
@@ -541,23 +570,60 @@ var fn_gridColorEstacion = function (gd) {
         edit: function (e) {
             // Ocultar
             KdoHideCampoPopup(e.container, "IdRequerimientoColor");
-            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "IdSeteo");
             KdoHideCampoPopup(e.container, "Nombre");
-            Grid_Focus(e, "Color");
+            KdoHideCampoPopup(e.container, "Item");
+
+            $('[name="IdTipoPantonera"]').on("change", function (e) {
+                if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
+                    var data = $(this).data("kendoMultiColumnComboBox").dataItem();
+
+                    $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
+                    $('[name="Color"]').val(data.Codigo);
+                    $('[name="Item"]').val(data.Item);
+                    $('[name="ColorHex"]').data("kendoColorPicker").trigger("change");
+                    $('[name="Color"]').trigger("change");
+                    $('[name="Item"]').trigger("change");
+                }
+            });
+
+            if (!e.model.isNew() && e.model.Item !== null) {
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").text(e.model.Color);
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").trigger("change");
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").search(e.model.Color);
+                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").refresh();
+            }
+
+            Grid_Focus(e, "IdTipoPantonera");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRequerimientoColor", title: "Código. Desarrollo Color", hidden: true },
-            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "Color", title: "Color Diseño" }
-
+            { field: "IdSeteo", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            
+            {
+                field: "IdTipoPantonera", title: "Código Pantone",
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantones();
+                },
+                hidden: true
+            },
+            { field: "Item", title: "Item", hidden: true },
+            { field: "Color", title: "Color Diseño" },
+            {
+                field: "ColorHex", title: "Muestra",
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>',
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).kendoColorPicker();
+                }
+            }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, gridAlto);
     SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsColor);
 
     var srow1 = [];
@@ -588,27 +654,27 @@ var fn_gridColorEstacion = function (gd) {
 
 };
 
-var fn_gridTecnicaEstacion = function (gd) {
+var fn_gridTecnicaEstacion = function (gd, xvIdSeteo) {
 
     var dsTecnica = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/GetRequerimientoDesarrollosColoresTecnicaByIdRequerimiento/" + $("#txtIdRequerimiento").val(); },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + xvIdSeteo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaTecnicas/" + datos.IdSeteo + "/" + datos.IdRequerimientoTecnica; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas/" + datos.IdRequerimientoTecnica; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaTecnicas/" + datos.IdSeteo + "/" + datos.IdRequerimientoTecnica; },
                 type: "DELETE"
             },
             create: {
-                url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicas",
+                url: TSM_Web_APi + "SeteoMaquinaTecnicas",
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
 
@@ -619,18 +685,23 @@ var fn_gridTecnicaEstacion = function (gd) {
                 }
             }
         },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
         schema: {
             model: {
                 id: "IdRequerimientoTecnica",
                 fields: {
+                    IdSeteo: {
+                        type: "number", defaultValue: function () {
+                            return xvIdSeteo;
+                        }
+
+                    },
                     IdRequerimientoTecnica: {
                         type: "number"
 
-                    },
-                    IdRequerimiento: {
-                        type: "number", defaultValue: function () {
-                            return $("#txtIdRequerimiento").val();
-                        }
                     },
                     IdTecnica: {
                         type: "string",
@@ -985,7 +1056,7 @@ var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
-var Fn_GetSistemaTintas = function (vid) {
+var Fn_GetSistemaPigmentos = function (vid) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
@@ -995,7 +1066,27 @@ var Fn_GetSistemaTintas = function (vid) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "SistemasTintas/GetbyTipoTintas/" + (vid !== null ? vid.toString() : 0),
+                    url: TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+var Fn_GetSistemaBases = function (vid) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -1059,11 +1150,11 @@ var fn_MostraTablaFormula = function (ds, div) {
 
 };
 
-var fn_SistemasTintas = function () {
+var fn_TipoTintas = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
-        url: TSM_Web_APi + "SistemasTintas",
+        url: TSM_Web_APi + "TiposTintas",
         type: 'GET',
         async: false,
         success: function (datos) {
@@ -1074,5 +1165,29 @@ var fn_SistemasTintas = function () {
         }
     });
     return result;
+};
+
+var fn_UnidadMedida = function (filtro) {
+    let urlUM_Est = TSM_Web_APi + "UnidadesMedidas";
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    async: false,
+                    url: urlUM_Est + "/GetUnidadesMedidasByFiltro",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(filtro),
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
 };
 

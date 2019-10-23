@@ -1201,6 +1201,7 @@
     <Content Include="Scripts\js\TiposEmulsiones.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
     <Content Include="Scripts\Utils\CmbPersonalizar.js" />
+    <Content Include="Scripts\Utils\ComponentesPersonalizados.js" />
     <Content Include="Scripts\Utils\Generico.js" />
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />

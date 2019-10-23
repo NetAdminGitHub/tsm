@@ -20,15 +20,15 @@ var fn_DMCargarConfiguracion = function () {
         decimals: 2,
         value: 0
     });
-
+    maq = fn_GetMaquinas();
     // colocar grid para arrastre
-    fn_gridColorEstacion($("#dgColorDis"));
+    fn_gridColorEstacion($("#dgColorDis"),maq[0].IdSeteo);
     $("#dgColorDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
     $("#dgColorDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
     $("#dgColorDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
     $("#dgColorDis").data("Formulacion", "COLOR"); // guardar nombre archivo JS
 
-    fn_gridTecnicaEstacion($("#dgTecnicaDis"));
+    fn_gridTecnicaEstacion($("#dgTecnicaDis"),maq[0].IdSeteo);
     $("#dgTecnicaDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
     $("#dgTecnicaDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
     $("#dgTecnicaDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
@@ -45,7 +45,7 @@ var fn_DMCargarConfiguracion = function () {
     $("#dgAccesoriosDis").data("EstacionJS", "EstacionAccesoriosDis.js"); // guardar nombre archivo JS
     $("#dgAccesoriosDis").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
     $("#dgAccesoriosDis").data("Formulacion", ""); // guarda el idformulacion
-    maq = fn_GetMaquinas();
+
     TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
     Kendo_CmbFiltrarGrid($("#CmbMaquinaDis"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
@@ -59,8 +59,12 @@ var fn_DMCargarConfiguracion = function () {
         group: "gridGroup"
     });
     //*****************************
-    let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
-    Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
+    //let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
+    //Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
+    KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
+    $("#CmbIdUnidad").data("kendoComboBox").setDataSource(fn_UnidadMedida("14,5,19,22"));
+    KdoCmbSetValue($("#CmbIdUnidad"), 5);
+
     let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
     Kendo_CmbFiltrarGrid($("#CmbIdOrientacionPositivo"), UrlDM_OP, "Nombre", "IdOrientacionPositivo", "Seleccione...");
     let UrlDM_TS = TSM_Web_APi + "TiposSeparaciones";
