@@ -417,9 +417,6 @@ var fn_VSCargarJSEtapa = function () {
 
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
-            if (e.type === "create" || e.type === "destroy") {
-                ObtenerTallas();
-            }
             Grid_requestEnd(e);
         },
         // VALIDAR ERROR
@@ -559,6 +556,7 @@ var fn_VSCargarJSEtapa = function () {
     var selectedRowsDimen = [];
     $("#GRDimension").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#GRDimension"), selectedRowsDimen);
+        ObtenerTallas();
     });
 
     //#endregion Fin CRUD Programación GRID Dimensiones
@@ -1104,9 +1102,12 @@ var fn_VSCargar = function () {
     }
 };
 
-fun_List.push(fn_VSCargarJSEtapa);
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_VSCargar;
 
-fun_ListDatos.push(fn_VSCargar);
+fun_List.push(fn_VSCargarJSEtapa);
+fun_ListDatos.push(EtapaPush);
 
 //#region Metodos Generales
 
@@ -1127,7 +1128,7 @@ let getRD = function (UrlRD) {
                 $("#NoDocumento").val(elemento.NoDocumento1);
                 $("#IdModulo").val(elemento.IdModulo);
                 $("#IdSolicitudDisenoPrenda").val(elemento.IdSolicitudDisenoPrenda);
-                $("#TxtEjecutivoCuenta").val(elemento.Nombre9);
+                $("#TxtEjecutivoCuenta").val(elemento.Nombre8);
                 $("#IdEjecutivoCuenta").val(elemento.IdEjecutivoCuenta);
                 $("#UbicacionHor").val(elemento.UbicacionHorizontal);
                 $("#UbicacionVer").val(elemento.UbicacionVertical);
@@ -1344,14 +1345,10 @@ let ObtenerTallas = function () {
         $("#TallaPrincipal").val("");
         $("#CantidadTallas").data("kendoNumericTextBox").value(0);
     }
-
-    ActualizarReq();
-
-
 };
 
 let GuardarRequerimiento = function (UrlRD) {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($("#BPform"), true);
 
     var XEstado = "EDICION";
     var XFecha = kendo.toString(kendo.parseDate($("#Fecha").val()), 's');
@@ -1436,7 +1433,7 @@ let GuardarRequerimiento = function (UrlRD) {
             //habilitar botones   
             $("#myBtnAdjunto").data("kendoButton").enable(true);
             RequestEndMsg(data, XType);
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($("#BPform"), false);
 
             getAdjun(UrlApiArteAdj + "/GetByArte/" + data[0].IdArte.toString());
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
@@ -1447,7 +1444,7 @@ let GuardarRequerimiento = function (UrlRD) {
         },
         error: function (data) {
 
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($("#BPform"), false);
             ErrorMsg(data);
             $("#Nombre").focus().select();
         }

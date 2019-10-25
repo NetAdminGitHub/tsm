@@ -111,7 +111,7 @@ var fn_VistaEstacionMuestraDocuReady = function () {
             }
         },
         messages: {
-            vvpeso: "Requerido",
+            vpeso: "Requerido",
             vST: "Requerido",
             vTT: "Requerido",
             vTSed: "Requerido",

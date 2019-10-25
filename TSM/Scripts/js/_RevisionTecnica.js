@@ -40,12 +40,7 @@ var fn_RTCargarConfiguracion = function () {
     Kendo_CmbFiltrarGrid($("#CmbMaquina"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
     KdoComboBoxEnable($("#CmbMaquina"), false);
     KdoCmbSetValue($("#CmbMaquina"), maq[0].IdMaquina);
-    //hablitar el Drop Target de las maquinas
-    let vContenedor = $("#container");
-    $(vContenedor).kendoDropTarget({
-        drop: function (e) { dropElemento(e); },
-        group: "gridGroup"
-    });
+    
 
     $("#btnBT").data("kendoButton").bind('click', function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
@@ -66,9 +61,23 @@ var fn_RTMostrarGrid = function () {
     $("#dgAccesorios").data("kendoGrid").dataSource.read();
 };
 
+//Agregar a Lista de ejecucion funcion configurar grid
 fun_List.push(fn_RTCargarConfiguracion);
-fun_List.push(fn_RTCargarMaquina);
-fun_ListDatos.push(fn_RTMostrarGrid);
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_RTCargarMaquina;
+fun_ListDatos.push(EtapaPush);
+//Agregar a lista de ejecucion funcion mostrar grid.
+var EtapaPush2 = {};
+EtapaPush2.IdEtapa = idEtapaProceso;
+EtapaPush2.FnEtapa = fn_RTMostrarGrid;
+fun_ListDatos.push(EtapaPush2);
+// activa DropTarget
+var EtapaPush3 = {};
+EtapaPush3.IdEtapa = idEtapaProceso;
+EtapaPush3.FnEtapa = fn_RTActivaDropTarget;
+fun_ListDatos.push(EtapaPush3);
 
 let Fn_GetFilaSelect = function (data) {
     let fila = "";

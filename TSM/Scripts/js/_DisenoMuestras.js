@@ -1,5 +1,5 @@
 ﻿var Permisos;
-let vIdIdDisenoMuestra;
+var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
     KdoButton($("#btnBTDis"), "delete", "Limpiar");
@@ -53,14 +53,9 @@ var fn_DMCargarConfiguracion = function () {
 
     KdoCmbSetValue($("#CmbMaquinaDis"), maq[0].IdMaquina);
 
-    let vContenedor = $("#container");
-    $(vContenedor).kendoDropTarget({
-        drop: function (e) { dropElemento(e); },
-        group: "gridGroup"
-    });
+
     //*****************************
-    //let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
-    //Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
+
     KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
     $("#CmbIdUnidad").data("kendoComboBox").setDataSource(fn_UnidadMedida("14,5,19,22"));
     KdoCmbSetValue($("#CmbIdUnidad"), 5);
@@ -135,7 +130,6 @@ var fn_DMCargarConfiguracion = function () {
 
     });
 
-    fn_RTCargarMaquina();
 };
 
 var fn_DMCargarEtapa = function () {
@@ -144,8 +138,23 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnBTDis"), vhb);
 };
 
+//Agregar a Lista de ejecucion funcion configurar grid
 fun_List.push(fn_DMCargarConfiguracion);
-fun_ListDatos.push(fn_DMCargarEtapa);
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_RTCargarMaquina;
+fun_ListDatos.push(EtapaPush);
+//Agregar a lista de ejecucion funcion mostrar grid y carga de etapa
+var EtapaPush2 = {};
+EtapaPush2.IdEtapa = idEtapaProceso;
+EtapaPush2.FnEtapa = fn_DMCargarEtapa;
+fun_ListDatos.push(EtapaPush2);
+// activa DropTarget
+var EtapaPush3 = {};
+EtapaPush3.IdEtapa = idEtapaProceso;
+EtapaPush3.FnEtapa = fn_RTActivaDropTarget;
+fun_ListDatos.push(EtapaPush3);
 
 let fn_GetDisenoMuestra = function () {
     kendo.ui.progress($("#vistaParcial"), true);
