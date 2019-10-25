@@ -213,6 +213,10 @@ let fn_GuardarSolictudDesarrollo = function () {
 
 };
 
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_SDCargarDatos;
+
 fun_List.push(fn_SDCargarJSEtapa);
 
-fun_ListDatos.push(fn_SDCargarDatos);
+fun_ListDatos.push(EtapaPush);

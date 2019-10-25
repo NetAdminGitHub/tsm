@@ -1,7 +1,6 @@
 ﻿var Permisos;
-let vIdIdDisenoMuestra;
 
-var fn_DMCargarConfiguracion = function () {
+var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButtonEnable($("#btnMuest"), false);
     // colocar grid para arrastre
@@ -11,15 +10,8 @@ var fn_DMCargarConfiguracion = function () {
     let UrlMq = TSM_Web_APi + "Maquinas";
     Kendo_CmbFiltrarGrid($("#CmbMaquinaDis"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
     KdoComboBoxEnable($("#CmbMaquinaDis"), false);
-
     KdoCmbSetValue($("#CmbMaquinaDis"), maq[0].IdMaquina);
 
-    let vContenedor = $("#container");
-    $(vContenedor).kendoDropTarget({
-        drop: function (e) { dropElemento(e); },
-        group: "gridGroup"
-    });
-    //*****************************
     let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
     Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
     let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
@@ -32,17 +24,29 @@ var fn_DMCargarConfiguracion = function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
     });
 
-    fn_RTCargarMaquina();
+    //fn_RTCargarMaquina();
 };
 
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
 };
 
-fun_List.push(fn_DMCargarConfiguracion);
-fun_ListDatos.push(fn_DMCargarEtapa);
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_RTCargarMaquina;
+fun_ListDatos.push(EtapaPush);
+//Agregar a Lista de ejecucion funcion configurar 
+var EtapaPush2 = {};
+EtapaPush2.IdEtapa = idEtapaProceso;
+EtapaPush2.FnEtapa = fn_DMueCargarConfiguracion;
+fun_ListDatos.push(EtapaPush2);
 
-//let fn_GetDisenoMuestra = function () {
+//Agregar a Lista de ejecucion funcion validación 
+var EtapaPush3 = {};
+EtapaPush3.IdEtapa = idEtapaProceso;
+EtapaPush3.FnEtapa = fn_DMCargarEtapa;
+fun_ListDatos.push(EtapaPush3);
 
 fPermisos = function (datos) {
     Permisos = datos;
