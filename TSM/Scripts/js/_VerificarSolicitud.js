@@ -629,7 +629,7 @@ var fn_VSCargarJSEtapa = function () {
                         }
                     },
                     IdTipoPantonera: {
-                        type: "number"
+                        type: "string"
                     },
                     Item: {
                         type: "number"
