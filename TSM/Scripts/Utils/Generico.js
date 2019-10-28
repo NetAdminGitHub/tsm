@@ -870,6 +870,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
 
     // Smart Wizard
     DivIdElement.smartWizard({
+        keyNavigation: false,
         selected: etapas[0].EtapaActiva,
         showStepURLhash: false,
         theme: givenOrDefault(forma, "arrows"),
