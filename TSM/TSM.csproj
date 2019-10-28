@@ -1315,7 +1315,7 @@
     <Content Include="Views\Marcas\Index.cshtml" />
     <Content Include="Views\OrientacionPositivos\Index.cshtml" />
     <Content Include="Views\TiposSeparaciones\Index.cshtml" />
-    <Content Include="Views\Shared\_MaqSR22.cshtml" />
+    <Content Include="Views\Estaciones\_MaqSR22.cshtml" />
     <Content Include="Views\Estaciones\EstacionAccesorios.cshtml" />
     <Content Include="Views\Estaciones\EstacionColores.cshtml" />
     <Content Include="Views\Simulaciones\_SimulacionDatos.cshtml" />

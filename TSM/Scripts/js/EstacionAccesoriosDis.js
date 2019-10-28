@@ -1,5 +1,4 @@
-﻿var EstacionBraAcce;
-var idBraAcce;
+﻿
 var fn_VistaEstacionAccesoriosDisDocuReady = function () {
     KdoButton($("#btnAddMEA_Dis"), "check", "Agregar");
     $("#btnAddMEA_Dis").data("kendoButton").bind("click", function (e) {
@@ -21,7 +20,7 @@ var fn_VistaEstacionAccesoriosDis = function () {
     }
 };
 
-let fn_GuardarEstacionAccesorioDis = function () {
+var fn_GuardarEstacionAccesorioDis = function () {
 
     fn_GuardarEstacionAcceDis(idBraAcce);
     var a = stage.find("#TxtInfo" + idBraAcce);
@@ -29,7 +28,7 @@ let fn_GuardarEstacionAccesorioDis = function () {
     layer.draw();
 };
 
-let fn_GuardarEstacionAcceDis = function (xIdBrazo) {
+var fn_GuardarEstacionAcceDis = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionAccesoriosDis"), true);
     var xType;
 

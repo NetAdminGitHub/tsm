@@ -15,7 +15,23 @@ let Formulacion = "";
 let vhb;
 var fn_RTCargarMaquina = function () {
     //borrar la maquina
-  
+    $.each(ConfigEtapas, function (index,elemento) {
+        //if (elemento.IdEtapaProceso !== idEtapaProceso) {
+            $("#EtapaSeteo_" + elemento.IdEtapaProceso + "").children().remove();
+        //}  
+    }); 
+
+    $.ajax({
+        url: "/Estaciones/_MaqSR22",
+        async: false,
+        type: 'GET',
+        contentType: "text/html; charset=utf-8",
+        datatype: "html",
+        success: function (resultado) {
+            $("#EtapaSeteo_" + idEtapaProceso + "").html(resultado);
+        }
+    });
+
     var width = window.innerWidth;
     var height = window.innerHeight;
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
@@ -783,13 +799,13 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 ModalEstacionJS = "EstacionMuestra.js";
                 Formulacion = "BASE";
                 break;
-            //default:
-            //    Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-            //    ModalEstacion = "MEstacionAccesoriosDis";
-            //    ModalEstacionJS = "EstacionAccesoriosDis.js";
-            //    TipoEstacion = "ACCESORIO";
-            //    Formulacion = "";
-            //    break;
+            default:
+                Titulo = "";
+                ModalEstacion = undefined; // color undefined para no levatar vista modal
+                ModalEstacionJS = "";
+                TipoEstacion = "";
+                Formulacion = "";
+                break;
         }
     }
     if (ModalEstacion !== undefined) {

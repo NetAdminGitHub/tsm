@@ -37,5 +37,9 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult _MaqSR22()
+        {
+            return PartialView();
+        }
     }
 }

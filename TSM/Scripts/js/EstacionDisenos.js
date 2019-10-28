@@ -1,10 +1,4 @@
-﻿var SetFor;
-var EstaMarco;
-var EstacionBra;
-var Te;
-var idBra;
-var EstaTintasFormula;
-
+﻿
 var fn_VistaEstacionDisenoDocuReady = function () {
     KdoButton($("#btnccc_Dis"), "search", "Buscar en formula historicas..");
     KdoButtonEnable($("#btnccc_Dis"), false);
@@ -88,10 +82,17 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     KdoComboBoxEnable($("#CmbTecnica_Dis"), false);
 
  
-    let UrlBMezcla = TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/";
-    Kendo_CmbFiltrarGrid($("#CmbBasePigmento_Dis"), UrlBMezcla, "Nombre", "IdBasePigmento", "Seleccione un Base Mezcla ....", "", "");
+    //let UrlBMezcla = TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/0";
 
-    let frmDiseno = $("#FrmGenEDiseno").kendoValidator({
+    //let UrlBMezcla = TSM_Web_APi + "BasesPigmentos";
+    //Kendo_CmbFiltrarGrid($("#CmbBasePigmento_Dis"), UrlBMezcla, "Nombre", "IdBasePigmento", "Seleccione un Base ....", "", "");
+
+    KdoComboBoxbyData($("#CmbBasePigmento_Dis"), "[]", "Nombre", "IdBasePigmento", "Seleccione una Base de mezcla ....");
+    $("#CmbBasePigmento_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(0));
+    //KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
+
+
+    var frmDiseno = $("#FrmGenEDiseno").kendoValidator({
         rules: {
             vST: function (input) {
                 if (input.is("[id='CmbSistemaPigmento_Dis']")) {
@@ -215,7 +216,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         fn_FormulaHistorica("FormulaHistDis");
     });
     $("#btnDelFT_Dis").data("kendoButton").bind("click", function () {
-        fn_DelFormulaHis();
+        fn_DelFormulaHisDis();
     });
 
     $("#FormulaHistDis").on("ObtenerFormula", function (event, CodigoColor) {
@@ -302,10 +303,10 @@ var fn_VistaEstacionDiseno = function () {
         $("#TxtFormulaSug_Dis").val(setFor.SugerenciaFormula);
         KdoCmbSetValue($("#CmbTipoTinta_Dis"), setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta);
         $("#CmbSistemaPigmento_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
-        KdoCmbSetValue($("#CmbSistemaPigmento_Dis"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
-
         $("#CmbBasePigmento_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
+        KdoCmbSetValue($("#CmbSistemaPigmento_Dis"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
         KdoCmbSetValue($("#CmbBasePigmento_Dis"), setFor.IdBasePigmento === undefined ? "" : setFor.IdBasePigmento);
+
 
     } else {
         KdoCmbFocus($("#CmbTipoTinta_Dis"));
@@ -359,6 +360,9 @@ var fn_VistaEstacionDiseno = function () {
         kdoNumericSetValue($("#NumResolucionDPI_Dis"), estaMarco.ResolucionDPI);
         kdoNumericSetValue($("#NumLineajeLPI_Dis"), estaMarco.LineajeLPI);
         kdoNumericSetValue($("#NumPixeles_Dis"), estaMarco.Pixeles);
+        xNumPeso_Mues = estaMarco.Peso;
+        xCmdIdUnidadPeso_Mues= estaMarco.IdUnidadPeso;
+
     } else {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(0);
         $("#NumPasadas_Dis").data("kendoNumericTextBox").value(0);
@@ -370,6 +374,8 @@ var fn_VistaEstacionDiseno = function () {
         KdoCmbSetValue($("#CmbSedas_Dis"), "");
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), "");
         $("#TxtLetra").val("");
+        xNumPeso_Mues = null;
+        xCmdIdUnidadPeso_Mues = null;
     }
     
     if (EstaTintasFormula.length > 0) {
@@ -411,7 +417,7 @@ var fn_VistaEstacionDiseno = function () {
 
 };
 //// funciones
-let fn_GuardarEstacionDiseno = function () {
+var fn_GuardarEstacionDiseno = function () {
 
     fn_GuardarEstacionDisArea(idBra);
     var a = stage.find("#TxtInfo" + idBra);
@@ -423,7 +429,7 @@ let fn_GuardarEstacionDiseno = function () {
     layer.draw();
 };
 
-let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
+var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
 
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xIdTipoFormulacion;
@@ -464,6 +470,8 @@ let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             IdSeteo: maq[0].IdSeteo,
             Area: kdoNumericGetValue($("#NumArea_Dis")),
             IdUnidadArea: KdoCmbGetValue($("#CmdIdUnidadArea_Dis")),
+            Peso: xNumPeso_Mues,
+            IdUnidadPeso: xCmdIdUnidadPeso_Mues,
             ResolucionDPI: kdoNumericGetValue($("#NumResolucionDPI_Dis")),
             LineajeLPI: kdoNumericGetValue($("#NumLineajeLPI_Dis")),
             Pixeles: kdoNumericGetValue($("#NumPixeles_Dis"))
@@ -483,7 +491,7 @@ let fn_GuardarEstaMarcoDis = function (xIdBrazo) {
 
 };
 
-let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
+var fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
@@ -526,7 +534,7 @@ let fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
     });
 };
 
-let fn_GuardarEstacionDisArea = function (xIdBrazo) {
+var fn_GuardarEstacionDisArea = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
@@ -563,7 +571,7 @@ let fn_GuardarEstacionDisArea = function (xIdBrazo) {
 
 };
 
-let fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
+var fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
@@ -598,7 +606,7 @@ let fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
 
 };
 
-let fn_DelFormulaHis = function () {
+var fn_DelFormulaHisDis = function () {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xType = "Delete";
     xUrl = TSM_Web_APi + "TintasFormulaciones/" + $("#TxtIdform_Dis").val();

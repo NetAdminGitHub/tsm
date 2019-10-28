@@ -15,15 +15,38 @@ var xvNodocReq;
 var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
 var TiEst; // guarda los tipos de estaciones
 var TipoTintas;
+var ConfigEtapas;
+var xCmdIdUnidadPeso_Mues;
+var xNumPeso_Mues;
+var xAreaDis;
+var xIdUnidadAreaDis;
+var xNumResolucionDPI_Dis;
+var xNumLineajeLPI_Dis;
+var xNumPixeles_Dis;
+let xCmbTecnica_Mues;
+let xCmbBaseMezcla_Mues;
+let xCmbBasePigmentos_Mues;
+var SetFor;
+var EstaMarco;
+var EstacionBra;
+var Te;
+var idBra;
+var EstaTintasFormula;
+var EstacionBraAcce;
+var idBraAcce;
+var xidEstacion;
+var vidForm = 0;
+var xTxtLetra;
 fPermisos = function (datos) {
     Permisos = datos;
 };
+
 var fn_CambioEtp = function (e) {
     let Realizado = false;
     if (ValidarCamEtp.validate()) {
         // obtener indice de la etapa siguiente
         let xindice = KdoCmbGetValue($("#cmbEtpSigAnt"));
-        kendo.ui.progress($(document.body), true);
+        kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa",
             method: "POST",
@@ -46,7 +69,7 @@ var fn_CambioEtp = function (e) {
                 ErrorMsg(data);
             },
             complete: function () {
-                kendo.ui.progress($(document.body), false);
+                kendo.ui.progress($(".k-dialog"), false);
             }
         });
     } else {
@@ -83,12 +106,14 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarEtapa"), "gear");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
+    //cargando todas las etapas
+    ConfigEtapas = fn_ConfigEtapas();
+
 });
 
 window.onpopstate = function (e) {
     $("#smartwizard").smartWizard("goToPage", e.state);
 };
-
 
 
 /**
@@ -131,6 +156,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         }
     });
 };
+
 var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
@@ -184,9 +210,12 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     }
 
     $.each(fun_ListDatos, function (index, elemento) {
-        elemento.call(document, jQuery);
+        if (elemento.IdEtapa === idEtapaProceso) {
+            elemento.FnEtapa.call(document, jQuery);
+        }
     });
 };
+
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
     //LLena Splitter de imagenes
     kendo.ui.progress($(document.body), true);
@@ -284,7 +313,6 @@ $("#vAsignarUsuario").kendoDialog({
     }
 });
 
-
 $("#vCamEtapa").kendoDialog({
     height: "auto",
     width: "20%",
@@ -303,7 +331,6 @@ $("#vCamEtapa").kendoDialog({
     }
 });
 
-
 $("#btnCambiarEtapa").click(function (e) {
     $("#cmbUsuarioEtp").data("kendoComboBox").value("");
     $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
@@ -314,7 +341,6 @@ $("#btnCambiarEtapa").click(function (e) {
     $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
     KdoCmbFocus($("#cmbEtpSigAnt"));
 });
-
 
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
@@ -393,7 +419,7 @@ var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
                     return $("#cmbUsuario").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
-            }         
+            }
         },
         messages: {
             MsgcmbEstados: "Requerido"
@@ -1076,7 +1102,9 @@ var Fn_GetSistemaPigmentos = function (vid) {
         }
     });
 };
-var Fn_GetSistemaBases = function (vid) {
+
+
+var Fn_GetSistemaBases = function (vide) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
@@ -1086,7 +1114,7 @@ var Fn_GetSistemaBases = function (vid) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
+                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vide !== null ? vide.toString() : 0),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -1191,3 +1219,28 @@ var fn_UnidadMedida = function (filtro) {
     });
 };
 
+var fn_ConfigEtapas = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "EtapasProcesos/GetByModulo/2",
+        type: 'GET',
+        async: false,
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return result;
+};
+
+var fn_RTActivaDropTarget = function () {
+    //hablitar el Drop Target de las maquinas
+    let vContenedor = $("#container");
+    $(vContenedor).kendoDropTarget({
+        drop: function (e) { dropElemento(e); },
+        group: "gridGroup"
+    });
+};

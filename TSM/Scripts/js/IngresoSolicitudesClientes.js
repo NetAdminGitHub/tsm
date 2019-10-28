@@ -10,7 +10,8 @@ let UrlPro = TSM_Web_APi + "Programas/GetByCliente/0";
 let UrlTm = TSM_Web_APi + "TipoMuestras";
 let UrlCata = TSM_Web_APi + "CategoriaTallas";
 let UrlUm = TSM_Web_APi + "UnidadesMedidas";
-let UrlTem = TSM_Web_APi +"Temporadas"
+let UrlTem = TSM_Web_APi + "Temporadas";
+let InciarInsert = true;
 $(document).ready(function () {
     //#region Inicializar combobox en la vista 
     KdoComboBoxbyData($("#CmbCliCont"), "[]", "Nombre", "IdCliente", "Seleccione...");
@@ -280,6 +281,7 @@ let fn_HabilitabtnInsert = function () {
         let h = KdoCmbGetValue($("#CmbCliCont")) !== null && KdoCmbGetValue($("#CmbContactoSol")) !== null ? true : false;
         Grid_HabilitaToolbar($("#gridDet"), h, h, h);
     }
+    InciarInsert = true;
 };
 let fn_GetRelacionCCActivos = function () {
     // obtener la relacion entre contactos y clientes
@@ -389,12 +391,13 @@ let fn_crearServClie = function () {
             kendo.ui.progress($(document.body), false);
             //RequestEndMsg(data, xType);
             snCreoCli = true;
-            
+            InciarInsert = false;
         },
         error: function (data) {
             kendo.ui.progress($(document.body), false);
             ErrorMsg(data);
             snCreoCli = false;
+            InciarInsert = true;
         }
     });
 
@@ -552,11 +555,11 @@ let fn_gridSolDet = function () {
             Grid_Focus(e, "NombreDiseno");
 
             $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(vIdServSol === 1 ? fn_DSudm("9") : fn_DSudm("9,17"));
-            //if (vIdSoli === 0) {
+            if (InciarInsert===true) {
                 fn_GuadarCliente();
                 $('[name="IdSolicitud"]').data("kendoNumericTextBox").value(vIdSoli);
                 $('[name="IdSolicitud"]').data("kendoNumericTextBox").trigger("change");
-            //}
+            }
      
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -706,11 +709,12 @@ let fn_BorrarSol = function () {
 
 };
 let fn_finsolicitudCliente = function () {
+    //kendo.ui.progress($(".k-widget.k-window"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "SolicitudesDisenoPrendas/FinalizarSolicitudesClientes/" + vIdSoli.toString(),
         type: "Post",
         dataType: "json",
-        async: false,
         contentType: 'application/json; charset=utf-8',
         success: function () {
             $("#ModalMsgSol").modal({
@@ -720,9 +724,11 @@ let fn_finsolicitudCliente = function () {
             });
             $("#ModalMsgSol").find('.modal-title').text("Solicitud finalizada");
             $("#ModalMsgSol").find('.modal-body h2').text('Su solicitud ha sido recibida. Numero de solicitud : ' + $("#NoDocumento").val());
+            kendo.ui.progress($(document.body), false);
         },
         error: function (data) {
             ErrorMsg(data);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
@@ -755,6 +761,7 @@ let fn_crearProgra = function () {
 };
 let fn_GuadarCliente = function () {
     let snGuardo = false;
+    kendo.ui.progress($(document.body), true);
     if ($("#FrmClieCont").data("kendoValidator").validate()) {
         xpnIdcliente = KdoCmbGetValue($("#CmbCliCont"));
         xpnNombreClie = KdoCmbGetText($("#CmbCliCont"));
@@ -768,6 +775,7 @@ let fn_GuadarCliente = function () {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         snGuardo = false;
     }
+    kendo.ui.progress($(document.body), false);
     return snGuardo;
 };
 let fn_CreaItemProm = function (widgetId, value) {
