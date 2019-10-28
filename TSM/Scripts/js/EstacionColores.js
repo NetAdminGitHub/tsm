@@ -1,9 +1,4 @@
-﻿var SetFor;
-var EstaMarco;
-var EstacionBra;
-var Te;
-var idBra;
-var EstaTintasFormula;
+﻿
 
 var fn_VistaEstacionColorDocuReady = function () {
     KdoButton($("#btnccc"), "search", "Buscar en formula historicas..");
@@ -48,10 +43,12 @@ var fn_VistaEstacionColorDocuReady = function () {
     Kendo_CmbFiltrarGrid($("#CmbTecnica_color"), UrlRqTec, "Nombre", "IdRequerimientoTecnica", "Seleccione una Tecnica ....");
     KdoComboBoxEnable($("#CmbTecnica_color"), false);
 
-    let UrlBMezcla = TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/";
-    Kendo_CmbFiltrarGrid($("#CmbBasePigmento_color"), UrlBMezcla, "Nombre", "IdBasePigmento", "Seleccione un Base Mezcla ....", "", "");
+    //let UrlBMezcla = TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/0";
+    //Kendo_CmbFiltrarGrid($("#CmbBasePigmento_color"), UrlBMezcla, "Nombre", "IdBasePigmento", "Seleccione un Base Mezcla ....", "", "");
+    KdoComboBoxbyData($("#CmbBasePigmento_color"), "[]", "Nombre", "IdBasePigmento", "Seleccione una Base de mezcla ....");
+    $("#CmbBasePigmento_color").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(0));
 
-    let frmColor = $("#FrmGenEColor").kendoValidator({
+    var frmColor = $("#FrmGenEColor").kendoValidator({
         rules: {
             vST: function (input) {
                 if (input.is("[id='CmbSistemaPigmento_Color']")) {
@@ -253,11 +250,28 @@ var fn_VistaEstacionColor = function () {
         $("#NumPasadas").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         KdoCmbSetValue($("#CmbSedas_color"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmbTipoEmulsion_color"), estaMarco.IdTipoEmulsion);
+        xTxtLetra = estaMarco.Letra;
+        xNumPeso_Mues = estaMarco.Peso;
+        xCmdIdUnidadPeso_Mues = estaMarco.IdUnidadPeso;
+        xAreaDis = estaMarco.Area;
+        xIdUnidadAreaDis = estaMarco.IdUnidadArea;
+        xNumResolucionDPI_Dis = estaMarco.ResolucionDPI;
+        xNumLineajeLPI_Dis = estaMarco.LineajeLPI;
+        xNumPixeles_Dis = estaMarco.Pixeles;
+
     } else {
         $("#NumCapilar").data("kendoNumericTextBox").value(0);
         $("#NumPasadas").data("kendoNumericTextBox").value(0);
         KdoCmbSetValue($("#CmbSedas_color"), "");
         KdoCmbSetValue($("#CmbTipoEmulsion_color"), "");
+        xNumPeso_Mues =null;
+        xCmdIdUnidadPeso_Mues = null;
+        xAreaDis = null;
+        xIdUnidadAreaDis =null;
+        xNumResolucionDPI_Dis = null;
+        xNumLineajeLPI_Dis =null;
+        xNumPixeles_Dis = null;
+        xTxtLetra = null;
     }
 
     if (EstaTintasFormula.length >0) {
@@ -278,7 +292,7 @@ var fn_VistaEstacionColor = function () {
 };
 
 //// funciones
-let fn_GuardarEstacionColor = function () {
+var fn_GuardarEstacionColor = function () {
 
     fn_GuardarEstacion(idBra);
     var a = stage.find("#TxtInfo" + idBra);
@@ -290,7 +304,7 @@ let fn_GuardarEstacionColor = function () {
     layer.draw();
 };
 
-let fn_GuardarEstaMarco = function (xIdBrazo) {
+var fn_GuardarEstaMarco = function (xIdBrazo) {
 
     kendo.ui.progress($("#MEstacionColor"), true);
     let xIdTipoFormulacion;
@@ -322,13 +336,20 @@ let fn_GuardarEstaMarco = function (xIdBrazo) {
             Presion: null,
             Tension: null,
             OffContact: null,
-            Letra: null,
+            Letra: xTxtLetra,
             IdUsuarioMod:getUser(),
             FechaMod: xFecha,
             IdEscurridor: null,
             SerieMarco: null,
             IdTipoEmulsion: KdoCmbGetValue($("#CmbTipoEmulsion_color")),
-            IdSeteo: maq[0].IdSeteo
+            IdSeteo: maq[0].IdSeteo,
+            Area: xAreaDis,
+            IdUnidadArea: xIdUnidadAreaDis,
+            Peso: xNumPeso_Mues,
+            IdUnidadPeso: xCmdIdUnidadPeso_Mues,
+            ResolucionDPI: xNumResolucionDPI_Dis,
+            LineajeLPI: xNumLineajeLPI_Dis,
+            Pixeles: xNumPixeles_Dis 
 
         }),
         contentType: 'application/json; charset=utf-8',
@@ -346,7 +367,7 @@ let fn_GuardarEstaMarco = function (xIdBrazo) {
 
 };
 
-let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase ) {
+var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase ) {
     kendo.ui.progress($("#MEstacionColor"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
@@ -390,7 +411,7 @@ let fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
 
 };
 
-let fn_GuardarEstacion = function (xIdBrazo) {
+var fn_GuardarEstacion = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionColor"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
@@ -427,7 +448,7 @@ let fn_GuardarEstacion = function (xIdBrazo) {
 
 };
 
-let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
+var fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionColor"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
@@ -462,7 +483,7 @@ let fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
 
 };
 
-let fn_DelFormulaHis = function () {
+var fn_DelFormulaHis = function () {
     kendo.ui.progress($("#MEstacionColor"), true);
     let xType = "Delete";
     xUrl = TSM_Web_APi + "TintasFormulaciones/" + $("#TxtIdform").val();
