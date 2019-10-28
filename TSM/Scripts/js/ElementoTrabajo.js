@@ -16,6 +16,27 @@ var maq; // guarda el seteo de la maquina por orden de trabajo , etapa e item
 var TiEst; // guarda los tipos de estaciones
 var TipoTintas;
 var ConfigEtapas;
+var xCmdIdUnidadPeso_Mues;
+var xNumPeso_Mues;
+var xAreaDis;
+var xIdUnidadAreaDis;
+var xNumResolucionDPI_Dis;
+var xNumLineajeLPI_Dis;
+var xNumPixeles_Dis;
+let xCmbTecnica_Mues;
+let xCmbBaseMezcla_Mues;
+let xCmbBasePigmentos_Mues;
+var SetFor;
+var EstaMarco;
+var EstacionBra;
+var Te;
+var idBra;
+var EstaTintasFormula;
+var EstacionBraAcce;
+var idBraAcce;
+var xidEstacion;
+var vidForm = 0;
+var xTxtLetra;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -1082,7 +1103,8 @@ var Fn_GetSistemaPigmentos = function (vid) {
     });
 };
 
-var Fn_GetSistemaBases = function (vid) {
+
+var Fn_GetSistemaBases = function (vide) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
@@ -1092,7 +1114,7 @@ var Fn_GetSistemaBases = function (vid) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vid !== null ? vid.toString() : 0),
+                    url: TSM_Web_APi + "TiposTintasBasesPigmentos/GetByTipoTinta/" + (vide !== null ? vide.toString() : 0),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);

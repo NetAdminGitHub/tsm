@@ -1,17 +1,4 @@
-﻿var SetFor;
-var EstaMarco;
-var EstacionBra;
-var Te;
-var idBra;
-let xAreaDis;
-let xIdUnidadAreaDis;
-let xCmbTecnica_Mues;
-let xCmbBaseMezcla_Mues;
-let xCmbBasePigmentos_Mues;
-let xNumResolucionDPI_Dis;
-let xNumLineajeLPI_Dis;
-let xNumPixeles_Dis;
-
+﻿
 var fn_VistaEstacionMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_Mues"), "check", "Agregar");
     $("#NumPasadas_Mues").kendoNumericTextBox({
@@ -58,7 +45,7 @@ var fn_VistaEstacionMuestraDocuReady = function () {
     $("#CmdIdUnidadPeso_Mues").data("kendoComboBox").setDataSource(fn_UnidadMedida("1,21"));
     //KdoCmbSetValue($("#CmdIdUnidadPeso_Mues"), 21);
 
-    let frmDiseno = $("#FrmGenEDiseno").kendoValidator({
+    var frmDiseno = $("#FrmGenEDiseno").kendoValidator({
         rules: {
             vST: function (input) {
                 if (input.is("[id='CmbSistemaPigmentos_Mues']")) {
@@ -239,7 +226,7 @@ var fn_VistaEstacionMuestra = function () {
 
 };
 //// funciones
-let fn_GuardarEstacionMues = function () {
+var fn_GuardarEstacionMues = function () {
 
     GuardarEstacionDesaMues(idBra);
     var a = stage.find("#TxtInfo" + idBra);
@@ -251,7 +238,7 @@ let fn_GuardarEstacionMues = function () {
     layer.draw();
 };
 
-let fn_GuardarEstaMarcoMues = function (xIdBrazo) {
+var fn_GuardarEstaMarcoMues = function (xIdBrazo) {
 
     kendo.ui.progress($("#MEstacionMuestra"), true);
     let xIdTipoFormulacion;
@@ -313,7 +300,7 @@ let fn_GuardarEstaMarcoMues = function (xIdBrazo) {
 
 };
 
-let fn_GuardarMarcoFormuMues = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
+var fn_GuardarMarcoFormuMues = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
     kendo.ui.progress($("#MEstacionMuestra"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
@@ -357,7 +344,7 @@ let fn_GuardarMarcoFormuMues = function (xIdBrazo, xidRequerimientoColor, xidReq
 
 };
 
-let GuardarEstacionDesaMues = function (xIdBrazo) {
+var GuardarEstacionDesaMues = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionMuestra"), true);
     var xType;
     var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');

@@ -1,5 +1,4 @@
-﻿let xidEstacion;
-var vidForm = 0;
+﻿
 var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
@@ -63,7 +62,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     let urtMo = TSM_Web_APi + "MotivosAjustesTintas";
     Kendo_CmbFiltrarGrid($("#CmbMotivoAjus"), urtMo, "Nombre", "IdMotivo", "Seleccione un motivo de ajuste ....");
 
-    let frmNajus = $("#FrmNuevoAjuste").kendoValidator({
+    var frmNajus = $("#FrmNuevoAjuste").kendoValidator({
         rules: {
             vcnt: function (input) {
                 if (input.is("[id='NumCntIni_Recibida']") ) {
@@ -155,14 +154,14 @@ var fn_VistaEstacionFormulas = function () {
 
 
 };
-let fn_EditClose = function () {
+var fn_EditClose = function () {
     $("#gridFormulas").data("kendoGrid").dataSource.read().then(function () {
         $("#gridFormulasMP").data("kendoGrid").dataSource.read();
     });
 
 };
 
-let fn_ShowAjus = function () {
+var fn_ShowAjus = function () {
     $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read().then(function () {
         //fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? fn_getIdMotivo($("#gridFormulas").data("kendoGrid")) !== null ? Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
         fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ?  Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true)  : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
@@ -425,30 +424,30 @@ var fn_gridMateriaPrima = function (gd) {
    
 
 };
-let  fn_consultarFormulaDet = function (gridcab) {
+var  fn_consultarFormulaDet = function (gridcab) {
     vidForm = fn_getIdFormula(gridcab.data("kendoGrid"));
     $("#gridFormulasMP").data("kendoGrid").dataSource.read();
 };
 
-let fn_getIdFormula = function (g) {
+var fn_getIdFormula = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdFormula;
 
 };
 
-let fn_getIdMotivo = function (g) {
+var fn_getIdMotivo = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdMotivo;
 
 };
 
-let fn_getEstado = function (g) {
+var fn_getEstado = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Estado;
 
 };
 
-let fn_Ajuste = function () {
+var fn_Ajuste = function () {
     kendo.ui.progress($(document.body), true);
         $.ajax({
             url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntIni_Recibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
@@ -636,7 +635,7 @@ var fn_gridAjustePrima = function (gd) {
     });
 
 };
-let fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
+var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($(document.body), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";

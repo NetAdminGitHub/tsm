@@ -799,13 +799,13 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 ModalEstacionJS = "EstacionMuestra.js";
                 Formulacion = "BASE";
                 break;
-            //default:
-            //    Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-            //    ModalEstacion = "MEstacionAccesoriosDis";
-            //    ModalEstacionJS = "EstacionAccesoriosDis.js";
-            //    TipoEstacion = "ACCESORIO";
-            //    Formulacion = "";
-            //    break;
+            default:
+                Titulo = "";
+                ModalEstacion = undefined; // color undefined para no levatar vista modal
+                ModalEstacionJS = "";
+                TipoEstacion = "";
+                Formulacion = "";
+                break;
         }
     }
     if (ModalEstacion !== undefined) {
