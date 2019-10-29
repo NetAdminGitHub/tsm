@@ -867,10 +867,45 @@ var fn_VSCargarJSEtapa = function () {
         showFileList: false,
         success: function (e) {
             if (e.operation === "upload") {
-                GuardarArtAdj(UrlApiAAdj, e);
+                GuardarArtAdj(UrlApiAAdj, e.files[0].name);
             }
         }
 
+    });
+
+    
+    let fn_LeerImagen = function (event, blobs) {
+        kendo.ui.progress($("#vistaParcial"), true);
+
+        var nombreArchivo = 'Recorte_' + kendo.toString(kendo.parseDate(new Date()), 'yyyyMMdd_HHmmss') + '.' + blobs[0].name.split('.')[1];
+        var form = new FormData();
+        form.append("Adjunto", blobs[0], nombreArchivo);
+
+        $.ajax({
+            url: "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val(),//
+            type: "POST",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            //dataType: "json",
+            success: function (data) {
+                GuardarArtAdj(UrlApiAAdj, nombreArchivo);
+                kendo.ui.progress($("#vistaParcial"), false);
+            },
+            error: function (data) {
+                kendo.ui.progress($("#vistaParcial"), false);
+                ErrorMsg(data);
+            }
+        });
+    };
+
+    $("#myModalAdjunto").on("show.bs.modal", function (e) {
+        $(document).on('custom/paste/images', fn_LeerImagen);
+    });
+
+    $("#myModalAdjunto").on("hide.bs.modal", function (e) {
+        $(document).off('custom/paste/images', fn_LeerImagen);
     });
 
     //DataSource para Grid de Artes Adjuntos
@@ -1236,7 +1271,7 @@ let LimpiarArte = function () {
     $("#TxtDirectorioArchivos").val("");
 };
 
-let GuardarArtAdj = function (UrlAA, e) {
+let GuardarArtAdj = function (UrlAA, nombreFichero) {
     kendo.ui.progress($("#vistaParcial"), true);
     var XFecha = Fhoy();
     var XDescripcion = "ARCHIVO ADJUNTO";
@@ -1249,7 +1284,7 @@ let GuardarArtAdj = function (UrlAA, e) {
         data: JSON.stringify({
             IdArte: $("#IdArte").val(),
             Item: 0,
-            NombreArchivo: e.files[0].name,
+            NombreArchivo: nombreFichero,
             Fecha: XFecha,
             Descripcion: XDescripcion
         }),
