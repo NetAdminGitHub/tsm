@@ -519,6 +519,9 @@ function Grid_Focus(e, NombreCampo) {
                 if (ArgCampo.data("kendoComboBox")) {
                     ArgCampo.data("kendoComboBox").input.focus().select();
                 }
+                else if (ArgCampo.data("kendoMultiColumnComboBox")) {
+                    ArgCampo.data("kendoMultiColumnComboBox").input.focus().select();
+                }
                 else {
                     ArgCampo.focus().select();
                 }
@@ -534,6 +537,9 @@ function Grid_Focus(e, NombreCampo) {
         else {
             if (ArgCampo.data("kendoComboBox")) {
                 ArgCampo.data("kendoComboBox").input.focus().select();
+            }
+            else if (ArgCampo.data("kendoMultiColumnComboBox")) {
+                ArgCampo.data("kendoMultiColumnComboBox").input.focus().select();
             }
             else {
                 ArgCampo.focus().select();
