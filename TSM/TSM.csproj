@@ -234,6 +234,7 @@
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\ConfigEjecutivasContactosMarcasController.cs" />
     <Compile Include="Controllers\PerfilesImpresionesController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
@@ -680,6 +681,7 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
@@ -1341,6 +1343,7 @@
     <Content Include="Views\Shared\_DesarrolloMuestras.cshtml" />
     <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
     <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
+    <Content Include="Views\ConfigEjecutivasContactosMarcas\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1355,6 +1358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
