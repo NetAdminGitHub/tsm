@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "Gestion de Asignación de OT";
+    ViewBag.IdVersion = "TSM0101064|v19061101";
+}
+@section Scripts {
+    <script src="~/Scripts/Utils/sortable.min.js"></script>
+    <script src="~/Scripts/js/GestionOTAsignaciones.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="myKanban" class="board">
+
+                    <div data-id="_todo" class="kanban-board form-group col-lg-12">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            @*<div class="kanban-item" draggable="false" style="">All right</div>
+                <div class="kanban-item" draggable="false" style="">tes</div>
+                <div class="kanban-item" style="" draggable="false">Try Click This!</div>
+                <div class="kanban-item" draggable="false" style="">Try drag this (Look the console)</div>*@
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                    <div data-id="_todo" class="kanban-board form-group col-lg-2 sortable-drag" draggable="false">
+                        <header class="kanban-board-header">
+                            <div class="kanban-title-board">Backlogs</div>
+                            <button class="kanban-title-button btn btn-default btn-xs">+</button>
+                        </header>
+                        <main class="kanban-drag">
+                            <div class="kanban-item" style="" draggable="false">
+                                <div class="form-group col-lg-2">
+
+                                    <div class="user">
+                                        <div class="avatar-sm float-left mr-2" id="MyPhoto1">
+                                            <img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">
+                                        </div>
+                                        <div class="info">
+                                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" class="" draggable="false">
+                                                <span>
+                                                    <span id="MyUserName">William</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </main>
+                        <footer></footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

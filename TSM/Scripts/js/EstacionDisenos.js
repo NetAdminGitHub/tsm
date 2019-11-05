@@ -361,7 +361,8 @@ var fn_VistaEstacionDiseno = function () {
         kdoNumericSetValue($("#NumLineajeLPI_Dis"), estaMarco.LineajeLPI);
         kdoNumericSetValue($("#NumPixeles_Dis"), estaMarco.Pixeles);
         xNumPeso_Mues = estaMarco.Peso;
-        xCmdIdUnidadPeso_Mues= estaMarco.IdUnidadPeso;
+        xCmdIdUnidadPeso_Mues = estaMarco.IdUnidadPeso;
+        xEstado = estaMarco.Estado;
 
     } else {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(0);
@@ -376,6 +377,7 @@ var fn_VistaEstacionDiseno = function () {
         $("#TxtLetra").val("");
         xNumPeso_Mues = null;
         xCmdIdUnidadPeso_Mues = null;
+        xEstado = null;
     }
     
     if (EstaTintasFormula.length > 0) {
@@ -441,6 +443,7 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
     if (estaMarco === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/";
+        xEstado = "SOLICITADO";
     } else {
         xType = "Put";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/" + maq[0].IdSeteo + "/" + xIdBrazo;
@@ -474,7 +477,8 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             IdUnidadPeso: xCmdIdUnidadPeso_Mues,
             ResolucionDPI: kdoNumericGetValue($("#NumResolucionDPI_Dis")),
             LineajeLPI: kdoNumericGetValue($("#NumLineajeLPI_Dis")),
-            Pixeles: kdoNumericGetValue($("#NumPixeles_Dis"))
+            Pixeles: kdoNumericGetValue($("#NumPixeles_Dis")),
+            Estado: xEstado
 
         }),
         contentType: 'application/json; charset=utf-8',

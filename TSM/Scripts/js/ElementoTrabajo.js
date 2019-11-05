@@ -37,6 +37,7 @@ var idBraAcce;
 var xidEstacion;
 var vidForm = 0;
 var xTxtLetra;
+var xEstado;
 fPermisos = function (datos) {
     Permisos = datos;
 };
