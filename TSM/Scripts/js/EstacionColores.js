@@ -258,6 +258,7 @@ var fn_VistaEstacionColor = function () {
         xNumResolucionDPI_Dis = estaMarco.ResolucionDPI;
         xNumLineajeLPI_Dis = estaMarco.LineajeLPI;
         xNumPixeles_Dis = estaMarco.Pixeles;
+        xEstado = estaMarco.Estado;
 
     } else {
         $("#NumCapilar").data("kendoNumericTextBox").value(0);
@@ -272,6 +273,7 @@ var fn_VistaEstacionColor = function () {
         xNumLineajeLPI_Dis =null;
         xNumPixeles_Dis = null;
         xTxtLetra = null;
+        xEstado = null;
     }
 
     if (EstaTintasFormula.length >0) {
@@ -316,6 +318,7 @@ var fn_GuardarEstaMarco = function (xIdBrazo) {
     if (estaMarco === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/";
+        xEstado = "SOLICITADO";
     } else {
         xType = "Put";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/" + maq[0].IdSeteo + "/" + xIdBrazo;
@@ -349,7 +352,8 @@ var fn_GuardarEstaMarco = function (xIdBrazo) {
             IdUnidadPeso: xCmdIdUnidadPeso_Mues,
             ResolucionDPI: xNumResolucionDPI_Dis,
             LineajeLPI: xNumLineajeLPI_Dis,
-            Pixeles: xNumPixeles_Dis 
+            Pixeles: xNumPixeles_Dis,
+            Estado: xEstado
 
         }),
         contentType: 'application/json; charset=utf-8',

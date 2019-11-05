@@ -218,6 +218,7 @@
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
+    <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -685,6 +686,7 @@
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -1208,6 +1210,7 @@
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\sortable.min.js" />
     <Content Include="Scripts\Utils\TSM-LayoutSet.js" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -1343,6 +1346,7 @@
     <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
     <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
     <Content Include="Views\ConfigEjecutivasContactosMarcas\Index.cshtml" />
+    <Content Include="Views\GestionOTAsignaciones\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

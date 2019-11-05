@@ -747,21 +747,21 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "BALANCEO TINTAS COLOR";
+                Titulo = "TINTAS Y REVELADO COLOR";
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionFormulas.js";
                 break;
             case "TECNICA":
-                Titulo = "BALANCEO TINTAS TÉCNICAS";
+                Titulo = "TINTAS Y REVELADO TÉCNICAS";
                 ModalEstacion = "MEstacionFormulas";
                 ModalEstacionJS = "EstacionFormulas.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "BALANCEO TINTAS BASES";
+                Titulo = "TINTAS Y REVELADO BASES";
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionFormulas.js";
