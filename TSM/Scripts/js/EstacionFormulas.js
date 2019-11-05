@@ -77,7 +77,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     TextBoxEnable($("#CmbBasePigmento_MaRev"), false);
 
     TextBoxEnable($("#CmbSedas_MaRev"), false);
-    TextBoxEnable($("#TxtLetra"), false);
+    TextBoxEnable($("#TxtLetra_MaRev"), false);
     TextBoxEnable($("#CmdIdUnidadArea_MaRev"), false);
 
     TextBoxEnable($("#CmbTipoEmulsion_MaRev"), false);
@@ -263,7 +263,7 @@ var fn_VistaEstacionFormulas = function () {
         $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
         $("#CmbSedas_MaRev").val(setMaqMar.NombreSeda);
         $("#CmbTipoEmulsion_MaRev").val(setMaqMar.NombreEmulsion);
-        $("#TxtLetra").val(setMaqMar.Letra);
+        $("#TxtLetra_MaRev").val(setMaqMar.Letra);
         kdoNumericSetValue($("#NumResolucionDPI_MaRev"), setMaqMar.ResolucionDPI);
         kdoNumericSetValue($("#NumLineajeLPI_MaRev"), setMaqMar.LineajeLPI);
         kdoNumericSetValue($("#NumPixeles_MaRev"), setMaqMar.Pixeles);
@@ -279,7 +279,7 @@ var fn_VistaEstacionFormulas = function () {
         $("#CmdIdUnidadArea_MaRev").val("");
         $("#CmbSedas_MaRev").val("");
         $("#CmbTipoEmulsion_MaRev").val("");
-        $("#TxtLetra").val("");
+        $("#TxtLetra_MaRev").val("");
         xEstado = null;
         $("#TxtNombreEstado").val("");
     }
