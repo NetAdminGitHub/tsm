@@ -1201,6 +1201,7 @@
     <Content Include="Scripts\konva.js" />
     <Content Include="Scripts\konva.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\paste.js" />
     <Content Include="Scripts\pdfobject.min.js" />
     <Content Include="Scripts\js\TiposEmulsiones.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />

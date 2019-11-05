@@ -28,15 +28,19 @@ var fn_DRLoadConsultaHis = function (divCcf) {
                     return input.val().length === 0 ? true : input.val().length >= 3 && input.val().length <= 200;
                 }
                 return true;
+            },
+            vcnt: function (input) {
+                if (input.is("[id='TxtCompoTela']")) {
+                    return input.val().length === 0 ? true : input.val().length >= 3 && input.val().length <= 200;
+                }
+                return true;
             }
-           
-
         },
         messages: {
             vnc: "Requerido nombre del color",
             vct: "Requerido como minimo 3 caracteres",
-            vcpt: "Requerido como minimo 3 caracteres"
-        
+            vcpt: "Requerido como minimo 3 caracteres",
+            vcnt: "Requerido como minimo 3 caracteres"
         }
     }).data("kendoValidator");
 
@@ -46,6 +50,7 @@ var fn_DRLoadConsultaHis = function (divCcf) {
             FilColorTela = $("#TxtColorTela").val();
             FilNombreColor = $("#TxtNombreColor").val();
             FilComposicionTela = $("#TxtCompoTela").val();
+            FilConstruccionTela = $("#TxtConstruTela").val();
             PeticionFormula = true;
             $("#gCHFor").data("kendoGrid").dataSource.read();
 
@@ -60,6 +65,7 @@ var fn_ConsultaHis = function () {
     $("#TxtNombreColor").val("");
     $("#TxtColorTela").val("");
     $("#TxtCompoTela").val("");
+    $("#TxtConstruTela").val("");
     $("#TxtNombreColor").focus().select();
     $("#gCHFor").data("kendoGrid").dataSource.read();
 
@@ -78,7 +84,8 @@ let fn_gCHForBusqueda = function (divCcf) {
                         data: JSON.stringify({
                             NombreColor: FilNombreColor.toString(),
                             ColorTela: FilColorTela.toString(),
-                            ComposicionTela: FilComposicionTela.toString()
+                            ComposicionTela: FilComposicionTela.toString(),
+                            ConstruccionTela: FilConstruccionTela.toString()
                         }),
                         success: function (result) {
                             options.success(result);
@@ -109,7 +116,8 @@ let fn_gCHForBusqueda = function (divCcf) {
                     FechaFormula: { type: "date" },
                     NombreColor: { type: "string" },
                     ColorTela: { type: "string" },
-                    ComposicionTela: { type: "string" }
+                    ComposicionTela: { type: "string" },
+                    ConstruccionTela: { type: "string" }
                 }
             }
         }
@@ -127,7 +135,8 @@ let fn_gCHForBusqueda = function (divCcf) {
             { field: "NombreColor", title: "Nombre del color" },
             { field: "FechaFormula", title: "Fecha formula", format: "{0: dd/MM/yyyy}" },
             { field: "ColorTela", title: "Color Tela" },
-            { field: "ComposicionTela", title: "Composicion Tela" }
+            { field: "ComposicionTela", title: "Composición Tela" },
+            { field: "ConstruccionTela", title: "Construcción Tela" }
         ]
     });
 

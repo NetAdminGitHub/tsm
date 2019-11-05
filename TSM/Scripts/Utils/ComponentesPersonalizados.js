@@ -19,8 +19,8 @@
                     }
                 },
                 columns: [
-                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 25 },
-                    { field: "Item", title: "Posición", width: 25 },
+                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50 },
+                    { field: "Item", title: "Posición", width: 50 },
                     { field: "NomIdTipoPantonera", title: "Pantonera", width: 200 },
                     { field: "Codigo", title: "Pantone", width: 200 },
                     { field: "Nombre", title: "Nombre", width: 200 },
