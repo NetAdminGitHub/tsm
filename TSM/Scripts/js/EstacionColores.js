@@ -117,14 +117,11 @@ var fn_VistaEstacionColorDocuReady = function () {
     });
 
     $("#btnccc").data("kendoButton").bind("click", function () {
+        //FormulaHist: es el nombre del div en la vista elementoTrabajo
         fn_FormulaHistorica("FormulaHist");
     });
     $("#btnDelFT").data("kendoButton").bind("click", function () {
         fn_DelFormulaHis();
-    });
-
-    $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarEstacionFormula(idBra, CodigoColor);
     });
 
     $("#CmbTipoTinta_color").data("kendoComboBox").bind("change", function () {

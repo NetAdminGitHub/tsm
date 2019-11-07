@@ -213,14 +213,11 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     });
 
     $("#btnccc_Dis").data("kendoButton").bind("click", function () {
-        fn_FormulaHistorica("FormulaHistDis");
+        //FormulaHist: es el nombre del div en la vista elementoTrabajo
+        fn_FormulaHistorica("FormulaHist");
     });
     $("#btnDelFT_Dis").data("kendoButton").bind("click", function () {
         fn_DelFormulaHisDis();
-    });
-
-    $("#FormulaHistDis").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarEstacionFormulaDis(idBra, CodigoColor);
     });
 
     $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("change", function () {
