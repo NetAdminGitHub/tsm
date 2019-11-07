@@ -184,11 +184,8 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     });
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
-        fn_FormulaHistorica("FormulaEstacionTinta");
-    });
-
-    $("#FormulaEstacionTinta").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarFormulaEst(xidEstacion, CodigoColor);
+        //FormulaHist: es el nombre del div en la vista elementoTrabajo
+        fn_FormulaHistorica("FormulaHist");
     });
 
     $("#tsFormulas").kendoTabStrip({
@@ -814,10 +811,6 @@ var fn_GetSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
         }
     });
     return result;
-};
-
-var onCloseCambioEstado = function (e) {
-    fn_VistaEstacionFormulas();
 };
 
 fn_PWList.push(fn_VistaEstacionFormulas);

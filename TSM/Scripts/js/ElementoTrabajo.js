@@ -1,6 +1,7 @@
 ﻿
 var fun_List = [];
 var fun_ListDatos = [];
+var fun_ListMetodoSaveForm = []; //contiene lista de metodos de guardado para la entidad TintasFormulas.
 var Permisos;
 var item;
 var idTipoOrdenTrabajo;
@@ -1104,7 +1105,6 @@ var Fn_GetSistemaPigmentos = function (vid) {
     });
 };
 
-
 var Fn_GetSistemaBases = function (vide) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -1244,4 +1244,27 @@ var fn_RTActivaDropTarget = function () {
         drop: function (e) { dropElemento(e); },
         group: "gridGroup"
     });
+};
+
+$("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
+    fn_GuardaCodigoColor(CodigoColor);
+});
+
+var fn_GuardaCodigoColor = function (xCodColor) {
+    switch (idEtapaProceso) {
+        case "6":
+            fn_GuardarEstacionFormula(idBra, xCodColor);
+            break;
+        case "8":
+            fn_GuardarEstacionFormulaDis(idBra, xCodColor);
+            break;
+        case "9":
+            fn_GuardarFormulaEst(xidEstacion, xCodColor);
+            break;
+    }
+  
+};
+//metodo que se activa cuando se cierra ventana modal
+var onCloseCambioEstado = function (e) {
+    fn_VistaEstacionFormulas();
 };
