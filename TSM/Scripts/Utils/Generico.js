@@ -531,12 +531,13 @@ var Fn_VistaCambioEstado = function (e) {
         success: function (result) {
             var RList = [];
             VistaPopup.kendoDialog({
-                height: $(window).height() - "510" + "px",
+                height: "auto",// $(window).height() - "510" + "px",
                 width: "20%",
                 title: "Cambio de estado",
                 closable: true,
                 modal: true,
                 content: result,
+                maxHeight: 800,
                 visible: false,
                 actions: [
                     { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_Cambio },
