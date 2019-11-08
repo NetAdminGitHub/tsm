@@ -766,7 +766,7 @@ var fn_gridAjustePrima = function (gd) {
 
 };
 var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(".k-dialog"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
@@ -786,10 +786,10 @@ var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
             RequestEndMsg(data, "Post");
         },
         complete: function () {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
         },
         error: function (data) {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
             ErrorMsg(data);
         }
     });

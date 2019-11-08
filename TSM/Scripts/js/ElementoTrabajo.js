@@ -455,7 +455,7 @@ var ValidarCamEtp = $("#FrmCambioEtapa").kendoValidator(
 $("#btnAsignarUsuario").click(function (e) {
     e.preventDefault();
     if (ValidarUsuario.validate()) {
-        kendo.ui.progress($(document.body), true);
+        kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "/OrdenesTrabajosDetallesUsuarios/",
             method: "POST",
@@ -474,12 +474,13 @@ $("#btnAsignarUsuario").click(function (e) {
                 RequestEndMsg(datos, "Post");
                 $("#gridUsuarioAsignados").data("kendoGrid").dataSource.read();
                 $("#vAsignarUsuario").data("kendoDialog").close();
+                CargarInfoEtapa(false);
             },
             error: function (data) {
                 ErrorMsg(data);
             },
             complete: function () {
-                kendo.ui.progress($(document.body), false);
+                kendo.ui.progress($(".k-dialog"), false);
             }
         });
     }

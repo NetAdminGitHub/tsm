@@ -1651,10 +1651,6 @@ let Fn_VerEstados = function (IdRequerimiento) {
     Fn_VistaConsultaRequerimientoEstadosGet($("#vConsultaEstados"), "null", IdRequerimiento);
 };
 
-let onCloseCambioEstado = function (e) {
-    $("#grid").data("kendoGrid").dataSource.read();
-};
-
 let getIdReq = function (g) {
     return $("Id").val();
 };
