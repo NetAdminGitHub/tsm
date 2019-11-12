@@ -275,6 +275,7 @@
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
+    <Compile Include="Controllers\TiposTintasController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
@@ -919,6 +920,7 @@
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
+    <Content Include="Scripts\js\TiposTintas.js" />
     <Content Include="Scripts\js\TSM_VerDiseno.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
@@ -1348,6 +1350,7 @@
     <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
     <Content Include="Views\ConfigEjecutivasContactosMarcas\Index.cshtml" />
     <Content Include="Views\GestionOTAsignaciones\Index.cshtml" />
+    <Content Include="Views\TiposTintas\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
