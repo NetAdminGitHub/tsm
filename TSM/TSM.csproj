@@ -196,6 +196,7 @@
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
+    <Compile Include="Controllers\BasesMuestrasController.cs" />
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
@@ -685,6 +686,7 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
@@ -1357,6 +1359,7 @@
     <Content Include="Views\TiposTintas\Index.cshtml" />
     <Content Include="Views\BasesPigmentos\Index.cshtml" />
     <Content Include="Views\SistemasPigmentos\Index.cshtml" />
+    <Content Include="Views\BasesMuestras\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
