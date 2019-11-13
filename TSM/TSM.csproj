@@ -255,6 +255,7 @@
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
+    <Compile Include="Controllers\SistemasPigmentosController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
     <Compile Include="Controllers\SolicitudesClientesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
@@ -901,6 +902,7 @@
     <Content Include="Scripts\js\Simulaciones.js" />
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
     <Content Include="Scripts\js\Sistemas.js" />
+    <Content Include="Scripts\js\SistemasPigmentos.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
     <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\SolicitudesClientes.js" />
@@ -1354,6 +1356,7 @@
     <Content Include="Views\GestionOTAsignaciones\Index.cshtml" />
     <Content Include="Views\TiposTintas\Index.cshtml" />
     <Content Include="Views\BasesPigmentos\Index.cshtml" />
+    <Content Include="Views\SistemasPigmentos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
