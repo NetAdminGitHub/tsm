@@ -936,29 +936,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             }
         }
     };
-
-
     m.kendoDialog({
-        height: "auto",// $(window).height() - "300" + "px",
-        width: "70%",
+        height: "auto",
+        width: "auto",
         title: titulo,
         closable: true,
         modal: true,
         content: data,
         visible: false,
         maxHeight: 800,
-        //actions: [
-        //    { text: '<span class="k-icon k-i-check"></span>&nbspAceptar', primary: true },
-        //    { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
-
-        //],
-        show: onShow
-
-        //show: onShow,
-        //hide: onHide
-     
+        show: onShow     
     });
-
     m.data("kendoDialog").open();
 
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {

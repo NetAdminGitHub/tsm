@@ -1,30 +1,32 @@
-﻿<div class="card">
-    <div class="card-body">
-        <div class="form-row">
-            <div class="form-group col-lg-3">
-                <label for="TxtOpcSelecFormulas" id="OpcSelecFormulas"></label>
-                <input id="TxtOpcSelecFormulas" name="TxtOpcSelecFormulas" type="text" class="k-textbox form-control" />
-            </div>
-            <div class="form-group col-lg-3">
-                <label for="TxtNombreQuiForm">Química para utilizar</label>
-                <input id="TxtNombreQuiForm" name="TxtNombreQuiForm" type="text" class="k-textbox form-control" />
-            </div>
-            <div class="form-group col-lg-6">
-                <label for="TxtFormulaSugTint">Formulación Sugerida </label>
-                <input id="TxtFormulaSugTint" name="TxtFormulaSugTint" type="text" class="k-textbox form-control" />
-            </div>
-        </div>
-        <div class="form-row" id="tsFormulas">
-            <ul>
-                <li class="k-state-active">
-                    Balanceo Tintas Color
-                </li>
-                <li>
-                    Marcos y Revelados
-                </li>
-            </ul>
-            <div class="form-group col-lg-12">
-                
+﻿<div class="form-row">
+    <div class="form-group col-lg-12" style="width:1334.09px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="TxtOpcSelecFormulas" id="OpcSelecFormulas"></label>
+                        <input id="TxtOpcSelecFormulas" name="TxtOpcSelecFormulas" type="text" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="TxtNombreQuiForm">Química para utilizar</label>
+                        <input id="TxtNombreQuiForm" name="TxtNombreQuiForm" type="text" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="TxtFormulaSugTint">Formulación Sugerida </label>
+                        <input id="TxtFormulaSugTint" name="TxtFormulaSugTint" type="text" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row" id="tsFormulas">
+                    <ul>
+                        <li class="k-state-active">
+                            Balanceo Tintas Color
+                        </li>
+                        <li>
+                            Marcos y Revelados
+                        </li>
+                    </ul>
+                    <div class="form-group col-lg-12">
+
                         <div class="form-row">
                             <div class="form-group col-lg-6 align-self-lg-end">
                                 <button type="button" id="btnAddMFAjuste" data-toggle="modal" data-target="#MNuevoAjustes">Nuevo Ajuste</button>
@@ -39,138 +41,143 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-12">
-                                <div id="gridFormulasMP"  class="form-control"></div>
+                                <div id="gridFormulasMP" class="form-control"></div>
                             </div>
                         </div>
 
-            </div>
-            <div form-group col-lg-12>
-                <div class="border p-md-1 p-lg-1">
-                    <div class="form-row">
-                        <div class="col-lg-6"><label class="font-weight-bold">Revisión tecnica</label></div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="CmbTipoTinta_MaRev">Tipo de Tintas</label>
-                            <input name="CmbTipoTinta_MaRev" id="CmbTipoTinta_MaRev" type="text" class="k-textbox form-control">
+                    <div class="form-group col-lg-12">
+                        <div class="border p-md-1 p-lg-1">
+                            <div class="form-row">
+                                <div class="col-lg-6"><label class="font-weight-bold">Revisión tecnica</label></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbTipoTinta_MaRev">Tipo de Tintas</label>
+                                    <input name="CmbTipoTinta_MaRev" id="CmbTipoTinta_MaRev" type="text" class="k-textbox form-control">
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbBasePigmento_MaRev">Base Mezcla</label>
+                                    <input id="CmbBasePigmento_MaRev" name="CmbBasePigmento_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbSistemaPigmento_MaRev">Sistema Pigmentos</label>
+                                    <input id="CmbSistemaPigmento_MaRev" name="CmbSistemaPigmento_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbSedas_MaRev">Seda:</label>
+                                    <input id="CmbSedas_MaRev" name="CmbSedas_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbTipoEmulsion_MaRev">Emulsiones</label>
+                                    <input id="CmbTipoEmulsion_MaRev" name="CmbTipoEmulsion_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="NumCapilar_MaRev">Capilar</label>
+                                    <input id="NumCapilar_MaRev" name="NumCapilar_MaRev" type="text" class="form-control" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbBasePigmento_MaRev">Base Mezcla</label>
-                            <input id="CmbBasePigmento_MaRev" name="CmbBasePigmento_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbSistemaPigmento_MaRev">Sistema Pigmentos</label>
-                            <input id="CmbSistemaPigmento_MaRev" name="CmbSistemaPigmento_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="CmbSedas_MaRev">Seda:</label>
-                            <input id="CmbSedas_MaRev" name="CmbSedas_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbTipoEmulsion_MaRev">Emulsiones</label>
-                            <input id="CmbTipoEmulsion_MaRev" name="CmbTipoEmulsion_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumCapilar_MaRev">Capilar</label>
-                            <input id="NumCapilar_MaRev" name="NumCapilar_MaRev" type="text" class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row"><br></div>
-                <div class="border p-md-1 p-lg-1">
-                    <div class="form-row">
-                        <div class="col-lg-6"><label class="font-weight-bold">Analisis Diseño </label></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="TxtLetra_MaRev">Letras</label>
-                            <input id="TxtLetra_MaRev" name="TxtLetra_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumPixeles_MaRev">Pixeles</label>
-                            <input id="NumPixeles_MaRev" name="NumPixeles_MaRev" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumResolucionDPI_MaRev">Resolución</label>
-                            <input id="NumResolucionDPI_MaRev" name="NumResolucionDPI_MaRev" type="text" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="NumArea_MaRev">Área</label>
-                            <input id="NumArea_MaRev" name="NumArea_MaRev" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmdIdUnidadArea_MaRev">Unidad área</label>
-                            <input id="CmdIdUnidadArea_MaRev" name="CmdIdUnidadArea_MaRev" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="NumLineajeLPI_MaRev">Lineaje</label>
-                            <input id="NumLineajeLPI_MaRev" name="NumLineajeLPI_MaRev" type="text" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-4">
-                            <label for="NumPasadas_MaRev">Número de Pasadas</label>
-                            <input id="NumPasadas_MaRev" name="NumPasadas_MaRev" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="TxtNombreEstado">Estado del Marco</label>
-                            <input id="TxtNombreEstado" name="TxtNombreEstado" type="text" class="k-textbox form-control" />
-                        </div>
-                        <div class="form-group col-lg-4 align-self-lg-end">
-                            <button type="button" id="btnCambioEstado" name="btnCambioEstado">Cambio de estado del marco</button>
+                        <div class="form-row"><br></div>
+                        <div class="border p-md-1 p-lg-1">
+                            <div class="form-row">
+                                <div class="col-lg-6"><label class="font-weight-bold">Analisis Diseño </label></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="TxtLetra_MaRev">Letras</label>
+                                    <input id="TxtLetra_MaRev" name="TxtLetra_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="NumPixeles_MaRev">Pixeles</label>
+                                    <input id="NumPixeles_MaRev" name="NumPixeles_MaRev" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="NumResolucionDPI_MaRev">Resolución</label>
+                                    <input id="NumResolucionDPI_MaRev" name="NumResolucionDPI_MaRev" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="NumArea_MaRev">Área</label>
+                                    <input id="NumArea_MaRev" name="NumArea_MaRev" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmdIdUnidadArea_MaRev">Unidad área</label>
+                                    <input id="CmdIdUnidadArea_MaRev" name="CmdIdUnidadArea_MaRev" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="NumLineajeLPI_MaRev">Lineaje</label>
+                                    <input id="NumLineajeLPI_MaRev" name="NumLineajeLPI_MaRev" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="NumPasadas_MaRev">Número de Pasadas</label>
+                                    <input id="NumPasadas_MaRev" name="NumPasadas_MaRev" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="TxtNombreEstado">Estado del Marco</label>
+                                    <input id="TxtNombreEstado" name="TxtNombreEstado" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4 align-self-lg-end">
+                                    <button type="button" id="btnCambioEstado" name="btnCambioEstado">Cambio de estado del marco</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="MbtnEditForm">
+            <form id="FrmAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group cl-lg-12">
+                        <div id="gridFormulasAjusMP"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="MbtnAjuste">
+            <form id="FrmNuevoAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <input type="radio" id="rbAjuste" name="rbvAjusteForm" class="k-radio form-control">
+                        <label class="k-radio-label" for="rbAjuste">Ajustar</label>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <input type="radio" id="rbAjusteLimpio" name="rbvAjusteForm" class="k-radio form-control">
+                        <label class="k-radio-label" for="rbAjusteLimpio">Ajuste en Limpio</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="NumCntIni_Recibida">Cantidad Recibida:</label>
+                        <input id="NumCntIni_Recibida" name="NumCntIni_Recibida" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="CmbMotivoAjus">Motivo del Ajutes:</label>
+                        <input id="CmbMotivoAjus" name="CmbMotivoAjus" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="form-group cl-lg-12">
+                        <button type="button" class=" k-primary" id="btnAcepAjuste">Aceptar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
     </div>
 </div>
 
-<div id="MbtnEditForm">
-    <form id="FrmAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <div class="form-row">
-            <div class="form-group cl-lg-12">
-                <div id="gridFormulasAjusMP"></div>
-            </div>
-        </div>
-    </form>
-</div>
-<div id="MbtnAjuste">
-    <form id="FrmNuevoAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <div class="form-row">
-            <div class="form-group col-lg-6">
-                <input type="radio" id="rbAjuste" name="rbvAjusteForm" class="k-radio form-control">
-                <label class="k-radio-label" for="rbAjuste">Ajustar</label>
-            </div>
-            <div class="form-group col-lg-6">
-                <input type="radio" id="rbAjusteLimpio" name="rbvAjusteForm" class="k-radio form-control">
-                <label class="k-radio-label" for="rbAjusteLimpio">Ajuste en Limpio</label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-lg-12">
-                <label for="NumCntIni_Recibida">Cantidad Recibida:</label>
-                <input id="NumCntIni_Recibida" name="NumCntIni_Recibida" class="form-control" required />
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-lg-12">
-                <label for="CmbMotivoAjus">Motivo del Ajutes:</label>
-                <input id="CmbMotivoAjus" name="CmbMotivoAjus" required validationMessage="Requerido" type="text" class="form-control" />
-            </div>
-
-        </div>
-        <div class="form-row">
-            <div class="form-group cl-lg-12">
-                <button type="button" class=" k-primary" id="btnAcepAjuste">Aceptar</button>
-            </div>
-        </div>
-    </form>
-</div>
 
 <div id="FormulaEstacionTinta"></div>
 <div id="vCambioEstado"></div>
