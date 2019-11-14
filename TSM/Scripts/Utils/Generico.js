@@ -1026,7 +1026,7 @@ var fn_ShowModalFH = function (cargarJs, data, divCcf) {
     };
     $("#" + divCcf + "").kendoDialog({
         height: "auto",// $(window).height() - "300" + "px",
-        width: "70%",
+        width: "auto",
         title: "Formulas Historicas",
         closable: true,
         modal: true,
@@ -1038,6 +1038,6 @@ var fn_ShowModalFH = function (cargarJs, data, divCcf) {
 
     });
 
-    $("#" + divCcf + "").data("kendoDialog").open();
+    $("#" + divCcf + "").data("kendoDialog").open().toFront();
 };
 //#endregion 

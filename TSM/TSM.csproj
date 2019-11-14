@@ -275,6 +275,7 @@
     <Compile Include="Controllers\TiposFormulacionesController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
+    <Compile Include="Controllers\TiposMarcosController.cs" />
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
@@ -925,6 +926,7 @@
     <Content Include="Scripts\js\TiposFormulaciones.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
+    <Content Include="Scripts\js\TiposMarcos.js" />
     <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
@@ -1364,6 +1366,7 @@
     <Content Include="Views\BasesPigmentos\Index.cshtml" />
     <Content Include="Views\SistemasPigmentos\Index.cshtml" />
     <Content Include="Views\BasesMuestras\Index.cshtml" />
+    <Content Include="Views\TiposMarcos\Index.cshtml" />
     <Content Include="Views\MotivosAjustesTintas\Index.cshtml" />
     <Content Include="Views\Maquinas\Index.cshtml" />
     <None Include="Web.IST.config">
