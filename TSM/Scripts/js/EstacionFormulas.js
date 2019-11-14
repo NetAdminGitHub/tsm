@@ -122,14 +122,14 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFEditar").bind("click", function () {
     
-        $("#MbtnEditForm").data("kendoDialog").open();
+        $("#MbtnEditForm").data("kendoDialog").open().toFront();
     });
 
     $("#btnAddMFAjuste").bind("click", function () {
         kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
         KdoCmbSetValue($("#CmbMotivoAjus"), "");
         kdoRbSetValue($("#rbAjuste"), true);
-        $("#MbtnAjuste").data("kendoDialog").open();
+        $("#MbtnAjuste").data("kendoDialog").open().toFront();
         $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
         frmNajus.hideMessages();
     });
@@ -550,9 +550,6 @@ var fn_gridMateriaPrima = function (gd) {
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srow3);
     });
-
-   
-
 };
 var  fn_consultarFormulaDet = function (gridcab) {
     vidForm = fn_getIdFormula(gridcab.data("kendoGrid"));
