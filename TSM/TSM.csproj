@@ -196,6 +196,8 @@
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
+    <Compile Include="Controllers\BasesMuestrasController.cs" />
+    <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
@@ -218,6 +220,7 @@
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
+    <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -234,6 +237,7 @@
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\ConfigEjecutivasContactosMarcasController.cs" />
     <Compile Include="Controllers\PerfilesImpresionesController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
@@ -252,6 +256,7 @@
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
+    <Compile Include="Controllers\SistemasPigmentosController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
     <Compile Include="Controllers\SolicitudesClientesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
@@ -273,6 +278,7 @@
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
+    <Compile Include="Controllers\TiposTintasController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
@@ -680,9 +686,13 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\BasesMuestras.js" />
+    <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -894,6 +904,7 @@
     <Content Include="Scripts\js\Simulaciones.js" />
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
     <Content Include="Scripts\js\Sistemas.js" />
+    <Content Include="Scripts\js\SistemasPigmentos.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
     <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\SolicitudesClientes.js" />
@@ -915,6 +926,7 @@
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
+    <Content Include="Scripts\js\TiposTintas.js" />
     <Content Include="Scripts\js\TSM_VerDiseno.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
@@ -1197,6 +1209,7 @@
     <Content Include="Scripts\konva.js" />
     <Content Include="Scripts\konva.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\paste.js" />
     <Content Include="Scripts\pdfobject.min.js" />
     <Content Include="Scripts\js\TiposEmulsiones.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
@@ -1206,6 +1219,7 @@
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\sortable.min.js" />
     <Content Include="Scripts\Utils\TSM-LayoutSet.js" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -1340,6 +1354,12 @@
     <Content Include="Views\Shared\_DesarrolloMuestras.cshtml" />
     <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
     <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
+    <Content Include="Views\ConfigEjecutivasContactosMarcas\Index.cshtml" />
+    <Content Include="Views\GestionOTAsignaciones\Index.cshtml" />
+    <Content Include="Views\TiposTintas\Index.cshtml" />
+    <Content Include="Views\BasesPigmentos\Index.cshtml" />
+    <Content Include="Views\SistemasPigmentos\Index.cshtml" />
+    <Content Include="Views\BasesMuestras\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1354,6 +1374,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>

@@ -7,6 +7,81 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMFAHistori"), "search", "Formulas Historica");
     KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
     kdoRbSetValue($("#rbAjuste"), true);
+    KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
+
+    //informacion de revelado
+    $("#NumPasadas_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+    $("#NumCapilar_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 4000,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        step: 50
+
+    });
+    $("#NumArea_MaRev").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumResolucionDPI_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+    $("#NumLineajeLPI_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+    $("#NumPixeles_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+
+    });
+
+    KdoNumerictextboxEnable($("#NumPasadas_MaRev"), false);
+    KdoNumerictextboxEnable($("#NumCapilar_MaRev"), false);
+    KdoNumerictextboxEnable($("#NumArea_MaRev"), false);
+    KdoNumerictextboxEnable($("#NumResolucionDPI_MaRev"), false);
+    KdoNumerictextboxEnable($("#NumLineajeLPI_MaRev"), false);
+    KdoNumerictextboxEnable($("#NumPixeles_MaRev"), false);
+
+    TextBoxEnable($("#CmbTipoTinta_MaRev"), false);
+    TextBoxEnable($("#CmbSistemaPigmento_MaRev"), false);
+    TextBoxEnable($("#CmbBasePigmento_MaRev"), false);
+
+    TextBoxEnable($("#CmbSedas_MaRev"), false);
+    TextBoxEnable($("#TxtLetra_MaRev"), false);
+    TextBoxEnable($("#CmdIdUnidadArea_MaRev"), false);
+
+    TextBoxEnable($("#CmbTipoEmulsion_MaRev"), false);
+    TextBoxEnable($("#TxtNombreEstado"), false);
 
     $("#NumCntIni_Recibida").kendoNumericTextBox({
         min: 0.00,
@@ -47,14 +122,14 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFEditar").bind("click", function () {
     
-        $("#MbtnEditForm").data("kendoDialog").open();
+        $("#MbtnEditForm").data("kendoDialog").open().toFront();
     });
 
     $("#btnAddMFAjuste").bind("click", function () {
         kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
         KdoCmbSetValue($("#CmbMotivoAjus"), "");
         kdoRbSetValue($("#rbAjuste"), true);
-        $("#MbtnAjuste").data("kendoDialog").open();
+        $("#MbtnAjuste").data("kendoDialog").open().toFront();
         $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
         frmNajus.hideMessages();
     });
@@ -109,15 +184,33 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     });
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
-        fn_FormulaHistorica("FormulaEstacionTinta");
+        //FormulaHist: es el nombre del div en la vista elementoTrabajo
+        fn_FormulaHistorica("FormulaHist");
     });
 
-    $("#FormulaEstacionTinta").on("ObtenerFormula", function (event, CodigoColor) {
-        fn_GuardarFormulaEst(xidEstacion, CodigoColor);
+    $("#tsFormulas").kendoTabStrip({
+        tabPosition: "top",
+        animation: { open: { effects: "fadeIn" } }
+    }).data("kendoTabStrip").select(0);
+
+
+    // carga vista para el cambio de estado
+    // 1. configurar vista.
+    Fn_VistaCambioEstado($("#vCambioEstado"));
+     // 2. boton cambio de estado.
+    $("#btnCambioEstado").click(function () {
+       
+        var lstId = {
+            IdSeteo: maq[0].IdSeteo,
+            IdEstacion: xidEstacion
+        };
+        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId);
     });
+
 };
 
 var fn_VistaEstacionFormulas = function () {
+    $("#tsFormulas").data("kendoTabStrip").select(0);
     $("#gridFormulas").data("kendoGrid").dataSource.data([]);
     $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
@@ -127,6 +220,7 @@ var fn_VistaEstacionFormulas = function () {
     xidEstacion = $("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
     Te = $("#TxtOpcSelecFormulas").data("Formulacion");
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
+    setMaqMar = fn_GetSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
     if (setFor !== null) {
         switch (Te) {
             case "COLOR":
@@ -149,9 +243,45 @@ var fn_VistaEstacionFormulas = function () {
                 break;
         }
         $("#TxtFormulaSugTint").val(setFor.SugerenciaFormula);
+        $("#CmbTipoTinta_MaRev").val(setFor.NomIdTipoTinta === undefined ? "" : setFor.NomIdTipoTinta);
+        $("#CmbSistemaPigmento_MaRev").val(setFor.NombreSistPigmento === undefined ? "" : setFor.NombreSistPigmento);
+        $("#CmbBasePigmento_MaRev").val(setFor.NombreBasePig === undefined ? "" : setFor.NombreBasePig);
     }
-    $("#gridFormulas").data("kendoGrid").dataSource.read();
+    else {
+        $("#TxtFormulaSugTint").val("");
+        $("#CmbTipoTinta_MaRev").val("");
+        $("#CmbSistemaPigmento_MaRev").val("");
+        $("#CmbBasePigmento_MaRev").val("");
+    }
+    if (setMaqMar !== null) {
+        $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(setMaqMar.Capilar);
+        $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(setMaqMar.NoPasadas);
+        $("#NumArea_MaRev").data("kendoNumericTextBox").value(setMaqMar.Area);
+        $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
+        $("#CmbSedas_MaRev").val(setMaqMar.NombreSeda);
+        $("#CmbTipoEmulsion_MaRev").val(setMaqMar.NombreEmulsion);
+        $("#TxtLetra_MaRev").val(setMaqMar.Letra);
+        kdoNumericSetValue($("#NumResolucionDPI_MaRev"), setMaqMar.ResolucionDPI);
+        kdoNumericSetValue($("#NumLineajeLPI_MaRev"), setMaqMar.LineajeLPI);
+        kdoNumericSetValue($("#NumPixeles_MaRev"), setMaqMar.Pixeles);
+        xEstado = setMaqMar.Estado;
+        $("#TxtNombreEstado").val(setMaqMar.NombreEst);
+    } else {
+        $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(0);
+        $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(0);
+        $("#NumArea_MaRev").data("kendoNumericTextBox").value(0);
+        $("#NumResolucionDPI_MaRev").val(0);
+        $("#NumLineajeLPI_MaRev").val(0);
+        $("#NumPixeles_MaRev").val(0);
+        $("#CmdIdUnidadArea_MaRev").val("");
+        $("#CmbSedas_MaRev").val("");
+        $("#CmbTipoEmulsion_MaRev").val("");
+        $("#TxtLetra_MaRev").val("");
+        xEstado = null;
+        $("#TxtNombreEstado").val("");
+    }
 
+    $("#gridFormulas").data("kendoGrid").dataSource.read();
 
 };
 var fn_EditClose = function () {
@@ -420,9 +550,6 @@ var fn_gridMateriaPrima = function (gd) {
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srow3);
     });
-
-   
-
 };
 var  fn_consultarFormulaDet = function (gridcab) {
     vidForm = fn_getIdFormula(gridcab.data("kendoGrid"));
@@ -636,7 +763,7 @@ var fn_gridAjustePrima = function (gd) {
 
 };
 var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(".k-dialog"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
@@ -656,14 +783,31 @@ var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
             RequestEndMsg(data, "Post");
         },
         complete: function () {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
         },
         error: function (data) {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
             ErrorMsg(data);
         }
     });
 
+};
+
+var fn_GetSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetVistabyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return result;
 };
 
 fn_PWList.push(fn_VistaEstacionFormulas);

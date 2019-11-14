@@ -1,95 +1,85 @@
-﻿<div class="card">
-    <div class="card-body">
-        <form id="FrmGenEColor" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-group col-lg-12">
-                <div class="form-row">
-                    <div class="form-group col-lg-6">
-                        <label for="TxtOpcSelec" id="OpcSelec"></label>
-                        <input id="TxtOpcSelec" name="TxtOpcSelec" type="text" class="k-textbox form-control" />
+﻿<div class="form-row">
+    <div class="card">
+        <div class="card-body">
+            <form id="FrmGenEColor" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-group col-lg-12">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="TxtOpcSelec" id="OpcSelec"></label>
+                            <input id="TxtOpcSelec" name="TxtOpcSelec" type="text" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="TxtNombreQui">Quimica Utilizar</label>
+                            <input id="TxtNombreQui" name="TxtNombreQui" type="text" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbTipoTinta_color">Tipo de Tintas</label>
+                            <input name="CmbTipoTinta_color" id="CmbTipoTinta_color" required validationMessage="Requerido" type="text" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group col-lg-6">
-                        <label for="TxtNombreQui">Quimica Utilizar</label>
-                        <input id="TxtNombreQui" name="TxtNombreQui" type="text" class="k-textbox form-control" />
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="CmbSedas_color">Seda</label>
+                            <input id="CmbSedas_color" name="CmbSedas_color" required validationMessage="Requerido" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbTipoEmulsion_color">Emulsiones:</label>
+                            <input id="CmbTipoEmulsion_color" name="CmbTipoEmulsion_color" required validationMessage="Requerido" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="NumCapilar">Capilar</label>
+                            <input id="NumCapilar" name="NumCapilar" type="text" class="form-control" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="CmbTipoTinta_color">Tipo de Tintas</label>
-                        <input name="CmbTipoTinta_color" id="CmbTipoTinta_color" required validationMessage="Requerido" type="text" class="form-control">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="NumPasadas">Numero de Pasadas</label>
+                            <input id="NumPasadas" name="NumPasadas" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbBasePigmento_color">Base Mezcla</label>
+                            <input id="CmbBasePigmento_color" name="CmbBasePigmento_color" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbSistemaPigmento_Color">Sistema Pigmento</label>
+                            <input name="CmbSistemaPigmento_Color" id="CmbSistemaPigmento_Color" type="text" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbSedas_color">Seda</label>
-                        <input id="CmbSedas_color" name="CmbSedas_color" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbTipoEmulsion_color">Emulsiones:</label>
-                        <input id="CmbTipoEmulsion_color" name="CmbTipoEmulsion_color" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-3">
-                        <label for="NumCapilar">Capilar</label>
-                        <input id="NumCapilar" name="NumCapilar" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="NumPasadas">Numero de Pasadas</label>
-                        <input id="NumPasadas" name="NumPasadas" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <div class="form-row">
-                            <div class="form-group col-lg-4">
-                                <label for="NumMasaEntre">Masa entregada</label>
-                                <input id="NumMasaEntre" name="NumMasaEntre" type="text" class="k-textbox form-control" />
-                            </div>
-                            <div class="form-group col-lg-4 align-self-lg-end">
-                                <button type="button" id="btnccc"></button>
-                                <button type="button" id="btnDelFT"></button>
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label for="CmbTecnica_color">Tecnica a Aplicar</label>
+                            <input id="CmbTecnica_color" name="CmbTecnica_color" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="TxtFormulaSug">Formulación Sugerida</label>
+                            <input id="TxtFormulaSug" name="TxtFormulaSug" type="text" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="NumMasaEntre">Masa entregada</label>
+                                    <input id="NumMasaEntre" name="NumMasaEntre" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group col-lg-4 align-self-lg-end">
+                                    <button type="button" id="btnccc"></button>
+                                    <button type="button" id="btnDelFT"></button>
+                                </div>
                             </div>
                         </div>
-
                     </div>
-                    
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-lg-6">
-                        <div class="form-row">
-                            <div class="form-group col-lg-6">
-                                <label for="CmbBasePigmento_color">Base Mezcla</label>
-                                <input id="CmbBasePigmento_color" name="CmbBasePigmento_color" type="text" class="form-control" />
-                            </div> 
-                            <div class="form-group col-lg-6">
-                                <label for="CmbSistemaPigmento_Color">Sistema Pigmento</label>
-                                <input name="CmbSistemaPigmento_Color" id="CmbSistemaPigmento_Color"  type="text" class="form-control">
-                            </div>
+                    <div class="form-row">
+                        @*div donde se muestra la formula*@
+                        <div class="form-group col-lg-12">
+                            <input id="TxtIdform" name="TxtIdform" type="text" class="k-textbox form-control" , hidden="hidden" />
+                            <div id="TablaFormula"></div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-6">
-                                <label for="CmbTecnica_color">Tecnica a Aplicar</label>
-                                <input id="CmbTecnica_color" name="CmbTecnica_color" type="text" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="TxtFormulaSug">Formulación Sugerida</label>
-                                <input id="TxtFormulaSug" name="TxtFormulaSug" type="text" class="k-textbox form-control" />
-                            </div>
-                        </div> 
-                        
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <input id="TxtIdform" name="TxtIdform" type="text" class="k-textbox form-control" , hidden="hidden" />
-                        <div id="TablaFormula"></div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-    <div class="card-footer">
-        <button type="button" class=" k-primary" id="btnAddMCE">Guardar</button>
-    </div>
+            @*</form>*@
+        </div>
+        <div class="card-footer">
+            <button type="button" class=" k-primary" id="btnAddMCE">Guardar</button>
+        </div>
 
-</div>
-<div class="form-row">
-    <div class="form-group col-lg-12">
-        <div id="FormulaHist"></div>
     </div>
 </div>

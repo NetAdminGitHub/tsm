@@ -1,6 +1,7 @@
 ﻿
 var fun_List = [];
 var fun_ListDatos = [];
+var fun_ListMetodoSaveForm = []; //contiene lista de metodos de guardado para la entidad TintasFormulas.
 var Permisos;
 var item;
 var idTipoOrdenTrabajo;
@@ -37,6 +38,7 @@ var idBraAcce;
 var xidEstacion;
 var vidForm = 0;
 var xTxtLetra;
+var xEstado;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -453,7 +455,7 @@ var ValidarCamEtp = $("#FrmCambioEtapa").kendoValidator(
 $("#btnAsignarUsuario").click(function (e) {
     e.preventDefault();
     if (ValidarUsuario.validate()) {
-        kendo.ui.progress($(document.body), true);
+        kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "/OrdenesTrabajosDetallesUsuarios/",
             method: "POST",
@@ -472,12 +474,13 @@ $("#btnAsignarUsuario").click(function (e) {
                 RequestEndMsg(datos, "Post");
                 $("#gridUsuarioAsignados").data("kendoGrid").dataSource.read();
                 $("#vAsignarUsuario").data("kendoDialog").close();
+                CargarInfoEtapa(false);
             },
             error: function (data) {
                 ErrorMsg(data);
             },
             complete: function () {
-                kendo.ui.progress($(document.body), false);
+                kendo.ui.progress($(".k-dialog"), false);
             }
         });
     }
@@ -1103,7 +1106,6 @@ var Fn_GetSistemaPigmentos = function (vid) {
     });
 };
 
-
 var Fn_GetSistemaBases = function (vide) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -1243,4 +1245,27 @@ var fn_RTActivaDropTarget = function () {
         drop: function (e) { dropElemento(e); },
         group: "gridGroup"
     });
+};
+
+$("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
+    fn_GuardaCodigoColor(CodigoColor);
+});
+
+var fn_GuardaCodigoColor = function (xCodColor) {
+    switch (idEtapaProceso) {
+        case "6":
+            fn_GuardarEstacionFormula(idBra, xCodColor);
+            break;
+        case "8":
+            fn_GuardarEstacionFormulaDis(idBra, xCodColor);
+            break;
+        case "9":
+            fn_GuardarFormulaEst(xidEstacion, xCodColor);
+            break;
+    }
+  
+};
+//metodo que se activa cuando se cierra ventana modal
+var onCloseCambioEstado = function (e) {
+    fn_VistaEstacionFormulas();
 };

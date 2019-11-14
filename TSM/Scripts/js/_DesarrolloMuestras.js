@@ -8,9 +8,9 @@ var fn_DMueCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquinaDis"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquinaDis"), false);
-    KdoCmbSetValue($("#CmbMaquinaDis"), maq[0].IdMaquina);
+    Kendo_CmbFiltrarGrid($("#CmbMaquinaMues"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
+    KdoComboBoxEnable($("#CmbMaquinaMues"), false);
+    KdoCmbSetValue($("#CmbMaquinaMues"), maq[0].IdMaquina);
 
     let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
     Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");

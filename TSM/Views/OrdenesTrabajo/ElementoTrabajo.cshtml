@@ -10,12 +10,14 @@
         var idEtapaProceso = @ViewBag.IdEtapaProceso;
         var nombreVista = "@ViewBag.VistaParcial";
     </script>
+
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
     <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
 }
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
 <link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
+@*seccion que muestra información de la OT en la parte superior de la vista *@
 <div class="form-row">
     <div class="col-lg-12">
         <div class="card">
@@ -58,7 +60,7 @@
                                         <input id="txtEstado" disabled="disabled" hidden="hidden" />
                                     </div>
                                 </div>
-                                
+
                                 <div class="border p-md-1 p-lg-1">
                                     <div class="form-row">
                                         <div class="form-group col-lg-12"><label class="font-weight-bold">ORDEN DE TRABAJO</label></div>
@@ -84,7 +86,7 @@
 
                                     </div>
                                 </div>
-                               
+
                                 <div class="border p-md-1 p-lg-1 ">
                                     <div class="form-row">
                                         <div class="form-group col-lg-12"><label class="font-weight-bold">INFORMACION DEL DISEÑO A DESAROLLAR</label></div>
@@ -164,7 +166,7 @@
         </div>
     </div>
 </div>
-
+@*vista parcial para la asignación de ordenes de trabajo*@
 <div id="vAsignarUsuario">
     <form id="FrmAsignarUsuario" enctype="multipart/form-data">
         <div class="form-row">
@@ -194,7 +196,7 @@
         </div>
     </form>
 </div>
-
+@*vista parcial para la cambio de etapa *@
 <div id="vCamEtapa">
     <div class="form-group col-lg-12">
         <form id="FrmCambioEtapa" enctype="multipart/form-data">
@@ -213,12 +215,13 @@
             <div class="form-row">
                 <div class="form-group col-lg-12">
                     <label for="TxtMotivoEtp">Motivo</label>
-                    <textarea id="TxtMotivoEtp" name="TxtMotivoEtp" type="text" class="form-control" rows="2"  style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea>
+                    <textarea id="TxtMotivoEtp" name="TxtMotivoEtp" type="text" class="form-control" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea>
                 </div>
             </div>
         </form>
     </div>
 </div>
+@*div template para mostrar las imagenes para el desarrollo de la muestra *@
 <div class="custom-template">
     <div class="title">Arte a desarollar</div>
     <div class="custom-content">
@@ -232,6 +235,12 @@
     </div>
     <div class="custom-toggle">
         <i class="TS-icon-PLUMA-1"></i>
+    </div>
+</div>
+@*seccion html que se utilizara para la vista modal de formulas historicas *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="FormulaHist"></div>
     </div>
 </div>
 

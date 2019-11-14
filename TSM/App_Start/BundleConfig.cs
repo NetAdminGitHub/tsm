@@ -41,7 +41,8 @@ namespace TSM
                                                                         "~/Scripts/Utils/TSM-LayoutSet.js",
                                                                         "~/Scripts/Hubs/Notificaciones.js",
                                                                         "~/Scripts/konva.min.js",
-                                                                        "~/Scripts/Utils/ComponentesPersonalizados.js"
+                                                                        "~/Scripts/Utils/ComponentesPersonalizados.js",
+                                                                        "~/Scripts/paste.js"
                                                                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Login").Include("~/Scripts/js/Login.js"));

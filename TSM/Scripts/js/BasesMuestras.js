@@ -1,25 +1,24 @@
 ﻿var Permisos;
+let UrlBm = TSM_Web_APi + "BasesMuestras";
 $(document).ready(function () {
-    //#region Marcas
-    let vIdMarca = 0;
-    var dataSource = new kendo.data.DataSource({
+    let dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: Urlmc,
+                url: UrlBm,
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return Urlmc + "/" + datos.IdMarca; },
+                url: function (datos) { return UrlBm + "/" + datos.IdBase; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return Urlmc + "/" + datos.IdMarca; },
+                url: function (datos) { return UrlBm + "/" + datos.IdBase; },
                 type: "DELETE"
             },
             create: {
-                url: Urlmc,
+                url: UrlBm,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
@@ -35,9 +34,9 @@ $(document).ready(function () {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdMarca",
+                id: "IdBase",
                 fields: {
-                    IdMarca: { type: "number" },
+                    IdBase: { type: "number" },
                     Nombre: {
                         type: "string",
                         validation: {
@@ -61,15 +60,15 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdMarca");
+            KdoHideCampoPopup(e.container, "IdBase");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdMarca", title: "Codigo marca", hidden: true },
-            { field: "Nombre", title: "Nombre marca " },
+            { field: "IdBase", title: "Cod. Base Muestra", hidden: true },
+            { field: "Nombre", title: "Nombre" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -88,19 +87,13 @@ $(document).ready(function () {
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
-
     });
-
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#grid"), $(window).height() - "371");
     });
 
     Fn_Grid_Resize($("#grid"), $(window).height() - "371");
-    //#endregion 
-
-
 });
-
 
 fPermisos = function (datos) {
     Permisos = datos;
