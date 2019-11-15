@@ -91,9 +91,9 @@ $(document).ready(function () {
         columns: [
             { field: "IdMaquina", title: "Código Motivo", hidden: true },
             { field: "Nombre", title: "Nombre" },
-            { field: "NomIdTipoMaquina", title: "NomIdTipoMaquina" },
+            { field: "NomIdTipoMaquina", title: "Tipo de Maquina" },
             { field: "IdTipoMaquina", title: "Tipo de Maquina", editor: Grid_Combox, values: ["IdTipoMaquina", "Nombre", UrlTMQ, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
-            { field: "NomIdTiposMarco", title: "NomIdTiposMarco" },
+            { field: "NomIdTiposMarco", title: "Tipos de Marco" },
             { field: "IdTiposMarco", title: "Tipos de Marco", editor: Grid_Combox, values: ["IdTiposMarco", "Nombre", UrlTM, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
