@@ -365,7 +365,7 @@ var fn_VistaEstacionDiseno = function () {
     $("#NumPixeles_Dis").data("kendoNumericTextBox").bind("change", function (e) {
         //calcular el are del diseño
         if (kdoNumericGetValue($("#NumResolucionDPI_Dis")) > 0) {
-            kdoNumericSetValue($("#NumArea_Dis"), this.value() / kdoNumericGetValue($("#NumResolucionDPI_Dis")));
+            kdoNumericSetValue($("#NumArea_Dis"), this.value() / (kdoNumericGetValue($("#NumResolucionDPI_Dis")) * kdoNumericGetValue($("#NumResolucionDPI_Dis"))));
             KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
         } else {
             kdoNumericSetValue($("#NumArea_Dis"), 0);
@@ -375,7 +375,7 @@ var fn_VistaEstacionDiseno = function () {
     $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").bind("change", function (e) {
         //calcular el are del diseño
         if (this.value() > 0) {
-            kdoNumericSetValue($("#NumArea_Dis"), kdoNumericGetValue($("#NumPixeles_Dis")) / this.value());
+            kdoNumericSetValue($("#NumArea_Dis"), kdoNumericGetValue($("#NumPixeles_Dis")) / (this.value() * this.value()));
             KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), 6);
         } else {
             kdoNumericSetValue($("#NumArea_Dis"), 0);
