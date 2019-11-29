@@ -5,11 +5,16 @@
                 <label for="CmbMaquinaMues">Selección de Maquina:</label>
                 <input id="CmbMaquinaMues" name="CmbMaquinaMues" required validationMessage="Requerido" type="text" class="form-control" />
             </div>
-            <div class="form-group col-lg-3 col-md-4 align-self-lg-end"> <button type="button" id="btnMuest" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button></div>
-            <div class="col-lg-9 col-md-5"></div>
+            <div class="form-group col-lg-3 align-self-lg-end">
+                <button type="button" id="btnMuest" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button>
+                <button type="button" id="btnFinOT">Finalizar OT</button>
+            </div>
+            <div class="col-lg-6"></div>
         </div>
     </div>
 </div>
 <div class="form-row" id="EtapaSeteo_10">@*div utilizado para el dibujado de maquina por etapa*@</div>
 <div id="MEstacionMuestra" data-url='@Url.Action("EstacionMuestra","Estaciones")'></div>
+
+<div id="vCamEstado"></div>
 

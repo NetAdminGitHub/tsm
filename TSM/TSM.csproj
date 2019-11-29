@@ -257,6 +257,7 @@
     <Compile Include="Controllers\SedasController.cs" />
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
+    <Compile Include="Controllers\SimulacionesMuestrasController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
     <Compile Include="Controllers\SistemasPigmentosController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
@@ -908,6 +909,8 @@
     <Content Include="Scripts\js\Servicios.js" />
     <Content Include="Scripts\js\Simulaciones.js" />
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
+    <Content Include="Scripts\js\SimulacionesMuestras.js" />
+    <Content Include="Scripts\js\SimulacionesMuestrasInfo.js" />
     <Content Include="Scripts\js\Sistemas.js" />
     <Content Include="Scripts\js\SistemasPigmentos.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
@@ -943,6 +946,7 @@
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
+    <Content Include="Scripts\js\_SimulacionMuestrasDatos.js" />
     <Content Include="Scripts\js\_SolicitudDesarrolloMuestras.js" />
     <Content Include="Scripts\js\_SolicitudRegCliente.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaMuestra.js" />
@@ -1367,6 +1371,10 @@
     <Content Include="Views\SistemasPigmentos\Index.cshtml" />
     <Content Include="Views\BasesMuestras\Index.cshtml" />
     <Content Include="Views\TiposMarcos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\SimulacionesMuestrasInfo.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatos.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatosSubli.cshtml" />
     <Content Include="Views\MotivosAjustesTintas\Index.cshtml" />
     <Content Include="Views\Maquinas\Index.cshtml" />
     <None Include="Web.IST.config">
