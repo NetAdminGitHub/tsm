@@ -518,10 +518,16 @@ var Fn_VistaAsignarUsuario = function (e) {
 
 
 /**
- * 
+ * configura vista para el cambio de estado
  * @param {any} e objeto o etiqueta  <div> para el cambio de estado
+ * @param {any} fn_close opcional funcion a invocar despues de cerrar la ventana cambio estado
  */
-var Fn_VistaCambioEstado = function (e) {
+var Fn_VistaCambioEstado = function (e,fn_close) {
+    if (fn_close === undefined || fn_close === "") {
+        onCloseCE = function () { return onCloseCambioEstado(); };
+    } else {
+        onCloseCE = function () { return fn_close(); };
+    }
 
     VistaPopup = e;
     $.ajax({
@@ -544,7 +550,7 @@ var Fn_VistaCambioEstado = function (e) {
                     { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
 
                 ],
-                close: onCloseCambioEstado
+                close: onCloseCE
             });
 
             RList.push(fn_DocRIniciaVistaCambio);

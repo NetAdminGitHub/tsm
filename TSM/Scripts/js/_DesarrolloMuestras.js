@@ -3,6 +3,8 @@
 var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButtonEnable($("#btnMuest"), false);
+    KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
+
     // colocar grid para arrastre
 
     maq = fn_GetMaquinas();
@@ -24,11 +26,17 @@ var fn_DMueCargarConfiguracion = function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
     });
 
-    //fn_RTCargarMaquina();
+     //FINALIZAR OT
+    $("#btnFinOT").click(function () {
+        ConfirmacionMsg("¿Esta seguro de finalizar la Orden de trabajo  " + $("#txtNoDocumentoOT").val() + "?", function () { return fn_FinOT(); });
+    });
+
+
 };
 
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    KdoButtonEnable($("#btnFinOT"), vhb);
 };
 
 // Agregar a lista de ejecucion funcion dibujado de maquina.
@@ -51,3 +59,25 @@ fun_ListDatos.push(EtapaPush3);
 fPermisos = function (datos) {
     Permisos = datos;
 };
+
+let fn_FinOT = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajosFinalizar/" + $("#txtIdOrdenTrabajo").val() + "/" + idEtapaProceso ,
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (datos) {
+            RequestEndMsg(datos, "Post");
+            CargarInfoEtapa(false);
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($(document.body), false);
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+}
