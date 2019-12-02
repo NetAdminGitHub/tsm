@@ -18,6 +18,8 @@ var vxIdEstacion=0;
 $(document).ready(function () {
 
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
+    KdoButton($("#btnIrSimu"), "hyperlink-open-sm","Ir a Simulaciones");
+
     //programar control de tabulacion
     $("#TabSimulacion").kendoTabStrip({
         tabPosition: "left",
@@ -415,6 +417,10 @@ $(document).ready(function () {
     $("#btnRecalcular").click(function (event) {
         event.preventDefault();
         ConfirmacionMsg("¿Está seguro de volver a generar la simulación de pre-costeo para la simulación: " + $("#TxtNoDocumento").val().toString() + "?", function () { return fn_RecalSimulacion(); });
+    });
+
+    $("#btnIrSimu").click(function () {
+        window.location.href = "/SimulacionesMuestras";
     });
 
 });
