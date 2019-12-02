@@ -13,7 +13,8 @@ let UrlCatalo = TSM_Web_APi + "CatalogoInsumos";
 let UrlEP = TSM_Web_APi +"EtapasProcesos";
 let UrlCI = TSM_Web_APi +"CatalogoInsumos";
 let UrlRequeDesarrollo = TSM_Web_APi + "RequerimientoDesarrollos"; 
-
+var vxIdSeteo=0;
+var vxIdEstacion=0;
 $(document).ready(function () {
 
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
@@ -310,10 +311,107 @@ $(document).ready(function () {
 
     $("#gridSimuConsumo").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridSimuConsumo"), selectedRowsConsumos);
+        fn_ConsultarConsumoArt($("#gridSimuConsumo"));
     });
 
     //#endregion Fin RUD para el grid Rentabilidad
+    let DsSimConsuArt = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "SimulacionesMuestrasConsumosArticulos/GetBySimulacionesSeteoEstacion/" + vIdSimulacion + "/" + vxIdSeteo + "/" + vxIdEstacion; },
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "SimulacionesMuestrasConsumosArticulos/" + datos.IdSimulacion + "/" + datos.IdSeteo + "/" + datos.IdEstacion + "/" + datos.IdArticulo; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "SimulacionesMuestrasConsumosArticulos/" + datos.IdSimulacion + "/" + datos.IdSeteo + "/" + datos.IdEstacion + "/" + datos.IdArticulo; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "SimulacionesMuestrasConsumosArticulos",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
 
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    if (type === "PUT" && data.EsBase === true)
+                        data.idTecnica = null;
+
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdSeteo",
+                fields: {
+                    IdSeteo: { type: "number" },
+                    IdEstacion: { type: "number" },
+                    IdSimulacion: {
+                        type: "number", defaultValue: function (e) { return vIdSimulacion; }
+                    },
+                    Descripcion: { type: "string" },
+                    Peso: { type: "number" },
+                    Costo: { type: "number" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
+                }
+            }
+        },
+        aggregate: [
+            { field: "Peso", aggregate: "sum" },
+            { field: "Costo", aggregate: "sum" },
+            { field: "MasaFinal", aggregate: "sum" }
+        ]
+    });
+
+    $("#gridSimuConsumoArt").kendoGrid({
+        edit: function (e) {
+
+            KdoHideCampoPopup(e.container, "IdSeteo");
+            KdoHideCampoPopup(e.container, "IdEstacion");
+            KdoHideCampoPopup(e.container, "IdSimulacion");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "FechaMod");
+
+        },
+
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdSeteo", title: "IdSeteo", hidden: true },
+            { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
+            { field: "IdEstacion", title: "Estación Maquina",hidden:true },
+            { field: "Descripcion", title: "Descripción" ,hidden:true},
+            { field: "IdArticulo", title: "Artículo" },
+            { field: "NombreArt", title: "Nombre Artículo" },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "Peso Total: #: data.Peso ? kendo.format('{0:n2}', sum) : 0 #"},
+            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.99", "c", 2], format: "{0:c2}", footerTemplate: "Peso Total: #: data.Costo ? kendo.format('{0:c2}', sum) : 0 #"},
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }
+        ]
+
+    });
+
+    SetGrid($("#gridSimuConsumoArt").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
+    SetGrid_CRUD_ToolbarTop($("#gridSimuConsumoArt").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridSimuConsumoArt").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridSimuConsumoArt").data("kendoGrid"), DsSimConsuArt);
+
+    var selectedRowsConsArt = [];
+    $("#gridSimuConsumoArt").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridSimuConsumoArt"), selectedRowsConsArt);
+    });
+
+    $("#gridSimuConsumoArt").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridSimuConsumoArt"), selectedRowsConsArt);
+    });
+    //#reg
     $("#btnRecalcular").click(function (event) {
         event.preventDefault();
         ConfirmacionMsg("¿Está seguro de volver a generar la simulación de pre-costeo para la simulación: " + $("#TxtNoDocumento").val().toString() + "?", function () { return fn_RecalSimulacion(); });
@@ -557,7 +655,7 @@ let fn_SetCampos = function () {
 
 };
 
-let  fn_DHCamposSim= function() {
+let fn_DHCamposSim = function () {
     $("#TxtFecha").data("kendoDatePicker").enable(false);
     KdoCheckBoxEnable($("#chkUsarTermo"), false);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").enable(false);
@@ -593,7 +691,7 @@ let  fn_DHCamposSim= function() {
     $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
     $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
 
-}
+};
 
 let fn_SetCamposValores = function (elemento) {
     if (elemento !== null) {
@@ -712,3 +810,17 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 
+var fn_getIdSeteo = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdSeteo;
+};
+var fn_getIdEstacion = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdEstacion;
+};
+
+var fn_ConsultarConsumoArt = function (gridcab) {
+    vxIdSeteo = fn_getIdSeteo(gridcab.data("kendoGrid"));
+    vxIdEstacion = fn_getIdEstacion(gridcab.data("kendoGrid"));
+    $("#gridSimuConsumoArt").data("kendoGrid").dataSource.read();
+};
