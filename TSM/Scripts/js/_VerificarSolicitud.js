@@ -124,12 +124,7 @@ var fn_VSCargarJSEtapa = function () {
     let ValidRD = $("#ReqDes").kendoValidator(
         {
             rules: {
-                //Mayor0: function (input) {
-                //    if (input.is("[name='CntPiezas']")) {
-                //        return $("#CntPiezas").data("kendoNumericTextBox").value() > 0;
-                //    }
-                //    return true;
-                //},        
+                 
                 InstruccionesEspecialesRuler: function (input) {
                     if (input.is("[name='InstruccionesEspeciales']")) {
                         return input.val().length <= 2000;
@@ -843,6 +838,112 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion FIN CRUD manejo de requerimiento de Desarrollo
 
+    //#region Foil  
+    let UrlArtF = TSM_Web_APi + "Articulos/GetFoil";
+    let DsReqFoil = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasFoil/GetFoilByIdRequerimiento/" + VarIDReq; },
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasFoil/" + datos.IdRequerimientoFoil; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasFoil/" + datos.IdRequerimientoFoil; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasFoil",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdRequerimientoFoil",
+                fields: {
+                    IdRequerimientoFoil: {
+                        type: "number"
+
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function () {
+                            return $("#IdRequerimiento").val();
+                        }
+                    },
+                    IdArticulo: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='IdArticulo']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdArticulo").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+
+
+    });
+
+    $("#GRReqDesFoil").kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdRequerimientoFoil");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "IdArticulo");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRequerimientoFoil", title: "Código Foil", hidden: true },
+            { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
+            { field: "IdArticulo", title: "Foil", editor: Grid_Combox, values: ["IdArticulo", "Nombre", UrlArtF, "", "Seleccione un Foil....", "", "", ""], hidden: true },
+            { field: "Nombre", title: "Nombre Foil" }
+
+        ]
+
+    });
+
+    SetGrid($("#GRReqDesFoil").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
+    SetGrid_CRUD_ToolbarTop($("#GRReqDesFoil").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#GRReqDesFoil").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#GRReqDesFoil").data("kendoGrid"), DsReqFoil);
+
+    var sRFoil = [];
+    $("#GRReqDesFoil").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#GRReqDesFoil"), sRFoil);
+    });
+
+    //#endregion 
     //#region CRUD Manejo de Arte
 
 
