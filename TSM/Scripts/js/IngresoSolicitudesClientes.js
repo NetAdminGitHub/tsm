@@ -390,6 +390,8 @@ let fn_crearServClie = function () {
             KdoButtonEnable($("#btnProClieCont"), true);
             kendo.ui.progress($(document.body), false);
             //RequestEndMsg(data, xType);
+            //actualizar URL
+            window.history.pushState('', '',  "/SolicitudesClientes/IngresoSolicitudesClientes/" + vIdServSol.toString() + "/" + esContacto.toString() + "/" + vIdSoli.toString());
             snCreoCli = true;
             InciarInsert = false;
         },
