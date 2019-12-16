@@ -192,6 +192,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
@@ -384,6 +386,7 @@
     <Content Include="Content\kendo\Bootstrap\sprite_2x.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi_2x.png" />
+    <Content Include="Content\CatalogoDisenos.css" />
     <Content Include="Content\kendo\Default\editor.png" />
     <Content Include="Content\kendo\Default\imagebrowser.png" />
     <Content Include="Content\kendo\Default\indeterminate.gif" />
@@ -690,8 +693,10 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
@@ -1377,6 +1382,9 @@
     <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatosSubli.cshtml" />
     <Content Include="Views\MotivosAjustesTintas\Index.cshtml" />
     <Content Include="Views\Maquinas\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\CatalogoDisenoInf.cshtml" />
+    <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
