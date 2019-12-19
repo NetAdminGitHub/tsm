@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnIrSimu"), "hyperlink-open-sm","Ir a Simulaciones");
-
+    KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
     //programar control de tabulacion
     $("#TabSimulacion").kendoTabStrip({
         tabPosition: "left",
@@ -422,7 +422,37 @@ $(document).ready(function () {
         window.location.href = "/SimulacionesMuestras";
     });
 
+    // carga vista para el cambio de estado
+    Fn_VistaCambioEstado($("#vCambioEstado"));
+
+    $("#btnCambioEstado").click(function () {
+        Fn_VistaCambioEstadoMostrar("SimulacionesMuestras", $("#TxtEstado").val(), TSM_Web_APi + "SimulacionesMuestras/SimulacionesMuestras_CambiarEstado", "Sp_CambioEstado", vIdSimulacion);
+    });
+
+  
 });
+
+
+let onCloseCambioEstado = function () {
+
+    // obtener estado anterior despues de cerrar ventana cambio estado.
+    let EstadoAnt = $("#TxtEstado").val();
+
+    $.ajax({
+        url: TSM_Web_APi + "SimulacionesMuestras/GetbyIdSimulacion/" + vIdSimulacion,
+        dataType: 'json',
+        async: false,
+        type: 'GET',
+        success: function (respuesta) {
+            if (respuesta.Estado !== EstadoAnt) {
+                $("#TxtEstado").val(respuesta.Estado);
+            }
+        }
+    });
+    $("#TxtEstado").val() !== "EDICION" ? KdoButtonEnable($("#btnRecalcular"), false) : KdoButtonEnable($("#btnRecalcular"), Permisos.SNProcesar);
+    KdoButtonEnable($("#btnCambioEstado"), Permisos.SNCambiarEstados);
+    $("#TxtEstado").val() !== "EDICION" ? Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false) : Grid_HabilitaToolbar($("#gridRentabilidad"), false, Permisos.SNEditar, false);
+};
 
 var fn_CargarVistaParcial = function (ViewParcialJs, ViewPartial) {
     let a = document.getElementsByTagName("script");
@@ -774,6 +804,10 @@ let fn_SetCamposValores = function (elemento) {
         ConfigTooltipGrafico($("#chart"), true, "${0}");
         ConfigExportarGrafico($("#chart"), "chartexp2", true, true, true);
     }
+
+    $("#TxtEstado").val() !== "EDICION" ? KdoButtonEnable($("#btnRecalcular"), false) : KdoButtonEnable($("#btnRecalcular"), Permisos.SNProcesar);
+    KdoButtonEnable($("#btnCambioEstado"), Permisos.SNCambiarEstados);
+    $("#TxtEstado").val() !== "EDICION" ? Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false) : Grid_HabilitaToolbar($("#gridRentabilidad"), false, Permisos.SNEditar, false);
 };
 
 var fn_GetSimubyIdSimu = function () {
