@@ -1,0 +1,31 @@
+﻿.card-img-top {
+    align-self: center;
+}
+
+.card {
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.30);
+}
+
+.align-items-center {
+    align-items: flex-end;
+}
+#scrollView .photo {
+    display: inline-block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+ .photo1 {
+    background-image: url("/Adjuntos/RD-0000320/Technical.PNG");
+}
+
+.photo2 {
+    background-image: url("/Adjuntos/RD-0000310/Captura.JPG");
+}
+
+.photo3 {
+    background-image: url("/Adjuntos/RD-0000309/BATMAN.JPG");
+}

@@ -39,6 +39,8 @@ var xidEstacion;
 var vidForm = 0;
 var xTxtLetra;
 var xEstado;
+var xEstadoOT;
+var AccesMaquinaArt;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -110,6 +112,9 @@ $(document).ready(function () {
 
     //cargando todas las etapas
     ConfigEtapas = fn_ConfigEtapas();
+
+    //cargando los accesorios maquinas
+    AccesMaquinaArt = fn_getAccesoriosMaquinasArticulos();
 
 });
 
@@ -200,6 +205,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     xvNodocReq = datos.NodocReq;
+    xEstadoOT = datos.EstadoOT;
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
@@ -1050,6 +1056,25 @@ var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
+var fn_GetSeteoMaqEstAcce = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesAccesorios/" + xIdSeteo + "/" + xIdestacion,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
+
 var fn_GetTipoEstaciones = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1268,4 +1293,41 @@ var fn_GuardaCodigoColor = function (xCodColor) {
 //metodo que se activa cuando se cierra ventana modal
 var onCloseCambioEstado = function (e) {
     fn_VistaEstacionFormulas();
+};
+var fn_getAccesoriosMaquinasArticulos = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "AccesoriosMaquinasArticulos",
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return result;
+};
+
+var Fn_GetRequerimientoFoil = function (vIA) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasFoil/GetRequerimientoFoil/" + $("#txtIdRequerimiento").val().toString() + "/" + vIA.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
 };

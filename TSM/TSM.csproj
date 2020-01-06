@@ -192,6 +192,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
+    <Compile Include="Controllers\CotizacionesMuestrasController.cs" />
     <Compile Include="Controllers\DefinicionBusquedaController.cs" />
     <Compile Include="Controllers\EjecutivoCuentasController.cs" />
     <Compile Include="Controllers\EstacionesController.cs" />
@@ -226,10 +229,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
+    <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Controllers\SedasController.cs" />
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
+    <Compile Include="Controllers\SimulacionesMuestrasController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
     <Compile Include="Controllers\SistemasPigmentosController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
@@ -273,6 +279,7 @@
     <Compile Include="Controllers\TiposFormulacionesController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
+    <Compile Include="Controllers\TiposMarcosController.cs" />
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
@@ -380,6 +387,7 @@
     <Content Include="Content\kendo\Bootstrap\sprite_2x.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi_2x.png" />
+    <Content Include="Content\CatalogoDisenos.css" />
     <Content Include="Content\kendo\Default\editor.png" />
     <Content Include="Content\kendo\Default\imagebrowser.png" />
     <Content Include="Content\kendo\Default\indeterminate.gif" />
@@ -686,14 +694,20 @@
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
+    <Content Include="Scripts\js\CotizacionesMuestras.js" />
+    <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
+    <Content Include="Scripts\js\Maquinas.js" />
+    <Content Include="Scripts\js\MotivosAjustesTintas.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -903,6 +917,8 @@
     <Content Include="Scripts\js\Servicios.js" />
     <Content Include="Scripts\js\Simulaciones.js" />
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
+    <Content Include="Scripts\js\SimulacionesMuestras.js" />
+    <Content Include="Scripts\js\SimulacionesMuestrasInfo.js" />
     <Content Include="Scripts\js\Sistemas.js" />
     <Content Include="Scripts\js\SistemasPigmentos.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
@@ -921,6 +937,7 @@
     <Content Include="Scripts\js\TiposFormulaciones.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
+    <Content Include="Scripts\js\TiposMarcos.js" />
     <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
@@ -937,6 +954,7 @@
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
+    <Content Include="Scripts\js\_SimulacionMuestrasDatos.js" />
     <Content Include="Scripts\js\_SolicitudDesarrolloMuestras.js" />
     <Content Include="Scripts\js\_SolicitudRegCliente.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaMuestra.js" />
@@ -1360,6 +1378,18 @@
     <Content Include="Views\BasesPigmentos\Index.cshtml" />
     <Content Include="Views\SistemasPigmentos\Index.cshtml" />
     <Content Include="Views\BasesMuestras\Index.cshtml" />
+    <Content Include="Views\TiposMarcos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\SimulacionesMuestrasInfo.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatos.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatosSubli.cshtml" />
+    <Content Include="Views\MotivosAjustesTintas\Index.cshtml" />
+    <Content Include="Views\Maquinas\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\CatalogoDisenoInf.cshtml" />
+    <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
+    <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
+    <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
