@@ -1838,7 +1838,7 @@ $(document).ready(function () {
                     KdoNumerictextboxEnable($('[name="Consumo"]'), false);
                     KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), false);
                 }
-
+                kendo.ui.progress($("#splitter"), false);
                 $('[name="IdCatalogoInsumo"]').data("kendoComboBox").setDataSource(getDsCmbCI());
             },
             error: function () {
