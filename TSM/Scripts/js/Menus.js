@@ -782,6 +782,7 @@ $(document).ready(function () {
                 $("#btnEditar").data("kendoButton").enable(true);
                 $("#btnNuevo").data("kendoButton").enable(true);
                 $("#treeview").data("kendoTreeView").dataSource.read();
+                kendo.ui.progress($("#treeview"), false);
                 RequestEndMsg(data, XType);
             },
             error: function (data) {
@@ -888,7 +889,7 @@ $(document).ready(function () {
             success: function (data) {
                 RequestEndMsg(data, Type);
                 Type === "Put" ? $("#MenuPermiso").modal('hide'): $("#treeviewRoles").data("kendoTreeView").dataSource.read();
-                
+                kendo.ui.progress($("#treeview"), false);
             },
             error: function (data) {
                 kendo.ui.progress($("#treeview"), false);
@@ -936,6 +937,7 @@ $(document).ready(function () {
             success: function (data) {
                 $("#treeviewRoles").data("kendoTreeView").dataSource.read();
                 RequestEndMsg(data, 'Post');
+                kendo.ui.progress($("#treeview"), false);
             },
             error: function (data) {
                 kendo.ui.progress($("#treeview"), false);
@@ -981,7 +983,7 @@ $(document).ready(function () {
             success: function (data) {
                 RequestEndMsg(data, Type);
                 Type === "Put" ? $("#MenuPermiso").modal('hide') : $("#treeviewMenuUsuario").data("kendoTreeView").dataSource.read();
-
+                kendo.ui.progress($("#treeviewMenuUsuario"), false);
             },
             error: function (data) {
                 kendo.ui.progress($("#treeviewMenuUsuario"), false);
@@ -1027,6 +1029,7 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 $("#treeviewMenuUsuario").data("kendoTreeView").dataSource.read();
+                kendo.ui.progress($("#treeview"), false);
                 RequestEndMsg(data, 'Post');
             },
             error: function (data) {
