@@ -26,7 +26,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy config Files to artifacts directory'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/$(solutionDirectory)/'
+    SourceFolder: '$(Build.SourcesDirectory)/'
     Contents: 'Web.*.config'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/'
 - task: VSBuild@1
