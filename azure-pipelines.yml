@@ -51,5 +51,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(Build.BuildId)-$(GitVersion.SemVer).zip'
+    ArtifactName: 'TSM$(Build.BuildId)-$(GitVersion.SemVer).zip'
     publishLocation: 'Container'
