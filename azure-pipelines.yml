@@ -23,6 +23,12 @@ steps:
 - task: GitVersion@5
   inputs:
     runtime: 'full'
+- task: CopyFiles@2
+  displayName: 'Copy config Files to artifacts directory'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/$(solutionDirectory)/'
+    Contents: 'Web.*.config'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
