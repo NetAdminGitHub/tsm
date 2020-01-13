@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-
+  solutionDirectory: 'TSM'
 steps:
 - task: NuGetToolInstaller@1
 
@@ -26,7 +26,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy config Files to artifacts directory'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/'
+    SourceFolder: '$(Build.SourcesDirectory)/$(solutionDirectory)/'
     Contents: 'Web.*.config'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/'
 - task: VSBuild@1
