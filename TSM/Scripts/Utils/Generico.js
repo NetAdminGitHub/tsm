@@ -930,7 +930,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
         }
     });
 
-    let index = $.grep(etapas, function (n, i) { return n.IdEtapaProceso === window.location.href.split("/")[window.location.href.split("/").length - 1]; });
+    let index = $.grep(etapas, function (n, i) { return n.IdEtapaProceso === parseInt(window.location.href.split("/")[window.location.href.split("/").length - 1]); });
 
     $("#smartwizard").smartWizard("goToPage", index[0].Item - 1);
 
