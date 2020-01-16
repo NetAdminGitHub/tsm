@@ -1185,11 +1185,11 @@
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config">
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Debug.config">
     </Content>
     <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
