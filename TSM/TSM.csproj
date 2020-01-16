@@ -1185,10 +1185,8 @@
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config">
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1278,17 +1276,12 @@
     <Content Include="Views\Marcas\Index.cshtml" />
     <Content Include="Views\OrientacionPositivos\Index.cshtml" />
     <Content Include="Views\TiposSeparaciones\Index.cshtml" />
-    <None Include="Web.IST.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.PRD.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.UAT.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Web.IST.config">
+    </Content>
+    <Content Include="Web.PRD.config">
+    </Content>
+    <Content Include="Web.UAT.config">
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
