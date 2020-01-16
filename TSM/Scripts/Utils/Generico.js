@@ -17,7 +17,7 @@ function Get_KendoDataSource(Url_api) {
 
 var fn_FiltrarJsonResult = function (Data, Keyfilter) {
     if (Data.length !== 0) {
-        var resul = Data.filter(function (item) { return item[Keyfilter] !== null; });
+        var resul = Data.filter(function (item) { return item[Keyfilter] !== undefined; });
         return resul[0][Keyfilter];
     } else {
         return "";
