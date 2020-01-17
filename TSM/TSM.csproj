@@ -1390,7 +1390,7 @@
     <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
     <Content Include="Web.IST.config">
     </Content>
-    <None Include="Web.PRD.config">
+    <Content Include="Web.PRD.config">
     </Content>
     <Content Include="Web.UAT.config">
     </Content>
