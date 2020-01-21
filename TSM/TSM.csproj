@@ -1257,10 +1257,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
@@ -1390,17 +1388,12 @@
     <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
-    <None Include="Web.IST.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.PRD.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.UAT.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Web.IST.config">
+    </Content>
+    <Content Include="Web.PRD.config">
+    </Content>
+    <Content Include="Web.UAT.config">
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
