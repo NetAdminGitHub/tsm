@@ -201,6 +201,7 @@ var fn_VistaEstacionColor = function () {
    
     }
     else {
+        $("#TxtFormulaSug").val("");
         KdoButtonEnable($("#btnccc"), false);
         KdoButtonEnable($("#btnDelFT"), false);
         switch (Te) {
