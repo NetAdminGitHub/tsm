@@ -198,6 +198,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#TxtNombreCFT").val(datos.NombreCFT);
     $("#TxtNomQuimica").val(datos.NombreQui);
     $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
+    $("#txtNombreEC").val(datos.NombreEjecutivoCuentas);
+    $("#txtNombreTalla").val(datos.NombreTalla);
+    $("#txtNombreUbicacion").val(datos.NombreUbicacion);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
