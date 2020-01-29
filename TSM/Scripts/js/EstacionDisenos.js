@@ -247,7 +247,7 @@ var fn_VistaEstacionDiseno = function () {
     EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
     $("#FrmGenEDiseno").data("kendoValidator").hideMessages();
     if (setFor !== null) {
-        $("#NumPixeles_Dis").data("kendoNumericTextBox").focus();
+        $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").focus();
         switch (Te) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
