@@ -58,8 +58,10 @@ var fn_DRLoadConsultaHis = function (divCcf) {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         }       
     });
+
+    $("#" + divCcf + "").trigger("SetValorBusqueda", $("#TxtNombreColor"));
 };
-var fn_ConsultaHis = function () {
+var fn_ConsultaHis = function (divCcf) {
     PeticionFormula = false;
     $("#FrmCCH").data("kendoValidator").hideMessages();
     $("#TxtNombreColor").val("");
@@ -68,6 +70,7 @@ var fn_ConsultaHis = function () {
     $("#TxtConstruTela").val("");
     $("#TxtNombreColor").focus().select();
     $("#gCHFor").data("kendoGrid").dataSource.read();
+    $("#" + divCcf + "").trigger("SetValorBusqueda", $("#TxtNombreColor"));
 
 };
 let fn_gCHForBusqueda = function (divCcf) {

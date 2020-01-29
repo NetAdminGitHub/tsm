@@ -1275,7 +1275,19 @@ var fn_RTActivaDropTarget = function () {
 $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
     fn_GuardaCodigoColor(CodigoColor);
 });
-
+$("#FormulaHist").on("SetValorBusqueda", function (event, NombreColor) {
+    switch (idEtapaProceso) {
+        case "6":
+            NombreColor.value = $("#TxtOpcSelec").val(); //este campo contiene el valor del nombre color para la etapa de revisión técnica, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+        case "8":
+            NombreColor.value = $("#TxtOpcSelec_Dis").val();//este campo contiene el valor del nombre color para la etapa de Analisis y Diseño, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+        case "9":
+            NombreColor.value = $("#TxtOpcSelecFormulas").val();//este campo contiene el valor del nombre color para la etapa de Tintas, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+    }
+});
 var fn_GuardaCodigoColor = function (xCodColor) {
     switch (idEtapaProceso) {
         case "6":

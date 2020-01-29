@@ -296,6 +296,7 @@ var fn_VistaEstacionDiseno = function () {
     }
     else {
         KdoCmbFocus($("#CmbTipoTinta_Dis"));
+        $("#TxtFormulaSug_Dis").val("");
         KdoButtonEnable($("#btnccc_Dis"), false);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
 
