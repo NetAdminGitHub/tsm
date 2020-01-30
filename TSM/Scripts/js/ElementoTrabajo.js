@@ -110,6 +110,8 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarEtapa"), "gear");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
+    $("#swchSolTelaSusti").kendoSwitch();
+
     //cargando todas las etapas
     ConfigEtapas = fn_ConfigEtapas();
 
@@ -201,6 +203,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNombreEC").val(datos.NombreEjecutivoCuentas);
     $("#txtNombreTalla").val(datos.NombreTalla);
     $("#txtNombreUbicacion").val(datos.NombreUbicacion);
+    $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
+    $("#swchSolTelaSusti").data("kendoSwitch").enable(false);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;

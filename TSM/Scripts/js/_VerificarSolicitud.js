@@ -303,6 +303,10 @@ var fn_VSCargarJSEtapa = function () {
     Kendo_CmbFiltrarGrid($("#CmbTMuestra"), UrlTMues, "Nombre", "IdTipoMuestra", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbQuimica"), UrlQuimi, "Nombre", "IdQuimica", "Seleccione ...");
 
+    //solicita tela sustituta
+    $("#swchSolTelaSustituta").kendoSwitch();
+
+    $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
         dataTextField: "Abreviatura",
@@ -1234,7 +1238,7 @@ var fn_VSCargar = function () {
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         KdoComboBoxEnable($("#IdPrograma"), false);
-
+        $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
     }
 };
 
@@ -1298,6 +1302,7 @@ let getRD = function (UrlRD) {
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
                 HabilitaFormObje(true);
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
+                $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
 
 
                 if (elemento.IdServicio === 1) {
@@ -1549,7 +1554,9 @@ let GuardarRequerimiento = function (UrlRD) {
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
             IdTipoAcabado: $("#CmbTipoAcabado").val(),
             IdTipoMuestra: $("#CmbTMuestra").val(),
-            IdQuimica: KdoCmbGetValue($("#CmbQuimica"))
+            IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
+            SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check()
+
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1644,7 +1651,8 @@ let ActualizarReq = function () {
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
             IdTipoAcabado: $("#CmbTipoAcabado").val(),
             IdTipoMuestra: $("#CmbTMuestra").val(),
-            IdQuimica: KdoCmbGetValue($("#CmbQuimica"))
+            IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
+            SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check()
 
         }),
         contentType: 'application/json; charset=utf-8',
@@ -1697,6 +1705,7 @@ let LimpiarReq = function () {
     $("#CmbTMuestra").data("kendoComboBox").value("");
     $("#CmbTipoAcabado").data("kendoComboBox").value("");
     KdoCmbSetValue($("#CmbQuimica"), "");
+    $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
     //limpiar mensajes de validacion
     ValidRD.hideMessages();
 
@@ -1787,6 +1796,7 @@ let HabilitaFormObje = function (ToF) {
     KdoButtonEnable($("#Guardar"), ToF);
     KdoComboBoxEnable($("#CmbTipoLuz"), ToF);
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
+    $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
 
 };
 
