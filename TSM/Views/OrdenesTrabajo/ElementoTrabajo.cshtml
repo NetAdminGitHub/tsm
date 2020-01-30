@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v2001161";
+    ViewBag.IdVersion = "TSM0101088|v2001301";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -145,8 +145,16 @@
                                             <input id="txtNombreUbicacion" name="txtNombreUbicacion" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6">
-                                            <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
-                                            <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-10 col-md-10">
+                                                    <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
+                                                    <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
+                                                </div>
+                                                <div class="form-group col-lg-2 col-md-2 ">
+                                                    <label for="swchSolTelaSusti">Solicitar Tela Sustituta:</label>
+                                                    <input type="checkbox" id="swchSolTelaSusti" name="swchSolTelaSusti" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
