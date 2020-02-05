@@ -28,8 +28,7 @@ $(document).ready(function () {
 
     fn_CargarVistaParcial("_SimulacionMuestrasDatos.Js", "SimulacionMuestrasDatos");
     //cargar los datos de la simulación
-    fn_GetSimubyIdSimu();
-
+    
     //#region CRUD para el grid Rentabilidad
     let DsRent = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -483,7 +482,7 @@ var fn_LoadVista = function (ViewPartial) {
             $("#pvSimulacion").html(resultado);
             fn_CamposSimulacion();
             fn_DHCamposSim();
-
+            fn_GetSimubyIdSimu();
         }
     });
 };
