@@ -28,6 +28,14 @@ var fn_DMCargarConfiguracion = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumTiempoTra").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
 
     maq = fn_GetMaquinas();
     // colocar grid para arrastre
@@ -131,6 +139,13 @@ var fn_DMCargarConfiguracion = function () {
                     return $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
+            },
+            Tt: function (input) {
+
+                if (input.is("[name='NumTiempoTra']")) {
+                    return $("#NumTiempoTra").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
             }
         },
         messages:{
@@ -141,7 +156,8 @@ var fn_DMCargarConfiguracion = function () {
             cmUmLP:"Requerido",
             altod: "Requerido",
             cmUm: "Requerido",
-            LP: "Requerido"
+            LP: "Requerido",
+            Tt:"requerido"
         }
 
     }).data("kendoValidator");
@@ -176,6 +192,7 @@ var fn_DMCargarEtapa = function () {
     KdoNumerictextboxEnable($("#NumAltoDiseno"), vhb);
     KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
     KdoNumerictextboxEnable($("#NumLPelicula"), vhb);
+    KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
     TextBoxEnable($("#TxtObservaciones"), vhb);
     Grid_HabilitaToolbar($("#dgColorDis"), vhb, vhb, vhb);
     Grid_HabilitaToolbar($("#dgTecnicaDis"), vhb, vhb, vhb);
@@ -223,7 +240,8 @@ let fn_GetDisenoMuestra = function () {
                 $("#TxtDirectorio").val(respuesta.RutaArchivos);
                 KdoCmbSetValue($("#CmbIdImpresor"), respuesta.IdImpresor);
                 kdoNumericSetValue($("#NumLPelicula"),respuesta.LongitudPelicula);
-                KdoCmbSetValue($("#CmbIdUnidadLP"), respuesta.IdUnidadLongitudPelicula)
+                KdoCmbSetValue($("#CmbIdUnidadLP"), respuesta.IdUnidadLongitudPelicula);
+                kdoNumericSetValue($("#NumTiempoTra"), respuesta.TiempoTrabajo);
             }
         },
         error: function () {
@@ -251,7 +269,8 @@ let fn_GuardarDM = function () {
             Observaciones: $("#TxtObservaciones").val(),
             IdImpresor: KdoCmbGetValue($("#CmbIdImpresor")),
             LongitudPelicula: kdoNumericGetValue($("#NumLPelicula")),
-            IdUnidadLongitudPelicula: KdoCmbGetValue($("#CmbIdUnidadLP"))
+            IdUnidadLongitudPelicula: KdoCmbGetValue($("#CmbIdUnidadLP")),
+            TiempoTrabajo: kdoNumericGetValue($("#NumTiempoTra"))
         }),
         success: function (data) {
             RequestEndMsg(data, "Put");
