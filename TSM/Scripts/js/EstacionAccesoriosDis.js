@@ -163,7 +163,7 @@ var fn_GuardarEstacionAcceDis = function (xIdBrazo) {
             } else {
                 kendo.ui.progress($("#MEstacionAccesoriosDis"), false);
                 maq = fn_GetMaquinas();
-                $("#MEstacionAccesoriosDis").data("kendoDialog").close();
+                $("#MEstacionAccesoriosDis").data("kendoWindow").close();
                 RequestEndMsg(data, xType);
             }
         },
@@ -204,7 +204,7 @@ var fn_GuardarSeteoAccesDis = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesoriosDis"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesoriosDis").data("kendoDialog").close();
+            $("#MEstacionAccesoriosDis").data("kendoWindow").close();
             $("#row-1").attr("hidden", "hidden");
             $("#row-2").prop("hidden", "hidden");
             RequestEndMsg(data, xType);

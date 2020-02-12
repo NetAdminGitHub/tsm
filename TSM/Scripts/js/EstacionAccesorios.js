@@ -55,7 +55,7 @@ var fn_GuardarEstacionAcce = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesorios").data("kendoDialog").close();
+            $("#MEstacionAccesorios").data("kendoWindow").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {

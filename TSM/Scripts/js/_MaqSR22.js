@@ -833,7 +833,7 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 };
 
 let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig, ViewTipoEstacion, ViewFormulacion) {
-    var onShow = function (e) {
+    var onShow = function () {
         if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
 
             if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
@@ -935,20 +935,29 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Dis"]').text('Nombre del Accesorio');
             }
         }
+        
+        if (m !== undefined) {
+            m.data("kendoWindow").center();
+        }        
     };
-    m.kendoDialog({
+    m.kendoWindow({
+        actions: ["Close"],
         height: "auto",
         width: "auto",
         title: titulo,
         closable: true,
         modal: true,
-        content: data,
         visible: false,
-        maxHeight: 800,
-        show: onShow     
+        activate: onShow,
+        pinned: true,
+        maximize: function (e) {
+            e.preventDefault();
+        }
     });
-    m.data("kendoDialog").open();
 
+    m.data("kendoWindow").content(data);
+    m.data("kendoWindow").center().open();
+    
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
@@ -1011,11 +1020,8 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
         });
         fn_PWConfList = [];
     }
-  
+
     $.each(fn_PWList, function (index, elemento) {
         elemento.call(document, jQuery);
     });
-
-
-
 };

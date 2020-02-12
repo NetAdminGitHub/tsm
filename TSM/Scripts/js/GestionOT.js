@@ -123,6 +123,7 @@ $(document).ready(function () {
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
+                kendo.ui.progress($("#grid"), true);
                 fn_VerEtapas("/OrdenesTrabajo/ElementoTrabajo/" + grid.dataItem(this).IdOrdenTrabajo.toString() + "/" + grid.dataItem(this).IdEtapaProceso.toString());
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
