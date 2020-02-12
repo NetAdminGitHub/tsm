@@ -496,7 +496,7 @@ var fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            $("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionDisenos").data("kendoWindow").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
