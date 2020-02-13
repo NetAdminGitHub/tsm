@@ -977,6 +977,10 @@ var kdoRbSetValue = function (InputElem, value) {
     InputElem.prop('checked', value);
 };
 //#region Cosulta Historica
+/**
+ * 
+ * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
+ */
 var fn_FormulaHistorica = function (divCcf) {
 
     if ($("#" + divCcf + "").children().length === 0) {
@@ -996,6 +1000,11 @@ var fn_FormulaHistorica = function (divCcf) {
     }
 };
 
+/**
+ * 
+ * @param {content} data el contenido html de la busqueda
+ * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
+ */
 var fn_CargarVistaModalFormulacion = function (data, divCcf) {
 
     let a = document.getElementsByTagName("script");
@@ -1016,13 +1025,18 @@ var fn_CargarVistaModalFormulacion = function (data, divCcf) {
         fn_ShowModalFH(false, data, divCcf);
     }
 };
-
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la busqueda
+ * @param {HtmlElementId} divCcf  Id del div que contendra la vista de busqueda de tintas
+ */
 var fn_ShowModalFH = function (cargarJs, data, divCcf) {
     let onShow = function () {
         if (cargarJs === true) {
             fn_DRLoadConsultaHis(divCcf);
         } else {
-            fn_ConsultaHis();
+            fn_ConsultaHis(divCcf);
         }
     };
     let onClose = function () {

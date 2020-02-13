@@ -19,6 +19,8 @@ var fn_VistaEstacionAccesorios = function () {
     if (EstacionBraAcce !== null) {
         $("#TxtOpcSelecAcce").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
         $("#TxtOpcSelecAcce").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    } else {
+        $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
     }
 };
 
@@ -55,7 +57,7 @@ var fn_GuardarEstacionAcce = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesorios").data("kendoDialog").close();
+            $("#MEstacionAccesorios").data("kendoWindow").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {

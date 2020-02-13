@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v2001161";
+    ViewBag.IdVersion = "TSM0101088|v2002101";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -14,10 +14,10 @@
 
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
-    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>@*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
 }
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
-<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
+<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />@*css donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
 @*seccion que muestra información de la OT en la parte superior de la vista *@
 <div class="form-row">
     <div class="col-lg-12">
@@ -61,7 +61,6 @@
                                         <input id="txtEstado" disabled="disabled" hidden="hidden" />
                                     </div>
                                 </div>
-
                                 <div class="border p-md-1 p-lg-1">
                                     <div class="form-row">
                                         <div class="form-group col-lg-12"><label class="font-weight-bold">ORDEN DE TRABAJO</label></div>
@@ -72,6 +71,10 @@
                                             <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
+                                            <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
                                             <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
                                             <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
@@ -79,12 +82,16 @@
                                             <label for="txtNombre" id="lblCliente">Cliente:</label>
                                             <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombreEC" id="lblNomEstado">Ejectivo (a) Cuenta:</label>
+                                            <input id="txtNombreEC" name="txtNombreEC" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
                                         <div class="form-group col-lg-3 col-md-6">
                                             <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
                                             <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -94,8 +101,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-lg-3 col-md-6">
-                                            <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
-                                            <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
+                                            <label for="txtNombreTalla" id="lblNombreDiseno">Talla:</label>
+                                            <input id="txtNombreTalla" name="txtNombreTalla" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-3 col-md-6">
                                             <label for="txtNombreDiseno" id="lblNombreDiseno">Nombre Dise&ntilde;o:</label>
@@ -116,26 +123,38 @@
                                             <input id="TxtColor" name="TxtColor" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-3 col-md-6">
-                                            <label for="TxtNombreCPT">Compocic&iacute;on Tela:</label>
+                                            <label for="TxtNombreCPT">Compocici&oacute;n Tela:</label>
                                             <input id="TxtNombreCPT" name="TxtNombreCPT" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-3 col-md-6">
-                                            <label for="TxtNombreCCT">Construcc&iacute;on:</label>
+                                            <label for="TxtNombreCCT">Construcci&oacute;n:</label>
                                             <input id="TxtNombreCCT" name="TxtNombreCCT" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-3 col-md-6">
-                                            <label for="TxtNombreCFT">Confec&iacute;on:</label>
+                                            <label for="TxtNombreCFT">Confeci&oacute;n:</label>
                                             <input id="TxtNombreCFT" name="TxtNombreCFT" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-lg-3 col-md-3">
-                                            <label for="TxtNomQuimica">Qui&iacute;mica:</label>
+                                            <label for="TxtNomQuimica">Qu&iacute;mica:</label>
                                             <input id="TxtNomQuimica" name="TxtNomQuimica" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
-                                        <div class="form-group col-lg-9 col-md-9">
-                                            <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
-                                            <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
+                                        <div class="form-group col-lg-3 col-md-3">
+                                            <label for="txtNombreUbicacion">Ubicaci&oacute;n:</label>
+                                            <input id="txtNombreUbicacion" name="txtNombreUbicacion" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-10 col-md-10">
+                                                    <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
+                                                    <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
+                                                </div>
+                                                <div class="form-group col-lg-2 col-md-2 ">
+                                                    <label for="swchSolTelaSusti">Solicitar Tela Sustituta:</label>
+                                                    <input type="checkbox" id="swchSolTelaSusti" name="swchSolTelaSusti" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

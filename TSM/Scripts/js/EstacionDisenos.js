@@ -213,8 +213,8 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         fn_DelFormulaHisDis();
     });
 
-    $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("change", function () {
-        let TipoTin = KdoCmbGetValue($("#CmbTipoTinta_Dis"));
+    $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("select", function (e) {
+        let TipoTin = e.dataItem.IdTipoTinta;
         KdoCmbSetValue($("#CmbSistemaPigmento_Dis"), "");
         $("#CmbSistemaPigmento_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(TipoTin));
 
@@ -247,7 +247,7 @@ var fn_VistaEstacionDiseno = function () {
     EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
     $("#FrmGenEDiseno").data("kendoValidator").hideMessages();
     if (setFor !== null) {
-        $("#NumPixeles_Dis").data("kendoNumericTextBox").focus();
+        $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").focus();
         switch (Te) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
@@ -296,6 +296,7 @@ var fn_VistaEstacionDiseno = function () {
     }
     else {
         KdoCmbFocus($("#CmbTipoTinta_Dis"));
+        $("#TxtFormulaSug_Dis").val("");
         KdoButtonEnable($("#btnccc_Dis"), false);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
 
@@ -495,7 +496,7 @@ var fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            $("#MEstacionDisenos").data("kendoDialog").close();
+            $("#MEstacionDisenos").data("kendoWindow").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
