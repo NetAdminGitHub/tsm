@@ -9,11 +9,25 @@ namespace TSM.Utils
 {
     public static class Config
     {
+
+        private const string TsmWebApi = "TSM_WEB_API";
+
+        /// <summary>
+        /// Este metodo intenta obtener el valor de una variable de entorno, si no lo encuentra retornara el valor del segundo argumento <paramref name="valorPorDefecto"/>
+        /// </summary>
+        /// <param name="variableEntorno"></param>
+        /// <param name="valorPorDefecto"></param>
+        /// <returns></returns>
+        private static string GetEnvironmentVariableOrDefault(string variableEntorno, string valorPorDefecto)
+        {
+            return Environment.GetEnvironmentVariable(variableEntorno) ?? valorPorDefecto;
+        }
+
         public static string TSM_WebApi
         {
             get
             {
-                return ConfigurationManager.AppSettings["TSM-WebApi"];
+                return GetEnvironmentVariableOrDefault(TsmWebApi, ConfigurationManager.AppSettings["TSM-WebApi"]);
             }
         }
 
