@@ -441,16 +441,26 @@ var fn_gridFormulas = function (gd) {
             { field: "Nombre1", title: "Estado" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
-            //{
-            //    command: {
-            //        name: "Cambiar Estado",
-            //        click: function (e) {
-            //            e.preventDefault();
-            //            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-            //            alert(dataItem.MasaEntregada);
-            //        }
-            //    }
-            //}
+            {
+                command: {
+                    name: "cambiarEstado",
+                    iconClass: "TS-icon-ARROW",
+                    text: "",                    
+                    click: function (e) {
+                        e.preventDefault();
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                        var lstId = {
+                            IdFormula: dataItem.IdFormula
+                        };
+                        Fn_VistaCambioEstadoVisualizar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", lstId);
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 

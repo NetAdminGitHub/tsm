@@ -10,7 +10,7 @@ var fn_DocRIniciaVistaCambio = function () {
 /**
  * Inicializa la ventana modal
  * @param {string} pUrlCambioEstado url para el cambio de estado
- * @param {Dictionary<string, object>} Param
+ * @param {JSON} Param
  */
 var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
     VistaCambioEsta = e;
