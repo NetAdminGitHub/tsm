@@ -30,7 +30,9 @@ var fn_VistaEstacionColorDocuReady = function () {
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_color"), UrlTT, "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
 
     KdoComboBoxbyData($("#CmbSistemaPigmento_Color"), "[]", "Nombre", "IdSistemaPigmento", "Seleccione un sitema pigmentos ....", "", "");
-    $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(0));
+    $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(0));
+    //var ttsp = TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/" + 0;
+    //Kendo_CmbFiltrarGrid($("#CmbSistemaPigmento_Color"), ttsp, "Nombre", "IdSistemaPigmento", "Seleccione un sitema pigmentos ....");
 
     let UrlSed = TSM_Web_APi + "Sedas";
     Kendo_CmbFiltrarGrid($("#CmbSedas_color"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
@@ -120,13 +122,15 @@ var fn_VistaEstacionColorDocuReady = function () {
         fn_DelFormulaHis();
     });
 
-    $("#CmbTipoTinta_color").data("kendoComboBox").bind("change", function () {
-        let TipoTin = KdoCmbGetValue($("#CmbTipoTinta_color"));
+    $("#CmbTipoTinta_color").data("kendoComboBox").bind("select", function (e) {
+
+        let TipoTin = e.dataItem.IdTipoTinta;
         KdoCmbSetValue($("#CmbSistemaPigmento_Color"), "");
         $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(TipoTin));
 
         KdoCmbSetValue($("#CmbBasePigmento_color"), "");
         $("#CmbBasePigmento_color").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(TipoTin));
+
 
         // obtener el numero de pasadas por sistema de tintas
         if (KdoCmbGetValue($("#CmbTipoTinta_color")) !== null) {
@@ -136,6 +140,7 @@ var fn_VistaEstacionColorDocuReady = function () {
             kdoNumericSetValue($("#NumPasadas"), 1);
         }
     });
+
 };
 
 
@@ -154,6 +159,8 @@ var fn_VistaEstacionColor = function () {
     EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
 
     if (setFor !== null) {
+       
+
         switch (Te) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
@@ -193,10 +200,11 @@ var fn_VistaEstacionColor = function () {
       
         $("#TxtFormulaSug").val(setFor.SugerenciaFormula);
         KdoCmbSetValue($("#CmbTipoTinta_color"), setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta);
-        $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
-        KdoCmbSetValue($("#CmbSistemaPigmento_Color"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
 
         $("#CmbBasePigmento_color").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
+        $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
+
+        KdoCmbSetValue($("#CmbSistemaPigmento_Color"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
         KdoCmbSetValue($("#CmbBasePigmento_color"), setFor.IdBasePigmento === undefined ? "" : setFor.IdBasePigmento);
    
     }

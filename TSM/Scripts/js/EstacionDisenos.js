@@ -213,8 +213,8 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         fn_DelFormulaHisDis();
     });
 
-    $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("change", function () {
-        let TipoTin = KdoCmbGetValue($("#CmbTipoTinta_Dis"));
+    $("#CmbTipoTinta_Dis").data("kendoComboBox").bind("select", function (e) {
+        let TipoTin = e.dataItem.IdTipoTinta;
         KdoCmbSetValue($("#CmbSistemaPigmento_Dis"), "");
         $("#CmbSistemaPigmento_Dis").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(TipoTin));
 

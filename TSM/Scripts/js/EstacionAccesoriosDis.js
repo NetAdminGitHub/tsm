@@ -66,7 +66,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
         }
     }).data("kendoValidator");
 
-    if (AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString())) {
+    if (AccesMaquinaArt.find(q => q.IdAccesorio === ($("#TxtOpcSelecAcce_Dis").data("IdAccesorio") === undefined ? "" : $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString() === undefined))) {
         $("#row-1").prop("hidden", false);
         $("#row-2").prop("hidden", false);
         KdoCmbSetValue($("#CmbConsUnidad"),5);
@@ -101,6 +101,8 @@ var fn_VistaEstacionAccesoriosDis = function () {
     if (EstacionBraAcce !== null) {
         $("#TxtOpcSelecAcce_Dis").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
         $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    } else {
+        $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
     }
 
     if (AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString())) {
