@@ -110,6 +110,8 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarEtapa"), "gear");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
+    $("#swchSolTelaSusti").kendoSwitch();
+
     //cargando todas las etapas
     ConfigEtapas = fn_ConfigEtapas();
 
@@ -198,6 +200,11 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#TxtNombreCFT").val(datos.NombreCFT);
     $("#TxtNomQuimica").val(datos.NombreQui);
     $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
+    $("#txtNombreEC").val(datos.NombreEjecutivoCuentas);
+    $("#txtNombreTalla").val(datos.NombreTalla);
+    $("#txtNombreUbicacion").val(datos.NombreUbicacion);
+    $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
+    $("#swchSolTelaSusti").data("kendoSwitch").enable(false);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
@@ -1275,7 +1282,19 @@ var fn_RTActivaDropTarget = function () {
 $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
     fn_GuardaCodigoColor(CodigoColor);
 });
-
+$("#FormulaHist").on("SetValorBusqueda", function (event, NombreColor) {
+    switch (idEtapaProceso) {
+        case "6":
+            NombreColor.value = $("#TxtOpcSelec").val(); //este campo contiene el valor del nombre color para la etapa de revisión técnica, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+        case "8":
+            NombreColor.value = $("#TxtOpcSelec_Dis").val();//este campo contiene el valor del nombre color para la etapa de Analisis y Diseño, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+        case "9":
+            NombreColor.value = $("#TxtOpcSelecFormulas").val();//este campo contiene el valor del nombre color para la etapa de Tintas, cuando el marco sea de tipo de formulacion color,base y tecnica
+            break;
+    }
+});
 var fn_GuardaCodigoColor = function (xCodColor) {
     switch (idEtapaProceso) {
         case "6":

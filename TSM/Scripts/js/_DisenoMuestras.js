@@ -20,6 +20,23 @@ var fn_DMCargarConfiguracion = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumLPelicula").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumTiempoTra").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     maq = fn_GetMaquinas();
     // colocar grid para arrastre
     fn_gridColorEstacion($("#dgColorDis"),maq[0].IdSeteo);
@@ -60,10 +77,17 @@ var fn_DMCargarConfiguracion = function () {
     $("#CmbIdUnidad").data("kendoComboBox").setDataSource(fn_UnidadMedida("14,5,19,22"));
     KdoCmbSetValue($("#CmbIdUnidad"), 5);
 
+    KdoComboBoxbyData($("#CmbIdUnidadLP"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
+    $("#CmbIdUnidadLP").data("kendoComboBox").setDataSource(fn_UnidadMedida("5"));
+    KdoCmbSetValue($("#CmbIdUnidadLP"), 5);
+
     let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
     Kendo_CmbFiltrarGrid($("#CmbIdOrientacionPositivo"), UrlDM_OP, "Nombre", "IdOrientacionPositivo", "Seleccione...");
     let UrlDM_TS = TSM_Web_APi + "TiposSeparaciones";
     Kendo_CmbFiltrarGrid($("#CmbIdTipoSeparacion"), UrlDM_TS, "Nombre", "IdTipoSeparacion", "Seleccione...");
+    let URLImp = TSM_Web_APi + "Impresores";
+    Kendo_CmbFiltrarGrid($("#CmbIdImpresor"), URLImp, "Nombre", "IdImpresor", "Seleccione...");
+
     KdoButton($("#btnGuardarDiseñoMues"), "save", "Guardar");
     $("#DtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     KdoDatePikerEnable($("#DtFecha"), false);
@@ -89,6 +113,12 @@ var fn_DMCargarConfiguracion = function () {
                 }
                 return true;
             },
+            cmUmLP: function (input) {
+                if (input.is("[name='CmbIdUnidadLP']")) {
+                    return $("#CmbIdUnidadLP").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            },
             anchod: function (input) {
 
                 if (input.is("[name='NumAnchoDiseno']")) {
@@ -102,6 +132,20 @@ var fn_DMCargarConfiguracion = function () {
                     return $("#NumAltoDiseno").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
+            },
+            LP: function (input) {
+
+                if (input.is("[name='NumLPelicula']")) {
+                    return $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
+            },
+            Tt: function (input) {
+
+                if (input.is("[name='NumTiempoTra']")) {
+                    return $("#NumTiempoTra").data("kendoNumericTextBox").value() > 0;
+                }
+                return true;
             }
         },
         messages:{
@@ -109,8 +153,11 @@ var fn_DMCargarConfiguracion = function () {
             cmTs: "Requerido",
             rdpi: "Requerido",
             anchod: "Requerido",
+            cmUmLP:"Requerido",
             altod: "Requerido",
-            cmUm:"Requerido"
+            cmUm: "Requerido",
+            LP: "Requerido",
+            Tt:"requerido"
         }
 
     }).data("kendoValidator");
@@ -136,6 +183,22 @@ var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     fn_GetDisenoMuestra();
     KdoButtonEnable($("#btnBTDis"), vhb);
+    KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), vhb);
+    KdoComboBoxEnable($("#CmbIdTipoSeparacion"), vhb);
+    KdoComboBoxEnable($("#CmbIdImpresor"), vhb);
+    KdoComboBoxEnable($("#CmbIdUnidad"), vhb);
+    KdoComboBoxEnable($("#CmbIdUnidadLP"), vhb);
+    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
+    KdoNumerictextboxEnable($("#NumAltoDiseno"), vhb);
+    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
+    KdoNumerictextboxEnable($("#NumLPelicula"), vhb);
+    KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
+    TextBoxEnable($("#TxtObservaciones"), vhb);
+    Grid_HabilitaToolbar($("#dgColorDis"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgTecnicaDis"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgBasesDis"), vhb, vhb, vhb);
+    Grid_HabilitaToolbar($("#dgAccesoriosDis"), vhb, vhb, vhb);
+    KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
@@ -175,6 +238,10 @@ let fn_GetDisenoMuestra = function () {
                 $("#DtFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.Fecha), 'dd/MM/yyyy'));
                 $("#TxtObservaciones").val(respuesta.Observaciones);
                 $("#TxtDirectorio").val(respuesta.RutaArchivos);
+                KdoCmbSetValue($("#CmbIdImpresor"), respuesta.IdImpresor);
+                kdoNumericSetValue($("#NumLPelicula"),respuesta.LongitudPelicula);
+                KdoCmbSetValue($("#CmbIdUnidadLP"), respuesta.IdUnidadLongitudPelicula);
+                kdoNumericSetValue($("#NumTiempoTra"), respuesta.TiempoTrabajo);
             }
         },
         error: function () {
@@ -199,7 +266,11 @@ let fn_GuardarDM = function () {
             RutaArchivos: $("#TxtDirectorio").val(),
             IdOrientacionPositivo: KdoCmbGetValue($("#CmbIdOrientacionPositivo")),
             IdTipoSeparacion: KdoCmbGetValue($("#CmbIdTipoSeparacion")),
-            Observaciones: $("#TxtObservaciones").val()
+            Observaciones: $("#TxtObservaciones").val(),
+            IdImpresor: KdoCmbGetValue($("#CmbIdImpresor")),
+            LongitudPelicula: kdoNumericGetValue($("#NumLPelicula")),
+            IdUnidadLongitudPelicula: KdoCmbGetValue($("#CmbIdUnidadLP")),
+            TiempoTrabajo: kdoNumericGetValue($("#NumTiempoTra"))
         }),
         success: function (data) {
             RequestEndMsg(data, "Put");

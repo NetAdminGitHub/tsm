@@ -227,6 +227,7 @@
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
@@ -705,6 +706,7 @@
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
@@ -1388,12 +1390,18 @@
     <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
-    <Content Include="Web.IST.config">
-    </Content>
-    <Content Include="Web.PRD.config">
-    </Content>
-    <Content Include="Web.UAT.config">
-    </Content>
+    <Content Include="Views\Impresores\Index.cshtml" />
+    <None Include="Web.IST.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.PRD.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.UAT.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
