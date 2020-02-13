@@ -840,17 +840,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
+                        if (TxtIdsec!=="") $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (TxtIdsec !== "") $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdBase", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelec").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
                         break;
                     default:
@@ -861,17 +861,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (TxtIdsec !== "") $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdBase", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelec_Dis").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Base');
                         break;
                     default:
@@ -882,17 +882,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (TxtIdsec !== "") $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdBase", TxtIdsec);
+                        if (TxtIdsec !== "") $("#TxtOpcSelecFormulas").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Base');
                         break;
                     default:
@@ -903,17 +903,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
+                        if (TxtIdsec !== "") $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
+                        if (TxtIdsec !== "")  $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Base');
                         break;
                     default:
@@ -925,13 +925,13 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
 
             if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
                 //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
+                if (TxtIdsec !== "") $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
             }
 
             if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
                 //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
+                if (TxtIdsec !== "") $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Dis"]').text('Nombre del Accesorio');
             }
         }

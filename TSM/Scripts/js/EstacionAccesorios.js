@@ -19,6 +19,8 @@ var fn_VistaEstacionAccesorios = function () {
     if (EstacionBraAcce !== null) {
         $("#TxtOpcSelecAcce").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
         $("#TxtOpcSelecAcce").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    } else {
+        $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
     }
 };
 

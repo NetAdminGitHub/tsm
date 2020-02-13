@@ -1215,7 +1215,7 @@ var fn_VSCargar = function () {
         KdoComboBoxEnable($("#IdCategoriaConfeccion"), false);
         KdoComboBoxEnable($("#IdConstruccionTela"), false);
         KdoComboBoxEnable($("#IdComposicionTela"), false);
-        $("#Color").attr("disabled", true);
+        $("#TxtColorTela").attr("disabled", true);
         $("#Nombre").attr("disabled", true);
         KdoComboBoxEnable($("#CmbTipoAcabado"), false);
         KdoComboBoxEnable($("#CmbTipoLuz"), false);
@@ -1237,6 +1237,8 @@ var fn_VSCargar = function () {
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
+        Grid_HabilitaToolbar($("#GRReqDesFoil"), false, false, false);
+ 
         KdoComboBoxEnable($("#IdPrograma"), false);
         $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
     }
@@ -1287,7 +1289,7 @@ let getRD = function (UrlRD) {
                 $("#IdCategoriaConfeccion").data("kendoComboBox").value(elemento.IdCategoriaConfeccion);
                 $("#IdConstruccionTela").data("kendoComboBox").value(elemento.IdConstruccionTela);
                 $("#IdComposicionTela").data("kendoComboBox").value(elemento.IdComposicionTela);
-                $("#Color").val(elemento.Color);
+                $("#TxtColorTela").val(elemento.Color);
                 $("#CmbTipoLuz").data("kendoComboBox").value(elemento.IdTipoLuz);
                 $("#CmbMotivoDesarrollo").data("kendoComboBox").value(elemento.IdMotivoDesarrollo);
                 $("#CmbTipoAcabado").data("kendoComboBox").value(elemento.IdTipoAcabado);
@@ -1539,7 +1541,7 @@ let GuardarRequerimiento = function (UrlRD) {
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
             IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
-            Color: $("#Color").val(),
+            Color: $("#TxtColorTela").val(),
             //Entidad prendas
             IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
             // Entidad sistema de tintas.....
@@ -1636,7 +1638,7 @@ let ActualizarReq = function () {
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
             IdComposicionTela: $("#IdComposicionTela").data("kendoComboBox").value(),
-            Color: $("#Color").val(),
+            Color: $("#TxtColorTela").val(),
             //Entidad prendas
             IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
             // Entidad sistema de tintas.....
@@ -1699,7 +1701,7 @@ let LimpiarReq = function () {
     $("#IdCategoriaConfeccion").data("kendoComboBox").value("");
     $("#IdConstruccionTela").data("kendoComboBox").value("");
     $("#IdComposicionTela").data("kendoComboBox").value("");
-    $("#Color").val("");
+    $("#TxtColorTela").val("");
     $("#CmbTipoLuz").data("kendoComboBox").value("");
     $("#CmbMotivoDesarrollo").data("kendoComboBox").value("");
     $("#CmbTMuestra").data("kendoComboBox").value("");
@@ -1788,7 +1790,7 @@ let HabilitaFormObje = function (ToF) {
     //KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
     KdoCheckBoxEnable($("#chkDisenoFullColor"), ToF);
     TextBoxEnable($("#InstruccionesEspeciales"), ToF);
-    TextBoxEnable($("#Color"), ToF);
+    TextBoxEnable($("#TxtColorTela"), ToF);
     TextBoxEnable($("#Nombre"), ToF);
     TextBoxEnable($("#NumeroDiseno"), ToF);
     TextBoxEnable($("#EstiloDiseno"), ToF);
