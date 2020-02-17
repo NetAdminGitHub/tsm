@@ -4,22 +4,24 @@
 @{
     ViewBag.Title = "Declaraciones de mercancías con existencias.";
     ViewBag.IdVersion = "TSM0102002|v20020301";
- }
+}
 
 <script type="text/javascript" hidden="hidden">
-    var PageN = "@TSM.Utils.PbiUtils.PbiReport.NombrePagina" // nombre de la página.
+    var PageN = "@TSM.Utils.PbiUtils.PbiReport.Pagina"; // nombre de la página.
     var ReportN = null;
     var WSpace = null;
-    let EmbedUrl = "@ViewBag.Reporte.EmbedUrl";
-    let Client = "@ViewBag.Reporte.Id";
-    let Token ="@TSM.Utils.PbiUtils.authResult.AccessToken"
+    var EmbedUrl ="@TSM.Utils.PbiUtils.PbiEmbed";
+    let Client = "@TSM.Utils.PbiUtils.PbiReport.Reporte";
+    let Token = "@TSM.Utils.PbiUtils.authResult.AccessToken";
+    let navbarEnabled = '@TSM.Utils.PbiUtils.PbiReport.HabilitaBarraNav';
+
 
 </script>
 
 @section Scripts {
     <script type="text/javascript" src="~/Scripts/Utils/powerbi.js"></script>
     <script type="text/javascript" src="~/Scripts/js/pbiReporte.js"></script>
-
+    
 }
 
 
@@ -28,13 +30,16 @@
     <div class="col-lg-12">
         <div class="card" style="height:100%;">
             <div class="card-body" style="height:100%;">
-                <input type="button" class="k-input" value="Pantalla Completa" id="FullSize" onclick="_Report_FullScreen();" />
-                <div id="reportContainer" class="form-group" style="height:100%;">
+                    
+                   <input type="button" class="k-button k-primary" id="FullSize"  value="Pantalla Completa"  onclick="_Report_FullScreen();"  />
+              
+              <div id="reportContainer" class="form-group" style="height:100%;">
                     <iframe class="ReportFrame" frameborder="0" allowFullScreen="true" id="reportContainer" frameborder="0"></iframe>
-                   <!-- <input id="pbit" hidden="hidden" value="" />
-                    <input id="Id" hidden="hidden" value="" />
-                    <input id="EmbedUrl" hidden="hidden" value="" /> !-->
+                    <!-- <input id="pbit" hidden="hidden" value="" />
+        <input id="Id" hidden="hidden" value="" />
+        <input id="EmbedUrl" hidden="hidden" value="" /> !-->
                 </div>
+
             </div>
         </div>
     </div>

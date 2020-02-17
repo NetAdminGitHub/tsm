@@ -5,7 +5,7 @@ let embedUrl;
 let reportId;
 let models;
 let UrlPbiConf = TSM_Web_APi + "ParametrosReportesPbi/GetReporte/";
-let navbarEnabled = '<%=TSM.Utils.PbiUtils.PbiReport.HabilitaBarraNav%>';
+
 
 
 
@@ -77,7 +77,7 @@ window.onload=function () {
 
     $(document).ready(function () {
         setHeight();
-     
+    
 
     });
 
@@ -179,5 +179,18 @@ window.onload=function () {
         // Exits full screen mode.
         paginatedReport.exitFullscreen();
     }
+
+
+    function _Reset_Filters() {
+
+        var paginatedReportContainer = $('#paginatedReportContainer')[0];
+
+        // Get a reference to the paginated embedded report.
+        paginatedReport = powerbi.get(paginatedReportContainer);
+
+        paginatedReport.powerbi.load(this.config);
+
+    }
+
 };
 

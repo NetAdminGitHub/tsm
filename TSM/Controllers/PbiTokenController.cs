@@ -54,7 +54,7 @@ namespace TSM.Controllers
                 Session[PbiUtils.authResultString] = null;
             }
             //Redirect back to Default.aspx
-            Response.Redirect(Url.Content("~"+PbiUtils.PbiReport.reportRedirecUrl),false);
+            Response.Redirect(Url.Content("~/"+PbiUtils.PbiReport.reportRedirecUrl),false);
 
         }
     }

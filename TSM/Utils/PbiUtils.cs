@@ -12,10 +12,35 @@ namespace TSM.Utils
     {
         public const string authResultString = "authResult";
         public static string EmbedType { get; set; }
+        private static string _PbiEmbed = null;
+        private static string _PbiDataSet = null;
 
         public static AuthenticationResult authResult { get; set; }
+        
+        public static string PbiEmbed
+        {
+            get { return _PbiEmbed; }
+           
+        }
+        public static string PbiDataSet
+        {
+            get { return _PbiDataSet; }
+
+        }
+
 
         public static ReportePbi PbiReport {get;set;} 
+
+        /// <summary>
+        /// setea URL a embed y id de dataset
+        /// </summary>
+        /// <param name="embed"></param>
+        /// <param name="dataSetId"></param>
+        public static void SetEmbedDataSet(string embed,string dataSetId)
+        {
+            _PbiEmbed = embed;
+            _PbiDataSet = dataSetId;
+        }
 
         public static string GetAuthorizationCode()
         {
@@ -29,15 +54,15 @@ namespace TSM.Utils
 
                 //Client ID is used by the application to identify themselves to the users that they are requesting permissions from. 
                 //You get the client id when you register your Azure app.
-                {"client_id", "61d6a8f2-188c-4bf3-8988-01f4ce27fb37"},
+                {"client_id", PbiReport.ApplicationId},
 
                 //Resource uri to the Power BI resource to be authorized
                 //The resource uri is hard-coded for sample purposes
-                {"resource", "https://analysis.windows.net/powerbi/api"},
+                {"resource", PbiReport.PbiApiResourceUrl }, //https://analysis.windows.net/powerbi/api
 
                 //After app authenticates, Azure AD will redirect back to the web app. In this sample, Azure AD redirects back
                 //to Default page (Default.aspx).
-                { "redirect_uri", "https://localhost:44311/PbiToken/Validar"},
+                { "redirect_uri", PbiReport.RedirectUrl},
             };
 
             //Create sign-in query string
@@ -51,8 +76,8 @@ namespace TSM.Utils
             //      client_id that identifies your app in Azure AD
             //      resource which is the Power BI API resource to be authorized
             //      redirect_uri which is the uri that Azure AD will redirect back to after it authenticates
-
-            return "https://login.windows.net/common/"+$"oauth2/authorize?{queryString}";
+            //"https://login.windows.net/common/"
+            return PbiReport.AADAuthorityUri +$"oauth2/authorize?{queryString}";
         }
     }
 

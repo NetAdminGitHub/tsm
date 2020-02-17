@@ -45,7 +45,7 @@ namespace TSM.Controllers
                 } // se agrega URl para redireccionar luego de login
                 else
                 {
-                    PbiResult.reportRedirecUrl = String.Format("/{0}/{1}", reporte, NombrePagina);
+                    PbiResult.reportRedirecUrl = String.Format("ReportesPbi/{0}/{1}/", reporte, NombrePagina);
                     PbiUtils.PbiReport = PbiResult;
                 }
             }
@@ -54,11 +54,11 @@ namespace TSM.Controllers
             if (Session[PbiUtils.authResultString] != null)
             {
                //obtiene datos del reporte
-                using(ReportePbiBOL test = new ReportePbiBOL(new ReportePbiDAL()))
+                using(ReportePbiBOL rpbiBo = new ReportePbiBOL(new ReportePbiDAL()))
                 {
-                      rpt = test.GetReport(PbiResult);
-
-                    Session["PbiReport"] = rpt;
+                      rpt = rpbiBo.GetReport(PbiResult);
+                    //asigna a variable de sesion.
+                    PbiUtils.SetEmbedDataSet(rpt.EmbedUrl, rpt.DatasetId);                
                 }
 
             }
