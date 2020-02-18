@@ -212,6 +212,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\ConsultarFichaOTController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
@@ -701,10 +702,12 @@
     <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
+    <Content Include="Scripts\js\ConsultarFichaOT.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
@@ -1393,6 +1396,8 @@
     <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
     <Content Include="Views\Impresores\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
