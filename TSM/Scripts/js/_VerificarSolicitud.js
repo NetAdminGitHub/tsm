@@ -218,7 +218,7 @@ var fn_VSCargarJSEtapa = function () {
                 },
                 TxtDirectorioArchivosRuler: function (input) {
                     if (input.is("[name='TxtDirectorioArchivos']")) {
-                        return input.val().length <= 2000;
+                        return input.val().length>0 && input.val().length <= 2000;
                     }
                     return true;
                 },
@@ -274,7 +274,7 @@ var fn_VSCargarJSEtapa = function () {
                 NombreRuler: "Longitud máxima del campo es 200",
                 NumeroDisenoRuler: "Longitud máxima del campo es 200",
                 EstiloDisenoRuler: "Longitud máxima del campo es 200",
-                TxtDirectorioArchivosRuler: "Longitud máxima del campo es 2000",
+                TxtDirectorioArchivosRuler: "Requerido Longitud máxima del campo es 2000",
                 MsgCmbTipoLuz: "Requerido",
                 MsgCmbMotivo: "Requerido",
                 MsgCmbAcabado: "Requerido",
