@@ -179,7 +179,9 @@ $(document).ready(function () {
                     NombreClie: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    NombreEstado: { type: "string" }
+                    NombreEstado: { type: "string" },
+                    Tallas: { type: "string" }
+
                 }
             }
         }
@@ -211,7 +213,7 @@ $(document).ready(function () {
             { field: "NoPrograma", title: "No Programa" },
             { field: "NombreProg", title: "Nombre del programa" },
             { field: "IdCliente", title: "Código cliente", hidden: true },
-            { field: "NoCuenta", title: "No Cuenta cliente" },
+            { field: "NoCuenta", title: "No Cuenta cliente", hidden: true  },
             { field: "NombreClie", title: "Nombre del cliente" },
             { field: "IdServicio", title: "Código servicio", hidden: true },
             { field: "IdUbicacion", title: "Código ubicación", hidden: true },
@@ -221,6 +223,7 @@ $(document).ready(function () {
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "Tecnicas", title: "Técnicas" },
+            { field: "Tallas", title:"Tallas"},
             { field: "NombreEstado", title: "Estado simulación" }
 
         ]
@@ -286,7 +289,7 @@ $(document).ready(function () {
     });
 
     $("#btnAceptarSimu").click(function () {
-        if (ValidNuevoSim.validate()) { ConfirmacionMsg("¿Está seguro de generar una nueva simulación?", function () { return fn_GenNuevaSim(data.IdOrdenTrabajo, kdoNumericGetValue($("#TxtNuevaCantidadPiezas")), kdoNumericGetValue($("#TxtNoMontaje")), kdoNumericGetValue($("#txtPersonalExtra")), kdoNumericGetValue($("#txtCombos")), kdoNumericGetValue($("#txtVeloMaquina")), $("#chkUsarTermofijado").is(':checked') ? "1" : "0"); }); } 
+        if (ValidNuevoSim.validate()) { fn_GenNuevaSim(data.IdOrdenTrabajo, kdoNumericGetValue($("#TxtNuevaCantidadPiezas")), kdoNumericGetValue($("#TxtNoMontaje")), kdoNumericGetValue($("#txtPersonalExtra")), kdoNumericGetValue($("#txtCombos")), kdoNumericGetValue($("#txtVeloMaquina")), $("#chkUsarTermofijado").is(':checked') ? "1" : "0");} 
     });
 
 });
@@ -353,7 +356,9 @@ $.fn.extend({
                     { field: "IdRequerimiento", title: "Numero Requerimiento", width: 200 },
                     { field: "Nombre", title: "Nombre del Diseño", width: 200 },
                     { field: "NumeroDiseno", title: "Numero de Diseño", width: 200 },
-                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 }
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 },
+                    { field: "Tecnicas", title: "Tecnicas", width: 200 },
+                    { field: "Tallas", title: "Tallas", width: 200 }
                 ]
             });
         });

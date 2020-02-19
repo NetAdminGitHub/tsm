@@ -363,7 +363,7 @@ $(document).ready(function () {
     //#region generar procesar simulacion
     $("#btnGeneraCotiPro").click(function (event) {
         event.preventDefault();
-        ConfirmacionMsg("¿Esta seguro de cargar las simulaciones aprobadas para la cotización ?", function () { return fn_CotizarMuestra(); });
+        fn_CotizarMuestra(); 
     });
     //#endregion fin generar simulacion
 
