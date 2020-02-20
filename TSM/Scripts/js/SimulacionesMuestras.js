@@ -180,7 +180,9 @@ $(document).ready(function () {
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
                     NombreEstado: { type: "string" },
-                    Tallas: { type: "string" }
+                    Tallas: { type: "string" },
+                    FechaFinal: { type: "date"},
+                    FechaFinalMuestra: { type: "date"}
 
                 }
             }
@@ -199,21 +201,21 @@ $(document).ready(function () {
             Grid_SetSelectRow($("#gridSimulacion"), selectedRows);
         },
         columns: [
-            { field: "NoDocSimulacion", title: "No.Simulación" },
-            { field: "NoDocOT", title: "No OT" },
+            { field: "NoDocSimulacion", title: "No.Simulación", width: 100},
+            { field: "NoDocOT", title: "No OT", width: 100},
             { field: "Fecha", title: "Fecha simulación", format: "{0: dd/MM/yyyy}" },
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
-            { field: "NoDocRequerimiento", title: "No Requerimiento" },
+            { field: "NoDocRequerimiento", title: "Requerimiento", width: 100},
             { field: "Fecha", title: "Fecha del simulación", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "NombreArte", title: "Nombre del diseño" },
             { field: "EstiloDiseno", title: "Estilo diseno" },
-            { field: "NumeroDiseno", title: "Número diseno" },
+            { field: "NumeroDiseno", title: "Número diseno", width: 100},
             { field: "IdPrograma", title: "Código Programa", hidden: true },
             { field: "NoPrograma", title: "No Programa" },
             { field: "NombreProg", title: "Nombre del programa" },
             { field: "IdCliente", title: "Código cliente", hidden: true },
-            { field: "NoCuenta", title: "No Cuenta cliente", hidden: true  },
+            { field: "NoCuenta", title: "No Cuenta cliente", hidden: true },
             { field: "NombreClie", title: "Nombre del cliente" },
             { field: "IdServicio", title: "Código servicio", hidden: true },
             { field: "IdUbicacion", title: "Código ubicación", hidden: true },
@@ -223,8 +225,10 @@ $(document).ready(function () {
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "Tecnicas", title: "Técnicas" },
-            { field: "Tallas", title:"Tallas"},
-            { field: "NombreEstado", title: "Estado simulación" }
+            { field: "Tallas", title: "Tallas" },
+            { field: "FechaFinalMuestra", title: "Desarrollo Muestra", width: 125, format: "{0: dd/MM/yyyy}" },
+            { field: "FechaFinal", title: "Finalización OT", width: 100, format: "{0: dd/MM/yyyy HH:mm:ss}" },
+            { field: "NombreEstado", title: "Estado simulación", width: 100}
 
         ]
     });
@@ -349,16 +353,34 @@ $.fn.extend({
                             contentType: "application/json; charset=utf-8"
                         }
                     }
+                    //schema: {
+                    //    model: {
+                    //        fields: {
+                    //            NoDocumento: { type: "String" },
+                    //            NoDocReq: { type: "string" },
+                    //            Nombre: { type: "string" },
+                    //            NumeroDiseno: { type: "string" },
+                    //            EstiloDiseno: { type: "string" },
+                    //            Tecnicas: { type: "string" },
+                    //            Tallas: { type: "string" },
+                    //            FechaFinalMuestra: { type: "date" },
+                    //            FechaFinal: { type: "date" }
+                    //        }
+                    //    }
+                    //}
                 },
                 columns: [
                     //{ field: "IdOrdenTrabajo", title: "ID. Orden Trabajo", width: 200 },
-                    { field: "NoDocumento", title: "No Orden Trabajo", width: 200 },
-                    { field: "IdRequerimiento", title: "Numero Requerimiento", width: 200 },
+                    { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
+                    { field: "NoDocReq", title: "Requerimiento", width: 100 },
                     { field: "Nombre", title: "Nombre del Diseño", width: 200 },
-                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 200 },
+                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
                     { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 },
                     { field: "Tecnicas", title: "Tecnicas", width: 200 },
-                    { field: "Tallas", title: "Tallas", width: 200 }
+                    { field: "Tallas", title: "Tallas", width: 200 },
+                    { field: "FechaFinalMuestra", title: "Final Des. Muestra", template: '#:kendo.toString(kendo.parseDate(data.FechaFinalMuestra), "dd/MM/yyyy")#'  ,width: 125 },
+                    { field: "FechaFinal", title: "Fecha Fin OT", template: '#:kendo.toString(kendo.parseDate(data.FechaFinalMuestra), "dd/MM/yyyy HH:mm:ss")#',  width: 200}
+                
                 ]
             });
         });
