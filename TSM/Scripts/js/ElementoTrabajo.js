@@ -1159,6 +1159,27 @@ var Fn_GetSistemaBases = function (vide) {
     });
 };
 
+var Fn_GetTiposTintas = function (idQuimica) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,                    
+                    url: TSM_Web_APi + "TiposTintas/GetbyIdQuimica/" + (idQuimica !== null ? idQuimica.toString() : 0),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
 $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";
 });
