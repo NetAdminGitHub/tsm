@@ -12,9 +12,15 @@
     var WSpace = null;
     var EmbedUrl ="@TSM.Utils.PbiUtils.PbiEmbed";
     let Client = "@TSM.Utils.PbiUtils.PbiReport.Reporte";
-    let Token = "@TSM.Utils.PbiUtils.authResult.AccessToken";
-    let navbarEnabled = '@TSM.Utils.PbiUtils.PbiReport.HabilitaBarraNav';
+    let Token = "";
+    let navbarEnabled = "@TSM.Utils.PbiUtils.PbiReport.HabilitaBarraNav";
 
+    try {
+        Token =  "@TSM.Utils.PbiUtils.authResult.AccessToken";
+    } catch (e) {
+        Token = "";
+    }
+   
 
 </script>
 
@@ -26,18 +32,18 @@
 
 
 
-<div id="reportWrapper" class="form-row">
-    <div class="col-lg-12">
+<div id="reportWrapper" class="form-row" >
+    <div class="col-lg-12" >
         <div class="card" style="height:100%;">
+            <div class="card-body">
+                <div class="form-group" style="float:right;">
+                    <button type="button" id="FullSize" onclick="_Report_FullScreen();" class="k-button k-button-icontext" style="width:140px; height:35px;"><span class="k-button-icon k-icon k-i-toggle-full-screen-mode"></span><p>Pantala Completa</p></button>
+                </div>
+            </div>
             <div class="card-body" style="height:100%;">
-                    
-                   <input type="button" class="k-button k-primary" id="FullSize"  value="Pantalla Completa"  onclick="_Report_FullScreen();"  />
-              
-              <div id="reportContainer" class="form-group" style="height:100%;">
-                    <iframe class="ReportFrame" frameborder="0" allowFullScreen="true" id="reportContainer" frameborder="0"></iframe>
-                    <!-- <input id="pbit" hidden="hidden" value="" />
-        <input id="Id" hidden="hidden" value="" />
-        <input id="EmbedUrl" hidden="hidden" value="" /> !-->
+                 <div id="reportContainer" class="form-group" style="height:100%; ">
+                    <iframe class="ReportFrame" frameborder="0" style="height:100%; " allowFullScreen="true" id="reportContainer" frameborder="0"></iframe>
+
                 </div>
 
             </div>
