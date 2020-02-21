@@ -571,7 +571,7 @@ var Fn_VistaCambioEstado = function (e,fn_close) {
  */
 var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado) {
 
-    VistaPopup.data("kendoDialog").center().open();
+    VistaPopup.data("kendoDialog").open();
     var Param = {
         Tabla: Tabla,//obligatorios
         EstadoActual: EstadoActual,//obligatorios
