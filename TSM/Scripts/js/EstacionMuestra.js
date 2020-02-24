@@ -139,6 +139,7 @@ var fn_VistaEstacionMuestraDocuReady = function () {
 };
 
 var fn_VistaEstacionMuestra = function () {
+    TextBoxEnable($("#NumMasaEntre_Mues"), false);
     TextBoxEnable($("#TxtOpcSelec_Mues"), false);
     KdoNumerictextboxEnable($("#NumArea_Mues"), false);
     KdoComboBoxEnable($("#CmdIdUnidadArea_Mues"), false);
@@ -152,6 +153,7 @@ var fn_VistaEstacionMuestra = function () {
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
     estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
+    EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
 
     if (setFor !== null) {
         $("#NumPeso_Mues").data("kendoNumericTextBox").focus();
@@ -232,6 +234,18 @@ var fn_VistaEstacionMuestra = function () {
         xNumPixeles_Dis = 0;
         xEstado = null;
     }
+
+
+    if (EstaTintasFormula.length > 0) {
+        $("#TxtIdform_Mues").val(EstaTintasFormula[0].IdFormula);
+        $("#NumMasaEntre_Mues").val(EstaTintasFormula[0].MasaEntregada);
+        fn_MostraTablaFormula(EstaTintasFormula, "TablaFormulaMues");
+    } else {
+        $("#TxtIdform_Mues").val(0);
+        fn_MostraTablaFormula(null, "TablaFormulaMues");
+        $("#NumMasaEntre_Mues").val(0);
+    }
+
 };
 //// funciones
 var fn_GuardarEstacionMues = function () {
