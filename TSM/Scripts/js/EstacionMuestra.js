@@ -103,7 +103,7 @@ var fn_VistaEstacionMuestraDocuReady = function () {
             },
             vletra: function (input) {
                 if (input.is("[name='TxtLetra_Mues']")) {
-                    return input.val().length <= 5;
+                    return input.val().length <= 20;
                 }
                 return true;
             },
@@ -122,7 +122,7 @@ var fn_VistaEstacionMuestraDocuReady = function () {
             vTSed: "Requerido",
             vTemul: "Requerido",
             vidUa: "Requerido",
-            vletra: "Longitud máxima del campo es 5",
+            vletra: "Longitud máxima del campo es 20",
             vsuge: "Longitud máxima del campo es 200"
         }
     }).data("kendoValidator");
