@@ -110,8 +110,8 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Net" />
+    <Reference Include="System.Management" /
+  <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
       <Private>True</Private>
@@ -239,6 +239,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\ConsultarFichaOTController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
@@ -734,11 +736,14 @@
     <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
+    <Content Include="Scripts\js\ConsultarFichaOT.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
@@ -1429,9 +1434,16 @@
     <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
     <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
+
     <Content Include="Views\ReportesPbi\Index.cshtml" />
     <Content Include="Scripts\Utils\powerbi.js.map" />
     <Content Include="Scripts\powerbi.js.map" />
+
+
+    <Content Include="Views\Impresores\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
+
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

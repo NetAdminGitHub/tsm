@@ -107,7 +107,8 @@ $(document).ready(function () {
                     IdTemporada: { type: "number" },
                     NombreTemp: { type: "string" },
                     IdEjecutivoCuenta: { type: "number" },
-                    NombreEjecutivo: { type: "string" }
+                    NombreEjecutivo: { type: "string" },
+                    EstadoFormulas: { type: "string" }
                 }
             }
         }
@@ -123,6 +124,7 @@ $(document).ready(function () {
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
+                kendo.ui.progress($("#grid"), true);
                 fn_VerEtapas("/OrdenesTrabajo/ElementoTrabajo/" + grid.dataItem(this).IdOrdenTrabajo.toString() + "/" + grid.dataItem(this).IdEtapaProceso.toString());
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
@@ -144,6 +146,7 @@ $(document).ready(function () {
             { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true },
             { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120 },
             { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "EstadoFormulas", title: "Estado Fórmulas", minResizableWidth: 120 },
             { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },

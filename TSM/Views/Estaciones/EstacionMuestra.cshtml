@@ -8,8 +8,8 @@
                         <input id="TxtOpcSelec_Mues" name="TxtOpcSelec_Mues" type="text" class="k-textbox form-control" />
                     </div>
                     <div class="form-group col-lg-4">
-                        <label for="TxtNombreQui_Mues">Quimica Utilizar</label>
-                        <input id="TxtNombreQui_Mues" name="TxtNombreQui_Mues" type="text" class="k-textbox form-control" />
+                        <label for="CmbQuimica_Mues">Química Utilizar</label>
+                        <input id="CmbQuimica_Mues" name="CmbQuimica_Mues" required validationMessage="Requerido" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-4">
                         <label for="CmbTipoTinta_Mues">Tipo de Tintas</label>
@@ -58,7 +58,26 @@
                         <input id="TxtFormulaSug_Mues" name="TxtFormulaSug_Mues" type="text" class="k-textbox form-control" />
                     </div>
                 </div>
-              
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="NumArea_Mues">Área</label>
+                        <input id="NumArea_Mues" name="NumArea_Mues" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="CmdIdUnidadArea_Mues">Unidad área</label>
+                        <input id="CmdIdUnidadArea_Mues" name="CmdIdUnidadArea_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="NumMasaEntre_Mues">Masa entregada</label>
+                        <input id="NumMasaEntre_Mues" name="NumMasaEntre_Mues" type="text" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <input id="TxtIdform_Mues" name="TxtIdform_Mues" type="text" class="k-textbox form-control" , hidden="hidden" />
+                        <div id="TablaFormulaMues"></div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
