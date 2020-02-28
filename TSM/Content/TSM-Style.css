@@ -187,6 +187,13 @@ body {
     font-size: 1.625rem
 }
 
+.ReportFrame,iframe {
+    width: 1075px;
+    height: 564px;
+    border:none !important;
+
+}
+
 .h2, h2 {
     font-size: 1.25rem
 }
