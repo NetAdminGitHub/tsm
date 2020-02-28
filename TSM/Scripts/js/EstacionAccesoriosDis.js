@@ -66,7 +66,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
         }
     }).data("kendoValidator");
 
-    if (AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString())) {
+    if (AccesMaquinaArt.find(q => q.IdAccesorio === ($("#TxtOpcSelecAcce_Dis").data("IdAccesorio") === undefined ? "" : $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString() === undefined))) {
         $("#row-1").prop("hidden", false);
         $("#row-2").prop("hidden", false);
         KdoCmbSetValue($("#CmbConsUnidad"),5);
@@ -101,6 +101,8 @@ var fn_VistaEstacionAccesoriosDis = function () {
     if (EstacionBraAcce !== null) {
         $("#TxtOpcSelecAcce_Dis").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
         $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    } else {
+        $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
     }
 
     if (AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString())) {
@@ -163,7 +165,7 @@ var fn_GuardarEstacionAcceDis = function (xIdBrazo) {
             } else {
                 kendo.ui.progress($("#MEstacionAccesoriosDis"), false);
                 maq = fn_GetMaquinas();
-                $("#MEstacionAccesoriosDis").data("kendoDialog").close();
+                $("#MEstacionAccesoriosDis").data("kendoWindow").close();
                 RequestEndMsg(data, xType);
             }
         },
@@ -204,7 +206,7 @@ var fn_GuardarSeteoAccesDis = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesoriosDis"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesoriosDis").data("kendoDialog").close();
+            $("#MEstacionAccesoriosDis").data("kendoWindow").close();
             $("#row-1").attr("hidden", "hidden");
             $("#row-2").prop("hidden", "hidden");
             RequestEndMsg(data, xType);

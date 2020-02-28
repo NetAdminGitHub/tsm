@@ -583,6 +583,33 @@ var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado
     };
     fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, Param);
 };
+
+/**
+ *  MUESTRA VENTANA MODAL PARA EL CAMBIO DE ESTADOS
+ * @param {string} Tabla tabla a cambiar estado
+ * @param {string} EstadoActual estado actual del registro
+ * @param {string} UrlCambioEstado url cambio  de estado
+ * @param {string} SP nombre del proceso almacenado
+ * @param {JSON} param id del registo (PK)
+ * @param {function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
+ */
+var Fn_VistaCambioEstadoVisualizar = function (Tabla, EstadoActual, UrlCambioEstado, SP, param, fnGuardado) {
+
+    VistaPopup.data("kendoDialog").open();
+    let data = {
+        Tabla: Tabla,//obligatorios
+        EstadoActual: EstadoActual,//obligatorios
+        SP: SP,//obligatorios
+        EstadoSiguiente: "",//obligatorios
+        Motivo: "",//obligatorios
+        //Id: Id,
+        fnGuardado: fnGuardado
+    };
+
+    data = $.extend(data, param);
+    fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, data);
+};
+
 /**
  * permite habilitar o inhabilitar el elemento panel.
  * @param {HTMLDivElement} DivElem elemento div que contiene la funcion de panel

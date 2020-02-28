@@ -380,6 +380,12 @@ var fn_gridFormulas = function (gd) {
                         defaultValue: function () {
                             return 0;
                         }
+                    },
+                    CIELAB_DELTAE: {
+                        type: "number",
+                        defaultValue: function () {
+                            return 0;
+                        }
                     }
                 }
             }
@@ -411,6 +417,7 @@ var fn_gridFormulas = function (gd) {
                 KdoNumerictextboxEnable($('[name="CIELAB_L"]'), false);
                 KdoNumerictextboxEnable($('[name="CIELAB_A"]'), false);
                 KdoNumerictextboxEnable($('[name="CIELAB_B"]'), false);
+                KdoNumerictextboxEnable($('[name="CIELAB_DELTAE"]'), false);
             } else {
                 Grid_Focus(e, "CIELAB_L");
             }
@@ -428,12 +435,32 @@ var fn_gridFormulas = function (gd) {
             { field: "CIELAB_L", title: "CIELAB L", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
             { field: "CIELAB_A", title: "CIELAB A", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
             { field: "CIELAB_B", title: "CIELAB B", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_DELTAE", title: "CIELAB &Delta;E", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
             { field: "Nombre", title: "Nombre Motivo" },
             { field: "Estado", title: "Estado", hidden: true  },
             { field: "Nombre1", title: "Estado" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
-          
+            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            {
+                command: {
+                    name: "cambiarEstado",
+                    iconClass: "TS-icon-ARROW",
+                    text: "",                    
+                    click: function (e) {
+                        e.preventDefault();
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                        var lstId = {
+                            IdFormula: dataItem.IdFormula
+                        };
+                        Fn_VistaCambioEstadoVisualizar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", lstId);
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 

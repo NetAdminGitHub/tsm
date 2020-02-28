@@ -4,7 +4,19 @@ var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButtonEnable($("#btnMuest"), false);
     KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
-
+    KdoButton($("#btnAceptarFin"), "check", "Finalizar");
+    $("#dFechaFinMue").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaFinMue").data("kendoDatePicker").value(Fhoy());
+    $("#MbtnFinMue").kendoDialog({
+        height: "auto",
+        width: "20%",
+        title: "Finalizar Orden de Trabajo",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+    //kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's')
     // colocar grid para arrastre
 
     maq = fn_GetMaquinas();
@@ -27,10 +39,29 @@ var fn_DMueCargarConfiguracion = function () {
     });
 
      //FINALIZAR OT
-    $("#btnFinOT").click(function () {
-        ConfirmacionMsg("¿Esta seguro de finalizar la Orden de trabajo  " + $("#txtNoDocumentoOT").val() + "?", function () { return fn_FinOT(); });
-    });
+    let ValidFrmFinMue = $("#FrmFinMue").kendoValidator({
+        rules: {
+            FM: function (input) {
+                if (input.is("[name='dFechaFinMue']")) {
+                    return kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's') !== null;
+                }
+                return true;
+            }
 
+        },
+        messages: {
+            FM: "requerido"
+        }
+    }).data("kendoValidator");
+
+    $("#btnFinOT").click(function () {
+    
+        $("#MbtnFinMue").data("kendoDialog").open();
+        $("#dFechaFinMue").data("kendoDatePicker").element.focus();
+    });
+    $("#btnAceptarFin").click(function () {
+        if (ValidFrmFinMue.validate()) { fn_FinOT(); }
+    });
 
 };
 
@@ -61,23 +92,30 @@ fPermisos = function (datos) {
 };
 
 let fn_FinOT = function () {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajosFinalizar/" + $("#txtIdOrdenTrabajo").val() + "/" + idEtapaProceso ,
+        url: TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajosFinalizar",
         method: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val() ,
+            IdEtapaProcesoFinalizar: idEtapaProceso,
+            FechaFinMuestra: kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's')
+        }),
         success: function (datos) {
             RequestEndMsg(datos, "Post");
+            $("#MbtnFinMue").data("kendoDialog").close();
             CargarInfoEtapa(false);
         },
         error: function (data) {
             ErrorMsg(data);
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"),false);
         },
         complete: function () {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
         }
     });
 
-}
+};
+

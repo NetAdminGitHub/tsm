@@ -12,6 +12,7 @@ var ModalEstacion = "";
 var ModalEstacionJS = "";
 let TipoEstacion = "";
 let Formulacion = "";
+let HizoDropDown = false;
 let vhb;
 var fn_RTCargarMaquina = function () {
     //borrar la maquina
@@ -575,7 +576,8 @@ var dropElemento = function (e) {
     if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs && vhb===true) {
    
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
-        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {          
+        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {     
+            HizoDropDown = true;
             // obtener el nombre de vista modal estacion
             ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
             // Obtener el JS
@@ -593,20 +595,22 @@ var dropElemento = function (e) {
             let gDrag = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid"));
       
             let xEstacionBra = stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", "");
+            let xNumEstacion = xEstacionBra.replace("TxtInfo", "").replace("txtEdit", "").toString();
+
             if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
                 switch (Formulacion) {
                     case "COLOR":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdRequerimientoColor;
                         TxtSecName = gDrag.Color;
                         break;
                     case "TECNICA":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdRequerimientoTecnica;
                         TxtSecName = gDrag.Nombre;
                         break;
                     case "BASE":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN BASES ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdBase;
                         TxtSecName = gDrag.Nombre;
                         break;
@@ -616,9 +620,9 @@ var dropElemento = function (e) {
                 }
             }
             if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
-                        Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-                        TxtIdsec = gDrag.IdAccesorio;
-                        TxtSecName = gDrag.Nombre;
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
+                TxtIdsec = gDrag.IdAccesorio;
+                TxtSecName = gDrag.Nombre;
             }
            
 
@@ -676,31 +680,33 @@ let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewMod
 };
 
 var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
+    HizoDropDown = false;
+    let xNumEstacion = xEstacionBra.replace("TxtInfo", "").replace("txtEdit", "").toString();
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "COLOR";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "BASE";
                 break;
             default:
-                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionAccesorios";
                 ModalEstacionJS = "EstacionAccesorios.js";
                 TipoEstacion = "ACCESORIO";
@@ -712,28 +718,28 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionDisenos.js";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 ModalEstacionJS = "EstacionDisenos.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionDisenos.js";
                 Formulacion = "BASE";
                 break;
             default:
-                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionAccesoriosDis";
                 ModalEstacionJS = "EstacionAccesoriosDis.js";
                 TipoEstacion = "ACCESORIO";
@@ -744,24 +750,24 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 
     }
     if (xVistaFormulario.toUpperCase() === "_TINTASFORMULACIONES") {
-
+   
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "TINTAS Y REVELADO COLOR";
+                Titulo = "TINTAS Y REVELADO COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionFormulas.js";
                 break;
             case "TECNICA":
-                Titulo = "TINTAS Y REVELADO TÉCNICAS";
+                Titulo = "TINTAS Y REVELADO TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 ModalEstacionJS = "EstacionFormulas.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "TINTAS Y REVELADO BASES";
+                Titulo = "TINTAS Y REVELADO BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionFormulas.js";
@@ -779,21 +785,21 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
     if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionMuestra.js";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 ModalEstacionJS = "EstacionMuestra.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionMuestra.js";
@@ -833,24 +839,24 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 };
 
 let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig, ViewTipoEstacion, ViewFormulacion) {
-    var onShow = function (e) {
+    var onShow = function () {
         if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
 
             if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
+                        if (HizoDropDown===true) $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec").data("IdBase", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
                         break;
                     default:
@@ -861,17 +867,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Dis").data("IdBase", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Base');
                         break;
                     default:
@@ -882,17 +888,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelecFormulas").data("IdBase", TxtIdsec);
+                        if (HizoDropDown === true) $("#TxtOpcSelecFormulas").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Base');
                         break;
                     default:
@@ -903,17 +909,17 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 switch (Formulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Color');
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
+                        if (HizoDropDown === true)   $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Técnica');
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
-                        $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
+                        if (HizoDropDown === true)   $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
                         $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Base');
                         break;
                     default:
@@ -925,30 +931,39 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
 
             if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
                 //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
+                if (HizoDropDown === true)  $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
             }
 
             if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
                 //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
+                if (HizoDropDown === true)  $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Dis"]').text('Nombre del Accesorio');
             }
         }
+        HizoDropDown = false;
+        if (m !== undefined) {
+            m.data("kendoWindow").center();
+        }        
     };
-    m.kendoDialog({
+    m.kendoWindow({
+        actions: ["Close"],
         height: "auto",
         width: "auto",
         title: titulo,
         closable: true,
         modal: true,
-        content: data,
         visible: false,
-        maxHeight: 800,
-        show: onShow     
+        activate: onShow,
+        pinned: true,
+        maximize: function (e) {
+            e.preventDefault();
+        }
     });
-    m.data("kendoDialog").open();
 
+    m.data("kendoWindow").content(data);
+    m.data("kendoWindow").center().open();
+    m.data("kendoWindow").title(titulo);
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
@@ -1011,11 +1026,8 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
         });
         fn_PWConfList = [];
     }
-  
+
     $.each(fn_PWList, function (index, elemento) {
         elemento.call(document, jQuery);
     });
-
-
-
 };
