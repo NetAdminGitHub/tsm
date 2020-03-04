@@ -1,4 +1,5 @@
-﻿var stage;
+﻿
+var stage;
 var layer;
 var fn_PWList = [];
 var fn_PWConfList = [];
@@ -10,12 +11,33 @@ var Titulo = "";
 var ModalEstacion = "";
 var ModalEstacionJS = "";
 let TipoEstacion = "";
+let Formulacion = "";
+let HizoDropDown = false;
 let vhb;
 var fn_RTCargarMaquina = function () {
+    //borrar la maquina
+    $.each(ConfigEtapas, function (index,elemento) {
+        //if (elemento.IdEtapaProceso !== idEtapaProceso) {
+            $("#EtapaSeteo_" + elemento.IdEtapaProceso + "").children().remove();
+        //}  
+    }); 
+
+    $.ajax({
+        url: "/Estaciones/_MaqSR22",
+        async: false,
+        type: 'GET',
+        contentType: "text/html; charset=utf-8",
+        datatype: "html",
+        success: function (resultado) {
+            $("#EtapaSeteo_" + idEtapaProceso + "").html(resultado);
+        }
+    });
+
     var width = window.innerWidth;
     var height = window.innerHeight;
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     maq = fn_GetMaquinas();
+    TipoTintas = fn_TipoTintas();
 
     stage = new Konva.Stage({
         container: 'container',
@@ -26,13 +48,53 @@ var fn_RTCargarMaquina = function () {
     layer = new Konva.Layer();
     var con = stage.container();
 
-    var cambioColor = "";
+    var tooltipLayer = new Konva.Layer();
+    var tooltip = new Konva.Label({
+        opacity: 0.75,
+        visible: false,
+        listening: false
+    });
 
+    tooltip.add(
+        new Konva.Tag({
+            fill: 'black',
+            pointerDirection: 'down',
+            //pointerWidth: 10,
+            //pointerHeight: 10,
+            lineJoin: 'round',
+            shadowColor: 'black',
+            shadowBlur: 10,
+            shadowOffset: 10,
+            shadowOpacity: 0.2
+        })
+    );
+
+    tooltip.add(
+        new Konva.Text({
+            text: '',
+            fontFamily: 'Calibri',
+            fontSize: 18,
+            padding: 5,
+            fill: 'white'
+        })
+    );
+    //var tooltip = new Konva.Text({
+    //    text: '',
+    //    fontFamily: 'Calibri',
+    //    fontSize: 12,
+    //    padding: 5,
+    //    visible: false,
+    //    fill: 'black',
+    //    opacity: 0.75,
+    //    textFill: 'white'
+    //});
+
+    tooltipLayer.add(tooltip);
     //Brazos Superiores
     for (let i = 0; i < 11; i++) {
         let estacionInfo;
         let estacionTexto;
-        estacionInfo = maq.find(q => q.IdEstacion === i + 12);
+        estacionInfo = maq.find(q => q.IdEstacion === i + 1);
 
         if (estacionInfo)
             estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
@@ -44,7 +106,7 @@ var fn_RTCargarMaquina = function () {
             y: 55,
             width: 70,
             height: 70,
-            id: "TxtInfo" + (i + 12),
+            id: "TxtInfo" + (i + 1),
             text: estacionTexto
         });
 
@@ -58,14 +120,14 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnEdit" + (i + 12)
+            id: "btnEdit" + (i + 1)
         });
 
         let textbt1 = new Konva.Text({
             x: 111,
             y: 35,
             text: 'E',
-            id: "txtEdit" + (i + 12)
+            id: "txtEdit" + (i + 1)
         
         });
 
@@ -79,7 +141,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnborrar" + (i + 12)
+            id: "btnborrar" + (i + 1)
         });
 
 
@@ -87,7 +149,7 @@ var fn_RTCargarMaquina = function () {
             x: 151,
             y: 10,
             text: 'X',
-            id: "txtBorrar" + (i + 12)
+            id: "txtBorrar" + (i + 1)
        
         });
 
@@ -98,7 +160,7 @@ var fn_RTCargarMaquina = function () {
         let text = new Konva.Text({
             width: 70,
             height: 20,
-            text: "#" + (i + 12)
+            text: "#" + (i + 1)
         });
 
         text.align('center');
@@ -112,7 +174,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "brazo" + (i + 12),
+            id: "brazo" + (i + 1),
             IdSeteo: 0,
             IdTipoFormulacion: ""
 
@@ -172,21 +234,49 @@ var fn_RTCargarMaquina = function () {
             if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
                 let data = maq.find(q => q.IdEstacion === Number(xidb));
 
-                fn_verEidtar(data.IdTipoFormulacion, xidb);
+                fn_verEditar(data.IdTipoFormulacion, xidb);
             }
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
-            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10)) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+        });
+
+        textInfo.on('mousemove', function (e) {
+            var node = e.target;
+            let xidb = node.id().replace("TxtInfo", "");
+
+            if (node) {
+
+                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                    let data = maq.find(q => q.IdEstacion === Number(xidb));
+                    // update tooltip
+                    var mousePos = node.getStage().getPointerPosition();
+                    tooltip.position({
+                        x: mousePos.x+200,
+                        y: mousePos.y +200
+                    });
+                    tooltip
+                        .getText()
+                        .text(data.ToolTips);
+                    tooltip.show();
+                    tooltipLayer.batchDraw();
+                }
+
+            }
+        });
+        textInfo.on('mouseout', function () {
+            tooltip.hide();
+            tooltipLayer.draw();
         });
     }
 
     for (let i = 12; i < 23; i++) {
         let estacionInfo;
         let estacionTexto;
-        estacionInfo = maq.find(q => q.IdEstacion === 23 - i);
+        estacionInfo = maq.find(q => q.IdEstacion === (34 - i));
 
         if (estacionInfo)
             estacionTexto = estacionInfo.IdTipoFormulacion === "COLOR" ? estacionInfo.Color : estacionInfo.IdTipoFormulacion === "BASE" ? estacionInfo.NomIdBase : estacionInfo.IdTipoFormulacion === "TECNICA" ? estacionInfo.NomIdTecnica : estacionInfo.NomIdAccesorio;
@@ -198,7 +288,7 @@ var fn_RTCargarMaquina = function () {
             y: 55,
             width: 70,
             height: 70,
-            id: "TxtInfo" + (23 - i),
+            id: "TxtInfo" + (34 - i),
             text: estacionTexto
         });
 
@@ -212,14 +302,14 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnEdit" + (23 - i)
+            id: "btnEdit" + (34 - i)
         });
 
         let textbt1 = new Konva.Text({
             x: 111,
             y: 35,
             text: 'E',
-            id: "txtEdit" + (23 - i)
+            id: "txtEdit" + (34 - i)
             //fontSize: 16,
             //fontFamily: 'Calibri',
             //fill: 'green',
@@ -236,8 +326,7 @@ var fn_RTCargarMaquina = function () {
             fill: 'white',
             stroke: 'black',
             strokeWidth: 1,
-            id: "btnBorrar" + (23 - i)
-
+            id: "btnBorrar" + (34 - i)
         });
 
 
@@ -245,7 +334,7 @@ var fn_RTCargarMaquina = function () {
             x: 151,
             y: 10,
             text: 'X',
-            id: "txtBorrar" + (23 - i)
+            id: "txtBorrar" + (34 - i)
         });
 
         textbt2.align('center');
@@ -254,7 +343,7 @@ var fn_RTCargarMaquina = function () {
         let text = new Konva.Text({
             width: 70,
             height: 20,
-            text: "#" + (23 - i)
+            text: "#" + (34 - i)
         });
 
         text.align('center');
@@ -269,7 +358,7 @@ var fn_RTCargarMaquina = function () {
             stroke: 'black',
             strokeWidth: 1,
             draggable: true,
-            id: "brazo" + (23 - i),
+            id: "brazo" + (34 - i),
             IdSeteo: 0,
             IdTipoFormulacion: ""
         
@@ -326,15 +415,43 @@ var fn_RTCargarMaquina = function () {
             if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
                 let data = maq.find(q => q.IdEstacion === Number(xidb));
 
-                fn_verEidtar(data.IdTipoFormulacion, xidb);
+                fn_verEditar(data.IdTipoFormulacion, xidb);
             }
         });
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
 
-            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10) ) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
-        });       
+        });   
+
+        textInfo.on('mousemove', function (e) {
+            var node = e.target;
+            let xidb = node.id().replace("TxtInfo", "");
+
+            if (node) {
+
+                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                    let data = maq.find(q => q.IdEstacion === Number(xidb));
+                    // update tooltip
+                    var mousePos = node.getStage().getPointerPosition();
+                    tooltip.position({
+                        x: mousePos.x+200,
+                        y: mousePos.y +200
+                    });
+                    tooltip
+                        .getText()
+                        .text(data.ToolTips);
+                    tooltip.show();
+                    tooltipLayer.batchDraw();
+                }
+
+            }
+        });
+        textInfo.on('mouseout', function () {
+            tooltip.hide();
+            tooltipLayer.draw();
+        });
     }
 
 
@@ -444,6 +561,7 @@ var fn_RTCargarMaquina = function () {
 
 
     stage.add(layer);
+    stage.add(tooltipLayer);
 
     con.addEventListener("dragover", function (event) {
         event.preventDefault();
@@ -458,7 +576,8 @@ var dropElemento = function (e) {
     if (stage.getIntersection(stage.getPointerPosition()) && stage.getIntersection(stage.getPointerPosition()).attrs && vhb===true) {
    
         var a = stage.find("#" + stage.getIntersection(stage.getPointerPosition()).attrs.id);
-        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {          
+        if (stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("brazo") || stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().includes("TxtInfo")) {     
+            HizoDropDown = true;
             // obtener el nombre de vista modal estacion
             ModalEstacion = $("#" + e.draggable.element[0].id + "").data("Estacion");
             // Obtener el JS
@@ -467,38 +586,43 @@ var dropElemento = function (e) {
             // Tipo de estacion 
              TipoEstacion = $("#" + e.draggable.element[0].id + "").data("TipoEstacion");
 
+            // Tipo de Formulacion
+            Formulacion = $("#" + e.draggable.element[0].id + "").data("Formulacion");
+
             // obtener la Url de la vista parcial.
             let Url = $("#" + ModalEstacion + "").data("url");
 
             let gDrag = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid"));
       
             let xEstacionBra = stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", "");
-
-            switch (TipoEstacion) {
-                case "COLOR":
-                    Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
-                    TxtIdsec = gDrag.IdRequerimientoColor;
-                    TxtSecName = gDrag.Color;
-                    break;
-                case "TECNICA":
-                    Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
-                    TxtIdsec = gDrag.IdRequerimientoTecnica;
-                    TxtSecName = gDrag.Nombre;
-                    break;
-                case "BASE":
-                    Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
-                    TxtIdsec = gDrag.IdBase;
-                    TxtSecName = gDrag.Nombre;
-                    break;
-                case "ACCESORIO":
-                    Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-                    TxtIdsec = gDrag.IdAccesorio;
-                    TxtSecName = gDrag.Nombre;
-                    break;
-                default:
-                    Titulo = "ESTACION";
-                    break;
+            if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
+                switch (Formulacion) {
+                    case "COLOR":
+                        Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                        TxtIdsec = gDrag.IdRequerimientoColor;
+                        TxtSecName = gDrag.Color;
+                        break;
+                    case "TECNICA":
+                        Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                        TxtIdsec = gDrag.IdRequerimientoTecnica;
+                        TxtSecName = gDrag.Nombre;
+                        break;
+                    case "BASE":
+                        Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                        TxtIdsec = gDrag.IdBase;
+                        TxtSecName = gDrag.Nombre;
+                        break;
+                    default:
+                        Titulo = "ESTACION";
+                        break;
+                }
             }
+            if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
+                        Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                        TxtIdsec = gDrag.IdAccesorio;
+                        TxtSecName = gDrag.Nombre;
+            }
+           
 
             if ($("#" + ModalEstacion + "").children().length === 0) {
                 $.ajax({
@@ -508,12 +632,12 @@ var dropElemento = function (e) {
                     contentType: "text/html; charset=utf-8",
                     datatype: "html",
                     success: function (resultado) {
-                        fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
+                        fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion, Formulacion);
                     }
                 });
             } else {
 
-                fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
+                fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion, Formulacion);
             }
           
         }
@@ -529,8 +653,9 @@ var dropElemento = function (e) {
  * @param {HTMLDivElement} ViewModal Nombre vista modal
  * @param {string} ViewModalJs Nombre Js Vista modal
   *@param {string} ViewTipoEstacion tipo de estacion
+  *@param {string} ViewFormulacion tipo de formulacion
  */
-let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewModal, ViewModalJs, ViewTipoEstacion) {
+let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewModal, ViewModalJs, ViewTipoEstacion, ViewFormulacion) {
     let a = document.getElementsByTagName("script");
     let listJs = [];
     $.each(a, function (index, elemento) {
@@ -541,125 +666,365 @@ let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewMod
         script.type = "text/javascript";
         script.src = "/Scripts/js/" + ViewModalJs;
         script.onload = function () {
-            fn_ShowModalPW(ViewModal, ViewP, Titulo, xViewEstacionBra, ViewModal, true, ViewTipoEstacion);
+            fn_ShowModalPW(ViewModal, ViewP, Titulo, xViewEstacionBra, ViewModal, true, ViewTipoEstacion, ViewFormulacion);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalPW(ViewModal, ViewP, ViewTitulo, xViewEstacionBra, ViewModal, false, ViewTipoEstacion);
+        fn_ShowModalPW(ViewModal, ViewP, ViewTitulo, xViewEstacionBra, ViewModal, false, ViewTipoEstacion, ViewFormulacion);
     }
 
 
 };
 
-var fn_verEidtar = function (IdTipoFormulacion, xEstacionBra) {
-
-    switch (IdTipoFormulacion) {
-        case "COLOR":
-            Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
-            ModalEstacion= "MEstacionColor";
-            TipoEstacion= "COLOR";
-            ModalEstacionJS = "EstacionColores.js";
-            break;
-        case "TECNICA":
-            Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
-            ModalEstacion= "MEstacionColor";
-            TipoEstacion= "TECNICA";
-            ModalEstacionJS= "EstacionColores.js";
-            break;
-        case "BASE":
-            Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
-            ModalEstacion= "MEstacionColor";
-            TipoEstacion= "BASE";
-            ModalEstacionJS= "EstacionColores.js";
-            break;
-        default:
-            Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-            ModalEstacion= "MEstacionAccesorios";
-            ModalEstacionJS= "EstacionAccesorios.js";
-            TipoEstacion = "ACCESORIO";
-          
-            break;
+var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
+    HizoDropDown = false;
+    if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                ModalEstacion = "MEstacionColor";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionColores.js";
+                Formulacion = "COLOR";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                ModalEstacion = "MEstacionColor";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionColores.js";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                ModalEstacion = "MEstacionColor";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionColores.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                ModalEstacion = "MEstacionAccesorios";
+                ModalEstacionJS = "EstacionAccesorios.js";
+                TipoEstacion = "ACCESORIO";
+                Formulacion = "";
+                break;
+        }
     }
+    if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
 
-    let Url = $("#" + ModalEstacion + "").data("url");
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                ModalEstacion = "MEstacionDisenos";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionDisenos.js";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                ModalEstacion = "MEstacionDisenos";
+                ModalEstacionJS = "EstacionDisenos.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                ModalEstacion = "MEstacionDisenos";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionDisenos.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                ModalEstacion = "MEstacionAccesoriosDis";
+                ModalEstacionJS = "EstacionAccesoriosDis.js";
+                TipoEstacion = "ACCESORIO";
+                Formulacion = "";
+                break;
+        }
+       
 
-    if ($("#" + ModalEstacion + "").children().length === 0) {
-        $.ajax({
-            url: Url,
-            async: false,
-            type: 'GET',
-            contentType: "text/html; charset=utf-8",
-            datatype: "html",
-            success: function (resultado) {
-                fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
-            }
-        });
-    } else {
-
-        fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion);
     }
+    if (xVistaFormulario.toUpperCase() === "_TINTASFORMULACIONES") {
+   
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "TINTAS Y REVELADO COLOR";
+                ModalEstacion = "MEstacionFormulas";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionFormulas.js";
+                break;
+            case "TECNICA":
+                Titulo = "TINTAS Y REVELADO TÉCNICAS";
+                ModalEstacion = "MEstacionFormulas";
+                ModalEstacionJS = "EstacionFormulas.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "TINTAS Y REVELADO BASES";
+                ModalEstacion = "MEstacionFormulas";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionFormulas.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "";
+                ModalEstacion = undefined; // color undefined para no levatar vista modal
+                ModalEstacionJS = "";
+                TipoEstacion = "";
+                Formulacion = "";
+                break;
+        }
+    }
+    if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                ModalEstacion = "MEstacionMuestra";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionMuestra.js";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                ModalEstacion = "MEstacionMuestra";
+                ModalEstacionJS = "EstacionMuestra.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                ModalEstacion = "MEstacionMuestra";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionMuestra.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "";
+                ModalEstacion = undefined; // color undefined para no levatar vista modal
+                ModalEstacionJS = "";
+                TipoEstacion = "";
+                Formulacion = "";
+                break;
+        }
+    }
+    if (ModalEstacion !== undefined) {
+
+        let Url = $("#" + ModalEstacion + "").data("url");
+
+        if ($("#" + ModalEstacion + "").children().length === 0) {
+            $.ajax({
+                url: Url,
+                async: false,
+                type: 'GET',
+                contentType: "text/html; charset=utf-8",
+                datatype: "html",
+                success: function (resultado) {
+                    fn_CargarVistaModal(resultado, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion, Formulacion);
+                }
+            });
+        } else {
+
+            fn_CargarVistaModal(undefined, Titulo, xEstacionBra, $("#" + ModalEstacion + ""), ModalEstacionJS, TipoEstacion, Formulacion);
+        }
+    }
+    
  
 };
 
-let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig, ViewTipoEstacion) {
-    ViewModal.on('show.bs.modal', function (e) {
-        switch (TipoEstacion) {
-            case "COLOR":
+let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig, ViewTipoEstacion, ViewFormulacion) {
+    var onShow = function () {
+        if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
+
+            if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown===true) $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
+
+            if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Dis").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Dis"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
+
+            if (xVistaFormulario.toUpperCase() === "_TINTASFORMULACIONES") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelecFormulas").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
+
+            if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)  $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)   $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true)   $("#TxtOpcSelec_Mues").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
+        }
+
+        if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
+
+            if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
                 //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelec").data("IdRequerimientoColor", TxtIdsec);
-                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
-                break;
-            case "TECNICA":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelec").data("IdRequerimientoTecnica", TxtIdsec);
-                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
-                break;
-            case "BASE":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelec").data("IdBase", TxtIdsec);
-                $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
-                break;
-            case "ACCESORIO":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
+                if (HizoDropDown === true)  $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce"]').text('Nombre del Accesorio');
-                break;
-            default:
+            }
+
+            if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
+                //guardo en Memoria la llave del tipo de selección
+                if (HizoDropDown === true)  $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Dis"]').text('Nombre del Accesorio');
+            }
+        }
+        HizoDropDown = false;
+        if (m !== undefined) {
+            m.data("kendoWindow").center();
+        }        
+    };
+    m.kendoWindow({
+        actions: ["Close"],
+        height: "auto",
+        width: "auto",
+        title: titulo,
+        closable: true,
+        modal: true,
+        visible: false,
+        activate: onShow,
+        pinned: true,
+        maximize: function (e) {
+            e.preventDefault();
         }
     });
 
-    if (data !== undefined) { m.html(data); }
-    m.modal({
-        show: true,
-        keyboard: false,
-        backdrop: 'static'
-    });
-    m.find('.modal-title').text(titulo);
+    m.data("kendoWindow").content(data);
+    m.data("kendoWindow").center().open();
+    
+    if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
 
-    if (ViewTipoEstacion === 'ACCESORIO') {
-        $("#TxtOpcSelecAcce").data("name", TxtSecName);
-        $("#TxtOpcSelecAcce").data("TipoEstacion", ViewTipoEstacion);
-        $("#TxtOpcSelecAcce").data("IdBrazo", xvbrazo);
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
+            $("#TxtOpcSelecAcce").data("name", TxtSecName);
+            $("#TxtOpcSelecAcce").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecAcce").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecAcce").data("IdBrazo", xvbrazo);
 
-    } else {
-        $("#TxtOpcSelec").data("name", TxtSecName);
-        $("#TxtOpcSelec").data("TipoEstacion", ViewTipoEstacion);
-        $("#TxtOpcSelec").data("IdBrazo", xvbrazo);
-
-
+        }
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec").data("name", TxtSecName);
+            $("#TxtOpcSelec").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec").data("IdBrazo", xvbrazo);
+        }
     }
+    if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
+            $("#TxtOpcSelecAcce_Dis").data("name", TxtSecName);
+            $("#TxtOpcSelecAcce_Dis").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecAcce_Dis").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecAcce_Dis").data("IdBrazo", xvbrazo);
+
+        }
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec_Dis").data("name", TxtSecName);
+            $("#TxtOpcSelec_Dis").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec_Dis").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec_Dis").data("IdBrazo", xvbrazo);
+
+
+        }
+    }
+    if (xVistaFormulario.toUpperCase() === "_TINTASFORMULACIONES") {
+
+       
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelecFormulas").data("name", TxtSecName);
+            $("#TxtOpcSelecFormulas").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecFormulas").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecFormulas").data("IdBrazo", xvbrazo);
+        }
+    }
+
+    if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec_Mues").data("name", TxtSecName);
+            $("#TxtOpcSelec_Mues").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec_Mues").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec_Mues").data("IdBrazo", xvbrazo);
+        }
+    }
+
     if (CargarConfig === true) {
         $.each(fn_PWConfList, function (index, elemento) {
             elemento.call(document, jQuery);
         });
         fn_PWConfList = [];
     }
-  
+
     $.each(fn_PWList, function (index, elemento) {
         elemento.call(document, jQuery);
     });
-
-
-
 };

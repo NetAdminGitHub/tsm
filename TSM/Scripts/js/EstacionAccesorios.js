@@ -1,6 +1,4 @@
-﻿var EstacionBraAcce;
-var TeAcce;
-var idBraAcce;
+﻿
 var fn_VistaEstacionAccesoriosDocuReady = function () {
     KdoButton($("#btnAddMEA"), "check", "Agregar");
     $("#btnAddMEA").data("kendoButton").bind("click", function (e) {
@@ -10,20 +8,23 @@ var fn_VistaEstacionAccesoriosDocuReady = function () {
 };
 
 var fn_VistaEstacionAccesorios = function () {
+
+ 
     //InicioAcce = true;
     TextBoxEnable($("#TxtOpcSelecAcce"), false);
     $("#TxtOpcSelecAcce").val($("#TxtOpcSelecAcce").data("name"));
     idBraAcce = $("#TxtOpcSelecAcce").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
-    TeAcce = $("#TxtOpcSelecAcce").data("TipoEstacion");
     EstacionBraAcce = fn_GetEstacion(maq[0].IdSeteo, idBraAcce);
 
     if (EstacionBraAcce !== null) {
         $("#TxtOpcSelecAcce").val(EstacionBraAcce.Nombre1 === undefined ? "" : EstacionBraAcce.Nombre1);
         $("#TxtOpcSelecAcce").data("IdAccesorio", EstacionBraAcce.IdAccesorio === undefined ? "" : EstacionBraAcce.IdAccesorio);
+    } else {
+        $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
     }
 };
 
-let fn_GuardarEstacionAccesorio = function () {
+var fn_GuardarEstacionAccesorio = function () {
 
     fn_GuardarEstacionAcce(idBraAcce);
     var a = stage.find("#TxtInfo" + idBraAcce);
@@ -31,7 +32,7 @@ let fn_GuardarEstacionAccesorio = function () {
     layer.draw();
 };
 
-let fn_GuardarEstacionAcce = function (xIdBrazo) {
+var fn_GuardarEstacionAcce = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionAccesorios"), true);
     var xType;
     
@@ -56,7 +57,7 @@ let fn_GuardarEstacionAcce = function (xIdBrazo) {
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
             maq = fn_GetMaquinas();
-            $("#MEstacionAccesorios").modal('hide');
+            $("#MEstacionAccesorios").data("kendoWindow").close();
             RequestEndMsg(data, xType);
         },
         error: function (data) {
@@ -65,24 +66,6 @@ let fn_GuardarEstacionAcce = function (xIdBrazo) {
         }
     });
 };
-
-let fn_GetEstacion = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($("#MEstacionAccesorios"), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstaciones/GetSeteoMaquinasEstacionVista/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-            kendo.ui.progress($("#MEstacionAccesorios"), false);
-        }
-    });
-
-    return result;
-};
-
-
 
 fn_PWList.push(fn_VistaEstacionAccesorios);
 fn_PWConfList.push(fn_VistaEstacionAccesoriosDocuReady);

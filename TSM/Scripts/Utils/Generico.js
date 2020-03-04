@@ -17,7 +17,7 @@ function Get_KendoDataSource(Url_api) {
 
 var fn_FiltrarJsonResult = function (Data, Keyfilter) {
     if (Data.length !== 0) {
-        var resul = Data.filter(function (item) { return item[Keyfilter] != null; });
+        var resul = Data.filter(function (item) { return item[Keyfilter] !== undefined; });
         return resul[0][Keyfilter];
     } else {
         return "";
@@ -26,7 +26,7 @@ var fn_FiltrarJsonResult = function (Data, Keyfilter) {
 
 /**
  * Devuelve fecha y hora actual.
- * @returns {date} retorna fecha
+ * @returns {Date} retorna fecha
  */
 function Fhoy() {
     return kendo.toString(kendo.parseDate(new Date()), 's');
@@ -54,11 +54,11 @@ function RequestEndMsg(e, type) {
         let mensaje, tipo;
 
         if (type === "Delete") {
-            mensaje = e.Mensaje + ((e.Output === null || e.Output === undefined) ? "" : " " + e.Output);
+            mensaje = e.Mensaje + (e.Output === null || e.Output === undefined ? "" : " " + e.Output);
             tipo = e.TipoCodigo === "Satisfactorio" ? "success" : "error";
         }
         else {
-            mensaje = e[1].Mensaje + ((e[1].Output === null || e[1].Output === undefined) ? "" : " " + e[1].Output);
+            mensaje = e[1].Mensaje + (e[1].Output === null || e[1].Output === undefined ? "" : " " + e[1].Output);
             tipo = e[1].TipoCodigo === "Satisfactorio" ? "success" : "error";
         }
 
@@ -86,7 +86,7 @@ function ErrorMsg(e) {
     var MensajeTemplate = "";
     var mensaje = "";
     if (e.responseJSON) {
-        mensaje = ((e.responseJSON.Mensaje === null || e.responseJSON.Mensaje === undefined) ? (e.responseJSON.ExceptionMessage === undefined ? e.responseJSON.Message : e.responseJSON.ExceptionMessage) : e.responseJSON.Mensaje)
+        mensaje = (e.responseJSON.Mensaje === null || e.responseJSON.Mensaje === undefined ? e.responseJSON.ExceptionMessage === undefined ? e.responseJSON.Message : e.responseJSON.ExceptionMessage : e.responseJSON.Mensaje)
             + (e.responseJSON.Output === null || e.responseJSON.Output === undefined ? "" : " " + e.responseJSON.Output);
         icono = e.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
         MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
@@ -240,7 +240,7 @@ var Fn_VistaConsultaRequerimiento = function (e) {
 };
 /**
  * VISTA CONSULTA ANALISIS DE DISEÑO
- * @param {object} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  */
 var Fn_VistaConsultaAnalisis = function (e) {
     // cargar consulta
@@ -272,7 +272,7 @@ var Fn_VistaConsultaAnalisis = function (e) {
 
 /**
  * VISTA CONSULTA ESTADOS
- * @param {object} e tiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e tiqueta <DIV> a utilizar para mostrar el kendoDialog.
  */
 var Fn_VistaConsultaRequerimientoEstados = function (e) {
     // cargar consulta
@@ -303,7 +303,7 @@ var Fn_VistaConsultaRequerimientoEstados = function (e) {
 
 /**
  * VISTA CONSULTA SIMULACIONES
- * @param {object} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  */
 var Fn_VistaConsultaSimulacion = function (e) {
     // cargar consulta
@@ -335,7 +335,7 @@ var Fn_VistaConsultaSimulacion = function (e) {
 
 /**
  * Muestra ventana modal consulta requerimiento
- * @param {object} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  * @param {Number} IdRequerimiento codigo del requerimiento de desarrollo.
  */
 var Fn_VistaConsultaRequerimientoGet = function (e, IdRequerimiento) {
@@ -345,7 +345,7 @@ var Fn_VistaConsultaRequerimientoGet = function (e, IdRequerimiento) {
 };
 /**
  * Muestra ventana modal consulta analisis de diseño
- * @param {object} e  etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e  etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  * @param {number} IdServicio codigo del servicio
  * @param {number} IdAnalisisDiseno codigo del analisis de diseño
  */
@@ -357,7 +357,7 @@ var Fn_VistaConsultaAnalisisDisenosGet = function (e, IdServicio, IdAnalisisDise
 
 /**
  * Muestra Ventana modal consulta requerimiento estado
- * @param {object} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  * @param {string} Tabla tabla a consultar
  * @param {number} IdRequerimiento pk de la tabla Requerimiento parametro opcional.
  */
@@ -369,7 +369,7 @@ var Fn_VistaConsultaRequerimientoEstadosGet = function (e, Tabla, IdRequerimient
 
 /**
  * Muestra ventana modal consulta Simulación
- * @param {object} e  etiqueta <DIV> a utilizar para mostrar el kendoDialog.
+ * @param {HTMLDivElement} e  etiqueta <DIV> a utilizar para mostrar el kendoDialog.
  * @param {number} IdSimulacion codigo de simulación
  */
 var Fn_VistaConsultaSimulacionGet = function (e, IdSimulacion) {
@@ -382,9 +382,7 @@ var Fn_VistaConsultaSimulacionGet = function (e, IdSimulacion) {
  * funcion lee imagenes adjuntas y las inserta en una etiqueta DIV que funciona como carrusel
  * @param {string} Objecarousel por ejemplo $("#MyCarrousel)
  * @param {string} src ubicacion u origen de las imagenes adjuntadas /Adjuntos' 
- * @param {object} DataSource origen de datos
- * @param {string} srcDefault ubicacion de la imagen por defecto /Images/NoImage.png
- * @param {string} srcNoEncontrada ubicacion de imagen cuando existe un error de lectura /Images/NoEncontrada.png
+ * @param {JSON} DataSource origen de datos
  */
 
 var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
@@ -430,8 +428,7 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
 
 /**
  * metodo cuando ocurre un error al cargar la imagen la remplaza por una imagen definida.
- * @param {object} image objeto o etiqueta imagen
- * @param {string} src  scr origen de la imagen.
+ * @param {HTMLImageElement} image objeto o etiqueta imagen
  */
 var imgError = function (image) {
     image.onerror = "";
@@ -458,20 +455,13 @@ var Fn_Carouselcontent = function () {
         '</a>' +
         '</div>' +
         '</div>' +
-        '</div>' +
-        '<div class="form-row">' +
-        '<div id="myModal" class="modal-img">' +
-        '<span class="close-img" id = "idcloseMod" >&times;</span >' +
-        '<img class="modal-content-img" id="img01">' +
-        '<div id="caption"></div>' +
-        '</div>' +
         '</div>';
 
     return VarCarousel;
 };
 
 var fn_Ver_Img_Modal = function (idcolImg) {
-    let modal = document.getElementById("myModal");
+    let modal = document.getElementById("ModalImgeZoom");
     let img = document.getElementById(idcolImg);
     let modalImg = document.getElementById("img01");
     let captionText = document.getElementById("caption");
@@ -482,13 +472,15 @@ var fn_Ver_Img_Modal = function (idcolImg) {
     span.onclick = function () {
         modal.style.display = "none";
     };
+    fn_CustomTemplateClose();
 };
 var fn_click_Imagen = function (elemento) {
     fn_Ver_Img_Modal(elemento.id);
 };
+
 /**
  * 
- * @param {any} e objeto o etiqueta  <div> para el cambio de estado
+ * @param {HTMLDivElement} e objeto o etiqueta  <div> para el cambio de estado
  */
 var Fn_VistaAsignarUsuario = function (e) {
     VistaPopup = e;
@@ -524,10 +516,16 @@ var Fn_VistaAsignarUsuario = function (e) {
 
 
 /**
- * 
- * @param {any} e objeto o etiqueta  <div> para el cambio de estado
+ * configura vista para el cambio de estado
+ * @param {HTMLDivElement} e objeto o etiqueta  <div> para el cambio de estado
+ * @param {function} fn_close opcional funcion a invocar despues de cerrar la ventana cambio estado
  */
-var Fn_VistaCambioEstado = function (e) {
+var Fn_VistaCambioEstado = function (e,fn_close) {
+    if (fn_close === undefined || fn_close === "") {
+        onCloseCE = function () { return onCloseCambioEstado(); };
+    } else {
+        onCloseCE = function () { return fn_close(); };
+    }
 
     VistaPopup = e;
     $.ajax({
@@ -537,19 +535,20 @@ var Fn_VistaCambioEstado = function (e) {
         success: function (result) {
             var RList = [];
             VistaPopup.kendoDialog({
-                height: $(window).height() - "510" + "px",
+                height: "auto",// $(window).height() - "510" + "px",
                 width: "20%",
                 title: "Cambio de estado",
                 closable: true,
                 modal: true,
                 content: result,
+                maxHeight: 800,
                 visible: false,
                 actions: [
                     { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: Fn_Cambio },
                     { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
 
                 ],
-                close: onCloseCambioEstado
+                close: onCloseCE
             });
 
             RList.push(fn_DocRIniciaVistaCambio);
@@ -568,7 +567,7 @@ var Fn_VistaCambioEstado = function (e) {
  * @param {string} UrlCambioEstado url cambio  de estado
  * @param {string} SP nombre del proceso almacenado
  * @param {string} Id id del registo (PK)
- * @param {Function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
+ * @param {function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
  */
 var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado) {
 
@@ -584,6 +583,33 @@ var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado
     };
     fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, Param);
 };
+
+/**
+ *  MUESTRA VENTANA MODAL PARA EL CAMBIO DE ESTADOS
+ * @param {string} Tabla tabla a cambiar estado
+ * @param {string} EstadoActual estado actual del registro
+ * @param {string} UrlCambioEstado url cambio  de estado
+ * @param {string} SP nombre del proceso almacenado
+ * @param {JSON} param id del registo (PK)
+ * @param {function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
+ */
+var Fn_VistaCambioEstadoVisualizar = function (Tabla, EstadoActual, UrlCambioEstado, SP, param, fnGuardado) {
+
+    VistaPopup.data("kendoDialog").open();
+    let data = {
+        Tabla: Tabla,//obligatorios
+        EstadoActual: EstadoActual,//obligatorios
+        SP: SP,//obligatorios
+        EstadoSiguiente: "",//obligatorios
+        Motivo: "",//obligatorios
+        //Id: Id,
+        fnGuardado: fnGuardado
+    };
+
+    data = $.extend(data, param);
+    fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, data);
+};
+
 /**
  * permite habilitar o inhabilitar el elemento panel.
  * @param {HTMLDivElement} DivElem elemento div que contiene la funcion de panel
@@ -876,6 +902,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
 
     // Smart Wizard
     DivIdElement.smartWizard({
+        keyNavigation: false,
         selected: etapas[0].EtapaActiva,
         showStepURLhash: false,
         theme: givenOrDefault(forma, "arrows"),
@@ -898,11 +925,12 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     DivIdElement.on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
         let etapa = anchorObject.attr("etapa");
         let vista = anchorObject.attr("vista");
-        if (idEtapaProceso != undefined)
+        if (idEtapaProceso !== undefined)
             idEtapaProceso = etapa;
         window.history.pushState(stepNumber, window.title, window.location.origin + "/OrdenesTrabajo/ElementoTrabajo/" + idOrdenTrabajo + "/" + etapa);
 
-        if ($("#vistaParcial" + etapa).children().length == 0) {
+        if ($("#vistaParcial" + etapa).children().length === 0) {
+            kendo.ui.progress($(document.body), true);
             $.ajax({
                 url: "/OrdenesTrabajo/VistaParcial/" + vista,
                 method: 'POST',
@@ -911,13 +939,16 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
 
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "/Scripts/js/" + vista + ".js";
+                    script.src = "/Scripts/js/" + vista + ".js?" + _version;
 
                     script.onload = function () {
                         CargarInfoEtapa();
                     };
 
                     document.getElementsByTagName('head')[0].appendChild(script);
+                },
+                complete: function () {
+                    kendo.ui.progress($(document.body), false);
                 }
             });
         }
@@ -926,7 +957,7 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
         }
     });
 
-    let index = $.grep(etapas, function (n, i) { return n.IdEtapaProceso == window.location.href.split("/")[window.location.href.split("/").length - 1]; });
+    let index = $.grep(etapas, function (n, i) { return n.IdEtapaProceso === parseInt(window.location.href.split("/")[window.location.href.split("/").length - 1]); });
 
     $("#smartwizard").smartWizard("goToPage", index[0].Item - 1);
 
@@ -954,3 +985,104 @@ var KdoChkGetValue = function (InputElem) {
 var kdoChkSetValue = function (InputElem, value) {
     InputElem.prop('checked', value);
 };
+
+/**
+ * obtiene el valor del campo  radio button
+ * @param {HTMLInputElement} InputElem  recibe el elemento  radio button
+ * @returns {boolean} retorna el valor del  radio button
+ */
+var KdoRbGetValue = function (InputElem) {
+    return InputElem.is(':checked');
+};
+
+/**
+ * coloca un valor en el campo radio button
+ * @param {HTMLInputElement} InputElem recibe el elemento  radio button
+ * @param {boolean} value valor que recibira el radio button
+ */
+var kdoRbSetValue = function (InputElem, value) {
+    InputElem.prop('checked', value);
+};
+//#region Cosulta Historica
+/**
+ * 
+ * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
+ */
+var fn_FormulaHistorica = function (divCcf) {
+
+    if ($("#" + divCcf + "").children().length === 0) {
+        $.ajax({
+            url: "/AXFormulaciones/ConsultaHistoricaFormulas",
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalFormulacion(resultado, divCcf);
+            }
+        });
+    } else {
+
+        fn_CargarVistaModalFormulacion("", divCcf);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de la busqueda
+ * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
+ */
+var fn_CargarVistaModalFormulacion = function (data, divCcf) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("ConsultaHistoricaFormulas.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/ConsultaHistoricaFormulas.js";
+        script.onload = function () {
+            fn_ShowModalFH(true, data, divCcf);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalFH(false, data, divCcf);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la busqueda
+ * @param {HtmlElementId} divCcf  Id del div que contendra la vista de busqueda de tintas
+ */
+var fn_ShowModalFH = function (cargarJs, data, divCcf) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_DRLoadConsultaHis(divCcf);
+        } else {
+            fn_ConsultaHis(divCcf);
+        }
+    };
+    let onClose = function () {
+        //$("#" + divCcf + "").children().remove();
+    };
+    $("#" + divCcf + "").kendoDialog({
+        height: "auto",// $(window).height() - "300" + "px",
+        width: "auto",
+        title: "Formulas Historicas",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divCcf + "").data("kendoDialog").open().toFront();
+};
+//#endregion 

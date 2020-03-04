@@ -48,7 +48,7 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
     ModoEdicion: givenOrDefault(ModoEdicion, "popup");
     OpcGrid = {
         sortable: givenOrDefault(Ordenable, true),
-        filterable: givenOrDefault(Filtrable, true) === true ? (givenOrDefault(FiltroModo, "") === "" ? true : { mode: FiltroModo }) : false,
+        filterable: givenOrDefault(Filtrable, true) === true ? givenOrDefault(FiltroModo, "") === "" ? true : { mode: FiltroModo } : false,
         columnMenu: givenOrDefault(ColMenu, true),
         editable: ModoEdicion !== "popup" ? ModoEdicion === "batch" ? true : ModoEdicion : {
             mode: ModoEdicion,
@@ -486,7 +486,7 @@ function Grid_requestEnd(e) {
 
 function Grid_error(e) {
     if (e.status === "error" && e.xhr.responseJSON) {
-        let mensaje = ((e.xhr.responseJSON.Mensaje === null || e.xhr.responseJSON.Mensaje === undefined) ? e.xhr.responseJSON.ExceptionMessage : e.xhr.responseJSON.Mensaje) + ((e.xhr.responseJSON.Output === null || e.xhr.responseJSON.Output === undefined) ? "" : " " + e.xhr.responseJSON.Output);
+        let mensaje = (e.xhr.responseJSON.Mensaje === null || e.xhr.responseJSON.Mensaje === undefined ? e.xhr.responseJSON.ExceptionMessage : e.xhr.responseJSON.Mensaje) + (e.xhr.responseJSON.Output === null || e.xhr.responseJSON.Output === undefined ? "" : " " + e.xhr.responseJSON.Output);
         let icono = e.xhr.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
         let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
@@ -508,7 +508,7 @@ function Grid_error(e) {
 function Grid_Focus(e, NombreCampo) {
     var arg = e;
 
-    if (arg.sender.options.editable === "popup") {
+    if (arg.sender.options.editable.mode === "popup") {
         arg.container.data('kendoWindow').bind('activate', function () {
             ArgCampo = arg.container.find("input[name='" + NombreCampo + "']");
 
@@ -518,6 +518,9 @@ function Grid_Focus(e, NombreCampo) {
             else {
                 if (ArgCampo.data("kendoComboBox")) {
                     ArgCampo.data("kendoComboBox").input.focus().select();
+                }
+                else if (ArgCampo.data("kendoMultiColumnComboBox")) {
+                    ArgCampo.data("kendoMultiColumnComboBox").input.focus().select();
                 }
                 else {
                     ArgCampo.focus().select();
@@ -534,6 +537,9 @@ function Grid_Focus(e, NombreCampo) {
         else {
             if (ArgCampo.data("kendoComboBox")) {
                 ArgCampo.data("kendoComboBox").input.focus().select();
+            }
+            else if (ArgCampo.data("kendoMultiColumnComboBox")) {
+                ArgCampo.data("kendoMultiColumnComboBox").input.focus().select();
             }
             else {
                 ArgCampo.focus().select();
