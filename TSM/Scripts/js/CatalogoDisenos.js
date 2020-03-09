@@ -1,4 +1,6 @@
 ﻿var Permisos;
+var xidClie = 0;
+var xidCatalogo = 0;
 $(document).ready(function () {
     fn_getArtesAdjuntos();
     //$('[href = "#panel31"]').click( function() {
@@ -7,11 +9,13 @@ $(document).ready(function () {
 });
 
 var fn_getArtesAdjuntos = function () {
- 
+    Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi+ "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
     let dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: TSM_Web_APi + "ArteAdjuntos/GetAdjuntosListado",
+                url: function () {
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString();
+                },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             }
@@ -40,6 +44,23 @@ var fn_getArtesAdjuntos = function () {
         fn_DibujarCatalogo(view);
     });
 
+    $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidClie = this.dataItem(e.item.index()).IdCliente;
+            dataSource.read();
+        }
+        else {
+            vIdclien = 0;
+            dataSource.read();
+        }
+    });
+    $("#CmbCliente").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xidClie = 0;
+            dataSource.read();
+        }
+    });
 };
 
 var fn_DibujarCatalogo = function (data) {
@@ -50,56 +71,23 @@ var fn_DibujarCatalogo = function (data) {
     $.each(data, function (index, elemento) {
     
         Pn.append('<div class="d-flex align-items-stretch col-md-12 col-lg-3">' +
-            '<a class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdRequerimiento + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
-            '<img class="card-img-top img-responsive w-50 " src="/Adjuntos/' + elemento.NoDocumento + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
+            '<a class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
+            '<img class="card-img-top img-responsive w-75 " src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
             '<div class="card-block text-center ">' +
-            '<h4 class="card-title"> No: ' + index.toString() + " " + elemento.NombreDiseno + '</h4>' +
+            '<h4 class="card-title">' + elemento.NombreDiseno + '</h4>' +
             '<p class="card-text">' + elemento.EstiloDiseno + '</p>' +
             '</div>' +
             '</a>' +
             '</div');
 
-        $("#CCD-" + elemento.IdRequerimiento +"").data("IdRequerimiento",elemento.IdRequerimiento);
+        $("#CCD-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno);
     });
 };
 
-var fn_onShowDatos = function () {
 
-};
 var fn_CargarModal = function (e) {
-    if ($("#ModalCDinf").children().length === 0) {
-        $.ajax({
-            url: "/CatalogoDisenos/CatalogoDisenoInf",
-            async: false,
-            type: 'GET',
-            contentType: "text/html; charset=utf-8",
-            datatype: "html",
-            success: function (resultado) {
-                $("#ModalCDinf").kendoDialog({
-                    height: "70%",
-                    width: "70%",
-                    title: $("#" + e["id"] + "").data("nombredis"),
-                    closable: true,
-                    modal: true,
-                    content: resultado,
-                    visible: false,
-                    maxHeight: 800,
-                    show: fn_onShowDatos
-                });
-
-                $("#ModalCDinf").data("kendoDialog").open();
-            }
-        });
-    } else {
-        $("#ModalCDinf").data("kendoDialog").title($("#" + e["id"] + "").data("nombredis"));
-        $("#ModalCDinf").data("kendoDialog").open();
-        
-    }
-
-    $("#scrollView").kendoScrollView({
-        enablePager: true,
-        contentHeight: "100%"
-    });
+    xidCatalogo = $("#" + e["id"] + "").data("IdCatalogoDiseno");
+    fn_ConsultarCatalogoDisenoInf("ModalCDinf", xidCatalogo);
 };
 
 
