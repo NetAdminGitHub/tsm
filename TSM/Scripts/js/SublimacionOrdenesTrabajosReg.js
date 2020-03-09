@@ -42,7 +42,9 @@ $(document).ready(function () {
     KdoButton($("#btnIrOrdeTrabajoSublimacion"), "hyperlink-open-sm", "Ir a Ordenes de Trabajo");
     KdoButton($("#Guardar"), "save", "Guardar");
     KdoButton($("#Eliminar"), "delete", "Borrar");
+    KdoButton($("#btnConfirmarRegistro"), "gear","confirmar Registro");
     KdoButtonEnable($("#Eliminar"), fn_SNBorrar(false));
+    KdoButtonEnable($("#btnConfirmarRegistro"), fn_SNProcesar(false));
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseños");
     KdoButton($("#btnCerrar"), "cancel", "Cancelar");
     KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
@@ -293,6 +295,11 @@ $(document).ready(function () {
     $("#Eliminar").click(function (event) {
         event.preventDefault();
         ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return fn_EliminarReqSublimacion(); });
+    });
+
+    $("#btnConfirmarRegistro").click(function (event) {
+        event.preventDefault();
+        fn_CambiarEstadoSublimacion();
     });
 
     $("#btnIrOrdeTrabajoSublimacion").click(function () {
@@ -731,6 +738,7 @@ let fn_getRD = function () {
                 VarIDReq = elemento.IdRequerimiento;
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(elemento.Estado === "EDICION" ? true : false));
+                $("#btnConfirmarRegistro").data("kendoButton").enable(fn_SNProcesar(elemento.Estado === "EDICION" ? true : false));
                 KdoButtonEnable($("#Eliminar"), fn_SNBorrar(elemento.Estado === "EDICION" ? true : false));
                 HabilitaFormObje(elemento.Estado === "EDICION" ? true : false);
                 // foco en la fecha
@@ -1009,6 +1017,7 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             SublimacionIdReque = data[0].IdRequerimiento;
             KdoCmbFocus($("#IdPrograma"));
             KdoButtonEnable($("#Eliminar"), fn_SNBorrar(data[0].Estado === "EDICION" ? true : false));
+            KdoButtonEnable($("#btnConfirmarRegistro"), fn_SNProcesar(data[0].Estado === "EDICION" ? true : false));
             window.history.pushState('', '', "/SublimacionOrdenesTrabajos/SublimacionRegistro/" + SublimacionIdCliente.toString() + "/" + data[0].IdRequerimiento.toString());
             Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
            
@@ -1183,6 +1192,30 @@ let HabilitaFormObje = function (ToF) {
     TextBoxEnable($("#NumeroDiseno"), ToF);
     TextBoxEnable($("#EstiloDiseno"), ToF);
 
+};
+
+let fn_CambiarEstadoSublimacion = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "RequerimientoDesarrollos/RequerimientoDesarrollos_CambiarEstadoSublimacion",
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            Id: SublimacionIdReque  ,
+            EstadoSiguiente: "CONFIRMADO",
+            Motivo: "REQUERIMIENTO CONFIRMADO"
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            window.location.href = "/SublimacionOrdenesTrabajos";
+            RequestEndMsg(data, XType);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
 };
 
 let HabilitaObje = function (e, ToF) {
