@@ -240,6 +240,7 @@
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
+    <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
@@ -699,9 +700,11 @@
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
+    <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
     <Content Include="Scripts\js\ConsultarFichaOT.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
@@ -713,6 +716,7 @@
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -930,6 +934,7 @@
     <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\SolicitudesClientes.js" />
     <Content Include="Scripts\js\SolicitudesPendientes.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajosReg.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
     <Content Include="Scripts\js\Tecnicas.js" />
@@ -1398,6 +1403,9 @@
     <Content Include="Views\Impresores\Index.cshtml" />
     <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
     <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
+    <Content Include="Views\CatalogoDisenos\ConsultarCatalogoDisenos.cshtml" />
+    <Content Include="Views\SublimacionOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
