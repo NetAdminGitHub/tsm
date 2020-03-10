@@ -1173,8 +1173,8 @@ $(document).ready(function () {
                 CantidadStrikeOff: 0,
                 StrikeOffAdicional: 0,
                 IdQuimica: null,
-                SolicitaTelaSustituta:false
-
+                SolicitaTelaSustituta:false,
+                RegistroCompletado:false
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
@@ -1316,7 +1316,8 @@ $(document).ready(function () {
                 CantidadStrikeOff: 0,
                 StrikeOffAdicional: 0,
                 IdQuimica: null,
-                SolicitaTelaSustituta: false
+                SolicitaTelaSustituta: false,
+                RegistroCompletado:false
                
 
             }),
