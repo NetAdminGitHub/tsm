@@ -14,9 +14,19 @@ namespace TSM.Utils
         public static string EmbedType { get; set; }
         private static string _PbiEmbed = null;
         private static string _PbiDataSet = null;
+        private static AuthenticationResult _authResult;
+        public static AuthenticationResult authResult { get{ return _authResult; }
+                                                        set { _authResult = value; } }
+        public static string AToken
+        {
+            get
+            {
+                if (_authResult == null)
+                { return ""; }
+                else { return _authResult.AccessToken; }
+            }
+        }
 
-        public static AuthenticationResult authResult { get; set; }
-        
         public static string PbiEmbed
         {
             get { return _PbiEmbed; }
