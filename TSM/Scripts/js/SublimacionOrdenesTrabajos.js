@@ -63,7 +63,8 @@ $(document).ready(function () {
                     Nombre5: { type: "string" },
                     IdComposicionTela: { type: "number" },
                     Nombre8: { type: "string" },
-                    Color: { type: "string" }
+                    Color: { type: "string" },
+                    RegistroCompletado: {type:"bool"}
                 }
             }
         }
@@ -108,7 +109,8 @@ $(document).ready(function () {
             { field: "IdConstruccionTela", title: "Código construcción tela", hidden: true, menu: false },
             { field: "IdComposicionTela", title: "Código composición tela", hidden: true, menu: false },
             { field: "Nombre5", title: "composición tela", hidden: true },
-            { field: "Color", title: "Color", hidden: true }
+            { field: "Color", title: "Color", hidden: true },
+            { field: "RegistroCompletado", title: "Registro Completado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RegistroCompletado"); } }
 
         ]
     });

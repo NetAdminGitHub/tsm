@@ -53,10 +53,10 @@ $(document).ready(function () {
     $("#myBtnAdjunto").data("kendoButton").element.hide();
     $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
-    //$("#Guardar").data("kendoButton").enable(false);
     PanelBarConfig($("#BarPanel"));
     KdoDatePikerEnable($("#Fecha"), false);
-
+    $('#chkRegistroCompletado').prop('checked', 0);
+ 
     // codigo de programas para el splitter
     //*******************************************************************
 
@@ -164,6 +164,12 @@ $(document).ready(function () {
                         return input.val().length <= 200;
                     }
                     return true;
+                },
+                InstruccionesEspeciales: function (input) {
+                    if (input.is("[name='InstruccionesEspeciales']")) {
+                        return input.val().length <= 2000;
+                    }
+                    return true;
                 }
 
 
@@ -181,7 +187,8 @@ $(document).ready(function () {
                 MsgIdConstruccionTela: "Requerido",
                 NombreRuler: "Longitud máxima del campo es 200",
                 NumeroDisenoRuler: "Longitud máxima del campo es 200",
-                EstiloDisenoRuler: "Longitud máxima del campo es 200"
+                EstiloDisenoRuler: "Longitud máxima del campo es 200",
+                InstruccionesEspeciales: "Longitud máxima del campo es 2000"
             }
         }
     ).data("kendoValidator");
@@ -196,7 +203,7 @@ $(document).ready(function () {
     KdoComboBoxEnable($("#IdCliente"), false);
     KdoCmbSetValue($("#IdCliente"), SublimacionIdCliente);
 
-    Kendo_CmbFiltrarGrid($("#IdPrograma"), UrlApiPro, "Nombre", "IdPrograma", "Seleccione ...", "", "IdCliente");
+    fn_KdoCmbProgramas($("#IdPrograma"), TSM_Web_APi + "Programas/GetByCliente/" + SublimacionIdCliente, "Nombre", "IdPrograma", "Seleccione ...", "", "", "", "fn_CreaPrograma");
     Kendo_MultiSelect($("#IdCategoriaPrenda"), UrlApiCPre, "Nombre", "IdCategoriaPrenda", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdCategoriaConfeccion"), UrlApiCConfec, "Nombre", "IdCategoriaConfeccion", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#IdConstruccionTela"), UrlApiConsTela, "Nombre", "IdConstruccionTela", "Seleccione ...");
@@ -214,72 +221,15 @@ $(document).ready(function () {
         clearButton: true,
         placeholder: "Seleccione...",
         height: 550,
-        dataSource: DSUnidadMedida("9,17")
+        dataSource: fn_DSIdUnidadFiltro("9,17")
     });
+    KdoCmbSetValue($("#CmbIdUnidadMedidaCantidad"), 9);
     //#endregion fin CmbIdUnidadMedidaCantidad
 
     TextBoxEnable($("#Estado"), false);
     //HabilitaFormObje(false);
 
     //#endregion FIN Inicialización de variables y controles Kendo
-
-    //#region Programacion GRID REQUERIMIENTO DE DESARROLLO
-
-    let DsRD = new kendo.data.DataSource({
-        //CONFIGURACION DEL CRUD
-        transport: {
-            read: {
-                url: function (datos) { return UrlRD + "/" + $("#txtId").val(); },
-                contentType: "application/json; charset=utf-8"
-            },
-            parameterMap: function (data, type) {
-                if (type !== "read") {
-                    return kendo.stringify(data);
-                }
-            }
-        },
-        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
-        schema: {
-            model: {
-                id: "IdRequerimiento",
-                fields: {
-                    IdRequerimiento: { type: "number" },
-                    IdCliente: { type: "number" },
-                    NoCuenta: { type: "string" },
-                    IdPrograma: { type: "number" },
-                    Nombre4: { type: "string" },
-                    NoDocumento: { type: "string" },
-                    IdServicio: { type: "number" },
-                    Nombre: { type: "string" },
-                    IdUbicacion: { type: "number" },
-                    Nombre1: { type: "string" },
-                    NoDocumento1: { type: "string" },
-                    UbicacionHorizontal: { type: "string" },
-                    UbicacionVertical: { type: "string" },
-                    CantidadPiezas: { type: "number" },
-                    TallaPrincipal: { type: "string" },
-                    Estado: { type: "string" },
-                    Fecha: { type: "date" },
-                    InstruccionesEspeciales: { type: "string" },
-                    Nombre2: { type: "string" },
-                    EstiloDiseno: { type: "string" },
-                    NumeroDiseno: { type: "string" },
-                    Nombre3: { type: "string" },
-                    Nombre5: { type: "string" },
-                    IdCategoriaConfeccion: { type: "number" },
-                    Nombre6: { type: "string" },
-                    IdConstruccionTela: { type: "number" },
-                    Nombre7: { type: "string" },
-                    IdComposicionTela: { type: "number" },
-                    Nombre8: { type: "string" },
-                    Color: { type: "string" }
-                }
-            }
-        }
-    });
-
-    //#endregion FIN Programacion GRID REQUERIMIENTO DE DESARROLLO
-
 
     //#region CRUD manejo de requerimiento de Desarrollo
 
@@ -296,12 +246,10 @@ $(document).ready(function () {
         event.preventDefault();
         ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return fn_EliminarReqSublimacion(); });
     });
-
     $("#btnConfirmarRegistro").click(function (event) {
         event.preventDefault();
         fn_CambiarEstadoSublimacion();
     });
-
     $("#btnIrOrdeTrabajoSublimacion").click(function () {
         window.location.href = "/SublimacionOrdenesTrabajos";
     });
@@ -559,6 +507,7 @@ $(document).ready(function () {
         $("#IdRequerimiento").val(SublimacionIdReque);
         HabilitaFormObje(true);
         Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
+        KdoCheckBoxEnable($("#chkRegistroCompletado"), false);
         KdoCmbFocus($("#IdPrograma"));
     }
 
@@ -627,6 +576,14 @@ let fn_partesSublimado = function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdUnidad").data("kendoComboBox").selectedIndex >= 0;
                                 }
+                                if (input.is("[name='Cantidad']")) {
+                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                    return  $("[name='Cantidad']").data("kendoNumericTextBox").value() > 0;
+                                }
+                                if (input.is("[name='Precio']") ) {
+                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                    return Permisos.SNConfidencial === true ? $("[name='Precio']").data("kendoNumericTextBox").value() > 0 : true;
+                                }
                                 return true;
 
                             }
@@ -634,7 +591,7 @@ let fn_partesSublimado = function () {
                     },
                     Nombre1: { type: "string" },
                     Cantidad: { type: "number" },
-                    IdUnidad: { type: "string" },
+                    IdUnidad: { type: "string", defaultValue:9},
                     Nombre2: { type: "string" },
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
@@ -651,6 +608,7 @@ let fn_partesSublimado = function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridPartes").kendoGrid({
         edit: function (e) {
+            $('[name="IdUnidad"]').data("kendoComboBox").setDataSource(fn_DSIdUnidadFiltro("9,17"));
             KdoHideCampoPopup(e.container, "IdRequerimiento");
             KdoHideCampoPopup(e.container, "IdCategoriaPrenda");
             KdoHideCampoPopup(e.container, "FechaMod");
@@ -660,18 +618,22 @@ let fn_partesSublimado = function () {
             if (!e.model.isNew()) {
                 KdoHideCampoPopup(e.container, "IdUbicacion");
             }
+            if (!Permisos.SNConfidencial === true) {
+                KdoHideCampoPopup(e.container, "Precio");
+            }
+       
             Grid_Focus(e, "IdUbicacion");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRequerimiento", title: "Codigo Requerimiento", hidden: true },
             { field: "IdCategoriaPrenda", title: "Codigo IdCategoriaPrenda", hidden: true },
-            { field: "IdUbicacion", title: "Codigo Parte", editor: Grid_Combox, values: ["IdUbicacion", "Nombre", UrlUbic, "", "Seleccione...."], hidden: true },
+            { field: "IdUbicacion", title: "Parte", editor: Grid_Combox, values: ["IdUbicacion", "Nombre", UrlUbic, "", "Seleccione...."], hidden: true },
             { field: "Nombre1", title: "Parte" },
-            { field: "Cantidad", title: "Cantidad", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], footerTemplate: "Total: #: data.Cantidad ? sum : 0 #"},
-            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true},
+            { field: "Cantidad", title: "Cantidad", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], footerTemplate: "Total: #: data.Cantidad ? sum : 0 #" },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_ComboxData, values: ["IdUnidad", "Abreviatura", "[]", "Seleccione....", "", "", ""], hidden: true },
             { field: "Nombre2", title: "Unidad" },
-            { field: "Precio", title: "Precio", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c2", 2], format: "{0:c2}", footerTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #" },
+            { field: "Precio", title: "Precio", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c2", 2], format: "{0:c2}", footerTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #", hidden: true, menu: false },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -682,6 +644,8 @@ let fn_partesSublimado = function () {
     SetGrid_CRUD_ToolbarTop($("#gridPartes").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridPartes").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridPartes").data("kendoGrid"), dset);
+
+    Permisos.SNConfidencial === true ? $("#gridPartes").data("kendoGrid").showColumn("Precio") : $("#gridPartes").data("kendoGrid").hideColumn("gridPartes");
 
     var selectedRows = [];
     $("#gridPartes").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -722,7 +686,7 @@ let fn_getRD = function () {
                 $("#IdSolicitudDisenoPrenda").val(elemento.IdSolicitudDisenoPrenda);
                 $("#TxtEjecutivoCuenta").val(elemento.Nombre8);
                 $("#IdEjecutivoCuenta").val(elemento.IdEjecutivoCuenta);
-                //$("#UbicacionHor").val(elemento.UbicacionHorizontal);
+                $("#InstruccionesEspeciales").val(elemento.InstruccionesEspeciales);
                 $("#CntPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
                 $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value(elemento.CantidadStrikeOff);
                 $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value(elemento.StrikeOffAdicional);
@@ -734,6 +698,7 @@ let fn_getRD = function () {
                 $("#IdConstruccionTela").data("kendoComboBox").value(elemento.IdConstruccionTela);
                 $("#IdComposicionTela").data("kendoComboBox").value(elemento.IdComposicionTela);
                 $("#TxtColorTela").val(elemento.Color);
+                $('#chkRegistroCompletado').prop('checked', elemento.RegistroCompletado);
                 //consultar grid
                 VarIDReq = elemento.IdRequerimiento;
                 //habiliar en objetos en las vistas
@@ -741,8 +706,20 @@ let fn_getRD = function () {
                 $("#btnConfirmarRegistro").data("kendoButton").enable(fn_SNProcesar(elemento.Estado === "EDICION" ? true : false));
                 KdoButtonEnable($("#Eliminar"), fn_SNBorrar(elemento.Estado === "EDICION" ? true : false));
                 HabilitaFormObje(elemento.Estado === "EDICION" ? true : false);
+                KdoCheckBoxEnable($("#chkRegistroCompletado"), elemento.Estado === "EDICION" ? elemento.RegistroCompletado===true ? false: true : false);
                 // foco en la fecha
                 KdoCmbFocus($("#IdPrograma"));
+
+                //deshabilita crud despues de marcar como completado el registro
+                if (Permisos.SNConfidencial === false && $("#chkRegistroCompletado").is(':checked') === true) {
+                    KdoButtonEnable($("#Eliminar"), false);
+                    KdoButtonEnable($("#Guardar"), false);
+                }
+
+
+                if (Permisos.SNConfidencial === true) {
+                    KdoCheckBoxEnable($("#chkRegistroCompletado"), elemento.Estado === "EDICION" ? true : false);
+                }
 
             });
 
@@ -917,7 +894,11 @@ let getPrendasMultiSelec = function (Url) {
             xvIdCategoriaPren = $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === "" || $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === undefined ? 0 : $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0];
             $("#gridPartes").data("kendoGrid").dataSource.read();
             xvIdCategoriaPren === 0 || $("#Estado").val() !== "EDICION" ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-         
+           //deshabilita crud despues de marcar como completado el registro
+            if (Permisos.SNConfidencial === false && $("#chkRegistroCompletado").is(':checked') === true) {
+                Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
+            }
+
         },
         error: function (data) {
             kendo.ui.progress($("#vistaParcial"), false);
@@ -965,7 +946,7 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             TallaPrincipal: $("#TallaPrincipal").val(),
             Estado: XEstado,
             Fecha: XFecha,
-            InstruccionesEspeciales: null,
+            InstruccionesEspeciales: $("#InstruccionesEspeciales").val(),
             CantidadColores: 0,
             CantidadTallas: 0,
             Montaje: 0,
@@ -995,7 +976,8 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             IdTipoAcabado: null,
             IdTipoMuestra: null,
             IdQuimica:null,
-            SolicitaTelaSustituta: false
+            SolicitaTelaSustituta: false,
+            RegistroCompletado: $("#chkRegistroCompletado").is(':checked')
 
 
         }),
@@ -1017,10 +999,21 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             SublimacionIdReque = data[0].IdRequerimiento;
             KdoCmbFocus($("#IdPrograma"));
             KdoButtonEnable($("#Eliminar"), fn_SNBorrar(data[0].Estado === "EDICION" ? true : false));
+            KdoCheckBoxEnable($("#chkRegistroCompletado"), data[0].Estado === "EDICION" ? $("#chkRegistroCompletado").is(':checked') === true ? false : true : false);
             KdoButtonEnable($("#btnConfirmarRegistro"), fn_SNProcesar(data[0].Estado === "EDICION" ? true : false));
             window.history.pushState('', '', "/SublimacionOrdenesTrabajos/SublimacionRegistro/" + SublimacionIdCliente.toString() + "/" + data[0].IdRequerimiento.toString());
             Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-           
+
+            //deshabilita crud despues de marcar como completado el registro
+            if (Permisos.SNConfidencial === false && $("#chkRegistroCompletado").is(':checked') === true) {
+                KdoButtonEnable($("#Eliminar"), false);
+                KdoButtonEnable($("#Guardar"), false);
+                Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
+            }
+
+            if (Permisos.SNConfidencial === true)  {
+                KdoCheckBoxEnable($("#chkRegistroCompletado"), true);
+            }
            
         },
         error: function (data) {
@@ -1097,7 +1090,7 @@ let LimpiarReq = function () {
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     $("#InstruccionesEspeciales").val("");
     $("#Estado").val("");
-    $('#chkDisenoFullColor').prop('checked', 0);
+    $('#chkRevisionTecnica').prop('checked', 0);
     $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value("");
     $("#IdCategoriaConfeccion").data("kendoComboBox").value("");
     $("#IdConstruccionTela").data("kendoComboBox").value("");
@@ -1133,32 +1126,7 @@ let OcultarCamposReq = function (ToF) {
 
 };
 
-let Fn_UpdFilaGridRD = function (g, data) {
-    g.set("NoDocumento", data.NoDocumento);
-    g.set("IdPrograma", data.IdPrograma);
-    g.set("NoDocumento1", data.NoDocumento1);
-    //g.set("IdUbicacion", data.IdUbicacion);
-    g.set("Nombre1", data.Nombre1);
-    g.set("UbicacionHorizontal", data.UbicacionHorizontal);
-    g.set("UbicacionVertical", data.UbicacionVertical);
-    g.set("CantidadPiezas", data.CantidadPiezas);
-    g.set("Fecha", kendo.toString(kendo.parseDate(data.Fecha), 'dd/MM/yyyy'));
-    g.set("Nombre4", data.Nombre4);
-    g.set("Nombre3", data.Nombre3);
-    g.set("IdCategoriaConfeccion", data.IdCategoriaConfeccion);
-    g.set("Nombre6", data.Nombre6);
-    g.set("IdConstruccionTela", data.IdConstruccionTela);
-    g.set("Nombre7", data.Nombre7);
-    g.set("IdComposicionTela", data.IdComposicionTela);
-    g.set("Nombre8", data.Nombre8);
-    g.set("Color", data.Color);
-    g.set("Nombre2", data.Nombre2);
-    g.set("EstiloDiseno", data.EstiloDiseno);
-    g.set("NumeroDiseno", data.NumeroDiseno);
 
-
-    LimpiaMarcaCelda();
-};
 
 let Fn_VerEstados = function (IdRequerimiento) {
     Fn_VistaConsultaRequerimientoEstadosGet($("#vConsultaEstados"), "null", IdRequerimiento);
@@ -1174,7 +1142,6 @@ let getIdArte = function (g) {
 };
 
 let HabilitaFormObje = function (ToF) {
-    //KdoDatePikerEnable($("#Fecha"), ToF);
     KdoNumerictextboxEnable($("#CntPiezas"), ToF);
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
     KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), ToF);
@@ -1183,14 +1150,14 @@ let HabilitaFormObje = function (ToF) {
     KdoComboBoxEnable($("#IdComposicionTela"), ToF);
     KdoComboBoxEnable($("#IdCategoriaConfeccion"), ToF);
     KdoComboBoxEnable($("#IdConstruccionTela"), ToF);
-    //$("#IdServicio").val() !== "2" ? KdoComboBoxEnable($("#IdUbicacion"), ToF) : KdoComboBoxEnable($("#IdUbicacion"), false);
     KdoMultiselectEnable($("#IdCategoriaPrenda"), ToF);
-    //KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
-
+    TextBoxEnable($("#InstruccionesEspeciales"), ToF);
+    KdoCheckBoxEnable($("#chkRegistroCompletado"), ToF);
     TextBoxEnable($("#TxtColorTela"), ToF);
     TextBoxEnable($("#Nombre"), ToF);
     TextBoxEnable($("#NumeroDiseno"), ToF);
     TextBoxEnable($("#EstiloDiseno"), ToF);
+    TextBoxEnable($("#TallaPrincipal"), ToF);
 
 };
 
@@ -1246,8 +1213,8 @@ fn_SNCambiarEstados = function (valor) {
     return Permisos.SNCambiarEstados ? valor : false;
 };
 
-fn_SNProcesar = function (valor) {
-    return Permisos.SNProcesar ? valor : false;
+fn_SNConfidencial = function (valor) {
+    return Permisos.SNConfidencial ? valor : false;
 };
 
 let LimpiaMarcaCelda = function () {
@@ -1282,19 +1249,42 @@ let DSUnidadMedida = function (filtro) {
 let CmbNuevoItem = function (widgetId, value) {
     var widget = $("#" + widgetId).getKendoComboBox();
     var dataSource = widget.dataSource;
-    ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
+    //ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
         dataSource.add({
             IdComposicionTela: 0,
             Nombre: value
         });
         dataSource.one("sync", function () {
             widget.select(dataSource.view().length - 1);
+            $("#kendoNotificaciones").data("kendoNotification").show("Composicion de tela creado satisfactoriamente!!", "success");
         });
 
         dataSource.sync();
-    });
+    //});
 };
+let fn_CreaPrograma = function (widgetId, value) {
+    var widget = $("#" + widgetId).getKendoComboBox();
+    var dsProN = widget.dataSource;
 
+    //ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
+    dsProN.add({
+        IdPrograma: 0,
+        Nombre: value,
+        Fecha: Fhoy(),
+        IdCliente: KdoCmbGetValue($("#IdCliente")),
+        IdTemporada: 1, // como no se pide se coloca por defecto codigo 1 "NO DEFINIDA"
+        NoDocumento: "",
+        Nombre1: ""
+    });
+
+    dsProN.one("sync", function () {
+        widget.select(dsProN.view().length - 1);
+        $("#kendoNotificaciones").data("kendoNotification").show("Programa creado satisfactoriamente!!", "success");
+    });
+
+    dsProN.sync();
+    //});
+};
 let fn_EliminarReqSublimacion = function () {
     kendo.ui.progress($("#splitter"), true);
     $.ajax({
@@ -1316,7 +1306,79 @@ let fn_EliminarReqSublimacion = function () {
 };
 
 
+let fn_DSIdUnidadFiltro = function (filtro) {
 
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    async: false,
+                    url: UrlUniMed + "/GetUnidadesMedidasByFiltro",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(filtro),
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
+};
+
+var fn_KdoCmbProgramas = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear) {
+    $.ajax({
+        url: webApi,
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            var model = generateModel(result, valueField);
+            var dataSource = new kendo.data.DataSource({
+                batch: true,
+                transport: {
+                    read: {
+                        url: webApi,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    create: {
+                        url: TSM_Web_APi +"Programas",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    parameterMap: function (data, type) {
+                        if (type !== "read") {
+                            return kendo.stringify(data.models[0]);
+                        }
+                    }
+                },
+                schema: {
+                    total: "count",
+                    model: model
+                }
+            });
+            e.kendoComboBox({
+                dataTextField: textField,
+                dataValueField: valueField,
+                autoWidth: true,
+                filter: "contains",
+                autoBind: false,
+                clearButton: givenOrDefault(clearButton, true),
+                placeholder: givenOrDefault(opcPlaceHolder, "Seleccione un valor ...."),
+                height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
+                cascadeFrom: givenOrDefault(parentCascade, ""),
+                dataSource: dataSource,
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+            });
+
+        }
+    });
+};
 
 
 //#endregion Fin metods Generales
