@@ -57,7 +57,7 @@
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6 col-lg-7">
-                                                                <label for="CntPiezas">Cantidad a Producir:</a></label>
+                                                                <label for="CntPiezas">Cantidad a Producir:</label>
                                                                 <input id="CntPiezas" name="CntPiezas" type="text" required class="form-control" />
                                                             </div>
                                                             <div class="form-group col-md-6 col-lg-5">
@@ -116,6 +116,7 @@
                                                 <div class="form-row">
                                                     <div class="col-lg-6"><label class="font-weight-bold">Prenda</label></div>
                                                     <div class="col-lg-3"> <input id="IdModulo" name="IdModulo" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                    <div class="col-lg-3"> <input id="IdCatalogoDiseno" name="IdCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
                                                     <div class="col-lg-3"> <input id="IdSolicitudDisenoPrenda" name="IdSolicitudDisenoPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
                                                 </div>
                                                 <div class="form-row">
@@ -175,8 +176,20 @@
                                                 <div class="form-row">
                                                     <div class="col-lg-6"><label class="font-weight-bold">Diseño</label></div>
                                                     <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                    <div class="col-lg-3"> <input id="IdCatalogoDiseno" name="IdCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
                                                 </div>
                                                 <div class="form-row">
+                                                    <div class="form-group col-md-6 col-lg-3">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12 col-lg-12">
+                                                                <label for="NoReferencia">No Catalogo Diseño:</label>
+                                                                <input id="NoReferencia" name="NoReferencia" class="k-textbox form-control" , disabled="disabled" />
+                                                            </div>
+                                                            <div class="form-group col-md-5 col-lg-2 align-self-end" hidden="hidden">
+                                                                 <button type="button" id="btnCCDis"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="Nombre">Nombre del Diseño:</label>
                                                         <input id="Nombre" name="Nombre" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
@@ -189,12 +202,13 @@
                                                         <label for="EstiloDiseno">Estilo:</label>
                                                         <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
                                                     </div>
+                                                   
+                                                </div>
+                                                <div class="form-row">
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="CmbTipoLuz">Tipo de Luz:</label>
                                                         <input id="CmbTipoLuz" name="CmbTipoLuz" class="form-control" />
                                                     </div>
-                                                </div>
-                                                <div class="form-row">
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="CmbTipoAcabado">Acabado:</label>
                                                         <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
@@ -203,12 +217,12 @@
                                                         <label for="CmbQuimica">Química a Utilizar</label>
                                                         <input name="CmbQuimica" id="CmbQuimica" required validationMessage="Requerido" type="text" class="form-control">
                                                     </div>
-                                                    <div class="form-group col-md-12 col-lg-6">
+                                                    <div class="form-group col-md-6 col-lg-3">
                                                         <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
                                                         <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
                                                     </div>
                                                 </div>
-                                               
+
 
                                             </div>
                                             <div class="form-row"> <div class="form-group"></div></div>
@@ -222,6 +236,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </li>

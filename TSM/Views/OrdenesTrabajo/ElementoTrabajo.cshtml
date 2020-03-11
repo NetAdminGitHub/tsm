@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v2002201";
+    ViewBag.IdVersion = "TSM0101088|v2002271";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -14,10 +14,12 @@
 
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
-    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>@*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
+    @*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
 }
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
-<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />@*css donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
+<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
+@*css donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
 @*seccion que muestra información de la OT en la parte superior de la vista *@
 <div class="form-row">
     <div class="col-lg-12">
@@ -261,6 +263,12 @@
 <div class="form-row">
     <div class="form-group col-lg-12">
         <div id="FormulaHist"></div>
+    </div>
+</div>
+@*seccion html que se utilizara para la vista modal de Consulta de diseños *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="ConsultaCataloDis"></div>
     </div>
 </div>
 

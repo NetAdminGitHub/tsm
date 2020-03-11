@@ -17,7 +17,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
         closable: true,
         modal: true,
         actions: [
-            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_CambioEtp(); } },
+            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_GenerarOT(); } },
             { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
         ],
         close: function (e) {
@@ -25,20 +25,20 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
         }
     });
 
-    //ValidarFormularioOT = $("#FrmCambioEtapa").kendoValidator(
-    //    {
-    //        rules: {
-    //            MsgDesarrollo: function (input) {
-    //                if (input.is("[name='CmbMotivoDesarrollo']")) {
-    //                    return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
-    //                }
-    //                return true;
-    //            }
-    //        },
-    //        messages: {
-    //            MsgDesarrollo: "Requerido";
-    //        }
-    //    }).data("kendoValidator");
+    ValidarFrmGeneraOT = $("#FrmGeneraOT").kendoValidator(
+        {
+            rules: {
+                MsgDesarrollo: function (input) {
+                    if (input.is("[name='CmbMotivoDesarrollo']")) {
+                        return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                MsgDesarrollo: "Requerido"
+            }
+        }).data("kendoValidator");
 };
 
 
@@ -248,29 +248,24 @@ let fn_GetMotivoDesarrollo = function () {
     });
 };
 
-let fn_GenerarOT = function (e) {
-
-    if (ValidarCamEtp.validate()) {
+let fn_GenerarOT = function () {
+    let Realizado = false;
+    if (ValidarFrmGeneraOT.validate()) {
         // obtener indice de la etapa siguiente
-        let xindice = KdoCmbGetValue($("#cmbEtpSigAnt"));
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
-            url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa",
+            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo/" + fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString(),
             method: "POST",
             dataType: "json",
-            data: JSON.stringify({
-                idOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
-                idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
-                idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
-                motivo: $("#TxtMotivoEtp").val()
-            }),
+            //data: JSON.stringify({
+            //    IdRequerimiento: fn_getIdRequerimiento($("#gConOT").data("kendoGrid")),
+            //    IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo"))
+            //}),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;
                 RequestEndMsg(datos, "Post");
-                $("#vCamEtapa").data("kendoDialog").close();
-                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
-
+                $("#ModalGeneraOT").data("kendoDialog").close();
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -283,4 +278,10 @@ let fn_GenerarOT = function (e) {
         Realizado = false;
     }
     return Realizado;
+};
+
+let fn_getIdRequerimiento= function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdRequerimiento;
+
 };
