@@ -1,57 +1,55 @@
-﻿
-    <div class="form-row">
-        <!-- Grid column -->
-        <div class="col-md-6">
-            <!--carrousel de imagenes-->
-            <div class="view rounded-right">
-                <div id="CDisenos">
-                    <div style="margin:auto; width:70%">
-                        <div id="scrollView" style="width: 1022px; height: 600px; max-width: 100%;">
-                            <div class="photo photo1 " data-role="page">
-                            </div><div class="photo photo2" data-role="page">
-                            </div><div class="photo photo3" data-role="page">
-                            </div>
-                        </div>
+﻿<div class="form-row">
+    
+    <div class="col-md-4">
+        <!--carrousel de imagenes-->
+        <div class="view rounded-right">
+            <div id="CDisenos">
+                <div style="margin:auto; width:70%">
+                    <div id="scrollView" style="width: 1022px; height: 600px; max-width: 100%;">
+                        @*Espacio para las imagenes*@
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 py-5 pl-5">
-            <!--Nombre del diseño-->
-            <h5 class="font-weight-normal mb-3" id="infNomDiseg"></h5>
-            <!--descripcion del dsieño-->
-            <p class="text-muted" id="infDesDiseno"></p>
-
-            <ul class="list-unstyled font-small mt-5">
-
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Cliente</strong></p>
-                    <p class="text-muted mb-4" id="InfCliente"></p>
-                </li>
-
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Fecha</strong></p>
-                    <p class="text-muted mb-4" id="InfFecha"></p>
-                </li>
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Orden de Trabajo</strong></p>
-                    <div class="text-muted mb-4" id="InfTecnicas"></div>
-                </li>
-
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Tallas</strong></p>
-                    <p class="text-muted mb-4" id="InfTallas"></p>
-                </li>
-
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Colores</strong></p>
-                    <div class="text-muted mb-4" id="InfColores"></div>
-                </li>
-
-                <li>
-                    <p class="text-uppercase mb-2"><strong>Tecnicas</strong></p>
-                    <div class="text-muted mb-4" id="InfTecnicas"></div>
-                </li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-8 ">
+        <!--Nombre del diseño-->
+        <h5 class="font-weight-normal mb-3" id="infNomDiseg"></h5>
+        <!--descripcion del dsieño-->
+        <p class="text-muted" id="infDesDiseno"></p>
+
+        <ul class="list-unstyled font-small mt-5">
+
+            <li>
+                <p class="text-uppercase mb-2"><strong>Cliente</strong></p>
+                <p class="text-muted mb-4" id="InfCliente"></p>
+            </li>
+
+            <li>
+                <p class="text-uppercase mb-2"><strong>Fecha</strong></p>
+                <p class="text-muted mb-4" id="InfFecha"></p>
+            </li>
+            <li>
+                <p class="text-uppercase mb-2"><strong>Orden de Trabajo</strong></p>
+                <div class="text-muted mb-4" id="InfTecnicas"></div>
+            </li>
+            <li>
+                <div id="gConOT"></div>
+            </li>
+         
+        </ul>
+    </div>
+</div>
+
+<div class="form-row">
+    <div id="ModalGeneraOT">
+        <form id="FrmGeneraOT" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbMotivoDesarrollo">Motivo de Desarrollo</label>
+                    <input id="CmbMotivoDesarrollo" name="CmbMotivoDesarrollo" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

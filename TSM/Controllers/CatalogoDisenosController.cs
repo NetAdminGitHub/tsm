@@ -17,5 +17,20 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+
+        [HttpGet]
+        [Route("CatalogoDisenos/ConsultarCatalogoDisenos/{idCliente}")]
+        public ActionResult ConsultarCatalogoDisenos(long idCliente)
+        {
+            ViewData["IdCliente"] = idCliente;
+            return PartialView("ConsultarCatalogoDisenos");
+        }
+        [HttpGet]
+        [Route("CatalogoDisenos/CatalogoDisenoInf/{idCatalogoDiseno}")]
+        public ActionResult CatalogoDisenoInf(long idCatalogoDiseno)
+        {
+            ViewData["idCatalogoDiseno"] = idCatalogoDiseno;
+            return PartialView("CatalogoDisenoInf");
+        }
     }
 }

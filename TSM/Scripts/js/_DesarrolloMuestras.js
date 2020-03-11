@@ -106,7 +106,8 @@ let fn_FinOT = function () {
         success: function (datos) {
             RequestEndMsg(datos, "Post");
             $("#MbtnFinMue").data("kendoDialog").close();
-            CargarInfoEtapa(false);
+            //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
+            fn_GetArteDis();
         },
         error: function (data) {
             ErrorMsg(data);
@@ -119,3 +120,42 @@ let fn_FinOT = function () {
 
 };
 
+let fn_GetArteDis = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "Artes/GetArteByIdReq/" + $("#txtIdRequerimiento").val(),
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            if (respuesta !== null) {
+                var dsres = [{
+                    NoDocumento: xvNodocReq,
+                    NoReferencia: respuesta.NoReferencia,
+                    NombreArchivo: respuesta.NombreArchivo
+                }];
+                SubirArchivoCatalogo(dsres);
+            
+            }
+            CargarInfoEtapa(false);
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+
+let SubirArchivoCatalogo = function (ds) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        type: "Post",
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify(ds),
+        url: "/RequerimientoDesarrollos/SubirArchivoCatalogo",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
