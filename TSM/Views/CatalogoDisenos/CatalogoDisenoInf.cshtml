@@ -1,10 +1,9 @@
 ﻿<div class="form-row">
-    
-    <div class="col-md-4">
+    <div class="form-control col-lg-5">
         <!--carrousel de imagenes-->
         <div class="view rounded-right">
             <div id="CDisenos">
-                <div style="margin:auto; width:70%">
+                <div style="margin:auto; width:100%">
                     <div id="scrollView" style="width: 1022px; height: 600px; max-width: 100%;">
                         @*Espacio para las imagenes*@
                     </div>
@@ -12,32 +11,50 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 ">
+    <div class="form-control col-lg-7 ">
         <!--Nombre del diseño-->
-        <h5 class="font-weight-normal mb-3" id="infNomDiseg"></h5>
+        @*<h5 class="font-weight-normal mb-3" id="infNomDiseg"></h5>*@
         <!--descripcion del dsieño-->
-        <p class="text-muted" id="infDesDiseno"></p>
+        @*<p class="text-muted" id="infDesDiseno"></p>*@
+        <div class="form-row">
+            <div class="form-control col-lg-6">
+                <ul class="list-unstyled font-small mt-5">
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Cliente</strong></p>
+                        <p class="text-muted mb-4" id="InfCliente"></p>
+                    </li>
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Fecha</strong></p>
+                        <p class="text-muted mb-4" id="InfFecha"></p>
+                    </li>
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Tallas</strong></p>
+                        <p class="text-muted mb-4" id="InfTallas"></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-control col-lg-6">
+                <ul class="list-unstyled font-small mt-5">
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Nombre Diseño OT</strong></p>
+                        <p class="text-muted mb-4" id="InfNombreDisOT"></p>
+                    </li>
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Estilo Diseño OT</strong></p>
+                        <p class="text-muted mb-4" id="InfEstiloDisenoOT"></p>
+                    </li>
+                    <li>
+                        <p class="text-uppercase mb-2"><strong>Numero Diseño OT</strong></p>
+                        <p class="text-muted mb-4" id="InfNumeroDisenoOT"></p>
+                    </li>
+                </ul>
+            </div>
 
-        <ul class="list-unstyled font-small mt-5">
-
-            <li>
-                <p class="text-uppercase mb-2"><strong>Cliente</strong></p>
-                <p class="text-muted mb-4" id="InfCliente"></p>
-            </li>
-
-            <li>
-                <p class="text-uppercase mb-2"><strong>Fecha</strong></p>
-                <p class="text-muted mb-4" id="InfFecha"></p>
-            </li>
-            <li>
-                <p class="text-uppercase mb-2"><strong>Orden de Trabajo</strong></p>
-                <div class="text-muted mb-4" id="InfTecnicas"></div>
-            </li>
-            <li>
-                <div id="gConOT"></div>
-            </li>
-         
-        </ul>
+        </div>
+        <div class="form-row">
+            <div id="gConOT"></div>
+        </div>
+        
     </div>
 </div>
 
