@@ -672,7 +672,7 @@ var fn_gridAjustePrima = function (gd) {
                             maxlength: function (input) {
                                 if (input.is("[name='IdArticulo']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdArticulo").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("[name='IdArticulo']").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                                 }
                                 return true;
                             }
@@ -723,12 +723,11 @@ var fn_gridAjustePrima = function (gd) {
     gd.kendoGrid({
         edit: function (e) {
             // Ocultar
+           // e.model.fields.IdArticulo.validation.required = false;
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "IdFormula");
-            KdoHideCampoPopup(e.container, "Masatotal");
-            Grid_Focus(e, "IdArticulo");
+            KdoHideCampoPopup(e.container, "Masatotal"); 
             var MasaTot = e.model.Masatotal;
-
             $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(false);
             $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(false);
             $('[name="MasaFinal"]').data("kendoNumericTextBox").enable(false);
@@ -741,7 +740,6 @@ var fn_gridAjustePrima = function (gd) {
 
                 $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(xMasaInicial) + parseFloat(xMasaAgregada));
                 $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
-                //$('[name="PrecioVenta"]').data("kendoNumericTextBox").trigger("change");
             });
             $('[name="PorcentajeAgregado"]').on("change", function (e) {
                 let xPorcenMasaFinal = $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").value();
@@ -754,14 +752,33 @@ var fn_gridAjustePrima = function (gd) {
 
                 $('[name="MasaAgregada"]').data("kendoNumericTextBox").value(xMasaAgre);
                 $('[name="MasaAgregada"]').data("kendoNumericTextBox").trigger("change");
-
-                //$('[name="PrecioVenta"]').data("kendoNumericTextBox").trigger("change");
             });
+
+            if (!e.model.isNew()) {
+                Grid_Focus(e, "MasaAgregada");
+                var multicolumncombobox = $('[name="IdArticulo"]').data("kendoMultiColumnComboBox");
+                multicolumncombobox.select(function (dataItem) { return dataItem.IdArticulo === e.model.IdArticulo;});
+                multicolumncombobox.search(e.model.Nombre);
+                multicolumncombobox.refresh();
+                multicolumncombobox.text(e.model.Nombre);
+                multicolumncombobox.close();
+
+            } else {
+                Grid_Focus(e, "IdArticulo");
+            }
+           // e.model.fields.IdArticulo.validation.required = true;
+
+          
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdFormula", title: "Código. Formula", hidden: true },
-            { field: "IdArticulo", title: "Materia Prima", values: ["IdArticulo", "Nombre", UrlARt, "", "Seleccione....", "required", "", "Requerido"], editor: Grid_Combox},
+            {
+                field: "IdArticulo", title: "Código Articulo",
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrima();
+                }
+            },
             { field: "Nombre", title: "Nombre" },
             { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}',sum ): 0 #"},
             { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeInicial ? kendo.format('{0:n2}',sum)*100: 0 # %" },
