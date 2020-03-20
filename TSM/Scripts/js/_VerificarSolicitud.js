@@ -315,8 +315,10 @@ var fn_VSCargarJSEtapa = function () {
 
     //solicita tela sustituta
     $("#swchSolTelaSustituta").kendoSwitch();
+    $("#swchSolDesarrolloOEKO").kendoSwitch();
 
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
         dataTextField: "Abreviatura",
@@ -1269,6 +1271,7 @@ var fn_VSCargar = function () {
         KdoComboBoxEnable($("#IdPrograma"), false);
         $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
         $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(false);
+        $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(false);
     }
 };
 
@@ -1333,6 +1336,7 @@ let getRD = function (UrlRD) {
                 HabilitaFormObje(true);
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
+                $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
                 $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
                 fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
@@ -1602,7 +1606,8 @@ let GuardarRequerimiento = function (UrlRD) {
             IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
             IdCatalogoDiseno: $("#IdCatalogoDiseno").val(),
-            IdCalidadCriterio: $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value()
+            IdCalidadCriterio: $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(),
+            StandarOEKOTEX: $("#swchSolDesarrolloOEKO").data("kendoSwitch").check()
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1720,6 +1725,7 @@ let LimpiarReq = function () {
     KdoCmbSetValue($("#CmbQuimica"), "");
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
     //limpiar mensajes de validacion
     ValidRD.hideMessages();
 
@@ -1812,6 +1818,7 @@ let HabilitaFormObje = function (ToF) {
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
     $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(ToF);
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(ToF);
 
 };
 
