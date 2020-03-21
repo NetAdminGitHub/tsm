@@ -112,6 +112,10 @@ $(document).ready(function () {
 
     $("#swchSolTelaSusti").kendoSwitch();
 
+    $("#swchSolDesOEKO").kendoSwitch();
+    $("#swchPDocAduanal").kendoSwitch();
+    $("#swchCobDiseno").kendoSwitch();
+
     //cargando todas las etapas
     ConfigEtapas = fn_ConfigEtapas();
 
@@ -205,6 +209,13 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNombreUbicacion").val(datos.NombreUbicacion);
     $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
     $("#swchSolTelaSusti").data("kendoSwitch").enable(false);
+    $("#swchSolDesOEKO").data("kendoSwitch").check(datos.StandarOEKOTEX);
+    $("#swchSolDesOEKO").data("kendoSwitch").enable(false);
+    $("#swchPDocAduanal").data("kendoSwitch").check(datos.PoseeDocumentacionAduanal);
+    $("#swchPDocAduanal").data("kendoSwitch").enable(false);
+    $("#swchCobDiseno").data("kendoSwitch").check(datos.CobrarDiseno);
+    $("#swchCobDiseno").data("kendoSwitch").enable(false);
+
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;

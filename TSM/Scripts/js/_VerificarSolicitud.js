@@ -316,9 +316,15 @@ var fn_VSCargarJSEtapa = function () {
     //solicita tela sustituta
     $("#swchSolTelaSustituta").kendoSwitch();
     $("#swchSolDesarrolloOEKO").kendoSwitch();
+    $("#swchPoseeDocumentacionAduanal").kendoSwitch();
+    $("#swchCobrarDiseno").kendoSwitch();
+
 
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
     $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(false);
+    $("#swchCobrarDiseno").data("kendoSwitch").check(false);
+
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
         dataTextField: "Abreviatura",
@@ -1272,6 +1278,8 @@ var fn_VSCargar = function () {
         $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
         $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(false);
         $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(false);
+        $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(false);
+        $("#swchCobrarDiseno").data("kendoSwitch").enable(false);
     }
 };
 
@@ -1337,6 +1345,9 @@ let getRD = function (UrlRD) {
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
+                $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(elemento.PoseeDocumentacionAduanal);
+                $("#swchCobrarDiseno").data("kendoSwitch").check(elemento.CobrarDiseno);
+
                 $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
                 fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
@@ -1607,7 +1618,9 @@ let GuardarRequerimiento = function (UrlRD) {
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
             IdCatalogoDiseno: $("#IdCatalogoDiseno").val(),
             IdCalidadCriterio: $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(),
-            StandarOEKOTEX: $("#swchSolDesarrolloOEKO").data("kendoSwitch").check()
+            StandarOEKOTEX: $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(),
+            PoseeDocumentacionAduanal: $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(),
+            CobrarDiseno: $("#swchCobrarDiseno").data("kendoSwitch").check()
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1726,6 +1739,8 @@ let LimpiarReq = function () {
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
     $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(false);
+    $("#swchCobrarDiseno").data("kendoSwitch").check(false);
     //limpiar mensajes de validacion
     ValidRD.hideMessages();
 
@@ -1819,6 +1834,8 @@ let HabilitaFormObje = function (ToF) {
     $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(ToF);
     $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(ToF);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(ToF);
+    $("#swchCobrarDiseno").data("kendoSwitch").enable(ToF);
 
 };
 
