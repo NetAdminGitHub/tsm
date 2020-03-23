@@ -36,6 +36,9 @@ let vIdS = 0;
 let vIdCli = 0;
 let VarIDReq = 0;
 
+fPermisos = function (datos) {
+    Permisos = datos;
+};
 var fn_VSCargarJSEtapa = function () {
     KdoButton($("#btnCCDis"), "search", "Catalogo de Diseños");
 
@@ -1843,9 +1846,7 @@ let HabilitaObje = function (e, ToF) {
     ToF === true ? e.removeClass("k-state-disabled") : e.addClass("k-state-disabled");
 };
 
-fPermisos = function (datos) {
-    Permisos = datos;
-};
+
 
 fn_SNEditar = function (valor) {
     return Permisos.SNEditar ? valor : false;
