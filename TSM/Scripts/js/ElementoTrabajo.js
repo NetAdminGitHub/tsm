@@ -509,7 +509,10 @@ $("#btnAsignarUsuario").click(function (e) {
         });
     }
 });
-
+/** metodo publico en la vista elementos de trabajo para obteniene la confinguración de la maquina, hace un join a las siguientes tablas: SeteoMaquinas ,
+ * SeteoMaquinasEstaciones,SeteoMaquinasEstacionesMarcos,SeteoMarcosFormulaciones,SeteoMaquinasEstacionesAccesorios,SeteoMaquinaColores,BasesMuestras,SeteoMaquinaTecnicas,Tecnicas y AccesoriosMaquinas 
+ * @returns {data}
+ **/
 var fn_GetMaquinas = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -972,7 +975,11 @@ var fn_gridAccesoriosEstacion = function (gd) {
     });
 
 };
-
+/**
+ * Eliminacion de configuracion por brazo o el seteo de toda la maquina cuando el idestacion sea igual undefined
+ * @param {any} xIdSeteo codigo de seteo de la maquina
+ * @param {any} xIdestacion numero de estacion del brazo o estacion 
+ */
 var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
@@ -1003,7 +1010,12 @@ var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
         }
     });
 };
-
+/**
+ * obtiene solo los datos de la entidad SeteoMaquinasEstaciones
+ * @param {any} xIdSeteo codigo seteo de la maquina
+ * @param {any} xIdestacion numero de estacion o brazo
+ * @returns {data} datos del entidad maquina estaciones
+ */
 var fn_Estaciones = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1021,7 +1033,12 @@ var fn_Estaciones = function (xIdSeteo, xIdestacion) {
 
     return result;
 };
-
+/**
+ * Metodo publico en la vista elementos de trabajo obtenie la configuracion para la vista modal de accesorios, hace un join entre Seteo Maquinas Estaciones y accesorios maquinas
+ * @param {any} xIdSeteo codigo seteo maquina
+ * @param {any} xIdestacion numero estacion o brazo
+ * @returns {data} datos
+ */
 var fn_GetEstacion = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1038,7 +1055,12 @@ var fn_GetEstacion = function (xIdSeteo, xIdestacion) {
     });
     return result;
 };
-
+/**
+ * Obtiene solo los datos de la entidad SeteoMaquinasEstacionesMarcos., utilizada en vista modal Estacion colores, Estacion muestra y Estacion Diseño
+ * @param {any} xIdSeteo codigo seteo
+ * @param {any} xIdestacion numero de estacion o brazo
+ * @returns {data} datos
+ */
 var fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1055,7 +1077,12 @@ var fn_EstacionesMarcos = function (xIdSeteo, xIdestacion) {
     });
     return result;
 };
-
+/**
+ * Metodo publico en elementos de trabajo js obtenie la formulacion para ser mostrada en cada estacion de la maquina, en las vista modales: Estacion colores, Estacion muestra, Estacion Diseño y estacion formula
+ * @param {any} xIdSeteo codigo id seteo    
+ * @param {any} xIdestacion codigo estacion o numero de estación
+ * @returns {datos} datos
+ */
 var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1074,6 +1101,12 @@ var fn_GetMarcoFormulacion = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
+/**
+ * Para obtener solo datos de la entidad SeteoMaquinasEstacionesAccesorios para llenar los campos en la vista de Accesorios Dis etapa de diseño
+ * @param {any} xIdSeteo codigo del seteo
+ * @param {any} xIdestacion codigo o numero de estación
+ * @returns {data} datos
+ */
 var fn_GetSeteoMaqEstAcce = function (xIdSeteo, xIdestacion) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1092,7 +1125,10 @@ var fn_GetSeteoMaqEstAcce = function (xIdSeteo, xIdestacion) {
     return result;
 };
 
-
+/**
+ * get se utiliza en cada vista para cada etapa del desarrollo
+ * @returns {data} datos
+ * */
 var fn_GetTipoEstaciones = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1127,7 +1163,11 @@ var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
 
     return result;
 };
-
+/**
+ * TiposTintasSistemasPigmentos llenar combobox sistema de pigmentos en las vistas estacion colores, estacion diseño y estacion muestra
+ * @param {any} vid id o codigo del tipo de tintas
+ * @returns {data} datos
+ */
 var Fn_GetSistemaPigmentos = function (vid) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -1148,7 +1188,11 @@ var Fn_GetSistemaPigmentos = function (vid) {
         }
     });
 };
-
+/**
+ * TiposTintasBasesPigmentos llenar combobox Base de pigmentos (base para mezcla) en las vistas estacion colores, estacion diseño y estacion muestra
+ * @param {any} vide codigo o id tipo tintas
+ * @returns {data} datos
+ */
 var Fn_GetSistemaBases = function (vide) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -1169,7 +1213,11 @@ var Fn_GetSistemaBases = function (vide) {
         }
     });
 };
-
+/**
+ * Para obtener los tipos de tintas por quimica, para llenar el combobox Tipos de tintas en las vistas estacion colores, estacion diseño y estacion muestra.
+ * @param {any} idQuimica codigo o id quimica.
+ * @returns {data} datos
+ */
 var Fn_GetTiposTintas = function (idQuimica) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -1243,7 +1291,9 @@ var fn_MostraTablaFormula = function (ds, div) {
     //    '</tr>');
 
 };
-
+/** obtener los tipos de tintas
+ * @returns {data} datos
+ **/
 var fn_TipoTintas = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1260,7 +1310,11 @@ var fn_TipoTintas = function () {
     });
     return result;
 };
-
+/**
+ * Recibe como parametro [FromBody] string con el objetivo de filtrar las unidades de medida ejemplo parametro separados por "," (1,2,4)
+ * @param {string} filtro para filtrar enviar un string de valores separados por ","
+ * @returns {data} datos
+ */
 var fn_UnidadMedida = function (filtro) {
     let urlUM_Est = TSM_Web_APi + "UnidadesMedidas";
     return new kendo.data.DataSource({
@@ -1284,7 +1338,10 @@ var fn_UnidadMedida = function (filtro) {
         }
     });
 };
-
+/** 
+ *  Devuelve las etapas para el modulo del modulo 2 servicio al cliente
+ *  @returns {data} datos
+ */
 var fn_ConfigEtapas = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -1345,6 +1402,10 @@ var fn_GuardaCodigoColor = function (xCodColor) {
 var onCloseCambioEstado = function (e) {
     fn_VistaEstacionFormulas();
 };
+/** 
+ *  metodo que obtiene todos los AccesoriosMaquinasArticulos
+ *  @returns {data} datos
+ */
 var fn_getAccesoriosMaquinasArticulos = function () {
     kendo.ui.progress($(document.body), true);
     let result = null;
