@@ -53,6 +53,7 @@ let fn_GetOTRequerimiento = function () {
             fn_MostraFormulaCab();
             fn_DibujarSeccionMaqui();
             fn_MostrarEstMarcos();
+            fn_OTMostrarEstados();
             kendo.ui.progress($(document.body), false);
         }
 
@@ -144,9 +145,8 @@ let fn_MostrarEstMarcos = function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
     SetGrid($("#gMarcos").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
     Set_Grid_DataSource($("#gMarcos").data("kendoGrid"), dsetMar);
-
-
 };
+
 let fn_MostraFormulaCab = function () {
 
     var dataSource = new kendo.data.DataSource({
@@ -285,6 +285,7 @@ let fn_DibujarSeccionMaqui = function () {
 
     return result;
 };
+
 var fn_GetMQ = function (xetp, xitem) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -823,6 +824,60 @@ let fn_DibujarMq = function (maq) {
 
 
 
+};
+
+let fn_OTMostrarEstados = function () {
+    var dsetOTEstados = new kendo.data.DataSource({
+
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "OrdenesTrabajosDetallesEstados/GetByIdOrdenTrabajo/" + xIdOt; },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IDOrdenTrabajo",
+                fields: {
+                    IDOrdenTrabajo: { type: "number" },
+                    FechaEstado: { type: "date" },
+                    Item: { type: "number" },
+                    IdEtapaProceso: { type: "number" },
+                    Nombre: { type: "string" },
+                    IdUsuario: { type: "string" },
+                    Nombre1: { type: "string" },
+                    Estado: { type: "string" },
+                    Nombre2: { type: "string" },
+                    Motivo: { type: "string" }
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL gCHFor,CAMPOS
+    $("#gEstados").kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IDOrdenTrabajo", title: "Código OT", hidden: true },
+            { field: "FechaEstado", title: "Fecha Cambio de Etapa", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" ,width:160},
+            { field: "Item", title: "Item" ,width:50},
+            { field: "IdEtapaProceso", title: "Código Etapa", hidden: true,width:200},
+            { field: "Nombre", title: "Etapa del Proceso",width:200 },
+            { field: "IdUsuario", title: "Código Usuario", hidden: true,width:100 },
+            { field: "Nombre1", title: "Usuario",width:200 },
+            { field: "Estado", title: "Estado" ,width:100 },
+            { field: "Nombre2", title: "Estado", hidden: true},
+            { field: "Motivo", title: "Motivo" }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gEstados").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 350);
+    Set_Grid_DataSource($("#gEstados").data("kendoGrid"), dsetOTEstados,20);
 };
 
 fPermisos = function (datos) {

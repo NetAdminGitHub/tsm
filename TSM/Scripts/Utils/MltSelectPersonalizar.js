@@ -24,7 +24,7 @@ function Kendo_MultiSelect(e, WebApi, TextField, ValueField, OpcPlaceholder, Opc
 
 
 }
-function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Opcheight) {
+function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Opcheight, clearButton) {
     e.kendoMultiSelect({
         dataTextField: TextField,
         dataValueField: ValueField,
@@ -35,7 +35,7 @@ function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Op
         height: givenOrDefault(Opcheight, 550),
         tagMode: "multiple",
         autoBind: false,
-        clearButton: false
+        clearButton: givenOrDefault(clearButton, false),
 
     });
 

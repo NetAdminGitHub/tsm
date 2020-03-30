@@ -1,6 +1,7 @@
 ﻿var Permisos;
 var xidClie = 0;
-var xidCatalogo = 0;
+var xNoReferenciaCT = "";
+var xNombreArchivoCT = "";
 $(document).ready(function () {
     fn_getArtesAdjuntos();
     //$('[href = "#panel31"]').click( function() {
@@ -14,6 +15,7 @@ var fn_getArtesAdjuntos = function () {
         transport: {
             read: {
                 url: function () {
+                    kendo.ui.progress($(document.body), true);
                     return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString();
                 },
                 dataType: "json",
@@ -33,15 +35,18 @@ var fn_getArtesAdjuntos = function () {
 
 
     dataSource.fetch(function () {
+       
         dataSource.page(1);
         var view = dataSource.view();
         fn_DibujarCatalogo(view);
+        kendo.ui.progress($(document.body), false);
     });
 
 
     dataSource.bind("change", function () {
         var view = dataSource.view();
         fn_DibujarCatalogo(view);
+        kendo.ui.progress($(document.body), false);
     });
 
     $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
@@ -70,13 +75,16 @@ var fn_DibujarCatalogo = function (data) {
 
     $.each(data, function (index, elemento) {
     
-        Pn.append('<div class="d-flex align-items-stretch col-md-12 col-lg-3">' +
-            '<a class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
-            '<img class="card-img-top img-responsive w-75 " src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
+        Pn.append('<div class="d-flex align-items-stretch col-lg-2">' +
+            '<a href="#" class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
+            '<p></p>' +
             '<div class="card-block text-center ">' +
-            '<h4 class="card-title">' + elemento.NombreDiseno + '</h4>' +
-            '<p class="card-text">' + elemento.EstiloDiseno + '</p>' +
+            '<h4 class="card-title font-weight-bold">' + elemento.NombreDiseno + '</h4>' +
+            '<p class="card-subtitle">' + elemento.EstiloDiseno + '</p>' +
+            '<p class="card-text">' + elemento.NumeroDiseno + '</p>' +
             '</div>' +
+            '<p></p>'+
+            '<img class="card-img-top img-responsive w-75 " src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
             '</a>' +
             '</div');
 
@@ -86,8 +94,8 @@ var fn_DibujarCatalogo = function (data) {
 
 
 var fn_CargarModal = function (e) {
-    xidCatalogo = $("#" + e["id"] + "").data("IdCatalogoDiseno");
-    fn_ConsultarCatalogoDisenoInf("ModalCDinf", xidCatalogo);
+  
+    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"));
 };
 
 

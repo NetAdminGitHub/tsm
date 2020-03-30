@@ -36,6 +36,9 @@ let vIdS = 0;
 let vIdCli = 0;
 let VarIDReq = 0;
 
+fPermisos = function (datos) {
+    Permisos = datos;
+};
 var fn_VSCargarJSEtapa = function () {
     KdoButton($("#btnCCDis"), "search", "Catalogo de Diseños");
 
@@ -60,7 +63,7 @@ var fn_VSCargarJSEtapa = function () {
     $("#Guardar").data("kendoButton").enable(false);
     PanelBarConfig($("#BarPanel"));
     KdoDatePikerEnable($("#Fecha"), false);
-
+    fn_CmbCriterioCalidad();
     // codigo de programas para el splitter
     //*******************************************************************
 
@@ -315,8 +318,16 @@ var fn_VSCargarJSEtapa = function () {
 
     //solicita tela sustituta
     $("#swchSolTelaSustituta").kendoSwitch();
+    $("#swchSolDesarrolloOEKO").kendoSwitch();
+    $("#swchPoseeDocumentacionAduanal").kendoSwitch();
+    $("#swchCobrarDiseno").kendoSwitch();
+
 
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(false);
+    $("#swchCobrarDiseno").data("kendoSwitch").check(false);
+
     //#region CmbIdUnidadMedidaCantidad
     $("#CmbIdUnidadMedidaCantidad").kendoComboBox({
         dataTextField: "Abreviatura",
@@ -1197,6 +1208,21 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
+    $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_GetCriteriosCalidad(this.dataItem(e.item.index()).IdCalidadCriterio);
+        }
+        else {
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+    $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+
     //#endregion Fin Prendas multi select
     $("#IdRequerimiento").val($("#txtId").val());
     $("#UbicacionVer").autogrow({ vertical: true, horizontal: false, flickering: false });
@@ -1250,9 +1276,13 @@ var fn_VSCargar = function () {
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesFoil"), false, false, false);
- 
+
         KdoComboBoxEnable($("#IdPrograma"), false);
         $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
+        $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(false);
+        $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(false);
+        $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(false);
+        $("#swchCobrarDiseno").data("kendoSwitch").enable(false);
     }
 };
 
@@ -1317,7 +1347,12 @@ let getRD = function (UrlRD) {
                 HabilitaFormObje(true);
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
+                $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
+                $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(elemento.PoseeDocumentacionAduanal);
+                $("#swchCobrarDiseno").data("kendoSwitch").check(elemento.CobrarDiseno);
 
+                $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
+                fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
                 if (elemento.IdServicio === 1) {
                     elemento.DisenoFullColor === true ? KdoNumerictextboxEnable($("#CantidadColores"), false) : KdoNumerictextboxEnable($("#CantidadColores"), elemento.Estado === "EDICION" ? true : false);
@@ -1531,21 +1566,9 @@ let ObtenerTallas = function () {
 let GuardarRequerimiento = function (UrlRD) {
     kendo.ui.progress($("#BPform"), true);
 
-    var XEstado = "EDICION";
-    var XFecha = kendo.toString(kendo.parseDate($("#Fecha").val()), 's');
-    var XType = "";
-
-    if ($("#IdRequerimiento").val() === "0") {
-        XType = "Post";
-        UrlRD = UrlRD + "/CrearRequerimientoDesarrollo";
-    } else {
-        XType = "Put";
-        UrlRD = UrlRD + "/UpdRequerimientoDesarrolloSolicitud/" + $("#IdRequerimiento").val();
-    }
-
     $.ajax({
-        url: UrlRD,//
-        type: XType,
+        url: UrlRD + "/UpdRequerimientoDesarrolloSolicitud/" + $("#IdRequerimiento").val(),
+        type: "Put",
         dataType: "json",
         data: JSON.stringify({
             IdRequerimiento: $("#IdRequerimiento").val(),
@@ -1563,8 +1586,8 @@ let GuardarRequerimiento = function (UrlRD) {
             CantidadStrikeOff: $("#TxtCantidadSTrikeOff").val(),
             StrikeOffAdicional: $("#TxtStrikeOffAdicional").val(),
             TallaPrincipal: $("#TallaPrincipal").val(),
-            Estado: XEstado,
-            Fecha: XFecha,
+            Estado: "EDICION",
+            Fecha: kendo.toString(kendo.parseDate($("#Fecha").val()), 's'),
             InstruccionesEspeciales: $("#InstruccionesEspeciales").val(),
             CantidadColores: $("#CantidadColores").val(),
             CantidadTallas: $("#CantidadTallas").val(),
@@ -1596,8 +1619,11 @@ let GuardarRequerimiento = function (UrlRD) {
             IdTipoMuestra: $("#CmbTMuestra").val(),
             IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
-            IdCatalogoDiseno: $("#IdCatalogoDiseno").val()
-
+            IdCatalogoDiseno: $("#IdCatalogoDiseno").val(),
+            IdCalidadCriterio: $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(),
+            StandarOEKOTEX: $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(),
+            PoseeDocumentacionAduanal: $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(),
+            CobrarDiseno: $("#swchCobrarDiseno").data("kendoSwitch").check()
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1616,7 +1642,7 @@ let GuardarRequerimiento = function (UrlRD) {
 
             //habilitar botones   
             $("#myBtnAdjunto").data("kendoButton").enable(true);
-            RequestEndMsg(data, XType);
+            RequestEndMsg(data, "Put");
             kendo.ui.progress($("#BPform"), false);
 
             getAdjun(UrlApiArteAdj + "/GetByArte/" + data[0].IdArte.toString());
@@ -1714,6 +1740,10 @@ let LimpiarReq = function () {
     $("#CmbTipoAcabado").data("kendoComboBox").value("");
     KdoCmbSetValue($("#CmbQuimica"), "");
     $("#swchSolTelaSustituta").data("kendoSwitch").check(false);
+    $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(false);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(false);
+    $("#swchCobrarDiseno").data("kendoSwitch").check(false);
     //limpiar mensajes de validacion
     ValidRD.hideMessages();
 
@@ -1805,6 +1835,10 @@ let HabilitaFormObje = function (ToF) {
     KdoComboBoxEnable($("#CmbTipoLuz"), ToF);
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
     $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
+    $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(ToF);
+    $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(ToF);
+    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(ToF);
+    $("#swchCobrarDiseno").data("kendoSwitch").enable(ToF);
 
 };
 
@@ -1812,9 +1846,7 @@ let HabilitaObje = function (e, ToF) {
     ToF === true ? e.removeClass("k-state-disabled") : e.addClass("k-state-disabled");
 };
 
-fPermisos = function (datos) {
-    Permisos = datos;
-};
+
 
 fn_SNEditar = function (valor) {
     return Permisos.SNEditar ? valor : false;
@@ -1885,5 +1917,72 @@ let CmbNuevoItem = function(widgetId, value) {
     });
 };
 
+let fn_CmbCriterioCalidad = function () {
 
+    $("#CmbIdCalidadCriterio").kendoMultiColumnComboBox({
+        dataTextField: "Nombre",
+        dataValueField: "IdCalidadCriterio",
+        height: 400,
+        columns: [
+            { field: "Nombre", title: "Nombre", width: 200 },
+            { field: "Descripcion", title: "Descripcion", width: 500 }
+        ],
+        footerTemplate: 'Total #: instance.dataSource.total() # items found',
+        filter: "contains",
+        filterFields: ["IdCalidadCriterio", "Nombre", "Descripcion"],
+        dataSource: {
+            transport: {
+                read: {
+                    url: function () { return TSM_Web_APi + "CalidadCriterios"; },
+                    contentType: "application/json; charset=utf-8"
+                }
+                
+            }
+        }
+    });
+
+};
+let fn_GetCriteriosCalidad = function (xIdCriterio) {
+    kendo.ui.progress($("#BPform"), true);
+    $.ajax({
+        url: TSM_Web_APi + "CalidadCriteriosPruebas/GetbyIdidCalidadCriterio/" + (xIdCriterio === null ? 0 : xIdCriterio),
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato.length > 0) {
+                fn_DibujarCriteriosCalidad(dato);
+            } else {
+                fn_DibujarCriteriosCalidad(null);
+            }
+            kendo.ui.progress($("#BPform"), false);
+        },
+        error: function () {
+            kendo.ui.progress($("#BPform"), false);
+        }
+    });
+
+};
+
+let fn_DibujarCriteriosCalidad = function (DataSource) {
+    var lista = $("#ListaCriterios");
+    //remueve las imagenes del carrousel
+    lista.children().remove();
+    $.each(DataSource, function (index, elemento) {
+        let vClass;
+        if (elemento.Icono === "" || elemento.Icono === null) {
+            vClass = 'class= "k-icon k-i-check k-icon-32"';
+        } else {
+            vClass = 'class= "' + elemento.Icono + '"';
+        }
+
+        lista.append('<div class="form-group form-inline">' +
+            '<div class="custom-control" style="align-self: flex-end;">' +
+            '<label class="font-weight-bold" for="1">' + elemento.Codigo + '</label>' +
+            '<div ' + vClass + ' style="font-size: 32px;" id="1" data-toggle="tooltip" title="' + elemento.Nombre + '"></div>' +
+            '</div>' +
+            '</div> '
+        );
+    });
+
+};
 //#endregion Fin metods Generales

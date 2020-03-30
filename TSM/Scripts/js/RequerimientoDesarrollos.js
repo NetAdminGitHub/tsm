@@ -1174,7 +1174,8 @@ $(document).ready(function () {
                 StrikeOffAdicional: 0,
                 IdQuimica: null,
                 SolicitaTelaSustituta:false,
-                RegistroCompletado:false
+                RegistroCompletado: false,
+                IdUbicacionParte:null
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
@@ -1317,7 +1318,8 @@ $(document).ready(function () {
                 StrikeOffAdicional: 0,
                 IdQuimica: null,
                 SolicitaTelaSustituta: false,
-                RegistroCompletado:false
+                RegistroCompletado: false,
+                IdUbicacionParte: null
                
 
             }),

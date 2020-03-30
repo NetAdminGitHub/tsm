@@ -297,6 +297,7 @@
     <Compile Include="Controllers\SistemaTintasController.cs" />
     <Compile Include="Controllers\SolicitudesClientesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
+    <Compile Include="Controllers\SublimacionPreciosOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TamanosDimensionesController.cs" />
     <Compile Include="Controllers\TamanosInsumosController.cs" />
     <Compile Include="Controllers\TecnicasController.cs" />
@@ -969,6 +970,8 @@
     <Content Include="Scripts\js\Solicitudes.js" />
     <Content Include="Scripts\js\SolicitudesClientes.js" />
     <Content Include="Scripts\js\SolicitudesPendientes.js" />
+    <Content Include="Scripts\js\SublimacionPreciosOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajosPreciosApro.js" />
     <Content Include="Scripts\js\SublimacionOrdenesTrabajosReg.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
@@ -1446,6 +1449,8 @@
     <Content Include="Views\CatalogoDisenos\ConsultarCatalogoDisenos.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
+    <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

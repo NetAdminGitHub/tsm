@@ -6,7 +6,6 @@ var srcDef = "/Images/NoImagen.png";
 var fn_InfDetalle = function (divCDInf, xidCatalogo) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     fn_gridOT();
-    fn_CargarInfDetalle(divCDInf, xidCatalogo);
 
     $("#ModalGeneraOT").kendoDialog({
         height: "auto",
@@ -17,7 +16,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
         closable: true,
         modal: true,
         actions: [
-            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_GenerarOT(); } },
+            { text: '<span class="k-icon k-i-check"></span>&nbspCrear OT', primary: true, action: function () { return fn_GenerarOT(); } },
             { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
         ],
         close: function (e) {
@@ -39,8 +38,14 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
                 MsgDesarrollo: "Requerido"
             }
         }).data("kendoValidator");
-};
 
+    $("#gConOT").data("kendoGrid").bind("change", function () {
+        fn_GetAdjuntos();
+        Fn_getCotizacion($("#gConOT").data("kendoGrid"));
+    });
+
+    fn_CargarInfDetalle(divCDInf, xidCatalogo);
+};
 
 var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
     kendo.ui.progress($("#ModalCDinf"), true);
@@ -50,20 +55,18 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
         type: 'GET',
         success: function (dato) {
             DsCatDisInf = dato;
+            fn_DibujaScrollView($("#scrollView"), "", null);
             if (dato.length > 0) {
                 $("#InfCliente").text(dato[0].NombreCli);
                 $("#InfFecha").text(kendo.toString(kendo.parseDate(dato[0].Fecha), 'dd/MM/yyyy'));
                 $("#" + divCDInf + "").data("kendoDialog").title(dato[0].NombreDiseno);
                 $("#gConOT").data("kendoGrid").dataSource.read().then(function () { fn_GetAdjuntos(); });
-          
             } else {
                 $("#InfCliente").text("");
                 $("#InfFecha").text("");
                 $("#" + divCDInf + "").data("kendoDialog").title("");
-                fn_DibujaScrollView($("#scrollView"), "", null);
             }
 
-            
             kendo.ui.progress($("#ModalCDinf"), false);
         },
         error: function () {
@@ -113,7 +116,8 @@ let fn_gridOT = function () {
                     NumeroDisenoOT: { type: "string" },
                     FechaSolicitud: { type: "date" },
                     IdArte: { type: "number" },
-                    IdServicio: {type:"IdServicio"}
+                    IdServicio: { type: "IdServicio" },
+                    Tallas: { type:"Tallas"}
                 }
             }
         }
@@ -155,8 +159,8 @@ let fn_gridOT = function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gConOT
-    SetGrid($("#gConOT").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 350);
-    Set_Grid_DataSource($("#gConOT").data("kendoGrid"), dsOT);
+    SetGrid($("#gConOT").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 340);
+    Set_Grid_DataSource($("#gConOT").data("kendoGrid"), dsOT,20);
 
     var selectedRowsServ = [];
     $("#gConOT").data("kendoGrid").bind("dataBound", function () { //foco en la fila
@@ -250,6 +254,8 @@ let fn_GetMotivoDesarrollo = function () {
 
 let fn_GenerarOT = function () {
     let Realizado = false;
+    let xNDocReqAnterior = fn_getNodocumentoReq($("#gConOT").data("kendoGrid")).toString();
+    let IdArte =fn_getIdArte($("#gConOT").data("kendoGrid"));
     if (ValidarFrmGeneraOT.validate()) {
         // obtener indice de la etapa siguiente
         kendo.ui.progress($(".k-dialog"), true);
@@ -257,15 +263,12 @@ let fn_GenerarOT = function () {
             url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo/" + fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString(),
             method: "POST",
             dataType: "json",
-            //data: JSON.stringify({
-            //    IdRequerimiento: fn_getIdRequerimiento($("#gConOT").data("kendoGrid")),
-            //    IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo"))
-            //}),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;
                 RequestEndMsg(datos, "Post");
                 $("#ModalGeneraOT").data("kendoDialog").close();
+                fn_GetOTDetalleReq(datos[0], IdArte, xNDocReqAnterior);
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -284,4 +287,72 @@ let fn_getIdRequerimiento= function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdRequerimiento;
 
+};
+
+let fn_getNodocumentoReq = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.NoReq;
+};
+
+let fn_AdjArchivoRD = function (NodocumentoReqNuevo,idarte, NodocumentoReq) {
+
+    kendo.ui.progress($("#ModalCDinf"), true);
+    $.ajax({
+        url: TSM_Web_APi + "ArteAdjuntos/GetByArte/" + idarte,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            $.each(respuesta, function (item, elemento) {
+                var dsres = [{
+                    NoDocumento: NodocumentoReqNuevo,
+                    NoReferencia: NodocumentoReq,
+                    NombreArchivo: elemento.NombreArchivo
+                }];
+                fn_SubirADj(dsres);
+            });
+           
+            kendo.ui.progress($("#ModalCDinf"), false);
+        },
+        error: function () {
+            kendo.ui.progress($("#ModalCDinf"), false);
+        }
+    });
+};
+let fn_SubirADj = function (ds) {
+    $.ajax({
+        type: "Post",
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify(ds),
+        url: "/RequerimientoDesarrollos/SubirArchivoReq",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+
+        }
+    });
+};
+
+let fn_GetOTDetalleReq = function (idot, IdArte, xNDocReqAnterior) {
+    kendo.ui.progress($("#ModalCDinf"), true);
+    $.ajax({
+        url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetOrdenesTrabajosDetallesRequerimiento/" + idot,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            if (respuesta !== null) {
+                fn_AdjArchivoRD(respuesta.NodocReq, IdArte, xNDocReqAnterior);
+            }
+        },
+        error: function () {
+            kendo.ui.progress($("#ModalCDinf"), false);
+        }
+    });
+};
+
+let Fn_getCotizacion = function (g) {
+    var elemento = g.dataItem(g.select());
+    $("#InfTallas").text(elemento.Tallas);
+    $("#InfNombreDisOT").text(elemento.NombreDisOT);
+    $("#InfEstiloDisenoOT").text(elemento.EstiloDisenoOT);
+    $("#InfNombreDisOT").text(elemento.NombreDisOT);
 };

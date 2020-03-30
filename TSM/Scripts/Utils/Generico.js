@@ -1178,20 +1178,21 @@ var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
  * @param {numeric} idCatalogoDiseno id del cliente
  */
 var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno) {
-
+    kendo.ui.progress($(document.body), true);
     if ($("#" + divCDInf + "").children().length === 0) {
         $.ajax({
             url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString(),
-            async: false,
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
+                kendo.ui.progress($(document.body), false);
                 fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno);
+
             }
         });
     } else {
-
+        kendo.ui.progress($(document.body), false);
         fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno);
     }
 };
@@ -1242,8 +1243,8 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno) {
     };
 
     $("#" + divCDInf + "").kendoDialog({
-        height: "70%",
-        width: "70%",
+        height: "80%",
+        width: "80%",
         title: "Detalle",
         closable: true,
         modal: true,
