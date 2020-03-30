@@ -8,7 +8,7 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
     KdoCmbSetValue($("#CmbIdCliente"), "");
     KdoButton($("#btnNuevoRegistro"), "edit", "Nuevo Registro");
-    KdoButtonEnable($("#btnNuevoRegistro"), false);
+    KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
 
     $("#btnNuevoRegistro").click(function () {
         window.location.href = "/SublimacionOrdenesTrabajos/SublimacionRegistro/" + KdoCmbGetValue($("#CmbIdCliente")).toString() + "/" + 0;
@@ -110,7 +110,7 @@ $(document).ready(function () {
             { field: "IdComposicionTela", title: "Código composición tela", hidden: true, menu: false },
             { field: "Nombre5", title: "composición tela", hidden: true },
             { field: "Color", title: "Color", hidden: true },
-            { field: "RegistroCompletado", title: "Registro Completado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RegistroCompletado"); } }
+            { field: "RegistroCompletado", title: "Registro Completado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RegistroCompletado"); }, hidden: true,  }
 
         ]
     });
@@ -133,10 +133,10 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
             Fn_ConsultarSimu(this.dataItem(e.item.index()).IdCliente.toString());
-            KdoButtonEnable($("#btnNuevoRegistro"), true);
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
         } else {
             Fn_ConsultarSimu(0);
-            KdoButtonEnable($("#btnNuevoRegistro"), false);
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
         }
     });
 
@@ -144,7 +144,7 @@ $(document).ready(function () {
         let value = this.value();
         if (value === "") {
             Fn_ConsultarSimu(0);
-            KdoButtonEnable($("#btnNuevoRegistro"), false);
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
         }
     });
 

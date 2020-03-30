@@ -14,10 +14,12 @@
 
     </script>
     <script src="~/Scripts/js/SublimacionOrdenesTrabajosReg.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
 }
 
 <link href="~/Content/bootstrap/AdjCarousel.css" rel="stylesheet" />
 <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
+
 <style>
     #GRReqDesTec,
     #GRDimension,
@@ -59,7 +61,7 @@
                                                         <div class="input-group">
                                                             <div style="width: 100%;">
                                                                 <button type="button" id="btnIrOrdeTrabajoSublimacion" name="btnIrOrdeTrabajoSublimacion">Ir a Ordenes de Trabajo</button>
-                                                                <button type="button" id="btnConfirmarRegistro" name="btnConfirmarRegistro">Confirmar</button>
+                                                                <button type="button" id="btnCambiarEstado" name="btnCambiarEstado">Enviar a Desarrollo Precios</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -117,47 +119,89 @@
                                             </div>
                                             <div class="form-row"><br /></div>
                                             <!-- SECION FORMULARIO PRENDA-->
-                                            <div class="border p-md-1 p-lg-1">
-                                                <div class="form-row">
-                                                    <div class="col-lg-6"><label class="font-weight-bold">Prenda</label></div>
-                                                    <div class="col-lg-3"> <input id="IdModulo" name="IdModulo" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                    <div class="col-lg-3"> <input id="IdCatalogoDiseno" name="IdCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                    <div class="col-lg-3"> <input id="IdSolicitudDisenoPrenda" name="IdSolicitudDisenoPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="IdComposicionTela">Composición Tela:</label>
-                                                        <input id="IdComposicionTela" name="IdComposicionTela" required validationMessage="Requerido" class="form-control" />
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="IdCategoriaConfeccion">Confección:</label>
-                                                        <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion" required validationMessage="Requerido" class="form-control" />
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="IdConstruccionTela">Construcción Tela:</label>
-                                                        <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="TxtColorTela">Color Tela:</label>
-                                                        <input id="TxtColorTela" name="TxtColorTela" required validationMessage="Requerido" class="k-textbox form-control" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6 col-lg-9">
-                                                        <label for="IdCategoriaPrenda">Tipo Prenda:</label>
-                                                        <input id="IdCategoriaPrenda" name="IdCategoriaPrenda" class="form-control" />
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-12">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-lg-7">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-12">
+
+                                                                    <div class="border p-md-1 p-lg-1">
+                                                                        <div class="form-row">
+                                                                            <div class="col-lg-6"><label class="font-weight-bold">Prenda</label></div>
+                                                                            <div class="col-lg-3"> <input id="IdModulo" name="IdModulo" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                                            <div class="col-lg-3"> <input id="IdCatalogoDiseno" name="IdCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                                            <div class="col-lg-3"> <input id="IdSolicitudDisenoPrenda" name="IdSolicitudDisenoPrenda" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6 col-lg-3">
+                                                                                <label for="IdComposicionTela">Composición Tela:</label>
+                                                                                <input id="IdComposicionTela" name="IdComposicionTela" required validationMessage="Requerido" class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6 col-lg-3">
+                                                                                <label for="IdCategoriaConfeccion">Confección:</label>
+                                                                                <input id="IdCategoriaConfeccion" name="IdCategoriaConfeccion" required validationMessage="Requerido" class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6 col-lg-3">
+                                                                                <label for="IdConstruccionTela">Construcción Tela:</label>
+                                                                                <input id="IdConstruccionTela" name="IdConstruccionTela" required validationMessage="Requerido" class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6 col-lg-3">
+                                                                                <label for="TxtColorTela">Color Tela:</label>
+                                                                                <input id="TxtColorTela" name="TxtColorTela" required validationMessage="Requerido" class="k-textbox form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6 col-lg-9">
+                                                                                <label for="IdCategoriaPrenda">Tipo Prenda:</label>
+                                                                                <input id="IdCategoriaPrenda" name="IdCategoriaPrenda" class="form-control" />
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-3">
+                                                                                <label for="TallaPrincipal" id="lblTallas">Tallas:</label>
+                                                                                <input id="TallaPrincipal" name="TallaPrincipal" class="k-textbox form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12 col-lg-12">
+                                                                                <label for="IdPartesDet">Partes prenda:</label>
+                                                                                <input id="IdPartesDet" name="IdPartesDet" class="form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12 col-lg-12">
+                                                                                <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
+                                                                                <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-lg-5">
+                                                            <!-- SECION ADJUNTOS-->
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-12" id="Div_Carousel">
+                                                                    @* aqui se coloca dinamicamente las imagenes  *@
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-3">
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="TallaPrincipal" id="lblTallas">Tallas:</label>
-                                                        <input id="TallaPrincipal" name="TallaPrincipal" class="k-textbox form-control" />
-                                                    </div>
                                                 </div>
-                                               
+
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-row"><br /></div>
+                                    @*<div class="form-row"><br /></div>*@
                                     <div class="form-row">
                                         <div class="form-group col-lg-12">
                                             <!-- SECION FROMULARIO ARTE-->
@@ -181,13 +225,21 @@
                                                         <label for="EstiloDiseno">Estilo:</label>
                                                         <input id="EstiloDiseno" name="EstiloDiseno" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
                                                     </div>
-                                                    <div class="form-group col-md-6 col-lg-3  align-self-end">
+                                                    <div class="form-group col-md-6 col-lg-3  align-self-end" hidden="hidden">
                                                         <input type="checkbox" id="chkRegistroCompletado" name="chkRegistroCompletado" class="k-checkbox">
                                                         <label class="k-checkbox-label" for="chkRegistroCompletado">Registro Compleado </label>
                                                     </div>
 
                                                 </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-12"><label class="font-weight-bold">Historial de Cambios</label></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-12"> <div id="gCambios"></div></div>
+                                                </div>
                                             </div>
+
+
                                             <div class="form-row"> <div class="form-group"></div></div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-12 col-lg-4 align-self-lg-end">
@@ -203,16 +255,9 @@
 
                                         </div>
                                     </div>
+
                                 </li>
-                                <li class="k-state-active">
-                                    <span class="TS-icon-EFECTIVO" style="font-size: 1.7em;">&nbsp</span>
-                                    Detalle de Partes
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6 col-lg-12">
-                                            <div id="gridPartes"></div>
-                                        </div>
-                                    </div>
-                                </li>
+
                             </ul>
                         </form>
                         @* div utilizado para cargar la vista estados *@
@@ -223,3 +268,4 @@
         </div>
     </div>
 </div>
+<div id="vCambioEstado"></div>
