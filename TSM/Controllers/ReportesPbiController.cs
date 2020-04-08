@@ -13,6 +13,7 @@ using TSM.BOL;
 using TSM.DAL;
 using TSM.Models;
 
+
 namespace TSM.Controllers
 {
     public class ReportesPbiController : Controller
@@ -35,10 +36,10 @@ namespace TSM.Controllers
                 NombrePagina = NombrePagina.Trim()
             };
 
-            using (ReportePbiBOL test = new ReportePbiBOL(new ReportePbiDAL()))
+            using (ReportePbiBOL pbiBol = new ReportePbiBOL(new ReportePbiDAL()))
             {
                 // obtiene configuración de reporte
-                 PbiResult = test.ObtieneParametrosPbi(Utils.Config.TSM_WebApi, re);
+                 PbiResult = pbiBol.ObtieneParametrosPbi(Utils.Config.TSM_WebApi, re);
                 if (PbiResult == null)
                 {
                     throw new Exception("No se han obtenido parámeros para el reporte");
@@ -46,17 +47,27 @@ namespace TSM.Controllers
                 else
                 {
                     PbiResult.reportRedirecUrl = String.Format("ReportesPbi/{0}/{1}/", reporte, NombrePagina);
+                    Session["PbiParams"] = PbiResult; // agrega objeto a variable de sesion
                     PbiUtils.PbiReport = PbiResult;
                 }
+            }
+
+            if (!String.IsNullOrEmpty(PbiResult.MasterAcc) || !String.IsNullOrEmpty(PbiResult.MasterAccKey))
+            {
+                return Redirect("~/PbiToken/AutenticaMaster");
+            
             }
 
 
             if (Session[PbiUtils.authResultString] != null)
             {
-               //obtiene datos del reporte
-                using(ReportePbiBOL rpbiBo = new ReportePbiBOL(new ReportePbiDAL()))
+                var a = (AuthenticationResult)Session[PbiUtils.authResultString];
+                //obtiene datos del reporte
+                using (ReportePbiBOL rpbiBo = new ReportePbiBOL(new ReportePbiDAL()))
                 {
-                      rpt = rpbiBo.GetReport(PbiResult);
+                    
+                    
+                      rpt = rpbiBo.GetReport(PbiResult,a.AccessToken);
                     //asigna a variable de sesion.
                     PbiUtils.SetEmbedDataSet(rpt.EmbedUrl, rpt.DatasetId);                
                 }
@@ -73,15 +84,10 @@ namespace TSM.Controllers
 
             ViewBag.Reporte = rpt;
             ViewBag.pbat = accessToken;
-            
+          
             return View();
-           // return View();
+         
         }
-
-
-
-
-
 
 
     }

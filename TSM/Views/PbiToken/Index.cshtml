@@ -1,0 +1,32 @@
+﻿
+@model Microsoft.PowerBI.Api.V2.Models.Report
+
+@{
+    ViewBag.Title = "Dato Cifrado";
+    ViewBag.IdVersion = "TSM0102002|v20033101";
+}
+
+
+
+
+
+<div id="reportWrapper" class="form-row">
+    <div class="col-lg-12">
+        <div class="card" style="height:100%;">
+        <div class="card-body">
+
+            <div class="form-group">
+                <label class="sr-only" for="form-password">Contraseña</label>
+                <input type="password" autocomplete="current-password" name="form-password" placeholder="Contraseña..." class="form-password form-control" id="form-password">
+            </div>
+            <button id="btnLogin" class="btn btn-success">Ingresar</button>
+            <div class="form-group" style="float:right;">
+                <p>Data: @ViewBag.cifer</p>
+            </div>
+        </div>
+            
+            
+        </div>
+    </div>
+</div>
+

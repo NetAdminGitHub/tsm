@@ -1453,6 +1453,7 @@
     <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
+    <Content Include="Views\PbiToken\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -41,7 +41,7 @@ namespace TSM.BOL
 
 
 
-        public Report GetReport(ReportePbi PbiResult)
+        public Report GetReport(ReportePbi PbiResult,string AccessToken)
         {
             string WorkspaceId = "";//"eb3ce37f-f8ff-469f-82cf-c0deea99da0a";
             string reportId ="" ;// "b2a70493-b8fa-4fa0-87c6-19a26257f0a2";
@@ -50,7 +50,7 @@ namespace TSM.BOL
             try
             {
             
-                using (var client = new PowerBIClient(new Uri(PbiResult.PbiApiUrl), new TokenCredentials(PbiUtils.authResult.AccessToken, "Bearer")))
+                using (var client = new PowerBIClient(new Uri(PbiResult.PbiApiUrl), new TokenCredentials(AccessToken, "Bearer")))
                 {
 
 
