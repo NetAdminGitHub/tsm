@@ -1093,6 +1093,8 @@ let MostrarCamposxTecnica = function () {
             } else {
                 KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
             }
+
+            kendo.ui.progress($("#splitter"), false);
         },
         error: function () {
             kendo.ui.progress($("#splitter"), false);
