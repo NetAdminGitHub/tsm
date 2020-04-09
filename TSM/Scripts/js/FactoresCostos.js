@@ -115,7 +115,7 @@ $(document).ready(function () {
         columns: [
             { field: "IdFactorCosto", title: "Factor Costo" },
             { field: "Nombre", title: "Nombre" },
-            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.0000", "999.9999", "n4", 4]},
+            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.0001", "9999999.9999", "n4", 4],format:'{0:c4}'},
             { field: "IdUnidadCosto", title: "Unidad Costo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione...."], hidden: true },
             { field: "Nombre2", title: "Unidad Costo" }
         ]

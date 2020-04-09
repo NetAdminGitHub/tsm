@@ -1093,6 +1093,8 @@ let MostrarCamposxTecnica = function () {
             } else {
                 KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
             }
+
+            kendo.ui.progress($("#splitter"), false);
         },
         error: function () {
             kendo.ui.progress($("#splitter"), false);
@@ -1522,7 +1524,7 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
-    $("#TxtCostoTotalRes").kendoNumericTextBox({
+    $("#TxtCostoPrimoSubli").kendoNumericTextBox({
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1540,7 +1542,7 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
-    $("#NumCostoTotalTransRes").kendoNumericTextBox({
+    $("#NumCostoPrimoTransSubli").kendoNumericTextBox({
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1675,8 +1677,8 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoProduccionTrans"), elemento.CostoProduccionTrans);
         kdoNumericSetValue($("#TxtCostoOperacionTrans"), elemento.CostoOperacionTrans);
         kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
-        kdoNumericSetValue($("#TxtCostoTotalRes"), elemento.CostoTotal);
-        kdoNumericSetValue($("#NumCostoTotalTransRes"), elemento.CostoTotalTrans);
+        kdoNumericSetValue($("#TxtCostoPrimoSubli"), elemento.CostoPrimo);
+        kdoNumericSetValue($("#NumCostoPrimoTransSubli"), elemento.CostoPrimoTrans);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
         $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
         kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
@@ -1795,10 +1797,10 @@ function DesHabilitarCamposSim() {
         KdoNumerictextboxEnable($("#NumYardaTransHora"), false);
         KdoNumerictextboxEnable($("#NumCostoPapelImp"), false);
         KdoNumerictextboxEnable($("#NumCostoTinta"), false);
-        KdoNumerictextboxEnable($("#TxtCostoTotalRes"), false);
+        KdoNumerictextboxEnable($("#TxtCostoPrimoSubli"), false);
         KdoNumerictextboxEnable($("#NumCostoPapelProtec"), false);
         KdoNumerictextboxEnable($("#NumCostoAdicionales"), false);
-        KdoNumerictextboxEnable($("#NumCostoTotalTransRes"), false);
+        KdoNumerictextboxEnable($("#NumCostoPrimoTransSubli"), false);
         KdoNumerictextboxEnable($("#TxtCostoTotalMasTrans"), false);
         KdoNumerictextboxEnable($("#TxtCostoMODTrans"), false);
         KdoNumerictextboxEnable($("#TxtCostoFabrilTrans"), false);
@@ -1863,10 +1865,10 @@ let fn_LimpiarCamposSim = function () {
         kdoNumericSetValue($("#NumYardaTransHora"), 0);
         kdoNumericSetValue($("#NumCostoPapelImp"), 0);
         kdoNumericSetValue($("#NumCostoTinta"), 0);
-        kdoNumericSetValue($("#TxtCostoTotalRes"), 0);
+        kdoNumericSetValue($("#TxtCostoPrimoSubli"), 0);
         kdoNumericSetValue($("#NumCostoPapelProtec"), 0);
         kdoNumericSetValue($("#NumCostoAdicionales"), 0);
-        kdoNumericSetValue($("#NumCostoTotalTransRes"), 0);
+        kdoNumericSetValue($("#NumCostoPrimoTransSubli"), 0);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), 0);
         kdoNumericSetValue($("#TxtCostoMODTrans"), 0);
         kdoNumericSetValue($("#TxtCostoFabrilTrans"), 0);
