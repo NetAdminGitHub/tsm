@@ -1720,16 +1720,18 @@ $(document).ready(function () {
 
             });
 
+            $('[name="IdCatalogoInsumo"]').on('change', function () {
+                if (this.value !== "") {
+                    KdoCmbSetValue($('[name="IdUnidadConsumo"]'), fn_GetCataInsumos(this.value).IdUnidadDimension);
+                    $('[name="IdUnidadConsumo"]').data("kendoComboBox").trigger("change");
 
-            //$('[name="VelocidadMaquina"]').on("change", function (e) {
-            //    $('[name="VelocidadMaquinaMts"]').data("kendoNumericTextBox").value(parseFloat(this.value) * 0.9144);
-            //    $('[name="VelocidadMaquinaMts"]').data("kendoNumericTextBox").trigger("change");
-            //});
+                } else {
+                    KdoCmbSetValue($('[name="IdUnidadConsumo"]'),null);
+                    $('[name="IdUnidadConsumo"]').data("kendoComboBox").trigger("change");
+                }
+                
+            });
 
-            //$('[name="VelocidadMaquinaMts"]').on("change", function (e) {
-            //    $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").value(parseFloat(this.value) * 1.09361);
-            //    $('[name="VelocidadMaquina"]').data("kendoNumericTextBox").trigger("change");
-            //});
 
             if (!e.model.isNew()) {
                 IdTec = e.model.IdTecnica;
@@ -1761,7 +1763,8 @@ $(document).ready(function () {
             { field: "IdUnidadVelocidad", title: "Unidad Velocidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombrUnidadVelocidad", title: "Unidad Velocidad", hidden: true },
             { field: "Consumo", title: "Consumo Tinta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n2", 2] },
-            { field: "IdUnidadConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "", "", ""], hidden: true }
+            { field: "IdUnidadConsumo", title: "Unidad Consumo", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUniMed, "", "Seleccione....", "", "", ""], hidden: true },
+            { field: "NombreUnidadConsumo", title: "Unidad Consumo", hidden: true }
           
    
         ]
@@ -1803,7 +1806,9 @@ $(document).ready(function () {
                         KdoHideCampoPopup(e, "IdPerfilesImpresion");
                         KdoHideCampoPopup(e, "IdVelocidadTransferencia");
                         $('[name="IdCatalogoInsumo"]').data("kendoComboBox").input.focus();
+                        KdoComboBoxEnable($('[name="IdUnidadConsumo"]'), false);
                         Proceso = "TIN";
+
                     }
 
                     if (respuesta.EsSublimacion === true) {
@@ -1814,6 +1819,7 @@ $(document).ready(function () {
                         KdoShowCampoPopup(e, "IdUnidadVelocidad");
                         KdoHideCampoPopup(e, "IdUnidadConsumo");
                         KdoHideCampoPopup(e, "Consumo");
+
 
                         if (respuesta.IdTecnica === 2) {
                             KdoShowCampoPopup(e, "IdPerfilesImpresion");
@@ -2973,4 +2979,20 @@ let fn_GetFC = function (f) {
     return valor;
 };
 
+
+let fn_GetCataInsumos = function (id) {
+    kendo.ui.progress($("#body"), true);
+    let valor = "";
+    $.ajax({
+        url: TSM_Web_APi + "CatalogoInsumos/" + id,
+        async: false,
+        type: 'GET',
+        success: function (respuesta) {
+            valor = respuesta;
+
+        }
+    });
+    kendo.ui.progress($("#body"), false);
+    return valor;
+};
 //#endregion Metodos generales
