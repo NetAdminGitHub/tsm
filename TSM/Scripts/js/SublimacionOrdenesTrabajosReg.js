@@ -704,7 +704,7 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
                 UrlApiArteAdj = UrlApiArteAdj + "/GetByArte/" + respuesta.IdArte;
                 getAdjun(UrlApiArteAdj);
                 $("#Adjunto").data("kendoUpload").enable($("#Estado").val() !== "EDICION" ? false : true);
-                $("#Estado").val() !== "EDICION" ? Grid_HabilitaToolbar($("#GridAdjuntos"), false,false, false) : Grid_HabilitaToolbar($("#gCambios"), false, true, true);
+                $("#Estado").val() !== "EDICION" ? Grid_HabilitaToolbar($("#GridAdjuntos"), false, false, false) : Grid_HabilitaToolbar($("#GridAdjuntos"), false, true, true);
 
                 KdoButtonEnable($("#myBtnAdjunto"),true);
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
@@ -973,7 +973,7 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             data[0].Estado === "EDICION" ? Grid_HabilitaToolbar($("#gCambios"), Permisos.SNAgregar, false, false) : Grid_HabilitaToolbar($("#gCambios"), false, false, false);
             KdoButtonEnable($("#myBtnAdjunto"), true);
             $("#Adjunto").data("kendoUpload").enable(data[0].Estado  !== "EDICION" ? false : true);
-            data[0].Estado  !== "EDICION" ? Grid_HabilitaToolbar($("#GridAdjuntos"), false, false, false) : Grid_HabilitaToolbar($("#gCambios"), false, true, true);
+            data[0].Estado  !== "EDICION" ? Grid_HabilitaToolbar($("#GridAdjuntos"), false, false, false) : Grid_HabilitaToolbar($("#GridAdjuntos"), false, true, true);
         },
         error: function (data) {
 
