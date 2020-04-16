@@ -1724,19 +1724,24 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         dataChart.push(
             {
-                category: "Costo de Mano de Obra Directa (Imp + Trans)",
+                category: "Costo Primo (Imp + Trans)",
+                value: elemento.CostoPrimo + elemento.CostoPrimoTrans,
+                color: "#FFC733"
+            },
+            {
+                category: "Costo de Mano de Obra (Imp + Trans)",
                 value: elemento.CostoMOD + elemento.CostoMODTrans,
                 color: "#03396C"
             },
             {
-                category: "Costo Fabril (Imp + Trans)",
-                value: elemento.CostoFabril + elemento.CostoFabrilTrans,
+                category: "Costo Producción (Imp + Trans)",
+                value: elemento.CostoProduccion + elemento.CostoProduccionTrans,
                 color: "#005B96"
             },
             {
                 category: "Costo Operación (Imp + Trans)",
                 value: elemento.CostoOperacion + elemento.CostoOperacionTrans,
-                color: "#6497B1"
+                color: "#33C1FF"
             });
     }
    
