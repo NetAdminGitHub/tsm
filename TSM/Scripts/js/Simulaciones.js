@@ -1687,6 +1687,12 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#NumPeronalTransferencia"), elemento.NoOperariosTrans);
         kdoNumericSetValue($("#NumPeronalImpresion"), elemento.NoOperariosImpre);
         kdoNumericSetValue($("#NumCostoAdicionales"), elemento.CostoLimpieza);
+
+        $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
+        $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
+        $("#TxtPrecioCliente").data("kendoNumericTextBox").value(elemento.PrecioCliente);
+        $("#TxtPrecioTS").data("kendoNumericTextBox").value(elemento.PrecioTS);
+        $("#TxtPrecioVenta").data("kendoNumericTextBox").value(elemento.PrecioVenta);
         $("#dbgPartesSub").data("kendoGrid").dataSource.read();
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
@@ -1892,12 +1898,11 @@ let fn_LimpiarCamposSim = function () {
 };
 
 let  fn_GridPartes = function () {
-    let UrlAParte = TSM_Web_APi + "AnalisisDisenosPartes";
     let dset = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlAParte + "/GetAnalisisDisenosParteByAnalisisDiseno/" + S_IdA; },
+                url: function (datos) { return TSM_Web_APi + "Simulaciones/GetPartesbyIdSimulacion/" + VIDSim; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -1919,10 +1924,17 @@ let  fn_GridPartes = function () {
                     Nombre: { type: "string" },
                     PorcAreaLienzo: { type: "number"},
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    C2: { type: "number" }, //CostoParte
+                    PorcUtilidadConsiderada: {type:"number"},
+                    C3: { type: "number" } //PrecioParte
                 }
             }
-        }
+        },
+        aggregate: [
+            { field: "C2", aggregate: "sum" },
+            { field: "C3", aggregate: "sum" }
+        ]
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -1940,9 +1952,11 @@ let  fn_GridPartes = function () {
             { field: "Nombre", title: "Parte" },
             { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
             {
-                field: "PrecioParte", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2],format: "{0:c2}" ,template: function (dataItem) {
-                    return "<strong>" + kendo.htmlEncode(Number.parseFloat(dataItem.PorcAreaLienzo * kdoNumericGetValue($("#TxtCostoTotalMasTrans"))).toFixed(2)) + "</strong>";
-                }
+                field: "C2", title: "Costo por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", footerTemplate: "Total: #: data.C2 ? kendo.format('{0:c2}', sum) : 0 #"
+            },
+            { field: "PorcUtilidadConsiderada", title: "Rentabilidad", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
+            {
+                field: "C3", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", footerTemplate: "Total: #: data.C3 ? kendo.format('{0:c2}', sum) : 0 #"
             }
         ]
     });
