@@ -1476,6 +1476,22 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumAltoimp").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumConsumoYarda").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
     $("#NumPeronalTransferencia").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -1659,6 +1675,8 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         $("#TxtOperTela").val(elemento.OperacionTela);
         kdoNumericSetValue($("#NumAnchoimp"), elemento.AnchoDiseno);
+        kdoNumericSetValue($("#NumAltoimp"), elemento.AltoDiseno);
+        kdoNumericSetValue($("#NumConsumoYarda"), elemento.ConsumoYarda);
         $("#TxtUniAnchoimp").val(elemento.UnidadMedAncho);
         $("#TxtPerfilImpresion").val(elemento.PerfilImpresion);
         $("#TxtVelocidadTransferencia").val(elemento.NombreVeloTransf);
@@ -1800,6 +1818,8 @@ function DesHabilitarCamposSim() {
   
     if (VIdSer === 2) {
         KdoNumerictextboxEnable($("#NumAnchoimp"), false);
+        KdoNumerictextboxEnable($("#NumAltoimp"), false);
+        KdoNumerictextboxEnable($("#NumConsumoYarda"), false);
         KdoNumerictextboxEnable($("#NumPeronalTransferencia"), false);
         KdoNumerictextboxEnable($("#NumPeronalImpresion"), false);
         TextBoxEnable($("#TxtVelocidadTransferencia"), false);
@@ -1869,6 +1889,8 @@ let fn_LimpiarCamposSim = function () {
 
     if (VIdSer === 2) {
         kdoNumericSetValue($("#NumAnchoimp"), 0);
+        kdoNumericSetValue($("#NumAltoimp"), 0);
+        kdoNumericSetValue($("#NumConsumoYarda"), 0);
         kdoNumericSetValue($("#NumPeronalTransferencia"), 0);
         kdoNumericSetValue($("#NumPeronalImpresion"), 0);
         kdoNumericSetValue($("#NumYardaImpHora"), 0);
