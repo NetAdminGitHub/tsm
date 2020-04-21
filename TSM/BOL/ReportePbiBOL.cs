@@ -26,11 +26,14 @@ namespace TSM.BOL
         }
 
 
-        public ReportePbi ObtieneParametrosPbi(string urlBase,  PbiConfRequestModel data, string aplicacion = "/ParametrosReportesPbi/GetReporte/")
+        public ReportePbi ObtieneParametrosPbi(string urlBase,  PbiConfRequestModel data, ReportePbi PBiActual =  null, string aplicacion = "/ParametrosReportesPbi/GetReporte/")
         {
-            if (PbiUtils.PbiReport != null && data.CodReporte.Trim() == PbiUtils.PbiReport.CodReporte.Trim() && data.NombrePagina.Trim() == PbiUtils.PbiReport.NombrePagina.Trim())
+            PBiActual.CodReporte = String.IsNullOrEmpty(PBiActual.CodReporte) ? "" : PBiActual.CodReporte;
+            PBiActual.NombrePagina = String.IsNullOrEmpty(PBiActual.NombrePagina) ? "" : PBiActual.NombrePagina;
+
+            if (PBiActual != null && data.CodReporte.Trim() == PBiActual.CodReporte && data.NombrePagina.Trim() == PBiActual.NombrePagina)
             {
-                return PbiUtils.PbiReport;
+                return PBiActual;
             }
             else
             {

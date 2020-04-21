@@ -27,9 +27,10 @@ namespace TSM.Controllers
         [HttpGet]
         public void Validar()
         {
+            //var a = (ReportePbi)Session["PbiParams"];
             //Redirect uri must match the redirect_uri used when requesting Authorization code.
-            string redirectUri = PbiUtils.PbiReport.RedirectUrl;//$"https://localhost:44311/PbiToken/Validar";
-            string authorityUri =PbiUtils.PbiReport.AADAuthorityUri;// "https://login.windows.net/common/";
+            string redirectUri = PbiUtils.PbiReport.RedirectUrl;//"https://localhost:44311/PbiToken/Validar";
+            string authorityUri = PbiUtils.PbiReport.AADAuthorityUri;// "https://login.windows.net/common/";
 
             // Get the auth code
             string code = Request.Params["code"];
@@ -46,13 +47,12 @@ namespace TSM.Controllers
 
                 AuthenticationResult AR = AC.AcquireTokenByAuthorizationCodeAsync(code, new Uri(redirectUri), cc).Result;
 
-                //Set Session "authResult" index string to the AuthenticationResult
+                //asigna respuesta de tipo AuthenticationResult a variable de session
                 Session[PbiUtils.authResultString] = AR;
 
                 //Get the authentication result from the session
-                PbiUtils.authResult = (AuthenticationResult)Session[PbiUtils.authResultString];
-
-                //Response.Redirect($"/{PbiUtils.EmbedType}.aspx");
+               //// PbiUtils.authResult = (AuthenticationResult)Session[PbiUtils.authResultString];
+                              
             }
             else
             {
@@ -73,44 +73,27 @@ namespace TSM.Controllers
         {
             Session[PbiUtils.authResultString] = null; //reinicia la variable de sesión.
             SeguridadClient seg = new SeguridadClient("BasicHttpBinding_ISeguridad");
+            var a = (ReportePbi)Session["PbiParams"];
 
-            
 
             //Redirect uri must match the redirect_uri used when requesting Authorization code.
-            string redirectUri = PbiUtils.PbiReport.RedirectUrl;//$"https://localhost:44311/PbiToken/Validar";
-            string authorityUri = PbiUtils.PbiReport.AADAuthorityUri;// "https://login.windows.net/common/";
+            string redirectUri = a.RedirectUrl;//$"https://localhost:44311/PbiToken/Validar";
+            string authorityUri = a.AADAuthorityUri;// "https://login.windows.net/common/";
             AuthenticationResult authres = null;
           
-            var a = (ReportePbi)Session["PbiReport"];
-
                var authContext = new AuthenticationContext(authorityUri);
 
             // Authentication using master user credentials
             var credential = new UserPasswordCredential(a.MasterAcc, seg.Desencriptar(a.MasterAccKey,Utils.Config.App));
-            authres = authContext.AcquireTokenAsync(PbiUtils.PbiReport.PbiApiResourceUrl,PbiUtils.PbiReport.ApplicationId, credential).Result;
-            //asigna respuesta de tipo AuthenticationResult a ariable de session
+            authres = authContext.AcquireTokenAsync(a.PbiApiResourceUrl,a.ApplicationId, credential).Result;
+            //asigna respuesta de tipo AuthenticationResult a variable de session
             Session[PbiUtils.authResultString] = authres;
 
             //Redirect back to Default.aspx
-            Response.Redirect(Url.Content("~/" + PbiUtils.PbiReport.reportRedirecUrl), false);
+            Response.Redirect(Url.Content("~/" + a.reportRedirecUrl), false);
         }
 
 
-        /// <summary>
-        ///obtiene cadena cifrada 
-        /// </summary>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult Master ( FormCollection form)
-        {
-            string cc = form["cadena"];
-            string cifer = "";
-            SeguridadClient seg = new SeguridadClient("BasicHttpBinding_ISeguridad");
-            cifer = seg.Encriptar(cc, Utils.Config.App);
-            ViewBag.cifer = cifer;
-            return View();
-        }
 
     }
 
