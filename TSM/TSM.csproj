@@ -253,6 +253,7 @@
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
+    <Compile Include="Controllers\GetCipherController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
@@ -747,6 +748,7 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\GetCipher.js" />
     <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
@@ -1451,6 +1453,7 @@
     <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
+    <Content Include="Views\GetCipher\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

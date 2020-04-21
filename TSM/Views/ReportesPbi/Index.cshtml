@@ -7,16 +7,16 @@
 }
 
 <script type="text/javascript" hidden="hidden">
-    var PageN = "@TSM.Utils.PbiUtils.PbiReport.Pagina"; // nombre de la página.
+    var PageN = "@ViewBag.ReportSet.Pagina"; // nombre de la página.
     var ReportN = null;
     var WSpace = null;
-    var EmbedUrl ="@TSM.Utils.PbiUtils.PbiEmbed";
-    let Client = "@TSM.Utils.PbiUtils.PbiReport.Reporte";
+    var EmbedUrl ="@ViewBag.Embedded";
+    let Client = "@ViewBag.ReportSet.Reporte";
     let Token = "";
-    let navbarEnabled = "@TSM.Utils.PbiUtils.PbiReport.HabilitaBarraNav";
+    let navbarEnabled = "@ViewBag.ReportSet.HabilitaBarraNav";
 
     try {
-        Token =  "@TSM.Utils.PbiUtils.AToken";
+        Token =  "@ViewBag.pbat";
     } catch (e) {
         Token = "";
     }

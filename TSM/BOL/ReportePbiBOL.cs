@@ -26,11 +26,14 @@ namespace TSM.BOL
         }
 
 
-        public ReportePbi ObtieneParametrosPbi(string urlBase,  PbiConfRequestModel data, string aplicacion = "/ParametrosReportesPbi/GetReporte/")
+        public ReportePbi ObtieneParametrosPbi(string urlBase,  PbiConfRequestModel data, ReportePbi PBiActual =  null, string aplicacion = "/ParametrosReportesPbi/GetReporte/")
         {
-            if (PbiUtils.PbiReport != null && data.CodReporte.Trim() == PbiUtils.PbiReport.CodReporte.Trim() && data.NombrePagina.Trim() == PbiUtils.PbiReport.NombrePagina.Trim())
+            PBiActual.CodReporte = String.IsNullOrEmpty(PBiActual.CodReporte) ? "" : PBiActual.CodReporte;
+            PBiActual.NombrePagina = String.IsNullOrEmpty(PBiActual.NombrePagina) ? "" : PBiActual.NombrePagina;
+
+            if (PBiActual != null && data.CodReporte.Trim() == PBiActual.CodReporte && data.NombrePagina.Trim() == PBiActual.NombrePagina)
             {
-                return PbiUtils.PbiReport;
+                return PBiActual;
             }
             else
             {
@@ -41,7 +44,7 @@ namespace TSM.BOL
 
 
 
-        public Report GetReport(ReportePbi PbiResult)
+        public Report GetReport(ReportePbi PbiResult,string AccessToken)
         {
             string WorkspaceId = "";//"eb3ce37f-f8ff-469f-82cf-c0deea99da0a";
             string reportId ="" ;// "b2a70493-b8fa-4fa0-87c6-19a26257f0a2";
@@ -50,7 +53,7 @@ namespace TSM.BOL
             try
             {
             
-                using (var client = new PowerBIClient(new Uri(PbiResult.PbiApiUrl), new TokenCredentials(PbiUtils.authResult.AccessToken, "Bearer")))
+                using (var client = new PowerBIClient(new Uri(PbiResult.PbiApiUrl), new TokenCredentials(AccessToken, "Bearer")))
                 {
 
 
