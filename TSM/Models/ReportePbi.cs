@@ -26,7 +26,9 @@ namespace TSM.Models
         public string NombrePagina { get; set; }
         public string Pagina { get; set; }
         public string reportRedirecUrl { get; set; } // redirect a vista de reporte.
-
+        public string MasterAcc { get; set; }
+        public string MasterAccKey { get; set; }
+        
 
 
 

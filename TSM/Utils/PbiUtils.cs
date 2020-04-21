@@ -52,7 +52,7 @@ namespace TSM.Utils
             _PbiDataSet = dataSetId;
         }
 
-        public static string GetAuthorizationCode()
+        public static string GetAuthorizationCode(ReportePbi Rpbi)
         {
             //NOTE: Values are hard-coded for sample purposes.
             //Create a query string
@@ -64,15 +64,15 @@ namespace TSM.Utils
 
                 //Client ID is used by the application to identify themselves to the users that they are requesting permissions from. 
                 //You get the client id when you register your Azure app.
-                {"client_id", PbiReport.ApplicationId},
+                {"client_id", Rpbi.ApplicationId},
 
                 //Resource uri to the Power BI resource to be authorized
                 //The resource uri is hard-coded for sample purposes
-                {"resource", PbiReport.PbiApiResourceUrl }, //https://analysis.windows.net/powerbi/api
+                {"resource", Rpbi.PbiApiResourceUrl }, //https://analysis.windows.net/powerbi/api
 
                 //After app authenticates, Azure AD will redirect back to the web app. In this sample, Azure AD redirects back
                 //to Default page (Default.aspx).
-                { "redirect_uri", PbiReport.RedirectUrl},
+                { "redirect_uri", Rpbi.RedirectUrl},
             };
 
             //Create sign-in query string
@@ -87,9 +87,12 @@ namespace TSM.Utils
             //      resource which is the Power BI API resource to be authorized
             //      redirect_uri which is the uri that Azure AD will redirect back to after it authenticates
             //"https://login.windows.net/common/"
-            return PbiReport.AADAuthorityUri +$"oauth2/authorize?{queryString}";
+            return Rpbi.AADAuthorityUri +$"oauth2/authorize?{queryString}";
         }
     }
+
+    
+
 
     //Power BI Dashboards used to deserialize the Get Dashboard response.
 
