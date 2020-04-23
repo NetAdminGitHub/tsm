@@ -874,6 +874,18 @@ var opcionesFormaSmartWizard = {
     Puntos: "dots"
 };
 
+
+/**
+ * devuelve el valor del kendo multi colum combo
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ * @returns {string} string
+ */
+var KdoMultiColumnCmbGetValue = function (InputElem) {
+    var MultiColumnCombobox = InputElem.data("kendoMultiColumnComboBox");
+    return MultiColumnCombobox.value() === "" ? null : MultiColumnCombobox.selectedIndex >= 0 ? MultiColumnCombobox.value() : null;
+
+};
+
 /**
  * Proceso encargado de crear el control smartWizard.
  * @param {HTMLDivElement} DivIdElement Elemento DIV dentro del cual se dibujará el control wizard.
