@@ -24,9 +24,83 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <div id="gridPartes"></div>
+                    <div id="TabPreciosSubli">
+                        <ul>
+                            <li class="k-state-active">
+                                Aprobación de Precios
+                            </li>
+                            <li>
+                                Histórico Precios Aprobados
+                            </li>
+                        </ul>
+
+                        <div id="TabPrecios">
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <div id="gridPartes"></div>
+                                </div>
+                            </div>
+                            <form id="ReqDes" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-12">
+                                        <label id="lblComentarios" for="UbicacionVer">Comentarios:</label>
+                                        <textarea id="TxtComentarios" rows="2" name="TxtComentarios" type="text" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-4">
+                                        <div class="input-group">
+                                            <div style="width: 100%;">
+                                                <button type="button" id="btnGuardar" name="btnGuardar">Guardar Comentario</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="TabHistorico">
+                           
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <div class="form-row">
+                                            <div class=" form-group col-lg-4">
+                                                <label for="dFechaDesde">Fecha Desde:</label>
+                                                <input id="dFechaDesde" name="dFechaDesde" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label for="dFechaHasta">Fecha Hasta:</label>
+                                                <input id="dFechaHasta" name="dFechaHasta" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4 align-self-end">
+                                                <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox">
+                                                <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <label for="TxtNoOrdeTrabajo">No Orden Trabajo:</label>
+                                        <input id="TxtNoOrdeTrabajo" name="TxtNoOrdeTrabajo" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <div class="input-group">
+                                            <div style="width: 100%;">
+                                                <button type="button" id="btnConsular" name="btnConsular"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <div id="gridPartesHis"></div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+                        </div>
                     </div>
+                   
                 </div>
             </div>
         </div>

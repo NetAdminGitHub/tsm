@@ -3,6 +3,7 @@ let UrlClie = TSM_Web_APi + "Clientes";
 var Permisos;
 let VIdCliente = 0;
 let data;
+let xIdReqDes = 0;
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
@@ -12,12 +13,47 @@ $(document).ready(function () {
     KdoButton($("#btnAceptarCambiar"), "check", "Cambiar Estado");
     KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(false));
     KdoButtonEnable($("#btnRefrescar"), false);
+    KdoButton($("#btnConsular"), "search", "Consultar");
+    KdoButton($("#btnGuardar"), "save", "Guardar Comentario");
+
 
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
     Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un Cliente ....");
+    $("#TxtNoOrdeTrabajo").ControlSelecionOTSublimacionConfirmadas();
 
-   
+    let dtfecha = new Date();
+    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
+    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
+    $("#TxtComentarios").autogrow({ vertical: true, horizontal: false, flickering: false });
 
+    $('#chkRangFechas').prop('checked', 1);
+
+    KdoDatePikerEnable($("#dFechaDesde"), false);
+    KdoDatePikerEnable($("#dFechaHasta"), false);
+    KdoCheckBoxEnable($('#chkRangFechas'), false);
+    KdoButtonEnable($("#btnConsular"), false);
+    KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), false);
+    KdoButtonEnable($("#btnGuardar"), false);
+    $("#TxtComentarios").attr("disabled", true);
+
+    $("#chkRangFechas").click(function () {
+        if (this.checked) {
+            KdoDatePikerEnable($("#dFechaDesde"), true);
+            KdoDatePikerEnable($("#dFechaHasta"), true);
+
+        } else {
+
+            KdoDatePikerEnable($("#dFechaDesde"), false);
+            KdoDatePikerEnable($("#dFechaHasta"), false);
+        }
+    });
+
+    $("#TabPreciosSubli").kendoTabStrip({
+        tabPosition: "top",
+        animation: { open: { effects: "fadeIn" } }
+    });
     $("#ModalCambioEstado").kendoDialog({
         height: "auto",
         width: "30%",
@@ -62,10 +98,30 @@ $(document).ready(function () {
             Fn_ConsultarSibli(this.dataItem(e.item.index()).IdCliente.toString());
             KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
             KdoButtonEnable($("#btnRefrescar"), true);
+            KdoDatePikerEnable($("#dFechaDesde"), true);
+            KdoDatePikerEnable($("#dFechaHasta"), true);
+            KdoCheckBoxEnable($('#chkRangFechas'), true);
+            KdoButtonEnable($("#btnConsular"), true);
+            KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), true);
+            KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), "");
+            $('#chkRangFechas').prop('checked', 1);
+            KdoButtonEnable($("#btnGuardar"), true);
+            $("#TxtComentarios").attr("disabled", false);
         } else {
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
+            KdoDatePikerEnable($("#dFechaDesde"), false);
+            KdoDatePikerEnable($("#dFechaHasta"), false);
+            KdoCheckBoxEnable($('#chkRangFechas'), false);
+            KdoButtonEnable($("#btnConsular"), false);
+            KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), false);
+            KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), "");
+            $("#gridPartesHis").data("kendoGrid").dataSource.read("[]");
+            KdoButtonEnable($("#btnGuardar"), false);
+            $("#TxtComentarios").attr("disabled", true);
+            $("#TxtComentarios").val("");
+
         }
     });
 
@@ -75,6 +131,16 @@ $(document).ready(function () {
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
+            KdoDatePikerEnable($("#dFechaDesde"), false);
+            KdoDatePikerEnable($("#dFechaHasta"), false);
+            KdoCheckBoxEnable($('#chkRangFechas'), false);
+            KdoButtonEnable($("#btnConsular"), false);
+            KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), false);
+            KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), "");
+            $("#gridPartesHis").data("kendoGrid").dataSource.read("[]");
+            KdoButtonEnable($("#btnGuardar"), false);
+            $("#TxtComentarios").attr("disabled", true);
+            $("#TxtComentarios").val("");
         }
     });
 
@@ -134,6 +200,43 @@ $(document).ready(function () {
         }
     });
 
+    //Cargar grid precios historicos
+    fn_partesHisSublimado();
+
+    $("#btnConsular").click(function (e) {
+        $("#gridPartesHis").data("kendoGrid").dataSource.read();
+    });
+
+    $("#gridPartes").data("kendoGrid").bind("change", function (e) {
+        Fn_getRowPrecios($("#gridPartes").data("kendoGrid"));
+       
+    });
+
+    var valReqDes = $("#ReqDes").kendoValidator(
+        {
+            rules: {
+                InstruccionesEspecialesRuler: function (input) {
+                    if (input.is("[name='TxtComentarios']")) {
+                        return input.val().length >0 && input.val().length <= 2000;
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                InstruccionesEspecialesRuler: "Longitud máxima del campo es 2000"
+            }
+        }).data("kendoValidator");
+
+
+    $("#btnGuardar").click(function (event) {
+        event.preventDefault();
+        if (valReqDes.validate()) {
+            fn_ActualizarReqSublimacion();
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+        }
+
+    });
     //#endregion
 });
 
@@ -145,6 +248,11 @@ let Fn_ConsultarSibli = function (IdCliente) {
     $("#gridPartes").data("kendoGrid").dataSource.read().then(function () {
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, false);
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? KdoButtonEnable($("#btnCambioEstado"), false) : KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
+
+        $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? KdoButtonEnable($("#btnGuardar"), false) : KdoButtonEnable($("#btnGuardar"), true);
+        $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? $("#TxtComentarios").attr("disabled", true): $("#TxtComentarios").attr("disabled", false);
+  
+      
        
     });
 };
@@ -168,6 +276,7 @@ let fn_SNCambiarEstados = function (valor) {
 };
 let fn_partesSublimado = function () {
     //#region partes de sublimado
+   
 
     let UrlPParte = TSM_Web_APi + "PrendasPartes";
     let UrlUbic = TSM_Web_APi + "Ubicaciones";
@@ -254,7 +363,8 @@ let fn_partesSublimado = function () {
                     NombreUnidad: { type: "string" },
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    InstruccionesEspeciales: { type: "string" }
                 }
             }
         },
@@ -365,10 +475,38 @@ let fn_partesSublimado = function () {
                     }
                 }
             },
-            { field: "Cantidad", title: "Cantidad", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], footerTemplate: "Total: #: data.Cantidad ? sum : 0 #" },
-            { field: "IdUnidad", title: "Unidad", editor: Grid_ComboxData, values: ["IdUnidad", "Abreviatura", "[]", "Seleccione....", "", "", ""], hidden: true },
-            { field: "NombreUnidad", title: "Unidad" },
-            { field: "Precio", title: "Precio", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c2", 2], format: "{0:c2}", footerTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #", menu: false },
+            {
+                field: "Cantidad", title: "Cantidad", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], footerTemplate: "Total: #: data.Cantidad ? sum : 0 #",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "IdUnidad", title: "Unidad", editor: Grid_ComboxData, values: ["IdUnidad", "Abreviatura", "[]", "Seleccione....", "", "", ""], hidden: true,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NombreUnidad", title: "Unidad",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Precio", title: "Precio", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c2", 2], format: "{0:c2}", footerTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #", menu: false,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
@@ -422,6 +560,205 @@ let fn_partesSublimado = function () {
 
 };
 
+let fn_partesHisSublimado = function () {
+    //#region partes de sublimado
+
+    let dsethis = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: TSM_Web_APi + "PrendasPartes/GetHisByidCliente",
+                    data: JSON.stringify({
+                        FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                        FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                        IdCliente: KdoCmbGetValue($("#CmbIdCliente")),
+                        IdRequerimiento: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"))
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    },
+                    error: function () {
+                        options.error(result);
+                    }
+                });
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdUbicacion",
+                fields: {
+                    IdRequerimiento: { type: "string" },
+                    NombreProgra: { type: "string" },
+                    IdCategoriaPrenda: {
+                        type: "number"
+                    },
+                    NoDocumento: { type: "string" },
+                    NombrePrenda: { type: "string" },
+                    NombreDiseño: { type: "string" },
+                    EstiloDiseno: { type: "string" },
+                    IdUbicacion: {
+                        type: "string"
+                    },
+                    NombreParte: { type: "string" },
+                    Cantidad: { type: "number" },
+                    IdUnidad: { type: "string"},
+                    NombreUnidad: { type: "string" },
+                    Precio: { type: "number" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
+                }
+            }
+        },
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" },
+            { field: "Precio", aggregate: "sum" }
+        ]
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#gridPartesHis").kendoGrid({
+        toolbar: ["excel"],
+        excel: {
+            fileName: "Sublimacion_Precios_Aprobados.xlsx",
+            filterable: true
+        },
+        edit: function (e) {
+            $('[name="IdUnidad"]').data("kendoComboBox").setDataSource(fn_DSIdUnidadFiltro("9,17"));
+            KdoHideCampoPopup(e.container, "NoDocumento");
+            KdoHideCampoPopup(e.container, "IdCategoriaPrenda");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "NombreParte");
+            KdoHideCampoPopup(e.container, "NombreUnidad");
+            KdoHideCampoPopup(e.container, "NombreProgra");
+            KdoHideCampoPopup(e.container, "NombreDiseño");
+            KdoHideCampoPopup(e.container, "NombrePrenda");
+            KdoHideCampoPopup(e.container, "EstiloDiseno")
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            {
+                field: "IdRequerimiento", title: "No Orden Trabajo",
+                hidden: true
+            },
+            {
+                field: "NombreProgra", title: "Programa", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            { field: "NombreDiseño", title: "Nombre del Diseño" },
+            {
+                field: "NoDocumento", title: "No OT", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            { field: "IdCategoriaPrenda", title: "Codigo IdCategoriaPrenda", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], hidden: true },
+            {
+                field: "NombrePrenda", title: "Prenda", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "NombreParte", title: "Parte", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+
+            },
+            {
+                field: "EstiloDiseno", title: "Estilo del Diseno",
+                lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Cantidad", title: "Cantidad", footerTemplate: "Total: #: data.Cantidad ? sum : 0 #",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NombreUnidad", title: "Unidad",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Precio", title: "Precio", format: "{0:c2}", footerTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridPartesHis").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 600, true, "row");
+    //SetGrid_CRUD_ToolbarTop($("#gridPartesHis").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridPartesHis").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridPartesHis").data("kendoGrid"), dsethis);
+
+    var selectedRows1 = [];
+    $("#gridPartesHis").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridPartesHis"), selectedRows1);
+    });
+
+    $("#gridPartes").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridPartesHis"), selectedRows1);
+    });
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridPartesHis"), $(window).height() - "370");
+    });
+
+    Fn_Grid_Resize($("#gridPartesHis"), $(window).height() - "370");
+
+   
+
+    //#endregion
+};
+
 let fn_ComboNoDocumento = function () {
     return new kendo.data.DataSource({
         dataType: 'json',
@@ -459,4 +796,70 @@ var fn_GetNoDocumentosByCliente = function () {
         }
     });
     return result;
+};
+
+$.fn.extend({
+    ControlSelecionOTSublimacionConfirmadas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoOT",
+                dataValueField: "IdRequerimiento",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "Prendas/GetPrendasConfirmadas/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoOT", title: "No Orden Trabajo", width: 150 },
+                    { field: "NombrePrenda", title: "Nombre Prenda", width: 300 },
+                    { field: "NombreDiseno", title: "Nombre Diseño", width: 300 },
+                    { field: "NumeroDiseno", title: "Numero Diseño", width: 300 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 300 }
+
+                ]
+            });
+        });
+    }
+});
+
+let Fn_getRowPrecios = function (g) {
+    var elemento = g.dataItem(g.select());
+    $("#TxtComentarios").val(elemento.InstruccionesEspeciales);
+    xIdReqDes = elemento.IdRequerimiento;
+
+};
+
+let fn_ActualizarReqSublimacion = function () {
+    kendo.ui.progress($(document.body), true);
+
+    $.ajax({
+        url: TSM_Web_APi + "RequerimientoDesarrollos/UpdRequerimientoRow/" + xIdReqDes,
+        type: "Put",
+        dataType: "json",
+        data: JSON.stringify({
+            IdRequerimiento: xIdReqDes,
+            InstruccionesEspeciales: $("#TxtComentarios").val()
+
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Put");
+            kendo.ui.progress($(document.body), false);
+            $("#gridPartes").data("kendoGrid").dataSource.read();
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
 };
