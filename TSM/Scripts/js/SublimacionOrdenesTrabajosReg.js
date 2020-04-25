@@ -110,6 +110,7 @@ $(document).ready(function () {
         min: 1
     });
 
+
     // se utiliza pra validar formularios
     let ValidRD = $("#ReqDes").kendoValidator(
         {
@@ -330,7 +331,7 @@ $(document).ready(function () {
 
 
     let fn_LeerImagen = function (event, blobs) {
-        kendo.ui.progress($("#vistaParcial"), true);
+        kendo.ui.progress($(document.body), true);
 
         var nombreArchivo = 'Recorte_' + kendo.toString(kendo.parseDate(new Date()), 'yyyyMMdd_HHmmss') + '.' + blobs[0].name.split('.')[1];
         var form = new FormData();
@@ -346,10 +347,10 @@ $(document).ready(function () {
             //dataType: "json",
             success: function (data) {
                 GuardarArtAdj(UrlApiAAdj, nombreArchivo);
-                kendo.ui.progress($("#vistaParcial"), false);
+                kendo.ui.progress($(document.body), false);
             },
             error: function (data) {
-                kendo.ui.progress($("#vistaParcial"), false);
+                kendo.ui.progress($(document.body), false);
                 ErrorMsg(data);
             }
         });
@@ -487,7 +488,7 @@ $(document).ready(function () {
     $("#IdCategoriaPrenda").data("kendoMultiSelect").bind("deselect", function (e) {
         if ($("#IdRequerimiento").val() > 0) {
 
-            kendo.ui.progress($("#vistaParcial"), true);
+            kendo.ui.progress($(document.body), true);
             url = UrlApiP + "/" + e.dataItem.IdCategoriaPrenda + "/" + $("#IdRequerimiento").val().toString();
             $.ajax({
                 url: url,//
@@ -497,10 +498,10 @@ $(document).ready(function () {
                 success: function (data) {
                     fn_getPrendaParteMultiSelec();
                     RequestEndMsg(data, "Delete");
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                 },
                 error: function (data) {
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
             });
@@ -513,7 +514,7 @@ $(document).ready(function () {
         //si el requerimiento de Desarrollo existe 
         //se permite agregar un nuevo registro de prendas
         if ($("#IdRequerimiento").val() > 0) {
-            kendo.ui.progress($("#vistaParcial"), true);
+            kendo.ui.progress($(document.body), true);
             //var item = e.item;
             $.ajax({
                 url: UrlApiP,//
@@ -527,11 +528,11 @@ $(document).ready(function () {
                 success: function (data) {
                     //CargarInfoEtapa(false);
                     RequestEndMsg(data, "Post");
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                 },
                 error: function (data) {
                     fn_getPrendasMultiSelec(UrlApiP + "/GetByRequerimiento/" + $("#IdRequerimiento").val());
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
             });
@@ -546,7 +547,7 @@ $(document).ready(function () {
     $("#IdPartesDet").data("kendoMultiSelect").bind("deselect", function (e) {
         if ($("#IdRequerimiento").val() > 0) {
 
-            kendo.ui.progress($("#vistaParcial"), true);
+            kendo.ui.progress($(document.body), true);
             url = TSM_Web_APi + "PrendasPartes/" + $("#IdRequerimiento").val().toString() + "/" + ($("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === "" || $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === undefined ? 0 : $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0]) +"/" + e.dataItem.IdUbicacion ;
             $.ajax({
                 url: url,//
@@ -556,10 +557,10 @@ $(document).ready(function () {
                 success: function (data) {
                     //CargarInfoEtapa(false);
                     RequestEndMsg(data, "Delete");
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                 },
                 error: function (data) {
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
             });
@@ -572,7 +573,7 @@ $(document).ready(function () {
         //si el requerimiento de Desarrollo existe 
         //se permite agregar un nuevo registro de prendas
         if ($("#IdRequerimiento").val() > 0) {
-            kendo.ui.progress($("#vistaParcial"), true);
+            kendo.ui.progress($(document.body), true);
             //var item = e.item;
             $.ajax({
                 url: TSM_Web_APi +"PrendasPartes",//
@@ -590,11 +591,11 @@ $(document).ready(function () {
                 success: function (data) {
                     //CargarInfoEtapa(false);
                     RequestEndMsg(data, "Post");
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                 },
                 error: function (data) {
                     fn_getPrendaParteMultiSelec();
-                    kendo.ui.progress($("#vistaParcial"), false);
+                    kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
             });
@@ -625,7 +626,7 @@ $(document).ready(function () {
 //#region Metodos Generales
 
 let fn_getRD = function () {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "RequerimientoDesarrollos/GetRequerimientoDesarrollos_SublimacionOrdenesTrabajos/" + SublimacionIdReque.toString(),
         dataType: 'json',
@@ -654,6 +655,8 @@ let fn_getRD = function () {
                 $("#IdCategoriaConfeccion").data("kendoComboBox").value(elemento.IdCategoriaConfeccion);
                 $("#IdConstruccionTela").data("kendoComboBox").value(elemento.IdConstruccionTela);
                 $("#IdComposicionTela").data("kendoComboBox").value(elemento.IdComposicionTela);
+                $("#UbicacionHor").val(elemento.UbicacionHorizontal);
+                $("#UbicacionVer").val(elemento.UbicacionVertical);
                 $("#TxtColorTela").val(elemento.Color);
                 $('#chkRegistroCompletado').prop('checked', elemento.RegistroCompletado);
                 //consultar grid
@@ -672,21 +675,21 @@ let fn_getRD = function () {
             });
 
 
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
             getArte(UrlApiArte + "/GetArteByIdReq/" + VarIDReq.toString(), UrlApiArteAdj);
             fn_getPrendasMultiSelec(UrlApiP + "/GetByRequerimiento/" + VarIDReq.toString());
 
 
         },
         error: function () {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
 
         }
     });
 };
 
 let getArte = function (UrlArt, UrlApiArteAdj) {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: UrlArt,
         dataType: 'json',
@@ -700,7 +703,7 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
                 $("#TxtDirectorioArchivos").val(respuesta.DirectorioArchivos);
                 $("#IdCatalogoDiseno").val(respuesta.IdCatalogoDiseno);
                 $("#NoReferencia").val(respuesta.NoReferencia);
-                kendo.ui.progress($("#vistaParcial"), false);
+                kendo.ui.progress($(document.body), false);
                 UrlApiArteAdj = UrlApiArteAdj + "/GetByArte/" + respuesta.IdArte;
                 getAdjun(UrlApiArteAdj);
                 $("#Adjunto").data("kendoUpload").enable($("#Estado").val() !== "EDICION" ? false : true);
@@ -712,7 +715,7 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
             } else {
                 LimpiarArte();
                 Fn_LeerImagenes($("#Mycarousel"), "", null);
-                kendo.ui.progress($("#vistaParcial"), false);
+                kendo.ui.progress($(document.body), false);
                 $("#Adjunto").data("kendoUpload").enable(false);
                 $("#myBtnAdjunto").data("kendoButton").enable(false);
                 Grid_HabilitaToolbar($("#GridAdjuntos"), false, false, false);
@@ -723,7 +726,7 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
             //$("#IdRequerimiento").val() !== "0" && $("#Estado").val() === "EDICION" && $("#IdArte").val() !== "0" ? KdoButtonEnable($("#myBtnAdjunto"), $("#Estado").val() !== "EDICION" ? false : true) : $("#myBtnAdjunto").data("kendoButton").enable(false);
         },
         error: function () {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
@@ -737,7 +740,7 @@ let LimpiarArte = function () {
 };
 
 let GuardarArtAdj = function (UrlAA, nombreFichero) {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     var XFecha = Fhoy();
     var XDescripcion = "ARCHIVO ADJUNTO";
     var XType = "Post";
@@ -757,19 +760,19 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
         success: function (data) {
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
             getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val());
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
             RequestEndMsg(data, XType);
 
         },
         error: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
             ErrorMsg(data);
         }
     });
 };
 
 let EliminarArtAdj = function (UrlAA, Fn) {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     var eliminado = false;
 
     $.ajax({
@@ -778,11 +781,11 @@ let EliminarArtAdj = function (UrlAA, Fn) {
         data: { fileName: Fn },
         async: false,
         success: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
             eliminado = data.Resultado;
         },
         error: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
             eliminado = false;
         }
     });
@@ -792,23 +795,23 @@ let EliminarArtAdj = function (UrlAA, Fn) {
 
 let getAdjun = function (UrlAA) {
     //LLena Splitter de imagenes
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: UrlAA,
         dataType: 'json',
         type: 'GET',
         success: function (respuesta) {
             Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + $("#NoDocumento").val() + "", respuesta);
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         },
         error: function () {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
 let fn_CatalogoDisenos = function () {
     //LLena Splitter de imagenes
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "CatalogoDisenos/" + $("#IdCatalogoDiseno").val(),
         dataType: 'json',
@@ -823,16 +826,16 @@ let fn_CatalogoDisenos = function () {
                 }];
                 fn_SubirArchivoRD(dsres);
             }
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         },
         error: function () {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
 
 let fn_getPrendasMultiSelec = function (Url) {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: Url,
         dataType: 'json',
@@ -844,16 +847,16 @@ let fn_getPrendasMultiSelec = function (Url) {
             });
             $("#IdCategoriaPrenda").data("kendoMultiSelect").value(lista.split(","));
             fn_getPrendaParteMultiSelec();
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         },
         error: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
 
 let fn_getPrendaParteMultiSelec = function () {
-    kendo.ui.progress($("#vistaParcial"), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "PrendasPartes/GetPrendasParteByidRequerimientoidCategoriaPrenda/" + $("#IdRequerimiento").val() + "/" + ($("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === "" || $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0] === undefined ? 0 : $("#IdCategoriaPrenda").data("kendoMultiSelect").value()[0]) ,
         dataType: 'json',
@@ -864,10 +867,10 @@ let fn_getPrendaParteMultiSelec = function () {
                 lista = lista + elemento.IdUbicacion + ",";
             });
             $("#IdPartesDet").data("kendoMultiSelect").value(lista.split(","));
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         },
         error: function (data) {
-            kendo.ui.progress($("#vistaParcial"), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 };
@@ -904,8 +907,8 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             IdSolicitudDisenoPrenda: null,
             IdModulo: 4,
             IdEjecutivoCuenta: null,
-            UbicacionHorizontal: null,
-            UbicacionVertical: null,
+            UbicacionHorizontal: $("#UbicacionHor").val(),
+            UbicacionVertical: $("#UbicacionVer").val(),
             CantidadPiezas: $("#CntPiezas").val(),
             CantidadStrikeOff: $("#TxtCantidadSTrikeOff").val(),
             StrikeOffAdicional: $("#TxtStrikeOffAdicional").val(),
@@ -945,6 +948,7 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             SolicitaTelaSustituta: false,
             RegistroCompletado: $("#chkRegistroCompletado").is(':checked'),
             IdUbicacionParte: $("#IdPartesDet").data("kendoMultiSelect").value().toString()
+            
 
 
         }),
@@ -1080,6 +1084,8 @@ let HabilitaFormObje = function (ToF) {
     TextBoxEnable($("#EstiloDiseno"), ToF);
     TextBoxEnable($("#TallaPrincipal"), ToF);
     TextBoxEnable($("#TxtDirectorioArchivos"), ToF);
+    $("#UbicacionVer").attr("disabled", !ToF);
+    $("#UbicacionHor").attr("disabled", !ToF);
 
 };
 

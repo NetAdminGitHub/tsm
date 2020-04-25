@@ -887,6 +887,29 @@ var KdoMultiColumnCmbGetValue = function (InputElem) {
 };
 
 /**
+ * coloca valor al kendo multi colum combo
+ * @param {HTMLInputElement} InputElem recibe el elemento combo box
+ * @param {any} value valor para setear el combobox
+ */
+var KdoMultiColumnCmbSetValue = function (InputElem, value) {
+    var combobox = InputElem.data("kendoMultiColumnComboBox");
+    combobox.value(value);
+
+};
+
+
+/**
+ * Habilita o Inhabilita kendo multi colum combo
+ * @param {HTMLInputElement} InputElem elemento div que contiene la funcion Combo box
+ * @param {boolean} enable true o false
+ */
+var KdoMultiColumnCmbEnable = function (InputElem, enable) {
+    var combobox = InputElem.data("kendoMultiColumnComboBox");
+    combobox.enable(enable);
+};
+
+
+/**
  * Proceso encargado de crear el control smartWizard.
  * @param {HTMLDivElement} DivIdElement Elemento DIV dentro del cual se dibujará el control wizard.
  * @param {JSON} etapas Listado de etapas y sus propiedades para dibujar el control.
