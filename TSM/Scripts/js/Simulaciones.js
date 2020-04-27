@@ -1093,6 +1093,8 @@ let MostrarCamposxTecnica = function () {
             } else {
                 KdoComboBoxEnable($('[name="IdCatalogoInsumo"]'), false);
             }
+
+            kendo.ui.progress($("#splitter"), false);
         },
         error: function () {
             kendo.ui.progress($("#splitter"), false);
@@ -1474,6 +1476,22 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumAltoimp").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#NumConsumoYarda").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
     $("#NumPeronalTransferencia").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
@@ -1522,7 +1540,7 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
-    $("#TxtCostoTotalRes").kendoNumericTextBox({
+    $("#TxtCostoPrimoSubli").kendoNumericTextBox({
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1540,7 +1558,7 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
-    $("#NumCostoTotalTransRes").kendoNumericTextBox({
+    $("#NumCostoPrimoTransSubli").kendoNumericTextBox({
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1657,6 +1675,8 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         $("#TxtOperTela").val(elemento.OperacionTela);
         kdoNumericSetValue($("#NumAnchoimp"), elemento.AnchoDiseno);
+        kdoNumericSetValue($("#NumAltoimp"), elemento.AltoDiseno);
+        kdoNumericSetValue($("#NumConsumoYarda"), elemento.ConsumoYarda);
         $("#TxtUniAnchoimp").val(elemento.UnidadMedAncho);
         $("#TxtPerfilImpresion").val(elemento.PerfilImpresion);
         $("#TxtVelocidadTransferencia").val(elemento.NombreVeloTransf);
@@ -1675,8 +1695,8 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoProduccionTrans"), elemento.CostoProduccionTrans);
         kdoNumericSetValue($("#TxtCostoOperacionTrans"), elemento.CostoOperacionTrans);
         kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
-        kdoNumericSetValue($("#TxtCostoTotalRes"), elemento.CostoTotal);
-        kdoNumericSetValue($("#NumCostoTotalTransRes"), elemento.CostoTotalTrans);
+        kdoNumericSetValue($("#TxtCostoPrimoSubli"), elemento.CostoPrimo);
+        kdoNumericSetValue($("#NumCostoPrimoTransSubli"), elemento.CostoPrimoTrans);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
         $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
         kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
@@ -1685,6 +1705,12 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#NumPeronalTransferencia"), elemento.NoOperariosTrans);
         kdoNumericSetValue($("#NumPeronalImpresion"), elemento.NoOperariosImpre);
         kdoNumericSetValue($("#NumCostoAdicionales"), elemento.CostoLimpieza);
+
+        $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
+        $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
+        $("#TxtPrecioCliente").data("kendoNumericTextBox").value(elemento.PrecioCliente);
+        $("#TxtPrecioTS").data("kendoNumericTextBox").value(elemento.PrecioTS);
+        $("#TxtPrecioVenta").data("kendoNumericTextBox").value(elemento.PrecioVenta);
         $("#dbgPartesSub").data("kendoGrid").dataSource.read();
     }
     CargarEtapasProceso(elemento.IdRequerimiento);
@@ -1722,19 +1748,24 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         dataChart.push(
             {
-                category: "Costo de Mano de Obra Directa (Imp + Trans)",
+                category: "Costo Primo (Imp + Trans)",
+                value: elemento.CostoPrimo + elemento.CostoPrimoTrans,
+                color: "#FFC733"
+            },
+            {
+                category: "Costo de Mano de Obra (Imp + Trans)",
                 value: elemento.CostoMOD + elemento.CostoMODTrans,
                 color: "#03396C"
             },
             {
-                category: "Costo Fabril (Imp + Trans)",
-                value: elemento.CostoFabril + elemento.CostoFabrilTrans,
+                category: "Costo Producción (Imp + Trans)",
+                value: elemento.CostoProduccion + elemento.CostoProduccionTrans,
                 color: "#005B96"
             },
             {
                 category: "Costo Operación (Imp + Trans)",
                 value: elemento.CostoOperacion + elemento.CostoOperacionTrans,
-                color: "#6497B1"
+                color: "#33C1FF"
             });
     }
    
@@ -1787,6 +1818,8 @@ function DesHabilitarCamposSim() {
   
     if (VIdSer === 2) {
         KdoNumerictextboxEnable($("#NumAnchoimp"), false);
+        KdoNumerictextboxEnable($("#NumAltoimp"), false);
+        KdoNumerictextboxEnable($("#NumConsumoYarda"), false);
         KdoNumerictextboxEnable($("#NumPeronalTransferencia"), false);
         KdoNumerictextboxEnable($("#NumPeronalImpresion"), false);
         TextBoxEnable($("#TxtVelocidadTransferencia"), false);
@@ -1795,10 +1828,10 @@ function DesHabilitarCamposSim() {
         KdoNumerictextboxEnable($("#NumYardaTransHora"), false);
         KdoNumerictextboxEnable($("#NumCostoPapelImp"), false);
         KdoNumerictextboxEnable($("#NumCostoTinta"), false);
-        KdoNumerictextboxEnable($("#TxtCostoTotalRes"), false);
+        KdoNumerictextboxEnable($("#TxtCostoPrimoSubli"), false);
         KdoNumerictextboxEnable($("#NumCostoPapelProtec"), false);
         KdoNumerictextboxEnable($("#NumCostoAdicionales"), false);
-        KdoNumerictextboxEnable($("#NumCostoTotalTransRes"), false);
+        KdoNumerictextboxEnable($("#NumCostoPrimoTransSubli"), false);
         KdoNumerictextboxEnable($("#TxtCostoTotalMasTrans"), false);
         KdoNumerictextboxEnable($("#TxtCostoMODTrans"), false);
         KdoNumerictextboxEnable($("#TxtCostoFabrilTrans"), false);
@@ -1856,6 +1889,8 @@ let fn_LimpiarCamposSim = function () {
 
     if (VIdSer === 2) {
         kdoNumericSetValue($("#NumAnchoimp"), 0);
+        kdoNumericSetValue($("#NumAltoimp"), 0);
+        kdoNumericSetValue($("#NumConsumoYarda"), 0);
         kdoNumericSetValue($("#NumPeronalTransferencia"), 0);
         kdoNumericSetValue($("#NumPeronalImpresion"), 0);
         kdoNumericSetValue($("#NumYardaImpHora"), 0);
@@ -1863,10 +1898,10 @@ let fn_LimpiarCamposSim = function () {
         kdoNumericSetValue($("#NumYardaTransHora"), 0);
         kdoNumericSetValue($("#NumCostoPapelImp"), 0);
         kdoNumericSetValue($("#NumCostoTinta"), 0);
-        kdoNumericSetValue($("#TxtCostoTotalRes"), 0);
+        kdoNumericSetValue($("#TxtCostoPrimoSubli"), 0);
         kdoNumericSetValue($("#NumCostoPapelProtec"), 0);
         kdoNumericSetValue($("#NumCostoAdicionales"), 0);
-        kdoNumericSetValue($("#NumCostoTotalTransRes"), 0);
+        kdoNumericSetValue($("#NumCostoPrimoTransSubli"), 0);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), 0);
         kdoNumericSetValue($("#TxtCostoMODTrans"), 0);
         kdoNumericSetValue($("#TxtCostoFabrilTrans"), 0);
@@ -1885,12 +1920,11 @@ let fn_LimpiarCamposSim = function () {
 };
 
 let  fn_GridPartes = function () {
-    let UrlAParte = TSM_Web_APi + "AnalisisDisenosPartes";
     let dset = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlAParte + "/GetAnalisisDisenosParteByAnalisisDiseno/" + S_IdA; },
+                url: function (datos) { return TSM_Web_APi + "Simulaciones/GetPartesbyIdSimulacion/" + VIDSim; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -1912,10 +1946,17 @@ let  fn_GridPartes = function () {
                     Nombre: { type: "string" },
                     PorcAreaLienzo: { type: "number"},
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    C2: { type: "number" }, //CostoParte
+                    PorcUtilidadConsiderada: {type:"number"},
+                    C3: { type: "number" } //PrecioParte
                 }
             }
-        }
+        },
+        aggregate: [
+            { field: "C2", aggregate: "sum" },
+            { field: "C3", aggregate: "sum" }
+        ]
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -1933,9 +1974,11 @@ let  fn_GridPartes = function () {
             { field: "Nombre", title: "Parte" },
             { field: "PorcAreaLienzo", title: "% de Area de Lienzo", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
             {
-                field: "PrecioParte", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2],format: "{0:c2}" ,template: function (dataItem) {
-                    return "<strong>" + kendo.htmlEncode(Number.parseFloat(dataItem.PorcAreaLienzo * kdoNumericGetValue($("#TxtCostoTotalMasTrans"))).toFixed(2)) + "</strong>";
-                }
+                field: "C2", title: "Costo por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", footerTemplate: "Total: #: data.C2 ? kendo.format('{0:c2}', sum) : 0 #"
+            },
+            { field: "PorcUtilidadConsiderada", title: "Rentabilidad", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}" },
+            {
+                field: "C3", title: "Precio por parte", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", footerTemplate: "Total: #: data.C3 ? kendo.format('{0:c2}', sum) : 0 #"
             }
         ]
     });

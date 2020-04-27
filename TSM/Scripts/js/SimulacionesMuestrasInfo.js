@@ -73,6 +73,7 @@ $(document).ready(function () {
                     PrecioTS = e.response[0].PrecioTS;
                     PrecioCliente = e.response[0].PrecioCliente;
                     Utilidad = e.response[0].Utilidad;
+                    this.read();
                 } else {
                     PrecioVenta = 0;
                     Rentabilidad = 0;
@@ -195,6 +196,7 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
+            { field: "Aprobado", title: "Aprobado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Aprobado"); } },
             { field: "IdSimulacionRentabilidad", title: "IdSimulacionRentabilidad", hidden: true },
             { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
             { field: "IdRentabilidad", title: "IdRentabilidad", editor: Grid_Combox, values: ["IdRentabilidad", "Nombre", UrlFac, "", "Seleccione...."], hidden: true },
@@ -202,8 +204,24 @@ $(document).ready(function () {
             { field: "Descripcion", title: "Descripción" },
             { field: "Rentabilidad", title: "Rentabilidad", editor: Grid_ColNumeric, values: ["required", "-100", "100", "P2", 4], format: "{0:P2}" },
             { field: "Utilidad", title: "Utilidad $", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c4", 4], format: "{0:c4}" },
-            { field: "PrecioVenta", title: "Precio Venta $", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c4", 4], format: "{0:c4}" },
-            { field: "Aprobado", title: "Aprobar", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Aprobado"); } }
+            { field: "PrecioVenta", title: "Precio Venta $", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c4", 4], format: "{0:c4}" },            
+            {
+                command: {
+                    name: "aprobar",
+                    iconClass: "k-icon k-i-success",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        dataItem.set("Aprobado", true);
+                        this.saveChanges();
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
 
     });
@@ -273,28 +291,30 @@ $(document).ready(function () {
                     FechaMod: { type: "date" }
                 }
             }
-        }
+        },
+        aggregate: [
+            { field: "Peso", aggregate: "sum" },
+            { field: "Costo", aggregate: "sum" }
+        ]
     });
 
     $("#gridSimuConsumo").kendoGrid({
         edit: function (e) {
-
             KdoHideCampoPopup(e.container, "IdSeteo");
             KdoHideCampoPopup(e.container, "IdEstacion");
             KdoHideCampoPopup(e.container, "IdSimulacion");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
-
         },
 
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdSeteo", title: "IdSeteo", hidden: true },
             { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
-            { field: "IdEstacion", title: "Estación Maquina"},
+            { field: "IdEstacion", title: "Estación Maquina", footerTemplate: "Totales"},
             { field: "Descripcion", title:"Descripción"},
-            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}" },
-            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}" },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}", footerTemplate: "#: data.Costo ? kendo.format('{0:c8}', sum) : 0 #" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }
         ]
@@ -388,10 +408,10 @@ $(document).ready(function () {
             { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
             { field: "IdEstacion", title: "Estación Maquina",hidden:true },
             { field: "Descripcion", title: "Descripción" ,hidden:true},
-            { field: "IdArticulo", title: "Artículo" },
+            { field: "IdArticulo", title: "Artículo", footerTemplate: "Totales" },
             { field: "NombreArt", title: "Nombre Artículo" },
-            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "Peso Total: #: data.Peso ? kendo.format('{0:n2}', sum) : 0 #"},
-            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}", footerTemplate: "Peso Total: #: data.Costo ? kendo.format('{0:c2}', sum) : 0 #"},
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #"},
+            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}", footerTemplate: "#: data.Costo ? kendo.format('{0:c8}', sum) : 0 #"},
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }
         ]

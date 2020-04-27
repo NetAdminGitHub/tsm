@@ -595,20 +595,22 @@ var dropElemento = function (e) {
             let gDrag = $("#" + e.draggable.element[0].id + "").data("kendoGrid").dataSource.getByUid($(e.draggable.currentTarget).data("uid"));
       
             let xEstacionBra = stage.getIntersection(stage.getPointerPosition()).attrs.id.toString().replace("TextInfo", "").replace("brazo", "");
+            let xNumEstacion = xEstacionBra.replace("TxtInfo", "").replace("txtEdit", "").toString();
+
             if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === true) {
                 switch (Formulacion) {
                     case "COLOR":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdRequerimientoColor;
                         TxtSecName = gDrag.Color;
                         break;
                     case "TECNICA":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdRequerimientoTecnica;
                         TxtSecName = gDrag.Nombre;
                         break;
                     case "BASE":
-                        Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                        Titulo = "CONFIGURACIÓN ESTACIÓN BASES ESTACIÓN #" + xNumEstacion.toString();
                         TxtIdsec = gDrag.IdBase;
                         TxtSecName = gDrag.Nombre;
                         break;
@@ -618,9 +620,9 @@ var dropElemento = function (e) {
                 }
             }
             if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
-                        Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
-                        TxtIdsec = gDrag.IdAccesorio;
-                        TxtSecName = gDrag.Nombre;
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
+                TxtIdsec = gDrag.IdAccesorio;
+                TxtSecName = gDrag.Nombre;
             }
            
 
@@ -679,31 +681,32 @@ let fn_CargarVistaModal = function (ViewP, ViewTitulo, xViewEstacionBra, ViewMod
 
 var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
     HizoDropDown = false;
+    let xNumEstacion = xEstacionBra.replace("TxtInfo", "").replace("txtEdit", "").toString();
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "COLOR";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA";
+                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionColor";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionColores.js";
                 Formulacion = "BASE";
                 break;
             default:
-                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionAccesorios";
                 ModalEstacionJS = "EstacionAccesorios.js";
                 TipoEstacion = "ACCESORIO";
@@ -715,28 +718,28 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
 
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionDisenos.js";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 ModalEstacionJS = "EstacionDisenos.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionDisenos.js";
                 Formulacion = "BASE";
                 break;
             default:
-                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionAccesoriosDis";
                 ModalEstacionJS = "EstacionAccesoriosDis.js";
                 TipoEstacion = "ACCESORIO";
@@ -750,21 +753,21 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
    
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "TINTAS Y REVELADO COLOR";
+                Titulo = "TINTAS Y REVELADO COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionFormulas.js";
                 break;
             case "TECNICA":
-                Titulo = "TINTAS Y REVELADO TÉCNICAS";
+                Titulo = "TINTAS Y REVELADO TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 ModalEstacionJS = "EstacionFormulas.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "TINTAS Y REVELADO BASES";
+                Titulo = "TINTAS Y REVELADO BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionFormulas.js";
@@ -782,21 +785,21 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
     if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
         switch (IdTipoFormulacion) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
                 ModalEstacionJS = "EstacionMuestra.js";
                 break;
             case "TECNICA":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 ModalEstacionJS = "EstacionMuestra.js";
                 TipoEstacion = "MARCO";
                 Formulacion = "TECNICA";
                 break;
             case "BASE":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES";
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
                 TipoEstacion = "MARCO";
                 ModalEstacionJS = "EstacionMuestra.js";
@@ -960,7 +963,7 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
 
     m.data("kendoWindow").content(data);
     m.data("kendoWindow").center().open();
-    
+    m.data("kendoWindow").title(titulo);
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {

@@ -1086,3 +1086,177 @@ var fn_ShowModalFH = function (cargarJs, data, divCcf) {
     $("#" + divCcf + "").data("kendoDialog").open().toFront();
 };
 //#endregion 
+
+//#region Cosulta Catalogo
+/**
+ * 
+ * @param {HtmlElementId} divCD Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idcli id del cliente
+ */
+var fn_ConsultarCatalogoDiseno = function (divCD,idcli) {
+
+    if ($("#" + divCD + "").children().length === 0) {
+        $.ajax({
+            url: "/CatalogoDisenos/ConsultarCatalogoDisenos/" + idcli.toString(),
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalCatalogoDiseno(resultado, divCD, idcli);
+            }
+        });
+    } else {
+
+        fn_CargarVistaModalCatalogoDiseno("", divCD, idcli);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de la busqueda
+ * @param {HtmlElementId} divCD Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idcli id del cliente
+ */
+var fn_CargarVistaModalCatalogoDiseno = function (data, divCD, idcli) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("ConsultarCatalogoDisenos.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/ConsultarCatalogoDisenos.js";
+        script.onload = function () {
+            fn_ShowModalCD(true, data, divCD, idcli);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalCD(false, data, divCD, idcli);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la busqueda
+ * @param {HtmlElementId} divCD  Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idcli id del cliente
+ */
+var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
+    let onShow = function () {
+        fn_getCatalogoDisenos(idcli, divCD);
+    };
+    let onClose = function () {
+        //$("#" + divCcf + "").children().remove();
+    };
+
+    $("#" + divCD + "").kendoDialog({
+        height: "70%",// $(window).height() - "300" + "px",
+        width: "70%",
+        title: "Catalogo de Diseños",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divCD + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
+//#region Cosulta Catalogo Datlle
+/**
+ * 
+ * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idCatalogoDiseno id del cliente
+ */
+var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno) {
+    kendo.ui.progress($(document.body), true);
+    if ($("#" + divCDInf + "").children().length === 0) {
+        $.ajax({
+            url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString(),
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.body), false);
+                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.body), false);
+        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de la busqueda
+ * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idCatalogoDiseno id del cliente
+ */
+var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("CatalogoDisenoInf.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/CatalogoDisenoInf.js";
+        script.onload = function () {
+            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la busqueda
+ * @param {HtmlElementId} divCDInf  Id del div que contendra la vista de busqueda de tintas
+ * @param {numeric} idCatalogoDiseno id del cliente
+ */
+var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InfDetalle(divCDInf, idCatalogoDiseno);
+        } else {
+            fn_CargarInfDetalle(divCDInf, idCatalogoDiseno);
+        }      
+    };
+    let onClose = function () {
+        //$("#" + divCcf + "").children().remove();
+    };
+
+    $("#" + divCDInf + "").kendoDialog({
+        height: "80%",
+        width: "80%",
+        title: "Detalle",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divCDInf + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
