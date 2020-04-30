@@ -1,38 +1,33 @@
-﻿var Permisos;
+﻿let UrlClie = TSM_Web_APi + "Clientes";
+let UrlServ = TSM_Web_APi + "Servicios";
+var Permisos;
 $(document).ready(function () {
+
+    //covertir a kendo combobox
+    Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
+    Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
+
+    //convertir a Kendo boutton
+    KdoButton($("#btnConsultar"), "search", "Consultar");
+
+    //convertir a Kendo date picker
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
-    KdoButton($("#btnConsular"), "search", "Consultar");
-    Kendo_CmbFiltrarGrid($("#CmbCliente"), UrlCli, "Nombre", "IdCliente", "Opcional cliente ....");
-    Kendo_CmbFiltrarGrid($("#CmbPrograma"), UrlPro, "Nombre", "IdPrograma", "Opcional programa ....");
-    Kendo_CmbFiltrarGrid($("#CmbEjecutivo"), UrlEC, "Nombre", "IdEjecutivoCuenta", "Opcional ejecutivo de cuenta ....");
-    Kendo_CmbFiltrarGrid($("#CmbTemporada"), UrlTem, "Nombre", "IdTemporada", "Opcional temporada ....");
-    Kendo_CmbFiltrarGrid($("#CmbCategoriaPrenda"), UrlPren, "Nombre", "IdCategoriaPrenda", "Opcional prenda ....");
-    Kendo_CmbFiltrarGrid($("#CmbUbicacion"), UrlUbi, "Nombre", "IdUbicacion", "Opcional ubicación ....");
-    Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Opcional servicio ....");
 
+    //checkbox
     $('#chkRangFechas').prop('checked', 1);
-    //KdoDatePikerEnable($("#dFechaDesde"), false);
-    //KdoDatePikerEnable($("#dFechaHasta"), false);
 
-    $("#btnConsular").click(function (e) {
+    // convertir a kendo Multicolum combobox
+    $("#TxtNoOrdeTrabajo").ControlSelecionOTSolicitudesProducion();
+
+    $("#btnConsultar").click(function (e) {
         $("#grid").data("kendoGrid").dataSource.read();
     });
 
-    $("#chkRangFechas").click(function () {
-        if (this.checked) {
-            KdoDatePikerEnable($("#dFechaDesde"), true);
-            KdoDatePikerEnable($("#dFechaHasta"), true);
-
-        } else {
-
-            KdoDatePikerEnable($("#dFechaDesde"), false);
-            KdoDatePikerEnable($("#dFechaHasta"), false);
-        }
-    });
+    //#region configuracion del grid
 
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -41,18 +36,15 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
-                    url: UrlOT + "/GetConsultarFichaOT",
+                    url: TSM_Web_APi + "SolicitudProducciones/GetConsultaFichasProducciones",
                     data: JSON.stringify({
                         FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
                         FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
-                        IdCliente: KdoCmbGetValue($("#CmbCliente")),
-                        NoOt: $("#TxtNoOrdeTrabajo").val() === "" ? null : $("#TxtNoOrdeTrabajo").val(),
-                        IdejecutivoCuenta: KdoCmbGetValue($("#CmbEjecutivo")),
-                        IdPrograma: KdoCmbGetValue($("#CmbPrograma")),
-                        IdTemporada: KdoCmbGetValue($("#CmbTemporada")),
-                        IdCategoriaPrenda: KdoCmbGetValue($("#CmbCategoriaPrenda")),
-                        IdUbicacion: KdoCmbGetValue($("#CmbUbicacion")),
-                        IdServicio: KdoCmbGetValue($("#CmbServicio"))
+                        IdServicio: KdoCmbGetValue($("#CmbIdServicio")),
+                        IdCliente: KdoCmbGetValue($("#CmbIdCliente")),
+                        NoOt: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"))
+                      
+                       
                     }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
@@ -82,13 +74,8 @@ $(document).ready(function () {
                     IdPrioridadOrdenTrabajo: { type: "number" },
                     Prioridad: { type: "string" },
                     Estado: { type: "string" },
-                    DesEstadoOT: { type: "string" },
                     NoDocumento: { type: "string" },
                     Comentarios: { type: "string" },
-                    NoDocumentoReq: { type: "string" },
-                    IdRequerimiento: { type: "number" },
-                    EstadoEtapa: { type: "string" },
-                    Tabla: { type: "string" },
                     IdCliente: { type: "number" },
                     NombreCliente: { type: "string" },
                     IdServicio: { type: "number" },
@@ -103,11 +90,20 @@ $(document).ready(function () {
                     NombrePrenda: { type: "string" },
                     ColorTela: { type: "ColorTela" },
                     IdPrograma: { type: "number" },
+                    NoDocPrograma: { type: "string" },
                     NombrePrograma: { type: "string" },
                     IdTemporada: { type: "number" },
                     NombreTemp: { type: "string" },
                     IdEjecutivoCuenta: { type: "number" },
-                    NombreEjecutivo: { type: "string" }
+                    NombreEjecutivo: { type: "string" },
+                    EstadoFormulas: { type: "string" },
+                    IdSimulacion: { type: "number" },
+                    NoDocumentoSim: { type: "string" },
+                    IdCotizacion: { type: "number" },
+                    NoDocumentoCoti: { type: "string" },
+                    IdRequerimiento: { type: "number" },
+                    NoDocumentoReq: { type: "string" }
+                
                 }
             }
         }
@@ -123,11 +119,11 @@ $(document).ready(function () {
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
-     
-                //fn_VerEtapas("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#grid"), true);
+                //window.location.href = "/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString();
                 window.open("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#grid"), false);
+               
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
         },
@@ -137,38 +133,45 @@ $(document).ready(function () {
             { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true },
             { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
             { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },
+            { field: "NoDocumentoReq", title: "No Doc Requerimiento", minResizableWidth: 150 },
+            { field: "NoDocumentoSim", titel: "No Doc Simulación", minResizableWidth: 150 },
+            { field: "NoDocumentoCoti", titel: "No Doc Cotización", minResizableWidth: 150 },
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
             { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },
-            { field: "NombreUbicacion", title: "Ubicación", minResizableWidth: 120 },
+            { field: "NombreUbicacion", title: "Ubicación", hidden: true, minResizableWidth: 120 },
             { field: "IdPrograma", title: "Cod. programa", hidden: true },
+            { field: "NoDocPrograma", title: "No Doc Programa", minResizableWidth: 120 },
             { field: "NombrePrograma", title: "Programa", minResizableWidth: 120 },
             { field: "IdTemporada", title: "Cod. temporada", hidden: true },
             { field: "NombreTemp", title: "Temporada", minResizableWidth: 120 },
             { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true },
-            { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120 },
+            { field: "TipoOrdenTrabajo", title: "Tipo de orden", hidden: true,minResizableWidth: 120 },
             { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "EstadoFormulas", title: "Estado Fórmulas", hidden: true, minResizableWidth: 120 },
             { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },
             { field: "IdPrioridadOrdenTrabajo", title: "Prioridad orden trabajo", hidden: true },
-            { field: "Prioridad", title: "Prioridad", minResizableWidth: 120 },
-            { field: "Estado", title: "Estado Orden Trabajo", hidden: true },
-            { field: "DesEstadoOT", title: "Estado OT" },
+            { field: "Prioridad", title: "Prioridad", hidden: true,minResizableWidth: 120 },
+            { field: "Estado", title: "Estado orden", hidden: true },
             { field: "Comentarios", title: "Comentarios", hidden: true },
-            { field: "NoDocumentoReq", title: "No Requerimiento", minResizableWidth: 120 },
-            { field: "IdRequerimiento", title: "Cod. Requerimiento", minResizableWidth: 120, hidden: true  },
-            { field: "EstadoEtapa", title: "Estado etapa", hidden: true },
-            { field: "Tabla", title: "Tabla", hidden: true },
             { field: "IdCliente", title: "Cliente", hidden: true },
             { field: "NombreCliente", title: "Nombre Cliente", minResizableWidth: 120 },
             { field: "IdServicio", title: "Cod. servicio", hidden: true },
             { field: "Servicio", title: "Servicio", minResizableWidth: 120 },
-            { field: "UbicacionHorizontal", title: "Ubicación horizontal", minResizableWidth: 150 },
-            { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
+            { field: "UbicacionHorizontal", title: "Ubicación horizontal", hidden: true ,minResizableWidth: 150 },
+            { field: "UbicacionVertical", title: "Ubicación vertical", hidden: true , minResizableWidth: 150 },
             { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 }
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
+            { field: "IdSimulacion", title: "Cod. Simulación", hidden: true,minResizableWidth: 150 },
+            { field: "IdCotizacion", title: "Cod. Cotizacion", hidden: true, minResizableWidth: 150 },
+            { field: "IdRequerimiento", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 },
+            { field: "NoDocumentoReq", title: "No Doc Requerimiento", hidden: true, minResizableWidth: 150 }
+            
+        
+
         ]
     });
 
@@ -177,16 +180,59 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
+    //#endregion 
 
-    $("#grid").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#grid"), selectedRows);
+
+    $("#chkRangFechas").click(function () {
+        if (this.checked) {
+            KdoDatePikerEnable($("#dFechaDesde"), true);
+            KdoDatePikerEnable($("#dFechaHasta"), true);
+
+        } else {
+
+            KdoDatePikerEnable($("#dFechaDesde"), false);
+            KdoDatePikerEnable($("#dFechaHasta"), false);
+        }
     });
 
 });
 
-let fn_VerEtapas = function (url) {
-    window.location.href = url;
-};
+//funcionamiento busqueda de OT
+$.fn.extend({
+    ControlSelecionOTSolicitudesProducion: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () { return TSM_Web_APi + "SolicitudProducciones/GetSolicitudProduccionOrdenesTrabajos/" + (KdoCmbGetValue($("#CmbIdServicio")) === null ? 0 : KdoCmbGetValue($("#CmbIdServicio"))) + "/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "No Orden Trabajo", width: 150 },
+                    { field: "NoDocReq", title: "No Requerimiento", width: 300 },
+                    { field: "Nombre", title: "Nombre Diseño", width: 300 },
+                    { field: "NumeroDiseno", title: "Numero Diseño", width: 300 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 300 }
+
+                ]
+            });
+        });
+    }
+});
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
+
