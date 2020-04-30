@@ -333,7 +333,23 @@ $(document).ready(function () {
             { field: "IdArte", title: "Cóigo Arte", hidden: true },
             { field: "IdRequerimiento", title: "Código Requerimiento", hidden: true },
             { field: "NoRequerimiento", title: "No Requerimiento", hidden: true },
-            { field: "IdSimulacion", title: "Código Simulación", hidden: true }
+            { field: "IdSimulacion", title: "Código Simulación", hidden: true },
+            {
+                field: "aprobar", title: "&nbsp;",
+                command: {
+                    name: "Aprobar",
+                    iconClass: "k-icon k-i-success",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        fn_GenerarSolicitudProducciones();
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 
@@ -341,6 +357,9 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridCotizacionDetalle").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridCotizacionDetalle").data("kendoGrid"), false, fn_SNBorrar(true));
     Set_Grid_DataSource($("#gridCotizacionDetalle").data("kendoGrid"), DsCT);
+
+
+    vEstCoti === "CONFIRMADO" ? $("#gridCotizacionDetalle").data("kendoGrid").showColumn("aprobar") : $("#gridCotizacionDetalle").data("kendoGrid").hideColumn("aprobar");
 
     var selectedRowsCotiDet = [];
     $("#gridCotizacionDetalle").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -446,6 +465,7 @@ let onCloseCambioEstado = function () {
     KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
     vEstCoti !== "EDICION" ? Grid_HabilitaToolbar($("#gridCotizacionDetalle"), false, false, false) : Grid_HabilitaToolbar($("#gridCotizacionDetalle"), false, false, Permisos.SNBorrar ? true : false);
     vEstCoti !== "EDICION" ? KdoButtonEnable($("#btnGuardar"), false) : KdoButtonEnable($("#btnGuardar"), fn_SNAgregar(true));
+    vEstCoti === "CONFIRMADO" ? $("#gridCotizacionDetalle").data("kendoGrid").showColumn("aprobar") : $("#gridCotizacionDetalle").data("kendoGrid").hideColumn("aprobar");
 };
 
 let fn_DeshabilitarCampos = function () {
@@ -576,6 +596,25 @@ let fn_CotizarMuestra = function () {
     });
 };
 
+let fn_GenerarSolicitudProducciones = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SolicitudProducciones/Procesar/" + fn_getIdSimulacionRentabilidad($("#gridCotizacionDetalle").data("kendoGrid")),
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({ IdSimulacionRentabilidad: null }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridCotizacionDetalle").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+};
 let Fn_getCotiSimu = function (g) {
     var elemento = g.dataItem(g.select());
     kdoNumericSetValue($("#TxtCntDocena"), elemento.CantidadPiezas / 12);
@@ -669,6 +708,12 @@ var fn_UrlReporteRentabilidadMue = function () {
 let fn_getIdArte = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdArte;
+};
+
+
+let fn_getIdSimulacionRentabilidad = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdSimulacionRentabilidad;
 };
 
 let fn_getNoRequerimiento = function (g) {
