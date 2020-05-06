@@ -4,7 +4,8 @@ let UrlClie = TSM_Web_APi + "Clientes";
 let vIdModulo = 2;
 var Permisos;
 let VIdSer =0;
-let VIdCliente =0;
+let VIdCliente = 0;
+let VIdOrdenTra = 0;
 let data;
 $(document).ready(function () {
     $("#MbtnSimu").kendoDialog({
@@ -33,6 +34,7 @@ $(document).ready(function () {
 
     // transformar div en multicolumn
     $("#CmbNoOT").OrdenesTrabajos();
+    $("#CmbNoOrdenTrabajo").OrdenesTrabajosSimulacion();
 
     $("#CmbNoOT").data("kendoMultiColumnComboBox").bind("change", function (e) {
         if (this.dataItem() !== undefined) {
@@ -137,7 +139,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo; },
+                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo + "/" + VIdOrdenTra; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -201,22 +203,101 @@ $(document).ready(function () {
             Grid_SetSelectRow($("#gridSimulacion"), selectedRows);
         },
         columns: [
-            { field: "NoDocSimulacion", title: "No.Simulación", width: 100},
-            { field: "NoDocOT", title: "No OT", width: 100},
-            { field: "Fecha", title: "Fecha simulación", format: "{0: dd/MM/yyyy}" },
+            {
+                field: "NoDocSimulacion", title: "No.Simulación", width: 125,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NoDocOT", title: "No OT", width: 150,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Fecha", title: "Fecha simulación", format: "{0: dd/MM/yyyy}", width: 125,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
-            { field: "NoDocRequerimiento", title: "Requerimiento", width: 100},
+            {
+                field: "NoDocRequerimiento", title: "Requerimiento", width: 100,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "Fecha", title: "Fecha del simulación", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "NombreArte", title: "Nombre del diseño" },
-            { field: "EstiloDiseno", title: "Estilo diseno" },
-            { field: "NumeroDiseno", title: "Número diseno", width: 100},
-            { field: "IdPrograma", title: "Código Programa", hidden: true },
-            { field: "NoPrograma", title: "No Programa" },
-            { field: "NombreProg", title: "Nombre del programa" },
+            {
+                field: "NombreArte", title: "Nombre del diseño", width: 200,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "EstiloDiseno", title: "Estilo diseno", width: 150, filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NumeroDiseno", title: "Número diseno", width: 200, filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "IdPrograma", title: "Código Programa", hidden: true,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NoPrograma", title: "No Programa", width: 150,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "NombreProg", title: "Nombre del programa", width: 200,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
             { field: "IdCliente", title: "Código cliente", hidden: true },
             { field: "NoCuenta", title: "No Cuenta cliente", hidden: true },
-            { field: "NombreClie", title: "Nombre del cliente" },
+            {
+                field: "NombreClie", title: "Nombre del cliente", width: 200,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "IdServicio", title: "Código servicio", hidden: true },
             { field: "IdUbicacion", title: "Código ubicación", hidden: true },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", hidden: true },
@@ -224,16 +305,51 @@ $(document).ready(function () {
             { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "Tecnicas", title: "Técnicas" },
-            { field: "Tallas", title: "Tallas" },
-            { field: "FechaFinalMuestra", title: "Desarrollo Muestra", width: 125, format: "{0: dd/MM/yyyy}" },
-            { field: "FechaFinal", title: "Finalización OT", width: 100, format: "{0: dd/MM/yyyy HH:mm:ss}" },
-            { field: "NombreEstado", title: "Estado simulación", width: 100}
+            {
+                field: "Tecnicas", title: "Técnicas", width: 200,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Tallas", title: "Tallas", width: 200,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "FechaFinalMuestra", title: "Desarrollo Muestra", width: 150, format: "{0: dd/MM/yyyy}",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "FechaFinal", title: "Finalización OT", width: 150, format: "{0: dd/MM/yyyy HH:mm:ss}",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NombreEstado", title: "Estado simulación", width: 150,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            }
 
         ]
     });
 
-    SetGrid($("#gridSimulacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 550);
+    SetGrid($("#gridSimulacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true,0,true,"row");
     SetGrid_CRUD_ToolbarTop($("#gridSimulacion").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridSimulacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridSimulacion").data("kendoGrid"), DsRD,50);
@@ -242,6 +358,11 @@ $(document).ready(function () {
         Grid_SelectRow($("#gridSimulacion"), selectedRows);
     });
 
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridSimulacion"), $(window).height() - "371");
+    });
+
+    Fn_Grid_Resize($("#gridSimulacion"), $(window).height() - "371");
     //#endregion FIN GRID PRINCIPAL
 
     //#region seleccion de servicio y cliente
@@ -249,9 +370,9 @@ $(document).ready(function () {
     $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
         kendo.ui.progress($("#CmbIdServicio"), true);
         if (e.item) {
-            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")));
+            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         } else {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")));
+            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         }
 
     });
@@ -260,23 +381,45 @@ $(document).ready(function () {
         kendo.ui.progress($("#CmbIdServicio"), true);
         let value = this.value();
         if (value === "") {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")));
+            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         }
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString());
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         } else {
-            Fn_ConsultarSimu(0, 0);
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         }
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0);
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
         }
+
+    });
+
+    $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
+     
+        if (e.item) {
+            KdoCmbSetValue($("#CmbIdServicio"), this.dataItem(e.item.index()).IdServicio);
+
+            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio, Kendo_CmbGetvalue($("#CmbIdCliente")), this.dataItem(e.item.index()).IdOrdenTrabajo);
+        } else {
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")),0);
+        }
+    });
+
+    $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
+        if (data === undefined) {
+        
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")),0);
+        }
+
     });
 
     //#endregion
@@ -307,10 +450,11 @@ let fn_hbbtnSimu = function () {
         //$("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
     }
 };
-let Fn_ConsultarSimu = function (IdServicio, IdCliente) {
+let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra) {
     kendo.ui.progress($("#splitter"), true);
     VIdSer = Number(IdServicio);
     VIdCliente = Number(IdCliente);
+    VIdOrdenTra = Number(IdOrdenTra);
     //leer grid
     $("#gridSimulacion").data("kendoGrid").dataSource.data([]);
     $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () { fn_hbbtnSimu(); });
@@ -408,6 +552,42 @@ let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExt
     });
 };
 
+$.fn.extend({
+    OrdenesTrabajosSimulacion: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosRequerimientos/" + (KdoCmbGetValue($("#CmbIdServicio")) === null ? 0 : KdoCmbGetValue($("#CmbIdServicio"))) + "/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                   
+                },
+                columns: [
+                    //{ field: "IdOrdenTrabajo", title: "ID. Orden Trabajo", width: 200 },
+                    { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
+                    { field: "NoDocReq", title: "Requerimiento", width: 100 },
+                    { field: "Nombre", title: "Nombre del Diseño", width: 200 },
+                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 },
+                    { field: "Tecnicas", title: "Tecnicas", width: 200 },
+                    { field: "Tallas", title: "Tallas", width: 200 }
+
+                ]
+            });
+        });
+    }
+});
 let fn_closeGS = function () {
     $("#CmbNoOT").data("kendoMultiColumnComboBox").text("");
     $("#CmbNoOT").data("kendoMultiColumnComboBox").trigger("change");

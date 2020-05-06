@@ -11,6 +11,7 @@ namespace TSM.Controllers
         // GET: SimulacionesMuestras
         public ActionResult Index()
         {
+        
             return View();
         }
 
@@ -33,6 +34,7 @@ namespace TSM.Controllers
             return PartialView("_SimulacionMuestrasDatosSubli");
         }
 
+        
 
     }
 }
