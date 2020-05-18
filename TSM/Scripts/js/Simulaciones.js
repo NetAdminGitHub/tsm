@@ -384,8 +384,10 @@ $(document).ready(function () {
         if (e.item) {
             if (this.dataItem(e.item.index()).IdServicio === 1)
                 $("#gridSimuConsumo").data("kendoGrid").showColumn("Nombre1");
-            else
+            else {
                 $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre1");
+                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre2");
+            }
 
             Fn_Consultar(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")));
         } else {
@@ -1223,6 +1225,24 @@ let Fn_Consultar = function (IdServicio, IdCliente) {
     VIdCliente = Number(IdCliente);
     vistaP = $("#pvSimulacion");
     let Url = VIdSer === 2 ? "/Simulaciones/SimulacionDatosSubli" : "/Simulaciones/SimulacionDatos";
+    let UrlPartes = VIdSer === 2 ? "/Simulaciones/CostosPorPartes" : "";
+
+    if (UrlPartes !== "") {
+        $.ajax({
+            url: UrlPartes,
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                $("#pvCostosPorPartes").html(resultado);
+            }
+        });
+    }
+    else {
+        $("#pvCostosPorPartes").empty();
+    }
+
     $.ajax({
         url: Url,
         async: false,
@@ -1748,13 +1768,23 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         dataChart.push(
             {
+                category: "Costo Materia Prima (Imp + Trans)",
+                value: elemento.CostoMP + elemento.CostoMPTrans,
+                color: "#33FFE9"
+            },
+            {
                 category: "Costo Primo (Imp + Trans)",
-                value: elemento.CostoPrimo + elemento.CostoPrimoTrans,
+                value: Math.round((elemento.CostoPrimo + elemento.CostoPrimoTrans) * 100)/100,
                 color: "#FFC733"
             },
             {
+                category: "Costo Fabril (Imp + Trans)",
+                value: Math.round((elemento.CostoFabril + elemento.CostoFabrilTrans) * 100) / 100,
+                color: "#CA33FF"
+            },
+            {
                 category: "Costo de Mano de Obra (Imp + Trans)",
-                value: elemento.CostoMOD + elemento.CostoMODTrans,
+                value: Math.round((elemento.CostoMOD + elemento.CostoMODTrans) * 100) /100,
                 color: "#03396C"
             },
             {
