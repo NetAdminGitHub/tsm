@@ -384,8 +384,10 @@ $(document).ready(function () {
         if (e.item) {
             if (this.dataItem(e.item.index()).IdServicio === 1)
                 $("#gridSimuConsumo").data("kendoGrid").showColumn("Nombre1");
-            else
+            else {
                 $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre1");
+                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre2");
+            }
 
             Fn_Consultar(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")));
         } else {
@@ -1223,6 +1225,24 @@ let Fn_Consultar = function (IdServicio, IdCliente) {
     VIdCliente = Number(IdCliente);
     vistaP = $("#pvSimulacion");
     let Url = VIdSer === 2 ? "/Simulaciones/SimulacionDatosSubli" : "/Simulaciones/SimulacionDatos";
+    let UrlPartes = VIdSer === 2 ? "/Simulaciones/CostosPorPartes" : "";
+
+    if (UrlPartes !== "") {
+        $.ajax({
+            url: UrlPartes,
+            async: false,
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                $("#pvCostosPorPartes").html(resultado);
+            }
+        });
+    }
+    else {
+        $("#pvCostosPorPartes").empty();
+    }
+
     $.ajax({
         url: Url,
         async: false,
@@ -1748,27 +1768,26 @@ function getSimulacionGrid(g) {
     if (VIdSer === 2) {
         dataChart.push(
             {
-                category: "Costo Primo (Imp + Trans)",
-                value: elemento.CostoPrimo + elemento.CostoPrimoTrans,
-                color: "#FFC733"
+                category: "Costo Materia Prima (Imp + Trans)",
+                value: elemento.CostoMP + elemento.CostoMPTrans,
+                color: "#33FFE9"
+            },
+            {
+                category: "Costo Fabril (Imp + Trans)",
+                value: Math.round((elemento.CostoFabril + elemento.CostoFabrilTrans) * 100) / 100,
+                color: "#CA33FF"
             },
             {
                 category: "Costo de Mano de Obra (Imp + Trans)",
-                value: elemento.CostoMOD + elemento.CostoMODTrans,
+                value: Math.round((elemento.CostoMOD + elemento.CostoMODTrans) * 100) /100,
                 color: "#03396C"
-            },
-            {
-                category: "Costo Producción (Imp + Trans)",
-                value: elemento.CostoProduccion + elemento.CostoProduccionTrans,
-                color: "#005B96"
             },
             {
                 category: "Costo Operación (Imp + Trans)",
                 value: elemento.CostoOperacion + elemento.CostoOperacionTrans,
                 color: "#33C1FF"
             });
-    }
-   
+    }   
 
     CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
     ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= kendo.toString(value,'n2')# - #= kendo.toString(percentage * 100.0, 'n2')#%");

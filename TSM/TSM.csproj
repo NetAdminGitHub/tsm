@@ -1457,6 +1457,7 @@
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
     <Content Include="Views\GetCipher\Index.cshtml" />
     <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
+    <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
