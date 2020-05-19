@@ -1773,11 +1773,6 @@ function getSimulacionGrid(g) {
                 color: "#33FFE9"
             },
             {
-                category: "Costo Primo (Imp + Trans)",
-                value: Math.round((elemento.CostoPrimo + elemento.CostoPrimoTrans) * 100)/100,
-                color: "#FFC733"
-            },
-            {
                 category: "Costo Fabril (Imp + Trans)",
                 value: Math.round((elemento.CostoFabril + elemento.CostoFabrilTrans) * 100) / 100,
                 color: "#CA33FF"
@@ -1788,17 +1783,11 @@ function getSimulacionGrid(g) {
                 color: "#03396C"
             },
             {
-                category: "Costo Producción (Imp + Trans)",
-                value: elemento.CostoProduccion + elemento.CostoProduccionTrans,
-                color: "#005B96"
-            },
-            {
                 category: "Costo Operación (Imp + Trans)",
                 value: elemento.CostoOperacion + elemento.CostoOperacionTrans,
                 color: "#33C1FF"
             });
-    }
-   
+    }   
 
     CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
     ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= kendo.toString(value,'n2')# - #= kendo.toString(percentage * 100.0, 'n2')#%");
