@@ -347,63 +347,6 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion FIN Inicialización de variables y controles Kendo
 
-    //#region Programacion GRID REQUERIMIENTO DE DESARROLLO
-
-    let DsRD = new kendo.data.DataSource({
-        //CONFIGURACION DEL CRUD
-        transport: {
-            read: {
-                url: function (datos) { return UrlRD + "/" + $("#txtId").val(); },
-                contentType: "application/json; charset=utf-8"
-            },
-            parameterMap: function (data, type) {
-                if (type !== "read") {
-                    return kendo.stringify(data);
-                }
-            }
-        },
-        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
-        schema: {
-            model: {
-                id: "IdRequerimiento",
-                fields: {
-                    IdRequerimiento: { type: "number" },
-                    IdCliente: { type: "number" },
-                    NoCuenta: { type: "string" },
-                    IdPrograma: { type: "number" },
-                    Nombre4: { type: "string" },
-                    NoDocumento: { type: "string" },
-                    IdServicio: { type: "number" },
-                    Nombre: { type: "string" },
-                    IdUbicacion: { type: "number" },
-                    Nombre1: { type: "string" },
-                    NoDocumento1: { type: "string" },
-                    UbicacionHorizontal: { type: "string" },
-                    UbicacionVertical: { type: "string" },
-                    CantidadPiezas: { type: "number" },
-                    TallaPrincipal: { type: "string" },
-                    Estado: { type: "string" },
-                    Fecha: { type: "date" },
-                    InstruccionesEspeciales: { type: "string" },
-                    Nombre2: { type: "string" },
-                    EstiloDiseno: { type: "string" },
-                    NumeroDiseno: { type: "string" },
-                    Nombre3: { type: "string" },
-                    Nombre5: { type: "string" },
-                    IdCategoriaConfeccion: { type: "number" },
-                    Nombre6: { type: "string" },
-                    IdConstruccionTela: { type: "number" },
-                    Nombre7: { type: "string" },
-                    IdComposicionTela: { type: "number" },
-                    Nombre8: { type: "string" },
-                    Color: { type: "string" }
-                }
-            }
-        }
-    });
-
-    //#endregion FIN Programacion GRID REQUERIMIENTO DE DESARROLLO
-
     //#region CRUD Programación GRID Dimensiones
     let DsDimension = new kendo.data.DataSource({
         transport: {
