@@ -15,7 +15,7 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnRefrescar"), false);
     KdoButton($("#btnConsular"), "search", "Consultar");
     KdoButton($("#btnGuardar"), "save", "Guardar Comentario");
-
+  
 
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
     Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un Cliente ....");
@@ -27,6 +27,8 @@ $(document).ready(function () {
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#TxtComentarios").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#TxtComentariosHis").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#TxtComentariosHis").attr("readonly", true);
 
     $('#chkRangFechas').prop('checked', 1);
 
@@ -121,7 +123,7 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnGuardar"), false);
             $("#TxtComentarios").attr("disabled", true);
             $("#TxtComentarios").val("");
-
+            $("#TxtComentariosHis").val("");
         }
     });
 
@@ -141,6 +143,7 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnGuardar"), false);
             $("#TxtComentarios").attr("disabled", true);
             $("#TxtComentarios").val("");
+            $("#TxtComentariosHis").val("");
         }
     });
 
@@ -620,7 +623,8 @@ let fn_partesHisSublimado = function () {
                     NombreUnidad: { type: "string" },
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    InstruccionesEspeciales: { type: "string" }
                 }
             }
         },
@@ -648,7 +652,7 @@ let fn_partesHisSublimado = function () {
             KdoHideCampoPopup(e.container, "NombreProgra");
             KdoHideCampoPopup(e.container, "NombreDiseño");
             KdoHideCampoPopup(e.container, "NombrePrenda");
-            KdoHideCampoPopup(e.container, "EstiloDiseno")
+            KdoHideCampoPopup(e.container, "EstiloDiseno");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -730,7 +734,8 @@ let fn_partesHisSublimado = function () {
                 }
             },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "InstruccionesEspeciales", title:"Comentarios",menu:false,hidden:true}
         ]
     });
 
@@ -745,8 +750,9 @@ let fn_partesHisSublimado = function () {
         Grid_SetSelectRow($("#gridPartesHis"), selectedRows1);
     });
 
-    $("#gridPartes").data("kendoGrid").bind("change", function (e) {
+    $("#gridPartesHis").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridPartesHis"), selectedRows1);
+        Fn_getRowComentarioHis($("#gridPartesHis").data("kendoGrid"));
     });
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#gridPartesHis"), $(window).height() - "370");
@@ -837,6 +843,11 @@ let Fn_getRowPrecios = function (g) {
     $("#TxtComentarios").val(elemento.InstruccionesEspeciales);
     xIdReqDes = elemento.IdRequerimiento;
 
+};
+
+let Fn_getRowComentarioHis = function (g) {
+    var elemento = g.dataItem(g.select());
+    $("#TxtComentariosHis").val(elemento.InstruccionesEspeciales);
 };
 
 let fn_ActualizarReqSublimacion = function () {
