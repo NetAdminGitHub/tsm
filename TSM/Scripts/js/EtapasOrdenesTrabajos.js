@@ -65,9 +65,9 @@ let fn_DibujarKanban = function (ds) {
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' + elemento.NoDocumento + '</div>' +
+                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;"><a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '</a></div>' +
                         '<div class="card-body">' +
-                        '<h5 class="card-title" style="white-space:normal;font-weight: bold;"><a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NombreDiseño + '</a></h5>' +
+                        '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<div class="user">' +
                         '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
                         '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
