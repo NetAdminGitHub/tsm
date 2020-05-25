@@ -20,11 +20,11 @@ $(document).ready(function () {
     });
 
 
-    //KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
+    KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
     KdoButton($("#btnAceptarSimu"), "check", "Nueva simulación");
     $("#btnSimulacion").data("kendoButton").enable(false);
-    //$("#btnRecalcular").data("kendoButton").enable(false);
+    $("#btnRecalcular").data("kendoButton").enable(false);
    
     // configurar clientes y servicios
     Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
@@ -230,6 +230,7 @@ $(document).ready(function () {
             },
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
+            { field: "IdOrdenTrabajo", title:"Cod. Orden Trabajo", hidden:true},
             {
                 field: "NoDocRequerimiento", title: "Requerimiento", width: 100,
                 filterable: {
@@ -270,6 +271,15 @@ $(document).ready(function () {
                     }
                 }
             },
+            { field: "Estado", title: "Estado", hidden: true },
+            {
+                field: "NombreEstado", title: "Estado simulación", width: 125,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             {
                 field: "NoPrograma", title: "No Programa", width: 150,
                 filterable: {
@@ -304,7 +314,6 @@ $(document).ready(function () {
             { field: "UbicacionVertical", title: "Ubicacion vertical", hidden: true },
             { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
-            { field: "Estado", title: "Estado", hidden: true },
             {
                 field: "Tecnicas", title: "Técnicas", width: 200,
                 filterable: {
@@ -336,15 +345,8 @@ $(document).ready(function () {
                         enabled: false
                     }
                 }
-            },
-            {
-                field: "NombreEstado", title: "Estado simulación", width: 150,
-                filterable: {
-                    cell: {
-                        enabled: false
-                    }
-                }
             }
+           
 
         ]
     });
@@ -356,6 +358,8 @@ $(document).ready(function () {
 
     $("#gridSimulacion").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridSimulacion"), selectedRows);
+
+        fn_getEstado($("#gridSimulacion").data("kendoGrid")) !== "CONFIRMADO" ? $("#btnRecalcular").data("kendoButton").enable(true) : $("#btnRecalcular").data("kendoButton").enable(false);
     });
 
     $(window).on("resize", function () {
@@ -439,15 +443,20 @@ $(document).ready(function () {
         if (ValidNuevoSim.validate()) { fn_GenNuevaSim(data.IdOrdenTrabajo, kdoNumericGetValue($("#TxtNuevaCantidadPiezas")), kdoNumericGetValue($("#TxtNoMontaje")), kdoNumericGetValue($("#txtPersonalExtra")), kdoNumericGetValue($("#txtCombos")), kdoNumericGetValue($("#txtVeloMaquina")), $("#chkUsarTermofijado").is(':checked') ? "1" : "0");} 
     });
 
+
+    $("#btnRecalcular").click(function (event) {
+        fn_RecalSimulacion();
+    });
+
 });
 
 let fn_hbbtnSimu = function () {
     if (Number(KdoCmbGetValue($("#CmbIdServicio"))) === 0) {
         $("#btnSimulacion").data("kendoButton").enable(false);
-        //$("#btnRecalcular").data("kendoButton").enable(false);
+        $("#btnRecalcular").data("kendoButton").enable(false);
     } else {
         $("#btnSimulacion").data("kendoButton").enable(fn_SNProcesar(true));
-        //$("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
+        $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
     }
 };
 let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra) {
@@ -478,6 +487,25 @@ let fn_SNCambiarEstados = function (valor) {
     return Permisos.SNCambiarEstados ? valor : false;
 };
 
+let fn_RecalSimulacion = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + fn_getIdOrdenTrabajo($("#gridSimulacion").data("kendoGrid")) + "/" + fn_getIdSimulacion($("#gridSimulacion").data("kendoGrid")),
+        type: "Post",
+        dataType: "json",
+        data: {},
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+};
 $.fn.extend({
     OrdenesTrabajos: function () {
         return this.each(function () {
@@ -591,4 +619,21 @@ $.fn.extend({
 let fn_closeGS = function () {
     $("#CmbNoOT").data("kendoMultiColumnComboBox").text("");
     $("#CmbNoOT").data("kendoMultiColumnComboBox").trigger("change");
+};
+
+var fn_getIdOrdenTrabajo = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdOrdenTrabajo;
+
+};
+var fn_getIdSimulacion = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdSimulacion;
+
+};
+
+var fn_getEstado = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.Estado;
+
 };
