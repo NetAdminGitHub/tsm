@@ -248,6 +248,7 @@
     <Compile Include="Controllers\EjecutivoCuentasController.cs" />
     <Compile Include="Controllers\EstacionesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="Controllers\EtapasOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
@@ -747,6 +748,7 @@
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
@@ -1458,6 +1460,7 @@
     <Content Include="Views\GetCipher\Index.cshtml" />
     <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
+    <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

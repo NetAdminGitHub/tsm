@@ -433,8 +433,7 @@ $(document).ready(function () {
     });
     //#reg
     $("#btnRecalcular").click(function (event) {
-        event.preventDefault();
-        ConfirmacionMsg("¿Está seguro de volver a generar la simulación de pre-costeo para la simulación: " + $("#TxtNoDocumento").val().toString() + "?", function () { return fn_RecalSimulacion(); });
+        fn_RecalSimulacion();
     });
 
     $("#btnIrSimu").click(function () {
