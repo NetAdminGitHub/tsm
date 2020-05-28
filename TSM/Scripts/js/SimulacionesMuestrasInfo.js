@@ -17,9 +17,22 @@ var vxIdSeteo=0;
 var vxIdEstacion=0;
 $(document).ready(function () {
 
+    $("#MbtnSimuRecalcular").kendoDialog({
+        height: "auto",
+        width: "30%",
+        title: "Recalcular Simulación por No. OT",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900,
+        close: fn_closeGSRecal
+    });
+
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnIrSimu"), "hyperlink-open-sm","Ir a Simulaciones");
     KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
+    Kendo_MultiSelect($("#CmbTallasRecalcular"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
+    KdoButton($("#btnAceptarSimuRecal"), "check", "Recalcular Simulación");
     //programar control de tabulacion
     $("#TabSimulacion").kendoTabStrip({
         tabPosition: "left",
@@ -27,6 +40,33 @@ $(document).ready(function () {
     });
 
     fn_CargarVistaParcial("_SimulacionMuestrasDatos.Js", "SimulacionMuestrasDatos");
+
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").value("");
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
+
+    $("#NumCantidadTallasRecal").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#NumCantidadTallasRecal"), false);
+    let ValidNuevoSimRecal = $("#FrmRecalcularSim").kendoValidator({
+        rules: {
+            TallaRec: function (input) {
+                if (input.is("[name='CmbTallasRecalcular']")) {
+                    return $("#CmbTallasRecalcular").data("kendoMultiSelect").value().length > 0;
+                }
+                return true;
+            }
+
+        },
+        messages: {
+            TallaRec: "requerido"
+        }
+    }).data("kendoValidator");
+
+
     //cargar los datos de la simulación
     
     //#region CRUD para el grid Rentabilidad
@@ -433,7 +473,8 @@ $(document).ready(function () {
     });
     //#reg
     $("#btnRecalcular").click(function (event) {
-        fn_RecalSimulacion();
+        fn_getSimulacionesTallas(vIdSimulacion.toString());
+        $("#MbtnSimuRecalcular").data("kendoDialog").open();
     });
 
     $("#btnIrSimu").click(function () {
@@ -447,6 +488,23 @@ $(document).ready(function () {
         Fn_VistaCambioEstadoMostrar("SimulacionesMuestras", $("#TxtEstado").val(), TSM_Web_APi + "SimulacionesMuestras/SimulacionesMuestras_CambiarEstado", "Sp_CambioEstado", vIdSimulacion);
     });
 
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").bind("deselect", function (e) {
+
+        var MultiSelect = $("#CmbTallasRecalcular").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallasRecal"), count - 1);
+    });
+
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").bind("select", function (e) {
+        var MultiSelect = $("#CmbTallasRecalcular").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallasRecal"), count + 1);
+
+    });
+
+    $("#btnAceptarSimuRecal").click(function () {
+        if (ValidNuevoSimRecal.validate()) { fn_RecalSimulacionVistaInf(); }
+    });
   
 });
 
@@ -842,21 +900,24 @@ var fn_GetSimubyIdSimu = function () {
     });
 };
 
-let fn_RecalSimulacion = function () {
-    kendo.ui.progress($(document.body), true);
+let fn_RecalSimulacionVistaInf = function () {
+    kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
         url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString(),
         type: "Post",
         dataType: "json",
-        data: {},
+        data: JSON.stringify({
+            Tallas: $("#CmbTallasRecalcular").data("kendoMultiSelect").value().toString()
+        }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             fn_GetSimubyIdSimu();
-            kendo.ui.progress($(document.body), false);
+            $("#MbtnSimuRecalcular").data("kendoDialog").close();
+            kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(data, "Post");
         },
         error: function (data) {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
             ErrorMsg(data);
         }
     });
@@ -880,4 +941,32 @@ var fn_ConsultarConsumoArt = function (gridcab) {
     vxIdSeteo = fn_getIdSeteo(gridcab.data("kendoGrid"));
     vxIdEstacion = fn_getIdEstacion(gridcab.data("kendoGrid"));
     $("#gridSimuConsumoArt").data("kendoGrid").dataSource.read();
+};
+
+let fn_closeGSRecal = function () {
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").value("");
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
+    kdoNumericSetValue($("#NumCantidadTallasRecal"), 0);
+};
+
+let fn_getSimulacionesTallas = function (vidSim) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SimulacionesMuestrasTallas/GetbyIdSimulacion/" + vidSim,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            var lista = "";
+            $.each(respuesta, function (index, elemento) {
+                lista = lista + elemento.IdCategoriaTalla + ",";
+            });
+
+            $("#CmbTallasRecalcular").data("kendoMultiSelect").value(lista.split(","));
+            kdoNumericSetValue($("#NumCantidadTallasRecal"), respuesta.length);
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
 };
