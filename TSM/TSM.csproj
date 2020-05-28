@@ -1463,6 +1463,7 @@
     <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
