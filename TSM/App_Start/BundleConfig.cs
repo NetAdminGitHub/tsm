@@ -57,6 +57,7 @@ namespace TSM
             bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/Font-HelveticaNeue.css",
                                                                  "~/Content/Font-TS-Icons.css",
                                                                  "~/Content/Font-TSM-General.css",
+                                                                 "~/Content/Font-TSM-SeteoMaquinas.css",
                                                                  "~/Content/TSM-Style.css",
                                                                  "~/Content/smart_wizard.css",
                                                                  "~/Content/smart_wizard_theme_arrows.css"
