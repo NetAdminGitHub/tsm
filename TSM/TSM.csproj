@@ -228,6 +228,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
@@ -738,6 +739,7 @@
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
@@ -1464,6 +1466,7 @@
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
+    <Content Include="Views\CalidadCriterios\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

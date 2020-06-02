@@ -50,6 +50,9 @@ $(document).ready(function () {
                             }
                         }
                     },
+                    Icono: {
+                        type:"string"
+                    },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -66,14 +69,23 @@ $(document).ready(function () {
             }
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IconoView");
+            $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdAccesorio", title: "Codigo Accesorios"},
             { field: "Nombre", title: "Nombre Accesorio" },
+            { field: "Icono", title: "Icono"},
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            }
         ]
     });
 
