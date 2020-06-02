@@ -728,6 +728,7 @@
     <Content Include="Content\smart_wizard.css" />
     <Content Include="Content\smart_wizard_theme_arrows.css" />
     <Content Include="Content\smart_wizard_theme_circles.css" />
+    <Content Include="Content\Font-TSM-SeteoMaquinas.css" />
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\TSM_imagen_modal.css" />
@@ -1340,6 +1341,7 @@
     <Content Include="Views\UsuariosRoles\Index.cshtml" />
     <Content Include="Views\Menus\Index.cshtml" />
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
+    <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
