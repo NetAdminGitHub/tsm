@@ -920,12 +920,13 @@ var CrearEtapasProcesosModulo = function (DivIdElement, etapas, forma) {
     EtapaOpc.children().remove();
 
     var SetEtapa = "vistaParcial";
-
+    var strIcono = "";
     $.each(etapas, function (index, elemento) {
+        strIcono = (elemento.Icono === null ? '' : elemento.Icono).startsWith('k-i') === true ? "'k-icon " + elemento.Icono + " ficonEtp'" : "'" + elemento.Icono + " ficonEtp'";
         EtapaOpc.append(
             "<li class=\"nav-item\">" +
             "<a href=\"#" + SetEtapa + elemento.IdEtapaProceso + "\" class=\"nav-link\" etapa=\"" + elemento.IdEtapaProceso + "\" vista=\"" + elemento.VistaFormulario + "\" indice=\"" + (elemento.Item - 1) + "\">" +
-            "<span class=\"k-icon " + elemento.Icono + " ficonEtp\"></span><br>" +
+            "<span class=\ " + strIcono + " \"></span><br>" +
             "<small>" + elemento.Nombre + "</small>" +
             "</a>" +
             "</li>");
