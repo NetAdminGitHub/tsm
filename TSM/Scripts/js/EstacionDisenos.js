@@ -291,7 +291,10 @@ var fn_VistaEstacionDiseno = function () {
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);//obtener informacion de la entidad SeteoMarcos Formulaciones por seteo y estación
     estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
-    EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
+    EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "CREADA");
+    if (EstaTintasFormula.length=== 0) {
+        EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "VIGENTE");
+    }
     
     if (setFor !== null) {
         $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").focus();
@@ -620,7 +623,7 @@ var fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
         success: function (data) {
             $("#TxtIdform_Dis").val(data[0].IdFormula);
             EstacionBra = fn_Estaciones(maq[0].IdSeteo, xIdBrazo);
-            EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo);
+            EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo,"CREADA");
             fn_MostraTablaFormula(EstaTintasFormula,"TablaFormulaDis");
             $("#NumMasaEntre_Dis").val(EstaTintasFormula[0].MasaEntregada);
             KdoButtonEnable($("#btnccc_Dis"), false);
