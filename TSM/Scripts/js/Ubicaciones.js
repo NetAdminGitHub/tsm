@@ -51,9 +51,22 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
                                 }
+                                if (input.is("[name='Icono']") && input.val().length > 50) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 50");
+                                    return false;
+                                }
                                 return true;
                             }
                         }
+                    },
+                    Icono: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
                     }
                 }
             }
@@ -64,14 +77,26 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdUbicacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdUbicacion]").parent().next("div .k-edit-field").hide();
+            KdoHideCampoPopup(e.container, "IdUbicacion");
+            KdoHideCampoPopup(e.container, "IconoView");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdUbicacion", title: "Código Ubicación", editor: Grid_ColInt64NumSinDecimal,hidden:true },
-            { field: "Nombre", title: "Nombre" }
+            { field: "Nombre", title: "Nombre" },
+            { field: "Icono", title: "Icono" },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            }
         ]
     });
 

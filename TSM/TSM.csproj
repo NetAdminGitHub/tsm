@@ -228,6 +228,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
@@ -729,6 +730,7 @@
     <Content Include="Content\smart_wizard.css" />
     <Content Include="Content\smart_wizard_theme_arrows.css" />
     <Content Include="Content\smart_wizard_theme_circles.css" />
+    <Content Include="Content\Font-TSM-SeteoMaquinas.css" />
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\TSM_imagen_modal.css" />
@@ -738,6 +740,7 @@
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
@@ -1340,6 +1343,7 @@
     <Content Include="Views\UsuariosRoles\Index.cshtml" />
     <Content Include="Views\Menus\Index.cshtml" />
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
+    <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -1461,6 +1465,8 @@
     <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
+    <Content Include="Views\CalidadCriterios\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

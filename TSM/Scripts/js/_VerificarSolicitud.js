@@ -1888,7 +1888,7 @@ let fn_CmbCriterioCalidad = function () {
 let fn_GetCriteriosCalidad = function (xIdCriterio) {
     kendo.ui.progress($("#BPform"), true);
     $.ajax({
-        url: TSM_Web_APi + "CalidadCriteriosPruebas/GetbyIdidCalidadCriterio/" + (xIdCriterio === null ? 0 : xIdCriterio),
+        url: TSM_Web_APi + "CalidadCriteriosPruebas/GetbyIdCalidadCriterio/" + (xIdCriterio === null ? 0 : xIdCriterio),
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
@@ -1915,7 +1915,7 @@ let fn_DibujarCriteriosCalidad = function (DataSource) {
         if (elemento.Icono === "" || elemento.Icono === null) {
             vClass = 'class= "k-icon k-i-check k-icon-32"';
         } else {
-            vClass = 'class= "' + elemento.Icono + '"';
+            vClass = (elemento.Icono === null ? '' : elemento.Icono).startsWith('k-i') === true ? 'class= "k-icon ' + elemento.Icono + '"' : 'class= "' + elemento.Icono + '"';
         }
 
         lista.append('<div class="form-group form-inline">' +

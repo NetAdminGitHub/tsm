@@ -75,7 +75,10 @@ $(document).ready(function () {
                     },
                     FechaMod: {
                         type: "date"
-                    }
+                    },
+                    Icono: {
+                        type: "string"
+                    },
 
                 }
             }
@@ -96,6 +99,9 @@ $(document).ready(function () {
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();   
             e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();   
+
+            KdoHideCampoPopup(e.container, "IconoView");
+            $('[name="Icono"').attr('mayus', 'no');
 
             // DESHABILITAR OPCIONES DE CONFIGURACIONES SEGUN EL SERVICIO SELECCIONADO
             switch ($("#CmbServicio").data("kendoComboBox").value()) {
@@ -146,6 +152,7 @@ $(document).ready(function () {
         columns: [
             { field: "IdTecnica", title: "Codigo de técnica", editor: Grid_ColInt64NumSinDecimal,hidden:true },
             { field: "Nombre", title: "Nombre de técnica" },
+            { field: "Icono", title: "Icono" },
             { field: "IdServicio", title: "servicio", hidden: true},
             { field: "Nombre1", title: "Nombre servicio",hidden: true },
             { field: "EsPapel", title: "Es papel?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsPapel"); } },
@@ -153,8 +160,15 @@ $(document).ready(function () {
             { field: "EsSublimacion", title: "Técnica proceso sublimación?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsSublimacion"); } },
             { field: "EsPlantilla", title: "Técnica para plantilla?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsPlantilla"); }  },
             { field: "EsEstampado", title: "Técnica para estampado?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsEstampado"); } },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            },
             { field: "IdUsuarioMod", title: "Usuario", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" }
+           
         ]
     });
 

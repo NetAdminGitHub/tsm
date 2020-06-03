@@ -6,7 +6,7 @@ var Permisos;
 let VIdSer =0;
 let VIdCliente = 0;
 let VIdOrdenTra = 0;
-let data;
+let data=null;
 $(document).ready(function () {
     $("#MbtnSimu").kendoDialog({
         height: "auto",
@@ -19,18 +19,39 @@ $(document).ready(function () {
         close:fn_closeGS
     });
 
+    $("#MbtnSimuRecalcular").kendoDialog({
+        height: "auto",
+        width: "30%",
+        title: "Recalcular Simulación por No. OT",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900,
+        close: fn_closeGSRecal
+    });
+
 
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
     KdoButton($("#btnAceptarSimu"), "check", "Nueva simulación");
+    KdoButton($("#btnAceptarSimuRecal"), "check", "Recalcular Simulación");
     $("#btnSimulacion").data("kendoButton").enable(false);
     $("#btnRecalcular").data("kendoButton").enable(false);
    
     // configurar clientes y servicios
     Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
+    Kendo_MultiSelect($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
+    Kendo_MultiSelect($("#CmbTallasRecalcular"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
     KdoCmbSetValue($("#CmbIdCliente"), "");
     KdoCmbSetValue($("#CmbIdServicio"), "");
+
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").value("");
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
+
+    $("#CmbTallas").data("kendoMultiSelect").value("");
+    $("#CmbTallas").data("kendoMultiSelect").trigger("change");
+
 
     // transformar div en multicolumn
     $("#CmbNoOT").OrdenesTrabajos();
@@ -39,7 +60,11 @@ $(document).ready(function () {
     $("#CmbNoOT").data("kendoMultiColumnComboBox").bind("change", function (e) {
         if (this.dataItem() !== undefined) {
             data = this.dataItem();
+            fn_getDimensionesTallas(data.IdRequerimiento);
+        } else {
+            fn_getDimensionesTallas(0);
         }
+      
     });
 
     //#region campos para generar simulacion
@@ -81,6 +106,22 @@ $(document).ready(function () {
         value: 1
     });
 
+    //#region campos para generar simulacion
+    $("#NumCantidadTallas").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+    $("#NumCantidadTallasRecal").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+
     let ValidNuevoSim = $("#FrmNuevoSim").kendoValidator({
         rules: {
             SOT: function (input) {
@@ -118,6 +159,12 @@ $(document).ready(function () {
                     return input.val() > 0;
                 }
                 return true;
+            },
+            Talla: function (input) {
+                if (input.is("[name='CmbTallas']")) {
+                    return $("#CmbTallas").data("kendoMultiSelect").value().length > 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -130,6 +177,23 @@ $(document).ready(function () {
         }
     }).data("kendoValidator");
 
+    let ValidNuevoSimRecal = $("#FrmRecalcularSim").kendoValidator({
+        rules: {
+            TallaRec: function (input) {
+                if (input.is("[name='CmbTallasRecalcular']")) {
+                    return $("#CmbTallasRecalcular").data("kendoMultiSelect").value().length > 0;
+                }
+                return true;
+            }
+           
+        },
+        messages: {
+            TallaRec: "requerido"
+        }
+    }).data("kendoValidator");
+
+    KdoNumerictextboxEnable($("#NumCantidadTallas"), false);
+    KdoNumerictextboxEnable($("#NumCantidadTallasRecal"), false);
     //#endregion 
 
 
@@ -229,7 +293,7 @@ $(document).ready(function () {
                 }
             },
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
-            { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
+            { field: "IdRequerimiento", title: "Código requerimiento", hidden: true, width: 100},
             { field: "IdOrdenTrabajo", title:"Cod. Orden Trabajo", hidden:true},
             {
                 field: "NoDocRequerimiento", title: "Requerimiento", width: 100,
@@ -445,9 +509,42 @@ $(document).ready(function () {
 
 
     $("#btnRecalcular").click(function (event) {
-        fn_RecalSimulacion();
+        fn_getSimulacionesTallas(fn_getIdSimulacion($("#gridSimulacion").data("kendoGrid")));
+        $("#MbtnSimuRecalcular").data("kendoDialog").open();
     });
 
+    $("#btnAceptarSimuRecal").click(function () {
+        if (ValidNuevoSimRecal.validate()) { fn_RecalSimulacion(); }
+    });
+
+    $("#CmbTallas").data("kendoMultiSelect").bind("deselect", function (e) {
+        
+        var MultiSelect = $("#CmbTallas").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallas"), count - 1);
+    });
+
+    $("#CmbTallas").data("kendoMultiSelect").bind("select", function (e) {
+        var MultiSelect = $("#CmbTallas").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallas"), count + 1);
+     
+    });
+
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").bind("deselect", function (e) {
+
+        var MultiSelect = $("#CmbTallasRecalcular").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallasRecal"), count - 1);
+    });
+
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").bind("select", function (e) {
+        var MultiSelect = $("#CmbTallasRecalcular").data('kendoMultiSelect');
+        var count = MultiSelect.value().length;
+        kdoNumericSetValue($("#NumCantidadTallasRecal"), count + 1);
+
+    });
+   
 });
 
 let fn_hbbtnSimu = function () {
@@ -488,24 +585,51 @@ let fn_SNCambiarEstados = function (valor) {
 };
 
 let fn_RecalSimulacion = function () {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
         url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + fn_getIdOrdenTrabajo($("#gridSimulacion").data("kendoGrid")) + "/" + fn_getIdSimulacion($("#gridSimulacion").data("kendoGrid")),
         type: "Post",
         dataType: "json",
-        data: {},
+        data: JSON.stringify({
+            Tallas: $("#CmbTallasRecalcular").data("kendoMultiSelect").value().toString()
+        }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             $("#gridSimulacion").data("kendoGrid").dataSource.read();
-            kendo.ui.progress($(document.body), false);
+            $("#MbtnSimuRecalcular").data("kendoDialog").close();
+            kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(data, "Post");
         },
         error: function (data) {
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-dialog"), false);
             ErrorMsg(data);
         }
     });
 };
+
+let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExtra, vcombos, vvelocidadMaquina, vusarTermofijado) {
+    kendo.ui.progress($(".k-dialog"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SimulacionesMuestras/GenerarSimulacionOT/" + vIdOrdenTrabajo.toString() + "/" + vpiezas.toString() + "/" + vmontajes.toString() + "/" + vpersonalExtra.toString() + "/" + vcombos.toString() + "/" + vvelocidadMaquina.toString() + "/" + vusarTermofijado.toString(),
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            Tallas: $("#CmbTallas").data("kendoMultiSelect").value().toString()
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            $("#MbtnSimu").data("kendoDialog").close();
+            kendo.ui.progress($(".k-dialog"), false);
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            kendo.ui.progress($(".k-dialog"), false);
+            ErrorMsg(data);
+        }
+    });
+};
+
 $.fn.extend({
     OrdenesTrabajos: function () {
         return this.each(function () {
@@ -525,21 +649,7 @@ $.fn.extend({
                             contentType: "application/json; charset=utf-8"
                         }
                     }
-                    //schema: {
-                    //    model: {
-                    //        fields: {
-                    //            NoDocumento: { type: "String" },
-                    //            NoDocReq: { type: "string" },
-                    //            Nombre: { type: "string" },
-                    //            NumeroDiseno: { type: "string" },
-                    //            EstiloDiseno: { type: "string" },
-                    //            Tecnicas: { type: "string" },
-                    //            Tallas: { type: "string" },
-                    //            FechaFinalMuestra: { type: "date" },
-                    //            FechaFinal: { type: "date" }
-                    //        }
-                    //    }
-                    //}
+                   
                 },
                 columns: [
                     //{ field: "IdOrdenTrabajo", title: "ID. Orden Trabajo", width: 200 },
@@ -558,27 +668,6 @@ $.fn.extend({
         });
     }
 });
-
-let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExtra, vcombos, vvelocidadMaquina, vusarTermofijado) {
-    kendo.ui.progress($(".k-dialog"), true);
-    $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/GenerarSimulacionOT/" + vIdOrdenTrabajo.toString() + "/" + vpiezas.toString() + "/" + vmontajes.toString() + "/" + vpersonalExtra.toString() + "/" + vcombos.toString() + "/" + vvelocidadMaquina.toString() + "/" + vusarTermofijado.toString(),
-        type: "Post",
-        dataType: "json",
-        data: JSON.stringify({ IdAnalisisDiseno: null }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            $("#gridSimulacion").data("kendoGrid").dataSource.read();
-            $("#MbtnSimu").data("kendoDialog").close();
-            kendo.ui.progress($(".k-dialog"), false);
-            RequestEndMsg(data, "Post");
-        },
-        error: function (data) {
-            kendo.ui.progress($(".k-dialog"), false);
-            ErrorMsg(data);
-        }
-    });
-};
 
 $.fn.extend({
     OrdenesTrabajosSimulacion: function () {
@@ -619,6 +708,13 @@ $.fn.extend({
 let fn_closeGS = function () {
     $("#CmbNoOT").data("kendoMultiColumnComboBox").text("");
     $("#CmbNoOT").data("kendoMultiColumnComboBox").trigger("change");
+    kdoNumericSetValue($("#NumCantidadTallas"), 0);
+};
+
+let fn_closeGSRecal = function () {
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").value("");
+    $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
+    kdoNumericSetValue($("#NumCantidadTallasRecal"), 0);
 };
 
 var fn_getIdOrdenTrabajo = function (g) {
@@ -631,9 +727,59 @@ var fn_getIdSimulacion = function (g) {
     return SelItem === null ? 0 : SelItem.IdSimulacion;
 
 };
-
 var fn_getEstado = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Estado;
 
 };
+var fn_getIdRequerimiento = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdRequerimiento;
+
+};
+
+
+let fn_getDimensionesTallas = function (vidreq) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "Dimensiones/GetbyRequerimiento/" + vidreq,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            var lista = "";
+            $.each(respuesta, function (index, elemento) {
+                lista = lista + elemento.IdCategoriaTalla + ",";
+            });
+
+            $("#CmbTallas").data("kendoMultiSelect").value(lista.split(","));
+            kdoNumericSetValue($("#NumCantidadTallas"), respuesta.length);
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+
+let fn_getSimulacionesTallas = function (vidSim) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SimulacionesMuestrasTallas/GetbyIdSimulacion/" + vidSim,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            var lista = "";
+            $.each(respuesta, function (index, elemento) {
+                lista = lista + elemento.IdCategoriaTalla + ",";
+            });
+
+            $("#CmbTallasRecalcular").data("kendoMultiSelect").value(lista.split(","));
+            kdoNumericSetValue($("#NumCantidadTallasRecal"), respuesta.length);
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+
