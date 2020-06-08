@@ -2,19 +2,20 @@
 let UrlClie = TSM_Web_APi + "Clientes";
 let UrlPro = TSM_Web_APi + "Programas";
 let VIdCliente = 0;
+let vIdPrograma = 0;
 $(document).ready(function () {
 
     // configurar clientes y servicios
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
     KdoCmbSetValue($("#CmbIdCliente"), "");
-
+    $("#CmbPrograma").GetCotizacionesMuestrasProgramas();
     //#region PRGRANMACION DEL GRID citizacion
     var DsRD = new kendo.data.DataSource({
         dataType: "json",
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "CotizacionesMuestras/GetIdCliente/" + VIdCliente; },
+                url: function () { return TSM_Web_APi + "CotizacionesMuestras/GetIdClienteIdPrograma/" + VIdCliente + "/" + vIdPrograma; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -62,6 +63,7 @@ $(document).ready(function () {
                             }
                         }
                     },
+                    NoDocumentoPrograma: { type: "string" },
                     NombrePro: { type: "string" },
                     IdCliente: {
                         type: "string"
@@ -78,25 +80,7 @@ $(document).ready(function () {
                     Estado: { type: "string", defaultValue: "EDICION" },
                     Contacto: { type: "string" },
                     CotizaPromedio: { type: "bool" },
-                    PrecioPreliminar: { type: "bool", defaultValue: 1 },
-                    FinalCotizacion: { type: "bool" },
-                    PrecioDesarrolloMuestra: { type: "string" },
-                    CondicionPagoDesarrollo: { type: "string" },
-                    PrecioVendedorCTL: { type: "string" },
-                    CondicionPagoCTL: { type: "string" },
-                    Transporte: { type: "string" },
-                    CondicionPagoProduccion: { type: "string" },
-                    NumeroSeteos: { type: "string" },
-                    CotizacionVigencia: { type: "string" },
-                    PorcentajeSegundos: { type: "string" },
-                    NombreEst: { type: "string" },
-                    PrecioSetupAdicional: { type: "string" },
-                    PrecioAdicionalColorTela: { type: "string" },
-                    TerminosPago: { type: "string" },
-                    ExcesoSetup: { type: "string" },
-                    PrecioSetup: { type: "string" },
-                    RepeticionesDesarrollo: { type: "string" },
-                    RepeticionesCTL: { type: "string" }
+                    NombreEst: { type: "string" }
                 }
             }
         }
@@ -127,25 +111,8 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NoCuenta");
             KdoHideCampoPopup(e.container, "Contacto");
             KdoHideCampoPopup(e.container, "Comentarios");
-            KdoHideCampoPopup(e.container, "CotizaPromedio");
-            KdoHideCampoPopup(e.container, "PrecioPreliminar");
-            KdoHideCampoPopup(e.container, "FinalCotizacion");
-            KdoHideCampoPopup(e.container, "PrecioDesarrolloMuestra");
-            KdoHideCampoPopup(e.container, "CondicionPagoDesarrollo");
-            KdoHideCampoPopup(e.container, "PrecioVendedorCTL");
-            KdoHideCampoPopup(e.container, "CondicionPagoCTL");
-            KdoHideCampoPopup(e.container, "Transporte");
-            KdoHideCampoPopup(e.container, "CondicionPagoProduccion");
-            KdoHideCampoPopup(e.container, "NumeroSeteos");
-            KdoHideCampoPopup(e.container, "CotizacionVigencia");
-            KdoHideCampoPopup(e.container, "PorcentajeSegundos");
-            KdoHideCampoPopup(e.container, "PrecioSetupAdicional");
-            KdoHideCampoPopup(e.container, "PrecioAdicionalColorTela");
-            KdoHideCampoPopup(e.container, "TerminosPago");
-            KdoHideCampoPopup(e.container, "ExcesoSetup");
-            KdoHideCampoPopup(e.container, "PrecioSetup");
-            KdoHideCampoPopup(e.container, "RepeticionesDesarrollo");
-            KdoHideCampoPopup(e.container, "RepeticionesCTL");
+            KdoHideCampoPopup(e.container, "NoDocumentoPrograma");
+
             if (!e.model.isNew()) {
                 KdoComboBoxEnable($('[name="IdPrograma"]'), false);
             }
@@ -154,43 +121,83 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdCotizacion", title: "Cod. Cotización", hidden: true },
-            { field: "NoDocumento", title: "No Cotización" },
+            {
+                field: "NoDocumento", title: "No Cotización",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "FechaCotizacion", title: "Fecha Cotización", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "FechaCreacion", title: "Fecha Creación", format: "{0: dd/MM/yyyy}" },
+            {
+                field: "FechaCreacion", title: "Fecha Creación", format: "{0: dd/MM/yyyy}",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "IdCliente", title: "Cliente", hidden: true },
-            { field: "NoCuenta", title: "NoCuenta" },
-            { field: "NombreCli", title: "Nombre del Cliente" },
+            {
+                field: "NoCuenta", title: "NoCuenta",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NombreCli", title: "Nombre del Cliente",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "CmbIdCliente", "requerido"], hidden: true },
-            { field: "NombrePro", title: "Nombre del Programa " },
+            {
+                field: "NoDocumentoPrograma", title: "No Programa",
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "NombrePro", title: "Nombre del Programa",
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
             { field: "FechaAprobacion", title: "Fecha Aprobación", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "IdUsuario", title: "Usuario", hidden: true },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "NombreEst", title: "Estado cotización" },
+            {
+                field: "Estado", title: "Estado", hidden: true,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "NombreEst", title: "Estado cotización",
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
             { field: "Contacto", title: "Contacto", hidden: true },
-            { field: "Comentarios", title: "Comentarios", hidden: true },
-            { field: "CotizaPromedio", title: "Cotiza Promedio", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "CotizaPromedio"); }, hidden: true },
-            { field: "PrecioPreliminar", title: "Precio Preliminar", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "PrecioPreliminar"); }, hidden: true },
-            { field: "FinalCotizacion", title: "Final Cotizacion", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "FinalCotizacion"); }, hidden: true },
-            { field: "PrecioDesarrolloMuestra", title: "Precio Desarrollo Muestra $", hidden: true },
-            { field: "CondicionPagoDesarrollo", title: "Condicion Pago Desarrollo", hidden: true },
-            { field: "PrecioVendedorCTL", title: "Precio Vendedor CTLs", hidden: true },
-            { field: "CondicionPagoCTL", title: "Condicion Pago CTL", hidden: true },
-            { field: "Transporte", title: "Transporte", hidden: true },
-            { field: "CondicionPagoProduccion", title: "Condicion Pago Produccion", hidden: true },
-            { field: "NumeroSeteos", title: "Numero Seteos", hidden: true },
-            { field: "CotizacionVigencia", title: "Cotizacion Vigencia", hidden: true },
-            { field: "PorcentajeSegundos", title: "Porcentaje Segundos", hidden: true },
-            { field: "PrecioSetupAdicional", title: "Numero Seteos", hidden: true },
-            { field: "PrecioAdicionalColorTela", title: "Numero Seteos", hidden: true },
-            { field: "TerminosPago", title: "Numero Seteos", hidden: true },
-            { field: "ExcesoSetup", title: "Numero Seteos", hidden: true },
-            { field: "PrecioSetup", title: "Numero Seteos", hidden: true },
-            { field: "RepeticionesDesarrollo", title: "Numero Seteos", hidden: true },
-            { field: "RepeticionesCTL", title: "Numero Seteos", hidden: true }
-        ]
+            { field: "Comentarios", title: "Comentarios", hidden: true }
+            ]
     });
 
-    SetGrid($("#gridCotizacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 500);
+    SetGrid($("#gridCotizacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 0,true,"row");
     SetGrid_CRUD_ToolbarTop($("#gridCotizacion").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridCotizacion").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridCotizacion").data("kendoGrid"), DsRD);
@@ -203,22 +210,37 @@ $(document).ready(function () {
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente.toString());
-            Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+            Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
         } else {
-            Fn_ConsultarCotiza(0);
-            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
+            Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
         }
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            Fn_ConsultarCotiza(0);
-            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
+            Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
         }
     });
 
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
+            Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente, this.dataItem(e.item.index()).IdPrograma);
+        } else {
+            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")),0);
+           
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
+        }
+
+    });
 
     $("#gridCotizacion").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridCotizacion"), selectedRows);
@@ -232,12 +254,46 @@ $(document).ready(function () {
     //#endregion
 });
 
-let Fn_ConsultarCotiza = function (IdCliente) {
+let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
     VIdCliente = Number(IdCliente);
+    vIdPrograma = Number(IdPrograma);
     //leer grid
     $("#gridCotizacion").data("kendoGrid").dataSource.data([]);
-    $("#gridCotizacion").data("kendoGrid").dataSource.read();
+    $("#gridCotizacion").data("kendoGrid").dataSource.read().then(function () {
+        $("#gridCotizacion").data("kendoGrid").dataSource.total() === 0 ? Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false) : Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+    });
 };
+
+$.fn.extend({
+    GetCotizacionesMuestrasProgramas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CotizacionesMuestras/GetCotizacionesMuestrasProgramas/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+
+                },
+                columns: [
+                    { field: "NoDocumento", title: "No Programa", width: 100 },
+                    { field: "Nombre", title: "Nombre del Programa", width: 200 },
+                    { field: "NombreCli", title: "Nombre del Cliente", width: 200 }
+                ]
+            });
+        });
+    }
+});
 var fPermisos = function (datos) {
     Permisos = datos;
 };
