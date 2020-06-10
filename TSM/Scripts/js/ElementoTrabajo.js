@@ -1146,11 +1146,11 @@ var fn_GetTipoEstaciones = function () {
     return result;
 };
 
-var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion) {
+var fn_EstacionesTintasFormulaDet = function (xIdSeteo, xIdestacion,xestado) {
     kendo.ui.progress($(document.body), true);
     let result = null;
     $.ajax({
-        url: TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
+        url: TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion + "/" + xestado,
         async: false,
         type: 'GET',
         success: function (datos) {
