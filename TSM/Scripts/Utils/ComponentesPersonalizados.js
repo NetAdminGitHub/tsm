@@ -29,7 +29,7 @@
             });
         });
     },
-    ControlSelecionMateriaPrima: function () {
+    ControlSelecionMateriaPrima: function (idQuimica) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Nombre",
@@ -44,7 +44,7 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima"; },
+                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/"  + idQuimica; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }

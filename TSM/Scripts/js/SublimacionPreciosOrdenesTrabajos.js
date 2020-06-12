@@ -70,7 +70,7 @@ $(document).ready(function () {
         let Datos;
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value("");
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").setDataSource(fn_ComboNoDocumento());
-        KdoCmbSetValue($("#cmbEstados"), "CONFIRMADO");
+        KdoCmbSetValue($("#cmbEstados"), "APROBADO");
         Datos = fn_GetNoDocumentosByCliente();
         $.each(Datos, function (index, elemento) {
             if (elemento.Completado===true) {
@@ -314,6 +314,10 @@ let fn_partesSublimado = function () {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            if (e.type === "create") {
+                $("#gridPartes").data("kendoGrid").dataSource.read();
+            }
+           
         },
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
