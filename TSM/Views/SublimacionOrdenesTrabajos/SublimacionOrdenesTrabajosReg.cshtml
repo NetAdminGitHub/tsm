@@ -29,7 +29,7 @@
 </style>
 
 @*Etiqueta vista parcial cambio de estado*@
-<div id="vCambioEstado"></div>
+@*<div id="vCambioEstado"></div>*@
 
 <!-- SECION FILTRO REQUERIMIENTO DESARROLLO-->
 <div class="form-row">
@@ -61,7 +61,7 @@
                                                         <div class="input-group">
                                                             <div style="width: 100%;">
                                                                 <button type="button" id="btnIrOrdeTrabajoSublimacion" name="btnIrOrdeTrabajoSublimacion">Ir a Ordenes de Trabajo</button>
-                                                                <button type="button" id="btnCambiarEstado" name="btnCambiarEstado">Enviar a Desarrollo Precios</button>
+                                                                <button type="button" id="btnCambiarEstado" name="btnCambiarEstado">Cambio de Estado</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -278,4 +278,27 @@
         </div>
     </div>
 </div>
-<div id="vCambioEstado"></div>
+
+
+<div id="ModalCambioEstado">
+    <form id="FrmModalCambioEstado" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="cmbEstados">Estados:</label>
+                <input id="cmbEstados" name="cmbEstados" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="TxtMotivo">Motivo:</label>
+                <textarea id="TxtMotivo" name="TxtMotivo" type="text" class="form-control" row="3"  style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea> 
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <button type="button" class=" k-primary" id="btnAceptarCambiar">Cambiar estado</button>
+            </div>
+        </div>
+    </form>
+</div>
+
