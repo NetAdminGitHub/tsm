@@ -15,10 +15,10 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnRefrescar"), false);
     KdoButton($("#btnConsular"), "search", "Consultar");
     KdoButton($("#btnGuardar"), "save", "Guardar Comentario");
-  
+    $("#TxtMotivo").autogrow({ vertical: true, horizontal: false, flickering: false });
 
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
-    Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un Cliente ....");
+    Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un estado ....");
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSublimacionConfirmadas();
 
     let dtfecha = new Date();
@@ -71,6 +71,7 @@ $(document).ready(function () {
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value("");
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").setDataSource(fn_ComboNoDocumento());
         KdoCmbSetValue($("#cmbEstados"), "APROBADO");
+        $("#TxtMotivo").val("");
         Datos = fn_GetNoDocumentosByCliente();
         $.each(Datos, function (index, elemento) {
             if (elemento.Completado===true) {
@@ -161,11 +162,19 @@ $(document).ready(function () {
                         return $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value().length > 0;
                     }
                     return true;
+                },
+                mtv: function (input) {
+                    if (input.is("[name='TxtMotivo']") && KdoCmbGetValue($("#cmbEstados")) !== "APROBADO") {
+                        return input.val().length > 0 && input.val().length <= 2000;
+                    }
+                    return true;
                 }
+
             },
             messages: {
                 vcmbEstados: "Requerido",
-                CmbMulti: "Requerido"    
+                CmbMulti: "Requerido",
+                mtv:"Requerido"
             }
         }
     ).data("kendoValidator");
@@ -180,9 +189,9 @@ $(document).ready(function () {
                 type: "Post",
                 dataType: "json",
                 data: JSON.stringify({
-                    Id: 0,
+                    IdRequerimiento: 0,
                     EstadoSiguiente: KdoCmbGetValue($("#cmbEstados")),
-                    Motivo: "SUBLIMACION CAMBIO ESTADO POR :" + KdoCmbGetText($("#cmbEstados")),
+                    Motivo: $("#TxtMotivo").val(),
                     StringIdRequerimiento: $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value().toString()
                 }),
                 contentType: 'application/json; charset=utf-8',
