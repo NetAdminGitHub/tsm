@@ -26,6 +26,7 @@
                         <div class="input-group">
                             <div style="width: 100%;">
                                 <button type="button" id="btnSimulacion" name="btnSimulacion">Nueva Simulación</button>
+                                <button type="button" id="btnRecalcular" name="btnRecalcular">Recalcular</button>
                             </div>
                         </div>
                     </div>
@@ -80,6 +81,16 @@
                 </div>
             </div>
             <div class="form-row">
+                <div class="form-group col-lg-9">
+                    <label for="CmbTallas">Tallas:</label>
+                    <input id="CmbTallas" name="CmbTallas" class="form-control" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="NumCantidadTallas">Cantidad de Tallas:</label>
+                    <input id="NumCantidadTallas" name="NumCantidadTallas" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group cl-lg-12">
                     <button type="button" class=" k-primary" id="btnAceptarSimu">Aceptar</button>
                 </div>
@@ -88,3 +99,4 @@
     </div>
 </div>
 
+@Html.Partial("_Recalcular")

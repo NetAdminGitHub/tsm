@@ -96,6 +96,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Nombre2");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IconoView");
             $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
@@ -117,7 +118,13 @@ $(document).ready(function () {
             { field: "VistaFormulario", title: "Vista/Formulario" },
             { field: "TablaEtapa", title: "Tabla Etapa" },
             { field: "Nombre2", title: "Estado" },
-            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "EtapasProcesos", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true }
+            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "EtapasProcesos", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            }
         ]
     });
 

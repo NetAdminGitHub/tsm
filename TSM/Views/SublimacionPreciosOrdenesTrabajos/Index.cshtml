@@ -43,7 +43,7 @@
                             <form id="ReqDes" method="POST" enctype="multipart/form-data" autocomplete="off">
                                 <div class="form-row">
                                     <div class="form-group col-md-6 col-lg-12">
-                                        <label id="lblComentarios" for="UbicacionVer">Comentarios:</label>
+                                        <label id="lblComentarios" for="TxtComentarios">Comentarios:</label>
                                         <textarea id="TxtComentarios" rows="2" name="TxtComentarios" type="text" class="form-control"></textarea>
                                     </div>
                                 </div>
@@ -95,7 +95,13 @@
                                         <div id="gridPartesHis"></div>
                                     </div>
                                 </div>
-                              
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-12">
+                                        <label id="lblComentariosHis" for="TxtComentariosHis">Comentarios:</label>
+                                        <textarea id="TxtComentariosHis" rows="2" name="TxtComentariosHis" type="text" class="form-control"></textarea>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -112,13 +118,19 @@
         <div class="form-row">
             <div class="form-group col-lg-12">
                 <label for="CmbMultiComboNoDocmuento">No Documentos OT:</label>
-                <input id="CmbMultiComboNoDocmuento" name="CmbMultiComboNoDocmuento"  type="text" class="form-control" />
+                <input id="CmbMultiComboNoDocmuento" name="CmbMultiComboNoDocmuento" type="text" class="form-control" />
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-lg-12">
                 <label for="cmbEstados">Estados:</label>
                 <input id="cmbEstados" name="cmbEstados" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="TxtMotivo">Motivo:</label>
+                <textarea id="TxtMotivo" name="TxtMotivo" type="text" class="form-control" row="3"  style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea>
             </div>
         </div>
         <div class="form-row">

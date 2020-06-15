@@ -106,12 +106,14 @@ let fn_FinOT = function () {
         success: function (datos) {
             RequestEndMsg(datos, "Post");
             $("#MbtnFinMue").data("kendoDialog").close();
+            KdoButtonEnable($("#btnFinOT"), false);
             //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
             fn_GetArteDis();
         },
         error: function (data) {
             ErrorMsg(data);
-            kendo.ui.progress($(".k-dialog"),false);
+            kendo.ui.progress($(".k-dialog"), false);
+            KdoButtonEnable($("#btnFinOT"), true);
         },
         complete: function () {
             kendo.ui.progress($(".k-dialog"), false);

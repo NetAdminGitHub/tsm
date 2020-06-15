@@ -201,8 +201,10 @@ var fn_VistaEstacionColor = function () {
     setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra); //obtener informacion de la entidad SeteoMarcos Formulaciones por seteo y estación
     estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
-    EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra);
-
+    EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "CREADA");
+    if (EstaTintasFormula.length === 0) {
+        EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "VIGENTE");
+    }
     if (setFor !== null) {
        
 
@@ -514,7 +516,7 @@ var fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
         success: function (data) {
             $("#TxtIdform").val(data[0].IdFormula);
             EstacionBra = fn_Estaciones(maq[0].IdSeteo, xIdBrazo);
-            EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo);
+            EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, xIdBrazo,"CREADA");
             fn_MostraTablaFormula(EstaTintasFormula,"TablaFormula");
             $("#NumMasaEntre").val(EstaTintasFormula[0].MasaEntregada);
             KdoButtonEnable($("#btnccc"), false);

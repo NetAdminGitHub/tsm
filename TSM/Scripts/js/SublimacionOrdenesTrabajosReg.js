@@ -48,7 +48,7 @@ $(document).ready(function () {
     KdoButton($("#btnIrOrdeTrabajoSublimacion"), "hyperlink-open-sm", "Ir a Ordenes de Trabajo");
     KdoButton($("#Guardar"), "save", "Guardar");
     KdoButton($("#Eliminar"), "delete", "Borrar");
-    KdoButton($("#btnCambiarEstado"), "gear","confirmar Registro");
+    KdoButton($("#btnCambiarEstado"), "gear","Cambiar estado");
     KdoButtonEnable($("#Eliminar"), fn_SNBorrar(false));
     KdoButtonEnable($("#btnCambiarEstado"), fn_SNProcesar(false));
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Diseños");
@@ -275,14 +275,95 @@ $(document).ready(function () {
         ConfirmacionMsg("Está seguro que desea eliminar el registro", function () { return fn_EliminarReqSublimacion(); });
     });
 
+    //#region Cambiar esatado
+    $("#TxtMotivo").autogrow({ vertical: true, horizontal: false, flickering: false });
+    KdoComboBoxbyData($("#cmbEstados"), "[]", "Nombre", "EstadoSiguiente", "Seleccione un estado");
+    KdoButton($("#btnAceptarCambiar"), "check", "Cambiar Estado");
+    $("#ModalCambioEstado").kendoDialog({
+        height: "auto",
+        width: "30%",
+        title: "Cambio de estado",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+    $("#btnCambiarEstado").click(function () {
+        KdoCmbSetValue($("#cmbEstados"), "");
+        $("#TxtMotivo").val("");
+        $("#cmbEstados").data("kendoComboBox").setDataSource(fn_EstadosSiguientesSublimado($("#Estado").val()));
+        $("#ModalCambioEstado").data("kendoDialog").open().toFront();
+    });
+
+    let ValidCambiar = $("#FrmModalCambioEstado").kendoValidator(
+        {
+            rules: {
+                vcmbEstados: function (input) {
+                    if (input.is("[name='cmbEstados']")) {
+                        return $("#cmbEstados").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
+                mtv: function (input) {
+                    if (input.is("[name='TxtMotivo']") && $("#Estado").val()!=="EDICION") {
+                        return input.val().length>0 && input.val().length <= 2000;
+                    }
+                    return true;
+                }
+              
+            },
+            messages: {
+                vcmbEstados: "Requerido",
+                mtv: "Requerido"
+            }
+        }
+    ).data("kendoValidator");
+
+    $("#btnAceptarCambiar").click(function () {
+        if (ValidCambiar.validate()) {
+
+            kendo.ui.progress($(".k-dialog"), true);
+            $.ajax({
+                url: TSM_Web_APi + "RequerimientoDesarrollos/RequerimientoDesarrollos_CambiarEstadoSublimacion",
+                type: "Post",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdRequerimiento: SublimacionIdReque,
+                    EstadoSiguiente: KdoCmbGetValue($("#cmbEstados")),
+                    Motivo: $("#TxtMotivo").val(),
+                    StringIdRequerimiento: ""
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    kendo.ui.progress($(".k-dialog"), false);
+                    fn_RequerimientoCambios();
+                    fn_getRD();
+                    $("#ModalCambioEstado").data("kendoDialog").close();
+                    RequestEndMsg(data, "Post");
+                },
+                error: function (data) {
+                    kendo.ui.progress($(".k-dialog"), false);
+                    ErrorMsg(data);
+                }
+            });
+        }
+        else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+        }
+    });
+    //#endregion
+
+
+
      // carga vista para el cambio de estado
     //var fn_CambioEstadoBtnClose = function () {
-    //    KdoCmbFocus($("#IdPrograma"));
+    //    fn_RequerimientoCambios();
+    //    fn_getRD();
 
     //};
-    // 1. configurar vista.
+     //1. configurar vista.
     //Fn_VistaCambioEstado($("#vCambioEstado"), fn_CambioEstadoBtnClose);
-    // 2. boton cambio de estado.
+     //2. boton cambio de estado.
     //$("#btnCambiarEstado").click(function () {
 
     //    var lstId = {
@@ -290,10 +371,10 @@ $(document).ready(function () {
     //    };
     //    Fn_VistaCambioEstadoVisualizar("RequerimientoDesarrollos", $("#Estado").val(), TSM_Web_APi + "RequerimientoDesarrollos/RequerimientoDesarrollos_CambiarEstadoSublimacion", "", lstId);
     //});
-    $("#btnCambiarEstado").click(function (event) {
-        event.preventDefault();
-        fn_CambiarEstadoSublimacion();
-    });
+    //$("#btnCambiarEstado").click(function (event) {
+    //    event.preventDefault();
+    //    fn_CambiarEstadoSublimacion();
+    //});
     $("#btnIrOrdeTrabajoSublimacion").click(function () {
         window.location.href = "/SublimacionOrdenesTrabajos";
     });
@@ -663,7 +744,7 @@ let fn_getRD = function () {
                 VarIDReq = elemento.IdRequerimiento;
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(elemento.Estado === "EDICION" ? true : false));
-                $("#btnCambiarEstado").data("kendoButton").enable(fn_SNProcesar(elemento.Estado === "EDICION" ? true : false));
+                $("#btnCambiarEstado").data("kendoButton").enable(fn_SNProcesar(elemento.Estado !== "APROBADO" ? true : false));
                 KdoButtonEnable($("#Eliminar"), fn_SNBorrar(elemento.Estado === "EDICION" ? true : false));
                 HabilitaFormObje(elemento.Estado === "EDICION" ? true : false);
                 KdoCheckBoxEnable($("#chkRegistroCompletado"), elemento.Estado === "EDICION" ? elemento.RegistroCompletado === true ? false : true : false);
@@ -971,7 +1052,7 @@ let fn_GuardarRequerimientoSublimacion = function (UrlRD) {
             KdoCmbFocus($("#IdPrograma"));
             KdoButtonEnable($("#Eliminar"), fn_SNBorrar(data[0].Estado === "EDICION" ? true : false));
             KdoCheckBoxEnable($("#chkRegistroCompletado"), data[0].Estado === "EDICION" ? $("#chkRegistroCompletado").is(':checked') === true ? false : true : false);
-            KdoButtonEnable($("#btnCambiarEstado"), fn_SNProcesar(data[0].Estado === "EDICION" ? true : false));
+            KdoButtonEnable($("#btnCambiarEstado"), fn_SNProcesar(data[0].Estado !== "APROBADO" ? true : false));
             window.history.pushState('', '', "/SublimacionOrdenesTrabajos/SublimacionRegistro/" + SublimacionIdCliente.toString() + "/" + data[0].IdRequerimiento.toString());
             $("#gCambios").data("kendoGrid").dataSource.read();
             data[0].Estado === "EDICION" ? Grid_HabilitaToolbar($("#gCambios"), Permisos.SNAgregar, false, false) : Grid_HabilitaToolbar($("#gCambios"), false, false, false);
@@ -1330,6 +1411,11 @@ let fn_RequerimientoCambios = function () {
                 }
             }
         },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+            if (e.type === "create") { $("#gCambios").data("kendoGrid").dataSource.read(); }
+
+        },
         schema: {
             model: {
                 id: "Fecha",
@@ -1372,5 +1458,27 @@ let fn_RequerimientoCambios = function () {
     SetGrid($("#gCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 250);
     SetGrid_CRUD_ToolbarTop($("#gCambios").data("kendoGrid"), Permisos.SNAgregar);
     Set_Grid_DataSource($("#gCambios").data("kendoGrid"), dsetOTEstados, 20);
+};
+
+var fn_EstadosSiguientesSublimado = function (estado) {
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "GET",
+                    async: false,
+                    url: TSM_Web_APi + "RequerimientoDesarrollos/GetEstadosSiguientesSublimacion/RequerimientoDesarrollos/" + estado.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
 };
 //#endregion Fin metods Generales

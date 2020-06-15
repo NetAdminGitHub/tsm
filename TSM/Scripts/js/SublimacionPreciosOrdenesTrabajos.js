@@ -15,10 +15,10 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnRefrescar"), false);
     KdoButton($("#btnConsular"), "search", "Consultar");
     KdoButton($("#btnGuardar"), "save", "Guardar Comentario");
-
+    $("#TxtMotivo").autogrow({ vertical: true, horizontal: false, flickering: false });
 
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
-    Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un Cliente ....");
+    Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un estado ....");
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSublimacionConfirmadas();
 
     let dtfecha = new Date();
@@ -27,6 +27,8 @@ $(document).ready(function () {
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#TxtComentarios").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#TxtComentariosHis").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#TxtComentariosHis").attr("readonly", true);
 
     $('#chkRangFechas').prop('checked', 1);
 
@@ -68,7 +70,8 @@ $(document).ready(function () {
         let Datos;
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value("");
         $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").setDataSource(fn_ComboNoDocumento());
-        KdoCmbSetValue($("#cmbEstados"), "CONFIRMADO");
+        KdoCmbSetValue($("#cmbEstados"), "APROBADO");
+        $("#TxtMotivo").val("");
         Datos = fn_GetNoDocumentosByCliente();
         $.each(Datos, function (index, elemento) {
             if (elemento.Completado===true) {
@@ -121,7 +124,7 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnGuardar"), false);
             $("#TxtComentarios").attr("disabled", true);
             $("#TxtComentarios").val("");
-
+            $("#TxtComentariosHis").val("");
         }
     });
 
@@ -141,6 +144,7 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnGuardar"), false);
             $("#TxtComentarios").attr("disabled", true);
             $("#TxtComentarios").val("");
+            $("#TxtComentariosHis").val("");
         }
     });
 
@@ -158,11 +162,19 @@ $(document).ready(function () {
                         return $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value().length > 0;
                     }
                     return true;
+                },
+                mtv: function (input) {
+                    if (input.is("[name='TxtMotivo']") && KdoCmbGetValue($("#cmbEstados")) !== "APROBADO") {
+                        return input.val().length > 0 && input.val().length <= 2000;
+                    }
+                    return true;
                 }
+
             },
             messages: {
                 vcmbEstados: "Requerido",
-                CmbMulti: "Requerido"    
+                CmbMulti: "Requerido",
+                mtv:"Requerido"
             }
         }
     ).data("kendoValidator");
@@ -177,9 +189,9 @@ $(document).ready(function () {
                 type: "Post",
                 dataType: "json",
                 data: JSON.stringify({
-                    Id: 0,
+                    IdRequerimiento: 0,
                     EstadoSiguiente: KdoCmbGetValue($("#cmbEstados")),
-                    Motivo: "SUBLIMACION CAMBIO ESTADO POR :" + KdoCmbGetText($("#cmbEstados")),
+                    Motivo: $("#TxtMotivo").val(),
                     StringIdRequerimiento: $("#CmbMultiComboNoDocmuento").data("kendoMultiSelect").value().toString()
                 }),
                 contentType: 'application/json; charset=utf-8',
@@ -311,6 +323,10 @@ let fn_partesSublimado = function () {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            if (e.type === "create") {
+                $("#gridPartes").data("kendoGrid").dataSource.read();
+            }
+           
         },
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
@@ -620,7 +636,8 @@ let fn_partesHisSublimado = function () {
                     NombreUnidad: { type: "string" },
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    InstruccionesEspeciales: { type: "string" }
                 }
             }
         },
@@ -648,7 +665,7 @@ let fn_partesHisSublimado = function () {
             KdoHideCampoPopup(e.container, "NombreProgra");
             KdoHideCampoPopup(e.container, "NombreDiseño");
             KdoHideCampoPopup(e.container, "NombrePrenda");
-            KdoHideCampoPopup(e.container, "EstiloDiseno")
+            KdoHideCampoPopup(e.container, "EstiloDiseno");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -730,7 +747,8 @@ let fn_partesHisSublimado = function () {
                 }
             },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "InstruccionesEspeciales", title:"Comentarios",menu:false,hidden:true}
         ]
     });
 
@@ -745,8 +763,9 @@ let fn_partesHisSublimado = function () {
         Grid_SetSelectRow($("#gridPartesHis"), selectedRows1);
     });
 
-    $("#gridPartes").data("kendoGrid").bind("change", function (e) {
+    $("#gridPartesHis").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridPartesHis"), selectedRows1);
+        Fn_getRowComentarioHis($("#gridPartesHis").data("kendoGrid"));
     });
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#gridPartesHis"), $(window).height() - "370");
@@ -837,6 +856,11 @@ let Fn_getRowPrecios = function (g) {
     $("#TxtComentarios").val(elemento.InstruccionesEspeciales);
     xIdReqDes = elemento.IdRequerimiento;
 
+};
+
+let Fn_getRowComentarioHis = function (g) {
+    var elemento = g.dataItem(g.select());
+    $("#TxtComentariosHis").val(elemento.InstruccionesEspeciales);
 };
 
 let fn_ActualizarReqSublimacion = function () {
