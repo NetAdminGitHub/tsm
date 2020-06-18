@@ -776,7 +776,13 @@ var fn_gridAjustePrima = function (gd) {
             {
                 field: "IdArticulo", title: "Código Articulo",
                 editor: function (container, options) {
-                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrima(xIdQuimica);
+                    if (CumpleOEKOTEX === false) {
+                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrima(xIdQuimica);
+                    }
+                    else {
+                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrimaOEKOTEX(xIdQuimica);
+                    }
+                   
                 }
             },
             { field: "Nombre", title: "Nombre" },

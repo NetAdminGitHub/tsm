@@ -44,7 +44,7 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/"  + idQuimica; },
+                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/0"; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -53,6 +53,37 @@
                     { field: "IdArticulo", title: "Código. Articulo", width: 150 },
                     { field: "Nombre", title: "Nombre", width: 300 },
                     { field: "Alias", title: "Alias", width: 300 }
+                ]
+            });
+        });
+    },
+    ControlSelecionMateriaPrimaOEKOTEX: function (idQuimica) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdArticulo",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {  return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/1"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdArticulo", title: "Código. Articulo", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "Alias", title: "Alias", width: 300 },
+                    { field: "ClaseOEKOTEX", title: "Clase OEKOTEX", width: 150 },
+                    { field: "CumpleOEKOTEX", title: "Cumple OEKOTEX", width: 150 },
+                    { field: "EstatusOEKOTEX", title: "Estatus OEKOTEX", width: 150 }
                 ]
             });
         });
