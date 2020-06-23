@@ -97,6 +97,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
+                placeholder: "Selección de No Documento",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -111,6 +112,35 @@
                 columns: [
                     { field: "NoOT", title: "No Orden Trabajo", width: 150 },
                     { field: "NombrePrenda", title: "Nombre Prenda", width: 300 }
+                ]
+            });
+        });
+    },
+    ControlSelecionPrograma: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder:"Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "Programas/GetProgramasFiltro"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 },
+                    { field: "NombreTemporada", title: "Temporada", width: 300 }
                 ]
             });
         });

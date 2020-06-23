@@ -1212,8 +1212,9 @@ var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
  * 
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
  * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno) {
+var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, fnClose) {
     kendo.ui.progress($(document.body), true);
     if ($("#" + divCDInf + "").children().length === 0) {
         $.ajax({
@@ -1223,13 +1224,13 @@ var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno) {
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.body), false);
-                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno);
+                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno, fnClose);
 
             }
         });
     } else {
         kendo.ui.progress($(document.body), false);
-        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno);
+        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno, fnClose);
     }
 };
 
@@ -1238,8 +1239,9 @@ var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno) {
  * @param {content} data el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
  * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno) {
+var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno, fnClose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -1251,12 +1253,12 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
         script.type = "text/javascript";
         script.src = "/Scripts/js/CatalogoDisenoInf.js";
         script.onload = function () {
-            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno);
+            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, fnClose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno);
+        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno, fnClose);
     }
 };
 /**
@@ -1265,8 +1267,9 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
  * @param {content} data  el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf  Id del div que contendra la vista de busqueda de tintas
  * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno) {
+var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,fnClose) {
     let onShow = function () {
         if (cargarJs === true) {
             fn_InfDetalle(divCDInf, idCatalogoDiseno);
@@ -1275,7 +1278,11 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno) {
         }      
     };
     let onClose = function () {
-        //$("#" + divCcf + "").children().remove();
+        if (fnClose === undefined || fnClose === "") {
+            return true;
+        } else {
+            return fnClose();
+        }
     };
 
     $("#" + divCDInf + "").kendoDialog({
