@@ -2,6 +2,7 @@
 var xidClie = 0;
 var xNoReferenciaCT = "";
 var xNombreArchivoCT = "";
+var xIdPrograma = 0;
 $(document).ready(function () {
     fn_getArtesAdjuntos();
     //$('[href = "#panel31"]').click( function() {
@@ -10,13 +11,15 @@ $(document).ready(function () {
 });
 
 var fn_getArtesAdjuntos = function () {
-    Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi+ "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
+    Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
+    $("#CmbPrograma").ControlSelecionPrograma();
+    KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
     let dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function () {
                     kendo.ui.progress($(document.body), true);
-                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString();
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString() + "/" + xIdPrograma.toString();
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -52,19 +55,47 @@ var fn_getArtesAdjuntos = function () {
     $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
             xidClie = this.dataItem(e.item.index()).IdCliente;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
         }
         else {
-            vIdclien = 0;
+            xidClie = 0;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
         }
     });
+
     $("#CmbCliente").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
             xidClie = 0;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
         }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            KdoCmbSetValue($("#CmbCliente"), this.dataItem(e.item.index()).IdCliente);
+            xIdPrograma = this.dataItem(e.item.index()).IdPrograma;
+            xidClie = this.dataItem(e.item.index()).IdCliente;
+            dataSource.read();
+        } else {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = 0;
+            dataSource.read();
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = 0;
+            dataSource.read();
+        }
+
     });
 };
 
@@ -95,10 +126,12 @@ var fn_DibujarCatalogo = function (data) {
 
 var fn_CargarModal = function (e) {
   
-    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"));
+    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"), function () { fn_CloseInf();});
 };
 
-
+var fn_CloseInf = function () {
+    $("#tab_inf").data("kendoTabStrip").select(0);
+};
 
 fPermisos = function (datos) {
     Permisos = datos;
