@@ -41,6 +41,7 @@ var xTxtLetra;
 var xEstado;
 var xEstadoOT;
 var AccesMaquinaArt;
+var CumpleOEKOTEX;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -224,6 +225,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     xvNodocReq = datos.NodocReq;
     xEstadoOT = datos.EstadoOT;
+    CumpleOEKOTEX = datos.StandarOEKOTEX;
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
