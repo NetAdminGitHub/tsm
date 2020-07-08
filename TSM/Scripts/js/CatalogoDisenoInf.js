@@ -192,19 +192,12 @@ let fn_gridOT = function () {
             KdoHideCampoPopup(e.container, "FechaInicio");
             KdoHideCampoPopup(e.container, "FechaFinal");
             if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
-                $('[name="MUAPROPROD"]').data("kendoSwitch").enable(false);
+                KdoCheckBoxEnable($('[name="MUAPROPROD"]'), false);
             } else {
-                $('[name="MUAPROPROD"]').data("kendoSwitch").enable(e.model.SNFichaProd === true ? false : true);
+                KdoCheckBoxEnable($('[name="MUAPROPROD"]'), e.model.SNFichaProd === true ? false : true);
             }
-            $('[name="MUFIAPRO"]').data("kendoSwitch").enable(e.model.SNOTMuestraFin === true ? true : false);
-            $('[name="MUCOTIZADA"]').data("kendoSwitch").enable(e.model.SNMuCotizada === true ? true : false);
-        },
-        dataBound: function () {
-            this.tbody.find(".AprobacionesClass").kendoSwitch();
-        },
-        cancel: function (e) {
-            
-            $("#gConOT").data("kendoGrid").dataSource.read();
+            KdoCheckBoxEnable($('[name="MUFIAPRO"]'), e.model.SNOTMuestraFin === true ? true : false);
+            KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), e.model.SNMuCotizada === true ? true : false);
         },
         columns: [
             { field: "NombreDisOT", title: "Nombre del Diseño OT", hidden: true },
@@ -216,15 +209,14 @@ let fn_gridOT = function () {
             { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
             { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden:true },
             { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}", width: "120px",hidden:true },
-            { field: "MUFIAPRO", title: "Muestra Fisica Aprobada", template: "<input class='AprobacionesClass' #if (MUFIAPRO) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUCOTIZADA", title: "Muestra Cotizada", template: "<input  class='AprobacionesClass' #if (MUCOTIZADA) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUPREAPRO", title: "Muestra con Precio Aprob", template: "<input  class='AprobacionesClass' #if (MUPREAPRO) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUCANTAPRO", title: "Cantidad Aprobada", template: "<input  class='AprobacionesClass' #if (MUCANTAPRO) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUCOBAPRO", title: "Cobro Aprobado", template: "<input  class='AprobacionesClass' #if (MUCOBAPRO) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUENVIOAPRO", title: "Nota de Envio Aprobada", template: "<input  class='AprobacionesClass' #if (MUENVIOAPRO) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px"},
-            { field: "REQMP", title: "Requisicion de Materia Prima", template: "<input  class='AprobacionesClass' #if (REQMP) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-            { field: "MUAPROPROD", title: "Muestra Aprob Producción", template: "<input  class='AprobacionesClass' #if (MUAPROPROD) { # checked='checked' # } # type='checkbox' disabled />", editor: customEditor, width: "120px" },
-
+            { field: "MUFIAPRO", title: "Muestra Fisica Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUFIAPRO"); }  },
+            { field: "MUCOTIZADA", title: "Muestra Cotizada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOTIZADA"); }  },
+            { field: "MUPREAPRO", title: "Muestra con Precio Aprob", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUPREAPRO"); }  },
+            { field: "MUCANTAPRO", title: "Cantidad Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCANTAPRO"); } },
+            { field: "MUCOBAPRO", title: "Cobro Aprobado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOBAPRO"); }  },
+            { field: "MUENVIOAPRO", title: "Nota de Envio Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUENVIOAPRO"); } },
+            { field: "REQMP", title: "Requisicion de Materia Prima", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "REQMP"); }  },
+            { field: "MUAPROPROD", title: "Muestra Aprob Producción", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUAPROPROD"); } },
             {
                 command: {
                     name: "Generar OT",
@@ -246,19 +238,12 @@ let fn_gridOT = function () {
                 }
             }
         ]
-
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gConOT
     SetGrid($("#gConOT").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 400);
     SetGrid_CRUD_Command($("#gConOT").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gConOT").data("kendoGrid"), dsOT,20);
-
-    function customEditor(container, options) {
-        $('<input type="checkbox" name="' + options.field + '"/>')
-            .appendTo(container)
-            .kendoSwitch();
-    }
 
     var selectedRowsServ = [];
     $("#gConOT").data("kendoGrid").bind("dataBound", function () { //foco en la fila
