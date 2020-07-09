@@ -64,19 +64,19 @@ var fn_TintasFCargarConfiguracion = function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdSeteo", title: "IdSeteo", hidden:true },
-            { field: "IdSeda", title: "Id Seda", minResizableWidth: 20 ,hidden:true},
-            { field:"DesSeda", title: "Seda" , minResizableWidth:40},
-            { field: "IdTipoEmulsion", title: "Id Tipo Emulsión", minResizableWidth: 20, hidden:true },
-            { field: "DesTipoEmulsion",title:"Tipo de Emulsión",minResizableWidth:60},
-            { field: "CantidadEstaciones", title: "Cant. de estaciones", minResizableWidth: 20 },
-            { field: "Estaciones", title: "Estaciones ", minResizableWidth: 60 }
+            { field: "IdSeda", title: "Id Seda", minResizableWidth: 120 ,hidden:true},
+            { field:"DesSeda", title: "Seda" , minResizableWidth:120},
+            { field: "IdTipoEmulsion", title: "Id Tipo Emulsión", minResizableWidth: 120, hidden:true },
+            { field: "DesTipoEmulsion",title:"Tipo de Emulsión",minResizableWidth:120},
+            { field: "CantidadEstaciones", title: "Cant. de estaciones", minResizableWidth: 120 },
+            { field: "Estaciones", title: "Estaciones ", minResizableWidth: 120 }
             //{ field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
             
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridresumen").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid($("#gridresumen").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si,300);
     SetGrid_CRUD_ToolbarTop($("#gridresumen").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridresumen").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridresumen").data("kendoGrid"), dataSource);
@@ -85,13 +85,11 @@ var fn_TintasFCargarConfiguracion = function () {
         Grid_SelectRow($("#gridresumen"), selectedRows);
     });
 
-    $(window).on("resize", function () {
-        Fn_Grid_Resize($("#gridresumen"), $(window).height() - "371");
-    });
+    //$(window).on("resize", function () {
+    //    Fn_Grid_Resize($("#gridresumen"), $(window).height() - "100");
+    //});
 
-    Fn_Grid_Resize($("#gridresumen"), $(window).height() - "371");
-
-    
+    //Fn_Grid_Resize($("#gridresumen"), $(window).height() - "100");
 
 };
 

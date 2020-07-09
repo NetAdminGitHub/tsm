@@ -588,8 +588,6 @@ var fn_GuardarEstacionDisArea = function (xIdBrazo) {
         data: JSON.stringify({
             IdEstacion: xIdBrazo,
             IdSeteo: maq[0].IdSeteo,
-            IdUsuarioMod: getUser(),
-            FechaMod: xFecha,
             IdTipoEstacion: "MARCO",
             IdAccesorio: null
         }),

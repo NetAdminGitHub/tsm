@@ -2,6 +2,8 @@
 var FilColorTela = 0;
 var FilComposicionTela = 0;
 var PeticionFormula = false;
+var FilCumpleOEKOTEX = false;
+var TxtFilNombreColor = "";
 var fn_DRLoadConsultaHis = function (divCcf) {
   
     KdoButton($("#btnCCFH"), "search", "buscar..");
@@ -59,7 +61,9 @@ var fn_DRLoadConsultaHis = function (divCcf) {
         }       
     });
 
-    $("#" + divCcf + "").trigger("SetValorBusqueda", $("#TxtNombreColor"));
+    $("#" + divCcf + "").trigger("SetValorBusqueda");
+    $("#TxtNombreColor").val(TxtFilNombreColor);
+    $("#lblOEKOTex").text(FilCumpleOEKOTEX===true? "*Fomulas históricas cumplen con OEKOTEX":"" );
 };
 var fn_ConsultaHis = function (divCcf) {
     PeticionFormula = false;
@@ -68,10 +72,12 @@ var fn_ConsultaHis = function (divCcf) {
     $("#TxtColorTela").val("");
     $("#TxtCompoTela").val("");
     $("#TxtConstruTela").val("");
+    $("#TxtCumple").val("");
     $("#TxtNombreColor").focus().select();
     $("#gCHFor").data("kendoGrid").dataSource.read();
-    $("#" + divCcf + "").trigger("SetValorBusqueda", $("#TxtNombreColor"));
-
+    $("#" + divCcf + "").trigger("SetValorBusqueda");
+    $("#TxtNombreColor").val(TxtFilNombreColor);
+    $("#lblOEKOTex").text(FilCumpleOEKOTEX === true ? "*Fomulas históricas cumplen con OEKOTEX" : "");
 };
 let fn_gCHForBusqueda = function (divCcf) {
     var dataSource = new kendo.data.DataSource({
@@ -88,7 +94,8 @@ let fn_gCHForBusqueda = function (divCcf) {
                             NombreColor: FilNombreColor.toString(),
                             ColorTela: FilColorTela.toString(),
                             ComposicionTela: FilComposicionTela.toString(),
-                            ConstruccionTela: FilConstruccionTela.toString()
+                            ConstruccionTela: FilConstruccionTela.toString(),
+                            CumpleOEKOTEX: FilCumpleOEKOTEX.toString()
                         }),
                         success: function (result) {
                             options.success(result);
@@ -144,7 +151,7 @@ let fn_gCHForBusqueda = function (divCcf) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gCHFor").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 250);
+    SetGrid($("#gCHFor").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 230);
     Set_Grid_DataSource($("#gCHFor").data("kendoGrid"), dataSource);
 
     var selectedRowsServ = [];
