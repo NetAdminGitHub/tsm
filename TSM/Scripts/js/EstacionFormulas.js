@@ -1,4 +1,4 @@
-﻿
+﻿let QuimicaFormula = 0;
 var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
@@ -91,8 +91,6 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         decimals: 2,
         value: 0
     });
-
-    $("#TxtNombreQuiForm").val(NombreQui);
 
     xidEstacion = 0;
     fn_gridFormulas($("#gridFormulas"));
@@ -246,6 +244,9 @@ var fn_VistaEstacionFormulas = function () {
         $("#CmbTipoTinta_MaRev").val(setFor.NomIdTipoTinta === undefined ? "" : setFor.NomIdTipoTinta);
         $("#CmbSistemaPigmento_MaRev").val(setFor.NombreSistPigmento === undefined ? "" : setFor.NombreSistPigmento);
         $("#CmbBasePigmento_MaRev").val(setFor.NombreBasePig === undefined ? "" : setFor.NombreBasePig);
+        QuimicaFormula = setFor.IdQuimica;
+        $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
+
     }
     else {
         $("#TxtFormulaSugTint").val("");
@@ -777,10 +778,10 @@ var fn_gridAjustePrima = function (gd) {
                 field: "IdArticulo", title: "Código Articulo",
                 editor: function (container, options) {
                     if (CumpleOEKOTEX === false) {
-                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrima(xIdQuimica);
+                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrima(QuimicaFormula);
                     }
                     else {
-                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrimaOEKOTEX(xIdQuimica);
+                        $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionMateriaPrimaOEKOTEX(QuimicaFormula);
                     }
                    
                 }

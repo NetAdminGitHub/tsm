@@ -465,8 +465,7 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
 var fn_GuardarEstacion = function (xIdBrazo) {
     kendo.ui.progress($("#MEstacionColor"), true);
     var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
-
+   
     if (EstacionBra === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstaciones/";
@@ -481,8 +480,6 @@ var fn_GuardarEstacion = function (xIdBrazo) {
         data: JSON.stringify({
             IdEstacion: xIdBrazo,
             IdSeteo: maq[0].IdSeteo,
-            IdUsuarioMod: getUser(),
-            FechaMod: xFecha,
             IdTipoEstacion: "MARCO",
             IdAccesorio:null
         }),
