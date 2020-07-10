@@ -190,7 +190,13 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Abreviatura1");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
-            Grid_Focus(e, "IdUnidadSalida");
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdUnidadSalida");
+                Grid_Focus(e, "Factor");
+            } else {
+                Grid_Focus(e, "IdUnidadSalida");
+            }
+         
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -252,7 +258,7 @@ let Fn_getIdUnidad = function (g) {
 let fn_ConsultarFactores= function () {
     xidUnidad = Fn_getIdUnidad($("#grid").data("kendoGrid"));
     $("#gridFacConver").data("kendoGrid").dataSource.read();
-    $("#grid").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridFacConver"), Permisos.SNAgregar, false, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridFacConver"), false, false, false);
+    $("#grid").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#gridFacConver"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#gridFacConver"), false, false, false);
 };
 fPermisos = function (datos) {
     Permisos = datos;
