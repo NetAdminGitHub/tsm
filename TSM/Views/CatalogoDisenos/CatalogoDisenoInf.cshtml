@@ -1,7 +1,7 @@
-﻿<style >
-      .k-switch {
-            float: right;
-        }
+﻿<style>
+    .k-switch {
+        float: right;
+    }
 </style>
 
 <div class="form-row">
@@ -40,12 +40,18 @@
                         <input type="text" id="InfTallas" class="form-control">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfFechaInicio">Fecha Inicio de OT</label>
+                        <input type="text" id="InfFechaInicio" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="InfFechaFinal">Fecha Final de OT</label>
+                        <input type="text" id="InfFechaFinal" class="form-control">
+                    </div>
+                </div>
             </fieldset>
-            <div class="form-row">
-                <div id="gConOT"></div>
-            </div>
-
-        </div>  
+        </div>
     </div>
     <div class="form-control col-lg-5">
 
@@ -53,9 +59,6 @@
             <ul>
                 <li class="k-state-active">
                     Diseño
-                </li>
-                <li>
-                    Manejo de Aprobación
                 </li>
                 <li>
                     Generar Ficha de Producción
@@ -67,7 +70,7 @@
                 <div class="view rounded-right">
                     <div id="CDisenos">
                         <div style="margin:auto; width:100%">
-                            <div id="scrollView" style="width: 1022px; height: 600px; max-width: 100%;">
+                            <div id="scrollView" style="width: 1022px; height: 350px; max-width: 100%;">
                                 @*Espacio para las imagenes*@
                             </div>
                         </div>
@@ -75,75 +78,19 @@
                 </div>
             </div>
             <div id="tab_inf_2">
-                <div class="form-group col-lg-12">
-                    <div class="border p-md-3 p-lg-3 rounded">
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchMuestraFisicaAprobada">Muestra Fisica Aprobada:</label>
-                                <input type="checkbox" id="swchMuestraFisicaAprobada" name="swchMuestraFisicaAprobada" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchMuestraCotizada">Muestra Cotizada:</label>
-                                <input type="checkbox" id="swchMuestraCotizada" name="swchMuestraCotizada" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchMuestraPrecioAprobado">Muestra Precio Aprobado:</label>
-                                <input type="checkbox" id="swchMuestraPrecioAprobado" name="swchMuestraPrecioAprobado" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchCantidadAprobada">Cantidad Aprobada:</label>
-                                <input type="checkbox" id="swchCantidadAprobada" name="swchCantidadAprobada" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchMuestraAprobadaProduccion">Muestra para Producción :</label>
-                                <input type="checkbox" id="swchMuestraAprobadaProduccion" name="swchMuestraAprobadaProduccion" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchDesarrolloCobroAprobado">Cobro Aprobado:</label>
-                                <input type="checkbox" id="swchDesarrolloCobroAprobado" name="swchDesarrolloCobroAprobado" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                        <div class="form-row">
-                            <div form-group col-lg-2></div>
-                            <div class="form-group col-lg-10">
-                                <label for="swchNotaEnvioAprobado">Nota de Envio Aprobada :</label>
-                                <input type="checkbox" id="swchNotaEnvioAprobado" name="swchNotaEnvioAprobado" />
-                            </div>
-                            <div form-group col-lg-2></div>
-                        </div>
-                    </div>
-                   
-                </div>
-            </div>
-            <div id="tab_inf_3">
                 <div class="form-row">
-                    <div id="gridCotizacionDetalle"></div>
+                    <div class="form-group col-lg-12">
+                        <div id="gridCotizacionDetalle" class="form-control"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        
+
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="gConOT" class="form-control"></div>
     </div>
 </div>
 

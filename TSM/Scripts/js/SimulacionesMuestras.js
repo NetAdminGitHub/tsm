@@ -640,6 +640,7 @@ $.fn.extend({
                 autoBind: false,
                 //minLength: 3,
                 height: 400,
+                placeholder: "Selección de Ordenes de trabajo",
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
