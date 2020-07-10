@@ -82,7 +82,7 @@ let fn_MostrarEstMarcos = function () {
 
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "TintasFormulaciones/GetTitntasFormulacionesEstaciones/" + xIdSeteo; },
+                url: function () { return TSM_Web_APi + "TintasFormulaciones/GetTintasFormulacionesEstaciones/" + xIdSeteo; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -153,7 +153,7 @@ let fn_MostraFormulaCab = function () {
 
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "TintasFormulaciones/GetTitntasFormulacionesEstaciones/" + xIdSeteo; },
+                url: function () { return TSM_Web_APi + "TintasFormulaciones/GetTintasFormulacionesEstaciones/" + xIdSeteo; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
