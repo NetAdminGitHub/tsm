@@ -1303,3 +1303,97 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,fnC
 };
 //#endregion
 
+//#region Autorizacion de retenciones
+/**
+ * 
+ * @param {HtmlElementId} divAutRet Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_AutorizarRetenciones = function (divAutRet, retIdot, retIdEtapa, retItem) {
+    kendo.ui.progress($(document.body), true);
+    if ($("#" + divAutRet + "").children().length === 0) {
+        $.ajax({
+            url: "/Retenciones/AutorizarRetenciones",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalAutorizacion(resultado, divAutRet, retIdot, retIdEtapa, retItem);
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    } else {
+        fn_CargarVistaModalAutorizacion("", divAutRet, retIdot, retIdEtapa, retItem);
+        kendo.ui.progress($(document.body), false);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de la Autorizacion de retenciones
+ * @param {HtmlElementId} divAutRet Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_CargarVistaModalAutorizacion = function (data, divAutRet, retIdot, retIdEtapa, retItem) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("AutorizarRetenciones.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/AutorizarRetenciones.js";
+        script.onload = function () {
+            fn_ShowModalAutRet(true, data, divAutRet, retIdot, retIdEtapa, retItem);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalAutRet(false, data, divAutRet, retIdot, retIdEtapa, retItem);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la Autorizacion de retenciones
+ * @param {HtmlElementId} divAutRet  Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtapa, retItem) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializaAutorizacion(retIdot, retIdEtapa, retItem);
+        } else {
+            fn_CargarVistaAutorizacion(retIdot, retIdEtapa, retItem);
+        }
+    };
+    let onClose = function () {
+        //$("#" + divAutRet + "").children().remove();
+    };
+    $("#" + divAutRet + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Autorizar retenciones",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divAutRet + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
+
