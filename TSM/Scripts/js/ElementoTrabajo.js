@@ -106,9 +106,10 @@ $(document).ready(function () {
 
     });
 
-    KdoButton($("#btnCambiarAsignado"), "gear");
+    KdoButton($("#btnCambiarAsignado"), "user");
     KdoButton($("#btnAsignarUsuario"), "save");
     KdoButton($("#btnCambiarEtapa"), "gear");
+    KdoButton($("#btnAutorizarRetenciones"), "warning");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
 
     $("#swchSolTelaSusti").kendoSwitch();
@@ -438,6 +439,11 @@ $("#btnCambiarAsignado").click(function (e) {
     $("#vAsignarUsuario").data("kendoDialog").open();
 });
 
+
+$("#btnAutorizarRetenciones").bind("click", function () {
+    //AutRet: es el nombre del div en la vista elementoTrabajo
+    fn_AutorizarRetenciones("AutRet", idOrdenTrabajo ,idEtapaProceso ,$("#txtItem").val());
+});
 var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
     {
         rules: {
