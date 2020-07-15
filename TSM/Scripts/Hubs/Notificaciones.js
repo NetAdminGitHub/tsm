@@ -15,10 +15,14 @@
         fn_getNotificaciones();
     };
 
+    notif.client.actualizarVista = function (data) {
+        alert(data);
+    };
+
     $.connection.hub.url = TSM_Web_APi.replace("api/", "") + "signalr/hub";
     $.connection.hub.qs = { 'u': Cookies.get("user") };
     $.connection.hub.start().done(function () {
         console.log("Conectado a SignalR: " + $.connection.hub.id);
     })
-    .fail(function () { $("#kendoNotificaciones").data("kendoNotification").show('Could not Connect!', 'error'); });
+    .fail(function () { $("#kendoNotificaciones").data("kendoNotification").show('Imposible conectar a WebSocket!', 'error'); });
 });
