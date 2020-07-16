@@ -6,7 +6,8 @@ let data;
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), "");
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente") === null ? "" : sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente"));    
+
     KdoButton($("#btnNuevoRegistro"), "edit", "Nuevo Registro");
     KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
 
@@ -132,9 +133,11 @@ $(document).ready(function () {
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
+            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", this.dataItem(e.item.index()).IdCliente.toString());
             Fn_ConsultarSimu(this.dataItem(e.item.index()).IdCliente.toString());
             KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
         } else {
+            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", "");
             Fn_ConsultarSimu(0);
             KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
         }
@@ -143,11 +146,17 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
+            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", "");
             Fn_ConsultarSimu(0);
             KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
         }
     });
 
+    //Coloca el filtro de cliente guardado en la sesion
+    if (sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente") !== null) {
+        Fn_ConsultarSimu(sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente"));
+        KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
+    }
     //#endregion
 });
 
