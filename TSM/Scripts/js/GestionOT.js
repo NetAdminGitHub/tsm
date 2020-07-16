@@ -18,8 +18,10 @@ $(document).ready(function () {
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
 
-    $("#btnConsular").click(function (e) {
-        $("#grid").data("kendoGrid").dataSource.read();
+    $("#btnConsular").click(function () {
+        let g = $("#grid").data("kendoGrid");
+        g.dataSource.read();
+        g.pager.page(1);
     });
 
     $("#chkRangFechas").click(function () {

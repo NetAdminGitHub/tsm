@@ -22,9 +22,13 @@ $(document).ready(function () {
 
     // convertir a kendo Multicolum combobox
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSolicitudesProducion();
+    $("#CmbPrograma").ControlSelecionPrograma();
 
-    $("#btnConsultar").click(function (e) {
-        $("#grid").data("kendoGrid").dataSource.read();
+
+    $("#btnConsultar").click(function () {
+        let g = $("#grid").data("kendoGrid");
+        g.dataSource.read();
+        g.pager.page(1);
     });
 
     //#region configuracion del grid
@@ -42,7 +46,8 @@ $(document).ready(function () {
                         FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
                         IdServicio: KdoCmbGetValue($("#CmbIdServicio")),
                         IdCliente: KdoCmbGetValue($("#CmbIdCliente")),
-                        NoOt: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"))
+                        NoOt: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo")),
+                        IdPrograma: KdoMultiColumnCmbGetValue($("#CmbPrograma"))
                       
                        
                     }),
@@ -210,6 +215,7 @@ $.fn.extend({
                 height: 400,
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                placeholder: "Selección de ordenes de trabajo",
                 dataSource: {
                     serverFiltering: true,
                     transport: {
@@ -220,11 +226,13 @@ $.fn.extend({
                     }
                 },
                 columns: [
-                    { field: "NoDocumento", title: "No Orden Trabajo", width: 150 },
-                    { field: "NoDocReq", title: "No Requerimiento", width: 300 },
+                    { field: "NoDocumento", title: "No Orden Trabajo", width: 125 },
+                    { field: "NoDocReq", title: "No Requerimiento", width: 125 },
                     { field: "Nombre", title: "Nombre Diseño", width: 300 },
-                    { field: "NumeroDiseno", title: "Numero Diseño", width: 300 },
-                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 300 }
+                    { field: "NumeroDiseno", title: "Numero Diseño", width: 200 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 },
+                    { field: "NoPrograma", title: "No Programa", width: 125 },
+                    { field: "NombrePrograma", title: "Nombre Programa", width: 200 }
 
                 ]
             });
