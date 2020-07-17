@@ -3,15 +3,17 @@ var xIdServ = 0; //numero de servicio.
 var xidRq = 0; //numero del requerimiento
 var ValidarFormularioOT = "";
 var srcDef = "/Images/NoImagen.png";
+var xid = 0;
+var fn_verCotizacion = function (IdCotizacion, Estado) {
+    window.open("/CotizacionesMuestras/CotizacionesMuestrasDatos/" + IdCotizacion.toString() + "/" + Estado.toString());
+};
+var fn_verSimulacion = function (IdSimulacion, IdServicio, IdOrdenTrabajo) {
+    window.open("/SimulacionesMuestras/SimulacionesMuestrasInfo/" + IdSimulacion.toString() + "/" + IdServicio.toString() + "/" + IdOrdenTrabajo.toString());
+};
+
+
 var fn_InfDetalle = function (divCDInf, xidCatalogo) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
-    $("#swchMuestraFisicaAprobada").kendoSwitch();
-    $("#swchMuestraCotizada").kendoSwitch();
-    $("#swchMuestraPrecioAprobado").kendoSwitch();
-    $("#swchCantidadAprobada").kendoSwitch();
-    $("#swchMuestraAprobadaProduccion").kendoSwitch();
-    $("#swchDesarrolloCobroAprobado").kendoSwitch();
-    $("#swchNotaEnvioAprobado").kendoSwitch();
     fn_gridOT();
     $("#tab_inf").kendoTabStrip({
         tabPosition: "top",
@@ -21,7 +23,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
     $("#ModalGeneraOT").kendoDialog({
         height: "auto",
         width: "20%",
-        maxHeight: "600 px",
+        maxHeight: "700 px",
         title: "Generar Orden de Trabajo",
         visible: false,
         closable: true,
@@ -53,20 +55,14 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
     $("#gConOT").data("kendoGrid").bind("change", function () {
         fn_GetAdjuntos();
         Fn_getCotizacion($("#gConOT").data("kendoGrid"));
-        fn_GetAprobaciones(fn_getIdOT($("#gConOT").data("kendoGrid")));
-        $("#gridCotizacionDetalle").data("kendoGrid").dataSource.read();
+        $("#gridCotizacionDetalle").data("kendoGrid").dataSource.read().then(function (e) {
+            fn_getMUAPROPROD($("#gConOT").data("kendoGrid")) === true ? $("#gridCotizacionDetalle").data("kendoGrid").showColumn("aprobar") : $("#gridCotizacionDetalle").data("kendoGrid").hideColumn("aprobar");
+        });
         
     });
 
     fn_CargarInfDetalle(divCDInf, xidCatalogo);
-    $("#swchMuestraFisicaAprobada").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchMuestraCotizada").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchMuestraPrecioAprobado").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchCantidadAprobada").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchMuestraAprobadaProduccion").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchDesarrolloCobroAprobado").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-    $("#swchNotaEnvioAprobado").data("kendoSwitch").bind("change", function () { fn_GuardarAprobacion(fn_getIdOT($("#gConOT").data("kendoGrid"))); });
-
+ 
 };
 
 var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
@@ -76,7 +72,8 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
-            DsCatDisInf = dato;
+            xid = dato[0].IdCatalogoDiseno;
+            $("#gConOT").data("kendoGrid").dataSource.read();
             fn_DibujaScrollView($("#scrollView"), "", null);
             if (dato.length > 0) {
                 $("#InfCliente").val(dato[0].NombreCli);
@@ -102,8 +99,36 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
 let fn_gridOT = function () {
     var dsOT = new kendo.data.DataSource({
         transport: {
-            read: function (options) {
-                options.success(DsCatDisInf);
+            read: function (datos) {
+                $.ajax({
+                    type: "GET",
+                    dataType: 'json',
+                    url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByIdCatalogo/" + xid.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    },
+                    error: function () {
+                        options.error(result);
+                    }
+                });
+            },
+            update: function (datos) {
+                kendo.ui.progress($("#gConOT"), true);
+                $.ajax({
+                    type: "post",
+                    dataType: 'json',
+                    data: kendo.stringify(datos.data),
+                    url: TSM_Web_APi + "SolicitudProduccionesAprobacionesEstados/InsAprobacion",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        kendo.ui.progress($("#gConOT"), false);
+                        datos.success(result);
+                    },
+                    error: function () {
+                        kendo.ui.progress($("#gConOT"), false);
+                    }
+                });
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -113,7 +138,7 @@ let fn_gridOT = function () {
         },
         schema: {
             model: {
-                id: "IdCatalogoDiseno",
+                id: "IdOrdenTrabajo",
                 fields: {
                     IdCatalogoDiseno: { type: "number" },
                     NombreDiseno: { type: "string" },
@@ -138,7 +163,17 @@ let fn_gridOT = function () {
                     FechaSolicitud: { type: "date" },
                     IdArte: { type: "number" },
                     IdServicio: { type: "IdServicio" },
-                    Tallas: { type:"Tallas"}
+                    Tallas: { type: "Tallas" },
+                    SNFichaProd: { type: "bool" },
+                    SNOTMuestraFin: { type: "bool" },
+                    SNMuCotizada: { type: "bool"},
+                    MUAPROPROD: { type: "bool" },
+                    MUCANTAPRO: { type: "bool" },
+                    MUCOBAPRO: { type: "bool" },
+                    MUCOTIZADA: { type: "bool" },
+                    MUENVIOAPRO: { type: "bool" },
+                    MUFIAPRO: { type: "bool" },
+                    MUPREAPRO: { type: "bool" }
                 }
             }
         }
@@ -146,16 +181,42 @@ let fn_gridOT = function () {
     //CONFIGURACION DEL gConOT,CAMPOS
     $("#gConOT").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "NombreDisOT");
+            KdoHideCampoPopup(e.container, "IdCatalogoDiseno");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "NoOT");
+            KdoHideCampoPopup(e.container, "NoReq");
+            KdoHideCampoPopup(e.container, "FechaSolicitud");
+            KdoHideCampoPopup(e.container, "FechaInicio");
+            KdoHideCampoPopup(e.container, "FechaFinal");
+            if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
+                KdoCheckBoxEnable($('[name="MUAPROPROD"]'), false);
+            } else {
+                KdoCheckBoxEnable($('[name="MUAPROPROD"]'), e.model.SNFichaProd === true ? false : true);
+            }
+            KdoCheckBoxEnable($('[name="MUFIAPRO"]'), e.model.SNOTMuestraFin === true ? true : false);
+            KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), e.model.SNMuCotizada === true ? true : false);
+        },
         columns: [
-            { field: "NombreDisOT", title: "Nombre del Diseño OT" },
+            { field: "NombreDisOT", title: "Nombre del Diseño OT", hidden: true },
             { field: "IdCatalogoDiseno", title: "Cod IdCatalogo", hidden: true },
             { field: "IdRequerimiento", title: "Cod IdRequerimiento", hidden: true },
             { field: "IdOrdenTrabajo", title: "Cod IdOrdenTrabajo", hidden: true },
-            { field: "NoOT", title: "Orden de Trabajo" },
-            { field: "NoReq", title: "Requerimiento" },
-            { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}" },
-            { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}" },
-            { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}" },
+            { field: "NoOT", title: "Orden de Trabajo", width: "120px" },
+            { field: "NoReq", title: "Requerimiento", width: "120px" },
+            { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
+            { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden:true },
+            { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}", width: "120px",hidden:true },
+            { field: "MUFIAPRO", title: "Muestra Fisica Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUFIAPRO"); }  },
+            { field: "MUCOTIZADA", title: "Muestra Cotizada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOTIZADA"); }  },
+            { field: "MUPREAPRO", title: "Muestra con Precio Aprob", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUPREAPRO"); }  },
+            { field: "MUCANTAPRO", title: "Cantidad Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCANTAPRO"); } },
+            { field: "MUCOBAPRO", title: "Cobro Aprobado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOBAPRO"); }  },
+            { field: "MUENVIOAPRO", title: "Nota de Envio Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUENVIOAPRO"); } },
+            { field: "REQMP", title: "Requisicion de Materia Prima", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "REQMP"); }  },
+            { field: "MUAPROPROD", title: "Muestra Aprob Producción", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUAPROPROD"); } },
             {
                 command: {
                     name: "Generar OT",
@@ -181,11 +242,13 @@ let fn_gridOT = function () {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gConOT
     SetGrid($("#gConOT").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 400);
+    SetGrid_CRUD_Command($("#gConOT").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gConOT").data("kendoGrid"), dsOT,20);
 
     var selectedRowsServ = [];
     $("#gConOT").data("kendoGrid").bind("dataBound", function () { //foco en la fila
         Grid_SetSelectRow($("#gConOT"), selectedRowsServ);
+       
     });
 
     $("#gConOT").data("kendoGrid").bind("change", function () {
@@ -218,8 +281,11 @@ let fn_gridOT = function () {
             model: {
                 id: "IdCotizacionSimulacion",
                 fields: {
+                    IdServicio: {type:"number"},
                     IdCotizacionSimulacion: { type: "number" },
+                    EstadoCotizacion: {type:"string"},
                     IdCotizacion: { type: "number" },
+                    NoDocCotizacion: {type:"string"},
                     IdOrdenTrabajo: {type:"number"},
                     IdSimulacionRentabilidad: { type: "number" },
                     PorcUtilidadConsiderada: { type: "number" },
@@ -231,7 +297,8 @@ let fn_gridOT = function () {
                     FacturacionTS: { type: "number" },
                     FacturacionVenta: { type: "number" },
                     IdSimulacion: { type: "numeric" },
-                    NoDocumento: { type:"string"}
+                    NoDocumento: { type: "string" },
+                    SNExisteFichaProd: { type: "bool" }
                 }
             }
         }
@@ -239,12 +306,31 @@ let fn_gridOT = function () {
 
     $("#gridCotizacionDetalle").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
+        dataBound: function () {
+            let grid = this;
+            grid.tbody.find("tr").dblclick(function (e) {
+                kendo.ui.progress($("#gConOT"), true);
+                window.open("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
+                kendo.ui.progress($("#gConOT"), false);
+            });
+        },
         columns: [
             { field: "IdCotizacionProgramaSimulacion", title: "Código Cotización programa sim", hidden: true },
+            { field: "IdServicio", title: "Código Servicio", hidden: true },
             { field: "IdCotizacion", title: "Código Cotización", hidden: true },
+            {
+                field: "NoDocCotizacion", title: "No Cotización", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='fn_verCotizacion(" + data["IdCotizacion"] + ",\"" + data["EstadoCotizacion"] +"\")' >" + data["NoDocCotizacion"] + "</button>";
+                }
+            },
             { field: "IdSimulacion", title: "Código Simulación", hidden: true },
             { field: "IdOrdenTrabajo", title: "Código Orden de trabajo", hidden: true },
-            { field: "NoDocumento", title: "No Simulación" },
+            {
+                field: "NoDocumento", title: "No Simulación", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='fn_verSimulacion(" + data["IdSimulacion"] + "," + data["IdServicio"] + "," + data["IdServicio"] + ")' >" + data["NoDocumento"] + "</button>";
+                }
+            },
+            { field: "SNExisteFichaProd", title: "Ficha Producción",  template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "SNExisteFichaProd"); } },
             { field: "IdSimulacionRentabilidad", title: "cod. Simulación Rentabilidad", hidden: true },
             { field: "PorcUtilidadConsiderada", title: "PorcUtilidad Considerada", editor: Grid_ColNumeric, values: ["required", "-100", "100", "P2", 4], format: "{0:P2}", hidden: true },
             { field: "UtilidadDolares", title: "Utilidad Dolares", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
@@ -292,7 +378,10 @@ let fn_gridOT = function () {
 
     //#endregion FIN PROGRAMACIÓN DEL GRID SIMULACIÓN
 };
-
+var Grid_ColTemplateCheckBox = function (data, columna) {
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+        "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
+};
 let fn_GetAdjuntos = function () {
     //LLena Splitter de imagenes
     kendo.ui.progress($("#ModalCDinf"), true);
@@ -474,74 +563,14 @@ let Fn_getCotizacion = function (g) {
     $("#InfNombreDisOT").val(elemento.NombreDisOT);
     $("#InfEstiloDisenoOT").val(elemento.EstiloDisenoOT);
     $("#InfNumDisenoOT").val(elemento.NumeroDisenoOT);
-};
 
-let fn_GuardarAprobacion = function (idot) {
-    kendo.ui.progress($("#ModalCDinf"), true);
-    $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajosAprobaciones/" + idot,
-        dataType: "json",
-        type: "PUT",
-        data: JSON.stringify({
-            IdOrdenTrabajo: idot,
-            MuestraFisicaAprobada: $("#swchMuestraFisicaAprobada").data("kendoSwitch").check(),
-            MuestraCotizada: $("#swchMuestraCotizada").data("kendoSwitch").check(),
-            MuestraPrecioAprobado: $("#swchMuestraPrecioAprobado").data("kendoSwitch").check(),
-            CantidadAprobada: $("#swchCantidadAprobada").data("kendoSwitch").check(),
-            MuestraAprobadaProduccion: $("#swchMuestraAprobadaProduccion").data("kendoSwitch").check(),
-            DesarrolloCobroAprobado: $("#swchDesarrolloCobroAprobado").data("kendoSwitch").check(),
-            NotaEnvioAprobado: $("#swchNotaEnvioAprobado").data("kendoSwitch").check()
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (respuesta) {
-            kendo.ui.progress($("#ModalCDinf"), false);
-            RequestEndMsg(respuesta, "Put");
-        },
-        error: function (respuesta) {
-            kendo.ui.progress($("#ModalCDinf"), false);
-            ErrorMsg(respuesta);
-        }
-    });
-};
-
-let fn_GetAprobaciones = function (idot) {
-    kendo.ui.progress($("#ModalCDinf"), true);
-    $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajosAprobaciones/" + (idot === null ? 0 : idot),
-        dataType: 'json',
-        type: 'GET',
-        success: function (respuesta) {
-            if (respuesta !== null) {
-                fn_HabilitarAprobaciones(true);
-                $("#swchMuestraFisicaAprobada").data("kendoSwitch").check(respuesta.MuestraFisicaAprobada);
-                $("#swchMuestraCotizada").data("kendoSwitch").check(respuesta.MuestraCotizada);
-                $("#swchMuestraPrecioAprobado").data("kendoSwitch").check(respuesta.MuestraPrecioAprobado);
-                $("#swchCantidadAprobada").data("kendoSwitch").check(respuesta.MuestraPrecioAprobado);
-                $("#swchMuestraAprobadaProduccion").data("kendoSwitch").check(respuesta.MuestraAprobadaProduccion);
-                $("#swchDesarrolloCobroAprobado").data("kendoSwitch").check(respuesta.DesarrolloCobroAprobado);
-                $("#swchNotaEnvioAprobado").data("kendoSwitch").check(respuesta.NotaEnvioAprobado);
-            } else {
-                fn_HabilitarAprobaciones(false);
-                $("#swchMuestraFisicaAprobada").data("kendoSwitch").check(0);
-                $("#swchMuestraCotizada").data("kendoSwitch").check(0);
-                $("#swchMuestraPrecioAprobado").data("kendoSwitch").check(0);
-                $("#swchCantidadAprobada").data("kendoSwitch").check(0);
-                $("#swchMuestraAprobadaProduccion").data("kendoSwitch").check(0);
-                $("#swchDesarrolloCobroAprobado").data("kendoSwitch").check(0);
-                $("#swchNotaEnvioAprobado").data("kendoSwitch").check(0);
-
-            }
-        },
-        error: function () {
-            kendo.ui.progress($("#ModalCDinf"), false);
-        }
-    });
+    $("#InfFechaInicio").val(kendo.toString(kendo.parseDate(elemento.FechaInicio), 'dd/MM/yyyy'));
+    $("#InfFechaFinal").val(kendo.toString(kendo.parseDate(elemento.FechaFinal), 'dd/MM/yyyy'));
 };
 
 let fn_getIdOT = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdOrdenTrabajo;
-
 };
 let fn_getIdSimulacion = function (g) {
     var SelItem = g.dataItem(g.select());
@@ -550,6 +579,10 @@ let fn_getIdSimulacion = function (g) {
 let fn_getIdCotizacion = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdCotizacion;
+};
+let fn_getMUAPROPROD = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.MUAPROPROD;
 };
 let fn_GenerarSolicitudProducciones = function () {
     kendo.ui.progress($("#ModalGeneraOT"), true);
@@ -570,15 +603,4 @@ let fn_GenerarSolicitudProducciones = function () {
         }
     });
 };
-
-fn_HabilitarAprobaciones = function (b) {
-    $("#swchMuestraFisicaAprobada").data("kendoSwitch").enable(b);
-    $("#swchMuestraCotizada").data("kendoSwitch").enable(b);
-    $("#swchMuestraPrecioAprobado").data("kendoSwitch").enable(b);
-    $("#swchCantidadAprobada").data("kendoSwitch").enable(b);
-    $("#swchMuestraAprobadaProduccion").data("kendoSwitch").enable(b);
-    $("#swchDesarrolloCobroAprobado").data("kendoSwitch").enable(b);
-    $("#swchNotaEnvioAprobado").data("kendoSwitch").enable(b);
-};
-
 
