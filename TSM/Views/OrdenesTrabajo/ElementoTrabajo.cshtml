@@ -10,6 +10,7 @@
         var idOrdenTrabajo = @ViewBag.IdOrdenTrabajo;
         var idEtapaProceso = @ViewBag.IdEtapaProceso;
         var nombreVista = "@ViewBag.VistaParcial";
+        var loadedview = "ElementoTrabajo";
     </script>
 
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
@@ -191,8 +192,11 @@
                     </div>
                     <div class="form-group col-lg-6 col-md-6">
                         <div class="form-row">
-                            <div class="col-lg-9 col-md-8"></div>
-                            <div class="col-lg-3 col-md-4"> <button type="button" id="btnIrGOT">&nbsp;Ir a Gesti&oacute;n O.T</button></div>
+                            <div class="col-lg-6 col-md-5"></div>
+                            <div class="col-lg-6 col-md-7">
+                                <button type="button" id="btnDesbloquearEtapa">&nbsp;Desbloquear</button>
+                                <button type="button" id="btnIrGOT">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -297,3 +301,6 @@
         <div id="AutRet"></div>
     </div>
 </div>
+
+ @*div para controlar el evento del warning*@
+<div id="ElementoTrabajo_action"></div>

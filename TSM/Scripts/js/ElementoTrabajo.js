@@ -42,6 +42,7 @@ var xEstado;
 var xEstadoOT;
 var AccesMaquinaArt;
 var CumpleOEKOTEX;
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -60,14 +61,15 @@ var fn_CambioEtp = function (e) {
                 idOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
                 idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
                 idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
-                motivo: $("#TxtMotivoEtp").val()
+                motivo: $("#TxtMotivoEtp").val(),
+                IdUsuario:getUser()
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;
                 RequestEndMsg(datos, "Post");
                 $("#vCamEtapa").data("kendoDialog").close();
-                $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
+                Number(idEtapaProceso) === Number(xindice) ? location.reload() : $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
 
             },
             error: function (data) {
@@ -111,7 +113,8 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarEtapa"), "gear");
     KdoButton($("#btnAutorizarRetenciones"), "warning");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
-
+    KdoButton($("#btnDesbloquearEtapa"), "unlock");
+    KdoButtonEnable($("#btnDesbloquearEtapa"), false);
     $("#swchSolTelaSusti").kendoSwitch();
 
     $("#swchSolDesOEKO").kendoSwitch();
@@ -224,10 +227,12 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnDesbloquearEtapa"), $("#txtEstado").val() === "FINALIZADO" ? true : false);
     xvNodocReq = datos.NodocReq;
     xEstadoOT = datos.EstadoOT;
     CumpleOEKOTEX = datos.StandarOEKOTEX;
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
+    //obtner las estapas siguientes
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
     if (RecargarScriptVista === true) {
@@ -287,7 +292,6 @@ var get_cmbUsuario = function (tipoOrd, etp) {
 };
 
 var get_cmbEtpSigAnt = function ( etp) {
-    //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
         transport: {
@@ -296,6 +300,25 @@ var get_cmbEtpSigAnt = function ( etp) {
                     dataType: 'json',
                     async: false,
                     url: TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/" + etp.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+var get_cmbEtp = function (etp) {
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosSeleccion/" + etp.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -361,14 +384,33 @@ $("#vCamEtapa").kendoDialog({
 });
 
 $("#btnCambiarEtapa").click(function (e) {
-    $("#cmbUsuarioEtp").data("kendoComboBox").value("");
+    kendo.ui.progress($(document.body), true);
+    KdoCmbSetValue($("#cmbUsuarioEtp"), "");
     $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
-    $("#cmbEtpSigAnt").data("kendoComboBox").value("");
+    KdoComboBoxEnable($("#cmbEtpSigAnt"), true);
+    KdoCmbSetValue($("#cmbEtpSigAnt"), "");
     $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
     $("#TxtMotivoEtp").val("");
     $("#vCamEtapa").data("kendoDialog").open();
     $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
     KdoCmbFocus($("#cmbEtpSigAnt"));
+    kendo.ui.progress($(document.body), false);
+});
+$("#btnDesbloquearEtapa").click(function (e) {
+    kendo.ui.progress($(document.body), true);
+    KdoCmbSetValue($("#cmbEtpSigAnt"), "");
+    $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtp(idEtapaProceso));
+    $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
+    KdoCmbSetValue($("#cmbEtpSigAnt"), idEtapaProceso);
+    KdoComboBoxEnable($("#cmbEtpSigAnt"), false);
+    KdoCmbSetValue($("#cmbUsuarioEtp"), "");
+    $("#cmbUsuarioEtp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(idTipoOrdenTrabajo.toString(), idEtapaProceso));
+    $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
+    $("#TxtMotivoEtp").val("");
+    $("#vCamEtapa").data("kendoDialog").open();
+    $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
+    KdoCmbFocus($("#cmbUsuarioEtp"));
+    kendo.ui.progress($(document.body), false);
 });
 
 var CargarAsignacionUsuarios = function () {
@@ -1379,6 +1421,7 @@ var fn_RTActivaDropTarget = function () {
 $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
     fn_GuardaCodigoColor(CodigoColor);
 });
+
 $("#FormulaHist").on("SetValorBusqueda", function (event) {
     switch (idEtapaProceso) {
         case "6":
@@ -1395,6 +1438,7 @@ $("#FormulaHist").on("SetValorBusqueda", function (event) {
             break;
     }
 });
+
 var fn_GuardaCodigoColor = function (xCodColor) {
     switch (idEtapaProceso) {
         case "6":
@@ -1454,3 +1498,8 @@ var Fn_GetRequerimientoFoil = function (vIA) {
         }
     });
 };
+
+// se activa al hacer click en el boton OK del warning
+$("#ElementoTrabajo_action").on("Action", function (event,dt) {
+    location.reload();
+});
