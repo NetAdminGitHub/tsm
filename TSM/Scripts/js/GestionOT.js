@@ -1,4 +1,5 @@
-﻿var Permisos;
+﻿
+var Permisos;
 $(document).ready(function () {
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -15,6 +16,8 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Opcional servicio ....");
 
     $('#chkRangFechas').prop('checked', 0);
+    $('#chkAsignadas').prop('checked', 0);
+    
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
 
@@ -45,6 +48,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     url: UrlOT + "/GetGestionOTAsignadas",
                     data: JSON.stringify({
+                        Asignadas: $("#chkAsignadas").is(':checked'),
                         FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
                         FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
                         IdCliente: KdoCmbGetValue($("#CmbCliente")),
@@ -110,7 +114,8 @@ $(document).ready(function () {
                     NombreTemp: { type: "string" },
                     IdEjecutivoCuenta: { type: "number" },
                     NombreEjecutivo: { type: "string" },
-                    EstadoFormulas: { type: "string" }
+                    EstadoFormulas: { type: "string" },
+                    UsuarioAsignado: {type: "string"}
                 }
             }
         }
@@ -169,7 +174,8 @@ $(document).ready(function () {
             { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
             { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 }
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
+            { field: "UsuarioAsignado", title: "Usuario asignado", minResizableWidth:150}
         ]
     });
 

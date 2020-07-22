@@ -179,8 +179,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
     if (datos.Asignado === false && datos.Seguidor === false) {
-        window.location.href = "/GestionOT";
-        return;
+        $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
+
     }
     var fecha = new Date(datos.FechaOrdenTrabajo);
     $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
@@ -350,18 +350,25 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
 };
 
 $("#vAsignarUsuario").kendoDialog({
-    height: $(window).height() - "510" + "px",
+    height: "auto",
     width: "30%",
     title: "Asignación de Usuarios",
     visible: false,
+    maxHeight: 600,
     closable: true,
     modal: true,
     actions: [
         { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
     ],
     close: function (e) {
-        if (e.userTriggered)
+        if (e.userTriggered && EtpAsignado === false && EtpSeguidor === false) {
+            window.location.href = "/GestionOT";
+            return;
+        }
+        else {
+
             CargarInfoEtapa(false);
+        }
     }
 });
 
