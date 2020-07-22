@@ -256,6 +256,7 @@
     <Compile Include="Controllers\GestionFichasProduccionesController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
+    <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
     <Compile Include="Controllers\GetCipherController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -756,6 +757,7 @@
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\GestionOTDesarrollosCobrosApro.js" />
     <Content Include="Scripts\js\GetCipher.js" />
     <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
@@ -1471,6 +1473,7 @@
     <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
     <Content Include="Views\CalidadCriterios\Index.cshtml" />
     <Content Include="Views\Shared\_AutorizarRetenciones.cshtml" />
+    <Content Include="Views\GestionOTDesarrollosCobrosApro\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
