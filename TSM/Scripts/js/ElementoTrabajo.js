@@ -362,8 +362,9 @@ $("#vAsignarUsuario").kendoDialog({
     ],
     close: function (e) {
         if (e.userTriggered && EtpAsignado === false && EtpSeguidor === false) {
-            window.location.href = "/GestionOT";
-            return;
+            window.history.go(-2);
+            //window.location.href = "/GestionOT";
+            return false;
         }
         else {
 
