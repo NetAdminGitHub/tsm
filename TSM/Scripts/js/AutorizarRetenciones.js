@@ -85,7 +85,7 @@ var fn_MostrarNoti = function (result) {
             '<h4 class="list-group-item-title">' +
             '<span>' + elemento.NombreRet + '</span>' +
             '</h4>' +
-            '<p class="list-group-item-text">' + elemento.Descripcion + '</p>' +
+            '<p class="list-group-item-text">' + elemento.Descripcion + '<br/><strong>' + elemento.NombreEst + '</strong></p>' +
             '</div>' +
             '<div class="form-group  col-lg-2 text-lg-right">' +
             '<p class="list-group-item-text"></p>' +
