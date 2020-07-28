@@ -1045,11 +1045,10 @@ var kdoRbSetValue = function (InputElem, value) {
  * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
  */
 var fn_FormulaHistorica = function (divCcf) {
-
     if ($("#" + divCcf + "").children().length === 0) {
         $.ajax({
             url: "/AXFormulaciones/ConsultaHistoricaFormulas",
-            async: false,
+            //async: false,
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
@@ -1058,7 +1057,6 @@ var fn_FormulaHistorica = function (divCcf) {
             }
         });
     } else {
-
         fn_CargarVistaModalFormulacion("", divCcf);
     }
 };

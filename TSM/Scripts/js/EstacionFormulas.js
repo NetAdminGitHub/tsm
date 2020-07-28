@@ -1,9 +1,10 @@
 ﻿let QuimicaFormula = 0;
+let xIdSeteoMq = 0;
 var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
     KdoButton($("#btnAddMFAjuste"), "gear", "Ajuste");
-    KdoButton($("#btnAddMFEditar"), "edit", "Editar");
+    //KdoButton($("#btnAddMFEditar"), "edit", "Editar");
     KdoButton($("#btnAddMFAHistori"), "search", "Formulas Historica");
     KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
     kdoRbSetValue($("#rbAjuste"), true);
@@ -93,9 +94,9 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     });
 
     xidEstacion = 0;
+    fn_GridEstaciones($("#gridEstacion"));
     fn_gridFormulas($("#gridFormulas"));
-    fn_gridMateriaPrima($("#gridFormulasMP"));
-    fn_gridAjustePrima($("#gridFormulasAjusMP"));
+    fn_gridAjustePrima($("#gridFormulasMP"));
 
     $("#MbtnAjuste").kendoDialog({
         height: "auto",
@@ -105,22 +106,6 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         modal: true,
         visible: false,
         maxHeight: 900
-    });
-    $("#MbtnEditForm").kendoDialog({
-        height: "auto",
-        width: "60%",
-        title: "Ajuste de fórmulas",
-        closable: true,
-        modal: true,
-        visible: false,
-        maxHeight: 900,
-        close: fn_EditClose,
-        show: fn_ShowAjus
-    });
-
-    $("#btnAddMFEditar").bind("click", function () {
-    
-        $("#MbtnEditForm").data("kendoDialog").open().toFront();
     });
 
     $("#btnAddMFAjuste").bind("click", function () {
@@ -183,7 +168,9 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
+        kendo.ui.progress($(".k-window-content"), true);
         fn_FormulaHistorica("FormulaHist");
+        kendo.ui.progress($(".k-window-content"), false);
     });
 
     $("#tsFormulas").kendoTabStrip({
@@ -205,100 +192,30 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId);
     });
 
+   
 };
 
 var fn_VistaEstacionFormulas = function () {
+    xIdSeteoMq = maq[0].IdSeteo;
     $("#tsFormulas").data("kendoTabStrip").select(0);
-    $("#gridFormulas").data("kendoGrid").dataSource.data([]);
-    $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
     TextBoxEnable($("#TxtNombreQuiForm"), false);
-    TextBoxEnable($("#TxtFormulaSugTint"), false);
+    TextBoxReadOnly($("#TxtFormulaSugTint"), false);
     $("#TxtOpcSelecFormulas").val($("#TxtOpcSelecFormulas").data("name"));
-    xidEstacion = $("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
-    Te = $("#TxtOpcSelecFormulas").data("Formulacion");
-    setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
-    setMaqMar = fn_GetSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
-    if (setFor !== null) {
-        switch (Te) {
-            case "COLOR":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
-                $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
-                $("#TxtOpcSelecFormulas").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
-                break;
-            case "TECNICA":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
-                $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
-                $("#TxtOpcSelecFormulas").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
-                break;
-            case "BASE":
-                //guardo en Memoria la llave del tipo de selección
-                $("#TxtOpcSelecFormulas").data("IdBase", setFor.IdBase === undefined ? "" : setFor.IdBase);
-                $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Base');
-                $("#TxtOpcSelecFormulas").val(setFor.NomIdBase === undefined ? "" : setFor.NomIdBase);
-                break;
-        }
-        $("#TxtFormulaSugTint").val(setFor.SugerenciaFormula);
-        $("#CmbTipoTinta_MaRev").val(setFor.NomIdTipoTinta === undefined ? "" : setFor.NomIdTipoTinta);
-        $("#CmbSistemaPigmento_MaRev").val(setFor.NombreSistPigmento === undefined ? "" : setFor.NombreSistPigmento);
-        $("#CmbBasePigmento_MaRev").val(setFor.NombreBasePig === undefined ? "" : setFor.NombreBasePig);
-        QuimicaFormula = setFor.IdQuimica;
-        $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
-
-    }
-    else {
-        $("#TxtFormulaSugTint").val("");
-        $("#CmbTipoTinta_MaRev").val("");
-        $("#CmbSistemaPigmento_MaRev").val("");
-        $("#CmbBasePigmento_MaRev").val("");
-    }
-    if (setMaqMar !== null) {
-        $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(setMaqMar.Capilar);
-        $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(setMaqMar.NoPasadas);
-        $("#NumArea_MaRev").data("kendoNumericTextBox").value(setMaqMar.Area);
-        $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
-        $("#CmbSedas_MaRev").val(setMaqMar.NombreSeda);
-        $("#CmbTipoEmulsion_MaRev").val(setMaqMar.NombreEmulsion);
-        $("#TxtLetra_MaRev").val(setMaqMar.Letra);
-        kdoNumericSetValue($("#NumResolucionDPI_MaRev"), setMaqMar.ResolucionDPI);
-        kdoNumericSetValue($("#NumLineajeLPI_MaRev"), setMaqMar.LineajeLPI);
-        kdoNumericSetValue($("#NumPixeles_MaRev"), setMaqMar.Pixeles);
-        xEstado = setMaqMar.Estado;
-        $("#TxtNombreEstado").val(setMaqMar.NombreEst);
-    } else {
-        $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(0);
-        $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(0);
-        $("#NumArea_MaRev").data("kendoNumericTextBox").value(0);
-        $("#NumResolucionDPI_MaRev").val(0);
-        $("#NumLineajeLPI_MaRev").val(0);
-        $("#NumPixeles_MaRev").val(0);
-        $("#CmdIdUnidadArea_MaRev").val("");
-        $("#CmbSedas_MaRev").val("");
-        $("#CmbTipoEmulsion_MaRev").val("");
-        $("#TxtLetra_MaRev").val("");
-        xEstado = null;
-        $("#TxtNombreEstado").val("");
-    }
-
-    $("#gridFormulas").data("kendoGrid").dataSource.read();
-
-};
-var fn_EditClose = function () {
-    $("#gridFormulas").data("kendoGrid").dataSource.read().then(function () {
-        $("#gridFormulasMP").data("kendoGrid").dataSource.read();
-    });
-
-};
-
-var fn_ShowAjus = function () {
-    $("#gridFormulasAjusMP").data("kendoGrid").dataSource.read().then(function () {
-        //fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? fn_getIdMotivo($("#gridFormulas").data("kendoGrid")) !== null ? Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false) : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
-        fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ?  Grid_HabilitaToolbar($("#gridFormulasAjusMP"), true, true, true)  : Grid_HabilitaToolbar($("#gridFormulasAjusMP"), false, false, false);
+    $("#gridFormulas").data("kendoGrid").dataSource.data([]);
+    $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
+    var grid = $("#gridEstacion").data("kendoGrid");
+    grid.dataSource.data([]);
+    grid.dataSource.read().then(function () {
+        var items = grid.items();
+        items.each(function (idx, row) {
+            var dataItem = grid.dataItem(row);
+            if (dataItem[grid.dataSource.options.schema.model.id] === Number($("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) {
+                grid.select(row);
+            }
+        });
     });
 };
-
 
 var fn_gridFormulas = function (gd) {
 
@@ -424,6 +341,7 @@ var fn_gridFormulas = function (gd) {
             }
       
         },
+    
         columns: [
             { field: "IdFormula", title: "Código. Formula", hidden: true  },
             { field: "IdSeteo", title: "Código. IdSeteo", hidden: true  },
@@ -466,7 +384,7 @@ var fn_gridFormulas = function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 250);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 200);
     SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsFormulas);
     var srow2 = [];
@@ -476,17 +394,17 @@ var fn_gridFormulas = function (gd) {
 
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srow2);
-        fn_consultarFormulaDet(gd);
+        fn_consultarFormulaDet();
     });
 };
 
-var fn_gridMateriaPrima = function (gd) {
+var fn_GridEstaciones = function (gd) {
 
     var dsMp = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "TintasFormulacionesDetalles/GetbyIdFormula/" + vidForm; },
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetByIdSeteo/" +xIdSeteoMq;  },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -498,53 +416,28 @@ var fn_gridMateriaPrima = function (gd) {
         },
         schema: {
             model: {
-                id: "IdFormula",
+                id: "IdEstacion",
                 fields: {
-                    IdFormula: {
+                    IdSeteo: {
                         type: "number"
                     },
-                    Item: {
+                    IdEstacion: {
                         type: "number"
                     },
-                    IdArticulo: {
+                    DescripcionEstacion: {
                         type: "string"
 
                     },
-                    Nombre: {
+                    ColorHex: {
                         type: "string"
 
                     },
-                    MasaInicial: {
-                        type: "number"
-
-                    },
-                    PorcentajeInicial: {
-                        type: "number"
-
-                    },
-                    MasaFinal: {
-                        type: "number"
-
-                    },
-                    PorcentajeFinal: {
-                        type: "number"
-
-                    },
-                    IdUsuarioMod: {
+                    NombreColorEstacion: {
                         type: "string"
-                    },
-                    FechaMod: {
-                        type: "date"
                     }
                 }
             }
         },
-        aggregate: [
-            { field: "PorcentajeInicial", aggregate: "sum" },
-            { field: "MasaInicial", aggregate: "sum" },
-            { field: "MasaFinal", aggregate: "sum" },
-            { field: "PorcentajeFinal", aggregate: "sum" }
-        ],
         requestEnd: function (e) {
             Grid_requestEnd(e);
         }
@@ -552,22 +445,25 @@ var fn_gridMateriaPrima = function (gd) {
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
+        dataBound: function () {
+            for (var i = 0; i < this.columns.length; i++) {
+                this.autoFitColumn(i);
+                this.columnResizeHandleWidth;
+            }
+        },
         columns: [
-            { field: "IdFormula", title: "Código. Formula", hidden: true },
-            { field: "Item", title: "Item", hidden: true },
-            { field: "IdArticulo", title: "Articulo"},
-            { field: "Nombre", title: "Nombre"},
-            { field: "MasaInicial", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}', sum) : 0 #", hidden: true},
-            { field: "PorcentajeInicial", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeInicial ? kendo.format('{0:n2}', sum)*100: 0 # %", hidden: true },
-            { field: "MasaFinal", title: "Masa", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Final: #: data.MasaFinal ? kendo.format('{0:n2}', sum) : 0 #"},
-            { field: "PorcentajeFinal", title: "Porcentaje", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "Total: #: data.PorcentajeFinal ? kendo.format('{0:n2}', sum)*100: 0 # %" },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
+            { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120},
+            {
+                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
+            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120}
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,250);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si,800);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
     var srow3 = [];
@@ -577,33 +473,137 @@ var fn_gridMateriaPrima = function (gd) {
 
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srow3);
+        fn_ConsultarFormula(gd.data("kendoGrid"));
+        
     });
 };
-var  fn_consultarFormulaDet = function (gridcab) {
-    vidForm = fn_getIdFormula(gridcab.data("kendoGrid"));
-    $("#gridFormulasMP").data("kendoGrid").dataSource.read();
+var  fn_consultarFormulaDet = function () {
+  
+    $("#gridFormulasMP").data("kendoGrid").dataSource.read().then(function () {
+        fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? Grid_HabilitaToolbar($("#gridFormulasMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasMP"), false, false, false);
+
+    });
 };
 
+var fn_ConsultarFormula = function (g) {
+    var SelItem = g.dataItem(g.select());
+    xidEstacion = SelItem === null ? 0 : SelItem.IdEstacion;
+    $("#gridFormulas").data("kendoGrid").dataSource.read();
+    Te = SelItem.IdTipoFormulacion;
+    fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
+    fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
+    $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO COLOR ESTACIÓN #" + xidEstacion);
+};
+
+var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#tsFormulas-2"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetVistabyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
+        type: 'GET',
+        success: function (setMaqMar) {
+            if (setMaqMar !== null) {
+                $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(setMaqMar.Capilar);
+                $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(setMaqMar.NoPasadas);
+                $("#NumArea_MaRev").data("kendoNumericTextBox").value(setMaqMar.Area);
+                $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
+                $("#CmbSedas_MaRev").val(setMaqMar.NombreSeda);
+                $("#CmbTipoEmulsion_MaRev").val(setMaqMar.NombreEmulsion);
+                $("#TxtLetra_MaRev").val(setMaqMar.Letra);
+                kdoNumericSetValue($("#NumResolucionDPI_MaRev"), setMaqMar.ResolucionDPI);
+                kdoNumericSetValue($("#NumLineajeLPI_MaRev"), setMaqMar.LineajeLPI);
+                kdoNumericSetValue($("#NumPixeles_MaRev"), setMaqMar.Pixeles);
+                xEstado = setMaqMar.Estado;
+                $("#TxtNombreEstado").val(setMaqMar.NombreEst);
+            }
+            else {
+                $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(0);
+                $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(0);
+                $("#NumArea_MaRev").data("kendoNumericTextBox").value(0);
+                $("#NumResolucionDPI_MaRev").val(0);
+                $("#NumLineajeLPI_MaRev").val(0);
+                $("#NumPixeles_MaRev").val(0);
+                $("#CmdIdUnidadArea_MaRev").val("");
+                $("#CmbSedas_MaRev").val("");
+                $("#CmbTipoEmulsion_MaRev").val("");
+                $("#TxtLetra_MaRev").val("");
+                xEstado = null;
+                $("#TxtNombreEstado").val("");
+            }
+        },
+        complete: function () {
+            kendo.ui.progress($("#tsFormulas-2"), false);
+        }
+    });
+};
+var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
+    kendo.ui.progress($("#tsFormulas-2"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + xIdSeteo + "/" + xIdestacion,
+        type: 'GET',
+        success: function (setFor) {
+            if (setFor !== null) {
+                switch (Te) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
+                        $("#TxtOpcSelecFormulas").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
+                        $("#TxtOpcSelecFormulas").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        $("#TxtOpcSelecFormulas").data("IdBase", setFor.IdBase === undefined ? "" : setFor.IdBase);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Base');
+                        $("#TxtOpcSelecFormulas").val(setFor.NomIdBase === undefined ? "" : setFor.NomIdBase);
+                        break;
+                }
+                $("#TxtFormulaSugTint").val(setFor.SugerenciaFormula);
+                $("#CmbTipoTinta_MaRev").val(setFor.NomIdTipoTinta === undefined ? "" : setFor.NomIdTipoTinta);
+                $("#CmbSistemaPigmento_MaRev").val(setFor.NombreSistPigmento === undefined ? "" : setFor.NombreSistPigmento);
+                $("#CmbBasePigmento_MaRev").val(setFor.NombreBasePig === undefined ? "" : setFor.NombreBasePig);
+                QuimicaFormula = setFor.IdQuimica;
+                $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
+
+            }
+            else {
+                $("#TxtFormulaSugTint").val("");
+                $("#CmbTipoTinta_MaRev").val("");
+                $("#CmbSistemaPigmento_MaRev").val("");
+                $("#CmbBasePigmento_MaRev").val("");
+            }
+        },
+        complete: function () {
+            kendo.ui.progress($("#tsFormulas-2"), false);
+        }
+    });
+};
 var fn_getIdFormula = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdFormula;
 
 };
-
 var fn_getIdMotivo = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdMotivo;
 
 };
+var fn_getIdEstacion = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdEstacion;
 
+};
 var fn_getEstado = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Estado;
 
 };
-
 var fn_Ajuste = function () {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(".k-window-content"), true);
         $.ajax({
             url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntIni_Recibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
             type: "Post",
@@ -611,20 +611,31 @@ var fn_Ajuste = function () {
             data: JSON.stringify({ id: null }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                $("#gridFormulas").data("kendoGrid").dataSource.read();
-                kendo.ui.progress($(document.body), false);
+                //$("#gridFormulas").data("kendoGrid").dataSource.read();
+                kendo.ui.progress($(".k-window-content"), false);
                 $("#MbtnAjuste").data("kendoDialog").close();
                 RequestEndMsg(data, "Post");
+                let g = $("#gridFormulas").data("kendoGrid");
+                g.dataSource.read().then(function () {
+                    if (data[0] !== null) {
+                        var items = g.items();
+                        items.each(function (idx, row) {
+                            var dataItem = g.dataItem(row);
+                            if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
+                                g.select(row);
+                            }
+                        });
+                    }
+                   
+                });
             },
             error: function (data) {
-                kendo.ui.progress($(document.body), false);
+                kendo.ui.progress($(".k-window-content"), false);
                 ErrorMsg(data);
             }
         });
 };
-
 var fn_gridAjustePrima = function (gd) {
-
     var dsAjusMp = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
@@ -798,7 +809,7 @@ var fn_gridAjustePrima = function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 500);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 450);
     SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsAjusMp);
@@ -814,7 +825,7 @@ var fn_gridAjustePrima = function (gd) {
 
 };
 var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
-    kendo.ui.progress($(".k-dialog"), true);
+    kendo.ui.progress($(".k-window-content"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
@@ -828,38 +839,32 @@ var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            $("#gridFormulas").data("kendoGrid").dataSource.read();
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(".k-window-content"), false);
             $("#MbtnAjuste").data("kendoDialog").close();
             RequestEndMsg(data, "Post");
+            let g = $("#gridFormulas").data("kendoGrid");
+            g.dataSource.read().then(function () {
+                    var items = g.items();
+                    items.each(function (idx, row) {
+                        var dataItem = g.dataItem(row);
+                        if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
+                            g.select(row);
+                        }
+                    });
+               
+            });
         },
         complete: function () {
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window-content"), false);
         },
         error: function (data) {
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window-content"), false);
             ErrorMsg(data);
         }
     });
 
 };
 
-var fn_GetSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
-    kendo.ui.progress($(document.body), true);
-    let result = null;
-    $.ajax({
-        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetVistabyIdSeteoIdEstacion/" + xIdSeteo + "/" + xIdestacion,
-        async: false,
-        type: 'GET',
-        success: function (datos) {
-            result = datos;
-        },
-        complete: function () {
-            kendo.ui.progress($(document.body), false);
-        }
-    });
-    return result;
-};
-
 fn_PWList.push(fn_VistaEstacionFormulas);
 fn_PWConfList.push(fn_VistaEstacionFormulasDocuReady);
+
