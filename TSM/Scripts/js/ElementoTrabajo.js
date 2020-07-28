@@ -1463,7 +1463,8 @@ var fn_GuardaCodigoColor = function (xCodColor) {
 };
 //metodo que se activa cuando se cierra ventana modal
 var onCloseCambioEstado = function (e) {
-    fn_VistaEstacionFormulas();
+    fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
+    $("#gridFormulas").data("kendoGrid").dataSource.read();
 };
 /** 
  *  metodo que obtiene todos los AccesoriosMaquinasArticulos
