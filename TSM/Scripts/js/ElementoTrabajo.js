@@ -182,6 +182,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
         $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
 
     }
+    //calcular retenciones si existen
+    fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1,false);
+
     var fecha = new Date(datos.FechaOrdenTrabajo);
     $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
     $("#txtIdSolicitud").val(datos.IdSolicitud);
@@ -248,6 +251,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
             elemento.FnEtapa.call(document, jQuery);
         }
     });
+
+
 };
 
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
@@ -491,8 +496,10 @@ $("#btnCambiarAsignado").click(function (e) {
 
 
 $("#btnAutorizarRetenciones").bind("click", function () {
+    //validar si existen mas retenciones
+    fn_CalcularRetencion(idOrdenTrabajo, 2, 1, false, function () { fn_AutorizarRetenciones("AutRet", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val()); });
     //AutRet: es el nombre del div en la vista elementoTrabajo
-    fn_AutorizarRetenciones("AutRet", idOrdenTrabajo ,idEtapaProceso ,$("#txtItem").val());
+   
 });
 var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
     {

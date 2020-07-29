@@ -1393,5 +1393,38 @@ var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtap
     $("#" + divAutRet + "").data("kendoDialog").open().toFront();
 };
 //#endregion
-
+/**
+ * Metodo palcular las retenciones
+ * @param {number} vIdOrdenTrabajo orden de trabajo
+ * @param {number} vIdModulo el modulo para el cual se le va calcular
+ * @param {number} vIdTipoRetencion el tipo de retencion
+ * @param {boolean} vSNMostrar Mostrar Retencion catidad de rentenciones generadas
+ * @param {function} fn funcion a ejcutar despues de calcular las retenciones
+ */
+var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencion, vSNMostrar, fn) {
+    kendo.ui.progress($(document.body), true);
+    let fn_CR = function () {
+        if (fn === undefined || fn === "") {
+            return true;
+        } else {
+            return fn();
+        }
+    };
+    $.ajax({
+        url: TSM_Web_APi + "Retenciones/CalularRetenciones",
+        method: "POST",
+        dataType: "json",
+        data: JSON.stringify({
+            IdOrdenTrabajo: vIdOrdenTrabajo,
+            IdModulo: vIdModulo,
+            IdTipoRetencion: vIdTipoRetencion,
+            SNMostrar: vSNMostrar
+        }),
+        contentType: "application/json; charset=utf-8",
+        complete: function () {
+            fn_CR();
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
 

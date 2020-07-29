@@ -75,6 +75,7 @@ var fn_MostrarNoti = function (result) {
         Leido = elemento.Estado === "AUTORIZADO" ? "read" : "unread";
         StylebgLeido = elemento.Estado === "AUTORIZADO" ? "" : 'style = "background-color: #DFE3EE;"';
         flagRet = elemento.Estado === "AUTORIZADO" ? true : false;
+        SeAut = elemento.SeAutoriza === false ? "disabled='true'" : "";
         ListRetenciones.append(' <div class="list-group-item ' + Leido + '" id="List-' + elemento.IdOrdenTrabajo + '-' + elemento.IdEtapaProceso + '-' + elemento.Item + '-' + elemento.IdRetencion + '" ' + StylebgLeido + ' NotiRead=' + flagRet + ' >' +
             '<div class="list-group-item-figure">' +
             '<div class="' + Reten_Ico + '"> <i class="k-icon k-i-lock"></i> </div>' +
@@ -94,7 +95,7 @@ var fn_MostrarNoti = function (result) {
             '</div>' +
             '<div class="list-group-item-figure">' +
             '<div class="dropdown">' +
-            '<button class="btn-dropdown" data-toggle="dropdown">' +
+            '<button class="btn-dropdown" data-toggle="dropdown" ' + SeAut + '>' +
             '<i class="k-icon k-i-more-vertical"></i>' +
             '</button>' +
             '<div class="dropdown-arrow"></div>' +
