@@ -11,7 +11,16 @@ namespace TSM.Controllers
         // GET: EtapasOrdenesTrabajos
         public ActionResult Index()
         {
+            ViewData["Catalogo_IdOrdenTrabajo"] = 0;
             return View();
+        }
+
+        [HttpGet]
+        [Route("EtapasOrdenesTrabajos/{idOrdenTrabajo}")]
+        public ActionResult KanbanEtapa(long idOrdenTrabajo)
+        {
+            ViewData["Catalogo_IdOrdenTrabajo"] = idOrdenTrabajo;
+            return View("index");
         }
     }
 }

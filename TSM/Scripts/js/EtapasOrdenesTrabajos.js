@@ -6,27 +6,139 @@ let xItem;
 let xIdUsuarioTo;
 let xIdUsuarioFrom;
 
+var fn_VerOt = function (xidOrdenTrabajo, xidEtapaProceso) {
+    window.location.href = "/OrdenesTrabajo/ElementoTrabajo/" + xidOrdenTrabajo + "/" + xidEtapaProceso;
+};
+var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
+    window.location.href = "/GestionOTAsignaciones/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
+};
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbTiposOrdenesTrabajos"), TSM_Web_APi + "TiposOrdenesTrabajos", "Nombre", "IdTipoOrdenTrabajo", "Seleccione un Tipo de Orden de trabajo", "");
-    //Dibujar htmle
-    //fn_ObtenerOTs();
+    Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
+    $("#CmbPrograma").ControlSelecionPrograma();
+    $("#CmbOrdenTrabajo").ControlSeleccionOrdenesTrabajos();
+    
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            fn_ObtenerOTs(this.dataItem(e.item.index()).IdTipoOrdenTrabajo.toString());
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), this.dataItem(e.item.index()).IdTipoOrdenTrabajo);
         } else {
-            fn_ObtenerOTs(0);
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
         }
     });
 
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            fn_ObtenerOTs(0);
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'),null);
         }
     });
 
-    fn_ObtenerOTs(0);
+
+    $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                this.dataItem(e.item.index()).IdCliente,
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+        else {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
+                KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+    });
+
+    $("#CmbCliente").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
+                KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                this.dataItem(e.item.index()).IdCliente,
+                this.dataItem(e.item.index()).IdPrograma,
+                $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+
+        } else {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                null, $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                null, $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+
+    });
+
+
+    $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+          
+            fn_ObtenerOTs(null, this.dataItem(e.item.index()).IdOrdenTrabajo,
+                this.dataItem(e.item.index()).IdCliente,
+                this.dataItem(e.item.index()).IdPrograma, $("#chkVerTodas").is(':checked'),
+                KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+
+        } else {
+            fn_ObtenerOTs(null, null,
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+    });
+
+    $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
+        if (data === undefined) {
+            fn_ObtenerOTs(null, null,
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+        }
+
+    });
+
+    $("#chkVerTodas").click(function () {
+        fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            KdoCmbGetValue($("#CmbCliente")),
+            KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            , this.checked, KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")));
+    });
+    if (Catalogo_IdOrdenTrabajo > 0) {
+        KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), Catalogo_IdOrdenTrabajo);
+        $('#chkVerTodas').prop('checked', 1);
+        fn_ObtenerOTs(null, Catalogo_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null);
+    } else {
+        $('#chkVerTodas').prop('checked', 0);
+        fn_ObtenerOTs(null, null, null, null, $("#chkVerTodas").is(':checked'), null);
+      
+    }
+
+    //fn_DibujarKanban("[]");
+
 });
 
 let fn_DibujarKanban = function (ds) {
@@ -61,11 +173,22 @@ let fn_DibujarKanban = function (ds) {
                 MainKanba.children().remove();
                 let usuario = elemento.IdUsuario;
                 $.each(filtro, function (index, elemento) {
-
+                    let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;"><a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '</a></div>' +
+                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">'+
+                       // '< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
+                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>'+
+                            '<li class="emptyItem">'+
+                             '<span class="empty">' + elemento.NoDocumento +'</span>'+
+                                '<ul>'+
+                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>'+
+                        '<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>'+
+                                '</ul>'+
+                            '</li>'+
+                        '</ul>'+
+                        '</div > ' +
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<div class="user">' +
@@ -94,6 +217,11 @@ let fn_DibujarKanban = function (ds) {
                     $("#" + elemento.IdRow + "").data("IdEtapaProceso", elemento.IdEtapaProceso);
                     $("#" + elemento.IdRow + "").data("Item", elemento.Item);
 
+                    $("#Menu_" + elemento.IdRow + "").kendoMenu({
+                        openOnClick: true
+                    });
+
+
                 });
 
             });
@@ -111,11 +239,22 @@ let fn_DibujarKanban = function (ds) {
 
 };
 
-let fn_ObtenerOTs = function (vep) {
+let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdPrograma, xSNTodas, xIdTipoOrdenTrabajo) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
+        type: "POST",
+        dataType: 'json',
         url: TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosEtapas",
-        type: 'GET',
+        data: JSON.stringify({
+            IdEtapaProceso: xIdEtapaProceso,
+            IdOrdenTrabajo: xIdOrdenTrabajo,
+            IdCliente: xIdCliente,
+            IdPrograma: xIdPrograma,
+            SNTodas: xSNTodas,
+            IdTipoOrdenTrabajo:xIdTipoOrdenTrabajo
+
+        }),
+        contentType: "application/json; charset=utf-8",
         success: function (datos) {
             fn_DibujarKanban(datos);
 

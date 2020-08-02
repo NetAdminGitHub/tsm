@@ -12,7 +12,7 @@ var fn_getArtesAdjuntos = function () {
     Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
     $("#CmbPrograma").ControlSelecionPrograma();
     $("#CmbOrdenTrabajo").CatalogoOrdenesTrabajos();
-
+    KdoCmbSetValue($("#CmbCliente"), "");
     KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
     KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
 
@@ -21,7 +21,7 @@ var fn_getArtesAdjuntos = function () {
             read: {
                 url: function () {
                     kendo.ui.progress($(document.body), true);
-                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -138,7 +138,7 @@ var fn_DibujarCatalogo = function (data) {
     $.each(data, function (index, elemento) {
     
         Pn.append('<div class="d-flex align-items-stretch col-lg-2">' +
-            '<a href="#" class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
+            '<a href="#" class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + index.toString() +"-" + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
             '<p></p>' +
             '<div class="card-block text-center ">' +
             '<h4 class="card-title font-weight-bold">' + elemento.NombreDiseno + '</h4>' +
@@ -150,14 +150,15 @@ var fn_DibujarCatalogo = function (data) {
             '</a>' +
             '</div');
 
-        $("#CCD-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno);
+        $("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno === null ? 0 : elemento.IdCatalogoDiseno);
+        $("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdArte", elemento.IdArte === null ? 0 : elemento.IdArte);
     });
 };
 
 
 var fn_CargarModal = function (e) {
   
-    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"), function () { fn_CloseInf();});
+    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"), $("#" + e["id"] + "").data("IdArte"),function () { fn_CloseInf();});
 };
 
 var fn_CloseInf = function () {
