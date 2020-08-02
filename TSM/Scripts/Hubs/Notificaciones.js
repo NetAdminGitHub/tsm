@@ -47,7 +47,7 @@ let fn_AlertActualizaVista = function (dt) {
             '<h2>' + dt.Mensaje + '</h2>' +
             '</div>' +
             '</div >',
-        title: "warning!",
+        title: "Alerta!",
         height: "auto",
         width: "30%",
         actions: [{

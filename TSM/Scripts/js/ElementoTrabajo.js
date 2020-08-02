@@ -108,6 +108,11 @@ $(document).ready(function () {
 
     });
 
+
+    $("#Menu_Volver").kendoMenu({
+        openOnClick: true
+    });
+
     KdoButton($("#btnCambiarAsignado"), "user");
     KdoButton($("#btnAsignarUsuario"), "save");
     KdoButton($("#btnCambiarEtapa"), "gear");
@@ -178,10 +183,10 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
 var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
-    if (datos.Asignado === false && datos.Seguidor === false) {
-        $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
+    //if (datos.Asignado === false && datos.Seguidor === false) {
+    //    $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
 
-    }
+    //}
     //calcular retenciones si existen
     fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1,false);
 
@@ -228,8 +233,12 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
     NombreQui = datos.NombreQui;
-    KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
+    if ($("#txtEstado").val() === "ACTIVO") {
+        KdoButtonEnable($("#btnCambiarEtapa"), EtpSeguidor === true || EtpAsignado === false || datos.EstadoOT === 'TERMINADO' ? false : true);
+    } else {
+        KdoButtonEnable($("#btnCambiarEtapa"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
+    }
     KdoButtonEnable($("#btnDesbloquearEtapa"), $("#txtEstado").val() === "FINALIZADO" ? true : false);
     xvNodocReq = datos.NodocReq;
     xEstadoOT = datos.EstadoOT;
@@ -397,17 +406,36 @@ $("#vCamEtapa").kendoDialog({
 });
 
 $("#btnCambiarEtapa").click(function (e) {
-    kendo.ui.progress($(document.body), true);
-    KdoCmbSetValue($("#cmbUsuarioEtp"), "");
-    $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
-    KdoComboBoxEnable($("#cmbEtpSigAnt"), true);
-    KdoCmbSetValue($("#cmbEtpSigAnt"), "");
-    $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
-    $("#TxtMotivoEtp").val("");
-    $("#vCamEtapa").data("kendoDialog").open();
-    $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
-    KdoCmbFocus($("#cmbEtpSigAnt"));
-    kendo.ui.progress($(document.body), false);
+    if ($("#txtEstado").val() === "FINALIZADO") {
+        kendo.ui.progress($(document.body), true);
+        KdoCmbSetValue($("#cmbEtpSigAnt"), "");
+        $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtp(idEtapaProceso));
+        $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
+        KdoCmbSetValue($("#cmbEtpSigAnt"), idEtapaProceso);
+        KdoComboBoxEnable($("#cmbEtpSigAnt"), false);
+        KdoCmbSetValue($("#cmbUsuarioEtp"), "");
+        $("#cmbUsuarioEtp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(idTipoOrdenTrabajo.toString(), idEtapaProceso));
+        $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
+        $("#TxtMotivoEtp").val("");
+        $("#vCamEtapa").data("kendoDialog").open();
+        $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
+        KdoCmbFocus($("#cmbUsuarioEtp"));
+        kendo.ui.progress($(document.body), false);
+    } else {
+        kendo.ui.progress($(document.body), true);
+        KdoCmbSetValue($("#cmbUsuarioEtp"), "");
+        $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
+        KdoComboBoxEnable($("#cmbEtpSigAnt"), true);
+        KdoCmbSetValue($("#cmbEtpSigAnt"), "");
+        $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
+        $("#TxtMotivoEtp").val("");
+        $("#vCamEtapa").data("kendoDialog").open();
+        $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
+        KdoCmbFocus($("#cmbEtpSigAnt"));
+        kendo.ui.progress($(document.body), false);
+    }
+
+   
 });
 $("#btnDesbloquearEtapa").click(function (e) {
     kendo.ui.progress($(document.body), true);
@@ -1308,6 +1336,14 @@ $("#btnIrGOT").click(function () {
     window.location.href = "/GestionOT";
 });
 
+let  fn_IrKanbanEtapa=function () {
+    window.location.href = "/EtapasOrdenesTrabajos";
+};
+let fn_IrCatalogo=function () {
+    window.location.href = "/CatalogoDisenos";
+};
+
+
 var fn_MostraTablaFormula = function (ds, div) {
 
     let xformula = $("#" + div + "");
@@ -1517,5 +1553,5 @@ var Fn_GetRequerimientoFoil = function (vIA) {
 
 // se activa al hacer click en el boton OK del warning
 $("#ElementoTrabajo_action").on("Action", function (event,dt) {
-    location.reload();
+    fn_IrKanbanEtapa();
 });

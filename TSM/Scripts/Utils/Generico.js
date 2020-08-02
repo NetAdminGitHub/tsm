@@ -1209,26 +1209,27 @@ var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
 /**
  * 
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, fnClose) {
+var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, idArte,fnClose) {
     kendo.ui.progress($(document.body), true);
     if ($("#" + divCDInf + "").children().length === 0) {
         $.ajax({
-            url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString(),
+            url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString() + "/" + idArte.toString(),
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.body), false);
-                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno, fnClose);
+                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno, idArte, fnClose);
 
             }
         });
     } else {
         kendo.ui.progress($(document.body), false);
-        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno, fnClose);
+        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno, idArte, fnClose);
     }
 };
 
@@ -1236,10 +1237,11 @@ var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, fnClos
  * 
  * @param {content} data el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno, fnClose) {
+var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno, idArte, fnClose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -1251,12 +1253,12 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
         script.type = "text/javascript";
         script.src = "/Scripts/js/CatalogoDisenoInf.js";
         script.onload = function () {
-            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, fnClose);
+            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, idArte, fnClose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno, fnClose);
+        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno, idArte, fnClose);
     }
 };
 /**
@@ -1264,15 +1266,16 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
  * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
  * @param {content} data  el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf  Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,fnClose) {
+var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,idArte,fnClose) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InfDetalle(divCDInf, idCatalogoDiseno);
+            fn_InfDetalle(divCDInf, idCatalogoDiseno, idArte);
         } else {
-            fn_CargarInfDetalle(divCDInf, idCatalogoDiseno);
+            fn_CargarInfDetalle(divCDInf, idCatalogoDiseno, idArte);
         }      
     };
     let onClose = function () {

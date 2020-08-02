@@ -192,10 +192,19 @@
                     </div>
                     <div class="form-group col-lg-6 col-md-6">
                         <div class="form-row">
-                            <div class="col-lg-6 col-md-5"></div>
-                            <div class="col-lg-6 col-md-7">
-                                <button type="button" id="btnDesbloquearEtapa">&nbsp;Desbloquear</button>
-                                <button type="button" id="btnIrGOT">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                            <div class="col-lg-6 col-md-9"></div>
+                            <div class="col-lg-6 col-md-3">
+                                <button type="button" id="btnDesbloquearEtapa" hidden="hidden">&nbsp;Desbloquear</button>
+                                <button type="button" id="btnIrGOT" hidden="hidden">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                                <ul id="Menu_Volver">
+                                    <li class="emptyItem">
+                                        <span class="empty">Volver</span>
+                                        <ul>
+                                            <li onclick="fn_IrKanbanEtapa();"><span class="k-icon k-i-grid"></span>Ir al Kanban Etapa</li>
+                                            <li onclick="fn_IrCatalogo();"><span class="k-icon k-i-ungroup"></span>Ir al Catalogo</li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

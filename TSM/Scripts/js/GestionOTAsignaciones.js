@@ -5,27 +5,133 @@ let xIdEtapaProceso;
 let xItem;
 let xIdUsuarioTo;
 let xIdUsuarioFrom;
-
+var fn_VerOt = function (xidOrdenTrabajo, xidEtapaProceso) {
+    window.location.href = "/OrdenesTrabajo/ElementoTrabajo/" + xidOrdenTrabajo + "/" + xidEtapaProceso;
+};
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/GetbyIdUsuario/" + getUser(), "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
+    Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
+    KdoCmbSetValue($("#CmbEtapasProcesos"), "");
+    $("#CmbPrograma").ControlSelecionPrograma();
+    $("#CmbOrdenTrabajo").ControlSeleccionOrdenesTrabajos();
     //Dibujar htmle
     //fn_ObtenerOTs();
     $("#CmbEtapasProcesos").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            fn_ObtenerOTs(this.dataItem(e.item.index()).IdEtapaProceso.toString());
+            fn_ObtenerOTs(this.dataItem(e.item.index()).IdEtapaProceso.toString(), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
         } else {
-            fn_ObtenerOTs(0);
+            fn_ObtenerOTs(0, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
         }
     });
 
     $("#CmbEtapasProcesos").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            fn_ObtenerOTs(0);
+            fn_ObtenerOTs(0, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
         }
     });
 
+
+    $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                this.dataItem(e.item.index()).IdCliente,
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
+        }
+        else {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
+                null);
+        }
+    });
+
+    $("#CmbCliente").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
+                null);
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                this.dataItem(e.item.index()).IdCliente,
+                this.dataItem(e.item.index()).IdPrograma,
+                $("#chkVerTodas").is(':checked'), null);
+
+        } else {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                null, $("#chkVerTodas").is(':checked'), null);
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                null, $("#chkVerTodas").is(':checked'), null);
+        }
+
+    });
+
+
+    $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), this.dataItem(e.item.index()).IdOrdenTrabajo,
+                this.dataItem(e.item.index()).IdCliente,
+                this.dataItem(e.item.index()).IdPrograma, $("#chkVerTodas").is(':checked'),
+                null);
+
+        } else {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), null,
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
+        }
+    });
+
+    $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
+        if (data === undefined) {
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), null,
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), null);
+        }
+
+    });
+
+    $("#chkVerTodas").click(function () {
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            KdoCmbGetValue($("#CmbCliente")),
+            KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            , this.checked, null);
+    });
+
+    if (KanbanEtapa_IdOrdenTrabajo > 0 || KanbanEtapa_IdEtapaProceso >0) {
+        KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), KanbanEtapa_IdOrdenTrabajo);
+        KdoCmbSetValue($("#CmbEtapasProcesos"), KanbanEtapa_IdEtapaProceso);
+        $('#chkVerTodas').prop('checked', 1);
+        fn_ObtenerOTs(KanbanEtapa_IdEtapaProceso, KanbanEtapa_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null);
+    }
 
 });
 
@@ -73,11 +179,21 @@ let fn_DibujarKanban = function (ds) {
                 MainKanba.children().remove();
                 let usuario = elemento.IdUsuario;
                 $.each(filtro, function (index,elemento) {
-
+                    let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;"><a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '<a/></div>' +
+                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
+                        //'<a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '<a />' +
+                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>' +
+                        '<li class="emptyItem">' +
+                        '<span class="empty">' + elemento.NoDocumento + '</span>' +
+                        '<ul>' +
+                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>' +
+                        '</ul>' +
+                        '</li>' +
+                        '</ul>' +
+                        '</div>' +
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<p class="card-text" style="white-space:normal;">Usuario:' + elemento.IdUsuario + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
@@ -94,6 +210,11 @@ let fn_DibujarKanban = function (ds) {
                     $("#" + elemento.IdRow + "").data("IdEtapaProceso", elemento.IdEtapaProceso);
                     $("#" + elemento.IdRow + "").data("Item", elemento.Item);
                     $("#" + elemento.IdRow + "").data("UsuarioFrom", usuario);
+
+                    $("#Menu_" + elemento.IdRow + "").kendoMenu({
+                        openOnClick: true
+                    });
+
 
                 });
 
@@ -112,11 +233,22 @@ let fn_DibujarKanban = function (ds) {
 
 };
 
-let fn_ObtenerOTs = function (vep) {
+let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdPrograma, xSNTodas, xIdTipoOrdenTrabajo) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosEtapas/" + vep,
-        type: 'GET',
+        type: "POST",
+        dataType: 'json',
+        url: TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosEtapas",
+        data: JSON.stringify({
+            IdEtapaProceso: xIdEtapaProceso,
+            IdOrdenTrabajo: xIdOrdenTrabajo,
+            IdCliente: xIdCliente,
+            IdPrograma: xIdPrograma,
+            SNTodas: xSNTodas,
+            IdTipoOrdenTrabajo: xIdTipoOrdenTrabajo
+
+        }),
+        contentType: "application/json; charset=utf-8",
         success: function (datos) {
             fn_DibujarKanban(datos);
 
