@@ -111,6 +111,9 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdServicio");
             KdoHideCampoPopup(e.container, "IdModulo");
             KdoHideCampoPopup(e.container, "IdTipoRetencion");
+            if (!e.model.isNew()) {
+                KdoCmbSetValue($('[name="Severidad"]'), e.model.Severidad);
+            }
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
