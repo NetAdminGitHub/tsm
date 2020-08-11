@@ -764,6 +764,7 @@
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
+    <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SublimacionOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -1474,6 +1475,7 @@
     <Content Include="Views\CalidadCriterios\Index.cshtml" />
     <Content Include="Views\Shared\_AutorizarRetenciones.cshtml" />
     <Content Include="Views\GestionOTDesarrollosCobrosApro\Index.cshtml" />
+    <Content Include="Views\Shared\_SolicitarIngresoCambios.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

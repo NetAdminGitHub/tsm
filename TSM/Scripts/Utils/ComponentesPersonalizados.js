@@ -177,5 +177,33 @@
                 ]
             });
         });
-    }
+    },
+    ControlSelecionSolicitudesCambios: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdSolicitudCambio",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de solicitudes cambio",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudesCambios/GetEtapasImpacto"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdSolicitudCambio", title: "Solicitud Cambio", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "EtapasImpacto", title: "Etapas de impacto", width: 500 }
+                ]
+            });
+        });
+    },
 });
