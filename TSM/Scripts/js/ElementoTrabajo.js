@@ -42,6 +42,9 @@ var xEstado;
 var xEstadoOT;
 var AccesMaquinaArt;
 var CumpleOEKOTEX;
+let xvIdOrdenTrabajo=0;
+let xvIdSolicitudCambio=0;
+let xvItemSolicitud = 0;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -62,7 +65,8 @@ var fn_CambioEtp = function (e) {
                 idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
                 idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
                 motivo: $("#TxtMotivoEtp").val(),
-                IdUsuario:getUser()
+                IdUsuario: getUser(),
+                snMensaje: true
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
@@ -88,6 +92,11 @@ var fn_CambioEtp = function (e) {
 $(document).ready(function () {
     PanelBarConfig($("#BarPanelInfo"));
     kendo.ui.progress($(document.body), true);
+    //cargando los accesorios maquinas
+    fn_getAccesoriosMaquinasArticulos();
+    //cargando todas las etapas
+    fn_ConfigEtapas();
+
     $.ajax({
         url: TSM_Web_APi + "/OrdenesTrabajosDetalles/GetEtapasByOrdenTrabajo/" + idOrdenTrabajo,
         method: 'GET',
@@ -118,21 +127,223 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarEtapa"), "gear");
     KdoButton($("#btnAutorizarRetenciones"), "warning");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
-    KdoButton($("#btnDesbloquearEtapa"), "unlock");
-    KdoButtonEnable($("#btnDesbloquearEtapa"), false);
+    KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
+    KdoButton($("#btnRegistroCambio"), "track-changes-accept");
+   
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
+    KdoButtonEnable($("#btnRegistroCambio"), false);
     $("#swchSolTelaSusti").kendoSwitch();
 
     $("#swchSolDesOEKO").kendoSwitch();
     $("#swchPDocAduanal").kendoSwitch();
     $("#swchCobDiseno").kendoSwitch();
 
-    //cargando todas las etapas
-    ConfigEtapas = fn_ConfigEtapas();
+//#region Grid soliciud
+    var dsetRegCambios = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function () {
+                    return TSM_Web_APi + "OrdenesTrabajosSolicitudesCambios/GetByIdOrdenTrabajo/" + idOrdenTrabajo;
+                },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdOrdenTrabajo",
+                fields: {
+                    IdOrdenTrabajo: { type: "number"},
+                    IdSolicitudCambio: { type: "number" },
+                    NombreSolicitudCambio: { type: "string" },
+                    ItemSolicitud: { type: "number" },
+                    Comentario: { type: "string" },
+                    Estado: { type: "string" },
+                    NombreEstado: { type: "string" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
 
-    //cargando los accesorios maquinas
-    AccesMaquinaArt = fn_getAccesoriosMaquinasArticulos();
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL gCHFor,CAMPOS
+    $("#gridRegistroCambios").kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        dataBound: function () {
+            for (var i = 0; i < this.columns.length; i++) {
+                this.autoFitColumn(i);
+                this.columnResizeHandleWidth;
+            }
+        },
+        columns: [
+            { field: "IdOrdenTrabajo", title: "Código Orden Trabajo", hidden: true, menu: false },
+            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, menu: false },
+            { field: "NombreSolicitudCambio", title: "Cambio", minResizableWidth: 300 },
+            { field: "ItemSolicitud", title: "Item", hidden: true, menu: false },
+            { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
+            { field: "Estado", title: "Estado", hidden: true, menu: false },
+            { field: "NombreEstado", title: "Estado" },
+            { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
+            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}",  hidden: true }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gridRegistroCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si,220);
+    Set_Grid_DataSource($("#gridRegistroCambios").data("kendoGrid"), dsetRegCambios, 20);
+    var srow1 = [];
+    $("#gridRegistroCambios").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridRegistroCambios"), srow1);
+    });
+
+    $("#gridRegistroCambios").data("kendoGrid").bind("change", function (e) {
+        var sel = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
+        xest = sel === null ? 0 : sel.Estado;
+        xest ==="AUTORIZADA" ? Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, false, false) : Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, true, false);
+        fn_ConsultarDetalle();
+        Grid_SelectRow($("#gridRegistroCambios"), srow1);
+    });
+
+//#endregion 
+
+//#region Grid detalle de solicitud
+    var dsetRegCambiosDetalle = new kendo.data.DataSource({
+
+        transport: {
+            read: {
+                url: function () {
+                    return TSM_Web_APi + "GetOrdenesTrabajosDetallesSolicitudesCambiosAut/GetAut/" + idOrdenTrabajo + "/" + xvIdSolicitudCambio + "/" + xvItemSolicitud;
+                },
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) {
+                    return TSM_Web_APi + "OrdenesTrabajosDetallesSolicitudesCambiosAut/Registro/" + datos.IDOrdenTrabajo + "/" + datos.IdSolicitudCambio + "/" + datos.ItemSolicitud + "/" + datos.IdEtapaProceso + "/" + datos.Item;
+                },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+            if (e.type === "update") {
+                $("#gridRegistroCambios").data("kendoGrid").dataSource.read();
+            }
+        },
+        schema: {
+            model: {
+                id: "IdEtapaProceso",
+                fields: {
+                    IDOrdenTrabajo: { type: "number" },
+                    IdSolicitudCambio: { type: "number" },
+                    NombreSolicitudCambio: { type: "string" },
+                    ItemSolicitud: { type: "number" },
+                    IdEtapaProceso: { type: "number" },
+                    NombreEtapaProceso: { type: "string" },
+                    Item: { type: "number" },
+                    Estado: { type: "string" },
+                    NombreEstado: { type: "string" },
+                    Comentario: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='Comentario']") && (input.val().length > 500 || input.val().length < 0)) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    return false;
+                                }
+
+
+                                return true;
+                            }
+                        }
+                    },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" },
+                    Autorizado: { type: "bool" }
+
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL gCHFor,CAMPOS
+    $("#gridRegistroCambiosDetalle").kendoGrid({
+        dataBound: function () {
+            for (var i = 0; i < this.columns.length; i++) {
+                this.autoFitColumn(i);
+                this.columnResizeHandleWidth;
+            }
+        },
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "IDOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "IdSolicitudCambio");
+            KdoHideCampoPopup(e.container, "NombreSolicitudCambio");
+            KdoHideCampoPopup(e.container, "ItemSolicitud");
+            KdoHideCampoPopup(e.container, "IdEtapaProceso");
+            KdoHideCampoPopup(e.container, "NombreEtapaProceso");
+            KdoHideCampoPopup(e.container, "Item");
+            KdoHideCampoPopup(e.container, "Estado");
+            KdoHideCampoPopup(e.container, "NombreEstado");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            if (EtpAsignado === true && Number(e.model.IdEtapaProceso) !== Number($("#txtIdEtapaProceso").val())) {
+                TextBoxEnable($('[name="Comentario"]'), false);
+                KdoCheckBoxEnable($('[name="Autorizado"]'), false);
+            }
+            Grid_Focus(e, "Comentario");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IDOrdenTrabajo", title: "Código Orden Trabajo", hidden: true},
+            { field: "IdSolicitudCambio", title: "Código solicitud cambio" ,hidden: true},
+            { field: "NombreSolicitudCambio", title: "Solicitud de cambio", hidden: true},
+            { field: "ItemSolicitud", title: "Item", hidden: true},
+            { field: "IdEtapaProceso", title: "Código Etapa", hidden: true},
+            { field: "NombreEtapaProceso", title: "Etapa", minResizableWidth: 250},
+            { field: "Item", title: "Item", hidden: true },
+            { field: "Estado", title: "Estado", hidden: true},
+            { field: "NombreEstado", title: "Nombre Estado", hidden: true },
+            { field: "Comentario", title: "Comentario" ,minResizableWidth:700},
+            { field: "Autorizado", title: "Autorizado ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Autorizado"); } },
+            { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
+            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gridRegistroCambiosDetalle").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 300);
+    SetGrid_CRUD_ToolbarTop($("#gridRegistroCambiosDetalle").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridRegistroCambiosDetalle").data("kendoGrid"), Permisos.SNEditar, false);
+    Set_Grid_DataSource($("#gridRegistroCambiosDetalle").data("kendoGrid"), dsetRegCambiosDetalle);
+
+    var srow2 = [];
+    $("#gridRegistroCambiosDetalle").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridRegistroCambiosDetalle"), srow2);
+    });
+
+    $("#gridRegistroCambiosDetalle").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridRegistroCambiosDetalle"), srow2);
+        
+    });
+ //#endregion
 
 });
+var fn_ConsultarDetalle = function () {
+    var SelItem = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
+    xvIdSolicitudCambio = SelItem === null ? 0 : SelItem.IdSolicitudCambio;
+    xvItemSolicitud = SelItem === null ? 0 : SelItem.ItemSolicitud;
+    $("#gridRegistroCambiosDetalle").data("kendoGrid").dataSource.read();
+};
 
 window.onpopstate = function (e) {
     $("#smartwizard").smartWizard("goToPage", e.state);
@@ -239,7 +450,10 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     } else {
         KdoButtonEnable($("#btnCambiarEtapa"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     }
-    KdoButtonEnable($("#btnDesbloquearEtapa"), $("#txtEstado").val() === "FINALIZADO" ? true : false);
+
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.SNCambiosNoAut===true ? false : true);
+    KdoButtonEnable($("#btnRegistroCambio"),true);
+
     xvNodocReq = datos.NodocReq;
     xEstadoOT = datos.EstadoOT;
     CumpleOEKOTEX = datos.StandarOEKOTEX;
@@ -247,6 +461,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     //obtner las estapas siguientes
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
+
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
@@ -369,6 +584,7 @@ $("#vAsignarUsuario").kendoDialog({
     title: "Asignación de Usuarios",
     visible: false,
     maxHeight: 600,
+    minWidth: "30%",
     closable: true,
     modal: true,
     actions: [
@@ -389,8 +605,9 @@ $("#vAsignarUsuario").kendoDialog({
 
 $("#vCamEtapa").kendoDialog({
     height: "auto",
-    width: "20%",
-    maxHeight: "600 px",
+    width: "auto",
+    maxHeight: 600,
+       minWidth: "20%",
     title: "Cambio de Etapa",
     visible: false,
     closable: true,
@@ -405,6 +622,22 @@ $("#vCamEtapa").kendoDialog({
     }
 });
 
+$("#vRegistroCambio").kendoDialog({
+    height: "auto",
+    width: "60%",
+    title: "Historial de Cambios",
+    visible: false,
+    maxHeight: 800,
+    minWidth: "60%",
+    closable: true,
+    modal: true,
+    actions: [
+        { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
+    ],
+    close: function (e) {
+        $("#gridRegistroCambios").data("kendoGrid").dataSource.read();
+    }
+});
 $("#btnCambiarEtapa").click(function (e) {
     if ($("#txtEstado").val() === "FINALIZADO") {
         kendo.ui.progress($(document.body), true);
@@ -437,21 +670,11 @@ $("#btnCambiarEtapa").click(function (e) {
 
    
 });
-$("#btnDesbloquearEtapa").click(function (e) {
-    kendo.ui.progress($(document.body), true);
-    KdoCmbSetValue($("#cmbEtpSigAnt"), "");
-    $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtp(idEtapaProceso));
-    $("#cmbEtpSigAnt").data("kendoComboBox").dataSource.read();
-    KdoCmbSetValue($("#cmbEtpSigAnt"), idEtapaProceso);
-    KdoComboBoxEnable($("#cmbEtpSigAnt"), false);
-    KdoCmbSetValue($("#cmbUsuarioEtp"), "");
-    $("#cmbUsuarioEtp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(idTipoOrdenTrabajo.toString(), idEtapaProceso));
-    $("#cmbUsuarioEtp").data("kendoComboBox").dataSource.read();
-    $("#TxtMotivoEtp").val("");
-    $("#vCamEtapa").data("kendoDialog").open();
-    $("#FrmCambioEtapa").data("kendoValidator").hideMessages();
-    KdoCmbFocus($("#cmbUsuarioEtp"));
-    kendo.ui.progress($(document.body), false);
+$("#btnSolicitarRegistroCambio").click(function (e) {
+
+    //validar si existen mas retenciones
+    fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
+    //AutRet: es el nombre del div en la vista elementoTrabajo
 });
 
 var CargarAsignacionUsuarios = function () {
@@ -529,6 +752,17 @@ $("#btnAutorizarRetenciones").bind("click", function () {
     //AutRet: es el nombre del div en la vista elementoTrabajo
    
 });
+
+$("#btnRegistroCambio").click(function (e) {
+
+    $("#gridRegistroCambios").data("kendoGrid").dataSource.read().then(function () {
+        $("#vRegistroCambio").data("kendoDialog").open();
+        $("#gridRegistroCambios").data("kendoGrid").refresh();
+        $("#gridRegistroCambiosDetalle").data("kendoGrid").dataSource.read();
+        $("#gridRegistroCambiosDetalle").data("kendoGrid").refresh();
+    });
+});
+
 var ValidarUsuario = $("#FrmAsignarUsuario").kendoValidator(
     {
         rules: {
@@ -1441,23 +1675,19 @@ var fn_UnidadMedida = function (filtro) {
 };
 /** 
  *  Devuelve las etapas para el modulo del modulo 2 servicio al cliente
- *  @returns {data} datos
  */
 var fn_ConfigEtapas = function () {
     kendo.ui.progress($(document.body), true);
-    let result = null;
     $.ajax({
         url: TSM_Web_APi + "EtapasProcesos/GetByModulo/2",
         type: 'GET',
-        async: false,
         success: function (datos) {
-            result = datos;
+            ConfigEtapas = datos;
         },
         complete: function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    return result;
 };
 
 var fn_RTActivaDropTarget = function () {
@@ -1511,23 +1741,19 @@ var onCloseCambioEstado = function (e) {
 };
 /** 
  *  metodo que obtiene todos los AccesoriosMaquinasArticulos
- *  @returns {data} datos
  */
 var fn_getAccesoriosMaquinasArticulos = function () {
     kendo.ui.progress($(document.body), true);
-    let result = null;
     $.ajax({
         url: TSM_Web_APi + "AccesoriosMaquinasArticulos",
-        async: false,
         type: 'GET',
         success: function (datos) {
-            result = datos;
+            AccesMaquinaArt = datos;
         },
         complete: function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    return result;
 };
 
 var Fn_GetRequerimientoFoil = function (vIA) {
@@ -1552,6 +1778,9 @@ var Fn_GetRequerimientoFoil = function (vIA) {
 };
 
 // se activa al hacer click en el boton OK del warning
-$("#ElementoTrabajo_action").on("Action", function (event,dt) {
+$("#ElementoTrabajo_action").on("Action_Ok", function (event,dt) {
     fn_IrKanbanEtapa();
 });
+
+
+

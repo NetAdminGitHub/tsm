@@ -1396,6 +1396,9 @@ var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtap
     $("#" + divAutRet + "").data("kendoDialog").open().toFront();
 };
 //#endregion
+
+//#region Funcion calcular retencion
+
 /**
  * Metodo palcular las retenciones
  * @param {number} vIdOrdenTrabajo orden de trabajo
@@ -1430,4 +1433,115 @@ var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencio
         }
     });
 };
+//#endregion
+
+
+//#region Solicitar Registro de cambios
+/**
+ * 
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_SolicitarIngresoCambio = function (divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose) {
+    kendo.ui.progress($(document.body), true);
+    if ($("#" + divSolIngCambio + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/SolicitarIngresoCambios",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalSolictudIngresoCambio(resultado, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    } else {
+        fn_CargarVistaModalSolictudIngresoCambio("", divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose);
+        kendo.ui.progress($(document.body), false);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de Ingreso de cambios
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo 
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalSolictudIngresoCambio = function (data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitarIngresoCambios.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/SolicitarIngresoCambios.js";
+        script.onload = function () {
+            fn_ShowModalSolictudIngresoCambio(true, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalSolictudIngresoCambio(false, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicialarCargaVistaCambio(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        } else {
+            fn_RegistroCambios(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined || fn === "") {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divSolIngCambio + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Solicitar cambio",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () {return fn_RegistrarSolicitudCambio(sicIdot, sicIdEtapa, sicItem);} },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+        ],
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divSolIngCambio + "").data("kendoDialog").open().toFront();
+};
+//#endregion
 

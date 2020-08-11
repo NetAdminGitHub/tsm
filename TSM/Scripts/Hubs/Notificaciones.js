@@ -20,11 +20,7 @@
         if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo && Number(idEtapaProceso) !== d.Data.IdEtapa && d.Data.IdUsuario !== getUser()) {
             fn_AlertActualizaVista(d);
         } 
-          //  else {
-        //    if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo && Number(idEtapaProceso) !== d.Data.IdEtapa && d.Data.IdUsuario === getUser()) {
-        //        $("#" + d.Vista + "_action").trigger("Action");
-        //    }
-        //}
+        
         
     };
 
@@ -52,7 +48,7 @@ let fn_AlertActualizaVista = function (dt) {
         width: "30%",
         actions: [{
             action: function (e) {
-                $("#" + dt.Vista + "_action").trigger("Action");
+                $("#" + dt.Vista + "_action").trigger("Action_Ok");
                 return true;
             },
             primary: true
