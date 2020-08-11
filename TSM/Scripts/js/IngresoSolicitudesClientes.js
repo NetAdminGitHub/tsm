@@ -353,9 +353,8 @@ let fn_GetECClientes = function () {
 
     return result;
 };
-let fn_crearServClie = function () {
-    let snCreoCli = false;
-    kendo.ui.progress($(document.body), true);
+let fn_crearServClie = function (e) {
+    kendo.ui.progress($(".k-window-content"), true);
     let xType = vIdSoli === 0 ? "Post" : "Put";
     let xFecha =  kendo.toString(kendo.parseDate($("#Fecha").val()), 's');
     xpNodocumento = vIdSoli === 0 ? "" : $("#NoDocumento").val();
@@ -363,7 +362,6 @@ let fn_crearServClie = function () {
     $.ajax({
         url: TSM_Web_APi + (vIdSoli === 0 ? "Solicitudes" : "Solicitudes/" + vIdSoli),
         type: xType,
-        async: false,
         data: JSON.stringify({
             IdSolicitud: vIdSoli,
             NoDocumento: xpNodocumento,
@@ -388,22 +386,29 @@ let fn_crearServClie = function () {
             Grid_HabilitaToolbar($("#gridDet"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             KdoButtonEnable($("#btnDelClieCont"), true);
             KdoButtonEnable($("#btnProClieCont"), true);
-            kendo.ui.progress($(document.body), false);
-            //RequestEndMsg(data, xType);
-            //actualizar URL
+            kendo.ui.progress($(".k-window-content"), false);
+
+            TextBoxEnable($('[name="NombreDiseno"]'), true);
+            TextBoxEnable($('[name="NombrePro"]'), true);
+            KdoComboBoxEnable($('[name="IdTipoMuestra"]'), true);
+            KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), true);
+            TextBoxEnable($('[name="ColorTela"]'), true);
+            KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), true);
+            KdoNumerictextboxEnable($('[name="CantidadYardaPieza"]'), true);
+            KdoComboBoxEnable($('[name="IdUnidadYdPzs"]'), true);
+            $('[name="IdSolicitud"]').data("kendoNumericTextBox").value(vIdSoli);
+            $('[name="IdSolicitud"]').data("kendoNumericTextBox").trigger("change");
+            $('[name="NombreDiseno"]').focus();
             window.history.pushState('', '',  "/SolicitudesClientes/IngresoSolicitudesClientes/" + vIdServSol.toString() + "/" + esContacto.toString() + "/" + vIdSoli.toString());
-            snCreoCli = true;
             InciarInsert = false;
         },
         error: function (data) {
             kendo.ui.progress($(document.body), false);
             ErrorMsg(data);
-            snCreoCli = false;
             InciarInsert = true;
+            kendo.ui.progress($(".k-window-content"), false);
         }
     });
-
-    return snCreoCli;
 };
 let fn_GetSolCli = function (idsolicitud) {
     kendo.ui.progress($(document.body), true);
@@ -554,15 +559,14 @@ let fn_gridSolDet = function () {
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "NombreUN");
             KdoHideCampoPopup(e.container, "Estado");
-            Grid_Focus(e, "NombreDiseno");
-
+           
             $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(vIdServSol === 1 ? fn_DSudm("9") : fn_DSudm("9,17"));
-            if (InciarInsert===true) {
-                fn_GuadarCliente();
-                $('[name="IdSolicitud"]').data("kendoNumericTextBox").value(vIdSoli);
-                $('[name="IdSolicitud"]').data("kendoNumericTextBox").trigger("change");
+            if (InciarInsert === true) {
+                fn_GuadarCliente(e);
             }
-     
+            else {
+                $('[name="NombreDiseno"]').focus();
+            }
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -761,9 +765,7 @@ let fn_crearProgra = function () {
     });
 
 };
-let fn_GuadarCliente = function () {
-    let snGuardo = false;
-    kendo.ui.progress($(document.body), true);
+let fn_GuadarCliente = function (e) {
     if ($("#FrmClieCont").data("kendoValidator").validate()) {
         xpnIdcliente = KdoCmbGetValue($("#CmbCliCont"));
         xpnNombreClie = KdoCmbGetText($("#CmbCliCont"));
@@ -772,13 +774,18 @@ let fn_GuadarCliente = function () {
         } else {
             xpnIdContactoCliente = KdoCmbGetValue($("#CmbContactoSol"));
         }
-        snGuardo = fn_crearServClie();
+        TextBoxEnable($('[name="NombreDiseno"]'), false);
+        TextBoxEnable($('[name="NombrePro"]'), false);
+        KdoComboBoxEnable($('[name="IdTipoMuestra"]'), false);
+        KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), false);
+        TextBoxEnable($('[name="ColorTela"]'), false);
+        KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), false);
+        KdoNumerictextboxEnable($('[name="CantidadYardaPieza"]'), false);
+        KdoComboBoxEnable($('[name="IdUnidadYdPzs"]'), false);
+        fn_crearServClie();
     } else {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-        snGuardo = false;
     }
-    kendo.ui.progress($(document.body), false);
-    return snGuardo;
 };
 let fn_CreaItemProm = function (widgetId, value) {
     var widget = $("#" + widgetId).getKendoComboBox();

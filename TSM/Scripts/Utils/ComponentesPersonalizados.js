@@ -144,5 +144,66 @@
                 ]
             });
         });
-    }
+    },
+    ControlSeleccionOrdenesTrabajos: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Ordenes de trabajo",
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosConsulta"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+
+                },
+                columns: [
+                    { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
+                    { field: "NoDocReq", title: "Requerimiento", width: 100 },
+                    { field: "Nombre", title: "Nombre del Diseño", width: 200 },
+                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 }
+
+                ]
+            });
+        });
+    },
+    ControlSelecionSolicitudesCambios: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdSolicitudCambio",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de solicitudes cambio",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudesCambios/GetEtapasImpacto"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdSolicitudCambio", title: "Solicitud Cambio", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "EtapasImpacto", title: "Etapas de impacto", width: 500 }
+                ]
+            });
+        });
+    },
 });

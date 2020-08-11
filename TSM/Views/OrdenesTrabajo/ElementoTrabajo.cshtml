@@ -10,6 +10,7 @@
         var idOrdenTrabajo = @ViewBag.IdOrdenTrabajo;
         var idEtapaProceso = @ViewBag.IdEtapaProceso;
         var nombreVista = "@ViewBag.VistaParcial";
+        var loadedview = "ElementoTrabajo";
     </script>
 
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
@@ -25,6 +26,31 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
+                <div class="form-row">
+                    <div class="col-lg-8 col-md-8">
+                        <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de usuarios</button>
+                        <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de etapa</button>
+                        <button type="button" id="btnAutorizarRetenciones">&nbsp;Retenciones</button>
+                        <button type="button" id="btnRegistroCambio">&nbsp;Historial de cambios</button>
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4">
+                        <div class="form-row">
+                            <div class="col-lg-6 col-md-9"></div>
+                            <div class="col-lg-6 col-md-3">
+                                <button type="button" id="btnIrGOT" hidden="hidden">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                                <ul id="Menu_Volver">
+                                    <li class="emptyItem">
+                                        <span class="empty">Volver</span>
+                                        <ul>
+                                            <li onclick="fn_IrKanbanEtapa();"><span class="k-icon k-i-grid"></span>Ir al Kanban Etapa</li>
+                                            <li onclick="fn_IrCatalogo();"><span class="k-icon k-i-ungroup"></span>Ir al Catalogo</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <ul id="BarPanelInfo">
                     <li>
                         <span class="TS-icon-INFO1" style="font-size: 1.7em;">&nbsp</span>
@@ -152,10 +178,6 @@
                                                     <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
                                                     <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
                                                 </div>
-                                                @*<div class="form-group col-lg-2 col-md-2 ">
-                                                    <label for="swchSolTelaSusti">Solicitar Tela Sustituta:</label>
-                                                    <input type="checkbox" id="swchSolTelaSusti" name="swchSolTelaSusti" />
-                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -183,18 +205,6 @@
                     </li>
                 </ul>
                 <br />
-                <div class="form-row">
-                    <div class="col-lg-6 col-md-6">
-                        <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de Usuarios</button>
-                        <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de Etapa</button>
-                    </div>
-                    <div class="form-group col-lg-6 col-md-6">
-                        <div class="form-row">
-                            <div class="col-lg-9 col-md-8"></div>
-                            <div class="col-lg-3 col-md-4"> <button type="button" id="btnIrGOT">&nbsp;Ir a Gesti&oacute;n O.T</button></div>
-                        </div>
-                    </div>
-                </div>
                 <div class="form-row">
                     <div class="col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
                         <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor"></ul>
@@ -290,3 +300,38 @@
     </div>
 </div>
 
+@*seccion html que se utilizara para la vista modal de Autorizacion de retenciones *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="AutRet"></div>
+    </div>
+</div>
+
+ @*div para controlar el evento del warning*@
+<div id="ElementoTrabajo_action"></div>
+
+@*Div html que se utilizar para el ingreso de la solitud de resgistro de cambio. *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="SoliIngresoCambio"></div>
+    </div>
+</div>
+
+@*Vista modal registro de cambios*@
+<div id="vRegistroCambio">
+    <div class="form-row">
+        <div class="form-group col-lg-4 col-md-4">
+            <button type="button" id="btnSolicitarRegistroCambio">&nbsp;Registro de cambio</button>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <div id="gridRegistroCambios"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <div id="gridRegistroCambiosDetalle"></div>
+        </div>
+    </div>
+</div>
