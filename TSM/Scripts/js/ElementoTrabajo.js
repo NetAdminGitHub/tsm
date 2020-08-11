@@ -204,7 +204,7 @@ $(document).ready(function () {
     $("#gridRegistroCambios").data("kendoGrid").bind("change", function (e) {
         var sel = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
         xest = sel === null ? 0 : sel.Estado;
-        xest ==="AUTORIZADA" ? Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, false, false) : Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, true, false);
+        xest === "AUTORIZADA" || EtpAsignado === false ? Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, false, false) : EtpSeguidor === true ? Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, false, false) : Grid_HabilitaToolbar($("#gridRegistroCambiosDetalle"), false, true, false);
         fn_ConsultarDetalle();
         Grid_SelectRow($("#gridRegistroCambios"), srow1);
     });
@@ -296,10 +296,11 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
-            if (EtpAsignado === true && Number(e.model.IdEtapaProceso) !== Number($("#txtIdEtapaProceso").val())) {
+            if ( Number(e.model.IdEtapaProceso) !== Number($("#txtIdEtapaProceso").val())) {
                 TextBoxEnable($('[name="Comentario"]'), false);
                 KdoCheckBoxEnable($('[name="Autorizado"]'), false);
             }
+          
             Grid_Focus(e, "Comentario");
         },
         //DEFICNICIÓN DE LOS CAMPOS
