@@ -4,15 +4,18 @@ var xidRq = 0; //numero del requerimiento
 var ValidarFormularioOT = "";
 var srcDef = "/Images/NoImagen.png";
 var xid = 0;
+var xidArt = 0;
 var fn_verCotizacion = function (IdCotizacion, Estado) {
     window.open("/CotizacionesMuestras/CotizacionesMuestrasDatos/" + IdCotizacion.toString() + "/" + Estado.toString());
 };
 var fn_verSimulacion = function (IdSimulacion, IdServicio, IdOrdenTrabajo) {
     window.open("/SimulacionesMuestras/SimulacionesMuestrasInfo/" + IdSimulacion.toString() + "/" + IdServicio.toString() + "/" + IdOrdenTrabajo.toString());
 };
+var fn_verKanbanEtapa = function (IdOrdenTrabajo) {
+    window.location.href ="/EtapasOrdenesTrabajos/" + IdOrdenTrabajo.toString();
+};
 
-
-var fn_InfDetalle = function (divCDInf, xidCatalogo) {
+var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     fn_gridOT();
     $("#tab_inf").kendoTabStrip({
@@ -61,18 +64,19 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo) {
         
     });
 
-    fn_CargarInfDetalle(divCDInf, xidCatalogo);
+    fn_CargarInfDetalle(divCDInf, xidCatalogo, xidArte);
  
 };
 
-var fn_CargarInfDetalle = function (divCDInf, xidCatalogo) {
+var fn_CargarInfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     kendo.ui.progress($("#ModalCDinf"), true);
     $.ajax({
-        url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByIdCatalogo/" + xidCatalogo.toString(),
+        url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByIdCatalogoIdArte/" +  xidCatalogo + "/" + xidArte,
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
-            xid = dato[0].IdCatalogoDiseno;
+            xid = dato[0].IdCatalogoDiseno === null ? 0 : dato[0].IdCatalogoDiseno;
+            xidArt = dato[0].IdArte === null ? 0 : dato[0].IdArte;
             $("#gConOT").data("kendoGrid").dataSource.read();
             fn_DibujaScrollView($("#scrollView"), "", null);
             if (dato.length > 0) {
@@ -103,7 +107,7 @@ let fn_gridOT = function () {
                 $.ajax({
                     type: "GET",
                     dataType: 'json',
-                    url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByIdCatalogo/" + xid.toString(),
+                    url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByIdCatalogoIdArte/" + xid + "/" + xidArt,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -204,7 +208,12 @@ let fn_gridOT = function () {
             { field: "IdCatalogoDiseno", title: "Cod IdCatalogo", hidden: true },
             { field: "IdRequerimiento", title: "Cod IdRequerimiento", hidden: true },
             { field: "IdOrdenTrabajo", title: "Cod IdOrdenTrabajo", hidden: true },
-            { field: "NoOT", title: "Orden de Trabajo", width: "120px" },
+            //{ field: "NoOT", title: "Orden de Trabajo", width: "120px" },
+            {
+                field: "NoOT", title: "Orden de Trabajo", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='fn_verKanbanEtapa(" + data["IdOrdenTrabajo"] + ")'>" + data["NoOT"] + "</button>";
+                }, width: "120px"
+            },
             { field: "NoReq", title: "Requerimiento", width: "120px" },
             { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
             { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden:true },
@@ -248,6 +257,7 @@ let fn_gridOT = function () {
     var selectedRowsServ = [];
     $("#gConOT").data("kendoGrid").bind("dataBound", function () { //foco en la fila
         Grid_SetSelectRow($("#gConOT"), selectedRowsServ);
+        Grid_HabilitaToolbar($("#gConOT"), false, xid === 0 ? false : true, false);
        
     });
 

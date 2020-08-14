@@ -256,6 +256,7 @@
     <Compile Include="Controllers\GestionFichasProduccionesController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
+    <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
     <Compile Include="Controllers\GetCipherController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -738,6 +739,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
@@ -755,12 +757,14 @@
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\GestionOTDesarrollosCobrosApro.js" />
     <Content Include="Scripts\js\GetCipher.js" />
     <Content Include="Scripts\js\Impresores.js" />
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
+    <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SublimacionOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -1467,6 +1471,9 @@
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
     <Content Include="Views\CalidadCriterios\Index.cshtml" />
+    <Content Include="Views\Shared\_AutorizarRetenciones.cshtml" />
+    <Content Include="Views\GestionOTDesarrollosCobrosApro\Index.cshtml" />
+    <Content Include="Views\Shared\_SolicitarIngresoCambios.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

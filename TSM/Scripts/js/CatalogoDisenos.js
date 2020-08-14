@@ -12,7 +12,7 @@ var fn_getArtesAdjuntos = function () {
     Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
     $("#CmbPrograma").ControlSelecionPrograma();
     $("#CmbOrdenTrabajo").CatalogoOrdenesTrabajos();
-
+    KdoCmbSetValue($("#CmbCliente"), "");
     KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
     KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
 
@@ -21,7 +21,7 @@ var fn_getArtesAdjuntos = function () {
             read: {
                 url: function () {
                     kendo.ui.progress($(document.body), true);
-                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoByCliente/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -135,29 +135,53 @@ var fn_DibujarCatalogo = function (data) {
     let Pn = $("#RowPn31");
     Pn.children().remove();
 
-    $.each(data, function (index, elemento) {
+    //$.each(data, function (index, elemento) {
     
-        Pn.append('<div class="d-flex align-items-stretch col-lg-2">' +
-            '<a href="#" class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
-            '<p></p>' +
-            '<div class="card-block text-center ">' +
-            '<h4 class="card-title font-weight-bold">' + elemento.NombreDiseno + '</h4>' +
-            '<p class="card-subtitle">' + elemento.EstiloDiseno + '</p>' +
-            '<p class="card-text">' + elemento.NumeroDiseno + '</p>' +
-            '</div>' +
-            '<p></p>'+
-            '<img class="card-img-top img-responsive w-75 " src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
-            '</a>' +
-            '</div');
+    //    Pn.append('<div class="d-flex align-items-stretch col-lg-2">' +
+    //        '<a href="#" class= "card rounded-0 w-100 bg-white mb-4" onClick="fn_CargarModal(this)" id="CCD-' + index.toString() +"-" + elemento.IdCatalogoDiseno + '" data-NombreDis="' + elemento.NombreDiseno + '">' +
+    //        '<p></p>' +
+    //        '<div class="card-block text-center ">' +
+    //        '<h4 class="card-title font-weight-bold">' + elemento.NombreDiseno + '</h4>' +
+    //        '<p class="card-subtitle">' + elemento.EstiloDiseno + '</p>' +
+    //        '<p class="card-text">' + elemento.NumeroDiseno + '</p>' +
+    //        '</div>' +
+    //        '<p></p>'+
+    //        '<img class="card-img-top img-responsive w-75 " src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" alt="Card image cap">' +
+    //        '</a>' +
+    //        '</div');
 
-        $("#CCD-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno);
+    //    $("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno === null ? 0 : elemento.IdCatalogoDiseno);
+    //    $("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdArte", elemento.IdArte === null ? 0 : elemento.IdArte);
+    //});
+
+
+    $.each(data, function (index, elemento) {
+
+        Pn.append('<div class="k-card">' +
+            '<div class= "k-card-header" >' +
+            '<h5 class="k-card-title">' + elemento.NombreDiseno + '</h5>' +
+            '<h6 class="k-card-subtitle">Estilo: ' + elemento.EstiloDiseno + '</h6>' +
+            '</div >' +
+            '<img class="k-card-image"  src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" />' +
+            '<div class="k-card-body">' +
+            '<p>Numero:' + elemento.NumeroDiseno + '</p>' +
+            '<p>Archivo:' + elemento.NombreArchivo + '</p>' +
+            '<p>#:' + elemento.NoReferencia + '</p>' +
+            '</div>' +
+            '<div class="k-card-footer">' +
+            '<a class="k-button k-flat k-button-icon" onClick="fn_CargarModal(' + elemento.IdCatalogoDiseno + ',' + elemento.IdArte + ')"><span class="k-icon k-i-search" ></span></a>' +
+            '</div>' +
+            '</div >');
+
+        //$("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdCatalogoDiseno", elemento.IdCatalogoDiseno === null ? 0 : elemento.IdCatalogoDiseno);
+        //$("#CCD-" + index.toString() + "-" + elemento.IdCatalogoDiseno + "").data("IdArte", elemento.IdArte === null ? 0 : elemento.IdArte);
     });
 };
 
 
-var fn_CargarModal = function (e) {
+var fn_CargarModal = function (xIdCatalogoDiseno, xIdArte) {
   
-    fn_ConsultarCatalogoDisenoInf("ModalCDinf", $("#" + e["id"] + "").data("IdCatalogoDiseno"), function () { fn_CloseInf();});
+    fn_ConsultarCatalogoDisenoInf("ModalCDinf", xIdCatalogoDiseno === null ? 0 : xIdCatalogoDiseno, xIdArte === null ? 0 : xIdArte,function () { fn_CloseInf();});
 };
 
 var fn_CloseInf = function () {

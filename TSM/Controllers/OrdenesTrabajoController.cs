@@ -35,6 +35,12 @@ namespace TSM.Controllers
             }
         }
 
+        public ActionResult SolicitarIngresoCambios()
+        {
+
+            return PartialView("_SolicitarIngresoCambios");
+        }
+
         [HttpPost]
         public ActionResult VistaParcial(string id)
         {

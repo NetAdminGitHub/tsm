@@ -83,3 +83,14 @@ span[class*="ficonEtp"] {
     padding-top: 0.50rem;
     padding-bottom: 0.50rem;
 }
+
+div.TablaFomula {
+    height: 200px;
+    /*width: 200px;*/
+    overflow-y: scroll;
+}
+div.TablaEstacion {
+    height: 800px;
+    /*width: 200px;*/
+    overflow-y: scroll;
+}

@@ -1045,11 +1045,10 @@ var kdoRbSetValue = function (InputElem, value) {
  * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
  */
 var fn_FormulaHistorica = function (divCcf) {
-
     if ($("#" + divCcf + "").children().length === 0) {
         $.ajax({
             url: "/AXFormulaciones/ConsultaHistoricaFormulas",
-            async: false,
+            //async: false,
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
@@ -1058,7 +1057,6 @@ var fn_FormulaHistorica = function (divCcf) {
             }
         });
     } else {
-
         fn_CargarVistaModalFormulacion("", divCcf);
     }
 };
@@ -1211,26 +1209,27 @@ var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
 /**
  * 
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, fnClose) {
+var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, idArte,fnClose) {
     kendo.ui.progress($(document.body), true);
     if ($("#" + divCDInf + "").children().length === 0) {
         $.ajax({
-            url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString(),
+            url: "/CatalogoDisenos/CatalogoDisenoInf/" + idCatalogoDiseno.toString() + "/" + idArte.toString(),
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.body), false);
-                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno, fnClose);
+                fn_CargarVistaCatalogoDisenoInf(resultado, divCDInf, idCatalogoDiseno, idArte, fnClose);
 
             }
         });
     } else {
         kendo.ui.progress($(document.body), false);
-        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno, fnClose);
+        fn_CargarVistaCatalogoDisenoInf("", divCDInf, idCatalogoDiseno, idArte, fnClose);
     }
 };
 
@@ -1238,10 +1237,11 @@ var fn_ConsultarCatalogoDisenoInf = function (divCDInf, idCatalogoDiseno, fnClos
  * 
  * @param {content} data el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno, fnClose) {
+var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno, idArte, fnClose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -1253,12 +1253,12 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
         script.type = "text/javascript";
         script.src = "/Scripts/js/CatalogoDisenoInf.js";
         script.onload = function () {
-            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, fnClose);
+            fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, idArte, fnClose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno, fnClose);
+        fn_ShowModalCDInf(false, data, divCDInf, idCatalogoDiseno, idArte, fnClose);
     }
 };
 /**
@@ -1266,15 +1266,16 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
  * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
  * @param {content} data  el contenido html de la busqueda
  * @param {HtmlElementId} divCDInf  Id del div que contendra la vista de busqueda de tintas
- * @param {numeric} idCatalogoDiseno id del cliente
+ * @param {number} idCatalogoDiseno id del catalogo
+ * @param {number} idArte id del arte
  * @param {function} fnClose ejecutar funcion al cerrar modal
  */
-var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,fnClose) {
+var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,idArte,fnClose) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InfDetalle(divCDInf, idCatalogoDiseno);
+            fn_InfDetalle(divCDInf, idCatalogoDiseno, idArte);
         } else {
-            fn_CargarInfDetalle(divCDInf, idCatalogoDiseno);
+            fn_CargarInfDetalle(divCDInf, idCatalogoDiseno, idArte);
         }      
     };
     let onClose = function () {
@@ -1300,6 +1301,247 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,fnC
     });
 
     $("#" + divCDInf + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
+//#region Autorizacion de retenciones
+/**
+ * 
+ * @param {HtmlElementId} divAutRet Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_AutorizarRetenciones = function (divAutRet, retIdot, retIdEtapa, retItem) {
+    kendo.ui.progress($(document.body), true);
+    if ($("#" + divAutRet + "").children().length === 0) {
+        $.ajax({
+            url: "/Retenciones/AutorizarRetenciones",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalAutorizacion(resultado, divAutRet, retIdot, retIdEtapa, retItem);
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    } else {
+        fn_CargarVistaModalAutorizacion("", divAutRet, retIdot, retIdEtapa, retItem);
+        kendo.ui.progress($(document.body), false);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de la Autorizacion de retenciones
+ * @param {HtmlElementId} divAutRet Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_CargarVistaModalAutorizacion = function (data, divAutRet, retIdot, retIdEtapa, retItem) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("AutorizarRetenciones.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/AutorizarRetenciones.js";
+        script.onload = function () {
+            fn_ShowModalAutRet(true, data, divAutRet, retIdot, retIdEtapa, retItem);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalAutRet(false, data, divAutRet, retIdot, retIdEtapa, retItem);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html de la Autorizacion de retenciones
+ * @param {HtmlElementId} divAutRet  Id del div que contendra la vista de Autorizacion de retenciones
+ * @param {number} retIdot id orden de trabajo
+ * @param {number} retIdEtapa etapa del proceso
+ * @param {number} retItem item de la etapa
+ */
+var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtapa, retItem) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializaAutorizacion(retIdot, retIdEtapa, retItem);
+        } else {
+            fn_CargarVistaAutorizacion(retIdot, retIdEtapa, retItem);
+        }
+    };
+    let onClose = function () {
+        //$("#" + divAutRet + "").children().remove();
+    };
+    $("#" + divAutRet + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Autorizar retenciones",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        maxHeight: 800,
+        show: onShow,
+        close: onClose
+
+    });
+
+    $("#" + divAutRet + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
+//#region Funcion calcular retencion
+
+/**
+ * Metodo palcular las retenciones
+ * @param {number} vIdOrdenTrabajo orden de trabajo
+ * @param {number} vIdModulo el modulo para el cual se le va calcular
+ * @param {number} vIdTipoRetencion el tipo de retencion
+ * @param {boolean} vSNMostrar Mostrar Retencion catidad de rentenciones generadas
+ * @param {function} fn funcion a ejcutar despues de calcular las retenciones
+ */
+var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencion, vSNMostrar, fn) {
+    kendo.ui.progress($(document.body), true);
+    let fn_CR = function () {
+        if (fn === undefined || fn === "") {
+            return true;
+        } else {
+            return fn();
+        }
+    };
+    $.ajax({
+        url: TSM_Web_APi + "Retenciones/CalularRetenciones",
+        method: "POST",
+        dataType: "json",
+        data: JSON.stringify({
+            IdOrdenTrabajo: vIdOrdenTrabajo,
+            IdModulo: vIdModulo,
+            IdTipoRetencion: vIdTipoRetencion,
+            SNMostrar: vSNMostrar
+        }),
+        contentType: "application/json; charset=utf-8",
+        complete: function () {
+            fn_CR();
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+//#endregion
+
+
+//#region Solicitar Registro de cambios
+/**
+ * 
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_SolicitarIngresoCambio = function (divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose) {
+    kendo.ui.progress($(document.body), true);
+    if ($("#" + divSolIngCambio + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/SolicitarIngresoCambios",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                fn_CargarVistaModalSolictudIngresoCambio(resultado, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    } else {
+        fn_CargarVistaModalSolictudIngresoCambio("", divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose);
+        kendo.ui.progress($(document.body), false);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de Ingreso de cambios
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo 
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalSolictudIngresoCambio = function (data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitarIngresoCambios.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/SolicitarIngresoCambios.js";
+        script.onload = function () {
+            fn_ShowModalSolictudIngresoCambio(true, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalSolictudIngresoCambio(false, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicialarCargaVistaCambio(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        } else {
+            fn_RegistroCambios(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined || fn === "") {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divSolIngCambio + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Solicitar cambio",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () {return fn_RegistrarSolicitudCambio(sicIdot, sicIdEtapa, sicItem);} },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+        ],
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divSolIngCambio + "").data("kendoDialog").open().toFront();
 };
 //#endregion
 
