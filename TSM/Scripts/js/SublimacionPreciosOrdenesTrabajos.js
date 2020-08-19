@@ -4,15 +4,22 @@ var Permisos;
 let VIdCliente = 0;
 let data;
 let xIdReqDes = 0;
+//variables para mostrar los historicos
+let xIdReqChis = 0;
+let xIdCatPrendaChis = 0;
+let xIdUbiChis = 0;
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
     KdoCmbSetValue($("#CmbIdCliente"), "");
     KdoButton($("#btnCambioEstado"), "gear", "Cambiar estado");
     KdoButton($("#btnRefrescar"), "reload", "Actualizar");
+    KdoButton($("#btnEditarOT"), "unlock", "Editar OT histórica");
     KdoButton($("#btnAceptarCambiar"), "check", "Cambiar Estado");
+    KdoButton($("#btnCambiarPrecioApro"), "check", "Aceptar");
     KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(false));
     KdoButtonEnable($("#btnRefrescar"), false);
+    KdoButtonEnable($("#btnEditarOT"), fn_SNCambiarEstados(false));
     KdoButton($("#btnConsular"), "search", "Consultar");
     KdoButton($("#btnGuardar"), "save", "Guardar Comentario");
     $("#TxtMotivo").autogrow({ vertical: true, horizontal: false, flickering: false });
@@ -20,6 +27,7 @@ $(document).ready(function () {
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
     Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un estado ....");
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSublimacionConfirmadas();
+    $("#CmbOTaprob").ControlSelecionOTSublimacionConfirmadas();
 
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -51,7 +59,6 @@ $(document).ready(function () {
             KdoDatePikerEnable($("#dFechaHasta"), false);
         }
     });
-
     $("#TabPreciosSubli").kendoTabStrip({
         tabPosition: "top",
         animation: { open: { effects: "fadeIn" } }
@@ -65,6 +72,26 @@ $(document).ready(function () {
         visible: false,
         maxHeight: 900
     });
+    $("#ModalCambiaPrecioAprob").kendoDialog({
+        height: "auto",
+        width: "30%",
+        title: "Editar OT histórica",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+
+    $("#ModalPreciosHisCambios").kendoDialog({
+        height: "auto",
+        width: "60%",
+        title: "Histórico cambios de precios aprobados",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+
     $("#btnCambioEstado").click(function () {
         let lista = "";
         let Datos;
@@ -88,10 +115,18 @@ $(document).ready(function () {
         Fn_ConsultarSibli(KdoCmbGetValue($("#CmbIdCliente")));
     });
 
+    $("#btnEditarOT").click(function () {
+        KdoMultiColumnCmbSetValue($("#CmbOTaprob"), "");
+        $("#CmbOTaprob").data("kendoMultiColumnComboBox").dataSource.read();
+        $("#ModalCambiaPrecioAprob").data("kendoDialog").open().toFront();
+    });
+
+  
     //#region PROGRAMACION GRID PRINCIPAL PARA SIMULACION
 
     fn_partesSublimado();
     Grid_HabilitaToolbar($("#gridPartes"), false, false, false);
+
     //#endregion FIN GRID PRINCIPAL
 
     //#region seleccion de servicio y cliente
@@ -101,6 +136,7 @@ $(document).ready(function () {
             Fn_ConsultarSibli(this.dataItem(e.item.index()).IdCliente.toString());
             KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
             KdoButtonEnable($("#btnRefrescar"), true);
+            KdoButtonEnable($("#btnEditarOT"), fn_SNCambiarEstados(true));
             KdoDatePikerEnable($("#dFechaDesde"), true);
             KdoDatePikerEnable($("#dFechaHasta"), true);
             KdoCheckBoxEnable($('#chkRangFechas'), true);
@@ -114,6 +150,7 @@ $(document).ready(function () {
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
+            KdoButtonEnable($("#btnEditarOT"), false);
             KdoDatePikerEnable($("#dFechaDesde"), false);
             KdoDatePikerEnable($("#dFechaHasta"), false);
             KdoCheckBoxEnable($('#chkRangFechas'), false);
@@ -134,6 +171,7 @@ $(document).ready(function () {
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
+            KdoButtonEnable($("#btnEditarOT"), false);
             KdoDatePikerEnable($("#dFechaDesde"), false);
             KdoDatePikerEnable($("#dFechaHasta"), false);
             KdoCheckBoxEnable($('#chkRangFechas'), false);
@@ -148,8 +186,7 @@ $(document).ready(function () {
         }
     });
 
-    let ValidRD = $("#FrmModalCambioEstado").kendoValidator(
-        {
+    let ValidRD = $("#FrmModalCambioEstado").kendoValidator({
             rules: {
                 vcmbEstados: function (input) {
                     if (input.is("[name='cmbEstados']")) {
@@ -179,6 +216,21 @@ $(document).ready(function () {
         }
     ).data("kendoValidator");
 
+    let ValidHabilitar = $("#FrmModalCambioAprob").kendoValidator({
+            rules: {
+                vcmbEstados: function (input) {
+                    if (input.is("[name='CmbOTaprob']")) {
+                        return $("#CmbOTaprob").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                vcmbEstados: "Requerido"
+            }
+        }
+    ).data("kendoValidator");
+
 
     $("#btnAceptarCambiar").click(function () {
         if (ValidRD.validate()) {
@@ -197,7 +249,7 @@ $(document).ready(function () {
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     kendo.ui.progress($(".k-dialog"), false);
-                    $("#gridPartes").data("kendoGrid").dataSource.read();
+                    fn_GridPartesLoad();
                     $("#ModalCambioEstado").data("kendoDialog").close();
                     RequestEndMsg(data, "Post");
                 },
@@ -210,6 +262,40 @@ $(document).ready(function () {
         else {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         }
+    });
+
+    $("#btnCambiarPrecioApro").click(function () {
+        if (ValidHabilitar.validate()) {
+
+            kendo.ui.progress($(".k-dialog"), true);
+            $.ajax({
+                url: TSM_Web_APi + "RequerimientoDesarrollos/RequerimientoDesarrollos_CambiarEstadoSublimacion",
+                type: "Post",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdRequerimiento: KdoMultiColumnCmbGetValue($("#CmbOTaprob")),
+                    EstadoSiguiente: "DESARROLLO",
+                    Motivo: "ACTIVACIÓN DE OT POR CAMBIO DE PRECIOS",
+                    StringIdRequerimiento: ""
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    kendo.ui.progress($(".k-dialog"), false);
+                    fn_GridPartesLoad();
+                    $("#gridPartesHis").data("kendoGrid").dataSource.read();
+                    $("#ModalCambiaPrecioAprob").data("kendoDialog").close();
+                    RequestEndMsg(data, "Post");
+                },
+                error: function (data) {
+                    kendo.ui.progress($(".k-dialog"), false);
+                    ErrorMsg(data);
+                }
+            });
+        }
+        else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+        }
+     
     });
 
     //Cargar grid precios historicos
@@ -249,23 +335,38 @@ $(document).ready(function () {
         }
 
     });
+
+
     //#endregion
+
+    fn_partesHisCambios();
+    $("#chkMostrarTodos").click(function () {
+        $("#gridPartesHisCambios").data("kendoGrid").dataSource.read();
+    });
+
 });
-
-
+let fn_verHisCambioPrecios = function (xidreq, xidCatPre, xidUbi, xNodoc) {
+    xIdReqChis = xidreq;
+    xIdCatPrendaChis = xidCatPre;
+    xIdUbiChis = xidUbi;
+    $("#TxtNoDoc").val(xNodoc);
+    $("#gridPartesHisCambios").data("kendoGrid").dataSource.read();
+    kdoChkSetValue($("#chkMostrarTodos"), false);
+    $("#ModalPreciosHisCambios").data("kendoDialog").open();
+};
 let Fn_ConsultarSibli = function (IdCliente) {
     VIdCliente = Number(IdCliente);
     //leer grid
+    fn_GridPartesLoad();
+};
 
+let fn_GridPartesLoad = function () {
     $("#gridPartes").data("kendoGrid").dataSource.read().then(function () {
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? Grid_HabilitaToolbar($("#gridPartes"), false, false, false) : Grid_HabilitaToolbar($("#gridPartes"), Permisos.SNAgregar, Permisos.SNEditar, false);
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? KdoButtonEnable($("#btnCambioEstado"), false) : KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
 
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? KdoButtonEnable($("#btnGuardar"), false) : KdoButtonEnable($("#btnGuardar"), true);
-        $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? $("#TxtComentarios").attr("disabled", true): $("#TxtComentarios").attr("disabled", false);
-  
-      
-       
+        $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? $("#TxtComentarios").attr("disabled", true) : $("#TxtComentarios").attr("disabled", false);
     });
 };
 var fPermisos = function (datos) {
@@ -458,6 +559,9 @@ let fn_partesSublimado = function () {
                         operator: "contains",
                         suggestionOperator: "contains"
                     }
+                },
+                template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='fn_verHisCambioPrecios(" + data["IdRequerimiento"] + "," + data["IdCategoriaPrenda"] + "," + data["IdUbicacion"] + ",\"" + data["NoDocumento"] +"\")'>" + data["NoDocumento"] + "</button>";
                 }
             },
             { field: "IdCategoriaPrenda", title: "Codigo IdCategoriaPrenda", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0],   hidden: true },
@@ -690,6 +794,8 @@ let fn_partesHisSublimado = function () {
                         operator: "contains",
                         suggestionOperator: "contains"
                     }
+                }, template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='fn_verHisCambioPrecios(" + data["IdRequerimiento"] + "," + data["IdCategoriaPrenda"] + "," + data["IdUbicacion"] + ",\"" + data["NoDocumento"] +"\")'>" + data["NoDocumento"] + "</button>";
                 }
             },
             { field: "IdCategoriaPrenda", title: "Codigo IdCategoriaPrenda", editor: Grid_ColNumeric, values: ["required", "0", "9999999999999999", "#", 0], hidden: true },
@@ -827,6 +933,7 @@ $.fn.extend({
                 autoBind: false,
                 minLength: 3,
                 height: 400,
+                placeholder:"Seleccione una OT...",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -885,5 +992,127 @@ let fn_ActualizarReqSublimacion = function () {
             kendo.ui.progress($(document.body), false);
         }
     });
+
+};
+
+let fn_partesHisCambios = function () {
+    //#region partes de sublimado
+
+    let dsethisCambios = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) {
+                    return TSM_Web_APi + "PrendasPartesPreciosHis/" +( $("#chkMostrarTodos").is(':checked') === false ? "GetPrendasParteView/" + xIdReqChis.toString() + "/" + xIdCatPrendaChis.toString() + "/" + xIdUbiChis.toString() : "GetPrendasParteByidRequerimientoidCategoriaPrenda/" + xIdReqChis.toString() + "/" + xIdCatPrendaChis.toString()); },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdUbicacion",
+                fields: {
+                    IdRequerimiento: { type: "string" },
+                    NombreProgra: { type: "string" },
+                    IdCategoriaPrenda: {
+                        type: "number"
+                    },
+                    NoDocumento: { type: "string" },
+                    NombrePrenda: { type: "string" },
+                    NombreDiseño: { type: "string" },
+                    EstiloDiseno: { type: "string" },
+                    IdUbicacion: {
+                        type: "string"
+                    },
+                    NombreParte: { type: "string" },
+                    Fecha: { type: "date" },
+                    Cantidad: { type: "number" },
+                    IdUnidad: { type: "string" },
+                    NombreUnidad: { type: "string" },
+                    Precio: { type: "number" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" },
+                    InstruccionesEspeciales: { type: "string" }
+                }
+            }
+        },
+        group: {
+            field: "Fecha", aggregates: [
+                { field: "Cantidad", aggregate: "sum" },
+                { field: "Precio", aggregate: "sum" }
+            ]
+        },
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" },
+            { field: "Precio", aggregate: "sum" }
+        ]
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#gridPartesHisCambios").kendoGrid({
+
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "NoDocumento", title: "No Documento", hidden: true },
+            { field: "IdCategoriaPrenda", title: "Código Categoria Prenda", hidden: true },
+            { field: "NombrePrenda", title: "Prenda" },
+            { field: "IdUbicacion", title: "Código de ubicación", hidden: true },
+            { field: "NombreParte", title: "Parte" },
+            { field: "Cantidad", title: "Cantidad", aggregates: ["Cantidad"], groupFooterTemplate: "Total: #: data.Cantidad ? sum : 0 #"  },
+            { field: "NombreUnidad", title: "Unidad" },
+            { field: "Precio", title: "Precio", format: "{0:c2}", aggregates: ["Precio"], groupFooterTemplate: "Total: #: data.Precio ? kendo.format('{0:c2}', sum) : 0 #" },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridPartesHisCambios").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 600);
+    //SetGrid_CRUD_ToolbarTop($("#gridPartesHisCambios").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridPartesHisCambios").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridPartesHisCambios").data("kendoGrid"), dsethisCambios);
+
+    var selectedRows1 = [];
+    $("#gridPartesHisCambios").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridPartesHisCambios"), selectedRows1);
+    });
+
+    $("#gridPartesHisCambios").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridPartesHisCambios"), selectedRows1);
+    });
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridPartesHisCambios"), $(window).height() - "370");
+    });
+
+    Fn_Grid_Resize($("#gridPartesHisCambios"), $(window).height() - "370");
+
+
+    //#endregion
+};
+
+let fn_getIdReq=function(g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdRequerimiento;
+
+};
+let fn_getIdCategoriaPrenda = function(g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdCategoriaPrenda;
+
+};
+let fn_getIdUbicacion = function(g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdUbicacion;
 
 };
