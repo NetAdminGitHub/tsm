@@ -233,8 +233,10 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
         }
     };
     e.setOptions($.extend({}, e.getOptions(), DSource));
-    e.dataSource.pageSize(givenOrDefault(TamañoPagina, 50));
 
+    if (e.getOptions().pageable !== false) {
+        e.dataSource.pageSize(givenOrDefault(TamañoPagina, 50));
+    }
     // aplicar tooltips a botones de edicion y eliminacion del grid
 
     $("#" + e.element.attr('id') + "").kendoTooltip({

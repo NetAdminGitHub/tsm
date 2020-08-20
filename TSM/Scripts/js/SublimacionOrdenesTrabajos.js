@@ -116,7 +116,7 @@ $(document).ready(function () {
         ]
     });
 
-    SetGrid($("#gridConsulta").data("kendoGrid"), ModoEdicion.EnPopup, true, true, false, true, true, 600);
+    SetGrid($("#gridConsulta").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 600);
     SetGrid_CRUD_ToolbarTop($("#gridConsulta").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridConsulta").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridConsulta").data("kendoGrid"), DsRD);
