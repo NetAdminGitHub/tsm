@@ -7,8 +7,9 @@ $(document).ready(function () {
 
     // configurar clientes y servicios
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), "");
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") === null ? "" : sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente")); 
     $("#CmbPrograma").GetCotizacionesMuestrasProgramas();
+    KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") === null ? "" : sessionStorage.getItem("CotizacionesMuestras_CmbPrograma")); 
     //#region PRGRANMACION DEL GRID citizacion
     var DsRD = new kendo.data.DataSource({
         dataType: "json",
@@ -211,8 +212,10 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
             Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
         } else {
             Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", "");
         }
     });
 
@@ -220,6 +223,7 @@ $(document).ready(function () {
         let value = this.value();
         if (value === "") {
             Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", "");
         }
     });
 
@@ -227,9 +231,10 @@ $(document).ready(function () {
         if (e.item) {
             KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
             Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente, this.dataItem(e.item.index()).IdPrograma);
+            sessionStorage.setItem("CotizacionesMuestras_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
         } else {
-            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")),0);
-           
+            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
+            sessionStorage.setItem("CotizacionesMuestras_CmbPrograma", "");
         }
     });
 
@@ -238,6 +243,7 @@ $(document).ready(function () {
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
             Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
+            sessionStorage.setItem("CotizacionesMuestras_CmbPrograma", "");
         }
 
     });
@@ -252,6 +258,11 @@ $(document).ready(function () {
 
     Fn_Grid_Resize($("#gridCotizacion"), ($(window).height() - "371"));
     //#endregion
+
+    //Coloca el filtro de cliente guardado en la sesion
+    if (sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") !== null || sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") !== null ) {
+        Fn_ConsultarCotiza(sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente"), sessionStorage.getItem("CotizacionesMuestras_CmbPrograma"));
+    }
 });
 
 let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
@@ -274,6 +285,7 @@ $.fn.extend({
                 autoBind: false,
                 minLength: 3,
                 height: 400,
+                placeholder:"Seleccione un programa ...",
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
