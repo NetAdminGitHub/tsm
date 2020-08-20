@@ -133,6 +133,7 @@ $(document).ready(function () {
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
+            kdoChkSetValue($('#chkRangFechas'), true);
             Fn_ConsultarSibli(this.dataItem(e.item.index()).IdCliente.toString());
             KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
             KdoButtonEnable($("#btnRefrescar"), true);
@@ -143,10 +144,11 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnConsular"), true);
             KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), true);
             KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), "");
-            $('#chkRangFechas').prop('checked', 1);
+            $("#gridPartesHis").data("kendoGrid").dataSource.read("[]");
             KdoButtonEnable($("#btnGuardar"), true);
             $("#TxtComentarios").attr("disabled", false);
         } else {
+            kdoChkSetValue($('#chkRangFechas'), true);
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
@@ -168,6 +170,7 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
+            kdoChkSetValue($('#chkRangFechas'), true);
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
@@ -302,7 +305,9 @@ $(document).ready(function () {
     fn_partesHisSublimado();
 
     $("#btnConsular").click(function (e) {
-        $("#gridPartesHis").data("kendoGrid").dataSource.read();
+        let g = $("#gridPartesHis").data("kendoGrid");
+        g.dataSource.read();
+        g.pager.page(1);
     });
 
     $("#gridPartes").data("kendoGrid").bind("change", function (e) {
@@ -368,6 +373,7 @@ let fn_GridPartesLoad = function () {
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? KdoButtonEnable($("#btnGuardar"), false) : KdoButtonEnable($("#btnGuardar"), true);
         $("#gridPartes").data("kendoGrid").dataSource.total() === 0 ? $("#TxtComentarios").attr("disabled", true) : $("#TxtComentarios").attr("disabled", false);
     });
+
 };
 var fPermisos = function (datos) {
     Permisos = datos;
@@ -859,7 +865,7 @@ let fn_partesHisSublimado = function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridPartesHis").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 600, true, "row");
+    SetGrid($("#gridPartesHis").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 600, true, "row");
     //SetGrid_CRUD_ToolbarTop($("#gridPartesHis").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridPartesHis").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridPartesHis").data("kendoGrid"), dsethis);
@@ -1078,7 +1084,7 @@ let fn_partesHisCambios = function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridPartesHisCambios").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 600);
+    SetGrid($("#gridPartesHisCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 600);
     //SetGrid_CRUD_ToolbarTop($("#gridPartesHisCambios").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridPartesHisCambios").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridPartesHisCambios").data("kendoGrid"), dsethisCambios);
