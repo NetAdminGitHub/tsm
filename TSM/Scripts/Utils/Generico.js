@@ -1511,7 +1511,7 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
         if (cargarJs === true) {
             fn_InicialarCargaVistaCambio(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
         } else {
-            fn_RegistroCambios(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+            fn_RegistroCambios();
         }
     };
 
