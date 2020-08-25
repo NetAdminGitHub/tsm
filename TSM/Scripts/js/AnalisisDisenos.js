@@ -191,6 +191,12 @@ $(document).ready(function () {
                     return $("#cmbTipoOptela").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            come: function (input) {
+                if (input.is("[name='TxtComentariosSubli']") ) {
+                    return input.val().length <= 2000;
+                }
+                return true;
             }
 
 
@@ -202,7 +208,8 @@ $(document).ready(function () {
             FactorDistribucionRuler1: "Debe ser mayor a 0",
             required: "Requerido",
             MsgIdUnidadDimensionSub: "Requerido",
-            msgtop: "Requerido"
+            msgtop: "Requerido",
+            come: "Requerido campo no puede ser mayor 2000"
 
         }
     }).data("kendoValidator");
