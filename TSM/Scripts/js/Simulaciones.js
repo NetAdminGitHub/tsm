@@ -298,7 +298,8 @@ $(document).ready(function () {
                     CostoPapelProtec: { type: "number" },
                     CostoPapelImp: { type: "number" },
                     CostoTinta: { type: "number" },
-                    CostoLimpieza: { type: "number" }
+                    CostoLimpieza: { type: "number" },
+                    FactorDistribucion: {type:"number"}
                 }
             }
         }
@@ -368,7 +369,8 @@ $(document).ready(function () {
             { field: "PrecioVenta", title: "Precio Venta", format: "{0:c4}", hidden: true },
             { field: "DisenoFullColor", title: "Diseno FullColor", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DisenoFullColor"); }, hidden: true },
             { field: "TiempoProyecto", title: "Tiempo Proyecto", format: "{0:n}", hidden: true },
-            { field: "IdBase", title: "IdBase", hidden: true }
+            { field: "IdBase", title: "IdBase", hidden: true },
+            { field: "FactorDistribucion", title: "FactorDistribucion", hidden: true, menu: false }
         ]
     });
 
@@ -1620,6 +1622,12 @@ let fn_SeteoCamposSublimacion = function () {
         decimals: 2,
         value: 0
     });
+    $("#NumFactorDistribucion").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
     $("#TxtComentariosTecnicos").autogrow({ vertical: true, horizontal: false, flickering: false });
     fn_GridPartes();
 
@@ -1718,13 +1726,14 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoPrimoSubli"), elemento.CostoPrimo);
         kdoNumericSetValue($("#NumCostoPrimoTransSubli"), elemento.CostoPrimoTrans);
         kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
-        $("#TxtComentariosTecnicos").val(elemento.InstruccionesEspeciales);
+        $("#TxtComentariosTecnicos").val(elemento.Comentarios);
         kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
         kdoNumericSetValue($("#NumCostoTinta"), elemento.CostoTinta);
         kdoNumericSetValue($("#NumCostoPapelProtec"), elemento.CostoPapelProtec);
         kdoNumericSetValue($("#NumPeronalTransferencia"), elemento.NoOperariosTrans);
         kdoNumericSetValue($("#NumPeronalImpresion"), elemento.NoOperariosImpre);
         kdoNumericSetValue($("#NumCostoAdicionales"), elemento.CostoLimpieza);
+        kdoNumericSetValue($("#NumFactorDistribucion"), elemento.FactorDistribucion);
 
         $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
         $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
@@ -1864,6 +1873,7 @@ function DesHabilitarCamposSim() {
         TextBoxEnable($("#TxtVelociTrans"), false);
         TextBoxEnable($("#TxtPapelSelecionado"), false);
         TextBoxEnable($("#TxtConsumoTinta"), false);
+        KdoNumerictextboxEnable($("#NumFactorDistribucion"), false);
     }
 }
 
@@ -1935,6 +1945,7 @@ let fn_LimpiarCamposSim = function () {
         $("#TxtVelociTrans").val("");
         $("#TxtPapelSelecionado").val("");
         $("#TxtConsumoTinta").val("");
+        kdoNumericSetValue($("#NumFactorDistribucion"), 0);
     }
 };
 
