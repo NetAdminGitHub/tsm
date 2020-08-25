@@ -65,8 +65,7 @@ var fn_CambioEtp = function (e) {
                 idEtapaNuevo: KdoCmbGetValue($("#cmbEtpSigAnt")),
                 idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtp")),
                 motivo: $("#TxtMotivoEtp").val(),
-                IdUsuario: getUser(),
-                snMensaje: true
+                IdUsuario: getUser()
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
