@@ -95,7 +95,8 @@ var fn_RegistrarSolicitudCambio = function (xidOt, xIdEtapa, xItem) {
                 IdEtapa: xIdEtapa,
                 Estado: "GENERADA",
                 Comentario: $("#TxtMotivoCambio").val(),
-                IdUsuario: getUser()
+                IdUsuario: getUser(),
+                idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp"))
             }),
             success: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);

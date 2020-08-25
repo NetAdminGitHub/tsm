@@ -17,11 +17,11 @@
 
     notif.client.actualizarVista = function (data) {
         let d = JSON.parse(data);
-        if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo && Number(idEtapaProceso) !== d.Data.IdEtapa && d.Data.IdUsuario !== getUser()) {
+        if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo && (Number(idEtapaProceso) !== d.Data.IdEtapa && d.Data.IdUsuario !== getUser() || Number(idEtapaProceso) === d.Data.IdEtapa && d.Data.IdUsuario !== getUser())) {
             fn_AlertActualizaVista(d);
-        } 
-        
-        
+        }
+
+
     };
 
     $.connection.hub.url = TSM_Web_APi.replace("api/", "") + "signalr/hub";
