@@ -287,7 +287,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SimulacionesMuestrasConsumos/GetBySimulaciones/" + vIdSimulacion; },
+                url: function () { return TSM_Web_APi + "SimulacionesMuestrasConsumos/GetBySimulaciones/" + vIdSimulacion + "/" + ($("#chkSecuenciaCompleta").is(':checked') ? "1" : "0"); },
                 contentType: "application/json; charset=utf-8"
             },
             update: {
@@ -375,6 +375,9 @@ $(document).ready(function () {
         fn_ConsultarConsumoArt($("#gridSimuConsumo"));
     });
 
+    $("#chkSecuenciaCompleta").click(function () {
+        $("#gridSimuConsumo").data("kendoGrid").dataSource.read();
+    });
     //#endregion Fin RUD para el grid Rentabilidad
     let DsSimConsuArt = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -847,6 +850,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
         $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
         $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
+        $("#TxtOrdenTrabajo").val(elemento.NoOT);
 
         var dataChart = [];
 
