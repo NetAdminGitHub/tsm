@@ -290,7 +290,7 @@ function fn_CrearOpcionesMenuNivel2(opciones, IdMenuPadre) {
     var filtro = [];
     var data = JSON.parse(JSON.stringify(opciones), function (key, value) {
         if (value !== null) {
-            if (value.IdMenuPadre === IdMenuPadre) filtro.push(value);
+            if (value.IdMenuPadre === IdMenuPadre && value.OpcionesActivas!==0) filtro.push(value);
 
         }
         return value;
