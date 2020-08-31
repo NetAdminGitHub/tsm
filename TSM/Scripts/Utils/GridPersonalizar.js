@@ -116,7 +116,14 @@ function SetGrid_CRUD_ToolbarTop(e, agregar) {
     }
 
     e.setOptions($.extend({}, e.getOptions(), Opctoolbar));
-
+    //shortcut para crear nuevas lineas 
+    if (agregar) {
+        $("#" + e.element.attr('id') + "").keydown(function (ev) {
+            if (ev.altKey && ev.keyCode === 78) {
+                e.addRow();
+            }
+        });
+    }
 }
 
 // habilitar CRUD en la columna grid.
@@ -229,7 +236,7 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
     DSource = {
         dataSource: ds,
         noRecords: {
-            template: "No hay datos disponibles. La pagina actual es: #=this.dataSource.page()#"
+            template: e.getOptions().pageable !== false ? "No hay datos disponibles. La pagina actual es: #=this.dataSource.page()#" : "No hay datos disponibles."
         }
     };
     e.setOptions($.extend({}, e.getOptions(), DSource));
