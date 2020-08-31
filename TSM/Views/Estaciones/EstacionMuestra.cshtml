@@ -1,89 +1,107 @@
-﻿<div class="card">
-    <div class="card-body">
-        <form id="FrmGenEDiseno" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-group col-lg-12">
+﻿
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div class="card">
+            <div class="card-body">
                 <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="TxtOpcSelec_Mues" id="OpcSelec_Mues"></label>
-                        <input id="TxtOpcSelec_Mues" name="TxtOpcSelec_Mues" type="text" class="k-textbox form-control" />
+                    <div class="form-group col-lg-3">
+                        <div class="form-row">
+                            <div id="gridEstacion_Mues" class="form-control"></div>
+                        </div>
                     </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbQuimica_Mues">Química Utilizar</label>
-                        <input id="CmbQuimica_Mues" name="CmbQuimica_Mues" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbTipoTinta_Mues">Tipo de Tintas</label>
-                        <input name="CmbTipoTinta_Mues" id="CmbTipoTinta_Mues" required validationMessage="Requerido" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="CmbSistemaPigmentos_Mues">Sistema Pigmentos</label>
-                        <input name="CmbSistemaPigmentos_Mues" id="CmbSistemaPigmentos_Mues" required validationMessage="Requerido" type="text" class="form-control">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbSedas_Mues">Seda:</label>
-                        <input id="CmbSedas_Mues" name="CmbSedas_Mues" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmbTipoEmulsion_Mues">Emulsiones:</label>
-                        <input id="CmbTipoEmulsion_Mues" name="CmbTipoEmulsion_Mues" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="NumCapilar_Mues">Capilar:</label>
-                        <input id="NumCapilar_Mues" name="NumCapilar_Mues" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="NumPasadas_Mues">Numero de Pasadas:</label>
-                        <input id="NumPasadas_Mues" name="NumPasadas_Mues" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="TxtLetra_Mues">Letras</label>
-                        <input id="TxtLetra_Mues" name="TxtLetra_Mues" type="text" class="k-textbox form-control" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="NumPeso_Mues">Peso:</label>
-                        <input id="NumPeso_Mues" name="NumPeso_Mues" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmdIdUnidadPeso_Mues">Unidad Peso:</label>
-                        <input id="CmdIdUnidadPeso_Mues" name="CmdIdUnidadPeso_Mues" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="TxtFormulaSug_Mues">Formulacion Sugerida </label>
-                        <input id="TxtFormulaSug_Mues" name="TxtFormulaSug_Mues" type="text" class="k-textbox form-control" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-4">
-                        <label for="NumArea_Mues">Área</label>
-                        <input id="NumArea_Mues" name="NumArea_Mues" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="CmdIdUnidadArea_Mues">Unidad área</label>
-                        <input id="CmdIdUnidadArea_Mues" name="CmdIdUnidadArea_Mues" required validationMessage="Requerido" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="NumMasaEntre_Mues">Masa entregada</label>
-                        <input id="NumMasaEntre_Mues" name="NumMasaEntre_Mues" type="text" class="k-textbox form-control" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <input id="TxtIdform_Mues" name="TxtIdform_Mues" type="text" class="k-textbox form-control" , hidden="hidden" />
-                        <div id="TablaFormulaMues" class="TablaFomula"></div>
+                    <div class="form-group col-lg-9">
+                        <form id="FrmGenEDiseno" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="TxtOpcSelec_Mues" id="OpcSelec_Mues"></label>
+                                        <input id="TxtOpcSelec_Mues" name="TxtOpcSelec_Mues" type="text" class="k-textbox form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmbQuimica_Mues">Química Utilizar</label>
+                                        <input id="CmbQuimica_Mues" name="CmbQuimica_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmbTipoTinta_Mues">Tipo de Tintas</label>
+                                        <input name="CmbTipoTinta_Mues" id="CmbTipoTinta_Mues" required validationMessage="Requerido" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmbSistemaPigmentos_Mues">Sistema Pigmentos</label>
+                                        <input name="CmbSistemaPigmentos_Mues" id="CmbSistemaPigmentos_Mues" required validationMessage="Requerido" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmbSedas_Mues">Seda:</label>
+                                        <input id="CmbSedas_Mues" name="CmbSedas_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmbTipoEmulsion_Mues">Emulsiones:</label>
+                                        <input id="CmbTipoEmulsion_Mues" name="CmbTipoEmulsion_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="NumCapilar_Mues">Capilar:</label>
+                                        <input id="NumCapilar_Mues" name="NumCapilar_Mues" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="NumPasadas_Mues">Numero de Pasadas:</label>
+                                        <input id="NumPasadas_Mues" name="NumPasadas_Mues" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="TxtLetra_Mues">Letras</label>
+                                        <input id="TxtLetra_Mues" name="TxtLetra_Mues" type="text" class="k-textbox form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="NumPeso_Mues">Peso:</label>
+                                        <input id="NumPeso_Mues" name="NumPeso_Mues" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmdIdUnidadPeso_Mues">Unidad Peso:</label>
+                                        <input id="CmdIdUnidadPeso_Mues" name="CmdIdUnidadPeso_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="TxtFormulaSug_Mues">Formulacion Sugerida </label>
+                                        <input id="TxtFormulaSug_Mues" name="TxtFormulaSug_Mues" type="text" class="k-textbox form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="NumArea_Mues">Área</label>
+                                        <input id="NumArea_Mues" name="NumArea_Mues" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="CmdIdUnidadArea_Mues">Unidad área</label>
+                                        <input id="CmdIdUnidadArea_Mues" name="CmdIdUnidadArea_Mues" required validationMessage="Requerido" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="NumMasaEntre_Mues">Masa entregada</label>
+                                        <input id="NumMasaEntre_Mues" name="NumMasaEntre_Mues" type="text" class="k-textbox form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <input id="TxtIdform_Mues" name="TxtIdform_Mues" type="text" class="k-textbox form-control" , hidden="hidden" />
+                                        <div id="TablaFormulaMues" class="TablaFomula"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <div class="card-footer">
-        <div class="form-row">
-            <button type="button" class=" k-primary" id="btnAddMCE_Mues">Guardar</button>
+            <div class="card-footer">
+                <div class="form-row">
+                    <button type="button" class=" k-primary" id="btnAddMCE_Mues">Guardar</button>
+                </div>
+            </div>
         </div>
+
+
     </div>
 </div>
+

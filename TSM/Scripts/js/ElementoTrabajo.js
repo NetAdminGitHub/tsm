@@ -45,7 +45,8 @@ var CumpleOEKOTEX;
 let xvIdOrdenTrabajo=0;
 let xvIdSolicitudCambio=0;
 let xvItemSolicitud = 0;
-
+let xIdSeteoMq = 0;
+let QuimicaFormula = 0;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -430,6 +431,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#TxtInstruccionesEspeciales").val(datos.InstruccionesEspeciales);
     $("#txtNombreEC").val(datos.NombreEjecutivoCuentas);
     $("#txtNombreTalla").val(datos.NombreTalla);
+    $("#txtNoCatalogoDiseno").val(datos.NoCatalogoDiseno);
     $("#txtNombreUbicacion").val(datos.NombreUbicacion);
     $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
     $("#swchSolTelaSusti").data("kendoSwitch").enable(false);

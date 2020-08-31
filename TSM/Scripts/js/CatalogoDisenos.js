@@ -10,11 +10,14 @@ $(document).ready(function () {
 
 var fn_getArtesAdjuntos = function () {
     Kendo_CmbFiltrarGrid($("#CmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
+    KdoCmbSetValue($("#CmbCliente"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente")); 
+
     $("#CmbPrograma").ControlSelecionPrograma();
+    KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma")); 
+
     $("#CmbOrdenTrabajo").CatalogoOrdenesTrabajos();
-    KdoCmbSetValue($("#CmbCliente"), "");
-    KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
-    KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+    KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo"));
+
 
     let dataSource = new kendo.data.DataSource({
         transport: {
@@ -59,11 +62,13 @@ var fn_getArtesAdjuntos = function () {
             xidClie = this.dataItem(e.item.index()).IdCliente;
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente", this.dataItem(e.item.index()).IdCliente);
         }
         else {
             xidClie = 0;
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente", "");
         }
     });
 
@@ -73,6 +78,7 @@ var fn_getArtesAdjuntos = function () {
             xidClie = 0;
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente", "");
         }
     });
 
@@ -82,10 +88,13 @@ var fn_getArtesAdjuntos = function () {
             xIdPrograma = this.dataItem(e.item.index()).IdPrograma;
             xidClie = this.dataItem(e.item.index()).IdCliente;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
+
         } else {
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = 0;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", "");
         }
     });
 
@@ -96,6 +105,7 @@ var fn_getArtesAdjuntos = function () {
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = 0;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", "");
         }
 
     });
@@ -109,11 +119,14 @@ var fn_getArtesAdjuntos = function () {
             xidClie = this.dataItem(e.item.index()).IdCliente;
             xIdOT = this.dataItem(e.item.index()).IdOrdenTrabajo;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
+
         } else {
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             xIdOT = 0;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", "");
         }
     });
 
@@ -125,9 +138,16 @@ var fn_getArtesAdjuntos = function () {
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             xIdOT = 0;
             dataSource.read();
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", "");
         }
 
     });
+
+    if (sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") !== null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") !== null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") !== null) {
+        xidClie = sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === "" || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === null ? 0 : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente");
+        xIdPrograma = sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === "" || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === null ? 0 : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma");
+        xIdOT = sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === "" || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === null ? 0 : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo");
+    }
 };
 
 var fn_DibujarCatalogo = function (data) {
