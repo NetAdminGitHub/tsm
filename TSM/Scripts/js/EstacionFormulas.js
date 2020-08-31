@@ -1,5 +1,5 @@
-﻿let QuimicaFormula = 0;
-let xIdSeteoMq = 0;
+﻿
+
 var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
