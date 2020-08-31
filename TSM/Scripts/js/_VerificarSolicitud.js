@@ -253,12 +253,12 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                MsgCmbAcabado: function (input) {
-                    if (input.is("[name='CmbTipoAcabado']")) {
-                        return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+                //MsgCmbAcabado: function (input) {
+                //    if (input.is("[name='CmbTipoAcabado']")) {
+                //        return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
+                //    }
+                //    return true;
+                //},
                 vQui: function (input) {
                     if (input.is("[name='CmbQuimica']")) {
                         return $("#CmbQuimica").data("kendoComboBox").selectedIndex >= 0;
@@ -290,7 +290,7 @@ var fn_VSCargarJSEtapa = function () {
                 TxtDirectorioArchivosRuler: "Requerido Longitud máxima del campo es 2000",
                 MsgCmbTipoLuz: "Requerido",
                 MsgCmbMotivo: "Requerido",
-                MsgCmbAcabado: "Requerido",
+                //MsgCmbAcabado: "Requerido",
                 MsgCmbTMuestra: "Requerido",
                 vQui:"Requerido"
             }
@@ -1558,7 +1558,7 @@ let GuardarRequerimiento = function (UrlRD) {
             DirectorioArchivos: $("#TxtDirectorioArchivos").val(),
             IdTipoLuz: $("#CmbTipoLuz").val(),
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
-            IdTipoAcabado: $("#CmbTipoAcabado").val(),
+            IdTipoAcabado: KdoCmbGetValue($("#CmbTipoAcabado")),
             IdTipoMuestra: $("#CmbTMuestra").val(),
             IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
