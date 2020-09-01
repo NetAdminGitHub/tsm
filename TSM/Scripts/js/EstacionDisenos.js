@@ -6,6 +6,16 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     KdoButtonEnable($("#btnDelFT_Dis"), false);
 
     KdoButton($("#btnAddMCE_Dis"), "check", "Agregar");
+
+    $("#EscurridorDureza_Dis").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#NumPasadas_Dis").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -503,6 +513,7 @@ var fn_SeccionEstacionMarcos_Dis = function (datos) {
 
     if (estaMarco !== null) {
         $("#NumCapilar_Dis").data("kendoNumericTextBox").value(estaMarco.Capilar);
+        $("#EscurridorDureza_Dis").data("kendoNumericTextBox").value(estaMarco.Dureza);
         $("#NumPasadas_Dis").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         $("#NumArea_Dis").data("kendoNumericTextBox").value(estaMarco.Area);
         KdoCmbSetValue($("#CmdIdUnidadArea_Dis"), estaMarco.IdUnidadArea);
@@ -615,7 +626,7 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             IdTipoFormulacion: xIdTipoFormulacion,
             IdSeda: KdoCmbGetValue($("#CmbSedas_Dis")),
             NoPasadas: $("#NumPasadas_Dis").val(),
-            Dureza: null,
+            Dureza: $("#EscurridorDureza_Dis").val(),
             Angulo: null,
             Velocidad: null,
             Presion: null,

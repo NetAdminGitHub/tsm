@@ -11,6 +11,16 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
 
     //informacion de revelado
+
+    $("#EscurridorDureza_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#NumPasadas_MaRev").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -18,8 +28,8 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         restrictDecimals: true,
         decimals: 0,
         value: 0
-
     });
+
     $("#NumCapilar_MaRev").kendoNumericTextBox({
         min: 0,
         max: 4000,
@@ -66,6 +76,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     });
 
+    KdoNumerictextboxEnable($("#EscurridorDureza_MaRev"), false);
     KdoNumerictextboxEnable($("#NumPasadas_MaRev"), false);
     KdoNumerictextboxEnable($("#NumCapilar_MaRev"), false);
     KdoNumerictextboxEnable($("#NumArea_MaRev"), false);
@@ -503,6 +514,7 @@ var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) 
         success: function (setMaqMar) {
             if (setMaqMar !== null) {
                 $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(setMaqMar.Capilar);
+                $("#EscurridorDureza_MaRev").data("kendoNumericTextBox").value(setMaqMar.Dureza);
                 $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(setMaqMar.NoPasadas);
                 $("#NumArea_MaRev").data("kendoNumericTextBox").value(setMaqMar.Area);
                 $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
@@ -517,6 +529,7 @@ var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) 
             }
             else {
                 $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(0);
+                $("#EscurridorDureza_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumArea_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumResolucionDPI_MaRev").val(0);
