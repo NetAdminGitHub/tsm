@@ -6,6 +6,16 @@ var fn_VistaEstacionColorDocuReady = function () {
     KdoButtonEnable($("#btnDelFT"), false);
 
     KdoButton($("#btnAddMCE"), "check", "Agregar");
+
+    $("#EscurridorDureza").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#NumPasadas").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -161,7 +171,7 @@ var fn_VistaEstacionColorDocuReady = function () {
             let data = TipoTintas.find(q => q.IdTipoTinta === TipoTin);
             kdoNumericSetValue($("#NumPasadas"), data.NoPasadas);
         } else {
-            kdoNumericSetValue($("#NumPasadas"), 1);            
+            kdoNumericSetValue($("#NumPasadas"), 1);
         }
     });
 
@@ -395,6 +405,7 @@ var fn_SeccionEstacionMarcos = function (datos) {
     estaMarco = datos;
     if (estaMarco !== null) {
         $("#NumCapilar").data("kendoNumericTextBox").value(estaMarco.Capilar);
+        $("#EscurridorDureza").data("kendoNumericTextBox").value(estaMarco.Dureza);
         $("#NumPasadas").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         KdoCmbSetValue($("#CmbSedas_color"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmbTipoEmulsion_color"), estaMarco.IdTipoEmulsion);
@@ -514,7 +525,7 @@ var fn_GuardarEstaMarco = function (xIdBrazo) {
             IdTipoFormulacion: xIdTipoFormulacion,
             IdSeda: KdoCmbGetValue($("#CmbSedas_color")),
             NoPasadas: $("#NumPasadas").val(),
-            Dureza: null,
+            Dureza: $("#EscurridorDureza").val(),
             Angulo: null,
             Velocidad: null,
             Presion: null,

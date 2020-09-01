@@ -1,6 +1,16 @@
 ﻿
 var fn_VistaEstacionMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_Mues"), "check", "Agregar");
+
+    $("#EscurridorDureza_Mues").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#NumPasadas_Mues").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -8,7 +18,6 @@ var fn_VistaEstacionMuestraDocuReady = function () {
         restrictDecimals: true,
         decimals: 0,
         value: 0
-
     });
     $("#NumCapilar_Mues").kendoNumericTextBox({
         min: 0,
@@ -308,6 +317,7 @@ var fn_SeccionEstacionMarcos_Mues = function (datos) {
     estaMarco = datos;
     if (estaMarco !== null) {
         $("#NumCapilar_Mues").data("kendoNumericTextBox").value(estaMarco.Capilar);
+        $("#EscurridorDureza_Mues").data("kendoNumericTextBox").value(estaMarco.Dureza);
         $("#NumPasadas_Mues").data("kendoNumericTextBox").value(estaMarco.NoPasadas);
         $("#NumPeso_Mues").data("kendoNumericTextBox").value(estaMarco.Peso);
         KdoCmbSetValue($("#CmbSedas_Mues"), estaMarco.IdSeda);
@@ -324,6 +334,7 @@ var fn_SeccionEstacionMarcos_Mues = function (datos) {
         xEstado = estaMarco.Estado;
     } else {
         $("#NumCapilar_Mues").data("kendoNumericTextBox").value(0);
+        $("#EscurridorDureza_Mues").data("kendoNumericTextBox").value(0);
         $("#NumPasadas_Mues").data("kendoNumericTextBox").value(0);
         $("#NumPeso_Mues").data("kendoNumericTextBox").value(0);
         KdoCmbSetValue($("#CmdIdUnidadPeso_Mues"), 21);
@@ -418,7 +429,7 @@ var fn_GuardarEstaMarcoMues = function (xIdBrazo) {
             IdTipoFormulacion: xIdTipoFormulacion,
             IdSeda: KdoCmbGetValue($("#CmbSedas_Mues")),
             NoPasadas: $("#NumPasadas_Mues").val(),
-            Dureza: null,
+            Dureza: $("#EscurridorDureza_Mues").val(),
             Angulo: null,
             Velocidad: null,
             Presion: null,
