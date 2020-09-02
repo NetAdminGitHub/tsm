@@ -47,6 +47,9 @@ let xvIdSolicitudCambio=0;
 let xvItemSolicitud = 0;
 let xIdSeteoMq = 0;
 let QuimicaFormula = 0;
+var InicioModalRT = 0;
+var InicioModalAD = 0;
+var InicioModalMU = 0;
 fPermisos = function (datos) {
     Permisos = datos;
 };

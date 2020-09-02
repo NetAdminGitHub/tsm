@@ -150,6 +150,8 @@ var fn_VistaEstacionMuestraDocuReady = function () {
 };
 
 var fn_VistaEstacionMuestra = function () {
+
+    InicioModalMU = 1;
     TextBoxEnable($("#NumMasaEntre_Mues"), false);
     TextBoxEnable($("#TxtOpcSelec_Mues"), false);
     KdoNumerictextboxEnable($("#NumArea_Mues"), false);
@@ -223,11 +225,15 @@ var fn_Consultar_Mues = function (g) {
     setFor = null;
     estaMarco = null;
     EstaTintasFormula = null;
-    fn_GetMarcoFormulacion_Mues(maq[0].IdSeteo, idBra);
-    fn_EstacionesMarcos_Mues(maq[0].IdSeteo, idBra);
-    fn_EstacionesTintasFormulaDet_Mues(maq[0].IdSeteo, idBra);
-    $("#MEstacionMuestra").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + idBra);
 
+    if ((InicioModalMU === 1 && Number(idBra) === Number($("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) || InicioModalMU===0    ) {
+        fn_GetMarcoFormulacion_Mues(maq[0].IdSeteo, idBra);
+        fn_EstacionesMarcos_Mues(maq[0].IdSeteo, idBra);
+        fn_EstacionesTintasFormulaDet_Mues(maq[0].IdSeteo, idBra);
+        $("#MEstacionMuestra").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + idBra);
+        InicioModalMU = 0; 
+    }
+   
 
 };
 
