@@ -400,7 +400,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
     setFor = datos;
     if (setFor !== null) {
         $("#NumResolucionDPI_Dis").data("kendoNumericTextBox").focus();
-        switch (Te) {
+        switch (setFor.IdTipoFormulacion) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
                 $("#TxtOpcSelec_Dis").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
