@@ -298,7 +298,7 @@ var fn_GetMarcoFormulacion_EC = function (xIdSeteo, xIdestacion) {
 var fn_SeccionMarcosFormulacion = function (datos) {
     setFor = datos;
     if (setFor !== null) {
-        switch (Te) {
+        switch (setFor.IdTipoFormulacion) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
                 $("#TxtOpcSelec").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);

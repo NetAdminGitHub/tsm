@@ -250,7 +250,7 @@ var fn_fn_SeccionMarcosFormulacion_Mues = function (datos) {
     setFor = datos;
     if (setFor !== null) {
         $("#NumPeso_Mues").data("kendoNumericTextBox").focus();
-        switch (Te) {
+        switch (setFor.IdTipoFormulacion) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
                 $("#TxtOpcSelec_Mues").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
