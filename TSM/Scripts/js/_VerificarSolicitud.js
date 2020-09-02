@@ -1215,7 +1215,6 @@ var fn_VSCargar = function () {
         KdoButtonEnable($("#Guardar"), false);
         KdoButtonEnable($("#myBtnAdjunto"), false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
-        Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesFoil"), false, false, false);
@@ -1285,6 +1284,11 @@ let getRD = function (UrlRD) {
                 $("#GRDimension").data("kendoGrid").dataSource.read();
                 $("#GRReqDesColor").data("kendoGrid").dataSource.read();
                 $("#GRReqDesTec").data("kendoGrid").dataSource.read();
+                $("#GRReqDesFoil").data("kendoGrid").dataSource.read();
+                Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
                 HabilitaFormObje(true);
@@ -1582,6 +1586,7 @@ let GuardarRequerimiento = function (UrlRD) {
             Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+            Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
 
             //habilitar botones   
             $("#myBtnAdjunto").data("kendoButton").enable(true);
