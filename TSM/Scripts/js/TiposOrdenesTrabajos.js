@@ -334,7 +334,8 @@ $(document).ready(function () {
                     },
                     FechaMod: {
                         type: "date"
-                    }
+                    },
+                    EncargadoArea: { type: "boolean"}
                 }
             }
         }
@@ -345,10 +346,17 @@ $(document).ready(function () {
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdEtapaProceso");
-            KdoHideCampoPopup(e.container, "Nombre");
+
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdUsuario");
+                TextBoxEnable($('[name="Nombre"]'), false);
+            }
+            else
+                KdoHideCampoPopup(e.container, "Nombre");
+
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
-            Grid_Focus(e, "IdUsuario");
+            Grid_Focus(e, "EncargadoArea");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -357,7 +365,8 @@ $(document).ready(function () {
             { field: "IdUsuario", title: "Usuario", values: ["IdUsuario", "Nombre", TSM_Web_APi + "Usuarios", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
             { field: "Nombre", title: "Usuario" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "EncargadoArea", title: "Encargado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EncargadoArea"); } }
         ]
     });
 
@@ -365,7 +374,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gridConfEp
     SetGrid($("#gridUsuarios").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridUsuarios").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridUsuarios").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridUsuarios").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridUsuarios").data("kendoGrid"), daSUsuarios);
 
     Grid_HabilitaToolbar($("#gridUsuarios"), false, false, false);
