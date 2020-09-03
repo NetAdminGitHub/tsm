@@ -207,6 +207,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 };
 
 var fn_VistaEstacionFormulas = function () {
+    InicioModalFor = 1;
     xIdSeteoMq = maq[0].IdSeteo;
     $("#tsFormulas").data("kendoTabStrip").select(0);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
@@ -503,11 +504,16 @@ var  fn_consultarFormulaDet = function () {
 var fn_ConsultarFormula = function (g) {
     var SelItem = g.dataItem(g.select());
     xidEstacion = SelItem === null ? 0 : SelItem.IdEstacion;
-    $("#gridFormulas").data("kendoGrid").dataSource.read();
     Te = SelItem.IdTipoFormulacion;
-    fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
-    fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
-    $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO COLOR ESTACIÓN #" + xidEstacion);
+
+    if ((InicioModalFor === 1 && Number(xidEstacion) === Number($("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) || InicioModalFor === 0) {
+        $("#gridFormulas").data("kendoGrid").dataSource.read();
+        fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
+        fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
+        $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO COLOR ESTACIÓN #" + xidEstacion);
+        InicioModalFor = 0;
+    }
+   
 };
 
 var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
@@ -559,7 +565,7 @@ var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (setFor) {
             if (setFor !== null) {
-                switch (Te) {
+                switch (setFor.IdTipoFormulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);

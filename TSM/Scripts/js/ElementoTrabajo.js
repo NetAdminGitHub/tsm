@@ -50,6 +50,7 @@ let QuimicaFormula = 0;
 var InicioModalRT = 0;
 var InicioModalAD = 0;
 var InicioModalMU = 0;
+var InicioModalFor = 0;
 fPermisos = function (datos) {
     Permisos = datos;
 };
