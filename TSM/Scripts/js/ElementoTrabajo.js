@@ -653,10 +653,7 @@ $("#btnCambiarEtapa").click(function (e) {
     kendo.ui.progress($(document.body), false);
 });
 $("#btnSolicitarRegistroCambio").click(function (e) {
-
-    //validar si existen mas retenciones
     fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
-    //AutRet: es el nombre del div en la vista elementoTrabajo
 });
 
 var CargarAsignacionUsuarios = function () {
