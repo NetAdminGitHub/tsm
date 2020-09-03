@@ -179,9 +179,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
-        kendo.ui.progress($(".k-window-content"), true);
         fn_FormulaHistorica("FormulaHist");
-        kendo.ui.progress($(".k-window-content"), false);
     });
 
     $("#tsFormulas").kendoTabStrip({

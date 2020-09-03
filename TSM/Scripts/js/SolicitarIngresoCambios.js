@@ -2,11 +2,14 @@
 let xIdEtapa = 0;
 let VCamEtp;
 var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo) {
+
+
+    kendo.ui.progress($(document.activeElement), true);
     KdoComboBoxbyData($("#cmbUsuarioEtpImp"), "[]", "Nombre", "IdUsuario", "Seleccione...", "", "");
     $("#cmbCatalogoCambios").ControlSelecionSolicitudesCambios();
     $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
     xIdEtapa = sicIdEtapa;
-
+ 
     $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").bind("change", function (e) {
 
         let datos = fn_GetEtpAnterior(this.value() === "" ? 0 : this.value());
@@ -14,7 +17,7 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
             xidEtapaCambioAnte = datos.IdEtapaProceso;
             KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
             $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(SicidTipoOrdenTrabajo.toString(), xidEtapaCambioAnte));
-  
+            GetUltimoAsignado(sicIdot, xidEtapaCambioAnte);
         } else {
             xidEtapaCambioAnte = 0;
             $("#cmbUsuarioEtpImp").data("kendoComboBox").value("");
@@ -66,15 +69,20 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
                 Msg3: "Requerido"
 
             }
-        }).data("kendoValidator");
+         }).data("kendoValidator");
+
+    kendo.ui.progress($(document.activeElement), false);
+
 };
 
 var fn_RegistroCambios = function () {
+    kendo.ui.progress($(document.activeElement), true);
     KdoMultiColumnCmbSetValue($("#cmbCatalogoCambios"), "");
     $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").dataSource.read();
     $("#TxtMotivoCambio").val("");
     $("#TxtAreasImpacto").text("");
     KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+    kendo.ui.progress($(document.activeElement), false);
 
 };
 
@@ -190,4 +198,25 @@ var fn_CambioEtpRegCambio = function (xidOt, xIdEtapaNuevo) {
         }
     });
     
+};
+
+var GetUltimoAsignado = function (idot,idetp) {
+    kendo.ui.progress($(".k-dialog"), true);
+    KdoCheckBoxEnable($("#cmbUsuarioEtpImp"), false);
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajosDetallesUsuarios/GetUltimoAsignado/" + idot + "/" + idetp,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            if (datos !== null) {
+                KdoCmbSetValue($("#cmbUsuarioEtpImp"), datos.IdUsuario);
+            } else {
+                KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+            }
+        },
+        complete: function () {
+            kendo.ui.progress($(".k-dialog"), false);
+            KdoCheckBoxEnable($("#cmbUsuarioEtpImp"), true);
+        }
+    });
 };
