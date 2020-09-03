@@ -1045,18 +1045,20 @@ var kdoRbSetValue = function (InputElem, value) {
  * @param {HtmlElementId} divCcf Id del div que contendra la vista de busqueda de tintas
  */
 var fn_FormulaHistorica = function (divCcf) {
+    kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divCcf + "").children().length === 0) {
         $.ajax({
             url: "/AXFormulaciones/ConsultaHistoricaFormulas",
-            //async: false,
             type: 'GET',
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
                 fn_CargarVistaModalFormulacion(resultado, divCcf);
             }
         });
     } else {
+        kendo.ui.progress($(document.activeElement), false);
         fn_CargarVistaModalFormulacion("", divCcf);
     }
 };
@@ -1447,7 +1449,7 @@ var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencio
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
 var fn_SolicitarIngresoCambio = function (divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose) {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divSolIngCambio + "").children().length === 0) {
         $.ajax({
             url: "/OrdenesTrabajo/SolicitarIngresoCambios",
@@ -1455,13 +1457,15 @@ var fn_SolicitarIngresoCambio = function (divSolIngCambio, sicIdot, sicIdEtapa, 
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
                 fn_CargarVistaModalSolictudIngresoCambio(resultado, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
-                kendo.ui.progress($(document.body), false);
+               
             }
         });
     } else {
+        kendo.ui.progress($(document.activeElement), false);
         fn_CargarVistaModalSolictudIngresoCambio("", divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo,fnclose);
-        kendo.ui.progress($(document.body), false);
+     
     }
 };
 
@@ -1542,6 +1546,7 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
     });
 
     $("#" + divSolIngCambio + "").data("kendoDialog").open().toFront();
+   
 };
 //#endregion
 
