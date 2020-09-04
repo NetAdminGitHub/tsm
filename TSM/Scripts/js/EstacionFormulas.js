@@ -1,5 +1,5 @@
-﻿let QuimicaFormula = 0;
-let xIdSeteoMq = 0;
+﻿
+
 var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
@@ -11,6 +11,16 @@ var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
 
     //informacion de revelado
+
+    $("#EscurridorDureza_MaRev").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
     $("#NumPasadas_MaRev").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -18,8 +28,8 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         restrictDecimals: true,
         decimals: 0,
         value: 0
-
     });
+
     $("#NumCapilar_MaRev").kendoNumericTextBox({
         min: 0,
         max: 4000,
@@ -66,6 +76,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     });
 
+    KdoNumerictextboxEnable($("#EscurridorDureza_MaRev"), false);
     KdoNumerictextboxEnable($("#NumPasadas_MaRev"), false);
     KdoNumerictextboxEnable($("#NumCapilar_MaRev"), false);
     KdoNumerictextboxEnable($("#NumArea_MaRev"), false);
@@ -168,9 +179,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
-        kendo.ui.progress($(".k-window-content"), true);
         fn_FormulaHistorica("FormulaHist");
-        kendo.ui.progress($(".k-window-content"), false);
     });
 
     $("#tsFormulas").kendoTabStrip({
@@ -196,11 +205,13 @@ var fn_VistaEstacionFormulasDocuReady = function () {
 };
 
 var fn_VistaEstacionFormulas = function () {
+    InicioModalFor = 1;
     xIdSeteoMq = maq[0].IdSeteo;
     $("#tsFormulas").data("kendoTabStrip").select(0);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
     TextBoxEnable($("#TxtNombreQuiForm"), false);
     TextBoxReadOnly($("#TxtFormulaSugTint"), false);
+    TextBoxReadOnly($("#txtArticuloSugerido_Tint"), false);
     $("#TxtOpcSelecFormulas").val($("#TxtOpcSelecFormulas").data("name"));
     $("#gridFormulas").data("kendoGrid").dataSource.data([]);
     $("#gridFormulasMP").data("kendoGrid").dataSource.data([]);
@@ -434,6 +445,9 @@ var fn_GridEstaciones = function (gd) {
                     },
                     NombreColorEstacion: {
                         type: "string"
+                    },
+                    EstadoFormula: {
+                        type: "string"
                     }
                 }
             }
@@ -454,11 +468,12 @@ var fn_GridEstaciones = function (gd) {
         columns: [
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
-            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120},
+            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            { field: "EstadoFormula", title: "Estado Formula", minResizableWidth: 120 },
             {
-                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                field: "ColorHex", title: "Color", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
-            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120}
+            { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120}
         ]
     });
 
@@ -488,11 +503,16 @@ var  fn_consultarFormulaDet = function () {
 var fn_ConsultarFormula = function (g) {
     var SelItem = g.dataItem(g.select());
     xidEstacion = SelItem === null ? 0 : SelItem.IdEstacion;
-    $("#gridFormulas").data("kendoGrid").dataSource.read();
     Te = SelItem.IdTipoFormulacion;
-    fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
-    fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
-    $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO COLOR ESTACIÓN #" + xidEstacion);
+
+    if ((InicioModalFor === 1 && Number(xidEstacion) === Number($("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) || InicioModalFor === 0) {
+        $("#gridFormulas").data("kendoGrid").dataSource.read();
+        fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
+        fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
+        $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO ESTACIÓN #" + xidEstacion);
+        InicioModalFor = 0;
+    }
+   
 };
 
 var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) {
@@ -503,6 +523,7 @@ var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) 
         success: function (setMaqMar) {
             if (setMaqMar !== null) {
                 $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(setMaqMar.Capilar);
+                $("#EscurridorDureza_MaRev").data("kendoNumericTextBox").value(setMaqMar.Dureza);
                 $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(setMaqMar.NoPasadas);
                 $("#NumArea_MaRev").data("kendoNumericTextBox").value(setMaqMar.Area);
                 $("#CmdIdUnidadArea_MaRev").val(setMaqMar.Abreviatura);
@@ -517,6 +538,7 @@ var fn_GetDatosSeteoMaquinasEstacionesMarcos = function (xIdSeteo, xIdestacion) 
             }
             else {
                 $("#NumCapilar_MaRev").data("kendoNumericTextBox").value(0);
+                $("#EscurridorDureza_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumPasadas_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumArea_MaRev").data("kendoNumericTextBox").value(0);
                 $("#NumResolucionDPI_MaRev").val(0);
@@ -542,18 +564,20 @@ var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
         type: 'GET',
         success: function (setFor) {
             if (setFor !== null) {
-                switch (Te) {
+                switch (setFor.IdTipoFormulacion) {
                     case "COLOR":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelecFormulas").data("IdRequerimientoColor", setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoColor);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Color');
                         $("#TxtOpcSelecFormulas").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
+                        fn_TecnicasArticuloSugerido($("#txtArticuloSugerido_Tint"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                         break;
                     case "TECNICA":
                         //guardo en Memoria la llave del tipo de selección
                         $("#TxtOpcSelecFormulas").data("IdRequerimientoTecnica", setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                         $("#" + ModalEstacion + "").find('[id="OpcSelecFormulas"]').text('Nombre de Técnica');
                         $("#TxtOpcSelecFormulas").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
+                        fn_TecnicasArticuloSugerido($("#txtArticuloSugerido_Tint"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                         break;
                     case "BASE":
                         //guardo en Memoria la llave del tipo de selección
@@ -572,6 +596,7 @@ var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
             }
             else {
                 $("#TxtFormulaSugTint").val("");
+                $("#txtArticuloSugerido_Tint").val("");
                 $("#CmbTipoTinta_MaRev").val("");
                 $("#CmbSistemaPigmento_MaRev").val("");
                 $("#CmbBasePigmento_MaRev").val("");
@@ -809,7 +834,7 @@ var fn_gridAjustePrima = function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 450);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 430);
     SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command(gd.data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsAjusMp);

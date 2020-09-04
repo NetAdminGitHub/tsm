@@ -954,7 +954,7 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
         closable: true,
         modal: true,
         visible: false,
-        activate: onShow,
+        //activate: onShow,
         pinned: true,
         maximize: function (e) {
             e.preventDefault();
@@ -963,7 +963,10 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
 
     m.data("kendoWindow").content(data);
     m.data("kendoWindow").center().open();
+    m.data("kendoWindow").center();
     m.data("kendoWindow").title(titulo);
+
+    onShow();
     if (xVistaFormulario.toUpperCase() === "_REVISIONTECNICA") {
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {

@@ -15,13 +15,34 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-lg-3">
-                        <label for="CmbTiposOrdenesTrabajos">Tipos Ordenes de Trabajo:</label>
-                        <input id="CmbTiposOrdenesTrabajos" name="CmbTiposOrdenesTrabajos" class="form-control" />
+                        <div class="form-row">
+                            <div class=" form-group col-lg-4">
+                                <label for="dFechaDesde">Fecha Desde:</label>
+                                <input id="dFechaDesde" name="dFechaDesde" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="dFechaHasta">Fecha Hasta:</label>
+                                <input id="dFechaHasta" name="dFechaHasta" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4 align-self-end">
+                                <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-lg-3 align-self-end">
-                        <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox">
-                        <label class="k-checkbox-label" for="chkVerTodas">Ver todas (OTs activas y finalizadas) </label>
+                    <div class="form-group col-lg-3" >
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label for="CmbTiposOrdenesTrabajos">Tipos Ordenes de Trabajo:</label>
+                                <input id="CmbTiposOrdenesTrabajos" name="CmbTiposOrdenesTrabajos" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6 align-self-end">
+                                <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkVerTodas">Ver todas (OTs activas y finalizadas)</label>
+                            </div>
+                        </div>
                     </div>
+                   
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-3">

@@ -218,17 +218,18 @@
                                                         <label for="CmbTipoLuz">Tipo de Luz:</label>
                                                         <input id="CmbTipoLuz" name="CmbTipoLuz" class="form-control" />
                                                     </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
-                                                        <label for="CmbTipoAcabado">Acabado:</label>
-                                                        <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
-                                                    </div>
+
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="CmbQuimica">Química a Utilizar</label>
                                                         <input name="CmbQuimica" id="CmbQuimica" required validationMessage="Requerido" type="text" class="form-control">
                                                     </div>
-                                                    <div class="form-group col-md-6 col-lg-3">
+                                                    <div class="form-group col-md-6 col-lg-6">
                                                         <label for="TxtDirectorioArchivos">Directorio Archivos:</label>
                                                         <input id="TxtDirectorioArchivos" name="TxtDirectorioArchivos" type="text" class="k-textbox form-control" />
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-lg-3" hidden="hidden">
+                                                        <label for="CmbTipoAcabado">Acabado:</label>
+                                                        <input id="CmbTipoAcabado" name="CmbTipoAcabado" class="form-control" />
                                                     </div>
                                                 </div>
 
@@ -312,11 +313,13 @@
                                             <div class="form-row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
+                                                        <label for="GRReqDesColor"><strong>Registro de color</strong></label>
                                                         <div id="GRReqDesColor"></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
+                                                        <label for="GRReqDesTec"><strong>Registro de técnica</strong></label>
                                                         <div id="GRReqDesTec"></div>
                                                     </div>
                                                 </div>
@@ -324,7 +327,14 @@
                                             <div class="form-row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
+                                                        <label for="GRReqDesFoil"><strong>Registro de Foil</strong></label>
                                                         <div id="GRReqDesFoil"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="GRReqDesArtSug"><strong>Registro de artículo sugerido</strong></label>
+                                                        <div id="GRReqDesArtSug"></div>
                                                     </div>
                                                 </div>
                                             </div>

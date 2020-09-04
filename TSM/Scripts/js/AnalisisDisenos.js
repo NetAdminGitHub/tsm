@@ -191,6 +191,12 @@ $(document).ready(function () {
                     return $("#cmbTipoOptela").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            come: function (input) {
+                if (input.is("[name='TxtComentariosSubli']") ) {
+                    return input.val().length <= 2000;
+                }
+                return true;
             }
 
 
@@ -202,7 +208,8 @@ $(document).ready(function () {
             FactorDistribucionRuler1: "Debe ser mayor a 0",
             required: "Requerido",
             MsgIdUnidadDimensionSub: "Requerido",
-            msgtop: "Requerido"
+            msgtop: "Requerido",
+            come: "Requerido campo no puede ser mayor 2000"
 
         }
     }).data("kendoValidator");
@@ -389,6 +396,7 @@ $(document).ready(function () {
     $("#EstadoPla").prop("disabled", "disabled");
 
     $("#TxtDirectorioSubli").prop("readonly", "readonly");
+    //$("#TxtComentariosSubli").autogrow({ vertical: true, horizontal: false, flickering: false });
     $("#UbicacionSub").prop("disabled", "disabled");
     $("#EstadoSub").prop("disabled", "disabled");
 
@@ -1446,6 +1454,7 @@ $(document).ready(function () {
                     $("#UbicacionSub").val(getUbicacionRD($("#ReqDes").data("kendoGrid")));
                     kdoNumericSetValue($("#TxtFactorDistribucion"),respuesta.FactorDistribucion);
                     $("#TxtDirectorioSubli").val(respuesta.DirectorioArchivos);
+                    $("#TxtComentariosSubli").val(respuesta.Comentarios);
                     KdoCmbSetValue($("#cmbTipoOptela"), respuesta.IdTipoOperacionSublimado);
                     kdoChkSetValue($("#chkAplCostoLimpi"), respuesta.AplicaCostoLimpieza);
                     kdoChkSetValue($("#chkDetallarPieza"), respuesta.DetallarPiezas);
@@ -1493,7 +1502,7 @@ $(document).ready(function () {
                 LineajeLPI: 0, //no aplica para serigrafia
                 Estado: $("#EstadoSub").val(),
                 Fecha: kendo.toString(kendo.parseDate($("#FechaSub").val()), 'u'),
-                Comentarios: "",
+                Comentarios: $("#TxtComentariosSubli").val(),
                 AltoLienzo: 0,
                 AnchoLienzo: 0,
                 IdUnidadLienzo: null,
@@ -1537,7 +1546,7 @@ $(document).ready(function () {
         kdoNumericSetValue($("#NumConsmoYar"), 0);
         KdoCmbSetValue($("#cmbTipoOptela"), "");
         $("#TxtDirectorioSubli").val("");
-
+        $("#TxtComentariosSubli").val("");
     }
     //#endregion FIN Informacion Sublimacion
 

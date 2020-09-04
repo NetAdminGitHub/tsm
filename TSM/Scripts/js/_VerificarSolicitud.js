@@ -35,6 +35,7 @@ let xvUrl = "", xvId = "";
 let vIdS = 0;
 let vIdCli = 0;
 let VarIDReq = 0;
+let vIdReqTecnica = 0;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -253,12 +254,12 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                MsgCmbAcabado: function (input) {
-                    if (input.is("[name='CmbTipoAcabado']")) {
-                        return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+                //MsgCmbAcabado: function (input) {
+                //    if (input.is("[name='CmbTipoAcabado']")) {
+                //        return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
+                //    }
+                //    return true;
+                //},
                 vQui: function (input) {
                     if (input.is("[name='CmbQuimica']")) {
                         return $("#CmbQuimica").data("kendoComboBox").selectedIndex >= 0;
@@ -290,7 +291,7 @@ var fn_VSCargarJSEtapa = function () {
                 TxtDirectorioArchivosRuler: "Requerido Longitud máxima del campo es 2000",
                 MsgCmbTipoLuz: "Requerido",
                 MsgCmbMotivo: "Requerido",
-                MsgCmbAcabado: "Requerido",
+                //MsgCmbAcabado: "Requerido",
                 MsgCmbTMuestra: "Requerido",
                 vQui:"Requerido"
             }
@@ -777,8 +778,8 @@ var fn_VSCargarJSEtapa = function () {
         Grid_SetSelectRow($("#GRReqDesTec"), sRTec);
     });
 
-
-
+  
+   
 
 
     //#endregion fin CRUD Programación GRID Colores tecnicas
@@ -806,7 +807,7 @@ var fn_VSCargarJSEtapa = function () {
 
     //#endregion FIN CRUD manejo de requerimiento de Desarrollo
 
-    //#region Foil  
+    //#region grid ingreso Foil  
     let UrlArtF = TSM_Web_APi + "Articulos/GetFoil";
     let DsReqFoil = new kendo.data.DataSource({
         transport: {
@@ -910,6 +911,108 @@ var fn_VSCargarJSEtapa = function () {
     $("#GRReqDesFoil").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#GRReqDesFoil"), sRFoil);
     });
+
+    //#endregion 
+
+    //#region Articulos sugeridos  
+    let UrlArtSug = TSM_Web_APi + "tecnicasArticulos/GetByidTecnica/0";
+    let DsArtSugeridos = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicasArticulos/GetByidRequerimientoTecnica/" + vIdReqTecnica; },
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicasArticulos/" + datos.IdRequerimientoTecnica + "/" + datos.IdArticulo; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "RequerimientoDesarrollosMuestrasTecnicasArticulos",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdArticulo",
+                fields: {
+                    IdRequerimientoTecnica: {
+                        type: "number", defaultValue: function () {
+                            return Fn_getIdRequerimientoTecnica($("#GRReqDesTec").data("kendoGrid"));
+                        }
+                    },
+                    IdArticulo: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                                if (input.is("[name='IdArticulo']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdArticulo").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+
+
+    });
+
+    $("#GRReqDesArtSug").kendoGrid({
+        edit: function (e) {
+            // Ocultar
+            $('[name="IdArticulo"]').data("kendoComboBox").setDataSource(Fn_GetTecnicasArtSugeridos(Fn_getIdTecnica($("#GRReqDesTec").data("kendoGrid"))));
+            KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
+            KdoHideCampoPopup(e.container, "Nombre");
+            Grid_Focus(e, "IdArticulo");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRequerimientoTecnica", title: "Código Tecnica", hidden: true },
+            { field: "IdArticulo", title: "Articulo Sugerido", editor: Grid_Combox, values: ["IdArticulo", "Nombre", UrlArtSug, "", "Seleccione un Articulo....", "", "", ""], hidden: true },
+            { field: "Nombre", title: "Nombre" }
+
+        ]
+
+    });
+
+    SetGrid($("#GRReqDesArtSug").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
+    SetGrid_CRUD_ToolbarTop($("#GRReqDesArtSug").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#GRReqDesArtSug").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#GRReqDesArtSug").data("kendoGrid"), DsArtSugeridos);
+
+    var sRsug = [];
+    $("#GRReqDesArtSug").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#GRReqDesArtSug"), sRsug);
+    });
+
+    $("#GRReqDesTec").data("kendoGrid").bind("change", function (e) { //foco en la fila
+        fn_ConsultarArtSug();
+    });
+
 
     //#endregion 
     //#region CRUD Manejo de Arte
@@ -1215,10 +1318,10 @@ var fn_VSCargar = function () {
         KdoButtonEnable($("#Guardar"), false);
         KdoButtonEnable($("#myBtnAdjunto"), false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
-        Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesFoil"), false, false, false);
+        Grid_HabilitaToolbar($("#GRReqDesArtSug"), false, false, false);
 
         KdoComboBoxEnable($("#IdPrograma"), false);
         $("#swchSolTelaSustituta").data("kendoSwitch").enable(false);
@@ -1285,6 +1388,12 @@ let getRD = function (UrlRD) {
                 $("#GRDimension").data("kendoGrid").dataSource.read();
                 $("#GRReqDesColor").data("kendoGrid").dataSource.read();
                 $("#GRReqDesTec").data("kendoGrid").dataSource.read();
+                $("#GRReqDesFoil").data("kendoGrid").dataSource.read();
+                Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#GRReqDesArtSug"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 //habiliar en objetos en las vistas
                 $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
                 HabilitaFormObje(true);
@@ -1558,7 +1667,7 @@ let GuardarRequerimiento = function (UrlRD) {
             DirectorioArchivos: $("#TxtDirectorioArchivos").val(),
             IdTipoLuz: $("#CmbTipoLuz").val(),
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
-            IdTipoAcabado: $("#CmbTipoAcabado").val(),
+            IdTipoAcabado: KdoCmbGetValue($("#CmbTipoAcabado")),
             IdTipoMuestra: $("#CmbTMuestra").val(),
             IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
@@ -1582,7 +1691,8 @@ let GuardarRequerimiento = function (UrlRD) {
             Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-
+            Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+            Grid_HabilitaToolbar($("#GRReqDesArtSug"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             //habilitar botones   
             $("#myBtnAdjunto").data("kendoButton").enable(true);
             RequestEndMsg(data, "Put");
@@ -1927,5 +2037,44 @@ let fn_DibujarCriteriosCalidad = function (DataSource) {
         );
     });
 
+};
+
+let Fn_getIdRequerimientoTecnica= function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdRequerimientoTecnica;
+
+};
+
+let Fn_getIdTecnica= function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdTecnica;
+
+};
+
+let fn_ConsultarArtSug = function () {
+    vIdReqTecnica = Fn_getIdRequerimientoTecnica($("#GRReqDesTec").data("kendoGrid"));
+    $("#GRReqDesArtSug").data("kendoGrid").dataSource.read();
+    $("#GRReqDesTec").data("kendoGrid").dataSource.total() > 0 ? Grid_HabilitaToolbar($("#GRReqDesArtSug"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar) : Grid_HabilitaToolbar($("#GRReqDesArtSug"), false, false, false);
+};
+
+var Fn_GetTecnicasArtSugeridos = function (vIdTec) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "TecnicasArticulos/GetByidTecnica/" + vIdTec,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
 };
 //#endregion Fin metods Generales
