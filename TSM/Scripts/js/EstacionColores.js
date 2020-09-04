@@ -175,6 +175,16 @@ var fn_VistaEstacionColorDocuReady = function () {
         }
     });
 
+    $("#CmbTecnica_color").data("kendoComboBox").bind("change", function (e) {
+        if (this.value() === "") {
+            $("#ArticuloSugerido").val("");
+        }        
+    });
+
+    $("#CmbTecnica_color").data("kendoComboBox").bind("select", function (e) {
+        fn_TecnicasArticuloSugerido($("#ArticuloSugerido"), maq[0].IdSeteo, e.dataItem.IdRequerimientoTecnica);
+    });
+    
     $("#CmbQuimica_color").data("kendoComboBox").bind("change", function (e) {
         let idQ = this.value();
 
@@ -208,9 +218,14 @@ var fn_VistaEstacionColor = function () {
     TextBoxEnable($("#TxtOpcSelec"), false);
     TextBoxEnable($("#TxtNombreQui"), false);
     TextBoxEnable($("#NumMasaEntre"), false);
+    TextBoxReadOnly($("#ArticuloSugerido"), false);
     $("#TxtOpcSelec").val($("#TxtOpcSelec").data("name")); //campo nombre del color, base o tecnica.
     //idBra = $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit",""); //idBra: almacena el idestacion
     //Te = $("#TxtOpcSelec").data("Formulacion"); //Te: guarda el tipo de formulación a configurar (Color,Tenica,Base)
+
+    $("#ArticuloSugerido").val("");
+    if ($("#TxtOpcSelec").data().Formulacion === "TECNICA")
+        fn_TecnicasArticuloSugerido($("#ArticuloSugerido"), maq[0].IdSeteo, $("#TxtOpcSelec").data().IdRequerimientoTecnica);
 
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, $("#TxtOpcSelec").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""));
     xIdSeteoMq = EstacionBra === null ? 0 : maq[0].IdSeteo;
@@ -278,7 +293,7 @@ var fn_Consultar_EC = function (g) {
         fn_EstacionesMarcos_EC(maq[0].IdSeteo, idBra);
         fn_EstacionesTintasFormulaDet_EC(maq[0].IdSeteo, idBra);
 
-        $("#MEstacionColor").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + idBra);
+        $("#MEstacionColor").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN #" + idBra);
         InicioModalRT = 0;
     }
    
@@ -312,6 +327,7 @@ var fn_SeccionMarcosFormulacion = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
                 $("#TxtOpcSelec").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
                 KdoCmbSetValue($("#CmbTecnica_color"), setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 KdoComboBoxEnable($("#CmbTecnica_color"), true);
                 $("#CmbTecnica_color").data("kendoComboBox").dataSource.read();
                 KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
@@ -324,6 +340,7 @@ var fn_SeccionMarcosFormulacion = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
                 $("#TxtOpcSelec").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
                 KdoCmbSetValue($("#CmbTecnica_color"), "");
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 KdoComboBoxEnable($("#CmbTecnica_color"), false);
                 KdoCmbSetValue($("#CmbBasePigmento_color"), "");
                 KdoComboBoxEnable($("#CmbBasePigmento_color"), false);
@@ -336,6 +353,7 @@ var fn_SeccionMarcosFormulacion = function (datos) {
                 $("#TxtOpcSelec").val(setFor.NomIdBase === undefined ? "" : setFor.NomIdBase);
                 KdoCmbSetValue($("#CmbTecnica_color"), "");
                 KdoComboBoxEnable($("#CmbTecnica_color"), false);
+                $("#ArticuloSugerido").val("");
                 KdoCmbSetValue($("#CmbBasePigmento_color"), "");
                 KdoComboBoxEnable($("#CmbBasePigmento_color"), false);
                 KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), false);

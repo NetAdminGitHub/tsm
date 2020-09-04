@@ -263,6 +263,16 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         }
     });
 
+    $("#CmbTecnica_Dis").data("kendoComboBox").bind("change", function (e) {
+        if (this.value() === "") {
+            $("#ArticuloSugerido_Dis").val("");
+        }
+    });
+
+    $("#CmbTecnica_Dis").data("kendoComboBox").bind("select", function (e) {
+        fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Dis"), maq[0].IdSeteo, e.dataItem.IdRequerimientoTecnica);
+    });
+
     $("#CmbQuimica_Dis").data("kendoComboBox").bind("change", function (e) {
         let idQ = this.value();
 
@@ -296,6 +306,7 @@ var fn_VistaEstacionDiseno = function () {
     TextBoxEnable($("#TxtOpcSelec_Dis"), false);
     TextBoxEnable($("#TxtNombreQui_Dis"), false);
     TextBoxEnable($("#NumMasaEntre_Dis"), false);
+    TextBoxReadOnly($("#ArticuloSugerido_Dis"), false);
     KdoNumerictextboxEnable($("#NumArea_Dis"), false);
     KdoComboBoxEnable($("#CmdIdUnidadArea_Dis"), false);
     $("#TxtOpcSelec_Dis").val($("#TxtOpcSelec_Dis").data("name")); //campo nombre del color, base o tecnica.
@@ -303,6 +314,10 @@ var fn_VistaEstacionDiseno = function () {
     //Te = $("#TxtOpcSelec_Dis").data("Formulacion"); //Te: guarda el tipo de formulación a configurar (Color,Tenica,Base)
   /*  setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra)*///obtener informacion de la entidad SeteoMarcos Formulaciones por seteo y estación
    /* estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra)*/
+
+    $("#ArticuloSugerido_Dis").val("");
+    if ($("#TxtOpcSelec_Dis").data().Formulacion === "TECNICA")
+        fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Dis"), maq[0].IdSeteo, $("#TxtOpcSelec_Dis").data().IdRequerimientoTecnica);
 
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, $("#TxtOpcSelec_Dis").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""));
     xIdSeteoMq = EstacionBra === null ? 0 : maq[0].IdSeteo;
@@ -380,7 +395,7 @@ var fn_Consultar_Dis = function (g) {
         fn_GetMarcoFormulacion_Dis(maq[0].IdSeteo, idBra);
         fn_EstacionesMarcos_Dis(maq[0].IdSeteo, idBra);
         fn_EstacionesTintasFormulaDet_Dis(maq[0].IdSeteo, idBra);
-        $("#MEstacionDisenos").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + idBra);
+        $("#MEstacionDisenos").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN #" + idBra);
 
         InicioModalAD = 0;
     }
@@ -413,6 +428,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
                 $("#TxtOpcSelec_Dis").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
                 KdoCmbSetValue($("#CmbTecnica_Dis"), setFor.IdRequerimientoColor === undefined ? "" : setFor.IdRequerimientoTecnica);
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Dis"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 KdoComboBoxEnable($("#CmbTecnica_Dis"), true);
                 $("#CmbTecnica_Dis").data("kendoComboBox").dataSource.read();
                 KdoComboBoxEnable($("#CmbBasePigmento_Dis"), true);
@@ -425,6 +441,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
                 $("#TxtOpcSelec_Dis").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
                 KdoCmbSetValue($("#CmbTecnica_Dis"), "");
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Dis"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 KdoComboBoxEnable($("#CmbTecnica_Dis"), false);
                 KdoCmbSetValue($("#CmbBasePigmento_Dis"), "");
                 KdoComboBoxEnable($("#CmbBasePigmento_Dis"), false);
@@ -437,6 +454,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
                 $("#TxtOpcSelec_Dis").val(setFor.NomIdBase === undefined ? "" : setFor.NomIdBase);
                 KdoCmbSetValue($("#CmbTecnica_Dis"), "");
+                $("#ArticuloSugerido_Dis").val("");
                 KdoComboBoxEnable($("#CmbTecnica_Dis"), false);
                 KdoCmbSetValue($("#CmbBasePigmento_Dis"), "");
                 KdoComboBoxEnable($("#CmbBasePigmento_Dis"), false);

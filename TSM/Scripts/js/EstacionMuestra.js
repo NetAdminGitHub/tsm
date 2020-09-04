@@ -158,6 +158,7 @@ var fn_VistaEstacionMuestra = function () {
     KdoComboBoxEnable($("#CmdIdUnidadArea_Mues"), false);
     KdoComboBoxEnable($("#CmbQuimica_Mues"), false);
     $("#TxtFormulaSug_Mues").prop("readonly", true);
+    TextBoxReadOnly($("#ArticuloSugerido_Mues"), false);
     KdoComboBoxEnable($("#CmbSistemaPigmentos_Mues"), false);
     KdoComboBoxEnable($("#CmbTipoTinta_Mues"), false);
     $("#TxtOpcSelec_Mues").val($("#TxtOpcSelec_Mues").data("name"));
@@ -230,7 +231,7 @@ var fn_Consultar_Mues = function (g) {
         fn_GetMarcoFormulacion_Mues(maq[0].IdSeteo, idBra);
         fn_EstacionesMarcos_Mues(maq[0].IdSeteo, idBra);
         fn_EstacionesTintasFormulaDet_Mues(maq[0].IdSeteo, idBra);
-        $("#MEstacionMuestra").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + idBra);
+        $("#MEstacionMuestra").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN #" + idBra);
         InicioModalMU = 0; 
     }
    
@@ -263,6 +264,7 @@ var fn_fn_SeccionMarcosFormulacion_Mues = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Color');
                 $("#TxtOpcSelec_Mues").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
                 xCmbTecnica_Mues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Mues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_Mues = setFor.IdBase === undefined ? "" : setFor.IdBase;
                 break;
             case "TECNICA":
@@ -270,7 +272,8 @@ var fn_fn_SeccionMarcosFormulacion_Mues = function (datos) {
                 $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica", setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Técnica');
                 $("#TxtOpcSelec_Mues").val(setFor.NomIdTecnica === undefined ? "" : setFor.NomIdTecnica);
-                xCmbTecnica_Mues = null;
+                xCmbTecnica_Mues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
+                fn_TecnicasArticuloSugerido($("#ArticuloSugerido_Mues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_Mues = null;
                 break;
             case "BASE":
@@ -279,6 +282,7 @@ var fn_fn_SeccionMarcosFormulacion_Mues = function (datos) {
                 $("#" + ModalEstacion + "").find('[id="OpcSelec"]').text('Nombre de Base');
                 $("#TxtOpcSelec_Mues").val(setFor.NomIdBase === undefined ? "" : setFor.NomIdBase);
                 xCmbTecnica_Mues = null;
+                $("#ArticuloSugerido_Mues").val("");
                 xCmbBaseMezcla_Mues = null;
                 break;
         }
