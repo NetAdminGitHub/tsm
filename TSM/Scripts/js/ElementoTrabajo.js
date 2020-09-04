@@ -1761,5 +1761,16 @@ $("#ElementoTrabajo_action").on("Action_Ok", function (event,dt) {
     fn_IrKanbanEtapa();
 });
 
-
-
+var fn_TecnicasArticuloSugerido = function(input, idSeteo, idRequerimientoTecnica){
+    $.ajax({
+        url: TSM_Web_APi + "GetSeteoMaquinaTecnicasArticulosConcatenados/" + idSeteo + "/" + (idRequerimientoTecnica === null || idRequerimientoTecnica === undefined ? 0 : idRequerimientoTecnica),
+        type: 'GET',
+        success: function (datos) {
+            if (datos !== null) {
+                input.val(datos.Articulos);
+            } else {
+                input.val("");
+            }
+        }
+    });
+};
