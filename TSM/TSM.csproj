@@ -233,6 +233,7 @@
     <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
+    <Compile Include="Controllers\ArticulosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
     <Compile Include="Controllers\BasesMuestrasController.cs" />
@@ -755,6 +756,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\Articulos.js" />
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
@@ -1495,6 +1497,7 @@
     <Content Include="Views\GestionOTDesarrollosCobrosApro\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitarIngresoCambios.cshtml" />
     <Content Include="Views\SolicitudesCambios\Index.cshtml" />
+    <Content Include="Views\Articulos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
