@@ -30,14 +30,16 @@ namespace TSM.Controllers
                         var result = v.GetAzAuthorizeRequest();
 
                         Response.Redirect(result);
-
-
                     }
-
+                    
                 }
-                else { Response.Redirect("/Token/Validar");  }
-            
-           
+                else {
+                    return RedirectToAction("Validar", "Token", new { id_token = Session["aztkn"].ToString() });
+
+                                 
+                }
+
+
             }
 
             return View();

@@ -58,10 +58,14 @@ namespace TSM.Controllers
 
                
             }
-            else { Response.Redirect("~/Error.cshtml"); }
+            else { Response.Redirect("Error"); }
 
+            return Redirect(Url.Content("Validado"));
+        }
 
-            return RedirectToAction("Index", "Home");
+        public void Validado()
+        {
+            Response.Redirect(Url.Content("/Home/Index"), false);
         }
 
         public static string GenerarToken(string trama)

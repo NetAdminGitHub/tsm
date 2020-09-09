@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Web;
+using System.Runtime.Remoting.Channels;
+using System.Threading.Tasks;
+using TSM.FrwkSeguridadSrv;
 using TSM.Models;
 
 namespace TSM.DAL
@@ -18,22 +21,28 @@ namespace TSM.DAL
 
         public AzureAuthConf GetAzureAuthConf()
         {
-
-            AzureAuthConf conf = new AzureAuthConf()
+            string data;
+            string azjson;
+            //obtiene dato de archivo cifrado de configuracion
+            using (var stream = File.Open(HttpContext.Current.Server.MapPath("~\\jsonsettings.azconf"), FileMode.Open))
             {
-                Authority = "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
-                Tenant = "54174ba1-f659-408b-b1e6-f8789266f1d8",
-                Client_id = "40d8d80c-b29c-4d5b-bc37-35cbf54c6d6c",
-                ClientSecret = "n42i1k74Vm.A-IuXZrd-~3O6vu.55Vy.4A",
-                Scope = "openid profile",
-                ResponseMode = "form_post",
-                ResponseType = "id_token",
-                RedirectUrl = "https://localhost:44311/Token/Validar",
-                DiscoveryEndPoint = "https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration",
-                InstanciaAz = "https://login.microsoftonline.com/{tenant}/v2.0"
+                var reader = new StreamReader(stream);
 
-            };
-         //   var conf = JsonConvert.DeserializeObject<AzureAuthConf>("");
+                data = reader.ReadToEnd();
+
+            }
+           // descifra contenido con el método disponible y lo agrega a variable
+            using (var c = new SeguridadClient()) { 
+             azjson =  c.Desencriptar(data,Utils.Config.App);
+            }
+
+            // serializa para validar y generar GUID
+            var conf = JsonConvert.DeserializeObject<AzureAuthConf>(azjson);
+             
+           
+            var s = JsonConvert.SerializeObject(conf);
+
+         
 
             return conf;
         }

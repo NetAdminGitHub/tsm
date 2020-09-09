@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using Newtonsoft.Json;
 
@@ -52,8 +53,14 @@ namespace TSM.Models
         }
 
 
+        private string _redirectUrl;
 
-        public string RedirectUrl { get; set; }
+        public string RedirectUrl
+        {
+            get { return _redirectUrl.Replace("{appbaseurl}", Utils.ContextHelper.GetHttpContext()); }
+            set { _redirectUrl = value; }
+        }
 
-     }
+
+    }
 }

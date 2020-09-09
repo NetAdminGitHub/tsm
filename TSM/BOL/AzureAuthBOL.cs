@@ -42,28 +42,32 @@ namespace TSM.BOL
 
           string EndPointReferencia = confinicial.DiscoveryEndPoint;
 
-   
-
-            ConfigurationManager<OpenIdConnectConfiguration> configurador = new ConfigurationManager<OpenIdConnectConfiguration>(EndPointReferencia, new OpenIdConnectConfigurationRetriever());
-
-            OpenIdConnectConfiguration config =await Task.Run(()=> configurador.GetConfigurationAsync().Result);
-
-            var parametrosValidacion = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = confinicial.InstanciaAz,
-                ValidateAudience = true,
-                IssuerSigningKeys = config.SigningKeys,
-                IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(confinicial.ClientSecret)),
-                ValidateLifetime = true,
-                ValidAudience = confinicial.Client_id,
-                                
-            };
-
-
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            try
+            {
 
-            var result = handler.ValidateToken(id_token, parametrosValidacion, out jwt);
+                ConfigurationManager<OpenIdConnectConfiguration> configurador = new ConfigurationManager<OpenIdConnectConfiguration>(EndPointReferencia, new OpenIdConnectConfigurationRetriever());
+
+                OpenIdConnectConfiguration config = await Task.Run(() => configurador.GetConfigurationAsync().Result);
+
+                var parametrosValidacion = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = confinicial.InstanciaAz,
+                    ValidateAudience = true,
+                    IssuerSigningKeys = config.SigningKeys,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(confinicial.ClientSecret)),
+                    ValidateLifetime = true,
+                    ValidAudience = confinicial.Client_id,
+
+                };
+                var result = handler.ValidateToken(id_token, parametrosValidacion, out jwt);
+            }
+            catch (SecurityTokenException ex)
+            {
+                return null;
+             }
+
             
             return jwt as JwtSecurityToken;
         }
