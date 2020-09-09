@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Antlr.Runtime;
 using RestSharp;
+using TSM.Controllers;
+using TSM.Models;
 
 namespace TSM.Utils
 {
@@ -36,6 +39,29 @@ namespace TSM.Utils
             }
             return response;
         }
+
+        //get request para autenticación
+        public static string AzGeneraGetRequest( AzureAuthConf azconf)
+        {
+                              
+          
+            var client = new RestClient(azconf.Authority);
+            var request = new RestRequest( Method.GET);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("client_id",azconf.Client_id,ParameterType.GetOrPost);
+            request.AddParameter("response_type",azconf.ResponseType, ParameterType.GetOrPost);
+            request.AddParameter("redirect_uri", azconf.RedirectUrl, ParameterType.GetOrPost);
+            request.AddParameter("response_mode",azconf.ResponseMode,ParameterType.GetOrPost);
+            request.AddParameter("scope", azconf.Scope, ParameterType.GetOrPost);
+            request.AddParameter("state", azconf.State, ParameterType.GetOrPost);
+            request.AddParameter("nonce", azconf.Nonce, ParameterType.GetOrPost);
+
+            return client.BuildUri(request).ToString();
+            
+        }
+
+
+
 
 
     }

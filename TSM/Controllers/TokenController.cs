@@ -4,9 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
+using TSM.BOL;
+using TSM.DAL;
 
 namespace TSM.Controllers
 {
@@ -20,6 +24,44 @@ namespace TSM.Controllers
             newToken = GenerarToken(trama);
 
             return Json(newToken, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public async Task<ActionResult> Validar()
+        {
+            if (Request.Params["id_token"] !=null)
+            {
+                using (var tknvalid = new AzureAuthBOL(new AzureAuthDAL()))
+                {
+                    try
+                    {
+
+                        Session["aztkn"] = null;// limpia sesión
+                        //obtiene token validado
+                        var jwt = await tknvalid.ValidarToken(Request.Params["id_token"]);
+                        string[] user = jwt.Payload["preferred_username"].ToString().Split('@');
+                        HttpCookie cookieinfo = new HttpCookie("user");
+                        cookieinfo.Value = user[0];
+
+                        Session["aztkn"] = Request.Params["id_token"]; // asigna token
+                        Response.Cookies.Remove("user");
+                        Response.Cookies.Add(cookieinfo);
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                 
+                }
+
+               
+            }
+            else { Response.Redirect("~/Error.cshtml"); }
+
+
+            return RedirectToAction("Index", "Home");
         }
 
         public static string GenerarToken(string trama)
