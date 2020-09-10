@@ -42,7 +42,6 @@ namespace TSM.Controllers
                         string[] user = jwt.Payload["preferred_username"].ToString().Split('@');
                         HttpCookie cookieinfo = new HttpCookie("user");
                         cookieinfo.Value = user[0];
-
                         Session["aztkn"] = Request.Params["id_token"]; // asigna token
                         Response.Cookies.Remove("user");
                         Response.Cookies.Add(cookieinfo);
