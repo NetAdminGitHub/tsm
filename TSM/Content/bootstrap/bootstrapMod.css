@@ -85,7 +85,7 @@ span[class*="ficonEtp"] {
 }
 
 div.TablaFomula {
-    height: 200px;
+    height: 175px;
     /*width: 200px;*/
     overflow-y: scroll;
 }
