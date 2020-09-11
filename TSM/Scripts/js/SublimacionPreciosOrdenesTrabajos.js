@@ -762,7 +762,8 @@ let fn_partesHisSublimado = function () {
         toolbar: ["excel"],
         excel: {
             fileName: "Sublimacion_Precios_Aprobados.xlsx",
-            filterable: true
+            filterable: true,
+            allPages: true
         },
         edit: function (e) {
             $('[name="IdUnidad"]').data("kendoComboBox").setDataSource(fn_DSIdUnidadFiltro("9,17"));
