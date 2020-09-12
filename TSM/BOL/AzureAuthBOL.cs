@@ -14,6 +14,7 @@ using TSM.DAL;
 using TSM.Models;
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Web;
 
 namespace TSM.BOL
 {
@@ -33,13 +34,18 @@ namespace TSM.BOL
                 
          }
 
+        public AzureAuthConf GetCurrenConfig()
+        {
+            return _azureAuthDal.GetAzureAuthConf();
+        }
 
-        public async Task<JwtSecurityToken> ValidarToken(string id_token)
+
+        public async Task<JwtSecurityToken> ValidarToken(string id_token,AzureAuthConf conf = null)
         {
 
            SecurityToken jwt;
-            var confinicial = _azureAuthDal.GetAzureAuthConf(); // obtine objeto con la configuración.
-
+            var confinicial = (conf != null ) ? conf  : await _azureAuthDal.GetAzureAuthConfAsync(); // obtine objeto con la configuración.
+            
           string EndPointReferencia = confinicial.DiscoveryEndPoint;
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
@@ -65,11 +71,11 @@ namespace TSM.BOL
             }
             catch (SecurityTokenException ex)
             {
-                return null;
+                jwt = null;
              }
 
             
-            return jwt as JwtSecurityToken;
+            return (JwtSecurityToken)jwt;
         }
 
      

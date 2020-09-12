@@ -40,11 +40,28 @@ namespace TSM.Controllers
                         //obtiene token validado
                         var jwt = await tknvalid.ValidarToken(Request.Params["id_token"]);
                         string[] user = jwt.Payload["preferred_username"].ToString().Split('@');
+                        //crea cookie de usuario
                         HttpCookie cookieinfo = new HttpCookie("user");
                         cookieinfo.Value = user[0];
+
+                        //Crea cookie de validación
+                        string zvalidstr = "";
+                        using (var c = new FrwkSeguridadSrv.SeguridadClient())
+                        {
+                            var str = user[0] + '&' + jwt.Payload["nonce"].ToString();
+                            zvalidstr = await c.EncriptarAsync(str, Utils.Config.App);
+                        }
+
+                        HttpCookie verifcookie = new HttpCookie("zvalidator");
+                        verifcookie.Value = zvalidstr;
+
+                        // asigna token a param
                         Session["aztkn"] = Request.Params["id_token"]; // asigna token
+
                         Response.Cookies.Remove("user");
+                        Response.Cookies.Remove("zvalidator");
                         Response.Cookies.Add(cookieinfo);
+                        Response.Cookies.Add(verifcookie);
                     }
                     catch (Exception)
                     {

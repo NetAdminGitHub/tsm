@@ -29,14 +29,24 @@ namespace TSM.Controllers
                     {
                         var result = v.GetAzAuthorizeRequest();
 
-                        Response.Redirect(result);
+                        if (!Response.IsRequestBeingRedirected) {    
+                            Response.Redirect(result);
+                        }
+                        
                     }
                     
                 }
                 else {
-                    return RedirectToAction("Validar", "Token", new { id_token = Session["aztkn"].ToString() });
 
-                                 
+                    //remueve cookie t
+                    HttpCookie tcookie = System.Web.HttpContext.Current.Request.Cookies["t"];
+                    if (tcookie != null)
+                    {
+                        tcookie.Expires = DateTime.Now.AddDays(-1D);
+                        Response.Cookies.Add(tcookie);
+                    }
+                    return RedirectToAction("Validar", "Token", new { id_token = Session["aztkn"].ToString() });
+          
                 }
 
 
