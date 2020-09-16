@@ -500,7 +500,7 @@ let fn_partesSublimado = function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridPartes").kendoGrid({
         edit: function (e) {
-            $('[name="IdUnidad"]').data("kendoComboBox").setDataSource(fn_DSIdUnidadFiltro("9,17"));
+            $('[name="IdUnidad"]').data("kendoComboBox").setDataSource(fn_DSIdUnidadByGrupo(1));
             KdoHideCampoPopup(e.container, "NoDocumento");
             KdoHideCampoPopup(e.container, "IdCategoriaPrenda");
             KdoHideCampoPopup(e.container, "FechaMod");

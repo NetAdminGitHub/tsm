@@ -1550,3 +1550,25 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
 };
 //#endregion
 
+var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
+
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "Get",
+                    async: false,
+                    url: TSM_Web_APi + "/RelacionGruposUnidadesMedidas/GetByidGrupoUnidadMedida/" + IdGrupoUnidadMedida,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
+};
