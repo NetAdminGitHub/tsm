@@ -568,8 +568,9 @@ var Fn_VistaCambioEstado = function (e,fn_close) {
  * @param {string} SP nombre del proceso almacenado
  * @param {string} Id id del registo (PK)
  * @param {function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
+ * @param {function} fn_AfterChange opcional funcion a invocar despues de hacer un cambio satisfactorio
  */
-var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado) {
+var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado, fn_AfterChange) {
 
     VistaPopup.data("kendoDialog").open();
     var Param = {
@@ -579,7 +580,8 @@ var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado
         EstadoSiguiente: "",//obligatorios
         Motivo: "",//obligatorios
         Id: Id,
-        fnGuardado: fnGuardado
+        fnGuardado: fnGuardado,
+        fn_AfterChange: fn_AfterChange
     };
     fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, Param);
 };
