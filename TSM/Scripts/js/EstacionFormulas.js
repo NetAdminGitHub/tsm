@@ -198,7 +198,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
             IdSeteo: maq[0].IdSeteo,
             IdEstacion: xidEstacion
         };
-        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId);
+        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId, undefined, function () { return fn_UpdEstadoGrilla(); });
     });
 
    
@@ -383,7 +383,7 @@ var fn_gridFormulas = function (gd) {
                         var lstId = {
                             IdFormula: dataItem.IdFormula
                         };
-                        Fn_VistaCambioEstadoVisualizar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", lstId);
+                        Fn_VistaCambioEstadoVisualizar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", lstId, function () { return fn_UpdEstadoGrilla(); });
                     }
                 },
                 width: "70px",
@@ -890,6 +890,23 @@ var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
 
 };
 
+let Fn_UpdGridEstacion_Formula = function (g, estado) {
+    g.set("EstadoFormula", estado );
+    LimpiaMarcaCelda_Formula();
+};
+
+let LimpiaMarcaCelda_Formula = function () {
+    $(".k-dirty-cell", $("#gridEstacion")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gridEstacion")).remove();
+};
+
+let fn_UpdEstadoGrilla = function () {
+    // como esta funcion es Async =false es valido colocar este codigo
+    let ge = $("#gridEstacion").data("kendoGrid");
+    var uid = ge.dataSource.get(xidEstacion).uid;
+    Fn_UpdGridEstacion_Formula(ge.dataItem("tr[data-uid='" + uid + "']"), KdoCmbGetText($("#cmbEstados")));
+
+}
 fn_PWList.push(fn_VistaEstacionFormulas);
 fn_PWConfList.push(fn_VistaEstacionFormulasDocuReady);
 

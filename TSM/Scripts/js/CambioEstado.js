@@ -9,8 +9,9 @@ var fn_DocRIniciaVistaCambio = function () {
 };
 /**
  * Inicializa la ventana modal
+  * @param {any} e vista
  * @param {string} pUrlCambioEstado url para el cambio de estado
- * @param {JSON} Param
+ * @param {JSON} Param valores pasados a la funcion
  */
 var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
     VistaCambioEsta = e;
@@ -70,6 +71,7 @@ var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
 
 /**
  * funcion que se ejecuta en el boton cambio de estado en la ventana modal
+ * @returns {boolean} retorna true o false
  */
 function Fn_Cambio() {
     if (ValidCambio.validate()) {
@@ -117,6 +119,9 @@ function Fn_CambiarEstado(Url,DkParametros) {
                 RequestEndMsg(data, "Post");
                 Realizocambio = true;
                 kendo.ui.progress($(".k-dialog"), false);
+                if (DkParametros["fn_AfterChange"] === undefined) {
+                    DkParametros["fn_AfterChange"].call(document, jQuery);
+                }
             },
             error: function (data) {
                 VistaCambioEsta.data("kendoDialog").close();
