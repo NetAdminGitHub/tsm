@@ -379,7 +379,8 @@ let fn_ObtenerOTsKbAsig = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente
             SNTodas: xSNTodas,
             IdTipoOrdenTrabajo: xIdTipoOrdenTrabajo,
             FechaDesde: xFechaDesde,
-            FechaHasta: xFechaHasta
+            FechaHasta: xFechaHasta,
+            SNAsignadas: false
 
         }),
         contentType: "application/json; charset=utf-8",

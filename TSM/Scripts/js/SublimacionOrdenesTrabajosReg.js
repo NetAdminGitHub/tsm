@@ -249,7 +249,7 @@ $(document).ready(function () {
         clearButton: true,
         placeholder: "Seleccione...",
         height: 550,
-        dataSource: fn_DSIdUnidadFiltro("9,17")
+        dataSource: fn_DSIdUnidadByGrupo(1) //para factura de sublimacion
     });
     KdoCmbSetValue($("#CmbIdUnidadMedidaCantidad"), 9);
     //#endregion fin CmbIdUnidadMedidaCantidad
@@ -666,7 +666,7 @@ $(document).ready(function () {
                     IdUbicacion:  e.dataItem.IdUbicacion,
                     Cantidad: 0,
                     Precio: 0,
-                    IdUnidad:9
+                    IdUnidad: KdoCmbGetValue($("#CmbIdUnidadMedidaCantidad")) === null ? 9 : KdoCmbGetValue($("#CmbIdUnidadMedidaCantidad"))
                 }),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
