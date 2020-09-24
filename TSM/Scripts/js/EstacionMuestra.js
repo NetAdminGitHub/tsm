@@ -245,7 +245,7 @@ var fn_GetMarcoFormulacion_Mues = function (xIdSeteo, xIdestacion) {
         //async: false,
         type: 'GET',
         success: function (datos) {
-            fn_fn_SeccionMarcosFormulacion_Mues(datos);
+            fn_SeccionMarcosFormulacion_Mues(datos);
         },
         complete: function () {
             kendo.ui.progress($("#MEstacionMuestra"), false);
@@ -253,7 +253,7 @@ var fn_GetMarcoFormulacion_Mues = function (xIdSeteo, xIdestacion) {
     });
 };
 
-var fn_fn_SeccionMarcosFormulacion_Mues = function (datos) {
+var fn_SeccionMarcosFormulacion_Mues = function (datos) {
     setFor = datos;
     if (setFor !== null) {
         $("#NumPeso_Mues").data("kendoNumericTextBox").focus();
@@ -467,6 +467,12 @@ var fn_GuardarEstaMarcoMues = function (xIdBrazo) {
             let vIdtec = Te === "TECNICA" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoTecnica") : Te === "COLOR" ? xCmbTecnica_Mues : null;
             let vIdBase = Te === "BASE" ? $("#TxtOpcSelec_Mues").data("IdBase") : null;
             fn_GuardarMarcoFormuMues(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Mues").data("IdRequerimientoColor") : null, vIdtec, vIdBase);
+
+            if (xType === "Put") {
+                let ge = $("#gridEstacion_Mues").data("kendoGrid");
+                var uid = ge.dataSource.get(data[0].IdEstacion).uid;
+                Fn_UpdGridEstacion_Mues(ge.dataItem("tr[data-uid='" + uid + "']"), data[0]);
+            }
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionMuestra"), false);
@@ -594,10 +600,14 @@ var fn_GridEstacionesDiseno_Mues = function (gd) {
                     },
                     NombreColorEstacion: {
                         type: "string"
-                    }
+                    },
+                    Peso: { type: "number" }
                 }
             }
         },
+        aggregate: [
+            { field: "Peso", aggregate: "sum" }
+        ],
         requestEnd: function (e) {
             Grid_requestEnd(e);
         }
@@ -612,9 +622,10 @@ var fn_GridEstacionesDiseno_Mues = function (gd) {
             }
         },
         columns: [
-            { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
+            { field: "IdEstacion", title: "Estación", minResizableWidth: 50, footerTemplate: "Totales"},
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
@@ -638,3 +649,13 @@ var fn_GridEstacionesDiseno_Mues = function (gd) {
 
     });
 };
+
+let Fn_UpdGridEstacion_Mues = function (g, data) {
+    g.set("Peso", data.Peso);
+    LimpiaMarcaCelda_Mues();
+};
+let LimpiaMarcaCelda_Mues = function () {
+    $(".k-dirty-cell", $("#gridEstacion_Mues")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gridEstacion_Mues")).remove();
+};
+

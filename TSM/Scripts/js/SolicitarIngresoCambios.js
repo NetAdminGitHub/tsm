@@ -97,22 +97,24 @@ var fn_RegistrarSolicitudCambio = function (xidOt, xIdEtapa, xItem) {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
                 IdOrdenTrabajo: xidOt,
+                IdEtapaNuevo: xidEtapaCambioAnte,
+                IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
                 IdSolicitudCambio: KdoMultiColumnCmbGetValue($("#cmbCatalogoCambios")),
                 NombreTipoCambio: $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").text(),
                 ItemSolicitud: 0,
                 IdEtapa: xIdEtapa,
                 Estado: "GENERADA",
-                Comentario: $("#TxtMotivoCambio").val(),
+                Motivo: $("#TxtMotivoCambio").val(),
                 IdUsuario: getUser(),
-                idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp"))
+                snMensaje: false
             }),
             success: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
-                if (xidEtapaCambioAnte !== 0) {
-                    fn_CambioEtpRegCambio(xidOt, xidEtapaCambioAnte);
-                } else {
+                //if (xidEtapaCambioAnte !== 0) {
+                    //fn_CambioEtpRegCambio(xidOt, xidEtapaCambioAnte);
+                //} else {
                     window.location.href = "/EtapasOrdenesTrabajos";
-                }
+                //}
                 RequestEndMsg(data, "Post");
             },
             error: function (data) {

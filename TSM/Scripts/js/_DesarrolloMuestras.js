@@ -2,6 +2,7 @@
 
 var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnMuest"), "delete", "Limpiar");
+    KdoButton($("#btnConsultarPesos"), "search", "Consultar");
     KdoButtonEnable($("#btnMuest"), false);
     KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
     KdoButton($("#btnAceptarFin"), "check", "Finalizar");
@@ -11,6 +12,16 @@ var fn_DMueCargarConfiguracion = function () {
         height: "auto",
         width: "20%",
         title: "Finalizar Orden de Trabajo",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+
+    $("#MbtConsulta").kendoDialog({
+        height: "auto",
+        width: "40%",
+        title: "Detalle de pesos en muestra",
         closable: true,
         modal: true,
         visible: false,
@@ -55,13 +66,20 @@ var fn_DMueCargarConfiguracion = function () {
     }).data("kendoValidator");
 
     $("#btnFinOT").click(function () {
-    
         $("#MbtnFinMue").data("kendoDialog").open();
         $("#dFechaFinMue").data("kendoDatePicker").element.focus();
     });
+
+    $("#btnConsultarPesos").click(function () {
+        $("#MbtConsulta").data("kendoDialog").open();
+        $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
+        $("#gridEstacionPeso").data("kendoGrid").refresh();
+    });
+
     $("#btnAceptarFin").click(function () {
         if (ValidFrmFinMue.validate()) { fn_FinOT(); }
     });
+    fn_ConsultaPesos($("#gridEstacionPeso"));
 
 };
 
@@ -159,5 +177,86 @@ let SubirArchivoCatalogo = function (ds) {
         success: function (data) {
             kendo.ui.progress($(document.body), false);
         }
+    });
+};
+
+var fn_ConsultaPesos = function (gd) {
+
+    var dsMp = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetByIdSeteo/" + maq[0].IdSeteo; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdEstacion",
+                fields: {
+                    IdSeteo: {
+                        type: "number"
+                    },
+                    IdEstacion: {
+                        type: "number"
+                    },
+                    DescripcionEstacion: {
+                        type: "string"
+
+                    },
+                    ColorHex: {
+                        type: "string"
+
+                    },
+                    NombreColorEstacion: {
+                        type: "string"
+                    },
+                    Peso: { type: "number" }
+                }
+            }
+        },
+        aggregate: [
+            { field: "Peso", aggregate: "sum" }
+        ],
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        }
+    });
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+       
+        columns: [
+            { field: "IdEstacion", title: "Estación", minResizableWidth: 50, footerTemplate: "Totales" },
+            { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            {
+                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
+            },
+            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "PesoUnidadMedida", title: "Unidad", minResizableWidth: 100 }
+         
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 550);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
+
+    var srow4 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow4);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow4);
     });
 };

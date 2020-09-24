@@ -183,14 +183,23 @@ $(document).ready(function () {
                 this.autoFitColumn(i);
                 this.columnResizeHandleWidth;
             }
+            var grid = $("#gridRegistroCambios").data("kendoGrid");
+            var data = grid.dataSource.data();
+            $.each(data, function (i, row) {
+                if (row.Estado === 'GENERADA') {
+                    $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#83de83");
+                } else {
+                    $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                }
+            });
         },
         columns: [
-            { field: "IdOrdenTrabajo", title: "Código Orden Trabajo", hidden: true, menu: false },
-            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, menu: false },
+            { field: "IdOrdenTrabajo", title: "Código Orden Trabajo", hidden: true, minResizableWidth: 300 },
+            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, minResizableWidth: 300 },
             { field: "NombreSolicitudCambio", title: "Cambio", minResizableWidth: 300 },
-            { field: "ItemSolicitud", title: "Item", hidden: true, menu: false },
+            { field: "ItemSolicitud", title: "Item", hidden: true },
             { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
-            { field: "Estado", title: "Estado", hidden: true, menu: false },
+            { field: "Estado", title: "Estado", hidden: true},
             { field: "NombreEstado", title: "Estado" },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}",  hidden: true }
@@ -198,7 +207,7 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gridRegistroCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si,220);
+    SetGrid($("#gridRegistroCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, true, redimensionable.Si,220);
     Set_Grid_DataSource($("#gridRegistroCambios").data("kendoGrid"), dsetRegCambios, 20);
     var srow1 = [];
     $("#gridRegistroCambios").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -452,7 +461,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.SNCambiosNoAut===true ? false : true);
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true  ? false : true);
     KdoButtonEnable($("#btnRegistroCambio"),true);
 
     xvNodocReq = datos.NodocReq;
