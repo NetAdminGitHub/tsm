@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Text;
+using TSM.BOL;
+using TSM.DAL;
+using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace TSM.AuthFilters
 {
@@ -24,6 +28,46 @@ namespace TSM.AuthFilters
                     usuario = Controllers.TokenController.ObtenerUsuarioLocal(filterContext.RequestContext.HttpContext.Request.UserHostAddress);
                     filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("user", usuario));
                 }
+
+                // si existe token de azure en variable de sesión y la cookie de validación no es válida.
+                if (filterContext.HttpContext.Session["aztkn"] != null && !CookieValida(filterContext, "zvalidator"))
+                {
+                    using (var tknvalid = new AzureAuthBOL(new AzureAuthDAL()))
+                    {
+                        var azconf = tknvalid.GetCurrenConfig();
+                        var tarea = Utils.AsyncUtil.RunSync(async () => await tknvalid.ValidarToken(filterContext.HttpContext.Session["aztkn"].ToString(), azconf));
+
+                        var usuariojwt = tarea.Payload["preferred_username"].ToString().Split('@');
+                        // validasi el usuario de token es diferente del usuario y reasigna la cookie de usuario
+                        if (usuariojwt[0] != usuario) {
+                            filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("user", usuariojwt[0]));
+                            usuario = usuariojwt[0];
+                        }
+
+                    }
+                }
+                else if (CookieValida(filterContext, "zvalidator"))
+                {
+                    //Crea cookie de validación
+                    string zvalidstr = filterContext.RequestContext.HttpContext.Request.Cookies.Get("zvalidator").Value;
+                    string decripted = "";
+                    using (var c = new FrwkSeguridadSrv.SeguridadClient())
+                    {
+                        decripted = c.Desencriptar(zvalidstr, Utils.Config.App);
+                        if (decripted.Split('&')[0] != usuario)
+                        {
+                            filterContext.RequestContext.HttpContext.Response.Cookies.Set(new HttpCookie("user", decripted.Split('&')[0]));
+                            usuario = decripted.Split('&')[0];
+                        }
+
+                    }
+
+
+                } else if (Utils.Config.AppMode == "EXT") {
+                    usuario = "";
+                    filterContext.RequestContext.HttpContext.Response.Cookies.Remove("user");
+                                                                }
+               
                 
                 if (CookieValida(filterContext, "t"))
                 {

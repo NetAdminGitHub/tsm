@@ -9,6 +9,15 @@ namespace TSM.Utils
 {
     public static class Config
     {
+
+        public static string AppMode
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AppMode"];
+            }
+        }
+
         public static string TSM_WebApi
         {
             get

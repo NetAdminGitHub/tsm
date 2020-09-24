@@ -88,6 +88,21 @@
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=4.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.4.5.1\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.7.1\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.7.1\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=6.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.6.5.0\lib\net461\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=6.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.6.5.0\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.7.1\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.PowerBI.Api, Version=2.13.0.20002, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.PowerBI.Api.2.13.0\lib\netstandard2.0\Microsoft.PowerBI.Api.dll</HintPath>
     </Reference>
@@ -110,6 +125,9 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.7.1\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -196,18 +214,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
-      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.0\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthFilters\AuthAttribute.cs" />
+    <Compile Include="BOL\AzureAuthBOL.cs" />
     <Compile Include="BOL\ReportePbiBOL.cs" />
     <Compile Include="Connected Services\FrwkAuthSrv\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -331,18 +342,23 @@
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
     <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
+    <Compile Include="DAL\AzureAuthDAL.cs" />
     <Compile Include="DAL\ReportePbiDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AzureAuthConf.cs" />
     <Compile Include="Models\PbiConfRequest.cs" />
     <Compile Include="Models\ReportePbi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\AsyncUtil.cs" />
     <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\ContextHelper.cs" />
     <Compile Include="Utils\PbiUtils.cs" />
     <Compile Include="Utils\RestSharpHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzAppSettings.json" />
     <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth12.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
@@ -1352,6 +1368,7 @@
     <Content Include="Views\Menus\Index.cshtml" />
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
     <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
+    <Content Include="jsonsettings.azconf" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using TSM.FrwkSeguridadSrv;
 using TSM.FrwkAuthSrv;
 using Newtonsoft.Json;
+using TSM.BOL;
+using TSM.DAL;
 
 namespace TSM.Controllers
 {
@@ -14,8 +16,47 @@ namespace TSM.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            return View();
+             if (Utils.Config.AppMode == "LCL")
+            {
+                return View();
+            }
+            else if (Utils.Config.AppMode == "EXT")
+            {
+                if (Session["aztkn"] == null)
+                {
+
+                    using (var v = new AzureAuthBOL(new AzureAuthDAL()))
+                    {
+                        var result = v.GetAzAuthorizeRequest();
+
+                        if (!Response.IsRequestBeingRedirected) {    
+                            Response.Redirect(result);
+                        }
+                        
+                    }
+                    
+                }
+                else {
+
+                    //remueve cookie t
+                    HttpCookie tcookie = System.Web.HttpContext.Current.Request.Cookies["t"];
+                    if (tcookie != null)
+                    {
+                        tcookie.Expires = DateTime.Now.AddDays(-1D);
+                        Response.Cookies.Add(tcookie);
+                    }
+                    return RedirectToAction("Validar", "Token", new { id_token = Session["aztkn"].ToString() });
+          
+                }
+
+
+            }
+
+            return View(); 
         }
+
+
+
         [HttpPost]
         //string user, string password
         public JsonResult Login(FormCollection form)

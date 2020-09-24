@@ -1,0 +1,12 @@
+{
+  "Tenant": "idtenant",
+  "Client_id": "idapp",
+  "Scope": "openid profile",
+  "ClientSecret": "secreto",
+  "ResponseType": "id_token",
+  "ResponseMode": "form_post",
+  "Authority": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
+  "DiscoveryEndPoint": "https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration",
+  "InstanciaAz": "https://login.microsoftonline.com/{tenant}/v2.0",
+  "RedirectUrl": "{appbaseurl}/Token/Validar"
+}
