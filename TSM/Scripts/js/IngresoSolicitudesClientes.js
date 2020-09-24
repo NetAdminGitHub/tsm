@@ -502,7 +502,7 @@ let fn_gridSolDet = function () {
                                 }
                                 if (input.is("[name='IdPrograma']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdPrograma").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdPrograma").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='NombreDiseno']") && input.val().length > 200) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
@@ -559,13 +559,14 @@ let fn_gridSolDet = function () {
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "NombreUN");
             KdoHideCampoPopup(e.container, "Estado");
-           
+            Grid_Focus(e, "NombreDiseno");
             $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(vIdServSol === 1 ? fn_DSudm("9") : fn_DSudm("9,17"));
             if (InciarInsert === true) {
                 fn_GuadarCliente(e);
             }
             else {
-                $('[name="NombreDiseno"]').focus();
+          
+                Grid_Focus(e, "NombreDiseno");
             }
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -573,7 +574,13 @@ let fn_gridSolDet = function () {
             { field: "IdSolicitudDisenoPrenda", title: "Codigo Solicitud Diseño", hidden: true },
             { field: "IdSolicitud", title: "Codigo Solitud", hidden: true },
             { field: "NombreDiseno", title: "Nombre del Diseño" },
-            { field: "IdPrograma", title: "Programa", editor: fn_ComboPrograma, values: ["IdPrograma", "Nombre", "", "", "Seleccione....", "required", "", "Requerido","fn_CreaItemProm"], hidden: true },
+            //{ field: "IdPrograma", title: "Programa", editor: fn_ComboPrograma, values: ["IdPrograma", "Nombre", "", "", "Seleccione....", "required", "", "Requerido","fn_CreaItemProm"], hidden: true },
+            {
+                field: "IdPrograma", title: "Programa", hidden: true,
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" id ="' + options.field + '" />').appendTo(container).ControlSelecionProgramaCli();
+                }
+            },
             { field: "NombrePro", title: "Nombre del Programa" },
             { field: "IdTipoMuestra", title: "Tipo de muestra", editor: Grid_Combox, values: ["IdTipoMuestra", "Nombre", UrlTm, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreTipoM", title: "Tipo de muestras" },
@@ -788,7 +795,7 @@ let fn_GuadarCliente = function (e) {
     }
 };
 let fn_CreaItemProm = function (widgetId, value) {
-    var widget = $("#" + widgetId).getKendoComboBox();
+    var widget = $("#" + widgetId).getKendoMultiColumnComboBox();
     var dsProN = widget.dataSource;
 
     //ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
@@ -806,65 +813,135 @@ let fn_CreaItemProm = function (widgetId, value) {
             widget.select(dsProN.view().length - 1);
             widget.trigger("change");
             $("#kendoNotificaciones").data("kendoNotification").show("Programa creado satisfactoriamente!!", "success");
+            Kendo_CmbFocus($('[name="IdTipoMuestra"]'));
         });
 
         dsProN.sync();
     //});
 };
-let fn_ComboPrograma = function (container, options) {
-    var required = givenOrDefault(options.values[5], "");
-    var Message = givenOrDefault(options.values[7], "");
-    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
-    $.ajax({
-        url: TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbCliCont")) === null ? 0 : KdoCmbGetValue($("#CmbCliCont"))),
-        dataType: "json",
-        type:'GET',
-        async: false,
-        success: function (result) {
+//let fn_ComboPrograma = function (container, options) {
+//    var required = givenOrDefault(options.values[5], "");
+//    var Message = givenOrDefault(options.values[7], "");
+//    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+//    $.ajax({
+//        url: TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbCliCont")) === null ? 0 : KdoCmbGetValue($("#CmbCliCont"))),
+//        dataType: "json",
+//        type:'GET',
+//        async: false,
+//        success: function (result) {
            
-            var model = generateModel(result, options.values[0]);
-            var dataSource = new kendo.data.DataSource({
-                batch: true,
-                transport: {
-                    read: {
-                        url: TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbCliCont")) === null ? 0 : KdoCmbGetValue($("#CmbCliCont"))),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8"
+//            var model = generateModel(result, options.values[0]);
+//            var dataSource = new kendo.data.DataSource({
+//                batch: true,
+//                transport: {
+//                    read: {
+//                        url: TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbCliCont")) === null ? 0 : KdoCmbGetValue($("#CmbCliCont"))),
+//                        dataType: "json",
+//                        contentType: "application/json; charset=utf-8"
+//                    },
+//                    create: {
+//                        url: TSM_Web_APi + "/Programas",
+//                        dataType: "json",
+//                        type: "POST",
+//                        contentType: "application/json; charset=utf-8"
+//                    },
+//                    parameterMap: function (data, type) {
+//                        if (type !== "read") {
+//                            return kendo.stringify(data.models[0]);
+//                        }
+//                    }
+//                },
+//                schema: {
+//                    total: "count",
+//                    model: {
+//                        id: "IdPrograma",
+//                        fields: {
+//                            IdPrograma: { type: "number" },
+//                            NoDocumento: { type: "string" },
+//                            Nombre: { type: "string" }
+//                        }
+//                    }
+//                }
+//            });
+//            $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+//                .appendTo(container)
+//                .kendoMultiColumnComboBox({
+//                    valuePrimitive: true,
+//                    autoBind: true,
+//                    dataTextField: options.values[1],
+//                    dataValueField: options.values[0],
+//                    autoWidth: true,
+//                    cascadeFrom: givenOrDefault(options.values[6], ""),
+//                    placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
+//                    filter: "contains",
+//                    columns: [
+//                        { field: "NoDocumento", title: "No Documento", width: 150},
+//                        { field: "Nombre", title: "Nombre", width: 300}
+//                    ],
+//                    dataSource: dataSource,
+//                    noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + options.values[8].toString() + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+//                });
+//        }
+//    });
+//};
+
+$.fn.extend({
+    ControlSelecionProgramaCli: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                filterFields: ["IdPrograma", "NoDocumento", "Nombre"],
+                autoBind: false,
+                //minLength: 3,
+                height: 400,
+                placeholder: "Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbCliCont")) === null ? 0 : KdoCmbGetValue($("#CmbCliCont")));
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        create: {
+                            url: TSM_Web_APi + "/Programas",
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function (data, type) {
+                            if (type !== "read" && data.models) {
+                                return kendo.stringify(data.models[0]);
+                            }
+                        }
                     },
-                    create: {
-                        url: TSM_Web_APi + "/Programas",
-                        dataType: "json",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8"
-                    },
-                    parameterMap: function (data, type) {
-                        if (type !== "read") {
-                            return kendo.stringify(data.models[0]);
+                    schema: {
+                        total: "count",
+                        model: {
+                            id: "IdPrograma",
+                            fields: {
+                                IdPrograma: { type: "number" },
+                                NoDocumento: { type: "string" },
+                                Nombre: { type: "string" }
+                            }
                         }
                     }
                 },
-                schema: {
-                    total: "count",
-                    model: model
-                }
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"fn_CreaItemProm('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>"),//$("#noDataTemplate").html()
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 }
+                ]
             });
-            $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
-                .appendTo(container)
-                .kendoComboBox({
-                    valuePrimitive: true,
-                    autoBind: true,
-                    dataTextField: options.values[1],
-                    dataValueField: options.values[0],
-                    autoWidth: true,
-                    cascadeFrom: givenOrDefault(options.values[6], ""),
-                    placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
-                    filter: "contains",
-                    dataSource: dataSource,
-                    noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + options.values[8].toString() + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
-                });
-        }
-    });
-};
+        });
+    }
+});
+
 let fn_InsFilaGrid = function (g, data) {
     g.dataSource.insert(0, {
         IdSolicitudDisenoPrenda: 0,
