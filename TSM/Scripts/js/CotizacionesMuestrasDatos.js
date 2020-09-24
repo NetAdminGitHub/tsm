@@ -656,17 +656,51 @@ let fn_getAdjun = function () {
     });
 };
 
-var fn_UrlReporteCotizacionMue = function () {
-    let action_src = "/Reportes/" + "CotizacionesMuestras/Cotizacion/" + vIdCoti;
-    let form = $("#frmImprimirCot");
-    form.get(0).setAttribute("action", action_src);
-};
+$("#btnImprimir").click(function (e) {
+    e.preventDefault();
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/Reportes/crptCotizacionMuestrasPrograma/CotizacionesMuestras/ReporteCotizacionMuestrasPrograma/" + vIdCoti,
+        dataType: 'json',
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
 
-var fn_UrlReporteRentabilidadMue = function () {
-    let action_src = "/Reportes/" + "CotizacionesMuestras/Rentabilidad/" + vIdCoti;
-    let form = $("#frmImprimirRen");
-    form.get(0).setAttribute("action", action_src);
-};
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+});
+
+$("#btnImpRentabilidad").click(function (e) {
+    e.preventDefault();
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/Reportes/crptCotizacionMuestrasRentabilidad/CotizacionesMuestras/ReporteCotizacionMuestrasRentabilidad/" + vIdCoti,
+        dataType: 'json',
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
+
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+});
 
 let fn_getIdArte = function (g) {
     var SelItem = g.dataItem(g.select());

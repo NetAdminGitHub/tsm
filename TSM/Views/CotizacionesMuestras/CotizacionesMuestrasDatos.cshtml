@@ -5,7 +5,7 @@
 @section Scripts {
     <script type="text/javascript">
         var vIdCoti =@ViewData["IdCotizacion"];
-        var vEstCoti="@ViewData["IdEstado"]";
+        var vEstCoti = "@ViewData["IdEstado"]";
 
     </script>
     <script src="~/Scripts/js/CotizacionesMuestrasDatos.js"></script>
@@ -403,12 +403,12 @@
                                 <div class="form-row">
                                     <div class="col-3">
                                         <form id="frmImprimirCot" target="_blank" onsubmit="fn_UrlReporteCotizacionMue()">
-                                            <button type="submit" id="btnImprimir">Cotización de Programas</button>
+                                            <button id="btnImprimir">Cotización de Programas</button>
                                         </form>
                                     </div>
                                     <div class="col-3">
                                         <form id="frmImprimirRen" target="_blank" onsubmit="fn_UrlReporteRentabilidadMue()">
-                                            <button type="submit" id="btnImpRentabilidad">Rentabilidad de Programas</button>
+                                            <button id="btnImpRentabilidad">Rentabilidad de Programas</button>
                                         </form>
                                     </div>
                                 </div>
