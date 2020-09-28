@@ -17,6 +17,7 @@ var fn_verKanbanEtapa = function (IdOrdenTrabajo) {
 
 var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras","Nombre", "IdTipoMuestra", "Seleccione...");
     fn_gridOT();
     $("#tab_inf").kendoTabStrip({
         tabPosition: "top",
@@ -48,10 +49,17 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                         return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
+                },
+                MsgTP: function (input) {
+                    if (input.is("[name='CmbTiposMuestras']")) {
+                        return $("#CmbTiposMuestras").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
                 }
             },
             messages: {
-                MsgDesarrollo: "Requerido"
+                MsgDesarrollo: "Requerido",
+                MsgTP:"Requerido"
             }
         }).data("kendoValidator");
 
@@ -234,6 +242,7 @@ let fn_gridOT = function () {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#ModalGeneraOT").data("kendoDialog").open();
                         xidRq=dataItem.get("IdRequerimiento");
                         xIdServ = dataItem.get("IdServicio");
@@ -478,7 +487,7 @@ let fn_GenerarOT = function () {
         // obtener indice de la etapa siguiente
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
-            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo/" + fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString(),
+            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo/" + fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString() + "/" + KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
             method: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",

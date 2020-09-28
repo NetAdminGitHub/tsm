@@ -514,6 +514,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
+    SetGrid_CRUD_ToolbarTop($("#GRDimension").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,false);
     Set_Grid_DataSource($("#GRDimension").data("kendoGrid"), DsDimension);
    
@@ -1269,6 +1270,28 @@ var fn_VSCargarJSEtapa = function () {
         }
     });
 
+    $("#IdComposicionTela").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(this.dataItem(e.item.index()).IdComposicionTela));
+            fn_GetCriteriosCalidad(0);
+        }
+        else {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(0));
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+
+    $("#IdComposicionTela").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(0));
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+
     //#endregion Fin Prendas multi select
     $("#IdRequerimiento").val($("#txtId").val());
     $("#UbicacionVer").autogrow({ vertical: true, horizontal: false, flickering: false });
@@ -1352,6 +1375,7 @@ let getRD = function (UrlRD) {
 
             $.each(respuesta, function (index, elemento) {
                 //asignacion de valores a campos en vistas
+             
                 $("#IdRequerimiento").val(elemento.IdRequerimiento);
                 $("#IdUbicacion").data("kendoComboBox").value(elemento.IdUbicacion);
                 $("#IdPrograma").data("kendoComboBox").value(elemento.IdPrograma);
@@ -1402,7 +1426,7 @@ let getRD = function (UrlRD) {
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
                 $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(elemento.PoseeDocumentacionAduanal);
                 $("#swchCobrarDiseno").data("kendoSwitch").check(elemento.CobrarDiseno);
-
+                $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(elemento.IdComposicionTela));
                 $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
                 fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
@@ -1986,7 +2010,7 @@ let fn_CmbCriterioCalidad = function () {
         dataSource: {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "CalidadCriterios"; },
+                    url: function () { return TSM_Web_APi + "ComposicionTelasCalidadCriterios/GetByIdComposicionTela/0"; },
                     contentType: "application/json; charset=utf-8"
                 }
                 
@@ -1995,6 +2019,31 @@ let fn_CmbCriterioCalidad = function () {
     });
 
 };
+
+let fn_GetComposicionCalidad = function (xIdCompo) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "ComposicionTelasCalidadCriterios/GetByIdComposicionTela/" + xIdCompo.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+
+
+
 let fn_GetCriteriosCalidad = function (xIdCriterio) {
     kendo.ui.progress($("#BPform"), true);
     $.ajax({

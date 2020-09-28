@@ -342,6 +342,130 @@ $(document).ready(function () {
 
     //#endregion 
 
+    //#region Relación Criterio composicion"
+    var dsReCriterios = new kendo.data.DataSource({
+        dataType: "json",
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () {
+                    return TSM_Web_APi + "ComposicionTelasCalidadCriterios/GetByIdCalidadCriterio/" + vIdCalCri.toString();
+                },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) {
+                    return TSM_Web_APi + "ComposicionTelasCalidadCriterios/" + datos.IdCalidadCriterio + "/" + datos.IdComposicionTela;
+                },
+                dataType: "json",
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "ComposicionTelasCalidadCriterios/" + datos.IdCalidadCriterio + "/" + datos.IdComposicionTela; },
+                dataType: "json",
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "ComposicionTelasCalidadCriterios",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdComposicionTela",
+                fields: {
+                    IdCalidadCriterio: {
+                        type: "number",
+                        defaultValue: function () { return KdoCmbGetValue($("#CmbCalidadCriterios")); }
+                    },
+                    NombreCalidadCriterio: {
+                        type: "string"
+                    },
+                    IdComposicionTela: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+
+                                if (input.is("[name='IdComposicionTela']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdComposicionTela").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    NombreComposicion: {
+                        type: "string"
+                    },  
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL GRID,CAMPOS
+
+    $("#gridCalidadComposicion").kendoGrid({
+
+        edit: function (e) {
+            // BLOQUEA CAMPO LLAVE ( ID)
+            KdoHideCampoPopup(e.container, "IdCalidadCriterio");
+            KdoHideCampoPopup(e.container, "NombreCalidadCriterio");
+            KdoHideCampoPopup(e.container, "NombreComposicion");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "FechaMod");
+
+            Grid_Focus(e, "IdComposicionTela");
+
+
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdCalidadCriterio", title: "Criterio", hidden: true },
+            { field: "NombreCalidadCriterio", title: "Nombre criterio", hidden: true },
+            { field: "IdComposicionTela", title: "Composición tela", hidden: true, editor: Grid_Combox, values: ["IdComposicionTela", "Nombre", TSM_Web_APi + "ComposicionTelas", "", "Seleccione...."] },
+            { field: "NombreComposicion", title: "Nombre Composicion" },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }
+
+        ]
+    });
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridCalidadComposicion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si,0);
+    SetGrid_CRUD_ToolbarTop($("#gridCalidadComposicion").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridCalidadComposicion").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridCalidadComposicion").data("kendoGrid"), dsReCriterios);
+
+    Grid_HabilitaToolbar($("#gridCalidadComposicion"), false, false, false);
+
+    var seleRows3 = [];
+    $("#gridCalidadComposicion").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridCalidadComposicion"), seleRows3);
+    });
+
+    $("#gridCalidadComposicion").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridCalidadComposicion"), seleRows3);
+    });
+
+    //#endregion
     Grid_HabilitaToolbar($("#gridCalidadCriteriosPruebas"), false, false, false);
 
 
@@ -350,11 +474,13 @@ $(document).ready(function () {
             vIdCalCri = this.dataItem(e.item.index()).IdCalidadCriterio;
             fn_consultarCriteriosPruebas();
             Grid_HabilitaToolbar($("#gridCalidadCriteriosPruebas"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+            Grid_HabilitaToolbar($("#gridCalidadComposicion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
 
         }
         else {
             vIdCalCri = 0;
             Grid_HabilitaToolbar($("#gridCalidadCriteriosPruebas"), false, false, false);
+            Grid_HabilitaToolbar($("#gridCalidadComposicion"), false, false, false);
         }
     });
     $("#CmbCalidadCriterios").data("kendoComboBox").bind("change", function (e) {
@@ -362,7 +488,9 @@ $(document).ready(function () {
         if (value === "") {
             vIdCalCri = 0;
             $("#gridCalidadCriteriosPruebas").data("kendoGrid").dataSource.data([]);
+            $("#gridCalidadComposicion").data("kendoGrid").dataSource.data([]);
             Grid_HabilitaToolbar($("#gridCalidadCriteriosPruebas"), false, false, false);
+            Grid_HabilitaToolbar($("#gridCalidadComposicion"), false, false, false);
         }
     });
 
@@ -372,6 +500,7 @@ $(document).ready(function () {
 
 var fn_consultarCriteriosPruebas = function () {
     $("#gridCalidadCriteriosPruebas").data("kendoGrid").dataSource.read();
+    $("#gridCalidadComposicion").data("kendoGrid").dataSource.read();
 };
 
 fPermisos = function (datos) {
