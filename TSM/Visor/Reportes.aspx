@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="TSM.Visor.Reportes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
 
 <%@ Register Assembly="CrystalDecisions.Web" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 
@@ -39,7 +39,7 @@
             reporte.Load("\\\\inqui2003.local\\ReportesTSM_IST\\" + ViewState["rpt"].ToString() + ".rpt");
             reporte.SetDataSource(ds);
             reporte.SummaryInfo.ReportTitle = ViewState["rpt"].ToString().Replace("rpt", "");
-            CrystalReportViewer1.ReportSource = reporte;
+            CrystalReportViewer1.ReportSource = reporte;            
         }
 
         protected void Page_Unload(object sender, EventArgs e)
