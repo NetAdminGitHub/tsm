@@ -1,6 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Reportes.aspx.cs" Inherits="TSM.Visor.Reportes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
 
 <%@ Register Assembly="CrystalDecisions.Web" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
+
+<%@ Import Namespace="CrystalDecisions.CrystalReports.Engine" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 
 <!DOCTYPE html>
 
@@ -12,7 +16,7 @@
     <script runat="server">
         private string Reporte;
         private string Datos;
-        CrystalDecisions.CrystalReports.Engine.ReportDocument reporte;
+        ReportDocument reporte;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,12 +33,13 @@
                 Session["rpt" + Datos] = null;
             }
 
-            System.Data.DataTable ds = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Data.DataTable>(ViewState["ds"].ToString());
+            DataTable ds = JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString());
 
-            reporte = new CrystalDecisions.CrystalReports.Engine.ReportDocument();
+            reporte = new ReportDocument();
             reporte.Load("\\\\inqui2003.local\\ReportesTSM_IST\\" + ViewState["rpt"].ToString() + ".rpt");
             reporte.SetDataSource(ds);
-            CrystalReportViewer1.ReportSource = reporte;
+            reporte.SummaryInfo.ReportTitle = ViewState["rpt"].ToString().Replace("rpt", "");
+            CrystalReportViewer1.ReportSource = reporte;            
         }
 
         protected void Page_Unload(object sender, EventArgs e)
