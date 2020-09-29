@@ -674,10 +674,15 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
 
         }),
         contentType: 'application/json; charset=utf-8',
-        success: function (data) {
+        success: function (data) {    
             let vIdtec = Te === "TECNICA" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoTecnica") : Te === "COLOR" ? KdoCmbGetValue($("#CmbTecnica_Dis")) : null;
             let vIdBase = Te === "BASE" ? $("#TxtOpcSelec_Dis").data("IdBase") : null;
             fn_GuardarMarcoFormuDis(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec_Dis").data("IdRequerimientoColor") : null, vIdtec, vIdBase);
+            if (xType === "Put") {
+                let ge = $("#gridEstacionMq_Dis").data("kendoGrid");
+                var uid = ge.dataSource.get(data[0].IdEstacion).uid;
+                Fn_UpdGridEstacion_Dis(ge.dataItem("tr[data-uid='" + uid + "']"), data[0]);
+            }
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionDisenos"), false);
@@ -870,6 +875,10 @@ var fn_GridEstacionesDiseno_Dis = function (gd) {
                         type: "string"
 
                     },
+                    Letra: {
+                        type: "string"
+
+                    },
                     NombreColorEstacion: {
                         type: "string"
                     }
@@ -891,8 +900,9 @@ var fn_GridEstacionesDiseno_Dis = function (gd) {
         },
         columns: [
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
-            { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "IdSeteo", title: "Cod. Seteo", minResizableWidth: 50, hidden: true },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            { field: "Letra", title: "Letra", minResizableWidth: 100},
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
@@ -915,4 +925,14 @@ var fn_GridEstacionesDiseno_Dis = function (gd) {
         fn_Consultar_Dis(gd.data("kendoGrid"));
 
     });
+};
+
+let Fn_UpdGridEstacion_Dis = function (g, data) {
+    g.set("Letra", data.Letra);
+    LimpiaMarcaCelda_Dis();
+};
+
+let  LimpiaMarcaCelda_Dis= function() {
+    $(".k-dirty-cell", $("#gridEstacionMq_Dis")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gridEstacionMq_Dis")).remove();
 };

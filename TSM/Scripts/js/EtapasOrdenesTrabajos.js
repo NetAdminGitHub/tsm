@@ -10,10 +10,14 @@ var fn_VerOt = function (xidOrdenTrabajo, xidEtapaProceso) {
     window.location.href = "/OrdenesTrabajo/ElementoTrabajo/" + xidOrdenTrabajo + "/" + xidEtapaProceso;
 };
 var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
-    window.location.href = "/GestionOTAsignaciones/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
+    window.location.href = "/EtapasOrdenesTrabajos/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
 };
 $(document).ready(function () {
     let dtfecha = new Date();
+
+    Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModulo/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
+    KdoCmbSetValue($("#CmbEtapasProcesos"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos")); 
+
     Kendo_CmbFiltrarGrid($("#CmbTiposOrdenesTrabajos"), TSM_Web_APi + "TiposOrdenesTrabajos", "Nombre", "IdTipoOrdenTrabajo", "Seleccione un Tipo de Orden de trabajo", "");
     KdoCmbSetValue($("#CmbTiposOrdenesTrabajos"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos")); 
 
@@ -35,28 +39,73 @@ $(document).ready(function () {
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaHasta"));
 
     $('#chkRangFechas').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === null ? 0 : sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
+    $('#chkMe').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkMe") === null ? 0 : sessionStorage.getItem("EtapasOrdenesTrabajos_chkMe") === "true" ? 1 : 0);
 
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
 
+
+    $("#CmbEtapasProcesos").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            fn_ObtenerOTs(this.dataItem(e.item.index()).IdEtapaProceso.toString(), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
+            );
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbEtapasProcesos", this.dataItem(e.item.index()).IdEtapaProceso);
+        } else {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
+            );
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbEtapasProcesos", "");
+        }
+    });
+
+    $("#CmbEtapasProcesos").data("kendoComboBox").bind("change", function (e) {
+        let value = this.value();
+        if (value === "") {
+            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                KdoCmbGetValue($("#CmbCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
+            );
+
+            sessionStorage.setItem("EtapasOrdenesTrabajos_CmbEtapasProcesos", "");
+        }
+    });
+
+
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 KdoCmbGetValue($("#CmbCliente")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'), this.dataItem(e.item.index()).IdTipoOrdenTrabajo,
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos", this.dataItem(e.item.index()).IdTipoOrdenTrabajo);
 
         } else {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 KdoCmbGetValue($("#CmbCliente")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'), null,
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked')=== false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos", "");
@@ -66,12 +115,13 @@ $(document).ready(function () {
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 KdoCmbGetValue($("#CmbCliente")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'), null,
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos", "");
@@ -82,22 +132,24 @@ $(document).ready(function () {
 
     $("#CmbCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 this.dataItem(e.item.index()).IdCliente,
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked')=== false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked')=== false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente", this.dataItem(e.item.index()).IdCliente);
         }
         else {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente","");
@@ -107,11 +159,12 @@ $(document).ready(function () {
     $("#CmbCliente").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 null, KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbCliente", "");
@@ -120,23 +173,25 @@ $(document).ready(function () {
 
     $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 this.dataItem(e.item.index()).IdCliente,
                 this.dataItem(e.item.index()).IdPrograma,
                 $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked')=== false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
 
 
         } else {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 KdoCmbGetValue($("#CmbCliente")),
                 null, $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", "");
@@ -147,11 +202,12 @@ $(document).ready(function () {
         var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
-            fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
                 KdoCmbGetValue($("#CmbCliente")),
                 null, $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbPrograma", "");
@@ -163,7 +219,7 @@ $(document).ready(function () {
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
           
-            fn_ObtenerOTs(null, this.dataItem(e.item.index()).IdOrdenTrabajo,
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), this.dataItem(e.item.index()).IdOrdenTrabajo,
                 this.dataItem(e.item.index()).IdCliente,
                 this.dataItem(e.item.index()).IdPrograma, $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
@@ -174,12 +230,13 @@ $(document).ready(function () {
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
 
         } else {
-            fn_ObtenerOTs(null, null,
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), null,
                 KdoCmbGetValue($("#CmbCliente")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma"))
                 , $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", "");
@@ -190,13 +247,14 @@ $(document).ready(function () {
         var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
-            fn_ObtenerOTs(null, null,
+            fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), null,
                 KdoCmbGetValue($("#CmbCliente")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", "");
@@ -205,32 +263,35 @@ $(document).ready(function () {
     });
 
     $("#dFechaDesde").data("kendoDatePicker").bind("change", function () {
-        fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
             KdoCmbGetValue($("#CmbCliente")),
             KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
             $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            $("#chkMe").is(':checked')
         );
 
         sessionStorage.setItem("EtapasOrdenesTrabajos_dFechaDesde", kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'));
     });
 
     $("#dFechaHasta").data("kendoDatePicker").bind("change", function () {
-        fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
             KdoCmbGetValue($("#CmbCliente")),
             KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
             $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            $("#chkMe").is(':checked')
         );
         sessionStorage.setItem("EtapasOrdenesTrabajos_dFechaHasta", kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'));
     });
     $("#chkVerTodas").click(function () {
-        fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
             KdoCmbGetValue($("#CmbCliente")),
             KdoMultiColumnCmbGetValue($("#CmbPrograma"))
             , this.checked, KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
             $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            $("#chkMe").is(':checked')
         );
         sessionStorage.setItem("EtapasOrdenesTrabajos_chkVerTodas", this.checked);
     });
@@ -239,38 +300,53 @@ $(document).ready(function () {
 
         KdoDatePikerEnable($("#dFechaDesde"), this.checked);
         KdoDatePikerEnable($("#dFechaHasta"), this.checked);
-        fn_ObtenerOTs(null, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
             KdoCmbGetValue($("#CmbCliente")),
             KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
             this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            $("#chkMe").is(':checked')
         );
 
         sessionStorage.setItem("EtapasOrdenesTrabajos_chkRangFechas", this.checked);
     });
 
+    $("#chkMe").click(function () {
+        fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+            KdoCmbGetValue($("#CmbCliente")),
+            KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
+            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            $("#chkMe").is(':checked')
+        );
+
+        sessionStorage.setItem("EtapasOrdenesTrabajos_chkMe", this.checked);
+    });
 
 
     if (Catalogo_IdOrdenTrabajo > 0) {
         KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), Catalogo_IdOrdenTrabajo);
         $('#chkVerTodas').prop('checked', 1);
         $('#chkRangFechas').prop('checked', 0);
+        $("#chkMe").prop('checked', 0);
         fn_ObtenerOTs(null, Catalogo_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null, $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'));
     } else {
         $('#chkVerTodas').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkVerTodas") === "true" ? 1 : 0);
         $('#chkRangFechas').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
+        $('#chkMe').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkMe") === "true" ? 1 : 0);
 
         KdoDatePikerEnable($("#dFechaDesde"), sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
         KdoDatePikerEnable($("#dFechaHasta"), sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
 
-        fn_ObtenerOTs(null,
+        fn_ObtenerOTs(sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === "" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos"),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos")==="" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos"),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente"),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma"),
             $("#chkVerTodas").is(':checked'),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo"),
-            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaDesde") === null ? $("#dFechaDesde").val() : null), 's'),
-            $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaHasta") === null ? $("#dFechaHasta").val() : null), 's'));
+            !$("#chkRangFechas").is(':checked')  ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaDesde") === null ? $("#dFechaDesde").val() : null), 's'),
+            !$("#chkRangFechas").is(':checked') ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaHasta") === null ? $("#dFechaHasta").val() : null), 's'),
+            $("#chkMe").is(':checked'));
 
     }
 
@@ -376,7 +452,7 @@ let fn_DibujarKanban = function (ds) {
 
 };
 
-let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdPrograma, xSNTodas, xIdTipoOrdenTrabajo, xFechaDesde, xFechaHasta) {
+let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdPrograma, xSNTodas, xIdTipoOrdenTrabajo, xFechaDesde, xFechaHasta, xSNAsignadas) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         type: "POST",
@@ -390,7 +466,8 @@ let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdP
             SNTodas: xSNTodas,
             IdTipoOrdenTrabajo: xIdTipoOrdenTrabajo,
             FechaDesde: xFechaDesde,
-            FechaHasta: xFechaHasta
+            FechaHasta: xFechaHasta,
+            SNAsignadas: xSNAsignadas
 
         }),
         contentType: "application/json; charset=utf-8",

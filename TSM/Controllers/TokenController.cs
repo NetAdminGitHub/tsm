@@ -4,9 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
+using TSM.BOL;
+using TSM.DAL;
 
 namespace TSM.Controllers
 {
@@ -20,6 +24,64 @@ namespace TSM.Controllers
             newToken = GenerarToken(trama);
 
             return Json(newToken, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public async Task<ActionResult> Validar()
+        {
+            if (Request.Params["id_token"] !=null)
+            {
+                using (var tknvalid = new AzureAuthBOL(new AzureAuthDAL()))
+                {
+                    try
+                    {
+
+                        Session["aztkn"] = null;// limpia sesión
+                        //obtiene token validado
+                        var jwt = await tknvalid.ValidarToken(Request.Params["id_token"]);
+                        string[] user = jwt.Payload["preferred_username"].ToString().Split('@');
+                        //crea cookie de usuario
+                        HttpCookie cookieinfo = new HttpCookie("user");
+                        cookieinfo.Value = user[0];
+
+                        //Crea cookie de validación
+                        string zvalidstr = "";
+                        using (var c = new FrwkSeguridadSrv.SeguridadClient())
+                        {
+                            var str = user[0] + '&' + jwt.Payload["nonce"].ToString();
+                            zvalidstr = await c.EncriptarAsync(str, Utils.Config.App);
+                        }
+
+                        HttpCookie verifcookie = new HttpCookie("zvalidator");
+                        verifcookie.Value = zvalidstr;
+
+                        // asigna token a param
+                        Session["aztkn"] = Request.Params["id_token"]; // asigna token
+
+                        Response.Cookies.Remove("user");
+                        Response.Cookies.Remove("zvalidator");
+                        Response.Cookies.Add(cookieinfo);
+                        Response.Cookies.Add(verifcookie);
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                 
+                }
+
+               
+            }
+            else { Response.Redirect("Error"); }
+
+            return Redirect(Url.Content("Validado"));
+        }
+
+        public void Validado()
+        {
+            Response.Redirect(Url.Content("/Home/Index"), false);
         }
 
         public static string GenerarToken(string trama)
