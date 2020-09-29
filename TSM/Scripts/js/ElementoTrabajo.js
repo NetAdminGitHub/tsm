@@ -446,6 +446,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNombreTalla").val(datos.NombreTalla);
     $("#txtNoCatalogoDiseno").val(datos.NoCatalogoDiseno);
     $("#txtNombreUbicacion").val(datos.NombreUbicacion);
+    $("#txtComentarioCambio").val(datos.ComentarioCambio);
     $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
     $("#swchSolTelaSusti").data("kendoSwitch").enable(false);
     $("#swchSolDesOEKO").data("kendoSwitch").check(datos.StandarOEKOTEX);
