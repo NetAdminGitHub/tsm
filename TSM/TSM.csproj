@@ -235,6 +235,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthFilters\AuthAttribute.cs" />
     <Compile Include="BOL\AzureAuthBOL.cs" />
+    <Compile Include="BOL\OperacionMaquinasBOL.cs" />
     <Compile Include="BOL\ReportePbiBOL.cs" />
     <Compile Include="Connected Services\FrwkAuthSrv\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -364,8 +365,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AzureAuthConf.cs" />
+    <Compile Include="Models\EstacionMaquina.cs" />
     <Compile Include="Models\PbiConfRequest.cs" />
     <Compile Include="Models\ReportePbi.cs" />
+    <Compile Include="Models\SolicitudDesplazamiento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\AsyncUtil.cs" />
     <Compile Include="Utils\Config.cs" />
