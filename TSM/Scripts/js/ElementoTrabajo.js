@@ -133,6 +133,7 @@ $(document).ready(function () {
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
+    KdoButton($("#btnAgenda"), "track-changes","Comentarios por departamento");
    
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
@@ -665,6 +666,11 @@ $("#btnCambiarEtapa").click(function (e) {
 $("#btnSolicitarRegistroCambio").click(function (e) {
     fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
 });
+
+$("#btnAgenda").click(function (e) {
+    fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso);
+});
+
 
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
