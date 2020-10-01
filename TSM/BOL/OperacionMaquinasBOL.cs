@@ -152,6 +152,8 @@ namespace TSM.BOL
                         //mueve respetando el espacio.
                         for (int i = 0; i <= cantEspacios - 1; i++)
                         {
+                            if (current.Value.Ocupado) { throw new Exception("No se puede desplazar la cantidad de estaciones solicitadas a la derecha. Verifique los espacios disponibles."); } //si el actual esta ocupado ya no puede cotinuar desplazamiento respetando espacios.
+
                             maquina.RemoveLast();
                             maquina.AddBefore(inicial, current);
                             current = maquina.Last;
@@ -208,11 +210,12 @@ namespace TSM.BOL
                 {
                     case true:
                         current = maquina.First; // inicializa con primer nodo
-                        if (current.Value.Ocupado ) { throw new Exception("No se puede desplazar a la izquierda. Verifique espacios disponibles."); }
+                        if (current.Value.Ocupado ) { throw new Exception("No se puede desplazar a la izquierda. Verifique los espacios disponibles."); }
 
                         // mueve hacia la derecha respetando espacio.
                         for (int i = 0; i <= cantEspacios - 1; i++)
                         {
+                            if (current.Value.Ocupado) { throw new Exception("No se puede desplazar la cantidad de estaciones solicitadas a la izquierda. Verifique los espacios disponibles."); } //si el actual esta ocupado ya no puede cotinuar desplazamiento respetando espacios.
                             maquina.RemoveFirst();
                             maquina.AddAfter(inicial, current);
                             current = maquina.First;
