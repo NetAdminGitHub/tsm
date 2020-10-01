@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v2009241";
+    ViewBag.IdVersion = "TSM0101088|v2009301";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -70,9 +70,16 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-12 col-md-12">
-                        <label for="txtComentarioCambio" ><strong>Detalle de Cambios:</strong></label>
-                        <textarea  id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled" ></textarea>
+                    <div class="form-group col-lg-8 col-md-8">
+                        <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
+                        <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled"></textarea>
+                    </div>
+                    <div class="col-lg-4 col-md-4 align-self-center">
+                        <div class="input-group">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnAgenda" class="form-control"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <ul id="BarPanelInfo">
@@ -319,7 +326,7 @@
     </div>
 </div>
 
- @*div para controlar el evento del warning*@
+@*div para controlar el evento del warning*@
 <div id="ElementoTrabajo_action"></div>
 
 @*Div html que se utilizar para el ingreso de la solitud de resgistro de cambio. *@
@@ -347,3 +354,6 @@
         </div>
     </div>
 </div>
+
+@*Vista modal registro de Agenda*@
+<div id="Agenda_OT"></div>
