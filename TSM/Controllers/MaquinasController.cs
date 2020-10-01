@@ -18,9 +18,9 @@ namespace TSM.Controllers
         }
 
         
-        [HttpPost]
+       
         [Route("Maquinas/Desplazar")]
-        public string Desplazar(List<SolicitudDesplazamiento> value) 
+        public JsonResult Desplazar(List<SolicitudDesplazamiento> value) 
         {
             var respuesta = new Dictionary<string, object>();
          
@@ -29,7 +29,7 @@ namespace TSM.Controllers
               respuesta =  omaquina.DesplazarBrazos();
             }
 
-            return Newtonsoft.Json.JsonConvert.SerializeObject(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
 
