@@ -8,7 +8,9 @@ let gAlto = 300;
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnBT"), "delete", "Limpiar");
+    KdoButton($("#btnDesplaCambio_rev"), "arrows-kpi", "Desplazar/Cambiar");
     KdoButtonEnable($("#btnBT"), false);
+    KdoButtonEnable($("#btnDesplaCambio_rev"), false);
 
     maq = fn_GetMaquinas();
     fn_gridColorEstacion($("#dgColor"),maq[0].IdSeteo);
@@ -46,6 +48,12 @@ var fn_RTCargarConfiguracion = function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
         
     });
+
+
+    $("#btnDesplaCambio_rev").click(function (e) {
+        fn_OpenModalDesplazamiento();
+
+    });
 };
 
 var fn_RTMostrarGrid = function () {
@@ -55,6 +63,7 @@ var fn_RTMostrarGrid = function () {
     Grid_HabilitaToolbar($("#dgBases"), vhb, vhb, vhb);
     Grid_HabilitaToolbar($("#dgAccesorios"), vhb, vhb, vhb);
     KdoButtonEnable($("#btnBT"), vhb);
+    KdoButtonEnable($("#btnDesplaCambio_rev"), vhb);
     $("#dgTecnica").data("kendoGrid").dataSource.read();
     $("#dgColor").data("kendoGrid").dataSource.read();
     $("#dgBases").data("kendoGrid").dataSource.read();

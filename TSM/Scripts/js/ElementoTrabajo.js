@@ -51,6 +51,7 @@ var InicioModalRT = 0;
 var InicioModalAD = 0;
 var InicioModalMU = 0;
 var InicioModalFor = 0;
+var CantidadBrazos = 22;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -92,8 +93,17 @@ var fn_CambioEtp = function (e) {
     }
     return Realizado;
 };
-
+var tabStrip;
 $(document).ready(function () {
+
+    //tab modal para vista Desplazamiento e Intercambio
+    tabStrip=  $("#TabDesplazar").kendoTabStrip({
+        tabPosition: "top",
+        animation: { open: { effects: "fadeIn" } }
+    }).data("kendoTabStrip");
+
+
+    $('#rbDesplazarRight').prop('checked', true);
     PanelBarConfig($("#BarPanelInfo"));
     kendo.ui.progress($(document.body), true);
     //cargando los accesorios maquinas
@@ -133,15 +143,52 @@ $(document).ready(function () {
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
-    KdoButton($("#btnAgenda"), "track-changes","Comentarios por departamento");
-   
+    KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
+
+
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
-    $("#swchSolTelaSusti").kendoSwitch();
 
+    KdoButton($("#btnDesplazarEstacion"), "check", "Comentarios por departamento");
+    KdoButton($("#btnCambiarEstacion"), "check", "Desplazar / Intercambiar");
+
+    $("#swchSolTelaSusti").kendoSwitch();
     $("#swchSolDesOEKO").kendoSwitch();
     $("#swchPDocAduanal").kendoSwitch();
     $("#swchCobDiseno").kendoSwitch();
+
+    $("#NumBrazoIni").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        max: 22
+    });
+
+    $("#NumCntCantDesplazar").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+
+    $("#NumBrazoA").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        max:22
+    });
+
+    $("#NumBrazoB").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        max: 22
+    });
+
 
 //#region Grid soliciud
     var dsetRegCambios = new kendo.data.DataSource({
@@ -650,6 +697,16 @@ $("#vRegistroCambio").kendoDialog({
         $("#gridRegistroCambios").data("kendoGrid").dataSource.read();
     }
 });
+
+$("#vDesplazarCambiar").kendoDialog({
+    height: "auto",
+    width: "40%",
+    maxHeight: 600,
+    title: "Desplazmiento /Intercanbio de estaciones ",
+    visible: false,
+    closable: true,
+    modal: true
+});
 $("#btnCambiarEtapa").click(function (e) {
     kendo.ui.progress($(document.body), true);
     KdoCmbSetValue($("#cmbUsuarioEtp"), "");
@@ -672,6 +729,88 @@ $("#btnAgenda").click(function (e) {
 });
 
 
+$("#btnDesplazarEstacion").click(function () {
+    if (ValidarDesplazar.validate()) {
+        fn_EjecutarDesplazamiento($("#rbDesplazarRight").is(':checked') === true ? "right" : "left", $("#chkRespetaVacio").is(':checked'), kdoNumericGetValue($("#NumBrazoIni")), kdoNumericGetValue($("#NumCntCantDesplazar")));
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    }
+});
+
+$("#btnCambiarEstacion").click(function () {
+    if (ValidarCambiarEst.validate()) {
+        fn_Desplazar(kdoNumericGetValue($("#NumBrazoA")).toString() + "|" + kdoNumericGetValue($("#NumBrazoB")).toString() + "," + kdoNumericGetValue($("#NumBrazoB")).toString() + "|" + kdoNumericGetValue($("#NumBrazoA")).toString());
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    }
+});
+
+var fn_OpenModalDesplazamiento = function () {
+    $("#vDesplazarCambiar").data("kendoDialog").open();
+    tabStrip.select(fn_getItem(0));
+    kdoNumericSetValue($("#NumCntCantDesplazar"), 0);
+    kdoNumericSetValue($("#NumBrazoIni"), 0);
+    kdoNumericSetValue($("#NumBrazoA"), 0);
+    kdoNumericSetValue($("#NumBrazoB"), 0);
+    $('#rbDesplazarRight').prop('checked', true);
+    $("#NumBrazoIni").data("kendoNumericTextBox").focus();
+};
+var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInicial, xCantDesplazar) {
+    kendo.ui.progress($("#vDesplazarCambiar"), true);
+     var ListaEstaciones = [];
+    $.each(maq, function (item, elemento) {
+        ListaEstaciones.push({ IdEstacion: elemento.IdEstacion });
+    });
+
+    var Model = [{
+        Direccion: xDireccion,
+        RespetaVacio: xRespetaVacio,
+        Numbrazos: CantidadBrazos,
+        BrazoInicial: xBrazoInicial,
+        CantDesplazar: xCantDesplazar ,
+        Brazos: ListaEstaciones
+    }];
+
+
+    $.ajax({
+        url: '/Maquinas/Desplazar',
+        type: "POST",
+        data: JSON.stringify(Model),
+        contentType: "application/json; charset=utf-8",
+        success: function (res) {
+            kendo.ui.progress($("#vDesplazarCambiar"), false);
+            if (res.Error === undefined) {
+                fn_Desplazar(res.Resumen.toString());
+            } else {
+              
+                $("#kendoNotificaciones").data("kendoNotification").show(res.Detalle.toString(), "error");
+            }
+        },
+        error: function (res) {
+
+        }
+    });
+};
+var fn_Desplazar = function (StrEstaciones) {
+    kendo.ui.progress($("#vDesplazarCambiar"), true);
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasEstaciones/OperacionMaquina/" + maq[0].IdSeteo,
+        type: "Put",
+        data: JSON.stringify(StrEstaciones),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($("#vDesplazarCambiar"), false);
+            $("#vDesplazarCambiar").data("kendoDialog").close();
+            fn_RTCargarMaquina();
+            RequestEndMsg(data, "Put");
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($("#vDesplazarCambiar"), false);
+        }
+    });
+
+}
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
         $("#gridUsuarioAsignados").kendoGrid({
@@ -787,6 +926,52 @@ var ValidarCamEtp = $("#FrmCambioEtapa").kendoValidator(
             Msg2: function (input) {
                 if (input.is("[name='cmbUsuarioEtp']")) {
                     return $("#cmbUsuarioEtp").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            }
+        },
+        messages: {
+            Msg1: "Requerido",
+            Msg2: "Requerido"
+        }
+    }).data("kendoValidator");
+
+var ValidarDesplazar = $("#FrmDesplazar").kendoValidator(
+    {
+        rules: {
+
+            Msg1: function (input) {
+                if (input.is("[name='NumBrazoIni']")) {
+                    return kdoNumericGetValue($("#NumBrazoIni")) > 0 && kdoNumericGetValue($("#NumBrazoIni")) <= CantidadBrazos;
+                }
+                return true;
+            },
+            Msg2: function (input) {
+                if (input.is("[name='NumCntCantDesplazar']")) {
+                    return kdoNumericGetValue($("#NumCntCantDesplazar")) > 0 && kdoNumericGetValue($("#NumCntCantDesplazar")) <= CantidadBrazos;
+                }
+                return true;
+            }
+        },
+        messages: {
+            Msg1: "Requerido",
+            Msg2: "Requerido"
+        }
+    }).data("kendoValidator");
+
+var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
+    {
+        rules: {
+
+            Msg1: function (input) {
+                if (input.is("[name='NumBrazoA']")) {
+                    return kdoNumericGetValue($("#NumBrazoA")) > 0 && kdoNumericGetValue($("#NumBrazoA")) <= CantidadBrazos;
+                }
+                return true;
+            },
+            Msg2: function (input) {
+                if (input.is("[name='NumBrazoB']")) {
+                    return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
                 }
                 return true;
             }
@@ -1790,3 +1975,8 @@ var fn_TecnicasArticuloSugerido = function(input, idSeteo, idRequerimientoTecnic
         }
     });
 };
+// otiene el item del tab
+var fn_getItem = function (indice) {
+    return tabStrip.tabGroup.children("li").eq(indice);
+};
+
