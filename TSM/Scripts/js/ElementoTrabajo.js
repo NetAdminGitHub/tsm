@@ -802,6 +802,7 @@ var fn_Desplazar = function (StrEstaciones) {
             kendo.ui.progress($("#vDesplazarCambiar"), false);
             $("#vDesplazarCambiar").data("kendoDialog").close();
             fn_RTCargarMaquina();
+            fn_RTActivaDropTarget();
             RequestEndMsg(data, "Put");
         },
         error: function (data) {
@@ -1507,6 +1508,7 @@ var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
 
             } else {
                 fn_RTCargarMaquina();
+                fn_RTActivaDropTarget();
             }
         },
         error: function (data) {

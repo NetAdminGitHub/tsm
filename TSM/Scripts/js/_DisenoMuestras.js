@@ -3,7 +3,7 @@ var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
     KdoButton($("#btnBTDis"), "delete", "Limpiar");
-    KdoButton($("#btnDesplaCambio_Dis"), "arrows-kpi", "Desplazar/Cambiar");
+    KdoButton($("#btnDesplaCambio_Dis"), "arrows-kpi", "Desplazar/Intercambiar");
     KdoButtonEnable($("#btnBTDis"), false);
     KdoButtonEnable($("#btnDesplaCambio_Dis"), false);
     $("#NumAltoDiseno").kendoNumericTextBox({
