@@ -74,13 +74,14 @@
                         <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
                         <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled"></textarea>
                     </div>
-                    <div class="col-lg-4 col-md-4 align-self-center">
+                    <div class="col-lg-2 col-md-2 align-self-center">
                         <div class="input-group">
                             <div style="width: 100%;">
                                 <button type="button" id="btnAgenda" class="form-control"></button>
                             </div>
                         </div>
                     </div>
+                   
                 </div>
                 <ul id="BarPanelInfo">
                     <li>
@@ -357,3 +358,89 @@
 
 @*Vista modal registro de Agenda*@
 <div id="Agenda_OT"></div>
+
+@*vista Desplazar e intercambiar. *@
+<div id="vDesplazarCambiar">
+    <div class="form-group col-lg-12">
+        <div id="TabDesplazar">
+            <ul>
+                <li class="k-state-active">
+                    Desplazar
+                </li>
+                <li>
+                   Intercambio
+                </li>
+            </ul>
+            <div id="TP_1">
+                <form id="FrmDesplazar" enctype="multipart/form-data">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <input type="radio" id="rbDesplazarleft" name="GrbDespl" class="k-radio form-control">
+                                <label class="k-radio-label" for="rbDesplazarleft">Desplazar a la Izquierda</label>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <input type="radio" id="rbDesplazarRight" name="GrbDespl" class="k-radio form-control">
+                                <label class="k-radio-label" for="rbDesplazarRight">Desplazar a la Derecha</label>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label for="NumBrazoIni">Estacion Inicial:</label>
+                                <input id="NumBrazoIni" name="NumBrazoIni" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="NumCntCantDesplazar">Cantidad a Desplazar:</label>
+                                <input id="NumCntCantDesplazar" name="NumCntCantDesplazar" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-4 align-self-end">
+                                <input type="checkbox" id="chkRespetaVacio" name="chkRespetaVacio" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkRespetaVacio">Respetar estaciones vacias.</label>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <button type="button" class=" k-primary" id="btnDesplazarEstacion">Desplazar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="TP_2">
+                <form id="FrmCambiarEst" enctype="multipart/form-data">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label for="NumBrazoA">Estacion:</label>
+                                <input id="NumBrazoA" name="NumBrazoA" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="NumBrazoB">Estacion a Intercambiar:</label>
+                                <input id="NumBrazoB" name="NumBrazoB" class="form-control" required />
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <button type="button" class=" k-primary" id="btnCambiarEstacion">Cambiar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
