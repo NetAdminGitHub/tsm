@@ -8,7 +8,7 @@ let gAlto = 300;
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     KdoButton($("#btnBT"), "delete", "Limpiar");
-    KdoButton($("#btnDesplaCambio_rev"), "arrows-kpi", "Desplazar/Cambiar");
+    KdoButton($("#btnDesplaCambio_rev"), "arrows-kpi", "Desplazar/Intercambiar");
     KdoButtonEnable($("#btnBT"), false);
     KdoButtonEnable($("#btnDesplaCambio_rev"), false);
 
