@@ -1552,6 +1552,107 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
 };
 //#endregion
 
+//#region Solicitar Registro de Agenda
+/**
+ * 
+ * @param {HtmlElementId} divAgen Id del div que contendra la vista de ingreso de cambio
+ * @param {number} Idot id orden de trabajo
+ * @param {number} IdEtapa etapa del proceso
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_OrdenesTrabajosAgendas = function (divAgen,Idot,IdEtapa, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divAgen + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/RegistroOrdenesTrabajosAgendas",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalOrdenesTrabajosAgenda(resultado, divAgen, Idot, IdEtapa, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalOrdenesTrabajosAgenda("", divAgen, Idot, IdEtapa, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divAgen Id del div que contendra la vista de Ingreso de cambios
+ * @param {number} Idot id orden de trabajo
+ * @param {number} IdEtapa etapa del proceso
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, IdEtapa,fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("RegistroOrdenesTrabajosAgendas.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/RegistroOrdenesTrabajosAgendas.js";
+        script.onload = function () {
+            fn_ShowModalOrdenesTrabajosAgenda(true, data, divAgen, Idot, IdEtapa, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalOrdenesTrabajosAgenda(false, data, divAgen, Idot, IdEtapa, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divAgen  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} Idot id orden de trabajo
+ * @param {number} IdEtapa etapa del proceso
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalOrdenesTrabajosAgenda = function (cargarJs, data, divAgen, Idot, IdEtapa, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarAgenda(Idot, IdEtapa);
+        } else {
+            fn_CargarAgenda(Idot, IdEtapa);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined || fn === "") {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divAgen + "").kendoDialog({
+        height: "auto",
+        width: "70%",
+        title: "Agendar Cambios",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divAgen + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
 var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
 
     return new kendo.data.DataSource({
