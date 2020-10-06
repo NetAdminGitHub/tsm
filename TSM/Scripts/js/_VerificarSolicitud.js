@@ -515,7 +515,7 @@ var fn_VSCargarJSEtapa = function () {
 
     SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRDimension").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,false);
+    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,Permisos.SNBorrar);
     Set_Grid_DataSource($("#GRDimension").data("kendoGrid"), DsDimension);
    
     var selectedRowsDimen = [];
@@ -1428,7 +1428,7 @@ let getRD = function (UrlRD) {
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
                 $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(elemento.PoseeDocumentacionAduanal);
                 $("#swchCobrarDiseno").data("kendoSwitch").check(elemento.CobrarDiseno);
-                $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(elemento.IdComposicionTela));
+                $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(elemento.IdComposicionTela === null ? 0 : elemento.IdComposicionTela));
                 $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
                 fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
