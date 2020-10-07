@@ -17,6 +17,9 @@ var fn_verKanbanEtapa = function (IdOrdenTrabajo) {
 
 var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras", "Nombre", "IdTipoMuestra", "Seleccione...");
+    $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
+
     fn_gridOT();
     $("#tab_inf").kendoTabStrip({
         tabPosition: "top",
@@ -48,10 +51,24 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                         return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
+                },
+                MsgTP: function (input) {
+                    if (input.is("[name='CmbTiposMuestras']")) {
+                        return $("#CmbTiposMuestras").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
+                Msg3: function (input) {
+                    if (input.is("[name='TxtMotivoCambio']")) {
+                        return input.val().length > 0 && input.val().length <= 2000;
+                    }
+                    return true;
                 }
             },
             messages: {
-                MsgDesarrollo: "Requerido"
+                MsgDesarrollo: "Requerido",
+                MsgTP: "Requerido",
+                Msg3:"requerido"
             }
         }).data("kendoValidator");
 
@@ -234,6 +251,8 @@ let fn_gridOT = function () {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        KdoCmbSetValue($("#CmbTiposMuestras"), "");
+                        $("#TxtMotivoCambio").val("");
                         $("#ModalGeneraOT").data("kendoDialog").open();
                         xidRq=dataItem.get("IdRequerimiento");
                         xIdServ = dataItem.get("IdServicio");
@@ -478,9 +497,15 @@ let fn_GenerarOT = function () {
         // obtener indice de la etapa siguiente
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
-            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo/" + fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString(),
+            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo",
             method: "POST",
             dataType: "json",
+            data: JSON.stringify({
+                IdRequerimiento: fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString(),
+                IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString() ,
+                IdTipoMuestra: KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
+                Comentario: $("#TxtMotivoCambio").val()
+            }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;

@@ -135,7 +135,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
         rules: {
             vcnt: function (input) {
                 if (input.is("[id='NumCntIni_Recibida']") ) {
-                    return kdoNumericGetValue($("#NumCntIni_Recibida")) > 0 && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
+                    return kdoNumericGetValue($("#NumCntIni_Recibida")) >= (KdoRbGetValue($("#rbAjuste")) ? 1 : 0) && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
                 }
                 return true;
             },
@@ -198,7 +198,7 @@ var fn_VistaEstacionFormulasDocuReady = function () {
             IdSeteo: maq[0].IdSeteo,
             IdEstacion: xidEstacion
         };
-        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId, undefined, function () { return fn_UpdEstadoGrilla(); });
+        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId, undefined, undefined);
     });
 
    
@@ -330,7 +330,6 @@ var fn_gridFormulas = function (gd) {
         //DEFICNICIÓN DE LOS CAMPOS
         edit: function(e) {
             KdoHideCampoPopup(e.container, "Fecha");
-            KdoHideCampoPopup(e.container, "MasaEntregada");
             KdoHideCampoPopup(e.container, "MasaDevuelta");
             KdoHideCampoPopup(e.container, "C2");
             KdoHideCampoPopup(e.container, "IdMotivo");
@@ -342,15 +341,21 @@ var fn_gridFormulas = function (gd) {
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "FechaMod");
+
+            if (e.model.MasaEntregada > 0 && e.model.C2 > 0)
+                KdoHideCampoPopup(e.container, "MasaEntregada");
+
             if (e.model.Estado !== "CREADA") {
                 KdoNumerictextboxEnable($('[name="CIELAB_L"]'), false);
                 KdoNumerictextboxEnable($('[name="CIELAB_A"]'), false);
                 KdoNumerictextboxEnable($('[name="CIELAB_B"]'), false);
                 KdoNumerictextboxEnable($('[name="CIELAB_DELTAE"]'), false);
             } else {
-                Grid_Focus(e, "CIELAB_L");
-            }
-      
+                if (e.model.MasaEntregada > 0 && e.model.C2 > 0)
+                    Grid_Focus(e, "CIELAB_L");
+                else
+                    Grid_Focus(e, "MasaEntregada");
+            }      
         },
     
         columns: [
@@ -362,10 +367,10 @@ var fn_gridFormulas = function (gd) {
             { field: "MasaDevuelta", title: "Masa Devuelta", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}"},
             { field: "C2", title: "Masa Total", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}" },
             { field: "IdMotivo", title: "Motivo", hidden:true },
-            { field: "CIELAB_L", title: "CIELAB L", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "CIELAB_A", title: "CIELAB A", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "CIELAB_B", title: "CIELAB B", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
-            { field: "CIELAB_DELTAE", title: "CIELAB &Delta;E", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_L", title: "CIELAB L", editor: Grid_ColNumeric, values: ["", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_A", title: "CIELAB A", editor: Grid_ColNumeric, values: ["", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_B", title: "CIELAB B", editor: Grid_ColNumeric, values: ["", "0.00", "9999999999999999.99", "n2", 2] },
+            { field: "CIELAB_DELTAE", title: "CIELAB &Delta;E", editor: Grid_ColNumeric, values: ["", "0.00", "9999999999999999.99", "n2", 2] },
             { field: "Nombre", title: "Nombre Motivo" },
             { field: "Estado", title: "Estado", hidden: true  },
             { field: "Nombre1", title: "Estado" },
@@ -380,10 +385,10 @@ var fn_gridFormulas = function (gd) {
                         e.preventDefault();
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
-                        var lstId = {
-                            IdFormula: dataItem.IdFormula
-                        };
-                        Fn_VistaCambioEstadoVisualizar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", lstId, function () { return fn_UpdEstadoGrilla(); });
+                        //var lstId = {
+                        //    IdFormula: dataItem.IdFormula
+                        //};
+                        Fn_VistaCambioEstadoMostrar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, function () { return fn_UpdEstadoGrilla(); });
                     }
                 },
                 width: "70px",
@@ -750,7 +755,11 @@ var fn_gridAjustePrima = function (gd) {
             { field: "MasaFinal", aggregate: "sum" }
         ],
         requestEnd: function (e) {
-            if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) e.sender.read();
+            if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) {
+                e.sender.read();
+                $("#gridFormulas").data("kendoGrid").dataSource.read();
+            }
+
             Grid_requestEnd(e);
         }
     });
@@ -763,13 +772,27 @@ var fn_gridAjustePrima = function (gd) {
            // e.model.fields.IdArticulo.validation.required = false;
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "IdFormula");
-            KdoHideCampoPopup(e.container, "Masatotal"); 
+            KdoHideCampoPopup(e.container, "Masatotal");
             var MasaTot = e.model.Masatotal;
-            $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(false);
-            $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(false);
+            $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada($("#gridFormulas").data("kendoGrid")) === fn_getMasaTotal($("#gridFormulas").data("kendoGrid")));
+            $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada($("#gridFormulas").data("kendoGrid")) === fn_getMasaTotal($("#gridFormulas").data("kendoGrid")));
+            $('[name="PorcentajeAgregado"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada($("#gridFormulas").data("kendoGrid")) !== fn_getMasaTotal($("#gridFormulas").data("kendoGrid")));
+            $('[name="MasaAgregada"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada($("#gridFormulas").data("kendoGrid")) !== fn_getMasaTotal($("#gridFormulas").data("kendoGrid")));
             $('[name="MasaFinal"]').data("kendoNumericTextBox").enable(false);
             $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").enable(false);
             $('[name="Masatotal"]').data("kendoNumericTextBox").enable(false);
+
+            $('[name="MasaInicial"]').on("change", function (e) {
+                let xMasaInicial = this.value;
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(xMasaInicial));
+                $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
+            });
+
+            $('[name="PorcentajeInicial"]').on("change", function (e) {
+                let xPorcentajeInicial = this.value;
+                $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").value(parseFloat(xPorcentajeInicial));
+                $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").trigger("change");
+            });
 
             $('[name="MasaAgregada"]').on("change", function (e) {
                 let xMasaInicial = $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
@@ -906,7 +929,18 @@ let fn_UpdEstadoGrilla = function () {
     var uid = ge.dataSource.get(xidEstacion).uid;
     Fn_UpdGridEstacion_Formula(ge.dataItem("tr[data-uid='" + uid + "']"), KdoCmbGetText($("#cmbEstados")));
 
-}
+    return true;
+};
+
 fn_PWList.push(fn_VistaEstacionFormulas);
 fn_PWConfList.push(fn_VistaEstacionFormulasDocuReady);
 
+let fn_getMasaEntregada = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.MasaEntregada;
+};
+
+let fn_getMasaTotal = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.C2;
+};

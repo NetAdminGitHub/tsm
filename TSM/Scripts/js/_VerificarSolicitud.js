@@ -514,7 +514,8 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     SetGrid($("#GRDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
-    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,false);
+    SetGrid_CRUD_ToolbarTop($("#GRDimension").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#GRDimension").data("kendoGrid"), Permisos.SNEditar,Permisos.SNBorrar);
     Set_Grid_DataSource($("#GRDimension").data("kendoGrid"), DsDimension);
    
     var selectedRowsDimen = [];
@@ -1111,7 +1112,7 @@ var fn_VSCargarJSEtapa = function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type === "destroy") { getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val()); }
+            if (e.type === "destroy" || e.type==="update") { getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + $("#IdArte").val()); }
 
         },
         error: Grid_error,
@@ -1160,7 +1161,8 @@ var fn_VSCargarJSEtapa = function () {
                             }
                         }
                     },
-                    Catalogo: { type: "bool" }
+                    Catalogo: { type: "bool" },
+                    Placement: { type: "bool" }
                 }
             }
         }
@@ -1186,7 +1188,8 @@ var fn_VSCargarJSEtapa = function () {
             { field: "NombreArchivo", title: "Nombre del Archivo", template: function (data) { return "<a href='/Adjuntos/" + $("#NoDocumento").val() + "/" + data["NombreArchivo"] + "' target='_blank' style='text-decoration: underline;'>" + data["NombreArchivo"] + "</a>"; } },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Descripcion", title: "Descripción" },
-            { field: "Catalogo", title: "Catalogo ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Catalogo"); } }
+            { field: "Catalogo", title: "Catalogo ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Catalogo"); } },
+            { field: "Placement", title: "Placement ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Placement"); } }
         ]
     });
 
@@ -1265,6 +1268,28 @@ var fn_VSCargarJSEtapa = function () {
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+
+    $("#IdComposicionTela").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(this.dataItem(e.item.index()).IdComposicionTela));
+            fn_GetCriteriosCalidad(0);
+        }
+        else {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(0));
+            fn_GetCriteriosCalidad(0);
+        }
+    });
+
+    $("#IdComposicionTela").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value("");
+            $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(0));
             fn_GetCriteriosCalidad(0);
         }
     });
@@ -1352,6 +1377,7 @@ let getRD = function (UrlRD) {
 
             $.each(respuesta, function (index, elemento) {
                 //asignacion de valores a campos en vistas
+             
                 $("#IdRequerimiento").val(elemento.IdRequerimiento);
                 $("#IdUbicacion").data("kendoComboBox").value(elemento.IdUbicacion);
                 $("#IdPrograma").data("kendoComboBox").value(elemento.IdPrograma);
@@ -1402,7 +1428,7 @@ let getRD = function (UrlRD) {
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
                 $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(elemento.PoseeDocumentacionAduanal);
                 $("#swchCobrarDiseno").data("kendoSwitch").check(elemento.CobrarDiseno);
-
+                $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").setDataSource(fn_GetComposicionCalidad(elemento.IdComposicionTela === null ? 0 : elemento.IdComposicionTela));
                 $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").value(elemento.IdCalidadCriterio);
                 fn_GetCriteriosCalidad(elemento.IdCalidadCriterio);
 
@@ -1420,7 +1446,7 @@ let getRD = function (UrlRD) {
             if (respuesta.length === 0) {
 
                 HabilitaFormObje(false);
-                Fn_LeerImagenes($("#Mycarousel"), "", null);
+                Fn_DibujarCarrousel($("#Mycarousel"), "", null);
             }
             kendo.ui.progress($("#vistaParcial"), false);
             getArte(UrlApiArte + "/GetArteByIdReq/" + VarIDReq.toString(), UrlApiArteAdj);
@@ -1451,14 +1477,14 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
                 $("#IdCatalogoDiseno").val(respuesta.IdCatalogoDiseno);
                 $("#NoReferencia").val(respuesta.NoReferencia);
                 kendo.ui.progress($("#vistaParcial"), false);
-                UrlApiArteAdj = UrlApiArteAdj + "/GetByArte/" + respuesta.IdArte;
+                UrlApiArteAdj = UrlApiArteAdj + "/GetArteAdjuntosVista/" + respuesta.IdArte;
                 getAdjun(UrlApiArteAdj);
                 KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false : true);
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
 
             } else {
                 LimpiarArte();
-                Fn_LeerImagenes($("#Mycarousel"), "", null);
+                Fn_DibujarCarrousel($("#Mycarousel"), "", null);
                 kendo.ui.progress($("#vistaParcial"), false);
                 $("#myBtnAdjunto").data("kendoButton").enable(false);
                 $("#IdArte").val("0");
@@ -1496,12 +1522,14 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
             Item: 0,
             NombreArchivo: nombreFichero,
             Fecha: XFecha,
-            Descripcion: XDescripcion
+            Descripcion: XDescripcion,
+            Catalogo: 0,
+            Placement:0
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
-            getAdjun(UrlApiArteAdj + "/GetByArte/" + $("#IdArte").val());
+            getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + $("#IdArte").val());
             kendo.ui.progress($("#vistaParcial"), false);
             RequestEndMsg(data, XType);
 
@@ -1543,7 +1571,7 @@ let getAdjun = function (UrlAA) {
         dataType: 'json',
         type: 'GET',
         success: function (respuesta) {
-            Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + $("#NoDocumento").val() + "", respuesta);
+            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + $("#NoDocumento").val() + "", respuesta);
             kendo.ui.progress($("#vistaParcial"), false);
         },
         error: function () {
@@ -1698,7 +1726,7 @@ let GuardarRequerimiento = function (UrlRD) {
             RequestEndMsg(data, "Put");
             kendo.ui.progress($("#BPform"), false);
 
-            getAdjun(UrlApiArteAdj + "/GetByArte/" + data[0].IdArte.toString());
+            getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + data[0].IdArte.toString());
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
             //cargar datosdel catalogo
             fn_CatalogoDisenos();
@@ -1744,7 +1772,7 @@ let fn_SubirArchivoRD = function (ds) {
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         kendo.ui.progress($("#BPform"), false);
-                        getAdjun(UrlApiArteAdj + "/GetByArte/" + data[0].IdArte.toString());
+                        getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + data[0].IdArte.toString());
                         $("#GridAdjuntos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
@@ -1986,7 +2014,7 @@ let fn_CmbCriterioCalidad = function () {
         dataSource: {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "CalidadCriterios"; },
+                    url: function () { return TSM_Web_APi + "ComposicionTelasCalidadCriterios/GetByIdComposicionTela/0"; },
                     contentType: "application/json; charset=utf-8"
                 }
                 
@@ -1995,6 +2023,31 @@ let fn_CmbCriterioCalidad = function () {
     });
 
 };
+
+let fn_GetComposicionCalidad = function (xIdCompo) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "ComposicionTelasCalidadCriterios/GetByIdComposicionTela/" + xIdCompo.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+
+
+
 let fn_GetCriteriosCalidad = function (xIdCriterio) {
     kendo.ui.progress($("#BPform"), true);
     $.ajax({

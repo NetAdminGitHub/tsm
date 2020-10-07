@@ -3,7 +3,9 @@ var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
     KdoButton($("#btnBTDis"), "delete", "Limpiar");
+    KdoButton($("#btnDesplaCambio_Dis"), "arrows-kpi", "Desplazar/Intercambiar");
     KdoButtonEnable($("#btnBTDis"), false);
+    KdoButtonEnable($("#btnDesplaCambio_Dis"), false);
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -176,13 +178,17 @@ var fn_DMCargarConfiguracion = function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
 
     });
+    $("#btnDesplaCambio_Dis").click(function (e) {
+        fn_OpenModalDesplazamiento();
 
+    });
 };
 
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     fn_GetDisenoMuestra();
     KdoButtonEnable($("#btnBTDis"), vhb);
+    KdoButtonEnable($("#btnDesplaCambio_Dis"), vhb);
     KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), vhb);
     KdoComboBoxEnable($("#CmbIdTipoSeparacion"), vhb);
     KdoComboBoxEnable($("#CmbIdImpresor"), vhb);

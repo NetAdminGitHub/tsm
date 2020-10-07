@@ -390,7 +390,6 @@ let fn_crearServClie = function (e) {
 
             TextBoxEnable($('[name="NombreDiseno"]'), true);
             TextBoxEnable($('[name="NombrePro"]'), true);
-            KdoComboBoxEnable($('[name="IdTipoMuestra"]'), true);
             KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), true);
             TextBoxEnable($('[name="ColorTela"]'), true);
             KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), true);
@@ -520,7 +519,12 @@ let fn_gridSolDet = function () {
                             }
                         }
                     },
-                    IdTipoMuestra: { type: "string" },
+                    IdTipoMuestra: {
+                        type: "string",
+                        defaultValue: function () {
+                            return 22;
+                        }
+                    },
                     NombreTipoM: { type: "string" },
                     CantidadSTrikeOff: { type: "number" },
                     CantidadYardaPieza: { type: "number" },
@@ -559,6 +563,7 @@ let fn_gridSolDet = function () {
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "NombreUN");
             KdoHideCampoPopup(e.container, "Estado");
+        
             Grid_Focus(e, "NombreDiseno");
             $("#IdUnidadYdPzs").data("kendoComboBox").setDataSource(vIdServSol === 1 ? fn_DSudm("9") : fn_DSudm("9,17"));
             if (InciarInsert === true) {
@@ -568,6 +573,7 @@ let fn_gridSolDet = function () {
           
                 Grid_Focus(e, "NombreDiseno");
             }
+            KdoComboBoxEnable($('[name="IdTipoMuestra"]'), false);
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -783,7 +789,6 @@ let fn_GuadarCliente = function (e) {
         }
         TextBoxEnable($('[name="NombreDiseno"]'), false);
         TextBoxEnable($('[name="NombrePro"]'), false);
-        KdoComboBoxEnable($('[name="IdTipoMuestra"]'), false);
         KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), false);
         TextBoxEnable($('[name="ColorTela"]'), false);
         KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), false);
