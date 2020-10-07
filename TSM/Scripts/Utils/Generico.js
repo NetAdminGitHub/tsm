@@ -427,6 +427,60 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
 };
 
 /**
+ * funcion lee imagenes adjuntas y las inserta en una etiqueta DIV que funciona como carrusel
+ * @param {string} Objecarousel por ejemplo $("#MyCarrousel)
+ * @param {string} src ubicacion u origen de las imagenes adjuntadas /Adjuntos' 
+ * @param {JSON} DataSource origen de datos
+ */
+
+var Fn_DibujarCarrousel = function (Objecarousel, src, DataSource) {
+
+    var lista = Objecarousel;
+    //remueve las imagenes del carrousel
+    Objecarousel.children().remove();
+    if (DataSource === null || DataSource === undefined) {
+        lista.append(
+            '<div class="carousel-item col-md-6 col-lg-6 active">'
+            + '<img class="img-fluid mx-auto d-block" src="' + srcDefault + '" >'
+            + '</div > '
+        );
+
+    } else {
+        if (DataSource.length === 0) {
+            lista.append(
+                '<div class="carousel-item col-md-6 col-lg-6 active">'
+                + '<img class="img-fluid mx-auto d-block" id="Img_N0" src="' + srcDefault + '" onclick="fn_click_Imagen(this)">'
+                + '</div > '
+            );
+        } else {
+            $.each(DataSource, function (index, elemento) {
+                if (index === 0) {
+                    lista.append(
+                        '<div class="carousel-item col-md-6 col-lg-6 active">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<div class= "caption">'
+                        + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
+                         + '</div>'
+                        + '</div > '
+                    );
+                }
+                else {
+                    lista.append(
+                        '<div class="carousel-item col-md-6 col-lg-6 ">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<div class= "caption">'
+                        + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
+                        + '</div>'
+                        + '</div > '
+                    );
+                }
+            });
+        }
+
+    }
+};
+
+/**
  * metodo cuando ocurre un error al cargar la imagen la remplaza por una imagen definida.
  * @param {HTMLImageElement} image objeto o etiqueta imagen
  */
