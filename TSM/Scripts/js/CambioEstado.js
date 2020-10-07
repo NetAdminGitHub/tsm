@@ -119,7 +119,7 @@ function Fn_CambiarEstado(Url,DkParametros) {
                 RequestEndMsg(data, "Post");
                 Realizocambio = true;
                 kendo.ui.progress($(".k-dialog"), false);
-                if (DkParametros["fn_AfterChange"] === undefined) {
+                if (DkParametros["fn_AfterChange"] !== undefined) {
                     DkParametros["fn_AfterChange"].call(document, jQuery);
                 }
             },
