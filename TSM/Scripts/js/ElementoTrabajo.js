@@ -503,7 +503,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#swchPDocAduanal").data("kendoSwitch").enable(false);
     $("#swchCobDiseno").data("kendoSwitch").check(datos.CobrarDiseno);
     $("#swchCobDiseno").data("kendoSwitch").enable(false);
-
+    $("#TxtNoRegPrenda").val(datos.NoDocumentoRegPrenda);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
