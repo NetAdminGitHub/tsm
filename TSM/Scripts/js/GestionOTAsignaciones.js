@@ -246,7 +246,7 @@ $(document).ready(function () {
         KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), KanbanEtapa_IdOrdenTrabajo);
         KdoCmbSetValue($("#CmbEtapasProcesos"), KanbanEtapa_IdEtapaProceso);
         $('#chkVerTodas').prop('checked', 1);
-        fn_ObtenerOTsKbAsig(KanbanEtapa_IdEtapaProceso, KanbanEtapa_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null);
+        fn_ObtenerOTsKbAsig(KanbanEtapa_IdEtapaProceso, KanbanEtapa_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null,null,null);
     } else {
         $('#chkVerTodas').prop('checked', sessionStorage.getItem("GestionOTAsignaciones_chkVerTodas") === "true" ? 1 : 0);
         $('#chkRangFechas').prop('checked', sessionStorage.getItem("GestionOTAsignaciones_chkRangFechas") === "true" ? 1 : 0);
@@ -276,6 +276,8 @@ let fn_DibujarKanban = function (ds) {
             let MyKanban = $("#myKanban");
             MyKanban.children().remove();
             $.each(datos, function (index, elemento) {
+                let UsuarioKB = elemento.Nombre === null ? '</br>' : elemento.Nombre;
+
                 MyKanban.append('<div data-id="_' + elemento.IdUsuario + '" class="kanban-board form-group col-lg-12 sortable-drag" draggable="false">' +
                     '<header class="kanban-board-header">' +
                     '<div class="kanban-title-board"></div>' +
@@ -286,8 +288,9 @@ let fn_DibujarKanban = function (ds) {
                     '<div class="info">' +
                     '<a data-toggle="collapse" aria-expanded="true" class="">' +
                     '<span>' +
-                    '<span id="MyUserName">' + elemento.Nombre + '</span>' +
+                    '<span id="MyUserName">' + UsuarioKB + '</span>' +
                     '</span>' +
+                    '</br>' +
                     ' </a>' +
                     '</div>' +
                     '</div>' +
@@ -310,8 +313,11 @@ let fn_DibujarKanban = function (ds) {
                 let MainKanba = $("#" + elemento.IdUsuario + "");
                 MainKanba.children().remove();
                 let usuario = elemento.IdUsuario;
-                $.each(filtro, function (index,elemento) {
+
+                $.each(filtro, function (index, elemento) {
+                    let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
+                    let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
@@ -328,7 +334,8 @@ let fn_DibujarKanban = function (ds) {
                         '</div>' +
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
-                        '<p class="card-text" style="white-space:normal;">Usuario:' + elemento.IdUsuario + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
+                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                        '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
                         'Color Tela: ' + elemento.ColorTela + '</p>' +
                         '</div>' +
                         '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
