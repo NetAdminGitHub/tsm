@@ -666,7 +666,7 @@ let fn_gridSolDet = function () {
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
             { field: "NombreUN", title: "Unidad de medida" },
             {
-             field: "RegistroPrenda", title: "Nuevo", hidden: true, menu: false, editor: fn_BotonAgregar
+             field: "RegistroPrenda", title: "Crear registro de Prenda", hidden: true, menu: false, editor: fn_BotonAgregar
             },
             {
                 field: "IdRegistroSolicitudPrenda", title: "Registro de Prenda", hidden: true,
