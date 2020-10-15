@@ -101,34 +101,23 @@
     </div>
 </div>
 
-<form id="FrmModalCliePro" method="POST" enctype="multipart/form-data" autocomplete="off">
-    <div id="ModalCliePro" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title text-center" id="ModalClieProLabel"></h3>
-                    <button type="button" class="close" data-dismiss="modal" id="btnClosePro" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group col-lg-12">
-                        <div class="form-row">
-                            <div class="form-group col-lg-12">
-                                <label for="CmbTempo">Temporadas</label>
-                                <input name="CmbTempo" id="CmbTempo" required validationMessage="Requerido" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-12">
-                                <label for="TxtPro">Programa</label>
-                                <input name="TxtPro" id="TxtPro" required validationMessage="Requerido" type="text" class="k-textbox form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer ">
-                    <button type="button" id="btnACliePro">Crear</button>
+
+
+<div id="ModalCliePrenda">
+    <div class="form-group col-lg-12">
+        <form id="FrmModalCliePrenda" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtPrenda">Registro de prendas</label>
+                    <input id="TxtPrenda" name="TxtPrenda" required validationMessage="Requerido" class="form-control" />
                 </div>
             </div>
-        </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDescrip">Descripcion:</label>
+                    <input id="TxtDescrip" name="TxtDescrip" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>

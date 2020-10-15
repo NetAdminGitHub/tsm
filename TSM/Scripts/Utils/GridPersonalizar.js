@@ -279,8 +279,7 @@ var Grid_ColCheckbox = function (container, options) {
 
 var Grid_ColRadiobutton = function (container, options) {
     var guid = kendo.guid();
-    var columName = options.field;
-    $('<input class="k-radio" id="' + guid + '" type="radio" name="' + columName + '" data-type="boolean" data-bind="checked:' + columName + '">').appendTo(container);
+    $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
     $('<label class="k-radio-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
@@ -290,6 +289,11 @@ var Grid_ColTemplateCheckBox = function (data, columna) {
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 
+// Columna como CheckBox
+var Grid_ColTemplateRadiobutton = function (data, columna) {
+    return "<input name=\"" + columna + "\" id=\"" + data.id + "\" type=\"radio\" class=\"k-radio\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+        "<label class=\"k-radio-label\" for=\"" + data.id + "\"></label>";
+};
 
 // FORMATO NUMERICO CON DECIMALES.
 var Grid_ColNumeric = function (container, options) {

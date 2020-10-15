@@ -10,12 +10,12 @@ var fn_VerOt = function (xidOrdenTrabajo, xidEtapaProceso) {
     window.location.href = "/OrdenesTrabajo/ElementoTrabajo/" + xidOrdenTrabajo + "/" + xidEtapaProceso;
 };
 var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
-    window.location.href = "/EtapasOrdenesTrabajos/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
+    window.location.href = "/GestionOTAsignaciones/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
 };
 $(document).ready(function () {
     let dtfecha = new Date();
 
-    Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModulo/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
+    Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModuloActivas/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
     KdoCmbSetValue($("#CmbEtapasProcesos"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos")); 
 
     Kendo_CmbFiltrarGrid($("#CmbTiposOrdenesTrabajos"), TSM_Web_APi + "TiposOrdenesTrabajos", "Nombre", "IdTipoOrdenTrabajo", "Seleccione un Tipo de Orden de trabajo", "");
@@ -224,7 +224,8 @@ $(document).ready(function () {
                 this.dataItem(e.item.index()).IdPrograma, $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
                 $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's')
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkMe").is(':checked')
             );
 
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
@@ -252,8 +253,8 @@ $(document).ready(function () {
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 $("#chkVerTodas").is(':checked'),
                 KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
-                this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
                 $("#chkMe").is(':checked')
             );
 
@@ -329,7 +330,7 @@ $(document).ready(function () {
         $('#chkVerTodas').prop('checked', 1);
         $('#chkRangFechas').prop('checked', 0);
         $("#chkMe").prop('checked', 0);
-        fn_ObtenerOTs(null, Catalogo_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null, $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'));
+        fn_ObtenerOTs(null, Catalogo_IdOrdenTrabajo, null, null, $("#chkVerTodas").is(':checked'), null, $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'), $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'), $("#chkMe").is(':checked'));
     } else {
         $('#chkVerTodas').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkVerTodas") === "true" ? 1 : 0);
         $('#chkRangFechas').prop('checked', sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
@@ -339,11 +340,11 @@ $(document).ready(function () {
         KdoDatePikerEnable($("#dFechaHasta"), sessionStorage.getItem("EtapasOrdenesTrabajos_chkRangFechas") === "true" ? 1 : 0);
 
         fn_ObtenerOTs(sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === "" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos"),
-            sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos")==="" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos"),
+            sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === "" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo"),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbCliente"),
             sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbPrograma"),
             $("#chkVerTodas").is(':checked'),
-            sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo") === ""? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbOrdenTrabajo"),
+            sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos") === null || sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos") === "" ? null : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos"),
             !$("#chkRangFechas").is(':checked')  ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaDesde") === null ? $("#dFechaDesde").val() : null), 's'),
             !$("#chkRangFechas").is(':checked') ? null : kendo.toString(kendo.parseDate(sessionStorage.getItem("EtapasOrdenesTrabajos_dFechaHasta") === null ? $("#dFechaHasta").val() : null), 's'),
             $("#chkMe").is(':checked'));
@@ -385,8 +386,11 @@ let fn_DibujarKanban = function (ds) {
                 let MainKanba = $("#Etp-" + elemento.IdEtapaProceso + "");
                 MainKanba.children().remove();
                 let usuario = elemento.IdUsuario;
+
                 $.each(filtro, function (index, elemento) {
+                    let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
+                    let UsuarioKB = elemento.NombreUsuario === null ? '</br>' : elemento.NombreUsuario;
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
@@ -404,6 +408,7 @@ let fn_DibujarKanban = function (ds) {
                         '</div > ' +
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
+                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
                         '<div class="user">' +
                         '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
                         '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
@@ -411,7 +416,7 @@ let fn_DibujarKanban = function (ds) {
                         '<div class="info">' +
                         '<a data-toggle="collapse">' +
                         '<span>' +
-                        '<span id="MyUserName" style="white-space:normal;">' + elemento.NombreUsuario + '</span>' +
+                        '<span id="MyUserName" style="white-space:normal;">' + UsuarioKB + '</span>' +
                         '</span>' +
                         '</a>' +
                         '</div>' +
