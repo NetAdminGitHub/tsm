@@ -1,12 +1,30 @@
 ﻿var Permisos;
+var xCliente = 0;
 
 $(document).ready(function () {
+    $("#ModalAcuerdos").kendoDialog({
+        height: "auto",
+        width: "30%",
+        maxHeight: "400 px",
+        title: "Cargar Acuerdos Comerciales",
+        visible: false,
+        closable: true,
+        modal: true,
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCargar Plantilla', primary: true, action: function () { return fn_CargarPlantilla(); } },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
+        ],
+        close: function (e) {
+            KdoCmbSetValue($("#CmbIdAcuerdo"), "");
+        }
+    });
 
     var DivCarousel = $("#Div_Carousel");
     DivCarousel.append(Fn_Carouselcontent());
     Fn_LeerImagenes($("#Mycarousel"), "", null);
 
     KdoButton($("#btnGuardar"), "save", "Guardar");
+    KdoButton($("#btnPlantillas"), "track-changes-accept", "Cargar Plantilla");
     KdoButton($("#btnImprimir"), "print", "Imprimir Reporte de Cotización");
     KdoButton($("#btnImpRentabilidad"), "print", "Imprimir Reporte de Rentabilidad");
     KdoButton($("#btnGeneraCotiPro"), "gear", " Generar cotización por programa");
@@ -14,7 +32,7 @@ $(document).ready(function () {
     KdoButton($("#btnIrCoti"), "hyperlink-open-sm", "Ir a Simulaciones");
     KdoButtonEnable($("#btnGeneraCotiPro"), vEstCoti !== "EDICION" ? false: true);
     KdoButtonEnable($("#btnCambioEstado"), vEstCoti !== "EDICION" ? false : fn_SNCambiarEstados(true));
-    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false: fn_SNAgregar(true));
+    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false : fn_SNAgregar(true));    
 
     var Valid = $("#frmCondiciones").kendoValidator(
         {
@@ -320,12 +338,12 @@ $(document).ready(function () {
             { field: "CantidadTecnicas", title: "Cantidad Técnicas", editor: Grid_ColNumeric, values: ["", "0", "9999999999999999", "#", 0], format: "{0:#}", hidden: true },
             { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColNumeric, values: ["", "0", "9999999999999999", "#", 0], format: "{0:#}", hidden: true },
             { field: "ProductividadHora", title: "Productividad Hora", editor: Grid_ColNumeric, values: ["", "0", "9999999999999999", "#", 0], format: "{0:#}", hidden: true },
-            {field: "NoDocumento", title: "No Simualcion"},
+            { field: "NoDocumento", title: "No Simualcion"},
             { field: "CostoUnitario", title: "Costo Unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionCliente", title: "Facturacion Cliente", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionTS", title: "Facturacion Techno Screen", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionVenta", title: "Facturacion Venta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
-            {field: "NoOT", title: "No Orden Trabajo"},
+            { field: "NoOT", title: "No Orden Trabajo"},
             { field: "IdAnalisisDiseno", title: "Cod. AnalisisDiseno", hidden: true },
             { field: "NombreArte", title: "Nombre Diseño" },
             { field: "EstiloDiseno", title: "Estilo de Diseño" },
@@ -413,6 +431,8 @@ let Fn_getCotizacion = function () {
             $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
             $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
             $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+            xCliente = respuesta === null ? 0 : respuesta.IdCliente;
+            Kendo_CmbFiltrarGrid($("#CmbIdAcuerdo"), TSM_Web_APi + "ClientesAcuerdosPlantillas/GetNombreByCliente/" + xCliente, "Nombre", "IdAcuerdo", "Seleccione...");
             kendo.ui.progress($(document.body), false);
         },
         error: function (data) {
@@ -701,6 +721,76 @@ $("#btnImpRentabilidad").click(function (e) {
         }
     });
 });
+
+$("#btnPlantillas").click(function (e) {
+        e.preventDefault();
+        $("#ModalAcuerdos").data("kendoDialog").title("Cargar Plantilla de Acuerdos Comerciales");
+        $("#ModalAcuerdos").data("kendoDialog").open();
+});
+
+let ValidarPlantillas = $("#FrmCargarPlantilla").kendoValidator(
+{
+    rules: {
+        MsgAcuerdo: function (input) {
+            if (input.is("[name='CmbIdAcuerdo']")) {
+                return $("#CmbIdAcuerdo").data("kendoComboBox").selectedIndex >= 0;
+            }
+            return true;
+        }
+    },
+    messages: {
+        MsgAcuerdo: "Requerido"
+    }
+}).data("kendoValidator");
+
+let fn_CargarPlantilla = function () {
+    let realizado = false;
+
+    if (ValidarPlantillas.validate()) {
+        // obtener indice de la etapa siguiente
+        kendo.ui.progress($(document.body), true);
+        $.ajax({
+            url: TSM_Web_APi + "ClientesAcuerdosPlantillas/" + KdoCmbGetValue($("#CmbIdAcuerdo")).toString(),
+            type: 'GET',
+            success: function (respuesta) {
+                $("#TxtContacto").val(respuesta === null ? "" : respuesta.Contacto);
+                $("#TxtComentarios").data("kendoEditor").value(respuesta === null ? "" : respuesta.Comentarios);
+                $('#chkCotizaPromedio').prop('checked', respuesta === null ? false : respuesta.CotizaPromedio);
+                $('#chkPrecioPreliminar').prop('checked', respuesta === null ? false : respuesta.PrecioPreliminar);
+                $('#chkFinalCotizacion').prop('checked', respuesta === null ? false : respuesta.FinalCotizacion);
+                $("#TxtPrecioDesarrolloMuestra").val(respuesta === null ? "" : respuesta.PrecioDesarrolloMuestra);
+                $("#TxtCondicionPagoDesarrollo").val(respuesta === null ? "" : respuesta.CondicionPagoDesarrollo);
+                $("#TxtPrecioVendedorCTL").val(respuesta === null ? "" : respuesta.PrecioVendedorCTL);
+                $("#TxtCondicionPagoCTL").val(respuesta === null ? "" : respuesta.CondicionPagoCTL);
+                $("#TxtTransporte").val(respuesta === null ? "" : respuesta.Transporte);
+                $("#TxtCondicionPagoProduccion").val(respuesta === null ? "" : respuesta.CondicionPagoProduccion);
+                $("#TxtNumeroSeteos").val(respuesta === null ? "" : respuesta.NumeroSeteos);
+                $("#TxtPorcentajeSegundos").val(respuesta === null ? "" : respuesta.PorcentajeSegundos);
+                $("#txtPrecioSetupAdicional").val(respuesta === null ? "" : respuesta.PrecioSetupAdicional);
+                $("#txtPrecioAdicionalColorTela").val(respuesta === null ? "" : respuesta.PrecioAdicionalColorTela);
+                $("#txtTerminosPago").val(respuesta === null ? "" : respuesta.TerminosPago);
+                $("#txtExcesoSetup").val(respuesta === null ? "" : respuesta.ExcesoSetup);
+                $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
+                $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
+                $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+
+                $("#frmCondiciones").submit();
+                $("#ModalAcuerdos").data("kendoDialog").close();
+                realizado = true;
+            },
+            error: function (data) {
+                ErrorMsg(data);
+                kendo.ui.progress($(document.body), false);
+            },
+            complete: function () {
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    } else {
+        realizado = false;
+    }
+    return realizado;
+};
 
 let fn_getIdArte = function (g) {
     var SelItem = g.dataItem(g.select());
