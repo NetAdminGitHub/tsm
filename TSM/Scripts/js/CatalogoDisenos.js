@@ -131,7 +131,7 @@ var fn_getArtesAdjuntos = function () {
                 },
                 MsgTalla: function (input) {
                     if (input.is("[name='Cmb_Tallas']")) {
-                        return $("#Cmb_Tallas").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                        return $("#Cmb_Tallas").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 }
