@@ -321,7 +321,7 @@ $(document).ready(function () {
                     "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
                 field: "IconoView",
                 title: "&nbsp;"
-            },
+            }
         ]
     });
 

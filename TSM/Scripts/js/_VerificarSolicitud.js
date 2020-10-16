@@ -1915,11 +1915,24 @@ let HabilitaFormObje = function (ToF) {
     KdoButtonEnable($("#Guardar"), ToF);
     KdoComboBoxEnable($("#CmbTipoLuz"), ToF);
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
+    KdoComboBoxEnable($("#CmbTMuestra"), ToF);
+    KdoComboBoxEnable($("#CmbQuimica"), ToF);
+    KdoComboBoxEnable($("#CmbMotivoDesarrollo"), ToF);
     $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(ToF);
     $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(ToF);
     $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(ToF);
     $("#swchCobrarDiseno").data("kendoSwitch").enable(ToF);
+    if (ToF === true) {
+        $("#UbicacionVer").removeAttr("disabled");
+        $("#UbicacionHor").removeAttr("disabled");
+        $("#TxtDirectorioArchivos").removeAttr("disabled");
+    } else {
+        $("#UbicacionVer").attr("disabled", true);
+        $("#UbicacionHor").attr("disabled", true);
+        $("#TxtDirectorioArchivos").attr("disabled", true);
+    }
+
 
 };
 
