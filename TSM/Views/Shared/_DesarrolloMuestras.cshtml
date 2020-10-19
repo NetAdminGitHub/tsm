@@ -9,13 +9,25 @@
                 <button type="button" id="btnMuest" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button>
                 <button type="button" id="btnFinOT">Finalizar OT</button>
                 <button type="button" id="btnConsultarPesos">Detalle de pesos</button>
+                <button type="button" id="btnDesplaCambio_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
+                </button>
+                <button type="button" id="btnDuplicar_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-copy"></span>&nbsp;Duplicar Estación
+                </button>
             </div>
             <div class="col-lg-3"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-3">
+                <div id="dgAccesorios_Muest"></div>
+            </div>
         </div>
     </div>
 </div>
 <div class="form-row" id="EtapaSeteo_10">@*div utilizado para el dibujado de maquina por etapa*@</div>
 <div id="MEstacionMuestra" data-url='@Url.Action("EstacionMuestra","Estaciones")'></div>
+<div id="MEstacionAccesoriosMuest" data-url='@Url.Action("EstacionAccesoriosMuest","Estaciones")'></div>
 
 <div id="vCamEstado"></div>
 

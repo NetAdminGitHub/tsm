@@ -1,6 +1,8 @@
 ﻿var Permisos;
 
 var fn_DMueCargarConfiguracion = function () {
+    KdoButton($("#btnDesplaCambio_Mues"), "arrows-kpi", "Desplazar/Intercambiar");
+    KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
     KdoButtonEnable($("#btnMuest"), false);
@@ -81,11 +83,29 @@ var fn_DMueCargarConfiguracion = function () {
     });
     fn_ConsultaPesos($("#gridEstacionPeso"));
 
+
+    fn_gridAccesoriosEstacion($("#dgAccesorios_Muest"));
+    $("#dgAccesorios_Muest").data("Estacion", "MEstacionAccesoriosMuest"); // guardar nombre vista modal
+    $("#dgAccesorios_Muest").data("EstacionJS", "EstacionAccesoriosMuest.js"); // guardar nombre archivo JS
+    $("#dgAccesorios_Muest").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
+    $("#dgAccesorios_Muest").data("Formulacion", ""); //guarda el idformulacion
+
+
+    $("#btnDesplaCambio_Mues").click(function (e) {
+        fn_OpenModalDesplazamiento();
+
+    });
+
+    $("#btnDuplicar_Mues").click(function (e) {
+        fn_OpenModalDuplicar();
+
+    });
 };
 
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOT"), vhb);
+    Grid_HabilitaToolbar($("#dgAccesorios_Muest"), vhb, vhb, vhb);
 };
 
 // Agregar a lista de ejecucion funcion dibujado de maquina.
@@ -104,6 +124,12 @@ var EtapaPush3 = {};
 EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_DMCargarEtapa;
 fun_ListDatos.push(EtapaPush3);
+
+// activa DropTarget
+var EtapaPush4 = {};
+EtapaPush4.IdEtapa = idEtapaProceso;
+EtapaPush4.FnEtapa = fn_RTActivaDropTarget;
+fun_ListDatos.push(EtapaPush4);
 
 fPermisos = function (datos) {
     Permisos = datos;
