@@ -5,7 +5,7 @@ var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
-    KdoButtonEnable($("#btnMuest"), false);
+
     KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
     KdoButton($("#btnAceptarFin"), "check", "Finalizar");
     $("#dFechaFinMue").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -105,6 +105,9 @@ var fn_DMueCargarConfiguracion = function () {
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOT"), vhb);
+    KdoButtonEnable($("#btnMuest"), vhb);
+    KdoButtonEnable($("#btnDesplaCambio_Mues"), vhb);
+    KdoButtonEnable($("#btnDuplicar_Mues"), vhb);
     Grid_HabilitaToolbar($("#dgAccesorios_Muest"), vhb, vhb, vhb);
 };
 

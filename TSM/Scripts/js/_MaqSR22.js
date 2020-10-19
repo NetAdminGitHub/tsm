@@ -240,7 +240,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
-            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10)) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9 ) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
 
@@ -421,7 +421,7 @@ var fn_RTCargarMaquina = function () {
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
 
-            if (maq.find(q => q.IdEstacion === Number(xidb) && (q.IdEtapaProceso !== 9 && q.IdEtapaProceso !== 10) ) && vhb === true)
+            if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });   
 
