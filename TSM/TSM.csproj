@@ -789,6 +789,7 @@
     <Content Include="Scripts\js\ConsultarFichaOT.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
+    <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
@@ -1519,6 +1520,7 @@
     <Content Include="Views\SolicitudesCambios\Index.cshtml" />
     <Content Include="Views\Articulos\Index.cshtml" />
     <Content Include="Views\Shared\_RegistroOrdenesTrabajosAgendas.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesoriosMuest.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

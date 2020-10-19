@@ -51,7 +51,7 @@ var fn_RTCargarConfiguracion = function () {
 
 
     $("#btnDesplaCambio_rev").click(function (e) {
-        fn_OpenModalDesplazamiento();
+        fn_OpenModalDuplicar();
 
     });
 };
