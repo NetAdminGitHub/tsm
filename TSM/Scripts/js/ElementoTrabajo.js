@@ -856,7 +856,7 @@ var fn_Desplazar = function (StrEstaciones) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             kendo.ui.progress($("#vDesplazarCambiar"), false);
-            $("#vDesplazarCambiar").data("kendoDialog").close();
+            $("#vDesplazarCambiar").data("kendoWindow").close();
             fn_RTCargarMaquina();
             fn_RTActivaDropTarget();
             RequestEndMsg(data, "Put");
