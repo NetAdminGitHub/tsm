@@ -806,10 +806,10 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 Formulacion = "BASE";
                 break;
             default:
-                Titulo = "";
-                ModalEstacion = undefined; // color undefined para no levatar vista modal
-                ModalEstacionJS = "";
-                TipoEstacion = "";
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAccesoriosMuest";
+                ModalEstacionJS = "EstacionAccesoriosMuest.js";
+                TipoEstacion = "ACCESORIO";
                 Formulacion = "";
                 break;
         }
@@ -940,6 +940,13 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 if (HizoDropDown === true)  $("#TxtOpcSelecAcce_Dis").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Dis"]').text('Nombre del Accesorio');
             }
+
+
+            if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
+                //guardo en Memoria la llave del tipo de selección
+                if (HizoDropDown === true) $("#TxtOpcSelecAcce_Mues").data("IdAccesorio", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Mues"]').text('Nombre del Accesorio');
+            }
         }
         HizoDropDown = false;
         if (m !== undefined) {
@@ -1014,6 +1021,13 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
 
     if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
 
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
+            $("#TxtOpcSelecAcce_Mues").data("name", TxtSecName);
+            $("#TxtOpcSelecAcce_Mues").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecAcce_Mues").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecAcce_Mues").data("IdBrazo", xvbrazo);
+
+        }
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
             $("#TxtOpcSelec_Mues").data("name", TxtSecName);

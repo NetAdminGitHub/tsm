@@ -29,6 +29,10 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult EstacionAccesoriosMuest()
+        {
+            return PartialView();
+        }
         public ActionResult EstacionFormulas()
         {
             return PartialView();
