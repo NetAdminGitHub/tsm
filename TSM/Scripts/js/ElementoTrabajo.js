@@ -151,6 +151,7 @@ $(document).ready(function () {
 
     KdoButton($("#btnDesplazarEstacion"), "check", "Comentarios por departamento");
     KdoButton($("#btnCambiarEstacion"), "check", "Desplazar / Intercambiar");
+    KdoButton($("#btnDuplicarEstacion"), "check", "Duplicar");
 
     $("#swchSolTelaSusti").kendoSwitch();
     $("#swchSolDesOEKO").kendoSwitch();
@@ -182,6 +183,22 @@ $(document).ready(function () {
     });
 
     $("#NumBrazoB").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        max: 22
+    });
+
+    $("#NumOrigenA").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0,
+        max: 22
+    });
+
+    $("#NumDestinoB").kendoNumericTextBox({
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -698,15 +715,38 @@ $("#vRegistroCambio").kendoDialog({
     }
 });
 
-$("#vDesplazarCambiar").kendoDialog({
+$("#vDesplazarCambiar").kendoWindow({
     height: "auto",
     width: "40%",
     maxHeight: 600,
     title: "Desplazmiento /Intercanbio de estaciones ",
     visible: false,
     closable: true,
-    modal: true
+    modal: true,
+    pinned: true,
+    resizable: false,
+    maximize: function (e) {
+        e.preventDefault();
+    },
+    activate: function () { $("#NumBrazoIni").data("kendoNumericTextBox").focus(); }
 });
+
+$("#vDuplicarMarco").kendoWindow({
+    height: "auto",
+    width: "30%",
+    maxHeight: 600,
+    title: "Duplicar Estación",
+    visible: false,
+    closable: true,
+    modal: true,
+    pinned: true,
+    resizable: false,
+    maximize: function (e) {
+        e.preventDefault();
+    },
+    activate: function () { $("#NumOrigenA").data("kendoNumericTextBox").focus();}
+});
+
 $("#btnCambiarEtapa").click(function (e) {
     kendo.ui.progress($(document.body), true);
     KdoCmbSetValue($("#cmbUsuarioEtp"), "");
@@ -745,8 +785,16 @@ $("#btnCambiarEstacion").click(function () {
     }
 });
 
+$("#btnDuplicarEstacion").click(function () {
+    if (ValidarDuplicarEst.validate()) {
+        fn_Duplicar(kdoNumericGetValue($("#NumOrigenA")), kdoNumericGetValue($("#NumDestinoB")));
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    }
+});
+
 var fn_OpenModalDesplazamiento = function () {
-    $("#vDesplazarCambiar").data("kendoDialog").open();
+    $("#vDesplazarCambiar").data("kendoWindow").center().open();
     tabStrip.select(fn_getItem(0));
     kdoNumericSetValue($("#NumCntCantDesplazar"), 0);
     kdoNumericSetValue($("#NumBrazoIni"), 0);
@@ -755,6 +803,14 @@ var fn_OpenModalDesplazamiento = function () {
     $('#rbDesplazarRight').prop('checked', true);
     $("#NumBrazoIni").data("kendoNumericTextBox").focus();
 };
+
+var fn_OpenModalDuplicar = function () {
+    $("#vDuplicarMarco").data("kendoWindow").center().open();
+    kdoNumericSetValue($("#NumOrigenA"), 0);
+    kdoNumericSetValue($("#NumDestinoB"), 0);
+    $("#NumOrigenA").data("kendoNumericTextBox").focus();
+};
+
 var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInicial, xCantDesplazar) {
     kendo.ui.progress($("#vDesplazarCambiar"), true);
      var ListaEstaciones = [];
@@ -800,7 +856,7 @@ var fn_Desplazar = function (StrEstaciones) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             kendo.ui.progress($("#vDesplazarCambiar"), false);
-            $("#vDesplazarCambiar").data("kendoDialog").close();
+            $("#vDesplazarCambiar").data("kendoWindow").close();
             fn_RTCargarMaquina();
             fn_RTActivaDropTarget();
             RequestEndMsg(data, "Put");
@@ -808,6 +864,32 @@ var fn_Desplazar = function (StrEstaciones) {
         error: function (data) {
             ErrorMsg(data);
             kendo.ui.progress($("#vDesplazarCambiar"), false);
+        }
+    });
+
+}
+var fn_Duplicar= function (EstacionO,EstacionD) {
+    kendo.ui.progress($("#vDuplicarMarco"), true);
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
+        type: "Post",
+        data: JSON.stringify({
+            idSeteo: maq[0].IdSeteo,
+            idEstacionOrigen: EstacionO,
+            idEstacionDestino: EstacionD,
+            idUsuario: getUser()
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($("#vDuplicarMarco"), false);
+            $("#vDuplicarMarco").data("kendoWindow").close();
+            fn_RTCargarMaquina();
+            fn_RTActivaDropTarget();
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($("#vDuplicarMarco"), false);
         }
     });
 
@@ -973,6 +1055,30 @@ var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
             Msg2: function (input) {
                 if (input.is("[name='NumBrazoB']")) {
                     return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
+                }
+                return true;
+            }
+        },
+        messages: {
+            Msg1: "Requerido",
+            Msg2: "Requerido"
+        }
+    }).data("kendoValidator");
+
+
+var ValidarDuplicarEst = $("#FrmDuplicarEst").kendoValidator(
+    {
+        rules: {
+
+            Msg1: function (input) {
+                if (input.is("[name='NumOrigenA']")) {
+                    return kdoNumericGetValue($("#NumOrigenA")) > 0 && kdoNumericGetValue($("#NumOrigenA")) <= CantidadBrazos;
+                }
+                return true;
+            },
+            Msg2: function (input) {
+                if (input.is("[name='NumDestinoB']")) {
+                    return kdoNumericGetValue($("#NumDestinoB")) > 0 && kdoNumericGetValue($("#NumDestinoB")) <= CantidadBrazos;
                 }
                 return true;
             }
