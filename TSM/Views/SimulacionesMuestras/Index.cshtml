@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Simulación de Muestras";
+    ViewBag.IdVersion = "TMS0101084|v19111801";
+}
+@section Scripts {
+    <script src="~/Scripts/js/SimulacionesMuestras.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdServicio">Servicio :</label>
+                        <input id="CmbIdServicio" name="CmbIdServicio" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdCliente">Cliente :</label>
+                        <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbNoOrdenTrabajo">No. Orden de Trabajo</label>
+                        <input id="CmbNoOrdenTrabajo" name="CmbNoOrdenTrabajo" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3 align-self-end">
+                        <div class="input-group">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnSimulacion" name="btnSimulacion">Nueva Simulación</button>
+                                <button type="button" id="btnRecalcular" name="btnRecalcular">Recalcular</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridSimulacion"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div id="MbtnSimu">
+        <form id="FrmNuevoSim" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbNoOT">No. Orden de Trabajo</label>
+                    <input id="CmbNoOT" name="CmbNoOT" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row" id="row4">
+                <div class="form-group col-lg-6">
+                    <label for="TxtNuevaCantidadPiezas">Cantidad de Piezas:</label>
+                    <input id="TxtNuevaCantidadPiezas" name="TxtNuevaCantidadPiezas" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="TxtNoMontaje">Montajes:</label>
+                    <input id="TxtNoMontaje" name="TxtNoMontaje" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row" id="row6">
+                <div class="form-group col-lg-6">
+                    <label for="txtPersonalExtra">Personal Extra:</label>
+                    <input id="txtPersonalExtra" name="txtPersonalExtra" class="form-control" required />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label for="txtCombos">Cantidad de Combos:</label>
+                    <input id="txtCombos" name="txtCombos" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row" id="row8">
+                <div class="form-group col-lg-6">
+                    <label for="txtVeloMaquina">Velocidad Maquina:</label>
+                    <input id="txtVeloMaquina" name="txtVeloMaquina" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6 align-self-end">
+                    <input id="chkUsarTermofijado" type="checkbox" name="chkUsarTermofijado" class="k-checkbox" />
+                    <label class="k-checkbox-label" for="chkUsarTermofijado">Utilizar Termofijado</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-9">
+                    <label for="CmbTallas">Tallas:</label>
+                    <input id="CmbTallas" name="CmbTallas" class="form-control" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="NumCantidadTallas">Cantidad de Tallas:</label>
+                    <input id="NumCantidadTallas" name="NumCantidadTallas" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group cl-lg-12">
+                    <button type="button" class=" k-primary" id="btnAceptarSimu">Aceptar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@Html.Partial("_Recalcular")

@@ -1,22 +1,47 @@
 ﻿<div class="form-row">
-    <div class="form-group col-lg-12">
-    </div>
-</div>
-<div class="form-row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group col-lg-5">
-                        <label for="gridRev">Lista</label>
-                        <div id="gridRev"></div>
+                <div class="form-group col-lg-12">
+                    <div class="form-row">
+                        <div class="form-group col-lg-3">
+                            <div id="dgColor"></div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <div id="dgTecnica"></div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <div id="dgBases"></div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <div id="dgAccesorios"></div>
+                        </div>
                     </div>
-                    <div class="form-group col-lg-7">
-                        <label for="gridRevDet">Revisión Técnica Ítem</label>
-                        <div id="gridRevDet"></div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <div class="form-row">
+                                <div class="form-group col-lg-3">
+                                    <label for="CmbMaquina">Selección de Maquina:</label>
+                                    <input id="CmbMaquina" name="CmbMaquina" required validationMessage="Requerido" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-3 align-self-lg-end">
+                                    <button type="button" id="btnBT" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                                        <span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo
+                                    </button>
+                                </div>
+                                <div class="form-group col-lg-3 align-self-lg-end">
+                                    <button type="button" id="btnDesplaCambio_rev" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                                        <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="form-row" id="EtapaSeteo_6">@*div utilizado para el dibujado de maquina por etapa*@</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="MEstacionColor" data-url='@Url.Action("EstacionColores","Estaciones")'></div>
+<div id="MEstacionAccesorios" data-url='@Url.Action("EstacionAccesorios","Estaciones")'></div>

@@ -73,5 +73,76 @@ namespace TSM.Controllers
             return PartialView("_RequerimientoDesarrollosConsulta");
             
         }
+
+        [HttpPost]
+        [Route("RequerimientoDesarrollos/SubirArchivoReq")]
+        public ActionResult SubirArchivoReq(List<Dictionary<string, object>> value)
+        {
+            Dictionary<string, bool> respuesta = new Dictionary<string, bool>();
+            try
+            {
+                foreach (var item in value)
+                {
+                    var rutaFisica = Server.MapPath("~/Adjuntos");
+                    var physicalPath = Path.Combine(rutaFisica, item["NoReferencia"].ToString(), item["NombreArchivo"].ToString());
+                    var physicalPathDestino = Path.Combine(rutaFisica, item["NoDocumento"].ToString());
+
+                    if (!Directory.Exists(physicalPathDestino))
+                        Directory.CreateDirectory(physicalPathDestino);
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        physicalPathDestino = Path.Combine(physicalPathDestino, item["NombreArchivo"].ToString());
+                        System.IO.File.Copy(physicalPath, physicalPathDestino);
+                    }
+                }
+
+                respuesta.Add("Resultado", true);
+                return Json(respuesta);
+            }
+            catch (Exception)
+            {
+
+                respuesta.Add("Resultado", false);
+                return Json(respuesta);
+            }
+
+
+        }
+
+        [HttpPost]
+        [Route("RequerimientoDesarrollos/SubirArchivoCatalogo")]
+        public ActionResult SubirArchivoCatalogo(List<Dictionary<string, object>> value)
+        {
+            Dictionary<string, bool> respuesta = new Dictionary<string, bool>();
+            try
+            {
+                foreach (var item in value)
+                {
+                    var rutaFisica = Server.MapPath("~/Adjuntos");
+                    var physicalPath = Path.Combine(rutaFisica, item["NoDocumento"].ToString(), item["NombreArchivo"].ToString());
+                    var physicalPathDestino = Path.Combine(rutaFisica, item["NoReferencia"].ToString());
+
+                    if (!Directory.Exists(physicalPathDestino))
+                        Directory.CreateDirectory(physicalPathDestino);
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        physicalPathDestino = Path.Combine(physicalPathDestino, item["NombreArchivo"].ToString());
+                        System.IO.File.Copy(physicalPath, physicalPathDestino);
+                    }
+                }
+
+                respuesta.Add("Resultado", true);
+                return Json(respuesta);
+            }
+            catch (Exception)
+            {
+
+                respuesta.Add("Resultado", false);
+                return Json(respuesta);
+            }
+
+
+        }
+
     }
 }

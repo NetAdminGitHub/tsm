@@ -624,17 +624,19 @@ var fn_DibujarTallas = function (ds, IdCategoriaPrenda, item, spanId) {
         var lblchkRT = 'lblchkRT_' + (elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud) + elemento.IdCategoriaPrenda.toString() + elemento.IdCategoriaTalla.toString() + elemento.Item.toString();
         var chkRT = 'chkRT_' + (elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud) + elemento.IdCategoriaPrenda.toString() + elemento.IdCategoriaTalla.toString() + elemento.Item.toString();
         var TxtRT = 'TxtRT_' + (elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud) + elemento.IdCategoriaPrenda.toString() + elemento.IdCategoriaTalla.toString() + elemento.Item.toString();
+        var TipoTalla = (elemento.IdSolicitud === null ? vIdSolicitud : elemento.IdSolicitud) + elemento.IdCategoriaPrenda.toString() + (elemento.IdCategoriaTalla.toString()==="4" ? "UNICO": "NOUNICO") + elemento.Item.toString();
+
         UbicacionPren.append(
             '<div class="form-row">' +
             '<div class="form-group col-lg-12 ">' +
-            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox">' +
+            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox" tipotalla="chk' + TipoTalla+ '">' +
             '<label class="k-checkbox-label" for="' + chkRT + '">' + elemento.Nombre + '</label>' +
             '</div>' +
             '</div>' +
             '<div class="form-group form-row">' +
             '<label for="' + TxtRT + '" class="col-lg-4 col-form-label" id="' + lblchkRT + '">Rango</label>' +
             '<div class="col-lg-8">' +
-            '<input id="' + TxtRT + '" name="' + TxtRT + '" type="text" class="k-textbox form-control">' +
+            '<input id="' + TxtRT + '" name="' + TxtRT + '" type="text" class="k-textbox form-control" tipotalla="input' + TipoTalla + '">' +
             '</div>' +
             '</div>');
 
@@ -656,11 +658,34 @@ var fn_DibujarTallas = function (ds, IdCategoriaPrenda, item, spanId) {
         $("#" + TxtRT + "").prop("hidden", !elemento.Seleccionado);
         $("#" + lblchkRT + "").prop("hidden", !elemento.Seleccionado);
 
+   
+
         $("#" + chkRT + "").click(function () {
+            var xidT;
             if (this.checked) {
                 $("#" + TxtRT + "").prop("hidden", false);
                 $("#" + lblchkRT + "").prop("hidden", false);
-            } else {
+
+                if ($("#" + TxtRT + "").data("IdCategoriaTalla") === 4) {
+                    xidT = $("#" + TxtRT + "").data("IdSolicitud").toString() + $("#" + TxtRT + "").data("IdCategoriaPrenda").toString() + "NOUNICO" + $("#" + TxtRT + "").data("Item").toString();
+                    $('[tipotalla = "chk' + xidT + '"]').prop("disabled", true);
+                    $('[tipotalla = "input' + xidT + '"]').prop("disabled", true);
+                    $('[tipotalla = "chk' + xidT + '"]').prop("checked", false);
+                    $('[tipotalla = "input' + xidT + '"]').val("");
+                    
+                }
+            }
+            else
+            {
+             
+                if ($("#" + TxtRT + "").data("IdCategoriaTalla") === 4)
+                {
+                    xidT = $("#" + TxtRT + "").data("IdSolicitud").toString() + $("#" + TxtRT + "").data("IdCategoriaPrenda").toString() + "NOUNICO" + $("#" + TxtRT + "").data("Item").toString();
+                    $('[tipotalla = "chk' + xidT + '"]').prop("disabled", false);
+                    $('[tipotalla = "input' + xidT + '"]').prop("disabled", false);
+                    $('[tipotalla = "chk' + xidT + '"]').prop("checked", false);
+                    $('[tipotalla = "input' + xidT + '"]').val("");
+                } 
                 $("#" + TxtRT + "").prop("hidden", true);
                 $("#" + lblchkRT + "").prop("hidden", true);
             }

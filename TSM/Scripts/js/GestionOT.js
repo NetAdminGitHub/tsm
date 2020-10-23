@@ -1,4 +1,5 @@
-﻿var Permisos;
+﻿
+var Permisos;
 $(document).ready(function () {
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -15,11 +16,15 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Opcional servicio ....");
 
     $('#chkRangFechas').prop('checked', 0);
+    $('#chkAsignadas').prop('checked', 0);
+    
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
 
-    $("#btnConsular").click(function (e) {
-        $("#grid").data("kendoGrid").dataSource.read();
+    $("#btnConsular").click(function () {
+        let g = $("#grid").data("kendoGrid");
+        g.dataSource.read();
+        g.pager.page(1);
     });
 
     $("#chkRangFechas").click(function () {
@@ -38,7 +43,31 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: function (datos) {
-                datos.success(fn_GestionOT());
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: UrlOT + "/GetGestionOTAsignadas",
+                    data: JSON.stringify({
+                        Asignadas: $("#chkAsignadas").is(':checked'),
+                        FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                        FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                        IdCliente: KdoCmbGetValue($("#CmbCliente")),
+                        NoOt: $("#TxtNoOrdeTrabajo").val() === "" ? null : $("#TxtNoOrdeTrabajo").val(),
+                        IdejecutivoCuenta: KdoCmbGetValue($("#CmbEjecutivo")),
+                        IdPrograma: KdoCmbGetValue($("#CmbPrograma")),
+                        IdTemporada: KdoCmbGetValue($("#CmbTemporada")),
+                        IdCategoriaPrenda: KdoCmbGetValue($("#CmbCategoriaPrenda")),
+                        IdUbicacion: KdoCmbGetValue($("#CmbUbicacion")),
+                        IdServicio: KdoCmbGetValue($("#CmbServicio"))
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    },
+                    error: function () {
+                        options.error(result);
+                    }
+                });
             }
         },
         //FINALIZACIÓN DE UNA PETICIÓN
@@ -84,7 +113,9 @@ $(document).ready(function () {
                     IdTemporada: { type: "number" },
                     NombreTemp: { type: "string" },
                     IdEjecutivoCuenta: { type: "number" },
-                    NombreEjecutivo: { type: "string" }
+                    NombreEjecutivo: { type: "string" },
+                    EstadoFormulas: { type: "string" },
+                    UsuarioAsignado: {type: "string"}
                 }
             }
         }
@@ -96,10 +127,11 @@ $(document).ready(function () {
         dataBound: function () {
             for (var i = 0; i < this.columns.length; i++) {
                 this.autoFitColumn(i);
-                this.columnResizeHandleWidth
+                this.columnResizeHandleWidth;
             }
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
+                kendo.ui.progress($("#grid"), true);
                 fn_VerEtapas("/OrdenesTrabajo/ElementoTrabajo/" + grid.dataItem(this).IdOrdenTrabajo.toString() + "/" + grid.dataItem(this).IdEtapaProceso.toString());
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
@@ -121,6 +153,7 @@ $(document).ready(function () {
             { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true },
             { field: "TipoOrdenTrabajo", title: "Tipo de orden", minResizableWidth: 120 },
             { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "EstadoFormulas", title: "Estado Fórmulas", minResizableWidth: 120 },
             { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },
@@ -141,7 +174,8 @@ $(document).ready(function () {
             { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
             { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 }
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
+            { field: "UsuarioAsignado", title: "Usuario asignado", minResizableWidth:150}
         ]
     });
 
@@ -157,44 +191,9 @@ $(document).ready(function () {
 
 });
 
-
-let fn_GestionOT = function () {
-     kendo.ui.progress($("[class='card-body']"), true);
-    let DSOt = "[]";
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        async: false,
-        url: UrlOT + "/GetGestionOTAsignadas",
-        data: JSON.stringify({
-            FechaDesde: $("#chkRangFechas").is(':checked')===false?null: kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            FechaHasta: $("#chkRangFechas").is(':checked') === false ? null :kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
-            IdCliente: KdoCmbGetValue( $("#CmbCliente")),
-            NoOt: $("#TxtNoOrdeTrabajo").val() === "" ? null: $("#TxtNoOrdeTrabajo").val(),
-            IdejecutivoCuenta: KdoCmbGetValue($("#CmbEjecutivo")),
-            IdPrograma: KdoCmbGetValue($("#CmbPrograma")),
-            IdTemporada: KdoCmbGetValue($("#CmbTemporada")),
-            IdCategoriaPrenda: KdoCmbGetValue($("#CmbCategoriaPrenda")),
-            IdUbicacion: KdoCmbGetValue($("#CmbUbicacion")),
-            IdServicio: KdoCmbGetValue($("#CmbServicio"))
-        }),
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            DSOt = result;
-            kendo.ui.progress($("[class='card-body']"), false);
-        },
-        error: function() {
-            DSOt = "[]";
-            kendo.ui.progress($("[class='card-body']"), false);
-        }
-    });
-
-    return DSOt;
-};
-
 let fn_VerEtapas = function (url) {
-    window.location.href = url; 
-}
+    window.location.href = url;
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };

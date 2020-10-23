@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Gestión Fichas de Producción";
+    ViewBag.IdVersion = "TSM0102004|v20042801";
+}
+@section Scripts {
+ 
+    <script src="~/Scripts/js/GestionFichasProducciones.js"></script>
+}
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <div class="form-row">
+                            <div class=" form-group col-lg-4">
+                                <label for="dFechaDesde">Fecha Desde:</label>
+                                <input id="dFechaDesde" name="dFechaDesde" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="dFechaHasta">Fecha Hasta:</label>
+                                <input id="dFechaHasta" name="dFechaHasta" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4 align-self-end">
+                                <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdServicio">Servicio :</label>
+                        <input id="CmbIdServicio" name="CmbIdServicio" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdCliente">Cliente :</label>
+                        <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbPrograma">Programas:</label>
+                        <input id="CmbPrograma" name="CmbPrograma" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="TxtNoOrdeTrabajo">No Orden Trabajo:</label>
+                        <input id="TxtNoOrdeTrabajo" name="TxtNoOrdeTrabajo" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3 align-self-lg-end">
+                        <div class="input-group">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnConsultar" name="btnConsultar"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

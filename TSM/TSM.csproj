@@ -51,6 +51,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CrystalReferences\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CrystalReferences\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CrystalReferences\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CrystalReferences\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -85,8 +101,38 @@
       <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.5\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=4.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.4.5.1\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.7.1\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.7.1\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=6.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.6.5.0\lib\net461\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=6.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.6.5.0\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.7.1\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PowerBI.Api, Version=2.13.0.20002, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.PowerBI.Api.2.13.0\lib\netstandard2.0\Microsoft.PowerBI.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.18\lib\net452\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.10.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.1\lib\net45\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -95,10 +141,20 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.7.1\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -124,6 +180,12 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -139,6 +201,7 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -167,18 +230,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
-      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.0\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthFilters\AuthAttribute.cs" />
+    <Compile Include="BOL\AzureAuthBOL.cs" />
+    <Compile Include="BOL\OperacionMaquinasBOL.cs" />
+    <Compile Include="BOL\ReportePbiBOL.cs" />
     <Compile Include="Connected Services\FrwkAuthSrv\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -189,10 +247,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
+    <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
+    <Compile Include="Controllers\ArticulosController.cs" />
+    <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
+    <Compile Include="Controllers\BasesMuestrasController.cs" />
+    <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CalidadCriteriosController.cs" />
+    <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
@@ -203,36 +269,53 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\ConsultarFichaOTController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
+    <Compile Include="Controllers\CotizacionesMuestrasController.cs" />
     <Compile Include="Controllers\DefinicionBusquedaController.cs" />
     <Compile Include="Controllers\EjecutivoCuentasController.cs" />
+    <Compile Include="Controllers\EstacionesController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="Controllers\EtapasOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
+    <Compile Include="Controllers\GestionFichasProduccionesController.cs" />
+    <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
+    <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
+    <Compile Include="Controllers\GetCipherController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
+    <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
+    <Compile Include="Controllers\SolicitudesCambiosController.cs" />
+    <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
     <Compile Include="Controllers\PapelesInsumosController.cs" />
     <Compile Include="Controllers\ParametrosAdjuntosController.cs" />
     <Compile Include="Controllers\ParametrosControlErroresController.cs" />
+    <Compile Include="Controllers\ConfigEjecutivasContactosMarcasController.cs" />
+    <Compile Include="Controllers\PbiTokenController.cs" />
+    <Compile Include="Controllers\PerfilesImpresionesController.cs" />
     <Compile Include="Controllers\PerfilUsuariosController.cs" />
     <Compile Include="Controllers\PersonalizacionErroresController.cs" />
     <Compile Include="Controllers\PlantillasListasVerificacionesController.cs" />
     <Compile Include="Controllers\PrioridadesOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\ProgramasController.cs" />
+    <Compile Include="Controllers\QuimicasController.cs" />
     <Compile Include="Controllers\RentabilidadConfiguracionesController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RequerimientoDesarrollosController.cs" />
@@ -240,36 +323,61 @@
     <Compile Include="Controllers\RetencionesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecuenciasNumericasController.cs" />
+    <Compile Include="Controllers\SedasController.cs" />
     <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Controllers\SimulacionesController.cs" />
+    <Compile Include="Controllers\SimulacionesMuestrasController.cs" />
     <Compile Include="Controllers\SistemasController.cs" />
+    <Compile Include="Controllers\SistemasPigmentosController.cs" />
     <Compile Include="Controllers\SistemaTintasController.cs" />
+    <Compile Include="Controllers\SolicitudesClientesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
+    <Compile Include="Controllers\SublimacionPreciosOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TamanosDimensionesController.cs" />
     <Compile Include="Controllers\TamanosInsumosController.cs" />
     <Compile Include="Controllers\TecnicasController.cs" />
     <Compile Include="Controllers\TelasController.cs" />
     <Compile Include="Controllers\TemporadasController.cs" />
+    <Compile Include="Controllers\TipoEstacionesController.cs" />
     <Compile Include="Controllers\TipoMuestrasController.cs" />
     <Compile Include="Controllers\TipoNotificacionesController.cs" />
     <Compile Include="Controllers\TiposAcabadosController.cs" />
+    <Compile Include="Controllers\TiposEmulsionesController.cs" />
+    <Compile Include="Controllers\TiposFormulacionesController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
+    <Compile Include="Controllers\TiposMarcosController.cs" />
+    <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
+    <Compile Include="Controllers\TiposTintasController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
+    <Compile Include="Controllers\ReportesPbiController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
+    <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
+    <Compile Include="DAL\AzureAuthDAL.cs" />
+    <Compile Include="DAL\ReportePbiDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AzureAuthConf.cs" />
+    <Compile Include="Models\EstacionMaquina.cs" />
+    <Compile Include="Models\PbiConfRequest.cs" />
+    <Compile Include="Models\ReportePbi.cs" />
+    <Compile Include="Models\SolicitudDesplazamiento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\AsyncUtil.cs" />
     <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\ContextHelper.cs" />
+    <Compile Include="Utils\PbiUtils.cs" />
+    <Compile Include="Utils\RestSharpHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzAppSettings.json" />
     <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth12.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
@@ -359,6 +467,7 @@
     <Content Include="Content\kendo\Bootstrap\sprite_2x.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi.png" />
     <Content Include="Content\kendo\Bootstrap\sprite_kpi_2x.png" />
+    <Content Include="Content\CatalogoDisenos.css" />
     <Content Include="Content\kendo\Default\editor.png" />
     <Content Include="Content\kendo\Default\imagebrowser.png" />
     <Content Include="Content\kendo\Default\indeterminate.gif" />
@@ -659,10 +768,46 @@
     <Content Include="Content\smart_wizard.css" />
     <Content Include="Content\smart_wizard_theme_arrows.css" />
     <Content Include="Content\smart_wizard_theme_circles.css" />
+    <Content Include="Content\Font-TSM-SeteoMaquinas.css" />
     <Content Include="Content\TSM-Style.css" />
     <Content Include="Content\TreeviewStyle.css" />
     <Content Include="Content\TSM_imagen_modal.css" />
+    <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\AccesoriosMaquinas.js" />
+    <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\Articulos.js" />
+    <Content Include="Scripts\js\AutorizarRetenciones.js" />
+    <Content Include="Scripts\js\BasesMuestras.js" />
+    <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CalidadCriterios.js" />
+    <Content Include="Scripts\js\CatalogoDisenoInf.js" />
+    <Content Include="Scripts\js\CatalogoDisenos.js" />
+    <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
+    <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
+    <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
+    <Content Include="Scripts\js\ConsultarFichaOT.js" />
+    <Content Include="Scripts\js\CotizacionesMuestras.js" />
+    <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
+    <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
+    <Content Include="Scripts\js\EstacionFormulas.js" />
+    <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\FichaOT.js" />
+    <Content Include="Scripts\js\GestionFichasProducciones.js" />
+    <Content Include="Scripts\js\GestionOTAsignaciones.js" />
+    <Content Include="Scripts\js\GestionOTDesarrollosCobrosApro.js" />
+    <Content Include="Scripts\js\GetCipher.js" />
+    <Content Include="Scripts\js\Impresores.js" />
+    <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
+    <Content Include="Scripts\js\Maquinas.js" />
+    <Content Include="Scripts\js\MotivosAjustesTintas.js" />
+    <Content Include="Scripts\js\pbiReporte.js" />
+    <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
+    <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
+    <Content Include="Scripts\js\SolicitudesCambios.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -830,6 +975,10 @@
     <Content Include="Scripts\js\DefinicionBusqueda.js" />
     <Content Include="Scripts\js\EjecutivoCuentas.js" />
     <Content Include="Scripts\js\ElementoTrabajo.js" />
+    <Content Include="Scripts\js\EstacionAccesorios.js" />
+    <Content Include="Scripts\js\EstacionAccesoriosDis.js" />
+    <Content Include="Scripts\js\EstacionColores.js" />
+    <Content Include="Scripts\js\EstacionDisenos.js" />
     <Content Include="Scripts\js\Estados.js" />
     <Content Include="Scripts\js\EtapasProcesos.js" />
     <Content Include="Scripts\js\EtapasProcesosModulos.js" />
@@ -851,10 +1000,12 @@
     <Content Include="Scripts\js\PapelesInsumos.js" />
     <Content Include="Scripts\js\ParametrosAdjuntos.js" />
     <Content Include="Scripts\js\ParametrosControlErrores.js" />
+    <Content Include="Scripts\js\PerfilesImpresiones.js" />
     <Content Include="Scripts\js\PersonalizacionErrores.js" />
     <Content Include="Scripts\js\PlantillasListasVerificaciones.js" />
     <Content Include="Scripts\js\PrioridadesOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Programas.js" />
+    <Content Include="Scripts\js\Quimicas.js" />
     <Content Include="Scripts\js\RentabilidadConfiguraciones.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollosConsulta.js" />
     <Content Include="Scripts\js\RequerimientoDesarrollos.js" />
@@ -865,28 +1016,47 @@
     <Content Include="Scripts\js\Servicios.js" />
     <Content Include="Scripts\js\Simulaciones.js" />
     <Content Include="Scripts\js\SimulacionesConsulta.js" />
+    <Content Include="Scripts\js\SimulacionesMuestras.js" />
+    <Content Include="Scripts\js\SimulacionesMuestrasInfo.js" />
     <Content Include="Scripts\js\Sistemas.js" />
+    <Content Include="Scripts\js\SistemasPigmentos.js" />
     <Content Include="Scripts\js\SistemaTintas.js" />
     <Content Include="Scripts\js\Solicitudes.js" />
+    <Content Include="Scripts\js\SolicitudesClientes.js" />
+    <Content Include="Scripts\js\SolicitudesPendientes.js" />
+    <Content Include="Scripts\js\SublimacionPreciosOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajosPreciosApro.js" />
+    <Content Include="Scripts\js\SublimacionOrdenesTrabajosReg.js" />
     <Content Include="Scripts\js\TamanosDimensiones.js" />
     <Content Include="Scripts\js\TamanosInsumos.js" />
     <Content Include="Scripts\js\Tecnicas.js" />
     <Content Include="Scripts\js\Telas.js" />
     <Content Include="Scripts\js\Temporadas.js" />
+    <Content Include="Scripts\js\TipoEstaciones.js" />
     <Content Include="Scripts\js\TipoMuestras.js" />
     <Content Include="Scripts\js\TipoNotificaciones.js" />
     <Content Include="Scripts\js\TiposAcabados.js" />
+    <Content Include="Scripts\js\TiposFormulaciones.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
+    <Content Include="Scripts\js\TiposMarcos.js" />
+    <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
+    <Content Include="Scripts\js\TiposTintas.js" />
+    <Content Include="Scripts\js\TSM_VerDiseno.js" />
     <Content Include="Scripts\js\Ubicaciones.js" />
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
+    <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_DesarrolloMuestras.js" />
+    <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
+    <Content Include="Scripts\js\_SimulacionMuestrasDatos.js" />
     <Content Include="Scripts\js\_SolicitudDesarrolloMuestras.js" />
     <Content Include="Scripts\js\_SolicitudRegCliente.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaMuestra.js" />
@@ -894,6 +1064,7 @@
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaTela.js" />
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaUbicacion.js" />
     <Content Include="Scripts\js\_SolicitudRegPrenda.js" />
+    <Content Include="Scripts\js\_TintasFormulaciones.js" />
     <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
@@ -909,8 +1080,6 @@
     <Content Include="Scripts\kendo\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\kendo.angular.min.js" />
     <Content Include="Scripts\kendo\kendo.angular.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js" />
-    <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\kendo.autocomplete.min.js" />
     <Content Include="Scripts\kendo\kendo.autocomplete.min.js.map" />
     <Content Include="Scripts\kendo\kendo.binder.min.js" />
@@ -1023,8 +1192,6 @@
     <Content Include="Scripts\kendo\kendo.mediaplayer.min.js.map" />
     <Content Include="Scripts\kendo\kendo.menu.min.js" />
     <Content Include="Scripts\kendo\kendo.menu.min.js.map" />
-    <Content Include="Scripts\kendo\Kendo.messages.es-ES.min.js" />
-    <Content Include="Scripts\kendo\kendo.messages.es-ES.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.actionsheet.min.js" />
     <Content Include="Scripts\kendo\kendo.mobile.actionsheet.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.application.min.js" />
@@ -1065,7 +1232,6 @@
     <Content Include="Scripts\kendo\kendo.mobile.tabstrip.min.js.map" />
     <Content Include="Scripts\kendo\kendo.mobile.view.min.js" />
     <Content Include="Scripts\kendo\kendo.mobile.view.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.modernizr.custom.js" />
     <Content Include="Scripts\kendo\kendo.multicolumncombobox.min.js" />
     <Content Include="Scripts\kendo\kendo.multiselect.min.js" />
     <Content Include="Scripts\kendo\kendo.multiselect.min.js.map" />
@@ -1153,7 +1319,6 @@
     <Content Include="Scripts\kendo\kendo.virtuallist.min.js.map" />
     <Content Include="Scripts\kendo\kendo.web.min.js" />
     <Content Include="Scripts\kendo\kendo.web.min.js.map" />
-    <Content Include="Scripts\kendo\kendo.webcomponents.js" />
     <Content Include="Scripts\kendo\kendo.window.min.js" />
     <Content Include="Scripts\kendo\kendo.window.min.js.map" />
     <Content Include="Scripts\kendo\messages\kendo.messages.en-US.min.js" />
@@ -1161,14 +1326,24 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.es-ES.min.js" />
     <Content Include="Scripts\kendo\messages\kendo.messages.es-ES.min.js.map" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
+    <Content Include="Scripts\konva.js" />
+    <Content Include="Scripts\konva.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\paste.js" />
     <Content Include="Scripts\pdfobject.min.js" />
+    <Content Include="Scripts\js\TiposEmulsiones.js" />
+    <Content Include="Scripts\powerbi.js" />
+    <Content Include="Scripts\powerbi.min.js" />
     <Content Include="Scripts\Utils\ChartTSMPersonalizar.js" />
     <Content Include="Scripts\Utils\CmbPersonalizar.js" />
+    <Content Include="Scripts\Utils\ComponentesPersonalizados.js" />
     <Content Include="Scripts\Utils\Generico.js" />
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\powerbi.js" />
+    <Content Include="Scripts\Utils\powerbi.min.js" />
+    <Content Include="Scripts\Utils\sortable.min.js" />
     <Content Include="Scripts\Utils\TSM-LayoutSet.js" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -1184,6 +1359,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Visor\Reportes.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1213,6 +1389,8 @@
     <Content Include="Views\UsuariosRoles\Index.cshtml" />
     <Content Include="Views\Menus\Index.cshtml" />
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
+    <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
+    <Content Include="jsonsettings.azconf" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -1285,6 +1463,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CrystalReferences\" />
+    <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
@@ -1300,14 +1480,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Scripts\Jquery\jquery-3.3.1.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.all-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.dataviz-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.dataviz.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.mobile-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.mobile.min.intellisense.js" />
-    <None Include="Scripts\kendo\kendo.web-vsdoc.js" />
-    <None Include="Scripts\kendo\kendo.web.min.intellisense.js" />
     <Content Include="Views\BitacoraErrores\Index.cshtml" />
     <Content Include="Views\Boards\Index.cshtml" />
     <Content Include="Views\DefinicionBusqueda\Index.cshtml" />

@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Ingreso de solicitud del Cliente";
+    ViewBag.IdVersion = "TSM0101060|v19092001";
+
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        var vIdServSol = @ViewData["idServicio"];
+        var esContacto =@ViewData["esContacto"];
+        var idSolicitud=@ViewData["idSolicitud"];
+    </script>
+    <script src="~/Scripts/js/IngresoSolicitudesClientes.js"></script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group col-lg-12">
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6">
+                          <div class="border p-md-3 p-lg-3">
+                              <form id="FrmClieCont" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-lg-3">
+                                          <label for="NoDocumento" hidden="hidden">No Solicitud:</label>
+                                          <input id="NoDocumento" name="NoDocumento" class="k-textbox form-control" , disabled="disabled" hidden="hidden" />
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-8">
+                                          <label for="CmbCliCont">Cliente</label>
+                                          <input name="CmbCliCont" id="CmbCliCont" required validationMessage="Requerido" class="form-control">
+                                      </div>
+                                      <div class="form-group col-lg-4">
+                                          <label for="Fecha">Fecha</label>
+                                          <input id="Fecha" name="Fecha" required validationMessage="Requerido" class="form-control" />
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-12">
+                                          <label for="CmbContactoSol">Contacto</label>
+                                          <input name="CmbContactoSol" id="CmbContactoSol" class="form-control">
+                                      </div>
+                                  </div>
+                                  <div class="form-row" id="divEje">
+                                      <div class="form-group col-lg-12">
+                                          <label for="CmbEjecSol">Ejecutivo(a) de cuentas</label>
+                                          <input name="CmbEjecSol" id="CmbEjecSol" class="form-control">
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-lg-9 align-self-lg-end">
+                                          <button type="button" id="btnAClieCont" hidden="hidden"></button>
+                                          <button type="button" id="btnDelClieCont"></button>
+                                          <button type="button" id="btnFinClieCont"></button>
+                                      </div>
+                                      <div class="form-group col-lg-3 align-self-lg-end">
+                                          <button type="button" id="btnProClieCont" hidden="hidden"></button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div> 
+                        </div>
+                        <div class="form-group col-lg-3"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <div id="gridDet"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalMsgSol" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="ModalClieEjeLabel"></h3>
+                <button type="button" class="close" data-dismiss="modal" id="btnCloseMsg" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="MshSol">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4 text-center">
+                            <i class="k-icon k-i-check" style="font-size:120px;"></i>
+                        </div>
+                        <div class="form-group col-lg-8">
+                            <h2></h2>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="ModalCliePrenda">
+    <div class="form-group col-lg-12">
+        <form id="FrmModalCliePrenda" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtPrenda">Registro de prendas</label>
+                    <input id="TxtPrenda" name="TxtPrenda" required validationMessage="Requerido" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtDescrip">Descripcion:</label>
+                    <input id="TxtDescrip" name="TxtDescrip" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -91,7 +91,7 @@ var renovar = function () {
     }).done(function (data) {
         if (data === null || data === "") window.location.href = "/Token/Redirect";
         Cookies.set("t", data);
-        kendo.ui.progress($("#body"), false);
+        //kendo.ui.progress($("#body"), false);
     });
 };
 
@@ -110,7 +110,7 @@ var nuevo = function (u) {
         data: { trama: trama }
     }).done(function (data) {
         Cookies.set("t", data);
-        kendo.ui.progress($("#body"), false);
+        //kendo.ui.progress($("#body"), false);
     });
 };
 

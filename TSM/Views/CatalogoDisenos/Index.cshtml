@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Catalogo de Diseños";
+    ViewBag.IdVersion = "TMS0101085|v19041201";
+}
+@section Scripts {
+    <script src="~/Scripts/js/CatalogoDisenos.js"></script>
+}
+<link href="~/Content/CatalogoDisenos.css" rel="stylesheet" />
+
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .k-card {
+        margin: 1%;
+        width: 300px;
+    }
+
+    .k-card-footer {
+        text-align: center;
+        border-width: 1px 0 0;
+        border-color: inherit;
+    }
+
+    .k-card-body p {
+        line-height: 0.5
+    }
+</style>
+<!--Div para mostrar la ventana modal -->
+<div id="ModalCDinf"></div>
+
+
+@*<div class="col-lg-12">*@
+<div class="card">
+    <div class="card-body">
+        <div class="form-row">
+            <div class="form-group col-lg-3">
+                <label for="CmbCliente">Cliente</label>
+                <input id="CmbCliente" name="CmbCliente" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="CmbPrograma">Programa:</label>
+                <input id="CmbPrograma" name="CmbPrograma" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="CmbOrdenTrabajo">Orden de Trabajo:</label>
+                <input id="CmbOrdenTrabajo" name="CmbOrdenTrabajo" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-lg-3 align-self-end">
+                <div class="input-group">
+                    <div style="width: 100%;">
+                        <button type="button" id="btnAXaTSM" name="btnAXaTSM">Importar FM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            @*<div class="container my-5">
+                    <section>
+                        <div class="tab-pane fade show in active" id="panel31" role="tabpanel">
+                            <div class="form-row" id="RowPn31"></div>
+                        </div>
+                    </section>
+                </div>*@
+
+            <div class="container" id="RowPn31">
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12"><div id="pager"></div></div>
+        </div>
+    </div>
+</div>
+@*</div>*@
+
+<div class="form-row">
+    <div id="ModalGeneraOT_AX">
+        <form id="FrmGeneraOTAX" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="form-group col-lg-4">
+                    <label for="CmbFM">No. FM</label>
+                    <input id="CmbFM" name="CmbFM" type="text" class="form-control" />
+                </div>
+            </div>
+            <fieldset disabled>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="TxtNomDisOT">Nombre de Diseño</label>
+                        <input type="text" id="TxtNomDisOT" class="form-control">
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="TxtEstiloDisenoOT">Estilo Diseño OT</label>
+                        <input type="text" id="TxtEstiloDisenoOT" class="form-control">
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="txtNumDisenoOT">Numero Diseño OT</label>
+                        <input type="text" id="txtNumDisenoOT" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <div class="form-group col-lg-4">
+                        <label for="TxtTallas">Tallas</label>
+                        <input type="text" id="TxtTallas" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="TxtPrograma">Programas</label>
+                        <input type="text" id="TxtPrograma" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="TxtFecha">Fecha</label>
+                        <input type="text" id="TxtFecha" class="form-control">
+                    </div>
+                </div>
+            </fieldset>           
+            
+            <div class="form-row">
+                <div class="form-group col-lg-4">
+                    <label for="CmbMotivoDes">Motivo de Desarrollo</label>
+                    <input id="CmbMotivoDes" name="CmbMotivoDes" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="CmbProg">Programa</label>
+                    <input id="CmbProg" name="CmbProg" type="text" class="form-control" />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="Cmb_Tallas">Talla</label>
+                    <input id="Cmb_Tallas" name="Cmb_Tallas" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+              
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-4 align-self-end">
+                    <button type="button" id="btnGenOT_AX">Generar OT</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

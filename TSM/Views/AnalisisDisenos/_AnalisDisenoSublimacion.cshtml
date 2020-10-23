@@ -1,52 +1,74 @@
 ﻿
     <div class="form-row">
         <div class="form-group col-lg-7">
-            <div class="form-row">
-                <input id="IdSeparacionSubli" name="IdSeparacionSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
-                <input id="IdSeparacionDetalleSubli" name="IdSeparacionDetalleSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
-                <div class="form-group col-md-4 col-lg-4">
-                    <label for="UbicacionSub">Tipo Prenda:</label>
-                    <input id="UbicacionSub" name="UbicacionSub" class="k-textbox form-control" />
-                </div>
-                <div class="form-group col-md-4 col-lg-4">
-                    <label for="FechaSub">Fecha:</label>
-                    <input id="FechaSub" name="FechaSub" class="form-control" />
-                </div>
-                <div class="form-group col-md-4 col-lg-4">
-                    <label for="EstadoSub">Estado:</label>
-                    <input id="EstadoSub" name="EstadoSub" class="k-textbox form-control" />
-                </div>
-
-            </div>
-            <div class="form-row">
-                <div class="form-group col-lg-12">
-                    <label for="TxtDirectorioSubli">Directorio Archivos:</label>
-                    <input id="TxtDirectorioSubli" name="TxtDirectorioSubli" type="text" class="k-textbox form-control"/>
-                </div>
-            </div>
             <form id="FrmSublimacion">
                 <div class="form-row">
+                    <input id="IdSeparacionSubli" name="IdSeparacionSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <input id="IdSeparacionDetalleSubli" name="IdSeparacionDetalleSubli" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <input id="UbicacionSub" name="UbicacionSub" class="k-textbox form-control" hidden="hidden" />
+                    <div class="form-group col-md-4 col-lg-4">
+                        <label for="FechaSub">Fecha:</label>
+                        <input id="FechaSub" name="FechaSub" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4 col-lg-4">
+                        <label for="EstadoSub">Estado:</label>
+                        <input id="EstadoSub" name="EstadoSub" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-md-4 col-lg-4 align-self-end">
+                        <input type="checkbox" id="chkAplCostoLimpi" name="chkAplCostoLimpi" class="k-checkbox">
+                        <label class="k-checkbox-label" for="chkAplCostoLimpi">Aplica costo de limpieza por pieza</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4 col-lg-4">
+                        <label for="cmbTipoOptela">Operación de Tela:</label>
+                        <input id="cmbTipoOptela" name="cmbTipoOptela" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-3 col-lg-4">
+                        <label for="TxtFactorDistribucion">Factor Distribución:</label>
+                        <input id="TxtFactorDistribucion" name="TxtFactorDistribucion" class="form-control" required />
+                    </div>
+                    <div class="form-group col-md-3 col-lg-4">
+                        <label for="IdUnidadDimensionSub">Unidad Medida Ancho/Alto:</label>
+                        <input id="IdUnidadDimensionSub" name="IdUnidadDimensionSub" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-3  col-lg-4">
-                        <label for="AnchoDisenoSub" >Ancho:</label>
+                        <label for="AnchoDisenoSub">Ancho:</label>
                         <input id="AnchoDisenoSub" name="AnchoDisenoSub" class="form-control" required />
                     </div>
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="AltoDisenoSub" >Alto:</label>
+                        <label for="AltoDisenoSub">Alto:</label>
                         <input id="AltoDisenoSub" name="AltoDisenoSub" class="form-control" required />
                     </div>
                     <div class="form-group col-md-3 col-lg-4">
-                        <label for="IdUnidadDimensionSub" >Unidad Medida:</label>
-                        <input id="IdUnidadDimensionSub" name="IdUnidadDimensionSub" class="form-control" required validationMessage="Requerido" />
+                        <label for="NumConsmoYar">Consumo en Yarda en Lienzo:</label>
+                        <input id="NumConsmoYar" name="NumConsmoYar" class="form-control" required />
                     </div>
-
-
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-3 col-lg-4">
-                        <label for="TxtFactorDistribucion" >Factor Distribución:</label>
-                        <input id="TxtFactorDistribucion" name="TxtFactorDistribucion" class="form-control" required />
+                    <div class="form-group col-md-12 col-lg-12">
+                        <label for="TxtComentariosSubli">Comentarios:</label>
+                        <textarea id="TxtComentariosSubli" rows="2" name="TxtComentariosSubli" type="text" class="form-control"></textarea>
                     </div>
-                    
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9 col-lg-9">
+                        <label for="TxtDirectorioSubli">Directorio Archivos:</label>
+                        <input id="TxtDirectorioSubli" name="TxtDirectorioSubli" type="text" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-md-3 col-lg-3 align-self-end">
+                        <input type="checkbox" id="chkDetallarPieza" name="chkDetallarPieza" class="k-checkbox">
+                        <label class="k-checkbox-label" for="chkDetallarPieza">Detalle de Piezas</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 col-lg-12">
+                        <div id="gridPartes"></div>
+                    </div>
+
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3 col-lg-4 align-self-end">
@@ -55,7 +77,7 @@
                                 <button type="button" id="GuardarSubli" name="GSublimacion"></button>
                                 <button type="button" id="btnVerReq1" name="btnVerReq"></button>
                                 <button type="button" id="myBtnAdjunto1" data-toggle="modal" data-target="#myModalAdjunto" onclick=" $('#GridAdjuntos').data('kendoGrid').dataSource.read([]); $('#GridAdjuntos').data('kendoGrid').dataSource.read(); return;"></button>
-                     
+
                             </div>
                         </div>
                     </div>

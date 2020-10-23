@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Gestion de Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101061|v19050101";
+    ViewBag.IdVersion = "TSM0101061|v20022001";
 }
 @section Scripts {
     <script type="text/javascript">
@@ -15,8 +15,7 @@
         var UrlPren = "@string.Format("{0}CategoriaPrendas", TSM.Utils.Config.TSM_WebApi)";
         var UrlUbi = "@string.Format("{0}Ubicaciones", TSM.Utils.Config.TSM_WebApi)";
         var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
-
-      
+       
     </script>
     <script src="~/Scripts/js/GestionOT.js"></script>
 }
@@ -75,12 +74,16 @@
                 </div>
                 <div class="form-row">
 
-                   
+
                     <div class="form-group col-lg-3">
                         <label for="CmbUbicacion">Ubicacion:</label>
                         <input id="CmbUbicacion" name="CmbUbicacion" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3 align-self-lg-end">
+                    <div class="form-group col-lg-2 align-self-end ">
+                        <input type="checkbox" id="chkAsignadas" name="chkAsignadas" class="k-checkbox">
+                        <label class="k-checkbox-label" for="chkAsignadas" id="lblchkAsignadas">Ver todas las OT</label>
+                    </div>
+                    <div class="form-group col-lg-1 align-self-lg-end">
                         <div class="input-group">
                             <div style="width: 100%;">
                                 <button type="button" id="btnConsular" name="btnConsular"></button>

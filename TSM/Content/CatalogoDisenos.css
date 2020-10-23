@@ -1,0 +1,19 @@
+﻿.card-img-top {
+    align-self: center;
+}
+
+.card {
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.30);
+}
+
+.align-items-center {
+    align-items: flex-end;
+}
+#scrollView .photo {
+    display: inline-block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

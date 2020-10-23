@@ -1,0 +1,120 @@
+﻿<style>
+    .k-switch {
+        float: right;
+    }
+</style>
+
+<div class="form-row">
+    <div class="form-group col-lg-7 ">
+        <div class="border p-md-1 p-lg-1 rounded">
+            <fieldset disabled>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfCliente">Cliente</label>
+                        <input type="text" id="InfCliente" class="form-control">
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label for="InfFecha">Fecha</label>
+                        <input type="text" id="InfFecha" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfNombreDisOT">Nombre de Diseño</label>
+                        <input type="text" id="InfNombreDisOT" class="form-control">
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label for="InfEstiloDisenoOT">Estilo Diseño OT</label>
+                        <input type="text" id="InfEstiloDisenoOT" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfNumDisenoOT">Numero Diseño OT</label>
+                        <input type="text" id="InfNumDisenoOT" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="InfTallas">Tallas</label>
+                        <input type="text" id="InfTallas" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfFechaInicio">Fecha Inicio de OT</label>
+                        <input type="text" id="InfFechaInicio" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="InfFechaFinal">Fecha Final de OT</label>
+                        <input type="text" id="InfFechaFinal" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-control col-lg-5">
+
+        <div id="tab_inf">
+            <ul>
+                <li class="k-state-active">
+                    Diseño
+                </li>
+                <li>
+                    Generar Ficha de Producción
+                </li>
+            </ul>
+
+            <div id="tab_inf_1">
+                <!--carrousel de imagenes-->
+                <div class="view rounded-right">
+                    <div id="CDisenos">
+                        <div style="margin:auto; width:100%">
+                            <div id="scrollView" style="width: 1022px; height: 350px; max-width: 100%;">
+                                @*Espacio para las imagenes*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab_inf_2">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridCotizacionDetalle" class="form-control"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="gConOT" class="form-control"></div>
+    </div>
+</div>
+
+<div class="form-row">
+    <div id="ModalGeneraOT">
+        <form id="FrmGeneraOT" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbMotivoDesarrollo">Motivo de Desarrollo</label>
+                    <input id="CmbMotivoDesarrollo" name="CmbMotivoDesarrollo" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="CmbTiposMuestras">Tipos de Muestras</label>
+                    <input id="CmbTiposMuestras" name="CmbTiposMuestras" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    <label for="TxtMotivoCambio">Detalle de Cambios:</label>
+                    <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

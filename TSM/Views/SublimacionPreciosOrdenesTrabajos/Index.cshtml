@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Sublimacion Ordenes de Trabajo Precios";
+    ViewBag.IdVersion = "TMS0101084|v19111801";
+}
+@section Scripts {
+    <script src="~/Scripts/js/SublimacionPreciosOrdenesTrabajos.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="CmbIdCliente">Cliente :</label>
+                        <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-4 align-self-end">
+                        <div class="input-group">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnCambioEstado" name="btnCambioEstado">Cambio de estado</button>
+                                <button type="button" id="btnEditarOT" name="btnEditarOT">Editar OT histórica</button>
+                                <button type="button" id="btnRefrescar" name="btnRefrescar">Actualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div id="TabPreciosSubli">
+                        <ul>
+                            <li class="k-state-active">
+                                Aprobación de Precios
+                            </li>
+                            <li>
+                                Histórico Precios Aprobados
+                            </li>
+                        </ul>
+
+                        <div id="TabPrecios">
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <div id="gridPartes"></div>
+                                </div>
+                            </div>
+                            <form id="ReqDes" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-12">
+                                        <label id="lblComentarios" for="TxtComentarios">Comentarios:</label>
+                                        <textarea id="TxtComentarios" rows="2" name="TxtComentarios" type="text" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-4">
+                                        <div class="input-group">
+                                            <div style="width: 100%;">
+                                                <button type="button" id="btnGuardar" name="btnGuardar">Guardar Comentario</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="TabHistorico">
+
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <div class="form-row">
+                                            <div class=" form-group col-lg-4">
+                                                <label for="dFechaDesde">Fecha Desde:</label>
+                                                <input id="dFechaDesde" name="dFechaDesde" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label for="dFechaHasta">Fecha Hasta:</label>
+                                                <input id="dFechaHasta" name="dFechaHasta" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-4 align-self-end">
+                                                <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox">
+                                                <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <label for="TxtNoOrdeTrabajo">No Documento OT:</label>
+                                        <input id="TxtNoOrdeTrabajo" name="TxtNoOrdeTrabajo" type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-4 align-self-lg-end">
+                                        <div class="input-group">
+                                            <div style="width: 100%;">
+                                                <button type="button" id="btnConsular" name="btnConsular"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <div id="gridPartesHis"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-12">
+                                        <label id="lblComentariosHis" for="TxtComentariosHis">Comentarios:</label>
+                                        <textarea id="TxtComentariosHis" rows="2" name="TxtComentariosHis" type="text" class="form-control"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalCambioEstado">
+    <form id="FrmModalCambioEstado" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="CmbMultiComboNoDocmuento">No Documentos OT:</label>
+                <input id="CmbMultiComboNoDocmuento" name="CmbMultiComboNoDocmuento" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="cmbEstados">Estados:</label>
+                <input id="cmbEstados" name="cmbEstados" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="TxtMotivo">Motivo:</label>
+                <textarea id="TxtMotivo" name="TxtMotivo" type="text" class="form-control" row="3" style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <button type="button" class=" k-primary" id="btnAceptarCambiar">Cambiar estado</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="ModalCambiaPrecioAprob">
+    <form id="FrmModalCambioAprob" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="CmbOTaprob">No Documento:</label>
+                <input id="CmbOTaprob" name="CmbOTaprob" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <button type="button" class=" k-primary" id="btnCambiarPrecioApro">Aceptar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="ModalPreciosHisCambios">
+    <div class="form-row">
+        <div class="form-group col-lg-3">
+            <label for="TxtNoDoc"><strong>No Documento:</strong></label>
+            <input id="TxtNoDoc" name="TxtNoDoc" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+        </div>
+        <div class="form-group col-lg-3 align-self-end">
+            <input id="chkMostrarTodos" type="checkbox" name="chkMostrarTodos" class="k-checkbox" />
+            <label class="k-checkbox-label" for="chkMostrarTodos">Mostrar Todos los precios</label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <div id="gridPartesHisCambios"></div>
+        </div>
+    </div>
+</div>

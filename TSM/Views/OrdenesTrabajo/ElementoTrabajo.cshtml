@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
+    ViewBag.IdVersion = "TSM0101088|v20101501";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -9,99 +10,229 @@
         var idOrdenTrabajo = @ViewBag.IdOrdenTrabajo;
         var idEtapaProceso = @ViewBag.IdEtapaProceso;
         var nombreVista = "@ViewBag.VistaParcial";
+        var loadedview = "ElementoTrabajo";
     </script>
-    <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
-}
 
+    <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
+    <script src="~/Scripts/js/_MaqSR22.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
+    @*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
+}
+<link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
+<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
+@*css donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
+@*seccion que muestra información de la OT en la parte superior de la vista *@
 <div class="form-row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div id="bottom-panel">
-                    <div class="form-row">
-                        <div class="col-lg-2">
-                            <input id="IdServicio" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtId" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtIdSolicitud" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtIdOrdenTrabajo" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtIdSolicitudDisenoPrenda" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtIdEtapaProceso" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtItem" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="IdCliente" disabled="disabled" hidden="hidden" />
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="txtEstado" disabled="disabled" hidden="hidden" />
-                        </div>
+                <div class="form-row">
+                    <div class="col-lg-8 col-md-8">
+                        <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de usuarios</button>
+                        <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de etapa</button>
+                        <button type="button" id="btnAutorizarRetenciones">&nbsp;Retenciones</button>
+                        <button type="button" id="btnRegistroCambio">&nbsp;Historial de cambios</button>
                     </div>
-                    <div class="form-row">
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNoDocumentoOT" id="lblNoDocumentoOT">No Orden Trabajo:</label>
-                            <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNombre" id="lblCliente">Cliente:</label>
-                            <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNombreDiseno" id="lblNombreDiseno">Nombre Dise&ntilde;o:</label>
-                            <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtEstiloDiseno" id="lblEstiloDiseno">Estilo Dise&ntilde;o:</label>
-                            <input id="txtEstiloDiseno" name="EstiloDiseno" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
-                            <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
-                            <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
-                            <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
-                            <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-lg-6 col-md-6">
-                            <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de Usuarios</button>
-                            <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de Etapa</button>
-                        </div>
-                        <div class="form-group col-lg-6 col-md-6">
-                            <div class="form-row">
-                                <div class="col-lg-9 col-md-8"></div>
-                                <div class="col-lg-3 col-md-4"> <button type="button" id="btnIrGOT" >&nbsp;Ir a Gesti&oacute;n O.T</button></div>
+                    <div class="form-group col-lg-4 col-md-4">
+                        <div class="form-row">
+                            <div class="col-lg-6 col-md-9"></div>
+                            <div class="col-lg-6 col-md-3">
+                                <button type="button" id="btnIrGOT" hidden="hidden">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                                <ul id="Menu_Volver">
+                                    <li class="emptyItem">
+                                        <span class="empty">Volver</span>
+                                        <ul>
+                                            <li onclick="fn_IrKanbanEtapa();"><span class="k-icon k-i-grid"></span>Ir al Kanban Etapa</li>
+                                            <li onclick="fn_IrCatalogo();"><span class="k-icon k-i-ungroup"></span>Ir al Catalogo</li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
-                            <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor"></ul>
-                            <div id="EtapasVistas" class="sw-container tab-content">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3 col-md-6">
+                        <label for="txtNoDocumentoOT" id="lblNoDocumentoOT"><strong>No Orden de Trabajo:</strong></label>
+                        <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6">
+                        <label for="txtNombreDiseno" id="lblNombreDiseno"><strong>Nombre del Dise&ntilde;o:</strong></label>
+                        <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6">
+                        <label for="txtNombreTalla" id="lblNombreDiseno"><strong>Talla:</strong></label>
+                        <input id="txtNombreTalla" name="txtNombreTalla" class="k-textbox form-control" , disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6">
+                        <label for="txtNoCatalogoDiseno" id="lblNoCatalogoDiseno"><strong>No Art. del Diseño:</strong></label>
+                        <input id="txtNoCatalogoDiseno" name="txtNoCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3 col-md-6">
+                        <label for="TxtNoRegPrenda" id="lblTxtNoRegPrenda"><strong>No Reg. Prenda:</strong></label>
+                        <input id="TxtNoRegPrenda" name="TxtNoRegPrenda" class="k-textbox form-control" , disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-6 col-md-4">
+                        <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
+                        <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled"></textarea>
+                    </div>
+                    <div class="col-lg-2 col-md-2 align-self-center">
+                        <div class="input-group">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnAgenda" class="form-control"></button>
                             </div>
+                        </div>
+                    </div>
+
+                </div>
+                <ul id="BarPanelInfo">
+                    <li>
+                        <span class="TS-icon-INFO1" style="font-size: 1.7em;">&nbsp</span>
+                        Información Orden de Trabajo
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="col-lg-2">
+                                        <input id="IdServicio" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtId" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdRequerimiento" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitud" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdOrdenTrabajo" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdSolicitudDisenoPrenda" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtIdEtapaProceso" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtItem" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="IdCliente" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="txtEstado" disabled="disabled" hidden="hidden" />
+                                    </div>
+                                </div>
+                                <div class="border p-md-1 p-lg-1">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12"><label class="font-weight-bold">ORDEN DE TRABAJO</label></div>
+                                    </div>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtFechaOrdenTrabajo" id="lblFechaOrdenTrabajo">Fecha de Orden de Trabajo:</label>
+                                            <input id="txtFechaOrdenTrabajo" name="FechaOrdenTrabajo" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNomServicio" id="lblNomServicio">Servicio:</label>
+                                            <input id="txtNomServicio" name="NomServicio" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombre" id="lblCliente">Cliente:</label>
+                                            <input id="txtNombre" name="Nombre" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNomEstado" id="lblNomEstado">Estado:</label>
+                                            <input id="txtNomEstado" name="NomEstado" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="border p-md-1 p-lg-1 ">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12"><label class="font-weight-bold">INFORMACION DEL DISEÑO A DESAROLLAR</label></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombreEC" id="lblNomEstado">Ejectivo (a) Cuenta:</label>
+                                            <input id="txtNombreEC" name="txtNombreEC" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtEstiloDiseno" id="lblEstiloDiseno">Estilo Dise&ntilde;o:</label>
+                                            <input id="txtEstiloDiseno" name="EstiloDiseno" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
+                                            <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtColor">Color Tela:</label>
+                                            <input id="TxtColor" name="TxtColor" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCPT">Composici&oacute;n Tela:</label>
+                                            <input id="TxtNombreCPT" name="TxtNombreCPT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCCT">Construcci&oacute;n:</label>
+                                            <input id="TxtNombreCCT" name="TxtNombreCCT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtNombreCFT">Confecci&oacute;n:</label>
+                                            <input id="TxtNombreCFT" name="TxtNombreCFT" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-3">
+                                            <label for="TxtNomQuimica">Qu&iacute;mica:</label>
+                                            <input id="TxtNomQuimica" name="TxtNomQuimica" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-3">
+                                            <label for="txtNombreUbicacion">Ubicaci&oacute;n:</label>
+                                            <input id="txtNombreUbicacion" name="txtNombreUbicacion" class="k-textbox form-control" , disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-10 col-md-10">
+                                                    <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
+                                                    <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3 col-md-3 ">
+                                            <label for="swchSolTelaSusti">Solicitar Tela Sustituta:</label>
+                                            <input type="checkbox" id="swchSolTelaSusti" name="swchSolTelaSusti" />
+                                        </div>
+                                        <div class="form-group col-md-3 col-lg-3">
+                                            <label for="swchSolDesOEKO">Standar OEKO-TEX:</label>
+                                            <input type="checkbox" id="swchSolDesOEKO" name="swchSolDesOEKO" />
+                                        </div>
+                                        <div class="form-group col-md-3 col-lg-3">
+                                            <label for="swchPDocAduanal">Documentación Aduanal:</label>
+                                            <input type="checkbox" id="swchPDocAduanal" name="swchPDocAduanal" />
+                                        </div>
+                                        <div class="form-group col-md-3 col-lg-3">
+                                            <label for="swchCobDiseno">Cobrar Diseño:</label>
+                                            <input type="checkbox" id="swchCobDiseno" name="swchCobDiseno" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <br />
+                <div class="form-row">
+                    <div class="col-lg-12 sw-main sw-theme-arrows" id="smartwizard">
+                        <ul id="EtapaOpc" class="nav nav-fill nav-tabs step-anchor"></ul>
+                        <div id="EtapasVistas" class="sw-container tab-content">
                         </div>
                     </div>
                 </div>
@@ -109,7 +240,7 @@
         </div>
     </div>
 </div>
-
+@*vista parcial para la asignación de ordenes de trabajo*@
 <div id="vAsignarUsuario">
     <form id="FrmAsignarUsuario" enctype="multipart/form-data">
         <div class="form-row">
@@ -139,28 +270,209 @@
         </div>
     </form>
 </div>
-
+@*vista parcial para la cambio de etapa *@
 <div id="vCamEtapa">
     <div class="form-group col-lg-12">
         <form id="FrmCambioEtapa" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="cmbEtpSigAnt">Etapas:</label>
+                    <label for="cmbEtpSigAnt">Etapas</label>
                     <input id="cmbEtpSigAnt" name="cmbEtpSigAnt" required validationMessage="Requerido" class="form-control" />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="cmbUsuarioEtp">Usuarios:</label>
+                    <label for="cmbUsuarioEtp">Usuarios</label>
                     <input id="cmbUsuarioEtp" name="cmbUsuarioEtp" required validationMessage="Requerido" class="form-control" />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-12">
-                    <label for="TxtMotivoEtp">Motivo:</label>
-                    <textarea id="TxtMotivoEtp" name="TxtMotivoEtp" type="text" class="form-control" rows="3" required validationMessage="Requerido" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" ></textarea>
+                    <label for="TxtMotivoEtp">Motivo</label>
+                    <textarea id="TxtMotivoEtp" name="TxtMotivoEtp" type="text" class="form-control" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 100%;"></textarea>
                 </div>
             </div>
         </form>
     </div>
+</div>
+@*div template para mostrar las imagenes para el desarrollo de la muestra *@
+<div class="custom-template">
+    <div class="title">Arte a desarollar</div>
+    <div class="custom-content">
+        <div class="form-group col-lg-12">
+            <div class="form-row">
+                <div class="form-group col-lg-12" id="OTSlide">
+                    @* aqui se coloca dinamicamente las imagenes  *@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="custom-toggle">
+        <i class="TS-icon-PLUMA-1"></i>
+    </div>
+</div>
+@*seccion html que se utilizara para la vista modal de formulas historicas *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="FormulaHist"></div>
+    </div>
+</div>
+@*seccion html que se utilizara para la vista modal de Consulta de diseños *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="ConsultaCataloDis"></div>
+    </div>
+</div>
+
+@*seccion html que se utilizara para la vista modal de Autorizacion de retenciones *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="AutRet"></div>
+    </div>
+</div>
+
+@*div para controlar el evento del warning*@
+<div id="ElementoTrabajo_action"></div>
+
+@*Div html que se utilizar para el ingreso de la solitud de resgistro de cambio. *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="SoliIngresoCambio"></div>
+    </div>
+</div>
+
+@*Vista modal registro de cambios*@
+<div id="vRegistroCambio">
+    <div class="form-row">
+        <div class="form-group col-lg-4 col-md-4">
+            <button type="button" id="btnSolicitarRegistroCambio">&nbsp;Registro de cambio</button>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <div id="gridRegistroCambios"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <div id="gridRegistroCambiosDetalle"></div>
+        </div>
+    </div>
+</div>
+
+@*Vista modal registro de Agenda*@
+<div id="Agenda_OT"></div>
+
+@*vista Desplazar e intercambiar. *@
+<div id="vDesplazarCambiar">
+    <div class="form-group col-lg-12">
+        <div id="TabDesplazar">
+            <ul>
+                <li class="k-state-active">
+                    Desplazar
+                </li>
+                <li>
+                    Intercambio
+                </li>
+            </ul>
+            <div id="TP_1">
+                <form id="FrmDesplazar" enctype="multipart/form-data">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <input type="radio" id="rbDesplazarleft" name="GrbDespl" class="k-radio form-control">
+                                <label class="k-radio-label" for="rbDesplazarleft">Desplazar a la Izquierda</label>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <input type="radio" id="rbDesplazarRight" name="GrbDespl" class="k-radio form-control">
+                                <label class="k-radio-label" for="rbDesplazarRight">Desplazar a la Derecha</label>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label for="NumBrazoIni">Estacion Inicial:</label>
+                                <input id="NumBrazoIni" name="NumBrazoIni" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="NumCntCantDesplazar">Cantidad a Desplazar:</label>
+                                <input id="NumCntCantDesplazar" name="NumCntCantDesplazar" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-4 align-self-end">
+                                <input type="checkbox" id="chkRespetaVacio" name="chkRespetaVacio" class="k-checkbox">
+                                <label class="k-checkbox-label" for="chkRespetaVacio">Respetar estaciones vacias.</label>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <button type="button" class=" k-primary" id="btnDesplazarEstacion">Desplazar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="TP_2">
+                <form id="FrmCambiarEst" enctype="multipart/form-data">
+                    <div class="form-group col-lg-12">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label for="NumBrazoA">Estacion:</label>
+                                <input id="NumBrazoA" name="NumBrazoA" class="form-control" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="NumBrazoB">Estacion a Intercambiar:</label>
+                                <input id="NumBrazoB" name="NumBrazoB" class="form-control" required />
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <button type="button" class=" k-primary" id="btnCambiarEstacion">Cambiar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*vista Desplazar e intercambiar. *@
+<div id="vDuplicarMarco">
+    <form id="FrmDuplicarEst" enctype="multipart/form-data">
+        <div class="form-group col-lg-12">
+
+            <div class="form-row">
+                <div class="form-group col-lg-6">
+                    <label for="NumOrigenA">Estacion:</label>
+                    <input id="NumOrigenA" name="NumOrigenA" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="NumDestinoB">Estacion a Duplicar:</label>
+                    <input id="NumDestinoB" name="NumDestinoB" class="form-control" required />
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-3">
+                    <button type="button" class=" k-primary" id="btnDuplicarEstacion">Duplicar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
 </div>

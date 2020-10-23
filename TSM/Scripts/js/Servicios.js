@@ -66,8 +66,8 @@ $(document).ready(function () {
     $("#grid").kendoGrid({      
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdServicio]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdServicio]").parent().next("div .k-edit-field").hide();
+            KdoHideCampoPopup(e.container, "IdServicio");
+            KdoHideCampoPopup(e.container, "IconoView");
             $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
@@ -79,7 +79,13 @@ $(document).ready(function () {
         columns: [
             { field: "IdServicio", title: "Codigo de Servicio", editor: Grid_ColInt64NumSinDecimal,hidden:true },
             { field: "Nombre", title: "Nombre del Servicio" },
-            { field: "Icono", title:"Icono"}
+            { field: "Icono", title: "Icono" },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            }
         ]
     });
 

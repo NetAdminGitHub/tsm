@@ -39,7 +39,10 @@ namespace TSM
                                                                        "~/Scripts/Utils/Menu.js",
                                                                         "~/Scripts/js/CambioEstado.js",
                                                                         "~/Scripts/Utils/TSM-LayoutSet.js",
-                                                                        "~/Scripts/Hubs/Notificaciones.js"
+                                                                        "~/Scripts/Hubs/Notificaciones.js",
+                                                                        "~/Scripts/konva.min.js",
+                                                                        "~/Scripts/Utils/ComponentesPersonalizados.js",
+                                                                        "~/Scripts/paste.js"
                                                                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Login").Include("~/Scripts/js/Login.js"));
@@ -54,6 +57,7 @@ namespace TSM
             bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/Font-HelveticaNeue.css",
                                                                  "~/Content/Font-TS-Icons.css",
                                                                  "~/Content/Font-TSM-General.css",
+                                                                 "~/Content/Font-TSM-SeteoMaquinas.css",
                                                                  "~/Content/TSM-Style.css",
                                                                  "~/Content/smart_wizard.css",
                                                                  "~/Content/smart_wizard_theme_arrows.css"

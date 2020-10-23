@@ -9,8 +9,9 @@ var fn_DocRIniciaVistaCambio = function () {
 };
 /**
  * Inicializa la ventana modal
+  * @param {any} e vista
  * @param {string} pUrlCambioEstado url para el cambio de estado
- * @param {Dictionary<string, object>} Param
+ * @param {JSON} Param valores pasados a la funcion
  */
 var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
     VistaCambioEsta = e;
@@ -70,6 +71,7 @@ var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
 
 /**
  * funcion que se ejecuta en el boton cambio de estado en la ventana modal
+ * @returns {boolean} retorna true o false
  */
 function Fn_Cambio() {
     if (ValidCambio.validate()) {
@@ -86,9 +88,10 @@ function Fn_Cambio() {
     
 }
 /**
- * ejecuta el evento ajax para el cambio de estado 
+ * ejecuta el evento ajax para el cambio de estado
  * @param {string} Url url de cambio de estado
- * @param {Dictionary<string, object>} DkParametros coleccion de parametros
+ * @param {Dictionary<string,object>} DkParametros coleccion de parametros
+ * @returns {boolean} RETORNA VERDADERO / FALSO
  */
 function Fn_CambiarEstado(Url,DkParametros) {
     kendo.ui.progress($("#TxtMotivo"), true);
@@ -96,13 +99,14 @@ function Fn_CambiarEstado(Url,DkParametros) {
     var proceder = true;
 
     if (DkParametros["fnGuardado"] === undefined) {
-        proceder = true
+        proceder = true;
     }
     else {
         proceder = DkParametros["fnGuardado"].call(document, jQuery);
     }
    
     if (proceder) {
+        kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: Url,
             data: JSON.stringify(DkParametros),
@@ -114,12 +118,17 @@ function Fn_CambiarEstado(Url,DkParametros) {
                 kendo.ui.progress($("#TxtMotivo"), false);
                 RequestEndMsg(data, "Post");
                 Realizocambio = true;
+                kendo.ui.progress($(".k-dialog"), false);
+                if (DkParametros["fn_AfterChange"] !== undefined) {
+                    DkParametros["fn_AfterChange"].call(document, jQuery);
+                }
             },
             error: function (data) {
                 VistaCambioEsta.data("kendoDialog").close();
                 kendo.ui.progress($("#TxtMotivo"), false);
                 ErrorMsg(data);
                 Realizocambio = false;
+                kendo.ui.progress($(".k-dialog"), false);
             }
 
         });

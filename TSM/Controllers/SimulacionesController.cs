@@ -19,5 +19,20 @@ namespace TSM.Controllers
             return PartialView("_SimulacionesConsulta");
 
         }
+
+        public ActionResult SimulacionDatos()
+        {
+            return PartialView("_SimulacionDatos");
+        }
+        
+        public ActionResult SimulacionDatosSubli()
+        {
+            return PartialView("_SimulacionDatosSubli");
+        }
+
+        public ActionResult CostosPorPartes()
+        {
+            return PartialView("_CostosPorPartes");
+        }
     }
 }
