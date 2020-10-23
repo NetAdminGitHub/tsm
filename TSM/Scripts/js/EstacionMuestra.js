@@ -45,6 +45,9 @@ var fn_VistaEstacionMuestraDocuReady = function () {
         value: 0
     });
 
+    Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_Mues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
+    KdoComboBoxEnable($("#CmbIdTipoEstacion_Mues"), false);
+
     Kendo_CmbFiltrarGrid($("#CmbQuimica_Mues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Mues"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
@@ -136,6 +139,10 @@ var fn_VistaEstacionMuestraDocuReady = function () {
         }
     }).data("kendoValidator");
 
+    $("#CmbIdTipoEstacion_Mues").data("kendoComboBox").bind("select", function (e) {
+        fn_DeshabilitarCamposMarco(e.dataItem.UtilizaMarco);
+    });
+
     $("#btnAddMCE_Mues").data("kendoButton").bind("click", function (e) {
         e.preventDefault();
         if (frmDiseno.validate()) {
@@ -223,6 +230,8 @@ var fn_Consultar_Mues = function (g) {
     //xidEstacion = SelItem === null ? 0 : SelItem.IdEstacion;
     idBra = SelItem === null ? $("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "") : SelItem.IdEstacion === null ? $("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "") : SelItem.IdEstacion;
     Te = SelItem === null ? $("#TxtOpcSelec_Mues").data("Formulacion") : SelItem.IdTipoFormulacion === null ? $("#TxtOpcSelec_Mues").data("Formulacion") : SelItem.IdTipoFormulacion;
+    KdoCmbSetValue($("#CmbIdTipoEstacion_Mues"), "MARCO");
+    fn_DeshabilitarCamposMarco(true);
     setFor = null;
     estaMarco = null;
     EstaTintasFormula = null;
@@ -234,8 +243,6 @@ var fn_Consultar_Mues = function (g) {
         $("#MEstacionMuestra").data("kendoWindow").title("CONFIGURACIÓN ESTACIÓN #" + idBra);
         InicioModalMU = 0; 
     }
-   
-
 };
 
 var fn_GetMarcoFormulacion_Mues = function (xIdSeteo, xIdestacion) {
@@ -288,6 +295,11 @@ var fn_SeccionMarcosFormulacion_Mues = function (datos) {
         }
 
         $("#TxtFormulaSug_Mues").val(setFor.SugerenciaFormula);
+
+        KdoCmbSetValue($("#CmbIdTipoEstacion_Mues"), setFor.IdTipoEstacion === undefined ? "" : setFor.IdTipoEstacion);
+        $("#CmbIdTipoEstacion_Mues").data("kendoComboBox").trigger("change");
+        fn_DeshabilitarCamposMarco($("#CmbIdTipoEstacion_Mues").data("kendoComboBox").dataItem().UtilizaMarco);
+
         KdoCmbSetValue($("#CmbQuimica_Mues"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
@@ -546,7 +558,7 @@ var GuardarEstacionDesaMues = function (xIdBrazo) {
         data: JSON.stringify({
             IdEstacion: xIdBrazo,
             IdSeteo: maq[0].IdSeteo,
-            IdTipoEstacion: "MARCO",
+            IdTipoEstacion: KdoCmbGetValue($("#CmbIdTipoEstacion_Mues")),
             IdAccesorio: null
         }),
         contentType: 'application/json; charset=utf-8',
@@ -659,3 +671,20 @@ let LimpiaMarcaCelda_Mues = function () {
     $(".k-dirty", $("#gridEstacion_Mues")).remove();
 };
 
+let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
+    let habilitarMarco = utilizaMarco;
+
+    KdoComboBoxEnable($("#CmbSedas_Mues"), habilitarMarco);
+    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), habilitarMarco);
+    KdoNumerictextboxEnable($("#NumCapilar_Mues"), habilitarMarco);
+    KdoNumerictextboxEnable($("#NumPasadas_Mues"), habilitarMarco);
+    KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), habilitarMarco);
+
+    if (!habilitarMarco) {
+        KdoCmbSetValue($("#CmbSedas_Mues"), "");
+        KdoCmbSetValue($("#CmbTipoEmulsion_Mues"), "");
+        kdoNumericSetValue($("#NumCapilar_Mues"), 0);
+        kdoNumericSetValue($("#NumPasadas_Mues"), 0);
+        kdoNumericSetValue($("#EscurridorDureza_Mues"), 0);
+    }
+};

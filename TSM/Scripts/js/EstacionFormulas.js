@@ -1,6 +1,4 @@
-﻿
-
-var fn_VistaEstacionFormulasDocuReady = function () {
+﻿var fn_VistaEstacionFormulasDocuReady = function () {
     KdoButton($("#btnAddMForE"), "check", "Guardar");
     KdoButton($("#btnAddMFAjus"), "check", "Guardar");
     KdoButton($("#btnAddMFAjuste"), "gear", "Ajuste");
@@ -596,6 +594,15 @@ var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
                 $("#CmbSistemaPigmento_MaRev").val(setFor.NombreSistPigmento === undefined ? "" : setFor.NombreSistPigmento);
                 $("#CmbBasePigmento_MaRev").val(setFor.NombreBasePig === undefined ? "" : setFor.NombreBasePig);
                 QuimicaFormula = setFor.IdQuimica;
+
+                $.ajax({
+                    url: TSM_Web_APi + "TipoEstaciones/" + setFor.IdTipoEstacion,
+                    type: 'GET',
+                    success: function (data) {
+                        KdoButtonEnable($("#btnCambioEstado"), data.UtilizaMarco);                        
+                    }
+                });
+
                 $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
 
             }
