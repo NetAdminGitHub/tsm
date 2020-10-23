@@ -535,7 +535,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     CumpleOEKOTEX = datos.StandarOEKOTEX;
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
     //obtner las estapas siguientes
-    $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso));
+    $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso, datos.IdTipoOrdenTrabajo));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
 
     if (RecargarScriptVista === true) {
@@ -596,7 +596,7 @@ var get_cmbUsuario = function (tipoOrd, etp) {
     });
 };
 
-var get_cmbEtpSigAnt = function ( etp) {
+var get_cmbEtpSigAnt = function ( etp, tipo) {
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
         transport: {
@@ -604,7 +604,7 @@ var get_cmbEtpSigAnt = function ( etp) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/" + etp.toString(),
+                    url: TSM_Web_APi + "EtapasProcesos/GetByIdEtapaProcesoTipoOrden/" + etp.toString() + "/" + tipo.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
