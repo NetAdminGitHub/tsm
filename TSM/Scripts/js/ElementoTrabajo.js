@@ -1865,6 +1865,10 @@ let fn_IrCatalogo=function () {
     window.location.href = "/CatalogoDisenos";
 };
 
+let fn_IrKbFinalizados = function () {
+    window.location.href = "/OrdenesTrabajosTerminadas";
+};
+
 
 var fn_MostraTablaFormula = function (ds, div) {
 

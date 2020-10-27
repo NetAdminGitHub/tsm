@@ -301,6 +301,7 @@
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
+    <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -802,6 +803,7 @@
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
+    <Content Include="Scripts\js\OrdenesTrabajosTerminadas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
@@ -1523,6 +1525,7 @@
     <Content Include="Views\Articulos\Index.cshtml" />
     <Content Include="Views\Shared\_RegistroOrdenesTrabajosAgendas.cshtml" />
     <Content Include="Views\Estaciones\EstacionAccesoriosMuest.cshtml" />
+    <Content Include="Views\OrdenesTrabajosTerminadas\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
