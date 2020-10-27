@@ -445,7 +445,7 @@ let fn_DibujarKanban = function (ds) {
             });
 
 
-            fn_IniciarKanban();
+            //fn_IniciarKanban();
 
 
         },
