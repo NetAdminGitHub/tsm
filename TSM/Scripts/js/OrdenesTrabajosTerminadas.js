@@ -229,31 +229,34 @@ let fn_DibujarKanban = function (ds) {
     const result = [];
     const map = new Map();
     for (const item of ds) {
-        if (!map.has(item.IdUsuarioEje)) {
-            map.set(item.IdUsuarioEje, true);    // set any value to Map
+        if (!map.has(item.IdEstatusColumna)) {
+            map.set(item.IdEstatusColumna, true);    // set any value to Map
             result.push({
-                IdUsuarioEje: item.IdUsuarioEje,
-                NombreEjec: item.NombreEjec
+                IdEstatusColumna: item.IdEstatusColumna,
+                EstatusColumna: item.EstatusColumna
             });
         }
     }
 
+    ResultOrden = [];
+    ResultOrden = sortByKeyAsc(result, "IdEstatusColumna");
+
     let MyKanban = $("#myKanban");
     MyKanban.children().remove();
-    $.each(result, function (index, elemento) {
-        let UsuarioKB = elemento.Nombre === null ? '</br>' : elemento.NombreEjec;
+    $.each(ResultOrden, function (index, elemento) {
+        let EstatusColumna = elemento.EstatusColumna === null ? '</br>' : elemento.EstatusColumna;
 
-        MyKanban.append('<div data-id="_' + elemento.IdUsuarioEje + '" class="kanban-board form-group col-lg-12 sortable-drag" draggable="false">' +
+        MyKanban.append('<div data-id="_' + elemento.IdEstatusColumna + '" class="kanban-board form-group col-lg-12 sortable-drag" draggable="false">' +
             '<header class="kanban-board-header">' +
             '<div class="kanban-title-board"></div>' +
             '<div class="user">' +
             '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
-            '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">' +
+            //'<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle" draggable="false">' +
             '</div>' +
             '<div class="info">' +
             '<a data-toggle="collapse" aria-expanded="true" class="">' +
             '<span>' +
-            '<span id="MyUserName">' + UsuarioKB + '</span>' +
+            '<span id="MyUserName"><strong>' + EstatusColumna + '</strong></span>' +
             '</span>' +
             '</br>' +
             ' </a>' +
@@ -261,7 +264,7 @@ let fn_DibujarKanban = function (ds) {
             '</div>' +
             '</header>' +
             '<div><br/></div>' +
-            '<main class="kanban-drag" id="' + elemento.IdUsuarioEje + '">' +
+            '<main class="kanban-drag" id="' + elemento.IdEstatusColumna + '">' +
             '</main>' +
             '<footer></footer>' +
             '</div>'
@@ -269,15 +272,15 @@ let fn_DibujarKanban = function (ds) {
         let filtro = [];
         JSON.parse(JSON.stringify(ds), function (key, value) {
             if (value !== null) {
-                if (value.IdUsuarioAsignado === elemento.IdUsuarioEje) filtro.push(value);
+                if (value.IdEstatusColumna === elemento.IdEstatusColumna) filtro.push(value);
 
             }
             return value;
         });
 
-        let MainKanba = $("#" + elemento.IdUsuarioEje + "");
+        let MainKanba = $("#" + elemento.IdEstatusColumna + "");
         MainKanba.children().remove();
-        let usuario = elemento.IdUsuarioEje;
+  
 
         $.each(filtro, function (index, elemento) {
             let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
@@ -300,6 +303,7 @@ let fn_DibujarKanban = function (ds) {
                 '<div class="card-body">' +
                 '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                 '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
                 '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
                 'Color Tela: ' + elemento.ColorTela + '</p>' +
                 '</div>' +
@@ -313,7 +317,7 @@ let fn_DibujarKanban = function (ds) {
             $("#" + elemento.IdRow + "").data("IdOrdenTrabajo", elemento.IdOrdenTrabajo);
             $("#" + elemento.IdRow + "").data("IdEtapaProceso", elemento.IdEtapaProceso);
             $("#" + elemento.IdRow + "").data("Item", elemento.Item);
-            $("#" + elemento.IdRow + "").data("UsuarioFrom", usuario);
+       
 
             $("#Menu_" + elemento.IdRow + "").kendoMenu({
                 openOnClick: true
@@ -362,6 +366,18 @@ let fn_ObtenerOTKbsFinalizadas = function (xIdEtapaProceso, xIdOrdenTrabajo, xId
 
 
 
+let sortByKeyDesc = function (array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+};
+let sortByKeyAsc = function (array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+};
 
 fPermisos = function (datos) {
     Permisos = datos;
