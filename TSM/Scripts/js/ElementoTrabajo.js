@@ -234,7 +234,8 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     NombreEstado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    Fecha: { type:"date"}
 
                 }
             }
@@ -259,15 +260,16 @@ $(document).ready(function () {
             });
         },
         columns: [
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NombreEstado", title: "Estado" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", minResizableWidth: 175 },
             { field: "IdOrdenTrabajo", title: "Código Orden Trabajo", hidden: true, minResizableWidth: 300 },
-            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, minResizableWidth: 300 },
+            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, minResizableWidth: 200 },
             { field: "NombreSolicitudCambio", title: "Cambio", minResizableWidth: 300 },
             { field: "ItemSolicitud", title: "Item", hidden: true },
             { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
-            { field: "Estado", title: "Estado", hidden: true},
-            { field: "NombreEstado", title: "Estado" },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
-            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}",  hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}",  hidden: true }
         ]
     });
 
@@ -356,12 +358,12 @@ $(document).ready(function () {
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     $("#gridRegistroCambiosDetalle").kendoGrid({
-        dataBound: function () {
-            for (var i = 0; i < this.columns.length; i++) {
-                this.autoFitColumn(i);
-                this.columnResizeHandleWidth;
-            }
-        },
+        //dataBound: function () {
+        //    for (var i = 0; i < this.columns.length; i++) {
+        //        this.autoFitColumn(i);
+        //        this.columnResizeHandleWidth;
+        //    }
+        //},
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IDOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdSolicitudCambio");
@@ -374,11 +376,10 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
-            if ( Number(e.model.IdEtapaProceso) !== Number($("#txtIdEtapaProceso").val())) {
+            if (Number(e.model.IdEtapaProceso) !== Number($("#txtIdEtapaProceso").val())) {
                 TextBoxEnable($('[name="Comentario"]'), false);
                 KdoCheckBoxEnable($('[name="Autorizado"]'), false);
             }
-          
             Grid_Focus(e, "Comentario");
         },
         //DEFICNICIÓN DE LOS CAMPOS
