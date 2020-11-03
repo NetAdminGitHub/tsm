@@ -213,9 +213,11 @@ $(document).ready(function () {
         if (e.item) {
             Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
+            Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
         } else {
             Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", "");
+            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
         }
     });
 
@@ -224,6 +226,7 @@ $(document).ready(function () {
         if (value === "") {
             Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("CotizacionesMuestras_CmbIdCliente", "");
+            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
         }
     });
 
@@ -260,7 +263,7 @@ $(document).ready(function () {
     //#endregion
 
     //Coloca el filtro de cliente guardado en la sesion
-    if (sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") !== null || sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") !== null ) {
+    if ((sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente")) !== null || (sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbPrograma")) !== null) {
         Fn_ConsultarCotiza(sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente"), sessionStorage.getItem("CotizacionesMuestras_CmbPrograma"));
     }
 });
@@ -270,9 +273,7 @@ let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
     vIdPrograma = Number(IdPrograma);
     //leer grid
     $("#gridCotizacion").data("kendoGrid").dataSource.data([]);
-    $("#gridCotizacion").data("kendoGrid").dataSource.read().then(function () {
-        Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-    });
+    $("#gridCotizacion").data("kendoGrid").dataSource.read();
 };
 
 $.fn.extend({
