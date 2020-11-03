@@ -271,7 +271,7 @@ let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
     //leer grid
     $("#gridCotizacion").data("kendoGrid").dataSource.data([]);
     $("#gridCotizacion").data("kendoGrid").dataSource.read().then(function () {
-        $("#gridCotizacion").data("kendoGrid").dataSource.total() === 0 ? Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false) : Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+        Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
     });
 };
 
