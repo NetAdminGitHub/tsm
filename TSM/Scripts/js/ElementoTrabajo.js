@@ -52,6 +52,7 @@ var InicioModalAD = 0;
 var InicioModalMU = 0;
 var InicioModalFor = 0;
 var CantidadBrazos = 22;
+var XSeteo = 0;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -174,21 +175,21 @@ $(document).ready(function () {
     });
 
 
-    $("#NumBrazoA").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0,
-        max:22
-    });
+    //$("#NumBrazoA").kendoNumericTextBox({
+    //    format: "#",
+    //    restrictDecimals: true,
+    //    decimals: 0,
+    //    value: 0,
+    //    max:22
+    //});
 
-    $("#NumBrazoB").kendoNumericTextBox({
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0,
-        max: 22
-    });
+    //$("#NumBrazoB").kendoNumericTextBox({
+    //    format: "#",
+    //    restrictDecimals: true,
+    //    decimals: 0,
+    //    value: 0,
+    //    max: 22
+    //});
 
     $("#NumOrigenA").kendoNumericTextBox({
         format: "#",
@@ -205,6 +206,9 @@ $(document).ready(function () {
         value: 0,
         max: 22
     });
+
+    //Iniciar Grid de intercambio
+    fn_gridEstacionIntercambio($("#gridInter"));
 
 
 //#region Grid soliciud
@@ -528,9 +532,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true  ? false : true);
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnRegistroCambio"),true);
-
+    
     xvNodocReq = datos.NodocReq;
     xEstadoOT = datos.EstadoOT;
     CumpleOEKOTEX = datos.StandarOEKOTEX;
@@ -550,10 +554,14 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $.each(fun_ListDatos, function (index, elemento) {
         if (elemento.IdEtapa === idEtapaProceso) {
             elemento.FnEtapa.call(document, jQuery);
+  
         }
     });
 
-
+    if (datos.IdEtapaProceso !== 5) {
+        XSeteo = maq[0].IdSeteo;
+    }
+   
 };
 
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
@@ -719,7 +727,7 @@ $("#vRegistroCambio").kendoDialog({
 $("#vDesplazarCambiar").kendoWindow({
     height: "auto",
     width: "40%",
-    maxHeight: 600,
+    minHeight:500,
     title: "Desplazmiento /Intercanbio de estaciones ",
     visible: false,
     closable: true,
@@ -778,13 +786,13 @@ $("#btnDesplazarEstacion").click(function () {
     }
 });
 
-$("#btnCambiarEstacion").click(function () {
-    if (ValidarCambiarEst.validate()) {
-        fn_Desplazar(kdoNumericGetValue($("#NumBrazoA")).toString() + "|" + kdoNumericGetValue($("#NumBrazoB")).toString() + "," + kdoNumericGetValue($("#NumBrazoB")).toString() + "|" + kdoNumericGetValue($("#NumBrazoA")).toString());
-    } else {
-        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-    }
-});
+//$("#btnCambiarEstacion").click(function () {
+//    if (ValidarCambiarEst.validate()) {
+//        fn_Desplazar(kdoNumericGetValue($("#NumBrazoA")).toString() + "|" + kdoNumericGetValue($("#NumBrazoB")).toString() + "," + kdoNumericGetValue($("#NumBrazoB")).toString() + "|" + kdoNumericGetValue($("#NumBrazoA")).toString());
+//    } else {
+//        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+//    }
+//});
 
 $("#btnDuplicarEstacion").click(function () {
     if (ValidarDuplicarEst.validate()) {
@@ -799,10 +807,12 @@ var fn_OpenModalDesplazamiento = function () {
     tabStrip.select(fn_getItem(0));
     kdoNumericSetValue($("#NumCntCantDesplazar"), 0);
     kdoNumericSetValue($("#NumBrazoIni"), 0);
-    kdoNumericSetValue($("#NumBrazoA"), 0);
-    kdoNumericSetValue($("#NumBrazoB"), 0);
+    //kdoNumericSetValue($("#NumBrazoA"), 0);
+    //kdoNumericSetValue($("#NumBrazoB"), 0);
     $('#rbDesplazarRight').prop('checked', true);
     $("#NumBrazoIni").data("kendoNumericTextBox").focus();
+    $("#gridInter").data("kendoGrid").dataSource.read();
+
 };
 
 var fn_OpenModalDuplicar = function () {
@@ -868,7 +878,7 @@ var fn_Desplazar = function (StrEstaciones) {
         }
     });
 
-}
+};
 var fn_Duplicar= function (EstacionO,EstacionD) {
     kendo.ui.progress($("#vDuplicarMarco"), true);
     $.ajax({
@@ -1043,28 +1053,28 @@ var ValidarDesplazar = $("#FrmDesplazar").kendoValidator(
         }
     }).data("kendoValidator");
 
-var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
-    {
-        rules: {
+//var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
+//    {
+//        rules: {
 
-            Msg1: function (input) {
-                if (input.is("[name='NumBrazoA']")) {
-                    return kdoNumericGetValue($("#NumBrazoA")) > 0 && kdoNumericGetValue($("#NumBrazoA")) <= CantidadBrazos;
-                }
-                return true;
-            },
-            Msg2: function (input) {
-                if (input.is("[name='NumBrazoB']")) {
-                    return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
-                }
-                return true;
-            }
-        },
-        messages: {
-            Msg1: "Requerido",
-            Msg2: "Requerido"
-        }
-    }).data("kendoValidator");
+//            Msg1: function (input) {
+//                if (input.is("[name='NumBrazoA']")) {
+//                    return kdoNumericGetValue($("#NumBrazoA")) > 0 && kdoNumericGetValue($("#NumBrazoA")) <= CantidadBrazos;
+//                }
+//                return true;
+//            },
+//            Msg2: function (input) {
+//                if (input.is("[name='NumBrazoB']")) {
+//                    return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
+//                }
+//                return true;
+//            }
+//        },
+//        messages: {
+//            Msg1: "Requerido",
+//            Msg2: "Requerido"
+//        }
+//    }).data("kendoValidator");
 
 
 var ValidarDuplicarEst = $("#FrmDuplicarEst").kendoValidator(
@@ -1590,6 +1600,132 @@ var fn_gridAccesoriosEstacion = function (gd) {
     });
 
 };
+
+var fn_gridEstacionIntercambio= function (gd) {
+
+    var dsMp = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetTodasByIdSeteo/" + XSeteo ; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdEstacion",
+                fields: {
+                    IdSeteo: {
+                        type: "number"
+                    },
+                    IdEstacion: {
+                        type: "number"
+                    },
+                    DescripcionEstacion: {
+                        type: "string"
+
+                    },
+                    ColorHex: {
+                        type: "string"
+
+                    },
+                    NombreColorEstacion: {
+                        type: "string"
+                    }
+                }
+            }
+        },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        }
+    });
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+       
+        columns: [
+            { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
+            { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            {
+                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
+            },
+            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 500);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
+
+    var srow3 = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srow3);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srow3);
+    });
+
+    gd.data("kendoGrid").table.kendoDraggable({
+        filter: "tbody > tr",
+        group: "gridGroup",
+        hint: function (e) {
+            return $('<div class="k-grid k-widget" style="background-color: DarkOrange; color: black;"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+        }
+    });
+
+    gd.data("kendoGrid").table.kendoDropTarget({
+        group: "gridGroup",
+        drop: function (e) {
+            e.draggable.hint.hide();
+            var target = dsMp.getByUid($(e.draggable.currentTarget).data("uid")),
+                dest = $(document.elementFromPoint(e.clientX, e.clientY));
+
+            if (dest.is("th")) {
+                return;
+            }
+            dest = dsMp.getByUid(dest.parent().data("uid"));
+            //not on same item
+            if (target.get("IdEstacion") !== dest.get("IdEstacion")) {
+                //reorder the items
+                var tmp = target.get("IdEstacion");
+                target.set("IdEstacion", dest.get("IdEstacion"));
+                dest.set("IdEstacion", tmp);
+                dsMp.sort({ field: "IdEstacion", dir: "asc" });
+                $(".k-dirty-cell", gd).removeClass("k-dirty-cell");
+                $(".k-dirty", gd).remove();
+                kendo.ui.progress($("#vDesplazarCambiar"), true);
+                $.ajax({
+                    url: TSM_Web_APi + "/SeteoMaquinasEstaciones/OperacionMaquina/" + maq[0].IdSeteo,
+                    type: "Put",
+                    data: JSON.stringify(target.get("IdEstacion").toString() + "|" + dest.get("IdEstacion").toString() + "," + dest.get("IdEstacion").toString() + "|" + target.get("IdEstacion").toString()),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        kendo.ui.progress($("#vDesplazarCambiar"), false);
+                        fn_RTCargarMaquina();
+                        fn_RTActivaDropTarget();
+                        RequestEndMsg(data, "Put");
+                    },
+                    error: function (data) {
+                        ErrorMsg(data);
+                        kendo.ui.progress($("#vDesplazarCambiar"), false);
+                    }
+                });
+            }
+
+        }
+    });
+
+
+};
 /**
  * Eliminacion de configuracion por brazo o el seteo de toda la maquina cuando el idestacion sea igual undefined
  * @param {any} xIdSeteo codigo de seteo de la maquina
@@ -1911,12 +2047,6 @@ var fn_MostraTablaFormula = function (ds, div) {
         '<th rowspan="1" colspan="1">'+( ds !==null ? kendo.format("{0:n2}", ds[0].TotalPorc): 0.00) +' %</th>' +
         '</tr>');
 
-    //xformulaDet.append('<tr>' +
-    //    '<td></td>' +
-    //    '<td></td>' +
-    //    '<td>Total:</td>' +
-    //    '<td>' +( ds !==null ? ds[0].TotalPorc.toFixed(4): 0.00) + '</td>' +
-    //    '</tr>');
 
 };
 /** obtener los tipos de tintas
