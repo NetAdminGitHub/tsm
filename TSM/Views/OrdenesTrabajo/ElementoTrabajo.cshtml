@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v20101501";
+    ViewBag.IdVersion = "TSM0101088|v20111051";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -419,31 +419,11 @@
                 </form>
             </div>
             <div id="TP_2">
-                <form id="FrmCambiarEst" enctype="multipart/form-data">
+                <div class="form-row">
                     <div class="form-group col-lg-12">
-                        <div class="form-row">
-                            <div class="form-group col-lg-12">
-                                <br />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-6">
-                                <label for="NumBrazoA">Estacion:</label>
-                                <input id="NumBrazoA" name="NumBrazoA" class="form-control" required />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="NumBrazoB">Estacion a Intercambiar:</label>
-                                <input id="NumBrazoB" name="NumBrazoB" class="form-control" required />
-                            </div>
-
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-3">
-                                <button type="button" class=" k-primary" id="btnCambiarEstacion">Cambiar</button>
-                            </div>
-                        </div>
+                        <div id="gridInter" class="form-control"></div>
                     </div>
-                </form>
+                </div>
 
             </div>
         </div>
