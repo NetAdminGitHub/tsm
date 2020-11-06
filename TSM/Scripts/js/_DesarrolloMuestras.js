@@ -100,6 +100,11 @@ var fn_DMueCargarConfiguracion = function () {
         fn_OpenModalDuplicar();
 
     });
+
+    $("#btnAjuste_Mues").click(function (e) {
+        fn_OpenModalEstacionAjuste();
+
+    });
 };
 
 var fn_DMCargarEtapa = function () {
