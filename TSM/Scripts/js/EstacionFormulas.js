@@ -451,6 +451,9 @@ var fn_GridEstaciones = function (gd) {
                     },
                     EstadoFormula: {
                         type: "string"
+                    },
+                    Comentario: {
+                        type: "string"
                     }
                 }
             }
@@ -467,6 +470,15 @@ var fn_GridEstaciones = function (gd) {
                 this.autoFitColumn(i);
                 this.columnResizeHandleWidth;
             }
+            var grid = gd.data("kendoGrid");
+            var data = grid.dataSource.data();
+            $.each(data, function (i, row) {
+                if (row.Comentario !== '') {
+                    $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                } else {
+                    $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                }
+            });
         },
         columns: [
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
@@ -476,7 +488,8 @@ var fn_GridEstaciones = function (gd) {
             {
                 field: "ColorHex", title: "Color", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
-            { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120}
+            { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120 },
+            { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 }
         ]
     });
 
