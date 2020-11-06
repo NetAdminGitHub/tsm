@@ -91,6 +91,11 @@ var fn_TintasFCargarConfiguracion = function () {
 
     //Fn_Grid_Resize($("#gridresumen"), $(window).height() - "100");
 
+    $("#btnAjuste_Tint").click(function (e) {
+        fn_OpenModalEstacionAjuste();
+
+    });
+
 };
 
 

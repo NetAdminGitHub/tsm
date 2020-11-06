@@ -421,6 +421,150 @@ $(document).ready(function () {
     });
  //#endregion
 
+    //#region Grid Ingreso de ajuste en estación
+    var dsetAjusteEst = new kendo.data.DataSource({
+
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinasAlertas/GetIdSeteo/" + XSeteo; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinasAlertas/" + datos.IdSeteo + "/" + datos.Item; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinasAlertas/" + datos.IdSeteo + "/" + datos.Item; },
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "SeteoMaquinasAlertas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        schema: {
+            model: {
+                id: "Item",
+                fields: {
+                    IdSeteo: { type: "number", defaultValue: function () { return XSeteo; } },
+                    Item: { type: "number" },
+                    IdEstacion: { type: "number" },
+                    IdAlerta: { type: "string" },
+                    Nombre: { type: "string" },
+                    Fecha: { type: "date" },
+                    Descripcion: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='IdAlerta']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdAlerta").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                if (input.is("[name='Descripcion']") ) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
+                                    return input.val().length > 0 && input.val().length <= 300;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Estado: { type: "string", defaultValue: function () { return 'ACTIVA'; } },
+                    Nombre1: { type: "string" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
+
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL gCHFor,CAMPOS
+    $("#gridAlerAjus").kendoGrid({
+       
+        edit: function (e) {
+            //KdoHideCampoPopup(e.container, "IdSeteo");
+            KdoHideCampoPopup(e.container, "Item");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "IdSeteo");
+            KdoHideCampoPopup(e.container, "Nombre1");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "Fecha");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdAlerta");
+                KdoHideCampoPopup(e.container, "IdEstacion");
+                KdoHideCampoPopup(e.container, "Descripcion");
+            } else {
+                KdoHideCampoPopup(e.container, "Estado");
+            }
+            Grid_Focus(e, "IdEstacion");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "IdSeteo", title: "Código IdSeteo", hidden: true },
+            { field: "Item", title: "Item", hidden: true },
+            { field: "IdEstacion", title: "Estación", editor: Grid_ColNumeric, values: ["required", "1", CantidadBrazos, "#", 0] },
+            { field: "IdAlerta", title: "Ajuste", editor: Grid_Combox, values: ["IdAlerta", "Nombre", TSM_Web_APi + "Alertas", "", "Seleccione...."], hidden: true},
+            { field: "Nombre", title: "Nombre" },
+            { field: "Descripcion", title: "Comentario ajuste", editor: Grid_ColTextArea, values: ["6"] },
+            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", TSM_Web_APi + "Estados", "SeteoMaquinasAlertas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre1", title: "Estado" },
+            { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
+            { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            //{
+            //    command: {
+            //        name: "cambiarEstado",
+            //        iconClass: "TS-icon-ARROW",
+            //        text: "",
+            //        click: function (e) {
+            //            e.preventDefault();
+            //            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            //            //var lstId = {
+            //            //    IdFormula: dataItem.IdFormula
+            //            //};
+            //            Fn_VistaCambioEstadoMostrar("SeteoMaquinasAlertas", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, function () { return fn_UpdEstadoGrilla(); });
+            //        }
+            //    },
+            //    width: "70px",
+            //    attributes: {
+            //        style: "text-align: center"
+            //    }
+            //}
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gridAlerAjus").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 500);
+    SetGrid_CRUD_ToolbarTop($("#gridAlerAjus").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridAlerAjus").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridAlerAjus").data("kendoGrid"), dsetAjusteEst);
+
+    var srow5 = [];
+    $("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridAlerAjus"), srow5);
+    });
+
+    $("#gridAlerAjus").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridAlerAjus"), srow5);
+
+    });
+ //#endregion
+    //Fn_VistaCambioEstado($("#vCambioEstadoAlert"));
+
 });
 var fn_ConsultarDetalle = function () {
     var SelItem = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
@@ -756,6 +900,21 @@ $("#vDuplicarMarco").kendoWindow({
     activate: function () { $("#NumOrigenA").data("kendoNumericTextBox").focus();}
 });
 
+$("#vAlertaAjustes").kendoWindow({
+    height: "auto",
+    width: "70%",
+    minHeight: 500,
+    title: "Ingresar Ajustes Tintas / Marcos",
+    visible: false,
+    closable: true,
+    modal: true,
+    pinned: true,
+    resizable: false,
+    maximize: function (e) {
+        e.preventDefault();
+    }
+});
+
 $("#btnCambiarEtapa").click(function (e) {
     kendo.ui.progress($(document.body), true);
     KdoCmbSetValue($("#cmbUsuarioEtp"), "");
@@ -814,6 +973,12 @@ var fn_OpenModalDesplazamiento = function () {
     $("#gridInter").data("kendoGrid").dataSource.read();
 
 };
+
+var fn_OpenModalEstacionAjuste = function () {
+    $("#vAlertaAjustes").data("kendoWindow").center().open();
+    $('#gridAlerAjus').data("kendoGrid").dataSource.read();
+};
+
 
 var fn_OpenModalDuplicar = function () {
     $("#vDuplicarMarco").data("kendoWindow").center().open();
