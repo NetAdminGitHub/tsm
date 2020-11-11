@@ -29,6 +29,7 @@ namespace TSM.Controllers
             Report rpt = null;
             ReportePbi PbiResult = null;
             AuthenticationResult a = null;
+            ViewBag.Titulo = "";
             //crea objeto para solicitud
             PbiConfRequestModel re = new PbiConfRequestModel()
             {
@@ -89,7 +90,7 @@ namespace TSM.Controllers
             }
 
             // ViewBag.Reporte = rpt;
-            
+            ViewBag.Titulo = (PbiResult != null) ? PbiResult.NombreReporte: "";
             ViewBag.ReportSet = (ReportePbi)Session["PbiParams"];
           
             return View();
