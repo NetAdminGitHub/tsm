@@ -12,6 +12,8 @@ let UrlCata = TSM_Web_APi + "CategoriaTallas";
 let UrlUm = TSM_Web_APi + "UnidadesMedidas";
 let UrlTem = TSM_Web_APi + "Temporadas";
 let InciarInsert = true;
+let dataPren = null;
+
 $(document).ready(function () {
     //#region Inicializar combobox en la vista 
     KdoComboBoxbyData($("#CmbCliCont"), "[]", "Nombre", "IdCliente", "Seleccione...");
@@ -47,7 +49,13 @@ $(document).ready(function () {
             KdoCmbSetValue($("#TxtPrenda"), "");
             $("#TxtDescrip").val("");
             $("#TxtPrenda").data("kendoComboBox").dataSource.read();
-
+        },
+        hide: function (e) {
+            if(dataPren !== null){
+                var multicolumncombobox = $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox");
+                multicolumncombobox.focus();
+                multicolumncombobox.select(function (dataItem) { return dataItem.IdRegistroSolicitudPrenda === dataPren[0].IdRegistroSolicitudPrenda; });
+            }
         }
     });
     //#region Inicializar validador para el formulario
@@ -853,8 +861,10 @@ let fn_CrearPrenda = function () {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            $("#ModalCliePrenda").data("kendoDialog").close();
-            $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").dataSource.read();
+            dataPren = data;
+            $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").dataSource.read().then(function () {
+                $("#ModalCliePrenda").data("kendoDialog").close();
+            });
             kendo.ui.progress($(document.body), false);
             RequestEndMsg(data, xType);
             creado = true;
@@ -863,6 +873,7 @@ let fn_CrearPrenda = function () {
             kendo.ui.progress($(document.body), false);
             ErrorMsg(data);
             creado = false;
+            dataPren = null;
         }
     });
 
@@ -1006,7 +1017,7 @@ $.fn.extend({
 var Fn_PrendasReg = function (vPr) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
-        sort: { field: "NombrePrograma", dir: "asc" },
+        sort: { field: "IdRegistroSolicitudPrenda", dir: "desc" },
         dataType: 'json',
         transport: {
             read: function (datos) {
