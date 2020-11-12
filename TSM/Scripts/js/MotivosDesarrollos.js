@@ -78,7 +78,8 @@ $(document).ready(function () {
             { field: "IdMotivoDesarrollo", title: "Codigo motivo desarrollo", hidden: true },
             { field: "Nombre", title: "Nombre motivo " },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "NoPermiteActualizar", title: "No Permitir Actualizar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "NoPermiteActualizar"); } }
         ]
     });
 

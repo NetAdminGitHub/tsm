@@ -1,9 +1,14 @@
 ﻿@{
     ViewBag.Title = "Catalogo de Diseños";
     ViewBag.IdVersion = "TMS0101085|v19041201";
+    ViewBag.Ruta = (new TSM.FrwkSeguridadSrv.SeguridadClient("BasicHttpBinding_ISeguridad")).Encriptar(Server.MapPath("~/Adjuntos"), TSM.Utils.Config.App);
 }
 @section Scripts {
     <script src="~/Scripts/js/CatalogoDisenos.js"></script>
+
+    <script type="text/javascript">
+        var RutaFisicaAdj = "@ViewBag.Ruta";
+    </script>
 }
 <link href="~/Content/CatalogoDisenos.css" rel="stylesheet" />
 
@@ -118,8 +123,18 @@
                         <input type="text" id="TxtFecha" class="form-control">
                     </div>
                 </div>
-            </fieldset>           
-            
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="TxtPrenda">Prenda</label>
+                        <input type="text" id="TxtPrenda" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="TxtParte">Parte</label>
+                        <input type="text" id="TxtParte" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+
             <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label for="CmbMotivoDes">Motivo de Desarrollo</label>
@@ -133,7 +148,18 @@
                     <label for="Cmb_Tallas">Talla</label>
                     <input id="Cmb_Tallas" name="Cmb_Tallas" required validationMessage="Requerido" type="text" class="form-control" />
                 </div>
-              
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-4">
+                    <label for="Cmb_Prenda">Prendas</label>
+                    <input id="Cmb_Prenda" name="Cmb_Prenda" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="Cmb_Partes">Partes</label>
+                    <input id="Cmb_Partes" name="Cmb_Partes" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-4 align-self-end">
