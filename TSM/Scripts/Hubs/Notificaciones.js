@@ -34,7 +34,7 @@
 
 
 let fn_AlertActualizaVista = function (dt) {
-    $("#KendoAlerta").kendoAlert({
+    $("#KendoAlerta").kendoDialog({
         content: '<div class="form-row">' +
             '<div class= "form-group col-lg-4 text-center" >' +
             '<i class="k-icon k-i-warning" style="font-size:120px;"></i>' +
@@ -46,16 +46,20 @@ let fn_AlertActualizaVista = function (dt) {
         title: "Alerta!",
         height: "auto",
         width: "30%",
+        closable:true,
         actions: [{
+            text: "OK",
             action: function (e) {
-                $("#" + dt.Vista + "_action").trigger("Action_Ok");
+        
                 return true;
             },
             primary: true
         }],
-        messages: {
-            okText: "OK"
+        close: function (e) {
+            e.preventDefault();
+            fn_IrKanbanEtapa();
         }
+     
     }).data("kendoAlert");
 
   
