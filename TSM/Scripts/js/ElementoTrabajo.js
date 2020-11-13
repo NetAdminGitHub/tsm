@@ -1221,29 +1221,6 @@ var ValidarDesplazar = $("#FrmDesplazar").kendoValidator(
         }
     }).data("kendoValidator");
 
-//var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
-//    {
-//        rules: {
-
-//            Msg1: function (input) {
-//                if (input.is("[name='NumBrazoA']")) {
-//                    return kdoNumericGetValue($("#NumBrazoA")) > 0 && kdoNumericGetValue($("#NumBrazoA")) <= CantidadBrazos;
-//                }
-//                return true;
-//            },
-//            Msg2: function (input) {
-//                if (input.is("[name='NumBrazoB']")) {
-//                    return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
-//                }
-//                return true;
-//            }
-//        },
-//        messages: {
-//            Msg1: "Requerido",
-//            Msg2: "Requerido"
-//        }
-//    }).data("kendoValidator");
-
 
 var ValidarDuplicarEst = $("#FrmDuplicarEst").kendoValidator(
     {
@@ -2368,10 +2345,6 @@ var Fn_GetRequerimientoFoil = function (vIA) {
     });
 };
 
-// se activa al hacer click en el boton OK del warning
-$("#ElementoTrabajo_action").on("Action_Ok", function (event,dt) {
-    fn_IrKanbanEtapa();
-});
 
 var fn_TecnicasArticuloSugerido = function(input, idSeteo, idRequerimientoTecnica){
     $.ajax({
