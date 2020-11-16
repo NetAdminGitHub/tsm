@@ -53,6 +53,7 @@ var InicioModalMU = 0;
 var InicioModalFor = 0;
 var CantidadBrazos = 22;
 var XSeteo = 0;
+var xNoPermiteActualizar = false;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -622,6 +623,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
 var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
+    xNoPermiteActualizar = datos.NoPermiteActualizar;
     //if (datos.Asignado === false && datos.Seguidor === false) {
     //    $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
 
@@ -686,6 +688,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     //obtner las estapas siguientes
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso, datos.IdTipoOrdenTrabajo));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
+    
 
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
@@ -1217,29 +1220,6 @@ var ValidarDesplazar = $("#FrmDesplazar").kendoValidator(
             Msg2: "Requerido"
         }
     }).data("kendoValidator");
-
-//var ValidarCambiarEst = $("#FrmCambiarEst").kendoValidator(
-//    {
-//        rules: {
-
-//            Msg1: function (input) {
-//                if (input.is("[name='NumBrazoA']")) {
-//                    return kdoNumericGetValue($("#NumBrazoA")) > 0 && kdoNumericGetValue($("#NumBrazoA")) <= CantidadBrazos;
-//                }
-//                return true;
-//            },
-//            Msg2: function (input) {
-//                if (input.is("[name='NumBrazoB']")) {
-//                    return kdoNumericGetValue($("#NumBrazoB")) > 0 && kdoNumericGetValue($("#NumBrazoB")) <= CantidadBrazos;
-//                }
-//                return true;
-//            }
-//        },
-//        messages: {
-//            Msg1: "Requerido",
-//            Msg2: "Requerido"
-//        }
-//    }).data("kendoValidator");
 
 
 var ValidarDuplicarEst = $("#FrmDuplicarEst").kendoValidator(
@@ -2365,10 +2345,6 @@ var Fn_GetRequerimientoFoil = function (vIA) {
     });
 };
 
-// se activa al hacer click en el boton OK del warning
-$("#ElementoTrabajo_action").on("Action_Ok", function (event,dt) {
-    fn_IrKanbanEtapa();
-});
 
 var fn_TecnicasArticuloSugerido = function(input, idSeteo, idRequerimientoTecnica){
     $.ajax({
