@@ -1466,7 +1466,7 @@ var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtap
  * @param {function} fn funcion a ejcutar despues de calcular las retenciones
  */
 var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencion, vSNMostrar, fn) {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(document.activeElement), true);
     let fn_CR = function () {
         if (fn === undefined || fn === "") {
             return true;
@@ -1487,7 +1487,7 @@ var fn_CalcularRetencion = function (vIdOrdenTrabajo, vIdModulo, vIdTipoRetencio
         contentType: "application/json; charset=utf-8",
         complete: function () {
             fn_CR();
-            kendo.ui.progress($(document.body), false);
+            kendo.ui.progress($(document.activeElement), false);
         }
     });
 };

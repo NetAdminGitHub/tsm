@@ -353,7 +353,7 @@ $(document).ready(function () {
             { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
             { field: "IdEstacion", title: "Estación Maquina", footerTemplate: "Totales"},
             { field: "Descripcion", title:"Descripción"},
-            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n4", 4], format: "{0:n4}", footerTemplate: "#: data.Peso ? kendo.format('{0:n4}', sum) : 0 #" },
             { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}", footerTemplate: "#: data.Costo ? kendo.format('{0:c8}', sum) : 0 #" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }
@@ -459,7 +459,7 @@ $(document).ready(function () {
             { field: "CostoArticulo", title: "Costo Art.", format: "{0:c6}"},
             { field: "Abreviatura", title: "Unidad Costo Art." },
             { field: "IdUnidadMedida", title: "IdUnidadMedida", hidden: true },
-            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #"},
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n4", 4], format: "{0:n4}", footerTemplate: "#: data.Peso ? kendo.format('{0:n4}', sum) : 0 #"},
             { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999.99999999", "c", 8], format: "{0:c8}", footerTemplate: "#: data.Costo ? kendo.format('{0:c8}', sum) : 0 #"},
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true }

@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Consulta Consumo Tintas Producción Costeado";
+    ViewBag.IdVersion = "TSM0102007|v20110501";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var crudServiceBaseUrl = "@string.Format("{0}CotizacionesMuestras/", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/ConsumoTintasPRD.js"></script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="form-row mx-2">
+                        <div class="form-group col-lg-4">
+                            <label for="CmbIdCliente">Cliente :</label>
+                            <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="cmbOrdenTrabajo">Orden de Trabajo</label>
+                            <input class="form-control" id="cmbOrdenTrabajo" name="cmbOrdenTrabajo" type="text" required validationMessage="Requerido" />
+                        </div>
+                    </div>
+                    <div class="form border rounded p-2 m-2">
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <h4>Diseño Cotizado</h4>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <h4>Diseño en Producción</h4>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <h4>Diferencia</h4>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <label for="txtNomCliente">Cliente:</label>
+                                <input id="txtNomCliente" name="txtNomCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtCantidadPiezas">N&uacute;mero de Piezas:</label>
+                                <input id="txtCantidadPiezas" name="txtCantidadPiezas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtPiezasProducidas">N&uacute;mero de Piezas:</label>
+                                <input id="txtPiezasProducidas" name="txtPiezasProducidas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtDiferencia">Diferencia:</label>
+                                <input id="txtDiferencia" name="txtDiferencia" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <label for="txtNoCotizacion">No. Cotizaci&oacute;n:</label>
+                                <input id="txtNoCotizacion" name="txtNoCotizacion" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtCostoMP">Costo Materia Prima:</label>
+                                <input id="txtCostoMP" name="txtCostoMP" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtValorTotal">Total tinta:</label>
+                                <input id="txtValorTotal" name="txtValorTotal" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3">
+                                <label for="txtNoPrograma">No. Programa:</label>
+                                <input id="txtNoPrograma" name="txtNoPrograma" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtPrecioCliente">Precio al Cliente:</label>
+                                <input id="txtPrecioCliente" name="txtPrecioCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtCostoPorPieza">Costo por Pieza:</label>
+                                <input id="txtCostoPorPieza" name="txtCostoPorPieza" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form m-2" id="tsContenido">
+                        <ul>
+                            <li class="k-state-active">
+                                Consolidado
+                            </li>
+                            <li>
+                                Detalle de Consumos
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                                <div id="gConsolidado"></div>
+                        </div>
+                        <div class="form-group">
+                            <div id="gDetalle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

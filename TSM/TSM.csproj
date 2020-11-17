@@ -270,6 +270,7 @@
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\ConsultarFichaOTController.cs" />
+    <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
     <Compile Include="Controllers\CotizacionesProgramasController.cs" />
@@ -301,6 +302,7 @@
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
+    <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -787,6 +789,7 @@
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
     <Content Include="Scripts\js\ConsultarFichaOT.js" />
+    <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
@@ -802,6 +805,7 @@
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
+    <Content Include="Scripts\js\OrdenesTrabajosTerminadas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
@@ -1454,12 +1458,86 @@
     <Content Include="Views\Marcas\Index.cshtml" />
     <Content Include="Views\OrientacionPositivos\Index.cshtml" />
     <Content Include="Views\TiposSeparaciones\Index.cshtml" />
-    <Content Include="Web.IST.config">
-    </Content>
-    <Content Include="Web.PRD.config">
-    </Content>
-    <Content Include="Web.UAT.config">
-    </Content>
+    <Content Include="Views\Estaciones\_MaqSR22.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesorios.cshtml" />
+    <Content Include="Views\Estaciones\EstacionColores.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatos.cshtml" />
+    <Content Include="Views\Simulaciones\_SimulacionDatosSubli.cshtml" />
+    <Content Include="Views\PerfilesImpresiones\Index.cshtml" />
+    <Content Include="Views\VelocidadesTransferencias\Index.cshtml" />
+    <Content Include="Views\TiposOperacionesSublimaciones\Index.cshtml" />
+    <Content Include="Views\Shared\_DisenoMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionDisenos.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesoriosDis.cshtml" />
+    <Content Include="Views\Quimicas\Index.cshtml" />
+    <Content Include="Views\TiposEmulsiones\Index.cshtml" />
+    <Content Include="Views\TiposFormulaciones\Index.cshtml" />
+    <Content Include="Views\TipoEstaciones\Index.cshtml" />
+    <Content Include="Views\Sedas\Index.cshtml" />
+    <Content Include="Views\AccesoriosMaquinas\Index.cshtml" />
+    <Content Include="Views\Shared\_TintasFormulaciones.cshtml" />
+    <Content Include="Views\Estaciones\EstacionFormulas.cshtml" />
+    <Content Include="Views\SolicitudesClientes\IngresoSolicitudesClientes.cshtml" />
+    <Content Include="Views\SolicitudesClientes\Index.cshtml" />
+    <Content Include="Views\SolicitudesClientes\SolicitudesPendientes.cshtml" />
+    <Content Include="Views\Shared\_DesarrolloMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionMuestra.cshtml" />
+    <Content Include="Views\AXFormulaciones\ConsultaHistoricaFormulas.cshtml" />
+    <Content Include="Views\ConfigEjecutivasContactosMarcas\Index.cshtml" />
+    <Content Include="Views\GestionOTAsignaciones\Index.cshtml" />
+    <Content Include="Views\TiposTintas\Index.cshtml" />
+    <Content Include="Views\BasesPigmentos\Index.cshtml" />
+    <Content Include="Views\SistemasPigmentos\Index.cshtml" />
+    <Content Include="Views\BasesMuestras\Index.cshtml" />
+    <Content Include="Views\TiposMarcos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\SimulacionesMuestrasInfo.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatos.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_SimulacionMuestrasDatosSubli.cshtml" />
+    <Content Include="Views\MotivosAjustesTintas\Index.cshtml" />
+    <Content Include="Views\Maquinas\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\Index.cshtml" />
+    <Content Include="Views\CatalogoDisenos\CatalogoDisenoInf.cshtml" />
+    <Content Include="Views\AccesoriosMaquinasArticulos\Index.cshtml" />
+    <Content Include="Views\CotizacionesMuestras\Index.cshtml" />
+    <Content Include="Views\CotizacionesMuestras\CotizacionesMuestrasDatos.cshtml" />
+    <Content Include="Views\ReportesPbi\Index.cshtml" />
+    <Content Include="Scripts\Utils\powerbi.js.map" />
+    <Content Include="Scripts\powerbi.js.map" />
+    <Content Include="Views\Impresores\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
+    <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
+    <Content Include="Views\CatalogoDisenos\ConsultarCatalogoDisenos.cshtml" />
+    <Content Include="Views\SublimacionOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
+    <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
+    <Content Include="Views\GetCipher\Index.cshtml" />
+    <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
+    <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
+    <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
+    <Content Include="Views\CalidadCriterios\Index.cshtml" />
+    <Content Include="Views\Shared\_AutorizarRetenciones.cshtml" />
+    <Content Include="Views\GestionOTDesarrollosCobrosApro\Index.cshtml" />
+    <Content Include="Views\Shared\_SolicitarIngresoCambios.cshtml" />
+    <Content Include="Views\SolicitudesCambios\Index.cshtml" />
+    <Content Include="Views\Articulos\Index.cshtml" />
+    <Content Include="Views\Shared\_RegistroOrdenesTrabajosAgendas.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesoriosMuest.cshtml" />
+    <Content Include="Views\OrdenesTrabajosTerminadas\Index.cshtml" />
+    <Content Include="Views\ConsumoTintasPRD\Index.cshtml" />
+    <None Include="Web.IST.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.PRD.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.UAT.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
