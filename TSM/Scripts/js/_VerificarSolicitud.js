@@ -1377,7 +1377,7 @@ let getRD = function (UrlRD) {
 
             $.each(respuesta, function (index, elemento) {
                 //asignacion de valores a campos en vistas
-             
+
                 $("#IdRequerimiento").val(elemento.IdRequerimiento);
                 $("#IdUbicacion").data("kendoComboBox").value(elemento.IdUbicacion);
                 $("#IdPrograma").data("kendoComboBox").value(elemento.IdPrograma);
@@ -1415,14 +1415,18 @@ let getRD = function (UrlRD) {
                 $("#GRReqDesColor").data("kendoGrid").dataSource.read();
                 $("#GRReqDesTec").data("kendoGrid").dataSource.read();
                 $("#GRReqDesFoil").data("kendoGrid").dataSource.read();
+                //habilitar grillas  
                 Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
                 Grid_HabilitaToolbar($("#GRReqDesArtSug"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+
+
                 //habiliar en objetos en las vistas
-                $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
-                HabilitaFormObje(true);
+                xNoPermiteActualizar === false ? $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true)) : $("#Guardar").data("kendoButton").enable(fn_SNAgregar(false)); //xNoPermiteActualizar es igual a true bloquear
+                xNoPermiteActualizar === false ? HabilitaFormObje(true) : HabilitaFormObje(false); //xNoPermiteActualizar es igual a true bloquear
+
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
@@ -2108,13 +2112,11 @@ let fn_DibujarCriteriosCalidad = function (DataSource) {
 let Fn_getIdRequerimientoTecnica= function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdRequerimientoTecnica;
-
 };
 
 let Fn_getIdTecnica= function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdTecnica;
-
 };
 
 let fn_ConsultarArtSug = function () {

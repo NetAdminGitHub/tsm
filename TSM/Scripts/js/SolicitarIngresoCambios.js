@@ -110,12 +110,9 @@ var fn_RegistrarSolicitudCambio = function (xidOt, xIdEtapa, xItem) {
             }),
             success: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
-                //if (xidEtapaCambioAnte !== 0) {
-                    //fn_CambioEtpRegCambio(xidOt, xidEtapaCambioAnte);
-                //} else {
-                    window.location.href = "/EtapasOrdenesTrabajos";
-                //}
                 RequestEndMsg(data, "Post");
+                $("#vRegistroCambio").data("kendoDialog").close();
+                KdoCmbGetValue($("#cmbUsuarioEtpImp")) !== getUser() ? window.location.href = "/EtapasOrdenesTrabajos" : $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xidEtapaCambioAnte.toString() + "]").attr("indice"));
             },
             error: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
