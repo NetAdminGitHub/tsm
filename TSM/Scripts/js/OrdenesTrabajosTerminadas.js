@@ -227,16 +227,30 @@ let fn_DibujarKanban = function (ds) {
     kendo.ui.progress($(document.body), true);
 
     const result = [];
-    const map = new Map();
-    for (const item of ds) {
-        if (!map.has(item.IdEstatusColumna)) {
-            map.set(item.IdEstatusColumna, true);    // set any value to Map
-            result.push({
-                IdEstatusColumna: item.IdEstatusColumna,
-                EstatusColumna: item.EstatusColumna
-            });
-        }
-    }
+    //const map = new Map();
+    //for (const item of ds) {
+    //    if (!map.has(item.IdEstatusColumna)) {
+    //        map.set(item.IdEstatusColumna, true);    // set any value to Map
+    //        result.push({
+    //            IdEstatusColumna: item.IdEstatusColumna,
+    //            EstatusColumna: item.EstatusColumna
+    //        });
+    //    }
+    //}
+
+    result.push({
+        IdEstatusColumna: "C1",
+        EstatusColumna: "PENDIENTE"
+    });
+
+    result.push({
+        IdEstatusColumna: "C2",
+        EstatusColumna: "EN PROGRESO"
+    });
+    result.push({
+        IdEstatusColumna: "C3",
+        EstatusColumna: "FINALIZADO"
+    });
 
     ResultOrden = [];
     ResultOrden = sortByKeyAsc(result, "IdEstatusColumna");
@@ -303,6 +317,7 @@ let fn_DibujarKanban = function (ds) {
                 '<div class="card-body">' +
                 '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                 '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
                 '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
                 '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
                 'Color Tela: ' + elemento.ColorTela + '</p>' +
