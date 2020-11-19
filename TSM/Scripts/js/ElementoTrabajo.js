@@ -689,7 +689,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso, datos.IdTipoOrdenTrabajo));
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
     
-
+    maq = fn_GetMaquinas();
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
@@ -1307,7 +1307,7 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaColores/GetSeteoMaquinaColoresByIdSeteo/" + xvIdSeteo; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaColores/GetSeteoMaquinaColoresByIdSeteo/" + maq[0].IdSeteo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -1342,7 +1342,7 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
                 fields: {
                     IdSeteo: {
                         type: "number", defaultValue: function () {
-                            return xvIdSeteo;
+                            return maq[0].IdSeteo;
                         }
 
                     },
@@ -1486,7 +1486,7 @@ var fn_gridTecnicaEstacion = function (gd, xvIdSeteo) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + xvIdSeteo; },
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + maq[0].IdSeteo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -1521,7 +1521,7 @@ var fn_gridTecnicaEstacion = function (gd, xvIdSeteo) {
                 fields: {
                     IdSeteo: {
                         type: "number", defaultValue: function () {
-                            return xvIdSeteo;
+                            return maq[0].IdSeteo;
                         }
 
                     },
@@ -1752,7 +1752,7 @@ var fn_gridEstacionIntercambio= function (gd) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetTodasByIdSeteo/" + XSeteo ; },
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetTodasByIdSeteo/" + XSeteo; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
