@@ -409,6 +409,7 @@ let fn_DibujarKanban = function (ds) {
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
                         '<div class="user">' +
                         '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
                         '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
@@ -489,7 +490,7 @@ let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdP
 
 let fn_IniciarKanban = function () {
 
-    var TSMboardDemo = {
+    var TSMboardK = {
         init: function init() {
 
             this.bindUIActions();
@@ -549,7 +550,7 @@ let fn_IniciarKanban = function () {
         }
     };
 
-    TSMboardDemo.init();
+    TSMboardK.init();
 
 };
 
