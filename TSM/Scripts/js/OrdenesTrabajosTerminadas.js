@@ -300,6 +300,7 @@ let fn_DibujarKanban = function (ds) {
             let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
             let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
             let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
+            let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
             MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                 //'<div class= "form-group col-lg-2">' +
                 '<div class="card border-success mb-3" style="max-width: 18rem;">' +
@@ -320,7 +321,7 @@ let fn_DibujarKanban = function (ds) {
                 '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
                 '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
                 '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
-                'Color Tela: ' + elemento.ColorTela + '</p>' +
+                'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
                 '</div>' +
                 '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                 '</div>' +
