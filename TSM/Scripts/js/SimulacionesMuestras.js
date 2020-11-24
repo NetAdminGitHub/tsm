@@ -748,7 +748,7 @@ let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExt
         type: "Post",
         dataType: "json",
         data: JSON.stringify({
-            PorcVariacion: kdoNumericGetValue($("#txtPorcVariacionRecalcular")),
+            PorcVariacion: kdoNumericGetValue($("#txtPorcVariacion")),
             Tallas: $("#CmbTallas").data("kendoMultiSelect").value().toString()
         }),
         contentType: 'application/json; charset=utf-8',
