@@ -391,24 +391,27 @@ let fn_DibujarKanban = function (ds) {
                     let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     let UsuarioKB = elemento.NombreUsuario === null ? '</br>' : elemento.NombreUsuario;
+                    let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
+
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">'+
-                       // '< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
-                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>'+
-                            '<li class="emptyItem">'+
-                             '<span class="empty">' + elemento.NoDocumento +'</span>'+
-                                '<ul>'+
-                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>'+
-                        '<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>'+
-                                '</ul>'+
-                            '</li>'+
-                        '</ul>'+
+                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
+                        // '< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
+                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>' +
+                        '<li class="emptyItem">' +
+                        '<span class="empty">' + elemento.NoDocumento + '</span>' +
+                        '<ul>' +
+                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>' +
+                        '<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>' +
+                        '</ul>' +
+                        '</li>' +
+                        '</ul>' +
                         '</div > ' +
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
                         '<div class="user">' +
                         '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
                         '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
@@ -422,7 +425,7 @@ let fn_DibujarKanban = function (ds) {
                         '</div>' +
                         '</div>' +
                         '<p class="card-text" style="white-space:normal;"><br/>Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
-                        'Color Tela: ' + elemento.ColorTela + '</p>' +
+                        'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
                         '</div>' +
                         '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                         '</div>' +
@@ -489,7 +492,7 @@ let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdP
 
 let fn_IniciarKanban = function () {
 
-    var TSMboardDemo = {
+    var TSMboardK = {
         init: function init() {
 
             this.bindUIActions();
@@ -549,7 +552,7 @@ let fn_IniciarKanban = function () {
         }
     };
 
-    TSMboardDemo.init();
+    TSMboardK.init();
 
 };
 

@@ -31,11 +31,11 @@ $(document).ready(function () {
     $("#btnAXaTSM").click(function () {
         $("#ModalGeneraOT_AX").data("kendoDialog").open();
         $("#CmbMotivoDes").data("kendoComboBox").setDataSource(fn_GetMotivoDes());
-        KdoMultiColumnCmbEnable($("#CmbProg"), false);
+        //KdoMultiColumnCmbEnable($("#CmbProg"), false);
         KdoComboBoxEnable($("#CmbMotivoDes"), false);
         KdoButtonEnable($("#btnGenOT_AX"), false);
         KdoCmbSetValue($("#CmbMotivoDes"), "");
-        KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+        //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
         KdoMultiColumnCmbSetValue($("#CmbFM"), "");
         KdoCmbSetValue($("#Cmb_Tallas"), "");
 
@@ -59,10 +59,10 @@ var fn_getArtesAdjuntos = function () {
 
 
     $("#CmbPrograma").ControlSelecionPrograma();
-    $("#CmbProg").ControlSelecionProg();
+    //$("#CmbProg").ControlSelecionProg();
     $("#CmbFM").ControlSelecionFM_AX();
 
-    KdoMultiColumnCmbEnable($("#CmbProg"), false);
+    //KdoMultiColumnCmbEnable($("#CmbProg"), false);
     KdoComboBoxEnable($("#CmbMotivoDes"), false);
     KdoButtonEnable($("#btnGenOT_AX"), false);
 
@@ -88,7 +88,7 @@ var fn_getArtesAdjuntos = function () {
         modal: true,
         close: function (e) {
             KdoCmbSetValue($("#CmbMotivoDes"), "");
-            KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+            //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
             KdoMultiColumnCmbSetValue($("#CmbFM"), "");
             KdoCmbSetValue($("#Cmb_Tallas"), "");
             KdoCmbSetValue($("#Cmb_Prenda"), "");
@@ -130,12 +130,12 @@ var fn_getArtesAdjuntos = function () {
                     }
                     return true;
                 },
-                MsgPro: function (input) {
-                    if (input.is("[name='CmbProg']")) {
-                        return $("#CmbProg").data("kendoMultiColumnComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+                //MsgPro: function (input) {
+                //    if (input.is("[name='CmbProg']")) {
+                //        return $("#CmbProg").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                //    }
+                //    return true;
+                //},
                 MsgTalla: function (input) {
                     if (input.is("[name='Cmb_Tallas']")) {
                         return $("#Cmb_Tallas").data("kendoComboBox").selectedIndex >= 0;
@@ -465,7 +465,7 @@ let fn_getFM = function (g) {
         $("#TxtParte").val(g.PARTEDISENO);
         $("#TxtPrograma").val(g.CODIGOPROGRAMA + " " + g.NOMBREPROGRAMA);
         $("#TxtFecha").val(kendo.toString(kendo.parseDate(g.FECHADISENO), 'dd/MM/yyyy'));
-        KdoMultiColumnCmbEnable($("#CmbProg"), true);
+        //KdoMultiColumnCmbEnable($("#CmbProg"), true);
         KdoComboBoxEnable($("#CmbMotivoDes"), true);
         KdoComboBoxEnable($("#Cmb_Tallas"), true);
         KdoComboBoxEnable($("#Cmb_Prenda"), true);
@@ -481,7 +481,7 @@ let fn_getFM = function (g) {
         $("#TxtFecha").val("");
         $("#TxtPrenda").val("");
         $("#TxtParte").val("");
-        KdoMultiColumnCmbEnable($("#CmbProg"), false);
+        //KdoMultiColumnCmbEnable($("#CmbProg"), false);
         KdoComboBoxEnable($("#CmbMotivoDes"), false);
         KdoComboBoxEnable($("#Cmb_Tallas"), false);
         KdoComboBoxEnable($("#Cmb_Prenda"), false);
@@ -490,7 +490,7 @@ let fn_getFM = function (g) {
         KdoComboBoxEnable($("#Cmb_Prenda"), false);
         KdoComboBoxEnable($("#Cmb_Partes"), false);
         KdoCmbSetValue($("#CmbMotivoDes"), "");
-        KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+        //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
         KdoCmbSetValue($("#Cmb_Tallas"), "");
     }
 
@@ -508,7 +508,7 @@ let fn_GenerarOT_FMAX= function () {
             dataType: "json",
             data: JSON.stringify({
                 codigoDiseno: KdoMultiColumnCmbGetValue($("#CmbFM")).toString(),
-                idPrograma: KdoMultiColumnCmbGetValue($("#CmbProg")).toString(),
+                //idPrograma: KdoMultiColumnCmbGetValue($("#CmbProg")).toString(),
                 IdServicio: 1,
                 idMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDes")).toString(),
                 idCategoriaTalla: KdoCmbGetValue($("#Cmb_Tallas")).toString(),

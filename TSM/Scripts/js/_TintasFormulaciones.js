@@ -42,7 +42,8 @@ var fn_TintasFCargarConfiguracion = function () {
                     IdTipoEmulsion: { type: "number" },
                     DesTipoEmulsion: {type:"string"},
                     CantidadEstaciones: { type: "string" },
-                    Estaciones: {type: "string"}
+                    Estaciones: { type: "string" },
+                    Capilar: {type: "string" }
                    
                 }
             }
@@ -67,9 +68,11 @@ var fn_TintasFCargarConfiguracion = function () {
             { field: "IdSeda", title: "Id Seda", minResizableWidth: 120 ,hidden:true},
             { field:"DesSeda", title: "Seda" , minResizableWidth:120},
             { field: "IdTipoEmulsion", title: "Id Tipo Emulsión", minResizableWidth: 120, hidden:true },
-            { field: "DesTipoEmulsion",title:"Tipo de Emulsión",minResizableWidth:120},
+            { field: "DesTipoEmulsion", title: "Tipo de Emulsión", minResizableWidth: 120 },
+            { field: "Capilar", title: "Capilar", minResizableWidth: 120 },
             { field: "CantidadEstaciones", title: "Cant. de estaciones", minResizableWidth: 120 },
             { field: "Estaciones", title: "Estaciones ", minResizableWidth: 120 }
+            
             //{ field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
             
         ]

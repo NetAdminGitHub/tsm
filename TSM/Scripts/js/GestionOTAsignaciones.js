@@ -318,6 +318,8 @@ let fn_DibujarKanban = function (ds) {
                     let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
+                    let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
+
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
@@ -335,8 +337,9 @@ let fn_DibujarKanban = function (ds) {
                         '<div class="card-body">' +
                         '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
                         '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
                         '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
-                        'Color Tela: ' + elemento.ColorTela + '</p>' +
+                        'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
                         '</div>' +
                         '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                         '</div>' +
@@ -404,7 +407,7 @@ let fn_ObtenerOTsKbAsig = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente
 
 let fn_IniciarKanban = function () {
 
-    var TSMboardDemo = {
+    var TSMboardK_A = {
         init: function init() {
 
             this.bindUIActions();
@@ -499,7 +502,7 @@ let fn_IniciarKanban = function () {
         }
     };
 
-    TSMboardDemo.init();
+    TSMboardK_A.init();
 
 };
 

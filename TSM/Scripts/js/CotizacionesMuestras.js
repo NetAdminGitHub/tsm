@@ -60,6 +60,10 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdArticulo").data("kendoComboBox").selectedIndex >= 0;
                                 }
+                                if (input.is("[name='IdPrograma']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdPrograma").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                                }
                                 return true;
                             }
                         }
@@ -156,7 +160,13 @@ $(document).ready(function () {
                     }
                 }
             },
-            { field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "CmbIdCliente", "requerido"], hidden: true },
+            //{ field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "CmbIdCliente", "requerido"], hidden: true },
+            {
+                field: "IdPrograma", title: "Programa", hidden: true,
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" id ="' + options.field + '" />').appendTo(container).SelecionProgramas();
+                }
+            },
             {
                 field: "NoDocumentoPrograma", title: "No Programa",
                 filterable: {
@@ -264,6 +274,8 @@ $(document).ready(function () {
 
     //Coloca el filtro de cliente guardado en la sesion
     if ((sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente")) !== null || (sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbPrograma")) !== null) {
+
+        Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, false, Permisos.SNBorrar);
         Fn_ConsultarCotiza(sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente"), sessionStorage.getItem("CotizacionesMuestras_CmbPrograma"));
     }
 });
@@ -302,6 +314,56 @@ $.fn.extend({
                     { field: "NoDocumento", title: "No Programa", width: 100 },
                     { field: "Nombre", title: "Nombre del Programa", width: 200 },
                     { field: "NombreCli", title: "Nombre del Cliente", width: 200 }
+                ]
+            });
+        });
+    }
+});
+
+$.fn.extend({
+    SelecionProgramas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                filterFields: ["IdPrograma", "NoDocumento", "Nombre"],
+                autoBind: false,
+                //minLength: 3,
+                height: 400,
+                placeholder: "Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")));
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function (data, type) {
+                            if (type !== "read" && data.models) {
+                                return kendo.stringify(data.models[0]);
+                            }
+                        }
+                    },
+                    schema: {
+                        total: "count",
+                        model: {
+                            id: "IdPrograma",
+                            fields: {
+                                IdPrograma: { type: "number" },
+                                NoDocumento: { type: "string" },
+                                Nombre: { type: "string" }
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 }
                 ]
             });
         });
