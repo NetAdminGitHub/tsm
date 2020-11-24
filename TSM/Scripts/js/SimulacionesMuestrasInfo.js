@@ -50,6 +50,52 @@ $(document).ready(function () {
         decimals: 0,
         value: 0
     });
+
+    $("#TxtNuevaCantidadPiezasRecalcular").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+    $("#txtPorcVariacionRecalcular").kendoNumericTextBox({
+        format: "p",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+
+    $("#TxtNoMontajeRecalcular").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+    $("#txtPersonalExtraRecalcular").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
+
+    $("#txtCombosRecalcular").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 1,
+        value: 1
+    });
+
+    $("#txtVeloMaquinaRecalcular").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 1,
+        value: 1
+    });
+
     KdoNumerictextboxEnable($("#NumCantidadTallasRecal"), false);
     let ValidNuevoSimRecal = $("#FrmRecalcularSim").kendoValidator({
         rules: {
@@ -58,10 +104,51 @@ $(document).ready(function () {
                     return $("#CmbTallasRecalcular").data("kendoMultiSelect").value().length > 0;
                 }
                 return true;
+            },
+            Mayor0: function (input) {
+                if (input.is("[name='TxtNuevaCantidadPiezasRecalcular']")) {
+                    return input.val() > 0;
+                }
+                return true;
+            },
+            NoMontajeMayor0: function (input) {
+                if (input.is("[name='TxtNoMontajeRecalcular']")) {
+                    return input.val() > 0;
+                }
+                return true;
+            },
+            PersonalMayorIgual0: function (input) {
+                if (input.is("[name='txtPersonalExtraRecalcular']")) {
+                    return input.val() >= 0;
+                }
+                return true;
+            },
+            CombosMayorIgual0: function (input) {
+                if (input.is("[name='txtCombosRecalcular']")) {
+                    return input.val() > 0;
+                }
+                return true;
+            },
+            VeloMayorIgual0: function (input) {
+                if (input.is("[name='txtVeloMaquinaRecalcular']")) {
+                    return input.val() > 0;
+                }
+                return true;
+            },
+            PorcMayorIgual0: function (input) {
+                if (input.is("[name='txtPorcVariacionRecalcular']")) {
+                    return input.val() >= 0;
+                }
+                return true;
             }
-
         },
         messages: {
+            Mayor0: "requerido",
+            NoMontajeMayor0: "requerido.",
+            PersonalMayorIgual0: "requerido",
+            CombosMayorIgual0: "requerido",
+            VeloMayorIgual0: "requerido",
+            PorcMayorIgual0: "requerido",
             TallaRec: "requerido"
         }
     }).data("kendoValidator");
@@ -483,6 +570,13 @@ $(document).ready(function () {
     //#reg
     $("#btnRecalcular").click(function (event) {
         fn_getSimulacionesTallas(vIdSimulacion.toString());
+        kdoNumericSetValue($("#txtCombosRecalcular"), kdoNumericGetValue($("#txtCantidadCombos")));
+        kdoNumericSetValue($("#TxtNuevaCantidadPiezasRecalcular"), kdoNumericGetValue($("#TxtCantidadPiezas")));
+        kdoNumericSetValue($("#TxtNoMontajeRecalcular"), kdoNumericGetValue($("#TxtMontajes")));
+        kdoNumericSetValue($("#txtPersonalExtraRecalcular"), kdoNumericGetValue($("#txtNoPersonalExtra")));
+        kdoNumericSetValue($("#txtVeloMaquinaRecalcular"), kdoNumericGetValue($("#txtVelocidadMaquina")));
+        kdoNumericSetValue($("#txtPorcVariacionRecalcular"), kdoNumericGetValue($("#txtPorcVariacion")) === null ? 0 : kdoNumericGetValue($("#txtPorcVariacion")));
+        kdoChkSetValue($("#chkUsarTermofijadoRecalcular"), KdoChkGetValue($("#chkUsarTermo")));
         $("#MbtnSimuRecalcular").data("kendoDialog").open();
     });
 
@@ -691,6 +785,13 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
 
+    $("#txtPorcVariacion").kendoNumericTextBox({
+        format: "p",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+
     $("#txtTiempoProyecto").kendoNumericTextBox({
         format: "n4",
         restrictDecimals: false,
@@ -810,7 +911,7 @@ let fn_DHCamposSim = function () {
     $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
     $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
     $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
-
+    $("#txtPorcVariacion").data("kendoNumericTextBox").enable(false);
 };
 
 let fn_SetCamposValores = function (elemento) {
@@ -849,6 +950,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#txtCantidadCombos").data("kendoNumericTextBox").value(elemento.CantidadCombos);
         $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
         $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+        $("#txtPorcVariacion").data("kendoNumericTextBox").value(elemento.PorcVariacion);
         $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
         $("#TxtOrdenTrabajo").val(elemento.NoOT);
 
@@ -913,15 +1015,19 @@ var fn_GetSimubyIdSimu = function () {
 let fn_RecalSimulacionVistaInf = function () {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString(),
+        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString() + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0"),
         type: "Post",
         dataType: "json",
         data: JSON.stringify({
+            PorcVariacion: kdoNumericGetValue($("#txtPorcVariacionRecalcular")),
             Tallas: $("#CmbTallasRecalcular").data("kendoMultiSelect").value().toString()
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             fn_GetSimubyIdSimu();
+            $("#gridSimuConsumo").data("kendoGrid").dataSource.read();
+            $("#gridSimuConsumoArt").data("kendoGrid").dataSource.read();
+            $("#gridRentabilidad").data("kendoGrid").dataSource.read();
             $("#MbtnSimuRecalcular").data("kendoDialog").close();
             kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(data, "Post");
