@@ -1426,7 +1426,27 @@ let getRD = function (UrlRD) {
                 //habiliar en objetos en las vistas
                 xNoPermiteActualizar === false ? $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true)) : $("#Guardar").data("kendoButton").enable(fn_SNAgregar(false)); //xNoPermiteActualizar es igual a true bloquear
                 xNoPermiteActualizar === false ? HabilitaFormObje(true) : HabilitaFormObje(false); //xNoPermiteActualizar es igual a true bloquear
-
+                if (xNoPermiteActualizar === true) {
+                    KdoComboBoxEnable($("#CmbMotivoDesarrollo"), true);
+                    $("#Guardar").data("kendoButton").enable(fn_SNAgregar(true));
+                    KdoNumerictextboxEnable($("#CntPiezas"), true);
+                    KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), true);
+                    KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), true);
+                    KdoComboBoxEnable($("#IdComposicionTela"), true);
+                    KdoComboBoxEnable($("#IdCategoriaConfeccion"), true);
+                    KdoComboBoxEnable($("#IdConstruccionTela"), true);
+                    KdoComboBoxEnable($("#CmbTipoLuz"),true);
+                    KdoComboBoxEnable($("#CmbTMuestra"), true);
+                    KdoComboBoxEnable($("#CmbQuimica"), true);
+                    $("#swchSolTelaSustituta").data("kendoSwitch").enable(true);
+                    $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(true);
+                    $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(true);
+                    $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(true);
+                    $("#swchCobrarDiseno").data("kendoSwitch").enable(true);
+                    KdoComboBoxEnable($("#CmbIdUnidadMedidaCantidad"), true);
+                    $("#TxtDirectorioArchivos").removeAttr("disabled");
+                    $("#TxtDirectorioArchivos").removeAttr("readonly");
+                } 
                 Fn_EnablePanelBar($("#BarPanel"), $("#BPGRReqDesTec"), false);
                 $("#swchSolTelaSustituta").data("kendoSwitch").check(elemento.SolicitaTelaSustituta);
                 $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(elemento.StandarOEKOTEX);
@@ -1697,10 +1717,10 @@ let GuardarRequerimiento = function (UrlRD) {
             EstiloDiseno: $("#EstiloDiseno").val(),
             NumeroDiseno: $("#NumeroDiseno").val(),
             DirectorioArchivos: $("#TxtDirectorioArchivos").val(),
-            IdTipoLuz: $("#CmbTipoLuz").val(),
+            IdTipoLuz: $("#CmbTipoLuz").val() === "" || $("#CmbTipoLuz").val() === null  ? null: $("#CmbTipoLuz").val(),
             IdMotivoDesarrollo: $("#CmbMotivoDesarrollo").val(),
             IdTipoAcabado: KdoCmbGetValue($("#CmbTipoAcabado")),
-            IdTipoMuestra: $("#CmbTMuestra").val(),
+            IdTipoMuestra: $("#CmbTMuestra").val() === "" || $("#CmbTMuestra").val() === null ? null : $("#CmbTMuestra").val(),
             IdQuimica: KdoCmbGetValue($("#CmbQuimica")),
             SolicitaTelaSustituta: $("#swchSolTelaSustituta").data("kendoSwitch").check(),
             IdCatalogoDiseno: $("#IdCatalogoDiseno").val(),
