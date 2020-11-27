@@ -2322,13 +2322,14 @@ var fn_MostraTablaFormula = function (ds, div) {
     let xformulaDet = $("#" + div + "_Det");
     xformulaDet.children().remove();
     $.each(ds, function (index, elemento) {
-
-        xformulaDet.append('<tr>' +
-            '<td>' + elemento.IdArticulo + '</td>' +
-            '<td>' + elemento.Nombre + '</td>' +
-            '<td>' + kendo.format("{0:n2}",elemento.MasaFinal) + '</td>' +
-            '<td>' + kendo.format("{0:n2}", elemento.PorcFinal) + '</td>' +
-            '</tr>');
+        if (elemento.IdArticulo !== null) {
+            xformulaDet.append('<tr>' +
+                '<td>' + elemento.IdArticulo + '</td>' +
+                '<td>' + elemento.Nombre + '</td>' +
+                '<td>' + kendo.format("{0:n2}", elemento.MasaFinal) + '</td>' +
+                '<td>' + kendo.format("{0:n2}", elemento.PorcFinal) + '</td>' +
+                '</tr>');
+        }
     });
 
     xformulaDet.append('<tr>' +
@@ -2336,7 +2337,7 @@ var fn_MostraTablaFormula = function (ds, div) {
         '<th rowspan="1" colspan="1"></th>' +
         '<th rowspan="1" colspan="1"></th>' +
         '<th rowspan="1" colspan="1">Total:</th>' +
-        '<th rowspan="1" colspan="1">'+( ds !==null ? kendo.format("{0:n2}", ds[0].TotalPorc): 0.00) +' %</th>' +
+        '<th rowspan="1" colspan="1">' + (ds !== null ? kendo.format("{0:n2}", ds[0].TotalPorc === null ? 0 : ds[0].TotalPorc): 0.00) +' %</th>' +
         '</tr>');
 
 

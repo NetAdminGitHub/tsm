@@ -609,8 +609,10 @@ var fn_SeccionTitasFormulas_Dis = function (datos) {
         $("#TxtIdform_Dis").val(EstaTintasFormula[0].IdFormula);
         $("#NumMasaEntre_Dis").val(EstaTintasFormula[0].MasaEntregada);
         fn_MostraTablaFormula(EstaTintasFormula, "TablaFormulaDis");
-        KdoButtonEnable($("#btnccc_Dis"), false);
-        KdoButtonEnable($("#btnDelFT_Dis"), true);
+        if (EstaTintasFormula[0].IdFormula !== null && EstaTintasFormula[0].IdFormula > 0) {
+            KdoButtonEnable($("#btnccc_Dis"), false);
+            KdoButtonEnable($("#btnDelFT_Dis"), true);
+        }
     } else {
         $("#TxtIdform_Dis").val(0);
         KdoButtonEnable($("#btnccc_Dis"), true);
