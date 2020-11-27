@@ -54,6 +54,7 @@ var InicioModalFor = 0;
 var CantidadBrazos = 22;
 var XSeteo = 0;
 var xNoPermiteActualizar = false;
+var LEstaciones = "";
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -99,7 +100,7 @@ var tabStrip;
 $(document).ready(function () {
 
     //tab modal para vista Desplazamiento e Intercambio
-    tabStrip=  $("#TabDesplazar").kendoTabStrip({
+    tabStrip = $("#TabDesplazar").kendoTabStrip({
         tabPosition: "top",
         animation: { open: { effects: "fadeIn" } }
     }).data("kendoTabStrip");
@@ -126,6 +127,9 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbTpAjuste"), TSM_Web_APi + "Alertas", "Nombre", "IdAlerta", "Seleccione...");
+    KdoCmbSetValue($("#cmbTpAjuste"), 1);
+    KdoComboBoxEnable($("#cmbTpAjuste"), false);
 
     $("#cmbEtpSigAnt").data("kendoComboBox").bind("change", function (e) {
         $("#cmbUsuarioEtp").data("kendoComboBox").value("");
@@ -153,7 +157,8 @@ $(document).ready(function () {
 
     KdoButton($("#btnDesplazarEstacion"), "check", "Comentarios por departamento");
     KdoButton($("#btnCambiarEstacion"), "check", "Desplazar / Intercambiar");
-    KdoButton($("#btnDuplicarEstacion"), "check", "Duplicar");
+    KdoButton($("#btnDuplicarEstacion"), "gear", "Duplicar");
+    KdoButton($("#btnRegAjuste"), "save", "Solicitar Ajuste");
 
     $("#swchSolTelaSusti").kendoSwitch();
     $("#swchSolDesOEKO").kendoSwitch();
@@ -212,7 +217,7 @@ $(document).ready(function () {
     fn_gridEstacionIntercambio($("#gridInter"));
 
 
-//#region Grid soliciud
+    //#region Grid soliciud
     var dsetRegCambios = new kendo.data.DataSource({
         transport: {
             read: {
@@ -231,7 +236,7 @@ $(document).ready(function () {
             model: {
                 id: "IdOrdenTrabajo",
                 fields: {
-                    IdOrdenTrabajo: { type: "number"},
+                    IdOrdenTrabajo: { type: "number" },
                     IdSolicitudCambio: { type: "number" },
                     NombreSolicitudCambio: { type: "string" },
                     ItemSolicitud: { type: "number" },
@@ -240,7 +245,7 @@ $(document).ready(function () {
                     NombreEstado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Fecha: { type:"date"}
+                    Fecha: { type: "date" }
 
                 }
             }
@@ -274,12 +279,12 @@ $(document).ready(function () {
             { field: "ItemSolicitud", title: "Item", hidden: true },
             { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}",  hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gridRegistroCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, true, redimensionable.Si,220);
+    SetGrid($("#gridRegistroCambios").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, true, redimensionable.Si, 220);
     Set_Grid_DataSource($("#gridRegistroCambios").data("kendoGrid"), dsetRegCambios, 20);
     var srow1 = [];
     $("#gridRegistroCambios").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -294,9 +299,9 @@ $(document).ready(function () {
         Grid_SelectRow($("#gridRegistroCambios"), srow1);
     });
 
-//#endregion 
+    //#endregion 
 
-//#region Grid detalle de solicitud
+    //#region Grid detalle de solicitud
     var dsetRegCambiosDetalle = new kendo.data.DataSource({
 
         transport: {
@@ -389,16 +394,16 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IDOrdenTrabajo", title: "Código Orden Trabajo", hidden: true},
-            { field: "IdSolicitudCambio", title: "Código solicitud cambio" ,hidden: true},
-            { field: "NombreSolicitudCambio", title: "Solicitud de cambio", hidden: true},
-            { field: "ItemSolicitud", title: "Item", hidden: true},
-            { field: "IdEtapaProceso", title: "Código Etapa", hidden: true},
-            { field: "NombreEtapaProceso", title: "Etapa", minResizableWidth: 250},
+            { field: "IDOrdenTrabajo", title: "Código Orden Trabajo", hidden: true },
+            { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true },
+            { field: "NombreSolicitudCambio", title: "Solicitud de cambio", hidden: true },
+            { field: "ItemSolicitud", title: "Item", hidden: true },
+            { field: "IdEtapaProceso", title: "Código Etapa", hidden: true },
+            { field: "NombreEtapaProceso", title: "Etapa", minResizableWidth: 250 },
             { field: "Item", title: "Item", hidden: true },
-            { field: "Estado", title: "Estado", hidden: true},
+            { field: "Estado", title: "Estado", hidden: true },
             { field: "NombreEstado", title: "Nombre Estado", hidden: true },
-            { field: "Comentario", title: "Comentario" ,minResizableWidth:700},
+            { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
             { field: "Autorizado", title: "Autorizado ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Autorizado"); } },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
@@ -418,11 +423,12 @@ $(document).ready(function () {
 
     $("#gridRegistroCambiosDetalle").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridRegistroCambiosDetalle"), srow2);
-        
+
     });
- //#endregion
+    //#endregion
 
     //#region Grid Ingreso de ajuste en estación
+
     var dsetAjusteEst = new kendo.data.DataSource({
 
         transport: {
@@ -457,43 +463,60 @@ $(document).ready(function () {
         },
         schema: {
             model: {
-                id: "Item",
+                id: "IdEstacion",
                 fields: {
-                    IdSeteo: { type: "number", defaultValue: function () { return XSeteo; } },
+                    IdSeteo: { type: "number"},
                     Item: { type: "number" },
                     IdEstacion: { type: "number" },
                     IdAlerta: { type: "string" },
                     Nombre: { type: "string" },
                     Fecha: { type: "date" },
                     Descripcion: {
-                        type: "string",
-                        validation: {
-                            required: true,
-                            maxlength: function (input) {
-                                if (input.is("[name='IdAlerta']")) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdAlerta").data("kendoComboBox").selectedIndex >= 0;
-                                }
-                                if (input.is("[name='Descripcion']") ) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
-                                    return input.val().length > 0 && input.val().length <= 300;
-                                }
-                                return true;
-                            }
-                        }
+                        type: "string"
+                        //validation: {
+                        //    required: true,
+                        //    maxlength: function (input) {
+                        //        //if (input.is("[name='IdAlerta']")) {
+                        //        //    input.attr("data-maxlength-msg", "Requerido");
+                        //        //    return $("#IdAlerta").data("kendoComboBox").selectedIndex >= 0;
+                        //        //}
+                        //        if (input.is("[name='Descripcion']")) {
+                        //            input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
+                        //            return input.val().length > 0 && input.val().length <= 300;
+                        //        }
+                        //        return true;
+                        //    }
+                        //}
                     },
                     Estado: { type: "string", defaultValue: function () { return 'ACTIVA'; } },
                     Nombre1: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    DescripcionEstacion: {
+                        type: "string"
+
+                    },
+                    ColorHex: {
+                        type: "string"
+
+                    },
+                    NombreColorEstacion: {
+                        type: "string"
+                    },
+                    IdRow: { type: "number"}
 
                 }
             }
         }
+        //,
+        //group: {
+        //    field: "Nombre"
+        //}
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
+
     $("#gridAlerAjus").kendoGrid({
-       
+
         edit: function (e) {
             //KdoHideCampoPopup(e.container, "IdSeteo");
             KdoHideCampoPopup(e.container, "Item");
@@ -503,10 +526,20 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "Fecha");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "DescripcionEstacion");
+            KdoHideCampoPopup(e.container, "NombreColorEstacion");
+            KdoHideCampoPopup(e.container, "ColorHex");
             if (!e.model.isNew()) {
                 KdoHideCampoPopup(e.container, "IdAlerta");
                 KdoHideCampoPopup(e.container, "IdEstacion");
-                KdoHideCampoPopup(e.container, "Descripcion");
+                KdoHideCampoPopup(e.container, "Estado");
+
+                $("[name='IdAlerta']").data("kendoComboBox").value(KdoCmbGetValue($("#cmbTpAjuste")));
+                $("[name='IdAlerta']").data("kendoComboBox").trigger("change");
+                $("[name='Estado']").data("kendoComboBox").value('ACTIVA');
+                $("[name='Estado']").data("kendoComboBox").trigger("change");
+                //$("[name='Estado']").trigger();
+       
             } else {
                 KdoHideCampoPopup(e.container, "Estado");
             }
@@ -514,15 +547,22 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
-            { field: "IdSeteo", title: "Código IdSeteo", hidden: true },
-            { field: "Item", title: "Item", hidden: true },
+            { selectable: true, width: "50px" },
             { field: "IdEstacion", title: "Estación", editor: Grid_ColNumeric, values: ["required", "1", CantidadBrazos, "#", 0] },
+            { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            {
+                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
+            },
+            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "IdSeteo", title: "Código IdSeteo" },
+            { field: "Item", title: "Item", hidden: true},
             { field: "IdAlerta", title: "Ajuste", editor: Grid_Combox, values: ["IdAlerta", "Nombre", TSM_Web_APi + "Alertas", "", "Seleccione...."], hidden: true},
-            { field: "Nombre", title: "Nombre" },
+            { field: "Nombre", title: "Nombre", hidden: true },
             { field: "Descripcion", title: "Comentario ajuste", editor: Grid_ColTextArea, values: ["6"] },
-            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", TSM_Web_APi + "Estados", "SeteoMaquinasAlertas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
-            { field: "Nombre1", title: "Estado" },
+            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", TSM_Web_APi + "Estados", "SeteoMaquinasAlertas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true},
+            { field: "Nombre1", title: "Estado", hidden: true },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
             //{
@@ -549,21 +589,98 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gridAlerAjus").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 500);
-    SetGrid_CRUD_ToolbarTop($("#gridAlerAjus").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid($("#gridAlerAjus").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 500,false);
     SetGrid_CRUD_Command($("#gridAlerAjus").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridAlerAjus").data("kendoGrid"), dsetAjusteEst);
 
-    var srow5 = [];
-    $("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridAlerAjus"), srow5);
-    });
+    //var srow5 = [];
+    //$("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+    //    Grid_SetSelectRow($("#gridAlerAjus"), srow5);
+    //});
 
     $("#gridAlerAjus").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridAlerAjus"), srow5);
+        //Grid_SelectRow($("#gridAlerAjus"), srow5);
+        LEstaciones = this.selectedKeyNames().join(", ");
 
     });
- //#endregion
+
+
+    //var dsSelect = new kendo.data.DataSource({
+    //    //CONFIGURACION DEL CRUD
+    //    transport: {
+    //        read: {
+    //            url: function () { return TSM_Web_APi + "SeteoMaquinasAlertas/GetSeleccionByIdSeteo/" + XSeteo; },
+    //            dataType: "json",
+    //            contentType: "application/json; charset=utf-8"
+    //        },
+    //        parameterMap: function (data, type) {
+    //            if (type !== "read") {
+    //                return kendo.stringify(data);
+    //            }
+    //        }
+    //    },
+    //    schema: {
+    //        model: {
+    //            id: "IdEstacion",
+    //            fields: {
+    //                IdSeteo: {
+    //                    type: "number"
+    //                },
+    //                IdEstacion: {
+    //                    type: "number"
+    //                },
+    //                DescripcionEstacion: {
+    //                    type: "string"
+
+    //                },
+    //                ColorHex: {
+    //                    type: "string"
+
+    //                },
+    //                NombreColorEstacion: {
+    //                    type: "string"
+    //                }
+
+    //            }
+    //        }
+    //    },
+
+
+    //});
+
+    ////CONFIGURACION DEL GRID,CAMPOS
+    //$("#gridAlerSelectAjus").kendoGrid({
+    //    //DEFICNICIÓN DE LOS CAMPOS
+
+    //    columns: [
+    //        { selectable: true, width: "50px" },
+    //        { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
+    //        { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+    //        { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+    //        {
+    //            field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+    //            template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
+    //        },
+    //        { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 }
+
+    //    ]
+    //});
+
+    //// FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    //SetGrid($("#gridAlerSelectAjus").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 500,false);
+    //Set_Grid_DataSource($("#gridAlerSelectAjus").data("kendoGrid"), dsSelect);
+
+    ////var srwf = [];
+    ////$("#gridAlerSelectAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+    ////    Grid_SetSelectRow($("#gridAlerSelectAjus"), srwf);
+    ////});
+
+    //$("#gridAlerSelectAjus").data("kendoGrid").bind("change", function (e) {
+    //    LEstaciones = this.selectedKeyNames().join(", ");
+    //});
+
+    //#endregion
+
     //Fn_VistaCambioEstado($("#vCambioEstadoAlert"));
 
 });
@@ -905,7 +1022,7 @@ $("#vDuplicarMarco").kendoWindow({
 
 $("#vAlertaAjustes").kendoWindow({
     height: "auto",
-    width: "70%",
+    width: "80%",
     minHeight: 500,
     title: "Ingresar Ajustes Tintas / Marcos",
     visible: false,
@@ -964,6 +1081,19 @@ $("#btnDuplicarEstacion").click(function () {
     }
 });
 
+$("#btnRegAjuste").click(function () {
+    if (ValidarSoliAjuste.validate()) {
+        if (LEstaciones === "" || LEstaciones === null) {
+            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione una o más estaciones a ajustar", "error");
+        } else {
+            fn_AlertasBatch();
+
+        }
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    }
+});
+
 var fn_OpenModalDesplazamiento = function () {
     $("#vDesplazarCambiar").data("kendoWindow").center().open();
     tabStrip.select(fn_getItem(0));
@@ -980,6 +1110,8 @@ var fn_OpenModalDesplazamiento = function () {
 var fn_OpenModalEstacionAjuste = function () {
     $("#vAlertaAjustes").data("kendoWindow").center().open();
     $('#gridAlerAjus').data("kendoGrid").dataSource.read();
+    //$("#gridAlerSelectAjus").data("kendoGrid").dataSource.read();
+    //KdoCmbSetValue($("#cmbTpAjuste"), "");
 };
 
 
@@ -1242,6 +1374,21 @@ var ValidarDuplicarEst = $("#FrmDuplicarEst").kendoValidator(
         messages: {
             Msg1: "Requerido",
             Msg2: "Requerido"
+        }
+    }).data("kendoValidator");
+
+var ValidarSoliAjuste = $("#FrmSoliAjuste").kendoValidator(
+    {
+        rules: {
+            Msg1: function (input) {
+                if (input.is("[name='cmbTpAjuste']")) {
+                    return $("#cmbTpAjuste").data("kendoComboBox").selectedIndex >= 0;
+                }
+                return true;
+            }
+        },
+        messages: {
+            Msg1: "Requerido"
         }
     }).data("kendoValidator");
 
@@ -2362,5 +2509,44 @@ var fn_TecnicasArticuloSugerido = function(input, idSeteo, idRequerimientoTecnic
 // otiene el item del tab
 var fn_getItem = function (indice) {
     return tabStrip.tabGroup.children("li").eq(indice);
+};
+
+//crear alertas en bacth
+
+var fn_AlertasBatch = function () {
+    kendo.ui.progress($("#vAlertaAjustes"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasAlertas/CrearSolicitudAjusteMarco",//
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
+            //IdEtapaNuevo: 9,
+            //IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
+            IdSolicitudCambio: 15,
+            NombreTipoCambio:"AJUSTE DE MARCO / TINTAS",
+            ItemSolicitud: 0,
+            IdEtapa: $("#txtIdEtapaProceso").val(),
+            Estado: "GENERADA",
+            Motivo:"AJUSTE SOLICITADO PARA TINTAS Y REVELADO",
+            IdUsuario: getUser(),
+            IdSeteo: XSeteo,
+            IdEstaciones: LEstaciones,
+            IdAlerta: KdoCmbGetValue($("#cmbTpAjuste"))
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Post");
+            $("#gridAlerAjus").data("kendoGrid").dataSource.read();
+            $("#vAlertaAjustes").data("kendoWindow").close();
+            window.location.href = "/EtapasOrdenesTrabajos";
+            kendo.ui.progress($("#vAlertaAjustes"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#vAlertaAjustes"), false);
+            ErrorMsg(data);
+        }
+    });
+
 };
 
