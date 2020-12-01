@@ -473,7 +473,7 @@ var fn_GridEstaciones = function (gd) {
             var grid = gd.data("kendoGrid");
             var data = grid.dataSource.data();
             $.each(data, function (i, row) {
-                if (row.Comentario !== '') {
+                if (row.EstadoAlerta === 'ACTIVA') {
                     $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
                 } else {
                     $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
@@ -489,7 +489,9 @@ var fn_GridEstaciones = function (gd) {
                 field: "ColorHex", title: "Color", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
             { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120 },
-            { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 }
+            { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 },
+            { field: "EstadoAlerta", title: "EstadoAlerta", minResizableWidth: 120, hidden: true }
+            
         ]
     });
 
@@ -934,7 +936,11 @@ var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
 };
 
 let Fn_UpdGridEstacion_Formula = function (g, estado) {
-    g.set("EstadoFormula", estado );
+    g.set("EstadoFormula", estado);
+    LimpiaMarcaCelda_Formula();
+    if (estado === "FORMULA VIGENTE") {
+        g.set("EstadoAlerta", "FINALIZADA");
+    }
     LimpiaMarcaCelda_Formula();
 };
 
@@ -948,6 +954,7 @@ let fn_UpdEstadoGrilla = function () {
     let ge = $("#gridEstacion").data("kendoGrid");
     var uid = ge.dataSource.get(xidEstacion).uid;
     Fn_UpdGridEstacion_Formula(ge.dataItem("tr[data-uid='" + uid + "']"), KdoCmbGetText($("#cmbEstados")));
+    $("tr[data-uid= '" + uid + "']").removeAttr("style");
 
     return true;
 };
