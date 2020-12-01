@@ -556,7 +556,7 @@ $(document).ready(function () {
             },
             { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
-            { field: "IdSeteo", title: "Código IdSeteo" },
+            { field: "IdSeteo", title: "Código IdSeteo", hidden: true },
             { field: "Item", title: "Item", hidden: true},
             { field: "IdAlerta", title: "Ajuste", editor: Grid_Combox, values: ["IdAlerta", "Nombre", TSM_Web_APi + "Alertas", "", "Seleccione...."], hidden: true},
             { field: "Nombre", title: "Nombre", hidden: true },
