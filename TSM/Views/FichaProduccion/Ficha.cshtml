@@ -1,0 +1,533 @@
+﻿@{
+    ViewBag.Title = "Ficha Orden de Trabajo";
+    ViewBag.IdVersion = "TSM0102003|v20021801";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var xIdOt =@ViewData["IdOrdenTrabajo"];
+    </script>
+    <script src="~/Scripts/js/FichaProd.js"></script>
+}
+
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <ul id="bpanel">
+                <li class="k-state-active">
+                    <span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>
+                    REQUERIMIENTO DE DESARROLLO
+                    <div class="form-group col-lg-12">
+                        <br />
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12" id="C_ImgDiseño">
+                                        @* aqui se coloca dinamicamente las imagenes  *@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-8">
+                                <div class=" p-lg-1">
+
+                                    <div class="border-bottom card-header-pills">
+                                        <h7 class="my-1">INFORMACIÓN GENERAL</h7>
+                                    </div>
+                                    <br />
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <h5 class="font-weight-bold">N° OT: </h5>
+                                            <p id="plNoDocumento"></p>
+                                        </div>
+                                        <div class="col-lg-6 ">
+                                            <h5 class="font-weight-bold">Fecha OT</h5>
+                                            <p id="plFechaOrdenTrabajo"></p>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="col-lg-6 ">
+                                            <h5 class="font-weight-bold">Cliente</h5>
+                                            <p id="plNombre"></p>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <h5 class="font-weight-bold">Programa</h5>
+                                            <p id="plNombrePrograma"></p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="col-lg-6">
+                                            <h5 class="font-weight-bold">N° Diseño</h5>
+                                            <p id="plIdDiseno"></p>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h5 class="font-weight-bold">Nombre Deseño</h5>
+                                            <p id="plNombreDiseno"></p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <h5 class="font-weight-bold">Estilo </h5>
+                                            <p id="plEstiloDiseno"></p>
+                                        </div>
+
+                                        <div class="col-lg-6 ">
+                                            <h5 class="font-weight-bold">Ejecutivo(a) </h5>
+                                            <p id="plNombreEjecutivoCuentas"></p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+
+                                        <div class="col-lg-6 ">
+                                            <h5 class="font-weight-bold">Piezas</h5>
+                                            <p id="plCantPiezas"></p>
+                                        </div>
+
+                                        <div class="col-lg-6 ">
+                                            <h5 class="font-weight-bold">N° de referencia</h5>
+                                            <p id="plCatalogo"></p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-12">
+                                <div class="form-row col-lg-12">
+                                    <div class="p-lg-1 col-lg-5">
+
+                                        <div class="border-bottom  card-header-pills ">
+                                            <h7 class="my-0 font-weight-normal">TELA</h7>
+                                        </div>
+                                        <br />
+                                        <div class="form-row">
+                                            <div class="col-lg-4 ">
+                                                <h5 class="font-weight-bold">Color: </h5>
+                                            </div>
+                                            <div class="col-lg-8"> <p id="plColor"></p> </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-lg-4 ">
+                                                <h5 class="font-weight-bold">Composici&oacute;n </h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p id="plNombreCPT"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-lg-4">
+                                                <h5 class="font-weight-bold">Construcc&oacute;n </h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p id="plNombreCCT"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="p-lg-1 col-lg-1">
+
+                                    </div>
+
+
+                                    <div class="p-lg-1 col-lg-6">
+
+                                        <div class="border-bottom  card-header-pills ">
+                                            <h7 class="my-0 font-weight-normal">PRENDA</h7>
+                                        </div>
+                                        <br />
+                                        <div class="form-row">
+                                            <div class="col-lg-4 ">
+                                                <h5 class="font-weight-bold">Prenda</h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p id="plNombrePrenda"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-lg-4 ">
+                                                <h5 class="font-weight-bold">Parte</h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p id="plParte"></p>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-lg-4">
+                                                <h5 class="font-weight-bold">Confecci&oacute;n </h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p id="plNombreCFT"></p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <!--  Se revisará si se necesita botón  -->
+                                <div class="form-row">
+
+                                    <div class="col-lg-4" hidden="hidden">
+                                        <button type="button" id="btnIrGOT">&nbsp;Ir a Gesti&oacute;n O.T</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </li>
+                <li>
+                    <span class="tsm-icon-DISEO" style="font-size: 1.7em;">&nbsp</span>
+                    PLACEMENT
+
+                    <div class="form-group col-lg-12">
+                        <br />
+
+                        <div class="form-row col-lg-12">
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12" id="C_ImagePlacement">
+                                            @* aqui se coloca dinamicamente las imagenes  *@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        </div>
+
+
+
+</li>
+
+                <li>
+
+                    <span class="tsm-icon-SOL-DESA" style="font-size: 1.7em;">&nbsp</span>
+                    INFORMACIÓN E INSTRUCCIONES
+
+                    <div class="form-group col-lg-12">
+
+                        <div class="form-row col-lg-12">
+                            <br />
+                            <div class="p-lg-1 col-lg-3">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">DATOS DE COSTEO</h7>
+                                </div>
+
+                                <div class="form-row"> <br />  </div>
+
+                                <div class="form-row">
+                                    <div class="col-lg-3 ">
+                                        <h5 class="font-weight-bold">Combos</h5>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p id="plCombos"></p>
+                                    </div>
+
+                                    <div class="col-lg-3 ">
+                                        <h5 class="font-weight-bold">Cambios de talla</h5>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p id="plCambioTalla"></p>
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-lg-3 ">
+                                        <h5 class="font-weight-bold">Montajes</h5>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p id="plMontajes"></p>
+                                    </div>
+
+                                    <div class="col-lg-3 ">
+                                        <h5 class="font-weight-bold">Producción/hora</h5>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p id="plProdHora"></p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="p-lg-1 col-lg-1"> </div>
+
+                            <div class="p-lg-1 col-lg-3">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">DOCUMENTOS ENTREGADOS</h7>
+                                </div>
+
+                                <div class="form-row"> <br />  </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group  col-lg-5 ">
+                                        <label class=" font-weight-bold" for="plStrikeOff" id="idstrikeoff">STRIKE OFF</label>
+                                        <input type="checkbox" id="plStrikeOff" name="plStrikeOff" class="k-checkbox-label" readonly="readonly"> 
+
+                                    </div>
+
+                                    <div class="form-group  col-lg-4  ">
+                                        <label class="font-weight-bold" for="plMigracion" id="idMigracion">MIGRACIÓN</label>
+                                        <input type="checkbox" id="plMigracion" name="plMigracion" class="k-checkbox-label">
+
+                                    </div>
+                                </div>
+                                <div class="form-row">
+
+                                    <div class="form-group  col-lg-6 ">
+                                        <label class="font-weight-bold" for="plMuestraAprobada" id="idMuestraAprobada">MUESTRA APROBADA</label>
+                                        <input type="checkbox" id="plMuestraAprobada" name="plMuestraAprobada" class="k-checkbox-label">
+
+                                    </div>
+                                    <div class="form-group  col-lg-3 ">
+                                        <label class="font-weight-bold " for="plTrama" id="idTrama">TRAMA</label>
+                                        <input type="checkbox" id="plTrama" name="plTrama" class="k-checkbox-label">
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-row">
+                                    <div class="form-group  col-lg-5 ">
+                                        <label class="font-weight-bold" for="plPlacement" id="idPlacement">PLACEMENT</label>
+                                        <input type="checkbox" id="plPlacement" name="plPlacement" class="k-checkbox-label font-weight-bold">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="p-lg-1 col-lg-1"> </div>
+
+                            <div class="p-lg-1 col-lg-3">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">PROCESOS</h7>
+                                </div>
+
+                                <div class="form-row"> <br />  </div>
+
+                                <div class="form-row">
+                                    <div class="col-lg-4 ">
+                                        <h5 class="font-weight-bold">Tipo de Luz</h5>
+                                    </div>
+                                    <div class="col-lg-6">
+                                                <p id="plTipoLuz"></p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group  col-lg-4 ">
+                                        <label class="font-weight-bold" for="plTermofijado" id="idplTermofijado">Termofijado</label>
+                                        <input type="checkbox" id="plTermofijado" name="plTermofijado" class="k-checkbox-label" readonly="readonly">
+
+                                    </div>
+                                </div>
+                                <div class="form-row">
+
+                                    <div class="form-group col-lg-12">
+                                        <label for="TxtComentarios">Instrucciones de termofijado:</label>
+                                        <input id="TxtComentarios" name="TxtTermoComent" class="form-control k-text"  />
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <div class="border-bottom  card-header-pills ">
+                            <h7 class="my-0 font-weight-normal">INSTRUCCIONES</h7>
+                        </div>
+                        <div class="form-row col-lg-12">
+
+
+
+                            <div class="form-row">
+                                <br /> <br />
+                            </div>
+
+                            <div class="p-lg-1 col-lg-5">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">PRODUCCIÓN</h7>
+                                </div>
+
+                                <div class="form-row">
+                                    <br/>
+                                </div>
+
+                                <div class="form-row">
+                                    <!-- Se confguará el control como KendoMultiselect -->
+                                    <div class="form-group col-md-7 col-lg-12">
+                                        <label for="instruccionesGen">Instrucciones generales:</label>
+                                        <input id="instruccionesProd" name="instruccionesGen" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="p-lg-1 col-lg-1"></div>
+                            <div class="p-lg-1 col-lg-5">
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">CALIDAD</h7>
+                                </div>
+                                <div class="form-row">
+                                  <br/>
+                                </div>
+                                <div class="form-row">
+                                  <div class="form-group col-lg-12">
+                                      <label for="instruccionesCalidad">Instrucciones generales:</label>
+                                     <input id="instruccionesCalidad" name="instruccionesCalidad" class="form-control k-i-font-size" />
+                                  </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-row col-lg-12">
+
+
+
+                            <div class="form-row">
+                                <br /> <br />
+                            </div>
+                            <div class="p-lg-1 col-lg-5">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">OTRAS INSTRUCCIONES</h7>
+                                </div>
+
+                                <div class="form-row">
+                                    <br />
+                                </div>
+                                <div class="form-row">
+
+                                    <div class="form-group col-lg-12">
+                                        <label for="TxtComentarios">Instrucciones:</label>
+                                        <input id="TxtInstrucciones" name="TxtInstrucciones" class="form-control k-text"  />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="p-lg-1 col-lg-1"></div>
+
+                            <div class="p-lg-1 col-lg-5">
+
+                                <div class="border-bottom  card-header-pills ">
+                                    <h7 class="my-0 font-weight-normal">TOLERANCIA DE MEDIDA</h7>
+                                </div>
+
+                                <div class="form-row">
+                                    <br />
+                                </div>
+                                <div class="form-row">
+                                    <!-- Se confguará el control como KendoMultiselect -->
+                                    <div class="form-group col-lg-12">
+                                        <label for="ToleranciaMed">Tolerancia:</label>
+                                        <input id="ToleranciaMed" name="ToleranciaMed" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </li>
+
+
+                <li class="k-state-active">
+                    <span class="TS-icon-DI1" style="font-size: 1.7em;">&nbsp</span>
+                    ANALISIS DEL DISEÑO
+
+                    <div class="form-group col-lg-12">
+                        <br />
+                        <div class="form-row">
+                            <div class="border-bottom  card-header-pills ">
+                                <h7 class="my-0 font-weight-normal">SETUP DE MUESTRAS</h7>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gConfBrazos"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="border-bottom  card-header-pills ">
+                                <h7 class="my-0 font-weight-normal">TAMAÑO DE POSITIVOS</h7>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gDimensiones"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="border-bottom  card-header-pills ">
+                                <h7 class="my-0 font-weight-normal">DETALLE DEL FOIL</h7>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gFoil"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="container"></div> <!--style="border: 1px solid;"-->
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+

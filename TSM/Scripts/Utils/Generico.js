@@ -514,6 +514,29 @@ var Fn_Carouselcontent = function () {
     return VarCarousel;
 };
 
+
+var Fn_Carouselcontentwp = function (id ) {
+
+    var VarCarousel = '<div class="form-row">' +
+        '<div class="container-fluid">' +
+        '<div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="9000">' +
+        '<div class="carousel-inner row w-100 " role="listbox" id="Mycarousel" ></div>' +
+        '<a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">' +
+        '<span class="carousel-control-prev-icon" style="color: #A05EB5;" aria-hidden="true"></span>' +
+        '<span class="sr-only">Previous</span>' +
+        '</a>' +
+        '<a class="carousel-control-next text-faded" href="#carouselExampleControls2" role="button" data-slide="next">' +
+        '<span class="carousel-control-next-icon" style="color: #A05EB5;" aria-hidden="true"></span>' +
+        '<span class="sr-only">Next</span>' +
+        '</a>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    return VarCarousel;
+};
+
+
 var fn_Ver_Img_Modal = function (idcolImg) {
     let modal = document.getElementById("ModalImgeZoom");
     let img = document.getElementById(idcolImg);

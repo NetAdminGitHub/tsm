@@ -269,6 +269,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultarFichaOTController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
@@ -796,6 +797,7 @@
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\FichaProd.js" />
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
@@ -1529,6 +1531,8 @@
     <Content Include="Views\Estaciones\EstacionAccesoriosMuest.cshtml" />
     <Content Include="Views\OrdenesTrabajosTerminadas\Index.cshtml" />
     <Content Include="Views\ConsumoTintasPRD\Index.cshtml" />
+    <Content Include="Views\FichaProduccion\Ficha.cshtml" />
+    <Content Include="Views\FichaProduccion\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
