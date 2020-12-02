@@ -88,16 +88,7 @@ var fn_TintasFCargarConfiguracion = function () {
         Grid_SelectRow($("#gridresumen"), selectedRows);
     });
 
-    //$(window).on("resize", function () {
-    //    Fn_Grid_Resize($("#gridresumen"), $(window).height() - "100");
-    //});
-
-    //Fn_Grid_Resize($("#gridresumen"), $(window).height() - "100");
-
-    $("#btnAjuste_Tint").click(function (e) {
-        fn_OpenModalEstacionAjuste();
-
-    });
+    
 
 };
 
