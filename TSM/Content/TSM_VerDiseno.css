@@ -2,8 +2,8 @@
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    right: -500px;
-    width: 500px;
+    right: -800px;
+    width: 800px;
     height: auto;
     display: block;
     z-index: 1;
