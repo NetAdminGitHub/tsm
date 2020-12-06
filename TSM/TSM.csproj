@@ -1533,6 +1533,7 @@
     <Content Include="Views\ConsumoTintasPRD\Index.cshtml" />
     <Content Include="Views\FichaProduccion\Ficha.cshtml" />
     <Content Include="Views\FichaProduccion\Index.cshtml" />
+    <Content Include="Views\FichaProduccion\_ArteAdjuntos.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

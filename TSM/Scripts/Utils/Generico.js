@@ -426,6 +426,58 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
     }
 };
 
+
+
+/**
+ * funcion lee imagenes adjuntas y las inserta en una etiqueta DIV que funciona como carrusel
+ * @param {string} Objecarousel por ejemplo $("#MyCarrousel)
+ * @param {string} src ubicacion u origen de las imagenes adjuntadas /Adjuntos' 
+ * @param {JSON} DataSource origen de datos
+ */
+
+var Fn_LeerImagenesMejorado = function (Objecarousel, src, DataSource) {
+
+    var lista = Objecarousel;
+    //remueve las imagenes del carrousel
+    Objecarousel.children().remove();
+    if (DataSource === null || DataSource === undefined) {
+        lista.append(
+            '<div class="carousel-item col-md-6 col-lg-6 active">'
+            + '<img class="img-fluid mx-auto d-block" src="' + srcDefault + '" >'
+            + '</div > '
+        );
+
+    } else {
+        if (DataSource.length === 0) {
+            lista.append(
+                '<div class="carousel-item col-md-6 col-lg-6 active">'
+                + '<img class="img-fluid mx-auto d-block" id=' + `"${Objecarousel.id}Def"` + ' src="' + srcDefault + '" onclick="fn_click_Imagen(this)">'
+                + '</div > '
+            );
+        } else {
+            $.each(DataSource, function (index, elemento) {
+                if (index === 0) {
+                    lista.append(
+                        '<div class="carousel-item col-md-6 col-lg-6 active">'
+                        + '<img class="img-fluid mx-auto d-block" id=' + `"${Objecarousel[index].id}${index}"` + '  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '</div > '
+                    );
+                }
+                else {
+                    lista.append(
+                        '<div class="carousel-item col-md-6 col-lg-6 ">'
+                        + '<img class="img-fluid mx-auto d-block" id=' + `"${Objecarousel[index].id}${index}"` + ' src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '</div > '
+                    );
+                }
+            });
+        }
+
+    }
+};
+
+//' + `"${Objecarousel.id}"` + '
+
 /**
  * funcion lee imagenes adjuntas y las inserta en una etiqueta DIV que funciona como carrusel
  * @param {string} Objecarousel por ejemplo $("#MyCarrousel)
@@ -515,12 +567,12 @@ var Fn_Carouselcontent = function () {
 };
 
 
-var Fn_Carouselcontentwp = function (id ) {
+var Fn_Carouselcontentwp = function (IdCarousel  ) {
 
     var VarCarousel = '<div class="form-row">' +
         '<div class="container-fluid">' +
         '<div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="9000">' +
-        '<div class="carousel-inner row w-100 " role="listbox" id="Mycarousel" ></div>' +
+        '<div class="carousel-inner row w-100 " role="listbox" id=' + `"${IdCarousel}"` +' ></div>' +
         '<a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">' +
         '<span class="carousel-control-prev-icon" style="color: #A05EB5;" aria-hidden="true"></span>' +
         '<span class="sr-only">Previous</span>' +
@@ -553,6 +605,10 @@ var fn_Ver_Img_Modal = function (idcolImg) {
 };
 var fn_click_Imagen = function (elemento) {
     fn_Ver_Img_Modal(elemento.id);
+};
+
+var fn_click_ImagenById = function (idElemento) {
+    fn_Ver_Img_Modal(idElemento);
 };
 
 /**

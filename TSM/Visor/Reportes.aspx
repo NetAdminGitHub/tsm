@@ -42,6 +42,7 @@
             reporte.SummaryInfo.ReportTitle = Titulo;
             this.Title = Titulo;
             CrystalReportViewer1.ReportSource = reporte;
+            
         }
 
         private string AddSpacesToSentence(string text, bool preserveAcronyms = true)
