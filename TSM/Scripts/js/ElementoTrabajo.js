@@ -471,47 +471,22 @@ $(document).ready(function () {
                     IdAlerta: { type: "string" },
                     Nombre: { type: "string" },
                     Fecha: { type: "date" },
-                    Descripcion: {
-                        type: "string"
-                        //validation: {
-                        //    required: true,
-                        //    maxlength: function (input) {
-                        //        //if (input.is("[name='IdAlerta']")) {
-                        //        //    input.attr("data-maxlength-msg", "Requerido");
-                        //        //    return $("#IdAlerta").data("kendoComboBox").selectedIndex >= 0;
-                        //        //}
-                        //        if (input.is("[name='Descripcion']")) {
-                        //            input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
-                        //            return input.val().length > 0 && input.val().length <= 300;
-                        //        }
-                        //        return true;
-                        //    }
-                        //}
-                    },
+                    Descripcion: {type: "string"},
                     Estado: { type: "string", defaultValue: function () { return 'ACTIVA'; } },
                     Nombre1: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    DescripcionEstacion: {
-                        type: "string"
-
-                    },
-                    ColorHex: {
-                        type: "string"
-
-                    },
-                    NombreColorEstacion: {
-                        type: "string"
-                    },
-                    IdRow: { type: "number"}
+                    DescripcionEstacion: {type: "string"},
+                    ColorHex: {type: "string"},
+                    NombreColorEstacion: {type: "string"},
+                    IdRow: { type: "number" },
+                    AplicaTintas: { type: "bool" },
+                    AplicaMarco: { type: "bool" }
 
                 }
             }
         }
-        //,
-        //group: {
-        //    field: "Nombre"
-        //}
+     
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
 
@@ -547,7 +522,7 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { selectable: true, width: "50px" },
+            //{ selectable: true, width: "50px" },
             { field: "IdEstacion", title: "Estación", editor: Grid_ColNumeric, values: ["required", "1", CantidadBrazos, "#", 0] },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
             {
@@ -560,31 +535,15 @@ $(document).ready(function () {
             { field: "Item", title: "Item", hidden: true},
             { field: "IdAlerta", title: "Ajuste", editor: Grid_Combox, values: ["IdAlerta", "Nombre", TSM_Web_APi + "Alertas", "", "Seleccione...."], hidden: true},
             { field: "Nombre", title: "Nombre", hidden: true },
+            { field: "AplicaTintas", title: "Aplica Tintas?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_TemplateCheckBoxColumn(dataItem, "AplicaTintas"); } },
+            { field: "AplicaMarco", title: "Aplica Marco?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_TemplateCheckBoxColumn(dataItem, "AplicaMarco"); } },
             { field: "Descripcion", title: "Comentario ajuste", editor: Grid_ColTextArea, values: ["6"] },
             { field: "Estado", title: "Estado", values: ["Estado", "Nombre", TSM_Web_APi + "Estados", "SeteoMaquinasAlertas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true},
             { field: "Nombre1", title: "Estado", hidden: true },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
-            //{
-            //    command: {
-            //        name: "cambiarEstado",
-            //        iconClass: "TS-icon-ARROW",
-            //        text: "",
-            //        click: function (e) {
-            //            e.preventDefault();
-            //            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-            //            //var lstId = {
-            //            //    IdFormula: dataItem.IdFormula
-            //            //};
-            //            Fn_VistaCambioEstadoMostrar("SeteoMaquinasAlertas", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, function () { return fn_UpdEstadoGrilla(); });
-            //        }
-            //    },
-            //    width: "70px",
-            //    attributes: {
-            //        style: "text-align: center"
-            //    }
-            //}
+      
+     
         ]
     });
 
@@ -593,96 +552,37 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridAlerAjus").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridAlerAjus").data("kendoGrid"), dsetAjusteEst);
 
-    //var srow5 = [];
-    //$("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-    //    Grid_SetSelectRow($("#gridAlerAjus"), srow5);
-    //});
+
 
     $("#gridAlerAjus").data("kendoGrid").bind("change", function (e) {
         //Grid_SelectRow($("#gridAlerAjus"), srow5);
         LEstaciones = this.selectedKeyNames().join(", ");
 
     });
+    $("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) {
+        //Grid_SelectRow($("#gridAlerAjus"), srow5);
+        //alert("prueba");
+        fn_GetSeteoMaquinasAlertasValidacion(XSeteo);
 
+    });
+    //actualizar columnas aplica tintas y marcos
 
-    //var dsSelect = new kendo.data.DataSource({
-    //    //CONFIGURACION DEL CRUD
-    //    transport: {
-    //        read: {
-    //            url: function () { return TSM_Web_APi + "SeteoMaquinasAlertas/GetSeleccionByIdSeteo/" + XSeteo; },
-    //            dataType: "json",
-    //            contentType: "application/json; charset=utf-8"
-    //        },
-    //        parameterMap: function (data, type) {
-    //            if (type !== "read") {
-    //                return kendo.stringify(data);
-    //            }
-    //        }
-    //    },
-    //    schema: {
-    //        model: {
-    //            id: "IdEstacion",
-    //            fields: {
-    //                IdSeteo: {
-    //                    type: "number"
-    //                },
-    //                IdEstacion: {
-    //                    type: "number"
-    //                },
-    //                DescripcionEstacion: {
-    //                    type: "string"
+    $("#chkTintasTodasEsta").click(function () {
+        if (this.checked) {
+            fn_ActualizarAlerta(1, "T");
+        } else {
+            fn_ActualizarAlerta(0, "T");
+        }
+    });
 
-    //                },
-    //                ColorHex: {
-    //                    type: "string"
-
-    //                },
-    //                NombreColorEstacion: {
-    //                    type: "string"
-    //                }
-
-    //            }
-    //        }
-    //    },
-
-
-    //});
-
-    ////CONFIGURACION DEL GRID,CAMPOS
-    //$("#gridAlerSelectAjus").kendoGrid({
-    //    //DEFICNICIÓN DE LOS CAMPOS
-
-    //    columns: [
-    //        { selectable: true, width: "50px" },
-    //        { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
-    //        { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
-    //        { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
-    //        {
-    //            field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
-    //            template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
-    //        },
-    //        { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 }
-
-    //    ]
-    //});
-
-    //// FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    //SetGrid($("#gridAlerSelectAjus").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 500,false);
-    //Set_Grid_DataSource($("#gridAlerSelectAjus").data("kendoGrid"), dsSelect);
-
-    ////var srwf = [];
-    ////$("#gridAlerSelectAjus").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-    ////    Grid_SetSelectRow($("#gridAlerSelectAjus"), srwf);
-    ////});
-
-    //$("#gridAlerSelectAjus").data("kendoGrid").bind("change", function (e) {
-    //    LEstaciones = this.selectedKeyNames().join(", ");
-    //});
-
-    //#endregion
-
-    //Fn_VistaCambioEstado($("#vCambioEstadoAlert"));
-
+    $("#chkMarcoTodasEsta").click(function () {
+        if (this.checked) {
+            fn_ActualizarAlerta(1, "M");
+        } else {
+            fn_ActualizarAlerta(0, "M");
+        }
+    });
+    
 });
 var fn_ConsultarDetalle = function () {
     var SelItem = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
@@ -795,7 +695,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
+    KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
     xvNodocReq = datos.NodocReq;
@@ -1082,16 +983,16 @@ $("#btnDuplicarEstacion").click(function () {
 });
 
 $("#btnRegAjuste").click(function () {
-    if (ValidarSoliAjuste.validate()) {
-        if (LEstaciones === "" || LEstaciones === null) {
-            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione una o más estaciones a ajustar", "error");
-        } else {
-            fn_AlertasBatch();
+    //if (ValidarSoliAjuste.validate()) {
+    //    if (LEstaciones === "" || LEstaciones === null) {
+    //        $("#kendoNotificaciones").data("kendoNotification").show("Seleccione una o más estaciones a ajustar", "error");
+    //    } else {
+    fn_AlertasBatch();
 
-        }
-    } else {
-        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-    }
+    //    }
+    //} else {
+    //    $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    //}
 });
 
 var fn_OpenModalDesplazamiento = function () {
@@ -2551,3 +2452,45 @@ var fn_AlertasBatch = function () {
 
 };
 
+var fn_ActualizarAlerta = function (xAplica , xTipo) {
+    kendo.ui.progress($("#vAlertaAjustes"), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasAlertas/ActualizarSeteoMaquinasAlertas",//
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            IdSeteo: XSeteo,
+            IdAlerta: KdoCmbGetValue($("#cmbTpAjuste")),
+            Aplica: xAplica,
+            Tipo: xTipo
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Post");
+            $("#gridAlerAjus").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($("#vAlertaAjustes"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($("#vAlertaAjustes"), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
+
+var fn_GetSeteoMaquinasAlertasValidacion = function (IdSeteo) {
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasAlertas/GetSeteoMaquinasAlertasValidacion/" + IdSeteo,
+        type: 'GET',
+        success: function (datos) {
+            if (datos === null) {
+                $('#chkTintasTodasEsta').prop('checked', false);
+                $('#chkMarcoTodasEsta').prop('checked', false);
+            } else {
+                $('#chkTintasTodasEsta').prop('checked', datos.Tintas);
+                $('#chkMarcoTodasEsta').prop('checked', datos.Marco);
+            }
+          
+        }
+    });
+};
