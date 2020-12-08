@@ -79,7 +79,8 @@ var fn_CambioEtp = function (e) {
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;
-                RequestEndMsg(datos, "Post");
+                //RequestEndMsg(datos, "Post");
+                fn_AlertActualizaVista({ Mensaje: datos[1].Output });
                 $("#vCamEtapa").data("kendoDialog").close();
                 Number(idEtapaProceso) === Number(xindice) ? location.reload() : $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
 
@@ -1179,7 +1180,7 @@ var fn_Desplazar = function (StrEstaciones) {
     });
 
 };
-var fn_Duplicar= function (EstacionO,EstacionD) {
+var fn_Duplicar = function (EstacionO, EstacionD) {
     kendo.ui.progress($("#vDuplicarMarco"), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
@@ -1203,8 +1204,8 @@ var fn_Duplicar= function (EstacionO,EstacionD) {
             kendo.ui.progress($("#vDuplicarMarco"), false);
         }
     });
+};
 
-}
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
         $("#gridUsuarioAsignados").kendoGrid({
@@ -1409,7 +1410,8 @@ $("#btnAsignarUsuario").click(function (e) {
                 IdUsuario: $("#cmbUsuario").data("kendoComboBox").value(),
                 Asignado: $("#rAsignado")[0].checked,
                 Seguidor: $("#rSeguidor")[0].checked,
-                FechaHasta: null
+                FechaHasta: null,
+                Estado: "ACTIVO"
             }),
             success: function (datos) {
                 RequestEndMsg(datos, "Post");

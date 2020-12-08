@@ -231,6 +231,14 @@ $(document).ready(function () {
         decimals: 2,
         value: 0
     });
+    $("#txtCantidadDecimales").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 4,
+        min: 0,
+        max: 4
+    });
     $("#TxtComentarios").kendoEditor({
         encoded: false,
         tools: []
@@ -431,6 +439,7 @@ let Fn_getCotizacion = function () {
             $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
             $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
             $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+            kdoNumericSetValue($("#txtCantidadDecimales"), respuesta === null ? 4 : respuesta.CantidadDecimales);
             xCliente = respuesta === null ? 0 : respuesta.IdCliente;
             Kendo_CmbFiltrarGrid($("#CmbIdAcuerdo"), TSM_Web_APi + "ClientesAcuerdosPlantillas/GetNombreByCliente/" + xCliente, "Nombre", "IdAcuerdo", "Seleccione...");
             kendo.ui.progress($(document.body), false);
@@ -529,7 +538,8 @@ let Fn_GuardarCondicionesCM = function (UrlCotizacion) {
                 ExcesoSetup: $("#txtExcesoSetup").val(),
                 PrecioSetup: $("#txtPrecioSetup").val(),
                 RepeticionesDesarrollo: $("#txtRepeticionesDesarrollo").val(),
-                RepeticionesCTL: $("#txtRepeticionesCTL").val()
+                RepeticionesCTL: $("#txtRepeticionesCTL").val(),
+                CantidadDecimales: kdoNumericGetValue($("#txtCantidadDecimales"))
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
@@ -773,6 +783,7 @@ let fn_CargarPlantilla = function () {
                 $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
                 $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
                 $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+                kdoNumericSetValue($("#txtCantidadDecimales"), respuesta === null ? "" : respuesta.CantidadDecimales);
 
                 $("#frmCondiciones").submit();
                 $("#ModalAcuerdos").data("kendoDialog").close();
