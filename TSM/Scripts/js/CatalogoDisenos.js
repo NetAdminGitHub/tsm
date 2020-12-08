@@ -258,6 +258,7 @@ var fn_getArtesAdjuntos = function () {
             xIdPrograma = this.dataItem(e.item.index()).IdPrograma;
             xidClie = this.dataItem(e.item.index()).IdCliente;
             xIdOT = this.dataItem(e.item.index()).IdOrdenTrabajo;
+            kdoChkSetValue($("#CmbCliente"), xIdOT);
             dataSource.read();
             sessionStorage.setItem("CatalogoDisenos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
 
@@ -271,8 +272,8 @@ var fn_getArtesAdjuntos = function () {
     });
 
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
-        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
@@ -287,6 +288,7 @@ var fn_getArtesAdjuntos = function () {
         xidClie = sessionStorage.getItem("CatalogoDisenos_CmbCliente") === "" || sessionStorage.getItem("CatalogoDisenos_CmbCliente") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbCliente");
         xIdPrograma = sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === "" || sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbPrograma");
         xIdOT = sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === "" || sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo");
+        dataSource.read();
     }
 };
 
