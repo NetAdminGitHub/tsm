@@ -1083,7 +1083,7 @@ var fn_VSCargarJSEtapa = function () {
     var DsAdj = new kendo.data.DataSource({
         transport: {
             read: {
-                url: function (datos) { return UrlApiAAdj + "/GetByArte/" + $("#IdArte").val().toString(); },
+                url: function (datos) { return UrlApiAAdj + "/GetArteAdjuntosVista/" + $("#IdArte").val().toString(); },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -1112,7 +1112,7 @@ var fn_VSCargarJSEtapa = function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type === "destroy" || e.type==="update") { getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + $("#IdArte").val()); }
+            if (e.type === "destroy" || e.type==="update") { getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + $("#IdArte").val()); }
 
         },
         error: Grid_error,
@@ -1140,6 +1140,7 @@ var fn_VSCargarJSEtapa = function () {
                                     input.attr("data-maxlength-msg", "Longitu máxima del campo es 200");
                                     return false;
                                 }
+                               
                                 return true;
                             }
                         }
@@ -1157,12 +1158,20 @@ var fn_VSCargarJSEtapa = function () {
                                     input.attr("data-maxlength-msg", "Longitu máxima del campo es 200");
                                     return false;
                                 }
+                                if (input.is("[name='IdTipoAdjunto']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTipoAdjunto").data("kendoComboBox").selectedIndex >= 0;
+                                }
                                 return true;
                             }
                         }
                     },
                     Catalogo: { type: "bool" },
-                    Placement: { type: "bool" }
+                    Placement: { type: "bool" },
+                    IdTipoAdjunto: { type: "string" },
+                    NombreAdjunto: { type: "string" }
+
+
                 }
             }
         }
@@ -1179,6 +1188,9 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "IdArte");
             KdoHideCampoPopup(e.container, "NombreArchivo");
             KdoHideCampoPopup(e.container, "Id");
+            KdoHideCampoPopup(e.container, "NombreAdjunto");
+            KdoHideCampoPopup(e.container, "Catalogo");
+            KdoHideCampoPopup(e.container, "Placement");
             Grid_Focus(e, "Descripción");
         },
         columns: [
@@ -1187,9 +1199,11 @@ var fn_VSCargarJSEtapa = function () {
             { field: "Item", title: "Item", editor: Grid_ColIntNumSinDecimal, hidden: true },
             { field: "NombreArchivo", title: "Nombre del Archivo", template: function (data) { return "<a href='/Adjuntos/" + $("#NoDocumento").val() + "/" + data["NombreArchivo"] + "' target='_blank' style='text-decoration: underline;'>" + data["NombreArchivo"] + "</a>"; } },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
-            { field: "Descripcion", title: "Descripción" },
-            { field: "Catalogo", title: "Catalogo ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Catalogo"); } },
-            { field: "Placement", title: "Placement ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Placement"); } }
+            { field: "Descripcion", title: "Descripción", hidden: true },
+            { field: "Catalogo", title: "Catalogo ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Catalogo"); }, hidden: true },
+            { field: "Placement", title: "Placement ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Placement"); }, hidden: true},
+            { field: "IdTipoAdjunto", title: "Tipo de Adjunto", editor: Grid_Combox, values: ["IdTipoAdjunto", "Nombre", TSM_Web_APi + "TiposAdjuntos", "", "Seleccione....", "required", "", "Requerido"], hidden: true },
+            { field: "NombreAdjunto", title: "Nombre Adjunto" }
         ]
     });
 
@@ -1501,7 +1515,7 @@ let getArte = function (UrlArt, UrlApiArteAdj) {
                 $("#IdCatalogoDiseno").val(respuesta.IdCatalogoDiseno);
                 $("#NoReferencia").val(respuesta.NoReferencia);
                 kendo.ui.progress($("#vistaParcial"), false);
-                UrlApiArteAdj = UrlApiArteAdj + "/GetArteAdjuntosVista/" + respuesta.IdArte;
+                UrlApiArteAdj = UrlApiArteAdj + "/GetVistaImagenes/" + respuesta.IdArte;
                 getAdjun(UrlApiArteAdj);
                 KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false : true);
                 $("#GridAdjuntos").data("kendoGrid").dataSource.read();
@@ -1553,7 +1567,7 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
-            getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + $("#IdArte").val());
+            getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + $("#IdArte").val());
             kendo.ui.progress($("#vistaParcial"), false);
             RequestEndMsg(data, XType);
 
@@ -1750,7 +1764,7 @@ let GuardarRequerimiento = function (UrlRD) {
             RequestEndMsg(data, "Put");
             kendo.ui.progress($("#BPform"), false);
 
-            getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + data[0].IdArte.toString());
+            getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + data[0].IdArte.toString());
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
             //cargar datosdel catalogo
             fn_CatalogoDisenos();
@@ -1796,7 +1810,7 @@ let fn_SubirArchivoRD = function (ds) {
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         kendo.ui.progress($("#BPform"), false);
-                        getAdjun(UrlApiArteAdj + "/GetArteAdjuntosVista/" + data[0].IdArte.toString());
+                        getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + data[0].IdArte.toString());
                         $("#GridAdjuntos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {

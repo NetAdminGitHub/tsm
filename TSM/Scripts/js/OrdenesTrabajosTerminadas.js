@@ -252,6 +252,11 @@ let fn_DibujarKanban = function (ds) {
         EstatusColumna: "FINALIZADO"
     });
 
+    result.push({
+        IdEstatusColumna: "C4",
+        EstatusColumna: "EN SIMULACIÓN"
+    });
+
     ResultOrden = [];
     ResultOrden = sortByKeyAsc(result, "IdEstatusColumna");
 
