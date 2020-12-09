@@ -1729,3 +1729,8 @@ var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
         }
     });
 };
+
+var Grid_TemplateCheckBoxColumn = function (data, columna) {
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+        "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
+};

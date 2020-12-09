@@ -3,6 +3,7 @@
 var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnDesplaCambio_Mues"), "arrows-kpi", "Desplazar/Intercambiar");
     KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
+    KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnMuest"), "delete", "Limpiar");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
 
@@ -112,6 +113,7 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnFinOT"), vhb);
     KdoButtonEnable($("#btnMuest"), vhb);
     KdoButtonEnable($("#btnDesplaCambio_Mues"), vhb);
+    KdoButtonEnable($("#btnAjuste_Mues"), vhb);
     KdoButtonEnable($("#btnDuplicar_Mues"), vhb);
     Grid_HabilitaToolbar($("#dgAccesorios_Muest"), vhb, vhb, vhb);
 };
