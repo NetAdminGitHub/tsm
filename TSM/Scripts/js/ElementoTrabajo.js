@@ -79,8 +79,10 @@ var fn_CambioEtp = function (e) {
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 Realizado = true;
-                //RequestEndMsg(datos, "Post");
-                fn_AlertActualizaVista({ Mensaje: datos[1].Output });
+                if (datos[1].Output === "¡Cambio de etapa exitoso!")
+                    RequestEndMsg(datos, "Post");
+                else
+                    fn_AlertActualizaVista({ Mensaje: datos[1].Output });
                 $("#vCamEtapa").data("kendoDialog").close();
                 Number(idEtapaProceso) === Number(xindice) ? location.reload() : $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xindice.toString() + "]").attr("indice"));
 
