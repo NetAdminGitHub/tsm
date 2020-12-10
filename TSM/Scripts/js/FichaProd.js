@@ -15,6 +15,8 @@ var idSimulacion;
 var idCotizacion;
 var EstadoFichaProd;
 let xNoDocumento;
+let imgCatSrc;
+let imgPlaceSrc;
 $(document).ready(function () {
     xIdOt = xIdOt === undefined ? 0 : xIdOt;
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
@@ -419,58 +421,51 @@ $(document).ready(function () {
         kendo.fx(this).zoom("out").endValue(1).startValue(2).play();
     });
 
+   
+    if (Permisos.SNEditar === false || Permisos.SNBorrar === false) {
+        $('#plStrikeOff').attr('enable', false);
+        $('#plMigracion').attr('enable', false);
+        $('#plMuestraAprobada').attr('enable', false);//
+        $('#plTrama').attr('enable', false);
+        $("#instruccionesProd").data("kendoMultiSelect").enable(false);
+        $("#InstruccionesCalidad").data("kendoMultiSelect").enable(false);
+        $("#TxtInstrucciones").attr("enable", false);
+        $("#ToleranciaMed").data("kendoMultiSelect").enable(false);
+    }
+
+
+
+
 });
 
 
 
 $("#btnImprimir").click(function (e) {
 
+    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion}`;
 
-    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-    mywindow.document.write('<html><head><title>' + document.title + '</title>');
-    mywindow.document.write('<link href="/Content/bootstrap/bootstrap.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/bootstrap/bootstrapMod.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/Font-HelveticaNeue.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/Font-TS-Icons.css" rel="stylesheet');
-    mywindow.document.write('<link href="/Content/Font-TSM-General.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/Font-TSM-SeteoMaquinas.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/TSM-Style.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/kendo/kendo.bootstrap-v4.min.css" rel="stylesheet">');
-    mywindow.document.write('<link href="/Content/bootstrap/boostrapKendoMod.css" rel="stylesheet">');
+    e.preventDefault();
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/ReportesStr/crptFichaProduccion/FichaProduccion/GetFicha/" + encodeURIComponent(paramficha) ,
+        dataType: 'json',
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
 
-    mywindow.document.write('</head><body >');
-    mywindow.document.write('<h1>' + document.title + '</h1>');
-    mywindow.document.write(document.getElementById("bpanel").innerHTML);
-    mywindow.document.write('</body></html>');
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
 
-    mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10*/
-
-    mywindow.print();
-    mywindow.close();
-
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
     return true;
-    //e.preventDefault();
-    //kendo.ui.progress($(document.body), true);
-    //$.ajax({
-    //    url: window.location.origin + "/Reportes/crptCotizacionMuestrasPrograma/CotizacionesMuestras/ReporteCotizacionMuestrasPrograma/" + vIdCoti,
-    //    dataType: 'json',
-    //    type: 'GET',
-    //    contentType: "application/json; charset=utf-8",
-    //    success: function (respuesta) {
-    //        let MiRpt = window.open(respuesta, "_blank");
-
-    //        if (!MiRpt)
-    //            $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
-
-    //        kendo.ui.progress($(document.body), false);
-    //    },
-    //    error: function (e) {
-    //        $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
-    //        kendo.ui.progress($(document.body), false);
-    //    }
-    //});
 });
 
 let fn_GetOTRequerimiento = function () {
@@ -644,6 +639,13 @@ let fn_getAdjunto = function () {
             Fn_LeerImagenesMejorado($("#Mycarousel"), "/Adjuntos/" + xNoDocumento + "", filtro2);
            
             Fn_LeerImagenesMejorado($("#Mycarouselwp"), "/Adjuntos/" + xNoDocumento + "", filtro);
+             imgCatSrc = $('#Mycarouselwp0').attr('src');
+             imgPlaceSrc = $('#Mycarousel0').attr('src');
+            var imgCatologo = document.querySelector('#Mycarouselwp0');
+            imgCatologo.addEventListener('load', function (event) {
+                var base64image = getDataUrl(event.currentTarget);
+
+            });
             kendo.ui.progress($(document.body), false);
         },
         error: function () {
@@ -651,6 +653,22 @@ let fn_getAdjunto = function () {
         }
     });
 };
+
+
+
+
+var getDataUrl = function (img) {
+    var canvas = document.createElement('canvas')
+    var ctx = canvas.getContext('2d')
+
+    canvas.width = img.width
+    canvas.height = img.height
+    ctx.drawImage(img, 0, 0)
+
+    // If the image is not png, the format
+    // must be specified here
+    return canvas.toDataURL()
+}
 
 
 
