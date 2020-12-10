@@ -1,17 +1,17 @@
 ﻿var Permisos;
 
-var fn_DMueCargarConfiguracion = function () {
-    KdoButton($("#btnDesplaCambio_Mues"), "arrows-kpi", "Desplazar/Intercambiar");
-    KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
-    KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
-    KdoButton($("#btnMuest"), "delete", "Limpiar");
-    KdoButton($("#btnConsultarPesos"), "search", "Consultar");
+var fn_VerifMuesCC = function () {
+    KdoButton($("#btnDespla_VerifMue"), "arrows-kpi", "Desplazar/Intercambiar");
+    KdoButton($("#btnDuplicar_VerifMue"), "copy", "Duplicar");
+    //KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
+    //KdoButton($("#btnMuest"), "delete", "Limpiar");
+    KdoButton($("#btnCPesosVerifMues"), "search", "Consultar");
 
-    //KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
-    KdoButton($("#btnAceptarFin"), "check", "Finalizar");
-    $("#dFechaFinMue").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaFinMue").data("kendoDatePicker").value(Fhoy());
-    $("#MbtnFinMue").kendoDialog({
+    KdoButton($("#btnFinOTVerifMue"), "gear", "Finalizar OT");
+    KdoButton($("#btnAcepFinVerifMue"), "check", "Finalizar");
+    $("#dFechaFinVerifMue").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaFinVerifMue").data("kendoDatePicker").value(Fhoy());
+    $("#MbtnFinVerifMue").kendoDialog({
         height: "auto",
         width: "20%",
         title: "Finalizar Orden de Trabajo",
@@ -21,7 +21,7 @@ var fn_DMueCargarConfiguracion = function () {
         maxHeight: 900
     });
 
-    $("#MbtConsulta").kendoDialog({
+    $("#MbtCVerifMue").kendoDialog({
         height: "auto",
         width: "40%",
         title: "Detalle de pesos en muestra",
@@ -36,28 +36,22 @@ var fn_DMueCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
     let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquinaMues"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquinaMues"), false);
-    KdoCmbSetValue($("#CmbMaquinaMues"), maq[0].IdMaquina);
+    Kendo_CmbFiltrarGrid($("#CmbMaquina_VerifMue"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
+    KdoComboBoxEnable($("#CmbMaquina_VerifMue"), false);
+    KdoCmbSetValue($("#CmbMaquina_VerifMue"), maq[0].IdMaquina);
 
-    let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
-    Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
-    let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
-    Kendo_CmbFiltrarGrid($("#CmbIdOrientacionPositivo"), UrlDM_OP, "Nombre", "IdOrientacionPositivo", "Seleccione...");
-    let UrlDM_TS = TSM_Web_APi + "TiposSeparaciones";
-    Kendo_CmbFiltrarGrid($("#CmbIdTipoSeparacion"), UrlDM_TS, "Nombre", "IdTipoSeparacion", "Seleccione...");
-    KdoButton($("#btnGuardarDiseñoMues"), "save", "Guardar");
+   
 
-    $("#btnMuest").data("kendoButton").bind('click', function () {
-        ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
-    });
+    //$("#btnMuest").data("kendoButton").bind('click', function () {
+    //    ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
+    //});
 
-     //FINALIZAR OT
-    let ValidFrmFinMue = $("#FrmFinMue").kendoValidator({
+    //FINALIZAR OT
+    let ValidFrmFinVerifMue = $("#FrmFinVerifMue").kendoValidator({
         rules: {
             FM: function (input) {
-                if (input.is("[name='dFechaFinMue']")) {
-                    return kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's') !== null;
+                if (input.is("[name='dFechaFinVerifMue']")) {
+                    return kendo.toString(kendo.parseDate($("#dFechaFinVerifMue").val()), 's') !== null;
                 }
                 return true;
             }
@@ -68,54 +62,54 @@ var fn_DMueCargarConfiguracion = function () {
         }
     }).data("kendoValidator");
 
-    //$("#btnFinOT").click(function () {
-    //    $("#MbtnFinMue").data("kendoDialog").open();
-    //    $("#dFechaFinMue").data("kendoDatePicker").element.focus();
-    //});
-
-    $("#btnConsultarPesos").click(function () {
-        $("#MbtConsulta").data("kendoDialog").open();
-        $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
-        $("#gridEstacionPeso").data("kendoGrid").refresh();
+    $("#btnFinOTVerifMue").click(function () {
+        $("#MbtnFinVerifMue").data("kendoDialog").open();
+        $("#dFechaFinVerifMue").data("kendoDatePicker").element.focus();
     });
 
-    $("#btnAceptarFin").click(function () {
-        if (ValidFrmFinMue.validate()) { fn_FinOT(); }
+    $("#btnCPesosVerifMues").click(function () {
+        $("#MbtCVerifMue").data("kendoDialog").open();
+        $("#gridEstacionPesoVerifMue").data("kendoGrid").dataSource.read();
+        $("#gridEstacionPesoVerifMue").data("kendoGrid").refresh();
     });
-    fn_ConsultaPesos($("#gridEstacionPeso"));
+
+    $("#btnAcepFinVerifMue").click(function () {
+        if (ValidFrmFinVerifMue.validate()) { fn_FinOT_VM(); }
+    });
+    fn_ConsultaPesosVerifMue($("#gridEstacionPesoVerifMue"));
 
 
-    fn_gridAccesoriosEstacion($("#dgAccesorios_Muest"));
-    $("#dgAccesorios_Muest").data("Estacion", "MEstacionAccesoriosMuest"); // guardar nombre vista modal
-    $("#dgAccesorios_Muest").data("EstacionJS", "EstacionAccesoriosMuest.js"); // guardar nombre archivo JS
-    $("#dgAccesorios_Muest").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
-    $("#dgAccesorios_Muest").data("Formulacion", ""); //guarda el idformulacion
+    fn_gridAccesoriosEstacion($("#dgAccesorios_VerifMue"));
+    $("#dgAccesorios_VerifMue").data("Estacion", "MEstacionAccesoriosVerifMuest"); // guardar nombre vista modal
+    $("#dgAccesorios_VerifMue").data("EstacionJS", "EstacionAccesoriosVerifMuest.js"); // guardar nombre archivo JS
+    $("#dgAccesorios_VerifMue").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
+    $("#dgAccesorios_VerifMue").data("Formulacion", ""); //guarda el idformulacion
 
 
-    $("#btnDesplaCambio_Mues").click(function (e) {
+    $("#btnDespla_VerifMue").click(function (e) {
         fn_OpenModalDesplazamiento();
 
     });
 
-    $("#btnDuplicar_Mues").click(function (e) {
+    $("#btnDuplicar_VerifMue").click(function (e) {
         fn_OpenModalDuplicar();
 
     });
 
-    $("#btnAjuste_Mues").click(function (e) {
-        fn_OpenModalEstacionAjuste();
+    //$("#btnAjuste_Mues").click(function (e) {
+    //    fn_OpenModalEstacionAjuste();
 
-    });
+    //});
 };
 
-var fn_DMCargarEtapa = function () {
+var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
-    //KdoButtonEnable($("#btnFinOT"), vhb);
-    KdoButtonEnable($("#btnMuest"), vhb);
-    KdoButtonEnable($("#btnDesplaCambio_Mues"), vhb);
-    KdoButtonEnable($("#btnAjuste_Mues"), vhb);
-    KdoButtonEnable($("#btnDuplicar_Mues"), vhb);
-    Grid_HabilitaToolbar($("#dgAccesorios_Muest"), vhb, vhb, vhb);
+    KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
+    //KdoButtonEnable($("#btnMuest"), vhb);
+    KdoButtonEnable($("#btnDespla_VerifMue"), vhb);
+    //KdoButtonEnable($("#btnAjuste_Mues"), vhb);
+    KdoButtonEnable($("#btnDuplicar_VerifMue"), vhb);
+    Grid_HabilitaToolbar($("#dgAccesorios_VerifMue"), vhb, vhb, vhb);
 };
 
 // Agregar a lista de ejecucion funcion dibujado de maquina.
@@ -126,13 +120,13 @@ fun_ListDatos.push(EtapaPush);
 //Agregar a Lista de ejecucion funcion configurar 
 var EtapaPush2 = {};
 EtapaPush2.IdEtapa = idEtapaProceso;
-EtapaPush2.FnEtapa = fn_DMueCargarConfiguracion;
+EtapaPush2.FnEtapa = fn_VerifMuesCC;
 fun_ListDatos.push(EtapaPush2);
 
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
 EtapaPush3.IdEtapa = idEtapaProceso;
-EtapaPush3.FnEtapa = fn_DMCargarEtapa;
+EtapaPush3.FnEtapa = fn_VerifMueCEtapa;
 fun_ListDatos.push(EtapaPush3);
 
 // activa DropTarget
@@ -141,11 +135,8 @@ EtapaPush4.IdEtapa = idEtapaProceso;
 EtapaPush4.FnEtapa = fn_RTActivaDropTarget;
 fun_ListDatos.push(EtapaPush4);
 
-fPermisos = function (datos) {
-    Permisos = datos;
-};
 
-let fn_FinOT = function () {
+let fn_FinOT_VM = function () {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
         url: TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajosFinalizar",
@@ -153,16 +144,16 @@ let fn_FinOT = function () {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
-            IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val() ,
+            IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
             IdEtapaProcesoFinalizar: idEtapaProceso,
-            FechaFinMuestra: kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's')
+            FechaFinMuestra: kendo.toString(kendo.parseDate($("#dFechaFinVerifMue").val()), 's')
         }),
         success: function (datos) {
             RequestEndMsg(datos, "Post");
-            $("#MbtnFinMue").data("kendoDialog").close();
+            $("#MbtnFinVerifMue").data("kendoDialog").close();
             //KdoButtonEnable($("#btnFinOT"), false);
             //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
-            fn_GetArteDis();
+            fn_GetArteDis_VM();
         },
         error: function (data) {
             ErrorMsg(data);
@@ -176,7 +167,7 @@ let fn_FinOT = function () {
 
 };
 
-let fn_GetArteDis = function () {
+let fn_GetArteDis_VM = function () {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "Artes/GetArteByIdReq/" + $("#txtIdRequerimiento").val(),
@@ -189,8 +180,8 @@ let fn_GetArteDis = function () {
                     NoReferencia: respuesta.NoReferencia,
                     NombreArchivo: respuesta.NombreArchivo
                 }];
-                SubirArchivoCatalogo(dsres);
-            
+                SubirArchivoCatalogo_VM(dsres);
+
             }
             CargarInfoEtapa(false);
             kendo.ui.progress($(document.body), false);
@@ -201,7 +192,7 @@ let fn_GetArteDis = function () {
     });
 };
 
-let SubirArchivoCatalogo = function (ds) {
+let SubirArchivoCatalogo_VM = function (ds) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         type: "Post",
@@ -215,8 +206,7 @@ let SubirArchivoCatalogo = function (ds) {
         }
     });
 };
-
-var fn_ConsultaPesos = function (gd) {
+var fn_ConsultaPesosVerifMue = function (gd) {
 
     var dsMp = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -267,7 +257,7 @@ var fn_ConsultaPesos = function (gd) {
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
-       
+
         columns: [
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50, footerTemplate: "Totales" },
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
@@ -279,7 +269,7 @@ var fn_ConsultaPesos = function (gd) {
             { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 },
             { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
             { field: "PesoUnidadMedida", title: "Unidad", minResizableWidth: 100 }
-         
+
         ]
     });
 
