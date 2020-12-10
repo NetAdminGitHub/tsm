@@ -1,6 +1,6 @@
 ﻿let xSeteoMEA;
 var fn_VistaEstacionAccesoriosMuesDocuReady = function () {
-    KdoButton($("#btnAddMEA_Mues"), "check", "Agregar"); frmAcce_mues
+    KdoButton($("#btnAddMEA_Mues"), "check", "Agregar"); 
 
     KdoComboBoxbyData($("#CmbConsUnidad_Mues"), "[]", "Abreviatura", "IdUnidad", "Seleccione una unidad dimensiones ....");
     $("#CmbConsUnidad_Mues").data("kendoComboBox").setDataSource(fn_UnidadMedida("5"));

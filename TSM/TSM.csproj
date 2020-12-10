@@ -793,8 +793,10 @@
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
+    <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
+    <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaOT.js" />
     <Content Include="Scripts\js\GestionFichasProducciones.js" />
@@ -1069,6 +1071,7 @@
     <Content Include="Scripts\js\_SolicitudRegDisenoPrendaUbicacion.js" />
     <Content Include="Scripts\js\_SolicitudRegPrenda.js" />
     <Content Include="Scripts\js\_TintasFormulaciones.js" />
+    <Content Include="Scripts\js\_ValidacionMuestras.js" />
     <Content Include="Scripts\js\_VerificarSolicitud.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
@@ -1529,6 +1532,9 @@
     <Content Include="Views\Estaciones\EstacionAccesoriosMuest.cshtml" />
     <Content Include="Views\OrdenesTrabajosTerminadas\Index.cshtml" />
     <Content Include="Views\ConsumoTintasPRD\Index.cshtml" />
+    <Content Include="Views\Shared\_ValidacionMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAccesoriosVerifMuest.cshtml" />
+    <Content Include="Views\Estaciones\EstacionVerifMuestra.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

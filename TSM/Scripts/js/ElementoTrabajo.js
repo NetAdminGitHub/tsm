@@ -27,6 +27,7 @@ var xNumPixeles_Dis;
 let xCmbTecnica_Mues;
 let xCmbBaseMezcla_Mues;
 let xCmbBasePigmentos_Mues;
+let xCmbBasePigmentos_VerifMues
 var SetFor;
 var EstaMarco;
 var EstacionBra;
