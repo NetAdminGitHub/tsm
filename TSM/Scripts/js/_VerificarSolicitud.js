@@ -1610,6 +1610,7 @@ let getAdjun = function (UrlAA) {
         type: 'GET',
         success: function (respuesta) {
             Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + $("#NoDocumento").val() + "", respuesta);
+           
             kendo.ui.progress($("#vistaParcial"), false);
         },
         error: function () {

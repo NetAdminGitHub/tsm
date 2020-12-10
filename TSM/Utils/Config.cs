@@ -54,7 +54,7 @@ namespace TSM.Utils
                 httpClient.DefaultRequestHeaders.Add("t", token);
 
                 var response = httpClient.GetStringAsync(new Uri(url)).Result;
-
+               
                 return response;
             }
         }

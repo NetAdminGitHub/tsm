@@ -126,7 +126,7 @@ $(document).ready(function () {
             grid.tbody.find("tr").dblclick(function (e) {
                 kendo.ui.progress($("#grid"), true);
                 //window.location.href = "/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString();
-                window.open("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
+                window.open("/FichaProduccion/Ficha/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#grid"), false);
                
             });
