@@ -6,6 +6,7 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
 
     kendo.ui.progress($(document.activeElement), true);
     KdoComboBoxbyData($("#cmbUsuarioEtpImp"), "[]", "Nombre", "IdUsuario", "Seleccione...", "", "");
+    Kendo_CmbFiltrarGrid($("#cmbMotivoSolCambio"), TSM_Web_APi + "MotivosSolicitudesCambios", "Nombre", "IdMotivoSolicitudCambio", "Seleccione Motivo...");
     $("#cmbCatalogoCambios").ControlSelecionSolicitudesCambios();
     $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
     xIdEtapa = sicIdEtapa;
@@ -16,11 +17,15 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
         if (datos !== null) {
             xidEtapaCambioAnte = datos.IdEtapaProceso;
             KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
-            $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtp(SicidTipoOrdenTrabajo.toString(), xidEtapaCambioAnte));
+            $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtpSolicitudCambio(SicidTipoOrdenTrabajo.toString(), xidEtapaCambioAnte));
+
+  
+
             GetUltimoAsignado(sicIdot, xidEtapaCambioAnte);
         } else {
             xidEtapaCambioAnte = 0;
             $("#cmbUsuarioEtpImp").data("kendoComboBox").value("");
+    
         }
 
         var multicolumncombobox = $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox");
@@ -37,6 +42,7 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
 
         } else {
             $("#TxtAreasImpacto").text("");
+    
         }
     });
 
@@ -62,11 +68,18 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
                     }
                     return true;
                 },
+                Msg4: function (input) {
+                    if (input.is("[name='cmbMotivoSolCambio']")) {
+                        return $("#cmbMotivoSolCambio").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                }
             },
             messages: {
                 Msg1: "Requerido",
                 Msg2: "Requerido",
-                Msg3: "Requerido"
+                Msg3: "Requerido",
+                Msg4: "Requerido"
 
             }
          }).data("kendoValidator");
@@ -82,6 +95,7 @@ var fn_RegistroCambios = function () {
     $("#TxtMotivoCambio").val("");
     $("#TxtAreasImpacto").text("");
     KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+    KdoCmbSetValue($("#cmbMotivoSolCambio"), "");
     kendo.ui.progress($(document.activeElement), false);
 
 };
@@ -106,7 +120,8 @@ var fn_RegistrarSolicitudCambio = function (xidOt, xIdEtapa, xItem) {
                 Estado: "GENERADA",
                 Motivo: $("#TxtMotivoCambio").val(),
                 IdUsuario: getUser(),
-                snMensaje: false
+                snMensaje: false,
+                IdMotivoSolicitudCambio: KdoCmbGetValue($("#cmbMotivoSolCambio"))
             }),
             success: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
@@ -148,7 +163,7 @@ var fn_GetEtpAnterior = function (xidSolicitudCambio) {
     return result;
 };
 
-var get_cmbUsuarioEtpCambio = function (tipo, etpAS) {
+var get_cmbUsuarioEtpSolicitudCambio = function (tipo, etpAS) {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
         sort: { field: "Nombre", dir: "asc" },
@@ -216,6 +231,26 @@ var GetUltimoAsignado = function (idot,idetp) {
         complete: function () {
             kendo.ui.progress($(".k-dialog"), false);
             KdoCheckBoxEnable($("#cmbUsuarioEtpImp"), true);
+        }
+    });
+};
+
+var get_MotivosSolicitudesCambios = function (IdSolicitudCambio) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "MotivosSolicitudesCambios/GetByidSolicitudCambio/" + IdSolicitudCambio.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
         }
     });
 };

@@ -7,7 +7,7 @@
     KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
     kdoRbSetValue($("#rbAjuste"), true);
     KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
-
+    KdoButton($("#btnAutRet"), "warning","Retenciones");
     //informacion de revelado
 
     $("#EscurridorDureza_MaRev").kendoNumericTextBox({
@@ -81,6 +81,7 @@
     KdoNumerictextboxEnable($("#NumResolucionDPI_MaRev"), false);
     KdoNumerictextboxEnable($("#NumLineajeLPI_MaRev"), false);
     KdoNumerictextboxEnable($("#NumPixeles_MaRev"), false);
+    KdoButtonEnable($("#btnAutRet"), EtpSeguidor === true  ? false : true);
 
     TextBoxEnable($("#CmbTipoTinta_MaRev"), false);
     TextBoxEnable($("#CmbSistemaPigmento_MaRev"), false);
@@ -124,6 +125,13 @@
         $("#MbtnAjuste").data("kendoDialog").open().toFront();
         $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
         frmNajus.hideMessages();
+    });
+
+    $("#btnAutRet").bind("click", function () {
+        //validar si existen mas retenciones
+        fn_CalcularRetencion(maq[0].IDOrdenTrabajo, 2, 1, false, function () { fn_AutorizarRetenciones("RetAut", maq[0].IDOrdenTrabajo, maq[0].IdEtapaProceso, maq[0].Item); });
+        //AutRet: es el nombre del div en la vista elementoTrabajo
+
     });
 
     let urtMo = TSM_Web_APi + "MotivosAjustesTintas";
@@ -319,6 +327,7 @@ var fn_gridFormulas = function (gd) {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
+
         }     
     });
 
@@ -516,6 +525,11 @@ var  fn_consultarFormulaDet = function () {
         fn_getEstado($("#gridFormulas").data("kendoGrid")) === 'CREADA' ? Grid_HabilitaToolbar($("#gridFormulasMP"), true, true, true) : Grid_HabilitaToolbar($("#gridFormulasMP"), false, false, false);
 
     });
+// valida retenciones
+    //calcular retenciones si existen
+    fn_CalcularRetencion(maq[0].IDOrdenTrabajo, 2, 1, false);
+    kendo.ui.progress($(document.activeElement), false);
+
 };
 
 var fn_ConsultarFormula = function (g) {
@@ -779,6 +793,7 @@ var fn_gridAjustePrima = function (gd) {
         requestEnd: function (e) {
             if ((e.type === "create" || e.type === "update" || e.type === "destroy") && e.response) {
                 e.sender.read();
+                fn_CalcularRetencion(maq[0].IDOrdenTrabajo, 2, 1, false);
                 $("#gridFormulas").data("kendoGrid").dataSource.read();
             }
 
@@ -891,6 +906,8 @@ var fn_gridAjustePrima = function (gd) {
 
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srow3);
+     
+
     });
 
 };

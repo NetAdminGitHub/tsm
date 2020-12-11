@@ -1,9 +1,14 @@
 ﻿
     <form id="FrmSolicitarCambio" enctype="multipart/form-data">
         <div class="form-row">
-            <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6">
                 <label for="cmbCatalogoCambios">Tipo de cambio:</label>
                 <input id="cmbCatalogoCambios" name="cmbCatalogoCambios" required validationMessage="Requerido" class="form-control" />
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label for="cmbMotivoSolCambio">Motivo del cambio:</label>
+                <input id="cmbMotivoSolCambio" name="cmbMotivoSolCambio" required validationMessage="Requerido" class="form-control" />
             </div>
         </div>
         <div class="form-row">
@@ -21,7 +26,7 @@
         </div>
         <div class="form-row">
             <div class="form-group col-lg-12">
-                <label for="TxtMotivoCambio">Motivo:</label>
+                <label for="TxtMotivoCambio">Comentario:</label>
                 <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
             </div>
         </div>
