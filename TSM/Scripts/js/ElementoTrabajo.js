@@ -249,7 +249,9 @@ $(document).ready(function () {
                     NombreEstado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Fecha: { type: "date" }
+                    Fecha: { type: "date" },
+                    IdMotivoSolicitudCambio: { type: "number" },
+                    NombreMotivo: { type: "string" }
 
                 }
             }
@@ -279,7 +281,8 @@ $(document).ready(function () {
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", minResizableWidth: 175 },
             { field: "IdOrdenTrabajo", title: "Código Orden Trabajo", hidden: true, minResizableWidth: 300 },
             { field: "IdSolicitudCambio", title: "Código solicitud cambio", hidden: true, minResizableWidth: 200 },
-            { field: "NombreSolicitudCambio", title: "Cambio", minResizableWidth: 300 },
+            { field: "NombreSolicitudCambio", title: "Tipo de cambio", minResizableWidth: 300 },
+            { field: "NombreMotivo", title: "Motivo del cambio", minResizableWidth: 200 },
             { field: "ItemSolicitud", title: "Item", hidden: true },
             { field: "Comentario", title: "Comentario", minResizableWidth: 700 },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
@@ -2430,7 +2433,7 @@ var fn_AlertasBatch = function () {
             IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
             //IdEtapaNuevo: 9,
             //IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
-            IdSolicitudCambio: 15,
+            IdSolicitudCambio: 4,
             NombreTipoCambio:"AJUSTE DE MARCO / TINTAS",
             ItemSolicitud: 0,
             IdEtapa: $("#txtIdEtapaProceso").val(),
