@@ -9,7 +9,7 @@
             Cookies.set("t", data);
             window.sessionStorage.setItem("user", $("#form-username").val());
             Cookies.set("user", $("#form-username").val());
-            window.sessionStorage.setItem("l", 1);
+            Cookies.set("l", 1);
             kendo.ui.progress($("#body"), false);
             if (data !== null && data !== "")
                 window.location.href = "/";
@@ -18,7 +18,7 @@
                 Cookies.remove("t");
                 Cookies.remove("user");
                 window.sessionStorage.removeItem("user");
-                window.sessionStorage.removeItem("l");
+                Cookies.remove("l");
             }
         });
     });
