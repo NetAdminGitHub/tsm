@@ -15411,7 +15411,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
     border-radius: .25rem;
     padding: .5rem;
     display: inline-block;
-    width: 18rem;
+    width: 15rem;
     padding: .5rem;
     vertical-align: top
 }
@@ -15482,7 +15482,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
     border-radius: 5px
 }
 
-    .kanban-item:hover {
+    .kanban-item-draggable:hover {
         cursor: move
     }
 

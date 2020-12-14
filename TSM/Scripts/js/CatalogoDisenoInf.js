@@ -336,7 +336,7 @@ let fn_gridOT = function () {
             let grid = this;
             grid.tbody.find("tr").dblclick(function (e) {
                 kendo.ui.progress($("#gConOT"), true);
-                window.open("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
+                window.open("/FichaProduccion/Ficha/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#gConOT"), false);
             });
         },

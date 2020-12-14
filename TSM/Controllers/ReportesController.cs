@@ -36,5 +36,25 @@ namespace TSM.Controllers
 
             return Json(baseUrl, JsonRequestBehavior.AllowGet);
         }
+
+
+
+        // GET: Reportes
+        [Route("ReportesStr/{rptName}/{controlador}/{accion}/{id}")]
+        public JsonResult VisorCrpt(string rptName, string controlador, string accion, string id)
+        {
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, controlador, accion, id));
+
+            string NombreDatos = Guid.NewGuid().ToString();
+
+            Session[NombreDatos] = data;
+            Session["rpt-" + NombreDatos] = rptName;
+
+            string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~/Visor/Reportes.aspx") + "?ds=" + NombreDatos;
+
+            return Json(baseUrl, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

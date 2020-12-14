@@ -814,6 +814,38 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 break;
         }
     }
+    if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
+        switch (IdTipoFormulacion) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionVerifMuestra";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionVerifMuestra.js";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionVerifMuestra";
+                ModalEstacionJS = "EstacionVerifMuestra.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionVerifMuestra";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionMuestra.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAccesoriosVerifMuest";
+                ModalEstacionJS = "EstacionAccesoriosVerifMuest.js";
+                TipoEstacion = "ACCESORIO";
+                Formulacion = "";
+                break;
+        }
+    }
     if (ModalEstacion !== undefined) {
 
         let Url = $("#" + ModalEstacion + "").data("url");
@@ -925,6 +957,27 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                     default:
                 }
             }
+
+            if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_VerifMues").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_VerifMues"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_VerifMues").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_VerifMues"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_VerifMues").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Mues"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
         }
 
         if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
@@ -946,6 +999,11 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                 //guardo en Memoria la llave del tipo de selección
                 if (HizoDropDown === true) $("#TxtOpcSelecAcce_Mues").data("IdAccesorio", TxtIdsec);
                 $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Mues"]').text('Nombre del Accesorio');
+            }
+            if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
+                //guardo en Memoria la llave del tipo de selección
+                if (HizoDropDown === true) $("#TxtOpcSelecAcce_VerifMues").data("IdAccesorio", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_VerifMues"]').text('Nombre del Accesorio');
             }
         }
         HizoDropDown = false;
@@ -1034,6 +1092,23 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             $("#TxtOpcSelec_Mues").data("TipoEstacion", ViewTipoEstacion);
             $("#TxtOpcSelec_Mues").data("Formulacion", ViewFormulacion);
             $("#TxtOpcSelec_Mues").data("IdBrazo", xvbrazo);
+        }
+    }
+    if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
+            $("#TxtOpcSelecAcce_VerifMues").data("name", TxtSecName);
+            $("#TxtOpcSelecAcce_VerifMues").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecAcce_VerifMues").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecAcce_VerifMues").data("IdBrazo", xvbrazo);
+
+        }
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec_VerifMues").data("name", TxtSecName);
+            $("#TxtOpcSelec_VerifMues").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec_VerifMues").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec_VerifMues").data("IdBrazo", xvbrazo);
         }
     }
 

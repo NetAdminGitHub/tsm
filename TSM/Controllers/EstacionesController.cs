@@ -33,11 +33,19 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult EstacionAccesoriosVerifMuest()
+        {
+            return PartialView();
+        }
         public ActionResult EstacionFormulas()
         {
             return PartialView();
         }
         public ActionResult EstacionMuestra()
+        {
+            return PartialView();
+        }
+        public ActionResult EstacionVerifMuestra()
         {
             return PartialView();
         }

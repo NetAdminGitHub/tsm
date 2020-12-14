@@ -320,7 +320,7 @@ let fn_DibujarKanban = function (ds) {
                     let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
                     let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
 
-                    MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
+                    MainKanba.append('<div class="kanban-item kanban-item-draggable" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
                         '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +

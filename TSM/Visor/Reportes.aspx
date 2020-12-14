@@ -33,15 +33,47 @@
                 Session["rpt" + Datos] = null;
             }
 
-            DataTable ds = JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString());
+            DataSet ds;
+
+            try
+            {
+                ds = new DataSet("reportData");
+                ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString()));
+
+            }
+            catch
+            {
+                ds = JsonConvert.DeserializeObject<DataSet>(ViewState["ds"].ToString());
+            }
+
 
             reporte = new ReportDocument();
             reporte.Load("\\\\inqui2003.local\\ReportesTSM_IST\\" + ViewState["rpt"].ToString() + ".rpt");
-            reporte.SetDataSource(ds);
+            reporte.SetDataSource(ds.Tables[0]);
+
+            if (ds.Tables.Count > 1)
+            {
+             
+                int subreportes = 0;
+
+                foreach (var srpt in reporte.Subreports)
+                {
+
+                     reporte.Subreports[subreportes].SetDataSource(ds.Tables[subreportes+1]);
+
+                    subreportes++;
+                }
+
+
+            }
             string Titulo = AddSpacesToSentence(ViewState["rpt"].ToString().Replace("crpt", ""));
             reporte.SummaryInfo.ReportTitle = Titulo;
             this.Title = Titulo;
+
+
             CrystalReportViewer1.ReportSource = reporte;
+
+
         }
 
         private string AddSpacesToSentence(string text, bool preserveAcronyms = true)

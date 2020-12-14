@@ -1,0 +1,63 @@
+﻿<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div class="form-row">
+            <div class="form-group col-lg-3">
+                <label for="CmbMaquina_VerifMue">Selección de Maquina:</label>
+                <input id="CmbMaquina_VerifMue" name="CmbMaquina_VerifMue" required validationMessage="Requerido" type="text" class="form-control" />
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12 align-self-lg-end">
+                @*<button type="button" id="btnVerifMue" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button>*@
+                <button type="button" id="btnFinOTVerifMue">Finalizar OT</button>
+                <button type="button" id="btnCPesosVerifMues">Detalle de pesos</button>
+                <button type="button" id="btnDespla_VerifMue" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
+                </button>
+                <button type="button" id="btnDuplicar_VerifMue" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-copy"></span>&nbsp;Duplicar Estación
+                </button>
+
+                @*<button type="button" id="btnAjuste_VerifMue" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-warning"></span>&nbsp;Ingresar ajuste tinta/marco
+                </button>*@
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-3">
+                <div id="dgAccesorios_VerifMue"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-row" id="EtapaSeteo_11">@*div utilizado para el dibujado de maquina por etapa*@</div>
+<div id="MEstacionVerifMuestra" data-url='@Url.Action("EstacionVerifMuestra","Estaciones")'></div>
+<div id="MEstacionAccesoriosVerifMuest" data-url='@Url.Action("EstacionAccesoriosVerifMuest","Estaciones")'></div>
+
+@*<div id="vCamEstado"></div>*@
+
+<div class="form-row">
+    <div id="MbtnFinVerifMue">
+        <form id="FrmFinVerifMue" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class=" form-group col-lg-12">
+                    <label for="dFechaFinVerifMue">Fecha Fin Muestra:</label>
+                    <input id="dFechaFinVerifMue" name="dFechaFinVerifMue" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group cl-lg-12">
+                    <button type="button" class=" k-primary" id="btnAcepFinVerifMue">Aceptar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="MbtCVerifMue">
+    <div class="form-row">
+        <div class=" form-group col-lg-12">
+            <div id="gridEstacionPesoVerifMue"></div>
+        </div>
+    </div>
+</div>
