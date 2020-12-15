@@ -7,7 +7,6 @@ $(document).ready(function () {
     if (Cookies.get("user") !== undefined)
         window.sessionStorage.setItem("user", Cookies.get("user"));
 
-
     vtoken();
 
     // oerde de ejecucion de documentos
@@ -22,7 +21,14 @@ $(document).ready(function () {
     //seguridad obtner los permisos 
     if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false && location.pathname.startsWith("/Reportes") === false) {
         var ParamPath = location.pathname.toString();//location.pathname.toUpperCase().endsWith("/INDEX")? location.pathname : location.pathname.toString() +'/' + 'Index'
-        fn_getOpcionesMenuPermisos(getUser(), ParamPath);        
+        var permisos = fn_getOpcionesMenuPermisos(getUser(), ParamPath);
+        if (permisos.length === 0) {
+            window.location.href = "/";
+
+        } else {
+            fPermisos(permisos[0]);
+            MostrarMapaSitio(permisos[0].IdMenu);
+        }
     }
 
     document.addEventListener("click", function () {
@@ -124,24 +130,23 @@ var vtoken = function () {
 };
 
 var fn_getOpcionesMenuPermisos = function (xIdUsuario, xUrl) {
+    var datos;
     $.ajax({
         url: UrlMRSeguridad + "/GetMenusRolesSeguridad",
         dataType: 'json',
         type: 'POST',
         data: JSON.stringify({ IdUsuario: xIdUsuario, Url: xUrl }),
         contentType: "application/json; charset=utf-8",
-        success: function (permisos) {
-            if (permisos.length === 0) {
-                window.location.href = "/";
-            } else {
-                fPermisos(permisos[0]);
-                MostrarMapaSitio(permisos[0].IdMenu);
-            }
+        async: false,
+        success: function (respuesta) {
+            datos = respuesta;
         },
         error: function (respuesta) {
-            window.location.href = "/";
+            datos = '[]';
         }
     });
+
+    return datos;
 };
 
 /**
@@ -158,7 +163,7 @@ var fn_getNotificaciones = function () {
             }
         },
         error: function (e) {
-            ErrorMsg(e)
+            ErrorMsg(e);
         }
     });
 };
