@@ -300,6 +300,7 @@
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
+    <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Controllers\TipoMuestrasController.cs" />
     <Compile Include="Controllers\TipoNotificacionesController.cs" />
     <Compile Include="Controllers\TiposAcabadosController.cs" />
+    <Compile Include="Controllers\TiposAdjuntosController.cs" />
     <Compile Include="Controllers\TiposEmulsionesController.cs" />
     <Compile Include="Controllers\TiposFormulacionesController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
@@ -809,6 +811,7 @@
     <Content Include="Scripts\js\IngresoSolicitudesClientes.js" />
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
+    <Content Include="Scripts\js\MotivosSolicitudesCambios.js" />
     <Content Include="Scripts\js\OrdenesTrabajosTerminadas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
@@ -1044,6 +1047,7 @@
     <Content Include="Scripts\js\TipoMuestras.js" />
     <Content Include="Scripts\js\TipoNotificaciones.js" />
     <Content Include="Scripts\js\TiposAcabados.js" />
+    <Content Include="Scripts\js\TiposAdjuntos.js" />
     <Content Include="Scripts\js\TiposFormulaciones.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
@@ -1540,6 +1544,8 @@
     <Content Include="Views\Shared\_ValidacionMuestras.cshtml" />
     <Content Include="Views\Estaciones\EstacionAccesoriosVerifMuest.cshtml" />
     <Content Include="Views\Estaciones\EstacionVerifMuestra.cshtml" />
+    <Content Include="Views\TiposAdjuntos\Index.cshtml" />
+    <Content Include="Views\MotivosSolicitudesCambios\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
