@@ -604,6 +604,12 @@ var fn_VSCargarJSEtapa = function () {
                     },
                     IdUsuarioMod: {
                         type: "string"
+                    },
+                    CodigoPantone: {
+                        type: "string"
+                    },
+                    ID: {
+                        type: "string"
                     }
                 }
             }
@@ -617,57 +623,73 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "IdRequerimiento");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Item");
+            KdoHideCampoPopup(e.container, "CodigoPantone");
+            KdoHideCampoPopup(e.container, "IdTipoPantonera");
 
             //$('[name="ColorHex"]').data("kendoColorPicker").enable(false);
 
-            $('[name="IdTipoPantonera"]').on("change", function (e) {
+            $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
                     var data = $(this).data("kendoMultiColumnComboBox").dataItem();
-                    
+
                     $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
-                    $('[name="Color"]').val(data.Codigo);
-                    $('[name="Item"]').val(data.Item);
                     $('[name="ColorHex"]').data("kendoColorPicker").trigger("change");
+                    $('[name="Color"]').val(data.Codigo);
                     $('[name="Color"]').trigger("change");
-                    $('[name="Item"]').trigger("change");
+                    //$('[name="Item"]').val(data.Item);
+                    $('[name="Item"]').data("kendoNumericTextBox").value(data.Item);
+                    $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
+                    $('[name="IdTipoPantonera"]').val(data.IdTipoPantonera);
+                    $('[name="IdTipoPantonera"]').trigger("change");
+                } else {
+
+                    //$('[name="Item"]').val(data.Item);
+                    $('[name="Item"]').data("kendoNumericTextBox").value(null);
+                    $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
+                    $('[name="IdTipoPantonera"]').val(null);
+                    $('[name="IdTipoPantonera"]').trigger("change");
                 }
             });
 
             if (!e.model.isNew() && e.model.Item !== null) {
-                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").text(e.model.Color);
-                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").trigger("change");
-                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").search(e.model.Color);
-                $('[name="IdTipoPantonera"]').data("kendoMultiColumnComboBox").refresh();
+                $('[name="ID"]').data("kendoMultiColumnComboBox").text(e.model.CodigoPantone);
+                $('[name="ID"]').data("kendoMultiColumnComboBox").trigger("change");
+                $('[name="ID"]').data("kendoMultiColumnComboBox").search(e.model.ID);
+                $('[name="ID"]').data("kendoMultiColumnComboBox").refresh();
+                $('[name="ID"]').data("kendoMultiColumnComboBox").close();
+         
             }
 
-            Grid_Focus(e, "IdTipoPantonera");
+            Grid_Focus(e, "ID");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRequerimientoColor", title: "Código. Desarrollo Color", hidden: true },
             { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
             {
-                field: "IdTipoPantonera", title: "Código Pantone",
+                field: "ID", title: "Código Pantone",
                 editor: function (container, options) {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantones();
                 },
                 hidden: true
             },
-            { field: "Item", hidden: true },
-            { field: "Color", title: "Color Diseño" },
+            { field: "Item", editor: Grid_ColIntNumSinDecimal, hidden: true },
+            { field: "Color",title: "Color Diseño" },
             {
                 field: "ColorHex", title: "Muestra", width: "120px",
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>',
                 editor: function (container, options) {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).kendoColorPicker();
                 }
-            }
+            },
+            { field: "CodigoPantone", title: "Codigó Pantone", hidden: true, menu: false },
+            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
         ]
     });
 
     SetGrid($("#GRReqDesColor").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, true, 0);
     SetGrid_CRUD_ToolbarTop($("#GRReqDesColor").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#GRReqDesColor").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#GRReqDesColor").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#GRReqDesColor").data("kendoGrid"), DsReqColor);
 
     var sRColo = [];
