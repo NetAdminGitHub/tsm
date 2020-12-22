@@ -1,5 +1,5 @@
 ﻿let xSeteo_MEA;
-var fn_VistaEstacionAccesoriosMuesDocuReady = function () {
+var fn_VistaEstacionAccesoriosVerifMuesDocuReady = function () {
     KdoButton($("#btnAddMEA_VerifMues"), "check", "Agregar"); 
 
     KdoComboBoxbyData($("#CmbConsUnidad_VerifMues"), "[]", "Abreviatura", "IdUnidad", "Seleccione una unidad dimensiones ....");
@@ -90,7 +90,7 @@ var fn_VistaEstacionAccesoriosMuesDocuReady = function () {
     });
 };
 
-var fn_VistaEstacionAccesoriosMues = function () {
+var fn_VistaEstacionAccesoriosVerifMues = function () {
     //InicioAcce = true;
     TextBoxEnable($("#TxtOpcSelecAcce_VerifMues"), false);
     $("#TxtOpcSelecAcce_VerifMues").val($("#TxtOpcSelecAcce_VerifMues").data("name"));
@@ -218,5 +218,5 @@ var fn_GuardarSeteoAccesMues = function (xIdBrazo) {
     });
 };
 
-fn_PWList.push(fn_VistaEstacionAccesoriosMues);
-fn_PWConfList.push(fn_VistaEstacionAccesoriosMuesDocuReady);
+fn_PWList.push(fn_VistaEstacionAccesoriosVerifMues);
+fn_PWConfList.push(fn_VistaEstacionAccesoriosVerifMuesDocuReady);

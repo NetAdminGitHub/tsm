@@ -3,7 +3,7 @@
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Codigo",
-                dataValueField: "IdTipoPantonera",
+                dataValueField: "ID",
                 filter: "contains",
                 autoBind: false,
                 minLength: 3,
