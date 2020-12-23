@@ -309,7 +309,7 @@ let fn_DibujarKanban = function (ds) {
             MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                 //'<div class= "form-group col-lg-2">' +
                 '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
+                '<div class= "TSM-card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
                 //'<a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '<a />' +
                 '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>' +
                 '<li class="emptyItem">' +
@@ -321,14 +321,14 @@ let fn_DibujarKanban = function (ds) {
                 '</ul>' +
                 '</div>' +
                 '<div class="card-body">' +
-                '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
-                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
-                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
-                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
+                '<h5 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.Tallas + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
                 '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
                 'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
                 '</div>' +
-                '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
+                '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                 '</div>' +
                 //'</div>' +
                 '</div>');
