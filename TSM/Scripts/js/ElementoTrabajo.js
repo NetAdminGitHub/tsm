@@ -467,6 +467,9 @@ $(document).ready(function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            if (e.type === "destroy") {
+                $("#gridAlerAjus").data("kendoGrid").dataSource.read();
+            }
         },
         schema: {
             model: {
