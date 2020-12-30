@@ -124,10 +124,11 @@ EtapaPush.IdEtapa = idEtapaProceso;
 EtapaPush.FnEtapa = fn_RTCargarMaquina;
 fun_ListDatos.push(EtapaPush);
 //Agregar a Lista de ejecucion funcion configurar 
-var EtapaPush2 = {};
-EtapaPush2.IdEtapa = idEtapaProceso;
-EtapaPush2.FnEtapa = fn_DMueCargarConfiguracion;
-fun_ListDatos.push(EtapaPush2);
+fun_List.push(fn_DMueCargarConfiguracion);
+//var EtapaPush2 = {};
+//EtapaPush2.IdEtapa = idEtapaProceso;
+//EtapaPush2.FnEtapa = fn_DMueCargarConfiguracion;
+//fun_ListDatos.push(EtapaPush2);
 
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
