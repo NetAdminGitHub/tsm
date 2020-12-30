@@ -834,7 +834,7 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + xNumEstacion.toString();
                 ModalEstacion = "MEstacionVerifMuestra";
                 TipoEstacion = "MARCO";
-                ModalEstacionJS = "EstacionMuestra.js";
+                ModalEstacionJS = "EstacionVerifMuestra.js";
                 Formulacion = "BASE";
                 break;
             default:
