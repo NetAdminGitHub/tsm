@@ -191,7 +191,10 @@ let fn_gridOT = function () {
                     //MUAPROPROD: { type: "bool" },
                     MUCOTIZADA: { type: "bool" },
                     MUFIAPRO: { type: "bool" },
-                    MUPREAPRO: { type: "bool" }
+                    MUPREAPRO: { type: "bool" },
+                    EstadoOT: { type: "bool" },
+                    NombreEstOT: { type: "bool" }
+
                 }
             }
         }
@@ -232,6 +235,8 @@ let fn_gridOT = function () {
                 }, width: "120px"
             },
             { field: "NoReq", title: "Requerimiento", width: "120px" },
+            { field: "EstadoOT", title: "Estado OT", width: "120px", hidden: true },
+            { field: "NombreEstOT", title: "Estado", width: "100px" },
             { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
             { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden:true },
             { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}", width: "120px",hidden:true },
@@ -509,6 +514,7 @@ let fn_GenerarOT = function () {
                 RequestEndMsg(datos, "Post");
                 $("#ModalGeneraOT").data("kendoDialog").close();
                 fn_GetOTDetalleReq(datos[0], IdArte, xNDocReqAnterior);
+                $("#gConOT").data("kendoGrid").dataSource.read();
             },
             error: function (data) {
                 ErrorMsg(data);

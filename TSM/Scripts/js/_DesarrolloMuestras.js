@@ -163,7 +163,7 @@ let fn_FinOT = function () {
             $("#MbtnFinMue").data("kendoDialog").close();
             //KdoButtonEnable($("#btnFinOT"), false);
             //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
-            fn_GetArteDis();
+            //fn_GetArteDis();
         },
         error: function (data) {
             ErrorMsg(data);
