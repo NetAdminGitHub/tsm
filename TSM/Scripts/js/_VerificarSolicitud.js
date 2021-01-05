@@ -1118,6 +1118,10 @@ var fn_VSCargarJSEtapa = function () {
             destroy: {
                 url: function (datos) {
                     if (EliminarArtAdj("/RequerimientoDesarrollos/BorrarArchivo/" + $("#NoDocumento").val(), datos.NombreArchivo)) {
+                        //borar la imagen del catalohgo cuando el tipo de adjunto sea # 1
+                        //if (datos.IdTipoAdjunto === "1") {
+                        //    EliminarArtAdj("/RequerimientoDesarrollos/BorrarArchivo/" + $("#NoReferencia").val(), datos.NombreArchivo);
+                        //}
                         return UrlApiAAdj + "/" + datos.Id;
                     }
                 },
@@ -1134,7 +1138,19 @@ var fn_VSCargarJSEtapa = function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type === "destroy" || e.type==="update") { getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + $("#IdArte").val()); }
+            if (e.type === "destroy" || e.type === "update") {
+                getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + $("#IdArte").val());
+                if (e.type === "update") {
+                    if (e.response[0].IdTipoAdjunto=== 1) {
+                        var dsres = [{
+                            NoDocumento: $("#NoDocumento").val(),
+                            NoReferencia: $("#NoReferencia").val(),
+                            NombreArchivo: e.response[0].NombreArchivo
+                        }];
+                        fn_SubirArchivoCatalogo(dsres);
+                    }
+                }
+            }
 
         },
         error: Grid_error,
@@ -1214,6 +1230,10 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "Catalogo");
             KdoHideCampoPopup(e.container, "Placement");
             Grid_Focus(e, "Descripción");
+
+            if (e.model.Catalogo === true) {
+                KdoHideCampoPopup(e.container, "IdTipoAdjunto");
+            }
         },
         columns: [
             { field: "Id", title: "ID", hidden: true },
@@ -1593,6 +1613,14 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
             kendo.ui.progress($("#vistaParcial"), false);
             RequestEndMsg(data, XType);
 
+            if (data[0].IdTipoAdjunto === 1) {
+                var dsres = [{
+                    NoDocumento: $("#NoDocumento").val(),
+                    NoReferencia: $("#NoReferencia").val(),
+                    NombreArchivo: data[0].NombreArchivo
+                }];
+                fn_SubirArchivoCatalogo(dsres);
+            }
         },
         error: function (data) {
             kendo.ui.progress($("#vistaParcial"), false);
@@ -1790,7 +1818,7 @@ let GuardarRequerimiento = function (UrlRD) {
             getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + data[0].IdArte.toString());
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
             //cargar datosdel catalogo
-            fn_CatalogoDisenos();
+            //fn_CatalogoDisenos();
             CargarInfoEtapa(false);
             $("#Fecha").data("kendoDatePicker").element.focus();
 
@@ -1843,6 +1871,20 @@ let fn_SubirArchivoRD = function (ds) {
                 });
             };
 
+        }
+    });
+};
+
+let fn_SubirArchivoCatalogo = function (ds) {
+    $.ajax({
+        type: "Post",
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify(ds),
+        url: "/RequerimientoDesarrollos/SubirAdjuntoCatalogo",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+           
         }
     });
 };
