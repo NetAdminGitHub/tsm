@@ -1775,7 +1775,7 @@ var fn_gridAccesoriosEstacion = function (gd) {
                 }
             }
         }
-    });
+    }); 
 
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
