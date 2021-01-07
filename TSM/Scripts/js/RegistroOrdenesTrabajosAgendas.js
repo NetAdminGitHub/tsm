@@ -39,13 +39,13 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa) {
                         validation: {
                             required: true,
                             maxlength: function (input) {
-                                if (input.is("[name='Estado']")) {
+                                if (input.is("[name='IdEtapaProcesoDestino']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#Estado").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdEtapaProcesoDestino").data("kendoComboBox").selectedIndex >= 0;
                                 }
-                                if (input.is("[name='Comentarios']") && input.val().length > 2000) {
+                                if (input.is("[name='Comentario']") ) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
-                                    return false;
+                                    return input.val().length <= 2000 && input.val().length > 0;
                                 }
                                 return true;
                             }
