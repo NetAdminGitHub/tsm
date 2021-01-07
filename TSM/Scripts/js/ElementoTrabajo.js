@@ -715,7 +715,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#cmbUsuario").data("kendoComboBox").setDataSource(get_cmbUsuario(datos.IdTipoOrdenTrabajo, datos.IdEtapaProceso));
     //obtner las estapas siguientes
     $("#cmbEtpSigAnt").data("kendoComboBox").setDataSource(get_cmbEtpSigAnt(datos.IdEtapaProceso, datos.IdTipoOrdenTrabajo));
-    fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetByArte/" + datos.IdArte, datos.NodocReq);
+    fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + datos.IdArte, datos.NodocReq);
     
     maq = fn_GetMaquinas();
     if (RecargarScriptVista === true) {
@@ -748,7 +748,7 @@ var fn_getImagen = function (xUrl,xNodocumentoReq) {
         dataType: 'json',
         type: 'GET',
         success: function (respuesta) {
-            Fn_LeerImagenes($("#Mycarousel"), "/Adjuntos/" + xNodocumentoReq.toString(), respuesta);
+            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + xNodocumentoReq.toString(), respuesta);
             kendo.ui.progress($("#splitter"), false);
         },
         error: function () {
@@ -1775,7 +1775,7 @@ var fn_gridAccesoriosEstacion = function (gd) {
                 }
             }
         }
-    });
+    }); 
 
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
