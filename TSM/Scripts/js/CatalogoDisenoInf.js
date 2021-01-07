@@ -19,6 +19,10 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras", "Nombre", "IdTipoMuestra", "Seleccione...");
     $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
+    KdoButton($("#btnReactivarOT"), "track-changes");
+    $("#btnReactivarOT").click(function (e) {
+        fn_SolicituReactivacionOrdenTrabajo("SoliIngresoCambio", fn_getIdOT($("#gConOT").data("kendoGrid")), fn_getIdEtp($("#gConOT").data("kendoGrid")), fn_getItem($("#gConOT").data("kendoGrid")), fn_getIdToT($("#gConOT").data("kendoGrid")), function () { return $("#gConOT").data("kendoGrid").dataSource.read(); } );
+    });
 
     fn_gridOT();
     $("#tab_inf").kendoTabStrip({
@@ -174,6 +178,8 @@ let fn_gridOT = function () {
                     NombreCli: { type: "string" },
                     IdRequerimiento: { type: "number" },
                     IdOrdenTrabajo: { type: "number" },
+                    IdEtapaProceso: { type: "IdEtapaProceso" },
+                    Item: { type: "Item" },
                     NoOT: { type: "string" },
                     NoReq: { type: "string" },
                     FechaInicio: { type: "date" },
@@ -212,6 +218,11 @@ let fn_gridOT = function () {
             KdoHideCampoPopup(e.container, "FechaSolicitud");
             KdoHideCampoPopup(e.container, "FechaInicio");
             KdoHideCampoPopup(e.container, "FechaFinal");
+            KdoHideCampoPopup(e.container, "EstadoOT");
+            KdoHideCampoPopup(e.container, "NombreEstOT");
+            KdoHideCampoPopup(e.container, "IdEtapaProceso");
+            KdoHideCampoPopup(e.container, "Item");
+            KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
             KdoCheckBoxEnable($('[name="MUFIAPRO"]'), false);
             KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), false);
             if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
@@ -228,6 +239,9 @@ let fn_gridOT = function () {
             { field: "IdCatalogoDiseno", title: "Cod IdCatalogo", hidden: true },
             { field: "IdRequerimiento", title: "Cod IdRequerimiento", hidden: true },
             { field: "IdOrdenTrabajo", title: "Cod IdOrdenTrabajo", hidden: true },
+            { field: "IdEtapaProceso", title: "Cod Etapa", hidden: true },
+            { field: "Item", title: "Item", hidden: true },
+            { field: "IdTipoOrdenTrabajo", title: "IdTipoOrdenTrabajo", hidden: true },
             //{ field: "NoOT", title: "Orden de Trabajo", width: "120px" },
             {
                 field: "NoOT", title: "Orden de Trabajo", template: function (data) {
@@ -279,11 +293,13 @@ let fn_gridOT = function () {
     $("#gConOT").data("kendoGrid").bind("dataBound", function () { //foco en la fila
         Grid_SetSelectRow($("#gConOT"), selectedRowsServ);
         Grid_HabilitaToolbar($("#gConOT"), false, xid === 0 ? false : true, false);
-       
+
     });
 
     $("#gConOT").data("kendoGrid").bind("change", function () {
         Grid_SelectRow($("#gConOT"), selectedRowsServ);
+        fn_getEstadoOT($("#gConOT").data("kendoGrid")) !== "TERMINADO" ? KdoButtonEnable($("#btnReactivarOT"), false) : KdoButtonEnable($("#btnReactivarOT"), true);
+
     });
 
     //#region PRGRANMACION DETALLE DE COTIZACION
@@ -610,6 +626,18 @@ let fn_getIdOT = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdOrdenTrabajo;
 };
+let fn_getItem = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.Item;
+};
+let fn_getIdEtp = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdEtapaProceso;
+};
+let fn_getIdToT = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdTipoOrdenTrabajo;
+};
 let fn_getIdSimulacion = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdSimulacion;
@@ -617,6 +645,10 @@ let fn_getIdSimulacion = function (g) {
 let fn_getIdCotizacion = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdCotizacion;
+};
+let fn_getEstadoOT = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.EstadoOT;
 };
 let fn_getMUPREAPRO = function (g) {
     var SelItem = g.dataItem(g.select());

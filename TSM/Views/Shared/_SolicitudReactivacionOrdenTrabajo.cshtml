@@ -1,0 +1,47 @@
+﻿
+
+    <form id="FrmSolicitarReactivacion" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbReactivarUltEtapa" name="rbReactivar" class="k-radio form-control">
+                <label class="k-radio-label" for="rbReactivarUltEtapa">Reactivar ultima etapa</label>
+            </div>
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbReactivarConSolicitud" name="rbReactivar" class="k-radio form-control">
+                <label class="k-radio-label" for="rbReactivarConSolicitud">Reactivar con solicitud de cambio</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <label for="cmbCatalogoCambios">Tipo de cambio:</label>
+                <input id="cmbCatalogoCambios" name="cmbCatalogoCambios" required validationMessage="Requerido" class="form-control" />
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label for="cmbMotivoSolCambio">Motivo del cambio:</label>
+                <input id="cmbMotivoSolCambio" name="cmbMotivoSolCambio" required validationMessage="Requerido" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="TxtAreasImpacto">Area de impacto:</label>
+                <textarea id="TxtAreasImpacto" name="TxtAreasImpacto" type="text" class="form-control" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" 
+                          disabled="disabled" />
+            </div>
+        </div>
+        <div class="form-row"><br /></div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="cmbUsuarioEtpImp">Usuarios</label>
+                <input id="cmbUsuarioEtpImp" name="cmbUsuarioEtpImp" required validationMessage="Requerido" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                
+                <label for="TxtMotivoCambioReact">Area de impacto:</label>
+                <textarea id="TxtMotivoCambioReact" name="TxtMotivoCambioReact" type="text" class="form-control" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
+            </div>
+        </div>
+    </form>
+
