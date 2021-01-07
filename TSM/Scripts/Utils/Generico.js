@@ -1655,7 +1655,7 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
     };
 
     let fn_CloseSIC = function () {
-        if (fnclose === undefined || fn === "") {
+        if (fnclose === undefined ) {
             return true;
         } else {
             return fnclose();
@@ -1813,3 +1813,115 @@ var Grid_TemplateCheckBoxColumn = function (data, columna) {
     return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
+
+//#region Solicitar Reactivacion de cambios
+/**
+ * 
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_SolicituReactivacionOrdenTrabajo = function (divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divSolIngCambio + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/SolicitudReactivacionOrdenTrabajo",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalSolicitudReactivacionOT(resultado, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalSolicitudReactivacionOT("", divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio Id del div que contendra la vista de Ingreso de cambios
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo 
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalSolicitudReactivacionOT = function (data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitudReactivacionOrdenTrabajo.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/SolicitudReactivacionOrdenTrabajo.js";
+        script.onload = function () {
+            fn_ShowModalSolicitudReactivacionOT(true, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalSolicitudReactivacionOT(false, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngCambio  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} sicIdot id orden de trabajo
+ * @param {number} sicIdEtapa etapa del proceso
+ * @param {number} sicItem item de la etapa
+ * @param {number} SicidTipoOrdenTrabajo tipo orden trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalSolicitudReactivacionOT = function (cargarJs, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicialarCargaVistaReactivacion(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        } else {
+            fn_RegistroReactivacion(sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divSolIngCambio + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Reactivar orden de trabajo",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_RegistrarSolicitudReactivacionOT(sicIdot, sicIdEtapa, sicItem); } },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+        ],
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divSolIngCambio + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion

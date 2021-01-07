@@ -817,6 +817,7 @@
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SolicitudesCambios.js" />
+    <Content Include="Scripts\js\SolicitudReactivacionOrdenTrabajo.js" />
     <Content Include="Scripts\js\SublimacionOrdenesTrabajos.js" />
     <Content Include="Scripts\js\Sedas.js" />
     <Content Include="favicon.ico" />
@@ -1546,6 +1547,7 @@
     <Content Include="Views\Estaciones\EstacionVerifMuestra.cshtml" />
     <Content Include="Views\TiposAdjuntos\Index.cshtml" />
     <Content Include="Views\MotivosSolicitudesCambios\Index.cshtml" />
+    <Content Include="Views\Shared\_SolicitudReactivacionOrdenTrabajo.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

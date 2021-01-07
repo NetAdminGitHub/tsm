@@ -40,6 +40,12 @@ namespace TSM.Controllers
 
             return PartialView("_SolicitarIngresoCambios");
         }
+        public ActionResult SolicitudReactivacionOrdenTrabajo()
+        {
+
+            return PartialView("_SolicitudReactivacionOrdenTrabajo");
+        }
+
 
         public ActionResult RegistroOrdenesTrabajosAgendas()
         {
