@@ -1469,16 +1469,18 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
 
             $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
-                    var data = $(this).data("kendoMultiColumnComboBox").dataItem();
+                    if ($(this).data("kendoMultiColumnComboBox").select() !== 0) {
+                        var data = $(this).data("kendoMultiColumnComboBox").dataItem();
 
-                    $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
-                    $('[name="ColorHex"]').data("kendoColorPicker").trigger("change");
-                    $('[name="Color"]').val(data.Codigo);
-                    $('[name="Color"]').trigger("change");
-                    $('[name="Item"]').data("kendoNumericTextBox").value(data.Item);
-                    $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
-                    $('[name="IdTipoPantonera"]').val(data.IdTipoPantonera);
-                    $('[name="IdTipoPantonera"]').trigger("change");
+                        $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
+                        $('[name="ColorHex"]').data("kendoColorPicker").trigger("change");
+                        $('[name="Color"]').val(data.Codigo);
+                        $('[name="Color"]').trigger("change");
+                        $('[name="Item"]').data("kendoNumericTextBox").value(data.Item);
+                        $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
+                        $('[name="IdTipoPantonera"]').val(data.IdTipoPantonera);
+                        $('[name="IdTipoPantonera"]').trigger("change");
+                    }
                 }
             });
 

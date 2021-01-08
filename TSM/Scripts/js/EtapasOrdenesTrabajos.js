@@ -389,6 +389,7 @@ let fn_DibujarKanban = function (ds) {
 
                 $.each(filtro, function (index, elemento) {
                     let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
+                    let NoReferencia = elemento.NoReferencia === null ? '' : elemento.NoReferencia;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     let UsuarioKB = elemento.NombreUsuario === null ? '</br>' : elemento.NombreUsuario;
                     let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
@@ -410,13 +411,15 @@ let fn_DibujarKanban = function (ds) {
                         '</div > ' +
                         '<div class="card-body">' +
                         '<h5 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
-                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoReferencia + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.NoPrograma  + '</h1>' +
+                        //'<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.Tallas + '</h1>' +
                         '<table class="table TSM-table">' +
                         '<tbody id="U_' + elemento.IdRow + '">' +
                         '</tbody>' +
                         '</table>' +
-                        '<p class="card-text" style="white-space:normal;"><br/>Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
+                        '<p class="card-text" style="white-space:normal;"><br/>Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
                         'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
                         '</div>' +
                         '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
