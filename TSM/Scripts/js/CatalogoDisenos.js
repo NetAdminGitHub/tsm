@@ -4,7 +4,8 @@ var xNoReferenciaCT = "";
 var xNombreArchivoCT = "";
 var xIdPrograma = 0;
 var xIdOT = 0;
-let dataSource
+var XIdCata = 0;
+let dataSource;
 let fn_GetMotivoDes = function () {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -61,12 +62,13 @@ var fn_getArtesAdjuntos = function () {
     $("#CmbPrograma").ControlSelecionPrograma();
     //$("#CmbProg").ControlSelecionProg();
     $("#CmbFM").ControlSelecionFM_AX();
-
+    $("#CmbFmCata").ControlSelecionFMCatalogo();
     //KdoMultiColumnCmbEnable($("#CmbProg"), false);
     KdoComboBoxEnable($("#CmbMotivoDes"), false);
     KdoButtonEnable($("#btnGenOT_AX"), false);
 
     KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbPrograma")); 
+    KdoMultiColumnCmbSetValue($("#CmbFmCata"), sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbFmCata")); 
 
     $("#CmbOrdenTrabajo").CatalogoOrdenesTrabajos();
     KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo"));
@@ -104,7 +106,7 @@ var fn_getArtesAdjuntos = function () {
             read: {
                 url: function () {
                     kendo.ui.progress($(document.body), true);
-                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString() + "/" + XIdCata.toString();
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -284,10 +286,47 @@ var fn_getArtesAdjuntos = function () {
 
     });
 
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            KdoCmbSetValue($("#CmbCliente"), this.dataItem(e.item.index()).IdCliente);
+            xidClie = this.dataItem(e.item.index()).IdCliente;
+            xIdPrograma = 0;
+            xIdOT = 0;
+            XIdCata = this.dataItem(e.item.index()).IdCatalogoDiseno;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbFmCata", this.dataItem(e.item.index()).IdCatalogoDiseno);
+            sessionStorage.setItem("CatalogoDisenos_CmbCliente", this.dataItem(e.item.index()).IdCliente);
+
+        } else {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdOT = 0;
+            XIdCata = 0;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbFmCata", "");
+        }
+    });
+
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        if (data === undefined) {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdOT = 0;
+            XIdCata = 0;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbOrdenTrabajo", "");
+        }
+
+    });
+
+
     if (sessionStorage.getItem("CatalogoDisenos_CmbCliente") !== null || sessionStorage.getItem("CatalogoDisenos_CmbPrograma") !== null || sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") !== null) {
         xidClie = sessionStorage.getItem("CatalogoDisenos_CmbCliente") === "" || sessionStorage.getItem("CatalogoDisenos_CmbCliente") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbCliente");
         xIdPrograma = sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === "" || sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbPrograma");
         xIdOT = sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === "" || sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo");
+        XIdCata = sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === "" || sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbFmCata");
         dataSource.read();
     }
 };
@@ -324,7 +363,7 @@ var fn_DibujarCatalogo = function (data) {
             '<h5 class="k-card-title">' + elemento.NombreDiseno + '</h5>' +
             '<h6 class="k-card-subtitle">Estilo: ' + elemento.EstiloDiseno + '</h6>' +
             '</div >' +
-            '<img class="k-card-image"  src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" />' +
+            '<img class="k-card-image"  id="Img_' + elemento.IdCatalogoDiseno + '" src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)" />' +
             '<div class="k-card-body">' +
             '<p>Numero:' + elemento.NumeroDiseno + '</p>' +
             '<p>Archivo:' + elemento.NombreArchivo + '</p>' +
@@ -535,6 +574,8 @@ let fn_GenerarOT_FMAX= function () {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
     }
 };
+
+
 
 fPermisos = function (datos) {
     Permisos = datos;

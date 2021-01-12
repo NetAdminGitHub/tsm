@@ -138,7 +138,7 @@ var fn_DMCargarConfiguracion = function () {
             LP: function (input) {
 
                 if (input.is("[name='NumLPelicula']")) {
-                    return $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
+                    return $("#NumLPelicula").data("kendoNumericTextBox").enable() && $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
@@ -174,13 +174,27 @@ var fn_DMCargarConfiguracion = function () {
 
     });
 
+    $("#CmbIdImpresor").data("kendoComboBox").bind("change", function (e) {
+        let _usapositivos = false
+        if (this.dataItem()) {
+            _usapositivos = this.dataItem().Positivos;
+        }
+
+        KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), _usapositivos);
+        KdoNumerictextboxEnable($("#NumLPelicula"), _usapositivos);
+
+        if (!_usapositivos) {
+            kdoNumericSetValue($("#NumLPelicula"), 0);
+            KdoCmbSetValue($("#CmbIdOrientacionPositivo"), "");
+        }
+    });
+
     $("#btnBTDis").data("kendoButton").bind('click', function () {
         ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
 
     });
     $("#btnDesplaCambio_Dis").click(function (e) {
         fn_OpenModalDesplazamiento();
-
     });
 };
 

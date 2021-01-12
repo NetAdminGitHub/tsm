@@ -3,7 +3,7 @@
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Codigo",
-                dataValueField: "IdTipoPantonera",
+                dataValueField: "ID",
                 filter: "contains",
                 autoBind: false,
                 minLength: 3,
@@ -38,7 +38,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
-                valuePrimitive:true,
+                valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
@@ -72,7 +72,7 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) {  return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/1"; },
+                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/1"; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -125,7 +125,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
-                placeholder:"Selección de Programas",
+                placeholder: "Selección de Programas",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -161,7 +161,8 @@
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosConsulta"; },
+                                return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosConsulta";
+                            },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -206,4 +207,35 @@
             });
         });
     },
+    ControlSelecionFMCatalogo: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoReferencia",
+                dataValueField: "IdCatalogoDiseno",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de FM",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                //filterFields: ["NoReferencia", "Nombre"],
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoFiltro"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "NombreCliente", title: "Cliente", width: 300 }
+                ]
+            });
+        });
+    }
+
 });

@@ -1,16 +1,17 @@
 ﻿let xidEtapaCambioAnte = 0;
 let xIdEtapa = 0;
 let VCamEtp;
-var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo) {
+
+var fn_InicialarCargaVistaReactivacion = function (sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo) {
 
 
     kendo.ui.progress($(document.activeElement), true);
     KdoComboBoxbyData($("#cmbUsuarioEtpImp"), "[]", "Nombre", "IdUsuario", "Seleccione...", "", "");
     Kendo_CmbFiltrarGrid($("#cmbMotivoSolCambio"), TSM_Web_APi + "MotivosSolicitudesCambios/GetMotivosSolicitudesCambiosLista", "Nombre", "IdMotivoSolicitudCambio", "Seleccione Motivo...");
     $("#cmbCatalogoCambios").ControlSelecionSolicitudesCambios();
-    $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#TxtMotivoCambioReact").autogrow({ vertical: true, horizontal: false, flickering: false });
     xIdEtapa = sicIdEtapa;
- 
+
     $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").bind("change", function (e) {
 
         let datos = fn_GetEtpAnterior(this.value() === "" ? 0 : this.value());
@@ -19,13 +20,13 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
             KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
             $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtpSolicitudCambio(SicidTipoOrdenTrabajo.toString(), xidEtapaCambioAnte));
 
-  
+
 
             GetUltimoAsignado(sicIdot, xidEtapaCambioAnte);
         } else {
             xidEtapaCambioAnte = 0;
             $("#cmbUsuarioEtpImp").data("kendoComboBox").value("");
-    
+
         }
 
         var multicolumncombobox = $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox");
@@ -42,11 +43,11 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
 
         } else {
             $("#TxtAreasImpacto").text("");
-    
+
         }
     });
 
-     VCamEtp = $("#FrmSolicitarCambio").kendoValidator(
+    VCamEtp = $("#FrmSolicitarReactivacion").kendoValidator(
         {
             rules: {
 
@@ -63,8 +64,8 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
                     return true;
                 },
                 Msg3: function (input) {
-                    if (input.is("[name='TxtMotivoCambio']")) {
-                        return input.val().length >0 && input.val().length <= 200;
+                    if (input.is("[name='TxtMotivoCambioReact']")) {
+                        return input.val().length > 0 && input.val().length <= 200;
                     }
                     return true;
                 },
@@ -82,52 +83,106 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
                 Msg4: "Requerido"
 
             }
-         }).data("kendoValidator");
+        }).data("kendoValidator");
+
+    KdoMultiColumnCmbSetValue($("#cmbCatalogoCambios"), "");
+    $("#TxtMotivoCambioReact").val("");
+    $("#TxtAreasImpacto").text("");
+    kdoRbSetValue($("#rbReactivarUltEtapa"), true);
+    KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+    KdoCmbSetValue($("#cmbMotivoSolCambio"), "");
+    KdoComboBoxEnable($("#cmbMotivoSolCambio"), false);
+    KdoMultiColumnCmbEnable($("#cmbCatalogoCambios"), false);
+    
+
+    $("#rbReactivarUltEtapa").click(function () {
+        KdoMultiColumnCmbSetValue($("#cmbCatalogoCambios"), "");
+        $("#TxtMotivoCambioReact").val("");
+        $("#TxtAreasImpacto").text("");
+        KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+        KdoCmbSetValue($("#cmbMotivoSolCambio"), "");
+        KdoComboBoxEnable($("#cmbMotivoSolCambio"), false);
+        KdoMultiColumnCmbEnable($("#cmbCatalogoCambios"), false);
+        VCamEtp.hideMessages();
+        $("#TxtMotivoCambioReact").focus();
+    });
+
+    $("#rbReactivarConSolicitud").click(function () {
+        KdoMultiColumnCmbSetValue($("#cmbCatalogoCambios"), "");
+        $("#TxtMotivoCambioReact").val("");
+        $("#TxtAreasImpacto").text("");
+        KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+        KdoCmbSetValue($("#cmbMotivoSolCambio"), "");
+        KdoComboBoxEnable($("#cmbMotivoSolCambio"), true);
+        KdoMultiColumnCmbEnable($("#cmbCatalogoCambios"), true);
+        VCamEtp.hideMessages();
+        var msc = $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox");
+        msc.focus();
+    });
+
+
+    if (KdoRbGetValue($("#rbReactivarUltEtapa")) === true) {
+        KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+        $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtpSolicitudCambio(SicidTipoOrdenTrabajo, sicIdEtapa));
+        GetUltimoAsignado(sicIdot, sicIdEtapa);
+    }
+
 
     kendo.ui.progress($(document.activeElement), false);
+    $("#TxtMotivoCambioReact").focus();
 
 };
 
-var fn_RegistroCambios = function () {
+var fn_RegistroReactivacion = function (sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo) {
     kendo.ui.progress($(document.activeElement), true);
     KdoMultiColumnCmbSetValue($("#cmbCatalogoCambios"), "");
     $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").dataSource.read();
-    $("#TxtMotivoCambio").val("");
+    $("#TxtMotivoCambioReact").val("");
     $("#TxtAreasImpacto").text("");
+    kdoRbSetValue($("#rbReactivarUltEtapa"), true);
     KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
     KdoCmbSetValue($("#cmbMotivoSolCambio"), "");
+    KdoComboBoxEnable($("#cmbMotivoSolCambio"), false);
+    KdoMultiColumnCmbEnable($("#cmbCatalogoCambios"), false);
     kendo.ui.progress($(document.activeElement), false);
+
+    if (KdoRbGetValue($("#rbReactivarUltEtapa")) === true ) {
+        KdoCmbSetValue($("#cmbUsuarioEtpImp"), "");
+        $("#cmbUsuarioEtpImp").data("kendoComboBox").setDataSource(get_cmbUsuarioEtpSolicitudCambio(SicidTipoOrdenTrabajo, sicIdEtapa));
+        GetUltimoAsignado(sicIdot, sicIdEtapa);
+        $("#TxtMotivoCambioReact").focus();
+    }
 
 };
 
-var fn_RegistrarSolicitudCambio = function (xidOt, xIdEtapa, xItem) {
+var fn_RegistrarSolicitudReactivacionOT = function (xidOt, xIdEtapa, xItem) {
     let Realizado = false;
     if (VCamEtp.validate()) {
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
-            url: TSM_Web_APi + "OrdenesTrabajosSolicitudesCambios/CrearSolicitud",
+            url: TSM_Web_APi + "OrdenesTrabajosSolicitudesCambios/ReactivarOT",
             type: "Post",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
                 IdOrdenTrabajo: xidOt,
                 IdEtapaNuevo: xidEtapaCambioAnte,
-                IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
-                IdSolicitudCambio: KdoMultiColumnCmbGetValue($("#cmbCatalogoCambios")),
+                IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")) === null ? "" : KdoCmbGetValue($("#cmbUsuarioEtpImp")),
+                IdSolicitudCambio: KdoMultiColumnCmbGetValue($("#cmbCatalogoCambios")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbCatalogoCambios")),
                 NombreTipoCambio: $("#cmbCatalogoCambios").data("kendoMultiColumnComboBox").text(),
                 ItemSolicitud: 0,
                 IdEtapa: xIdEtapa,
                 Estado: "GENERADA",
-                Motivo: $("#TxtMotivoCambio").val(),
+                Motivo: $("#TxtMotivoCambioReact").val(),
                 IdUsuario: getUser(),
                 snMensaje: false,
-                IdMotivoSolicitudCambio: KdoCmbGetValue($("#cmbMotivoSolCambio"))
+                IdMotivoSolicitudCambio: KdoCmbGetValue($("#cmbMotivoSolCambio")) === null ? 0 : KdoCmbGetValue($("#cmbMotivoSolCambio")),
+                Opcion: KdoRbGetValue($("#rbReactivarUltEtapa")) === true ? 1:2
+
             }),
             success: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
                 RequestEndMsg(data, "Post");
-                $("#vRegistroCambio").data("kendoDialog").close();
-                KdoCmbGetValue($("#cmbUsuarioEtpImp")) !== getUser() ? window.location.href = "/EtapasOrdenesTrabajos" : $("#smartwizard").smartWizard("goToPage", $("[etapa=" + xidEtapaCambioAnte.toString() + "]").attr("indice"));
             },
             error: function (data) {
                 kendo.ui.progress($(".k-dialog"), false);
@@ -184,7 +239,7 @@ var get_cmbUsuarioEtpSolicitudCambio = function (tipo, etpAS) {
 };
 
 var fn_CambioEtpRegCambio = function (xidOt, xIdEtapaNuevo) {
-        // obtener indice de la etapa siguiente
+    // obtener indice de la etapa siguiente
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
         url: TSM_Web_APi + "OrdenesTrabajos/CambiarEtapa",
@@ -194,7 +249,7 @@ var fn_CambioEtpRegCambio = function (xidOt, xIdEtapaNuevo) {
             idOrdenTrabajo: xidOt,
             idEtapaNuevo: xIdEtapaNuevo,
             idUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
-            motivo: $("#TxtMotivoCambio").val(),
+            motivo: $("#TxtMotivoCambioReact").val(),
             IdUsuario: getUser(),
             snMensaje: false
         }),
@@ -211,10 +266,10 @@ var fn_CambioEtpRegCambio = function (xidOt, xIdEtapaNuevo) {
             kendo.ui.progress($(".k-dialog"), false);
         }
     });
-    
+
 };
 
-var GetUltimoAsignado = function (idot,idetp) {
+var GetUltimoAsignado = function (idot, idetp) {
     kendo.ui.progress($(".k-dialog"), true);
     KdoCheckBoxEnable($("#cmbUsuarioEtpImp"), false);
     $.ajax({

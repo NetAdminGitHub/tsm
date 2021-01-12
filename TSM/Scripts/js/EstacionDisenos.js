@@ -1,4 +1,6 @@
-﻿
+﻿var xResolucion = 0;
+var xLineaje = 0;
+
 var fn_VistaEstacionDisenoDocuReady = function () {
     KdoButton($("#btnccc_Dis"), "search", "Buscar en formula historicas..");
     KdoButtonEnable($("#btnccc_Dis"), false);
@@ -473,7 +475,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
 
         KdoCmbSetValue($("#CmbIdTipoEstacion_Dis"), setFor.IdTipoEstacion === undefined ? "" : setFor.IdTipoEstacion);
         $("#CmbIdTipoEstacion_Dis").data("kendoComboBox").trigger("change");
-        fn_DeshabilitarCamposMarco_Dis($("#CmbIdTipoEstacion_Dis").data("kendoComboBox").dataItem().UtilizaMarco);
+        fn_DeshabilitarCamposMarco_Dis($("#CmbIdTipoEstacion_Dis").data("kendoComboBox").dataItem() ? 1 : $("#CmbIdTipoEstacion_Dis").data("kendoComboBox").dataItem().UtilizaMarco);
 
         KdoCmbSetValue($("#CmbQuimica_Dis"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
@@ -554,8 +556,8 @@ var fn_SeccionEstacionMarcos_Dis = function (datos) {
         KdoCmbSetValue($("#CmbSedas_Dis"), estaMarco.IdSeda);
         KdoCmbSetValue($("#CmbTipoEmulsion_Dis"), estaMarco.IdTipoEmulsion);
         $("#TxtLetra").val(estaMarco.Letra);
-        kdoNumericSetValue($("#NumResolucionDPI_Dis"), estaMarco.ResolucionDPI);
-        kdoNumericSetValue($("#NumLineajeLPI_Dis"), estaMarco.LineajeLPI);
+        kdoNumericSetValue($("#NumResolucionDPI_Dis"), estaMarco.ResolucionDPI === null ? xResolucion : estaMarco.ResolucionDPI);
+        kdoNumericSetValue($("#NumLineajeLPI_Dis"), estaMarco.LineajeLPI === null ? xLineaje : estaMarco.LineajeLPI);
         kdoNumericSetValue($("#NumPixeles_Dis"), estaMarco.Pixeles);
         xNumPeso_Mues = estaMarco.Peso;
         xCmdIdUnidadPeso_Mues = estaMarco.IdUnidadPeso;
@@ -695,6 +697,8 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
                 var uid = ge.dataSource.get(data[0].IdEstacion).uid;
                 Fn_UpdGridEstacion_Dis(ge.dataItem("tr[data-uid='" + uid + "']"), data[0]);
             }
+            xResolucion = kdoNumericGetValue($("#NumResolucionDPI_Dis"));
+            xLineaje = kdoNumericGetValue($("#NumLineajeLPI_Dis"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionDisenos"), false);

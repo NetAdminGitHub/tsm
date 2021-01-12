@@ -118,10 +118,14 @@ EtapaPush.IdEtapa = idEtapaProceso;
 EtapaPush.FnEtapa = fn_RTCargarMaquina;
 fun_ListDatos.push(EtapaPush);
 //Agregar a Lista de ejecucion funcion configurar 
-var EtapaPush2 = {};
-EtapaPush2.IdEtapa = idEtapaProceso;
-EtapaPush2.FnEtapa = fn_VerifMuesCC;
-fun_ListDatos.push(EtapaPush2);
+
+//Agregar a Lista de ejecucion funcion configurar 
+fun_List.push(fn_VerifMuesCC);
+
+//var EtapaPush2 = {};
+//EtapaPush2.IdEtapa = idEtapaProceso;
+//EtapaPush2.FnEtapa = fn_VerifMuesCC;
+//fun_ListDatos.push(EtapaPush2);
 
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
@@ -151,9 +155,10 @@ let fn_FinOT_VM = function () {
         success: function (datos) {
             RequestEndMsg(datos, "Post");
             $("#MbtnFinVerifMue").data("kendoDialog").close();
+            CargarInfoEtapa(false);
             //KdoButtonEnable($("#btnFinOT"), false);
             //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
-            fn_GetArteDis_VM();
+            //fn_GetArteDis_VM(); se cometarea ya que ahora el FM del catalogo se genera en la solicitud del cliente.
         },
         error: function (data) {
             ErrorMsg(data);
