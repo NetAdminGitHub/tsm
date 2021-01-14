@@ -1469,7 +1469,7 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
 
             $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
-                    if ($(this).data("kendoMultiColumnComboBox").select() !== 0) {
+                    if ($(this).data("kendoMultiColumnComboBox").selectedIndex >= 0) {
                         var data = $(this).data("kendoMultiColumnComboBox").dataItem();
 
                         $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
