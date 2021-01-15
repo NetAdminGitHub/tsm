@@ -902,8 +902,8 @@ $("#vRegistroCambio").kendoDialog({
 $("#vDesplazarCambiar").kendoWindow({
     height: "auto",
     width: "40%",
-    minHeight:500,
-    title: "Desplazmiento /Intercanbio de estaciones ",
+    minHeight:750,
+    title: "Desplazamiento /Intercambio de estaciones ",
     visible: false,
     closable: true,
     modal: true,
@@ -1826,7 +1826,7 @@ var fn_gridEstacionIntercambio= function (gd) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetTodasByIdSeteo/" + XSeteo; },
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetListaEstacionesIntercambiar/" + XSeteo + "/" + CantidadBrazos; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -1881,7 +1881,7 @@ var fn_gridEstacionIntercambio= function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 500);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 700);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
     var srow3 = [];
