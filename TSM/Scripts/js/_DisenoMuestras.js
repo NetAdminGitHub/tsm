@@ -138,7 +138,7 @@ var fn_DMCargarConfiguracion = function () {
             LP: function (input) {
 
                 if (input.is("[name='NumLPelicula']")) {
-                    return $("#NumLPelicula").data("kendoNumericTextBox").enable() && $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
+                    return $("#NumLPelicula").data("kendoNumericTextBox").element[0].disabled === false && $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
