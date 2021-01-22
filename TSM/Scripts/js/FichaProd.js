@@ -8,7 +8,7 @@ let UrlSolicitudProdTolerancia = TSM_Web_APi + "SolicitudProduccionesToleranciaM
 let UrlSolicitudProdHeader =  TSM_Web_APi + "SolicitudProducciones"
 var xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 let UrlApiAAdj = TSM_Web_APi + "ArteAdjuntos";
-
+let UrlApiArteAdj = TSM_Web_APi + "ArteAdjuntos";
 let idcliente = "";
 var reqid;
 var idSimulacion;
@@ -236,7 +236,7 @@ $(document).ready(function () {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val();
+            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + xNoDocumento;
         },
         showFileList: false,
         success: function (e) {
@@ -255,7 +255,7 @@ $(document).ready(function () {
         form.append("Adjunto", blobs[0], nombreArchivo);
 
         $.ajax({
-            url: "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val(),//
+            url: "/RequerimientoDesarrollos/SubirArchivo/" + xNoDocumento,//
             type: "POST",
             data: form,
             contentType: false,
@@ -296,7 +296,7 @@ $(document).ready(function () {
             },
             destroy: {
                 url: function (datos) {
-                    if (EliminarArtAdj("/RequerimientoDesarrollos/BorrarArchivo/" + $("#NoDocumento").val(), datos.NombreArchivo)) {
+                    if (EliminarArtAdjFicha("/RequerimientoDesarrollos/BorrarArchivo/" + xNoDocumento, datos.NombreArchivo)) {
                         return UrlApiAAdj + "/" + datos.Id;
                     }
                 },
@@ -400,7 +400,7 @@ $(document).ready(function () {
             { field: "Id", title: "ID", hidden: true },
             { field: "IdArte", title: "IdArte", hidden: true },
             { field: "Item", title: "Item", editor: Grid_ColIntNumSinDecimal, hidden: true },
-            { field: "NombreArchivo", title: "Nombre del Archivo", template: function (data) { return "<a href='/Adjuntos/" + $("#NoDocumento").val() + "/" + data["NombreArchivo"] + "' target='_blank' style='text-decoration: underline;'>" + data["NombreArchivo"] + "</a>"; } },
+            { field: "NombreArchivo", title: "Nombre del Archivo", template: function (data) { return "<a href='/Adjuntos/" + xNoDocumento + "/" + data["NombreArchivo"] + "' target='_blank' style='text-decoration: underline;'>" + data["NombreArchivo"] + "</a>"; } },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Descripcion", title: "Descripción", hidden: true },
             { field: "Catalogo", title: "Catalogo ?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Catalogo"); }, hidden: true },
@@ -1675,6 +1675,28 @@ let getAdjun = function (UrlAA) {
     });
 };
 
+let EliminarArtAdjFicha = function (UrlAA, Fn) {
+    kendo.ui.progress($("#myModalAdjunto"), true);
+    var eliminado = false;
+
+    $.ajax({
+        url: UrlAA,//
+        type: "Post",
+        data: { fileName: Fn },
+        async: false,
+        success: function (data) {
+            kendo.ui.progress($("#myModalAdjunto"), false);
+            eliminado = data.Resultado;
+            eliminado = true;
+        },
+        error: function (data) {
+            kendo.ui.progress($("#myModalAdjunto"), false);
+            eliminado = false;
+        }
+    });
+
+    return eliminado;
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };
