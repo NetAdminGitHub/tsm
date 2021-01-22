@@ -457,7 +457,10 @@ var fn_VSCargarJSEtapa = function () {
                     C3: {
                         type: "bool"
                     },
-                    DimensionesRelativas: { type: "string" }
+                    DimensionesRelativas: { type: "string" },
+                    DesarrollarTalla: {
+                        type: "bool", defaultValue: function (e) { return false; }
+                    }
                 }
             }
         }
@@ -508,7 +511,8 @@ var fn_VSCargarJSEtapa = function () {
             { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Abreviatura", title: "Unidad de Medida" },
-            { field: "DimensionesRelativas", title: "Medidas Relativas" }
+            { field: "DimensionesRelativas", title: "Medidas Relativas" },
+            { field: "DesarrollarTalla", title: "¿Talla a desarrollar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DesarrollarTalla"); } },
         ]
 
     });

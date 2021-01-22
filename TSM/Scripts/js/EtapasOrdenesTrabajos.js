@@ -411,16 +411,16 @@ let fn_DibujarKanban = function (ds) {
                         '</div > ' +
                         '<div class="card-body">' +
                         '<h5 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
+                        '<h1 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.TallaDesarrollar + '</h1>' +
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoReferencia + '</h1>' +
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.NoPrograma  + '</h1>' +
-                        //'<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
-                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.Tallas + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
                         '<table class="table TSM-table">' +
                         '<tbody id="U_' + elemento.IdRow + '">' +
                         '</tbody>' +
                         '</table>' +
                         '<p class="card-text" style="white-space:normal;"><br/>Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
-                        'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + '</p>' +
+                        'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas +'</p>' +
                         '</div>' +
                         '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                         '</div>' +
