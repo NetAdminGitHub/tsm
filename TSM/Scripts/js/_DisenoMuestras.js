@@ -94,6 +94,9 @@ var fn_DMCargarConfiguracion = function () {
     $("#DtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     KdoDatePikerEnable($("#DtFecha"), false);
 
+    KdoNumerictextboxEnable($("#NumAnchoDiseno"), false);
+    KdoNumerictextboxEnable($("#NumAltoDiseno"), false);
+    KdoComboBoxEnable($("#CmbIdUnidad"), false);
     // varible para validar formularios
     let valFrmDm = $("#FrmDM").kendoValidator({
         rules: {
@@ -205,11 +208,7 @@ var fn_DMCargarEtapa = function () {
     KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), vhb);
     KdoComboBoxEnable($("#CmbIdTipoSeparacion"), vhb);
     KdoComboBoxEnable($("#CmbIdImpresor"), vhb);
-    KdoComboBoxEnable($("#CmbIdUnidad"), vhb);
     KdoComboBoxEnable($("#CmbIdUnidadLP"), vhb);
-    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
-    KdoNumerictextboxEnable($("#NumAltoDiseno"), vhb);
-    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
     KdoNumerictextboxEnable($("#NumLPelicula"), vhb);
     KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
     TextBoxEnable($("#TxtObservaciones"), vhb);
