@@ -553,7 +553,15 @@ var fn_ConsultarFormula = function (g) {
     Te = SelItem.IdTipoFormulacion;
 
     if ((InicioModalFor === 1 && Number(xidEstacion) === Number($("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) || InicioModalFor === 0) {
-        $("#gridFormulas").data("kendoGrid").dataSource.read();
+        $("#gridFormulas").data("kendoGrid").dataSource.read().then(function () {
+            let items = $("#gridFormulas").data("kendoGrid").items();
+            items.each(function (idx, row) {
+                var dataItem = $("#gridFormulas").data("kendoGrid").dataItem(row);
+                if (dataItem["Estado"] === "VIGENTE") {
+                    $("#gridFormulas").data("kendoGrid").select(row);
+                }
+            });
+        });
         fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
         fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
         $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO ESTACIÓN #" + xidEstacion);
