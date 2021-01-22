@@ -457,7 +457,10 @@ var fn_VSCargarJSEtapa = function () {
                     C3: {
                         type: "bool"
                     },
-                    DimensionesRelativas: { type: "string" }
+                    DimensionesRelativas: { type: "string" },
+                    DesarrollarTalla: {
+                        type: "bool", defaultValue: function (e) { return false; }
+                    }
                 }
             }
         }
@@ -508,7 +511,8 @@ var fn_VSCargarJSEtapa = function () {
             { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Abreviatura", title: "Unidad de Medida" },
-            { field: "DimensionesRelativas", title: "Medidas Relativas" }
+            { field: "DimensionesRelativas", title: "Medidas Relativas" },
+            { field: "DesarrollarTalla", title: "¿Talla a desarrollar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DesarrollarTalla"); } },
         ]
 
     });
@@ -630,7 +634,7 @@ var fn_VSCargarJSEtapa = function () {
 
             $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
-                    if ($(this).data("kendoMultiColumnComboBox").select() !== 0) {
+                    if ($(this).data("kendoMultiColumnComboBox").selectedIndex >= 0) {
                         var data = $(this).data("kendoMultiColumnComboBox").dataItem();
 
                         $('[name="ColorHex"]').data("kendoColorPicker").value(data.ColorHex);
@@ -642,7 +646,7 @@ var fn_VSCargarJSEtapa = function () {
                         $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
                         $('[name="IdTipoPantonera"]').val(data.IdTipoPantonera);
                         $('[name="IdTipoPantonera"]').trigger("change");
-                    }
+                    } 
                     
                 } else {
 

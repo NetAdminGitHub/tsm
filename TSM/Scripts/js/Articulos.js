@@ -35,7 +35,6 @@ $(document).ready(function () {
                     NombreEstado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Costo: { type: "number" },
                     Alto: { type: "number" },
                     Ancho: { type: "number" },
                     Quimica: { type: "string" },
@@ -73,7 +72,6 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdArticulo");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Alias");
-            KdoHideCampoPopup(e.container, "Costo");
             KdoHideCampoPopup(e.container, "Alto");
             KdoHideCampoPopup(e.container, "Ancho");
             KdoHideCampoPopup(e.container, "IdUnidadMedida");
@@ -123,14 +121,6 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Costo", title: "Costo",  format: "{0:c6}",
-                filterable: {
-                    cell: {
-                        enabled: false
-                    }
-                }
-            },
-            {
                 field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2],
                 filterable: {
                     cell: {
@@ -146,7 +136,7 @@ $(document).ready(function () {
                     }
                 }
             },
-            { field: "IdUnidadMedida", title: "Código Unidad" },
+            { field: "IdUnidadMedida", title: "Código Unidad" , hidden:true},
             {
                 field: "NombreUnidad", title: "Unidad Med", minResizableWidth: 200,
                 filterable: {

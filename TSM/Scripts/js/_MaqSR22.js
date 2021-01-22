@@ -105,7 +105,7 @@ var fn_RTCargarMaquina = function () {
             x: 150,
             y: 55,
             width: 70,
-            height: 70,
+            height: 100,
             id: "TxtInfo" + (i + 1),
             text: estacionTexto
         });
@@ -183,7 +183,7 @@ var fn_RTCargarMaquina = function () {
        
         text.position({ x: 100 + (i + 1) * 100, y: 5 });
         rect.position({ x: 100 + (i + 1) * 100, y: 25 });
-        textInfo.position({ x: 100 + (i + 1) * 100, y: 55 });
+        textInfo.position({ x: 100 + (i + 1) * 100, y: 25 });
 
         cirbtn1.position({ x: 115 + (i + 1) * 100, y: 40 });
         textbt1.position({ x: 111 + (i + 1) * 100, y: 35 });
@@ -198,18 +198,18 @@ var fn_RTCargarMaquina = function () {
         lineBrazo.points([135 + (i + 1) * 100, 25, 135 + (i + 1) * 100, 170]);
         lineBrazo.strokeWidth(15);
 
-  
      
         layer.add(text);
         layer.add(lineBrazo);
         layer.add(rect);
         layer.add(textInfo);
-        layer.add(cirbtn1);
-        layer.add(textbt1);
-        layer.add(cirbtn2);
-        layer.add(textbt2);
 
-       
+        if (vhb) {
+            layer.add(cirbtn1);
+            layer.add(textbt1);
+            layer.add(cirbtn2);
+            layer.add(textbt2);
+        }       
 
         textbt1.on('mouseenter', function () {
             stage.container().style.cursor = 'pointer';
@@ -228,6 +228,23 @@ var fn_RTCargarMaquina = function () {
             stage.container().style.cursor = 'default';
         });
 
+        cirbtn1.on('mouseenter', function () {
+            stage.container().style.cursor = 'pointer';
+        });
+
+        cirbtn1.on('mouseleave', function () {
+            stage.container().style.cursor = 'default';
+        });
+
+
+        cirbtn2.on('mouseenter', function () {
+            stage.container().style.cursor = 'pointer';
+        });
+
+        cirbtn2.on('mouseleave', function () {
+            stage.container().style.cursor = 'default';
+        });
+
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
 
@@ -237,10 +254,28 @@ var fn_RTCargarMaquina = function () {
                 fn_verEditar(data.IdTipoFormulacion, xidb);
             }
         });
+
         textbt2.on('click', function () {
             let xidb = this.id().replace("txtBorrar", "");
             
             if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9 ) && vhb === true)
+                ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+        });
+
+        cirbtn1.on('click', function () {
+            let xidb = this.id().replace("btnEdit", "");
+
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                let data = maq.find(q => q.IdEstacion === Number(xidb));
+
+                fn_verEditar(data.IdTipoFormulacion, xidb);
+            }
+        });
+
+        cirbtn2.on('click', function () {
+            let xidb = this.id().replace("btnBorrar", "");
+
+            if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
         });
 
@@ -250,7 +285,7 @@ var fn_RTCargarMaquina = function () {
 
             if (node) {
 
-                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                if (maq.find(q => q.IdEstacion === Number(xidb))) {
                     let data = maq.find(q => q.IdEstacion === Number(xidb));
                     // update tooltip
                     var mousePos = node.getStage().getPointerPosition();
@@ -287,7 +322,7 @@ var fn_RTCargarMaquina = function () {
             x: 150,
             y: 55,
             width: 70,
-            height: 70,
+            height: 100,
             id: "TxtInfo" + (34 - i),
             text: estacionTexto
         });
@@ -387,11 +422,13 @@ var fn_RTCargarMaquina = function () {
         layer.add(lineBrazo);
         layer.add(rect);
         layer.add(textInfo);
-        layer.add(cirbtn1);
-        layer.add(textbt1);
-        layer.add(cirbtn2);
-        layer.add(textbt2);
 
+        if (vhb) {
+            layer.add(cirbtn1);
+            layer.add(textbt1);
+            layer.add(cirbtn2);
+            layer.add(textbt2);
+        }
 
         textbt1.on('mouseenter', function () {
             stage.container().style.cursor = 'pointer';
@@ -409,6 +446,22 @@ var fn_RTCargarMaquina = function () {
             stage.container().style.cursor = 'default';
         });
 
+        cirbtn1.on('mouseenter', function () {
+            stage.container().style.cursor = 'pointer';
+        });
+
+        cirbtn1.on('mouseleave', function () {
+            stage.container().style.cursor = 'default';
+        });
+
+        cirbtn2.on('mouseenter', function () {
+            stage.container().style.cursor = 'pointer';
+        });
+
+        cirbtn2.on('mouseleave', function () {
+            stage.container().style.cursor = 'default';
+        });
+
         textbt1.on('click', function () {
             let xidb = this.id().replace("txtEdit", "");
 
@@ -423,7 +476,23 @@ var fn_RTCargarMaquina = function () {
 
             if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9) && vhb === true)
                 ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
-        });   
+        });
+
+        cirbtn1.on('click', function () {
+            let xidb = this.id().replace("txtEdit", "");
+
+            if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                let data = maq.find(q => q.IdEstacion === Number(xidb));
+
+                fn_verEditar(data.IdTipoFormulacion, xidb);
+            }
+        });
+        cirbtn2.on('click', function () {
+            let xidb = this.id().replace("txtBorrar", "");
+
+            if (maq.find(q => q.IdEstacion === Number(xidb) && q.IdEtapaProceso !== 9) && vhb === true)
+                ConfirmacionMsg("¿Esta seguro de eliminar la configuración en la estación?", function () { return fn_EliminarEstacion(maq[0].IdSeteo, xidb); });
+        });
 
         textInfo.on('mousemove', function (e) {
             var node = e.target;

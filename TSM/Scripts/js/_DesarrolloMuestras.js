@@ -5,6 +5,7 @@ var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
     KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnMuest"), "delete", "Limpiar");
+    KdoButtonEnable($("#btnMuest"), false);
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
 
     //KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
@@ -48,9 +49,9 @@ var fn_DMueCargarConfiguracion = function () {
     Kendo_CmbFiltrarGrid($("#CmbIdTipoSeparacion"), UrlDM_TS, "Nombre", "IdTipoSeparacion", "Seleccione...");
     KdoButton($("#btnGuardarDiseñoMues"), "save", "Guardar");
 
-    $("#btnMuest").data("kendoButton").bind('click', function () {
-        ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
-    });
+    //$("#btnMuest").data("kendoButton").bind('click', function () {
+    //    ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
+    //});
 
      //FINALIZAR OT
     let ValidFrmFinMue = $("#FrmFinMue").kendoValidator({
@@ -111,7 +112,7 @@ var fn_DMueCargarConfiguracion = function () {
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     //KdoButtonEnable($("#btnFinOT"), vhb);
-    KdoButtonEnable($("#btnMuest"), vhb);
+    //KdoButtonEnable($("#btnMuest"), vhb);
     KdoButtonEnable($("#btnDesplaCambio_Mues"), vhb);
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
     KdoButtonEnable($("#btnDuplicar_Mues"), vhb);

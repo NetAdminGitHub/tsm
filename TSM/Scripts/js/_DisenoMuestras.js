@@ -94,6 +94,9 @@ var fn_DMCargarConfiguracion = function () {
     $("#DtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     KdoDatePikerEnable($("#DtFecha"), false);
 
+    KdoNumerictextboxEnable($("#NumAnchoDiseno"), false);
+    KdoNumerictextboxEnable($("#NumAltoDiseno"), false);
+    KdoComboBoxEnable($("#CmbIdUnidad"), false);
     // varible para validar formularios
     let valFrmDm = $("#FrmDM").kendoValidator({
         rules: {
@@ -138,7 +141,7 @@ var fn_DMCargarConfiguracion = function () {
             LP: function (input) {
 
                 if (input.is("[name='NumLPelicula']")) {
-                    return $("#NumLPelicula").data("kendoNumericTextBox").enable() && $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
+                    return $("#NumLPelicula").data("kendoNumericTextBox").element[0].disabled === false && $("#NumLPelicula").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
             },
@@ -189,10 +192,10 @@ var fn_DMCargarConfiguracion = function () {
         }
     });
 
-    $("#btnBTDis").data("kendoButton").bind('click', function () {
-        ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
+    //$("#btnBTDis").data("kendoButton").bind('click', function () {
+    //    ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
 
-    });
+    //});
     $("#btnDesplaCambio_Dis").click(function (e) {
         fn_OpenModalDesplazamiento();
     });
@@ -201,16 +204,11 @@ var fn_DMCargarConfiguracion = function () {
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     fn_GetDisenoMuestra();
-    KdoButtonEnable($("#btnBTDis"), vhb);
     KdoButtonEnable($("#btnDesplaCambio_Dis"), vhb);
     KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), vhb);
     KdoComboBoxEnable($("#CmbIdTipoSeparacion"), vhb);
     KdoComboBoxEnable($("#CmbIdImpresor"), vhb);
-    KdoComboBoxEnable($("#CmbIdUnidad"), vhb);
     KdoComboBoxEnable($("#CmbIdUnidadLP"), vhb);
-    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
-    KdoNumerictextboxEnable($("#NumAltoDiseno"), vhb);
-    KdoNumerictextboxEnable($("#NumAnchoDiseno"), vhb);
     KdoNumerictextboxEnable($("#NumLPelicula"), vhb);
     KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
     TextBoxEnable($("#TxtObservaciones"), vhb);

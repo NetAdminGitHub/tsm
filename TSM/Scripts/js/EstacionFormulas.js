@@ -204,7 +204,7 @@
             IdSeteo: maq[0].IdSeteo,
             IdEstacion: xidEstacion
         };
-        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId, undefined, undefined);
+        Fn_VistaCambioEstadoMostrar("SeteoMaquinasEstacionesMarcos", xEstado, TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/SeteoMaquinasEstacionesMarcos_CambiarEstado", "Sp_CambioEstado", lstId, undefined, function () { return fn_UpdAjusteMarcoGrilla(); });
     });
 
    
@@ -463,6 +463,12 @@ var fn_GridEstaciones = function (gd) {
                     },
                     Comentario: {
                         type: "string"
+                    },
+                    AplicaTintas: {
+                        type: "bool"
+                    },
+                    AplicaMarco: {
+                        type: "bool"
                     }
                 }
             }
@@ -482,10 +488,17 @@ var fn_GridEstaciones = function (gd) {
             var grid = gd.data("kendoGrid");
             var data = grid.dataSource.data();
             $.each(data, function (i, row) {
-                if (row.EstadoAlerta === 'ACTIVA') {
+                if (row.EstadoAlerta === 'ACTIVA' && row.AplicaTintas===true) {
                     $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
-                } else {
-                    $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                }
+                else {
+                    if (row.EstadoAlerta === 'ACTIVA' && row.AplicaMarco === true) {
+                        $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#ffa534");
+                    } else {
+
+                        $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                    }
+
                 }
             });
         },
@@ -499,7 +512,9 @@ var fn_GridEstaciones = function (gd) {
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
             { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120 },
             { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 },
-            { field: "EstadoAlerta", title: "EstadoAlerta", minResizableWidth: 120, hidden: true }
+            { field: "EstadoAlerta", title: "EstadoAlerta", minResizableWidth: 120, hidden: true },
+            { field: "AplicaTintas", title: "AplicaTintas", minResizableWidth: 50, hidden: true ,menu:false},
+            { field: "AplicaMarco", title: "AplicaMarco", minResizableWidth: 50, hidden: true, menu: false}
             
         ]
     });
@@ -538,7 +553,15 @@ var fn_ConsultarFormula = function (g) {
     Te = SelItem.IdTipoFormulacion;
 
     if ((InicioModalFor === 1 && Number(xidEstacion) === Number($("#TxtOpcSelecFormulas").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) || InicioModalFor === 0) {
-        $("#gridFormulas").data("kendoGrid").dataSource.read();
+        $("#gridFormulas").data("kendoGrid").dataSource.read().then(function () {
+            let items = $("#gridFormulas").data("kendoGrid").items();
+            items.each(function (idx, row) {
+                var dataItem = $("#gridFormulas").data("kendoGrid").dataItem(row);
+                if (dataItem["Estado"] === "VIGENTE") {
+                    $("#gridFormulas").data("kendoGrid").select(row);
+                }
+            });
+        });
         fn_GetDatosMarcoFormulacion(maq[0].IdSeteo, xidEstacion);
         fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
         $("#MEstacionFormulas").data("kendoWindow").title("TINTAS Y REVELADO ESTACIÓN #" + xidEstacion);
@@ -974,6 +997,26 @@ let fn_UpdEstadoGrilla = function () {
     $("tr[data-uid= '" + uid + "']").removeAttr("style");
 
     return true;
+};
+
+let fn_UpdAjusteMarcoGrilla = function () {
+    // como esta funcion es Async =false es valido colocar este codigo
+    let ge = $("#gridEstacion").data("kendoGrid");
+    var uid = ge.dataSource.get(xidEstacion).uid;
+    Fn_UpdGridEstacion_AjusteMarco(ge.dataItem("tr[data-uid='" + uid + "']"), KdoCmbGetText($("#cmbEstados")), uid);
+
+
+    return true;
+};
+
+
+let Fn_UpdGridEstacion_AjusteMarco = function (g, estado, uid) {
+    if (estado === "FINALIZADO") {
+        g.set("EstadoAlerta", "FINALIZADA");
+        LimpiaMarcaCelda_Formula();
+        $("tr[data-uid= '" + uid + "']").removeAttr("style"); 
+    }
+
 };
 
 fn_PWList.push(fn_VistaEstacionFormulas);
