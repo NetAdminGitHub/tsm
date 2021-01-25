@@ -45,10 +45,10 @@ $(document).ready(function () {
                     NoDocumento: { type: "string" },
                     IdServicio: { type: "number" },
                     Nombre: { type: "string" },
-                    IdUbicacion: { type: "number" },
+                    //IdUbicacion: { type: "number" },
                     NoDocumento1: { type: "string" },
-                    UbicacionHorizontal: { type: "string" },
-                    UbicacionVertical: { type: "string" },
+                    //UbicacionHorizontal: { type: "string" },
+                    //UbicacionVertical: { type: "string" },
                     CantidadPiezas: { type: "number" },
                     TallaPrincipal: { type: "string" },
                     Estado: { type: "string" },
@@ -65,7 +65,7 @@ $(document).ready(function () {
                     IdComposicionTela: { type: "number" },
                     Nombre8: { type: "string" },
                     Color: { type: "string" },
-                    RegistroCompletado: {type:"bool"}
+                    RegistroCompletado: { type: "bool" }
                 }
             }
         }
@@ -83,25 +83,83 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
-            { field: "NoDocumento", title: "No requerimiento" },
-            { field: "Fecha", title: "Fecha requerimiento", format: "{0: dd/MM/yyyy}" },
-            { field: "Nombre1", title: "Nombre del diseño" },
-            { field: "EstiloDiseno", title: "Estilo diseño" },
-            { field: "NumeroDiseno", title: "Número diseño" },
+            {
+                field: "NoDocumento", title: "No requerimiento", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Fecha", title: "Fecha requerimiento", format: "{0: dd/MM/yyyy}", filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Nombre1", title: "Nombre del diseño", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "EstiloDiseno", title: "Estilo diseño", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "NumeroDiseno", title: "Número diseño", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
             { field: "IdPrograma", title: "Código de programa", hidden: true },
-            { field: "Nombre2", title: "Nombre del programa", hidden: true },
+     
             { field: "IdCliente", title: "Código cliente", hidden: true },
             { field: "IdServicio", title: "Código servicio", hidden: true },
             { field: "Nombre", title: "Servicio", hidden: true },
-            { field: "IdUbicacion", title: "Código ubicación", hidden: true },
-            { field: "UbicacionHorizontal", title: "Ubicacion horizontal", hidden: true },
-            { field: "UbicacionVertical", title: "Ubicacion vertical", hidden: true },
             { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
             { field: "TallaPrincipal", title: "Detalle de tallas", hidden: true },
             { field: "Estado", title: "Código Estado", hidden: true },
             {
+                field: "NoDocumento1", title: "Código programa", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Nombre2", title: "Nombre del programa", lockable: true,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
                 field: "Nombre3", title: "Estado", template: function (data) {
                     return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre3"] + "</button>";
+                },
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
                 }
             },
             { field: "InstruccionesEspeciales", title: "Instrucciones Especiales", hidden: true },
@@ -110,13 +168,13 @@ $(document).ready(function () {
             { field: "IdConstruccionTela", title: "Código construcción tela", hidden: true, menu: false },
             { field: "IdComposicionTela", title: "Código composición tela", hidden: true, menu: false },
             { field: "Nombre5", title: "composición tela", hidden: true },
-            { field: "Color", title: "Color", hidden: true },
-            { field: "RegistroCompletado", title: "Registro Completado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RegistroCompletado"); }, hidden: true,  }
+            { field: "Color", title: "Color", hidden: true }
 
         ]
     });
 
-    SetGrid($("#gridConsulta").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 600);
+    //SetGrid($("#gridConsulta").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 600);
+    SetGrid($("#gridConsulta").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 600, true, "row");
     SetGrid_CRUD_ToolbarTop($("#gridConsulta").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridConsulta").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridConsulta").data("kendoGrid"), DsRD);
