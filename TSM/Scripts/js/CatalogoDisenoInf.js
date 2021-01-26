@@ -270,8 +270,8 @@ let fn_gridOT = function () {
                         KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#TxtMotivoCambio").val("");
                         $("#ModalGeneraOT").data("kendoDialog").open();
-                        xidRq=dataItem.get("IdRequerimiento");
-                        xIdServ = dataItem.get("IdServicio");
+                        xidRq=dataItem.IdRequerimiento;
+                        xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
                       
                     }
@@ -320,7 +320,7 @@ let fn_gridOT = function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-           
+
         },
         error: Grid_error,
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
@@ -328,12 +328,12 @@ let fn_gridOT = function () {
             model: {
                 id: "IdCotizacionSimulacion",
                 fields: {
-                    IdServicio: {type:"number"},
+                    IdServicio: { type: "number" },
                     IdCotizacionSimulacion: { type: "number" },
-                    EstadoCotizacion: {type:"string"},
+                    EstadoCotizacion: { type: "string" },
                     IdCotizacion: { type: "number" },
-                    NoDocCotizacion: {type:"string"},
-                    IdOrdenTrabajo: {type:"number"},
+                    NoDocCotizacion: { type: "string" },
+                    IdOrdenTrabajo: { type: "number" },
                     IdSimulacionRentabilidad: { type: "number" },
                     PorcUtilidadConsiderada: { type: "number" },
                     UtilidadDolares: { type: "number" },
@@ -345,7 +345,9 @@ let fn_gridOT = function () {
                     FacturacionVenta: { type: "number" },
                     IdSimulacion: { type: "numeric" },
                     NoDocumento: { type: "string" },
-                    SNExisteFichaProd: { type: "bool" }
+                    SNExisteFichaProd: { type: "bool" },
+                    EstadoCotizacionNombre: { type: "string" },
+                    FechaAprobacion: {type: "date"}
                 }
             }
         }
@@ -377,6 +379,8 @@ let fn_gridOT = function () {
                     return "<button class='btn btn-link nav-link' onclick='fn_verSimulacion(" + data["IdSimulacion"] + "," + data["IdServicio"] + "," + data["IdServicio"] + ")' >" + data["NoDocumento"] + "</button>";
                 }
             },
+            { field: "EstadoCotizacionNombre", title: "Estado" },
+            { field: "FechaAprobacion", title: "Fecha Apro cot.", format: "{0: dd/MM/yyyy}" },
             { field: "SNExisteFichaProd", title: "Ficha Producción",  template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "SNExisteFichaProd"); } },
             { field: "IdSimulacionRentabilidad", title: "cod. Simulación Rentabilidad", hidden: true },
             { field: "PorcUtilidadConsiderada", title: "PorcUtilidad Considerada", editor: Grid_ColNumeric, values: ["required", "-100", "100", "P2", 4], format: "{0:P2}", hidden: true },
@@ -395,7 +399,9 @@ let fn_gridOT = function () {
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        fn_GenerarSolicitudProducciones();
+
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        fn_GenerarSolicitudProducciones(dataItem);
                     }
                 },
                 width: "70px",
@@ -654,10 +660,10 @@ let fn_getMUPREAPRO = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.MUPREAPRO;
 };
-let fn_GenerarSolicitudProducciones = function () {
+let fn_GenerarSolicitudProducciones = function (data) {
     kendo.ui.progress($("#ModalGeneraOT"), true);
     $.ajax({
-        url: TSM_Web_APi + "SolicitudProducciones/Procesar/" + fn_getIdCotizacion($("#gridCotizacionDetalle").data("kendoGrid")) + "/" + fn_getIdOT($("#gridCotizacionDetalle").data("kendoGrid")) + "/" + fn_getIdSimulacion($("#gridCotizacionDetalle").data("kendoGrid")),
+        url: TSM_Web_APi + "SolicitudProducciones/Procesar/" + data.IdCotizacion.toString() + "/" + data.IdOrdenTrabajo.toString() + "/" + data.IdSimulacion.toString(),
         type: "Post",
         dataType: "json",
         data: JSON.stringify({ IdSimulacionRentabilidad: null }),
