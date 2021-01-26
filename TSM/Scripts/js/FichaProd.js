@@ -15,8 +15,8 @@ var idSimulacion;
 var idCotizacion;
 var EstadoFichaProd;
 let xNoDocumento;
-let imgCatSrc;
-let imgPlaceSrc;
+var imgCatSrc;
+var imgPlaceSrc;
 $(document).ready(function () {
     xIdOt = xIdOt === undefined ? 0 : xIdOt;
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
@@ -439,15 +439,41 @@ $(document).ready(function () {
 });
 
 
+let fn_GetImgBase64 = function () {
+    let imgstr = "";
+    $.ajax({
+        url: window.location.origin + "/Imagen/ImgStr",
+        dataType: 'json',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                imgCat: imgCatSrc,
+                imgPlace: imgPlaceSrc
+
+            }
+        ),
+        contentType: "application/json; charset=utf-8",
+        success: function (respuesta) {
+            imgstr = respuesta;
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return imgstr;
+};
+
 
 $("#btnImprimir").click(function (e) {
+    let imgvalue = fn_GetImgBase64();
 
-    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion},"base64_1","base64_1"`;
-
+    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion},"imgvalue[0]","base64_1"`;
+   
     e.preventDefault();
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: window.location.origin + "/ReportesCreate",
+        url: window.location.origin + "/ReportesCreate/",
         dataType: 'json',
         type: 'POST',
         data: JSON.stringify(
@@ -458,7 +484,7 @@ $("#btnImprimir").click(function (e) {
                 id: paramficha
             }
         ),
-        contentType: "application/json; charset=utf-8",
+        contentType: 'application/json; charset=utf-8',
         success: function (respuesta) {
             let MiRpt = window.open(respuesta, "_blank");
 

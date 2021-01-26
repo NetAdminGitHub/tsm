@@ -56,16 +56,16 @@ namespace TSM.Controllers
         }
 
         [HttpPost]
-        [Route("ReportesCreate")]
-        public JsonResult VisorCrpt(Dictionary<string, object> value)
+        [Route("Reportes/ReportesCreate/")]
+        public JsonResult CallReport(Dictionary<string, object> val)
         {
-            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, value["controlador"].ToString(), value["accion"].ToString(), value["id"].ToString()));
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, val["controlador"].ToString(), val["accion"].ToString(), val["id"].ToString()));
 
             string NombreDatos = Guid.NewGuid().ToString();
 
             Session[NombreDatos] = data;
-            Session["Parametros_" + NombreDatos] = value;
-            Session["rpt-" + NombreDatos] = value["rptName"].ToString();
+            Session["Parametros_" + NombreDatos] = val;
+            Session["rpt-" + NombreDatos] = val["rptName"].ToString();
 
             string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~/Visor/Reportes.aspx") + "?ds=" + NombreDatos;
 

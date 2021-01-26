@@ -291,6 +291,7 @@
     <Compile Include="Controllers\GetCipherController.cs" />
     <Compile Include="Controllers\GradosInsumosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -1563,6 +1564,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CrystalReferences\" />
+    <Folder Include="Views\Imagen\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
