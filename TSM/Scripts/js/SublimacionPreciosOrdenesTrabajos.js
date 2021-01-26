@@ -8,10 +8,13 @@ let xIdReqDes = 0;
 let xIdReqChis = 0;
 let xIdCatPrendaChis = 0;
 let xIdUbiChis = 0;
+let xIdRdConsulta = null;
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), "");
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente"));    
+
+    //KdoCmbSetValue($("#CmbIdCliente"), "");
     KdoButton($("#btnCambioEstado"), "gear", "Cambiar estado");
     KdoButton($("#btnRefrescar"), "reload", "Actualizar");
     KdoButton($("#btnEditarOT"), "unlock", "Editar OT histórica");
@@ -27,19 +30,27 @@ $(document).ready(function () {
     KdoMultiSelectDatos($("#CmbMultiComboNoDocmuento"), "[]", "NoDocumento", "IdRequerimiento", "Seleccione ...", 100, true);
     Kendo_CmbFiltrarGrid($("#cmbEstados"), TSM_Web_APi +"EstadosSiguientes/GetEstadosSiguientes/RequerimientoDesarrollos/DESARROLLO/true", "Nombre", "EstadoSiguiente", "Seleccione un estado ....");
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSublimacionConfirmadas();
+    KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo")); 
     $("#CmbOTaprob").ControlSelecionOTSublimacionConfirmadas();
 
     let dtfecha = new Date();
+    let xfd = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde");
+    let xfh = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta");
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
+    //$("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
+    $("#dFechaDesde").data("kendoDatePicker").value(xfd === "" ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde"));
+
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
+    //$("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
+    $("#dFechaHasta").data("kendoDatePicker").value(xfh === "" ? Fhoy() : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta"));
+
     $("#TxtComentarios").autogrow({ vertical: true, horizontal: false, flickering: false });
     $("#TxtComentariosHis").autogrow({ vertical: true, horizontal: false, flickering: false });
     $("#TxtComentariosHis").attr("readonly", true);
 
-    $('#chkRangFechas').prop('checked', 1);
-
+    //$('#chkRangFechas').prop('checked', 1);
+    let xchkRanF = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_chkRangFechas") === null ? "false" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_chkRangFechas");
+    $('#chkRangFechas').prop('checked', xchkRanF=== "true" ? 1 : 0);
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
     KdoCheckBoxEnable($('#chkRangFechas'), false);
@@ -133,7 +144,8 @@ $(document).ready(function () {
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            kdoChkSetValue($('#chkRangFechas'), true);
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente", this.dataItem(e.item.index()).IdCliente.toString());
+            kdoChkSetValue($('#chkRangFechas'), xchkRanF === "true" ? 1 : 0);
             Fn_ConsultarSibli(this.dataItem(e.item.index()).IdCliente.toString());
             KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
             KdoButtonEnable($("#btnRefrescar"), true);
@@ -148,7 +160,8 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnGuardar"), true);
             $("#TxtComentarios").attr("disabled", false);
         } else {
-            kdoChkSetValue($('#chkRangFechas'), true);
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente", "");
+            kdoChkSetValue($('#chkRangFechas'), xchkRanF === "true" ? 1 : 0);
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
@@ -170,7 +183,8 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            kdoChkSetValue($('#chkRangFechas'), true);
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente", "");
+            kdoChkSetValue($('#chkRangFechas'), xchkRanF === "true" ? 1 : 0);
             Fn_ConsultarSibli(0);
             KdoButtonEnable($("#btnCambioEstado"), false);
             KdoButtonEnable($("#btnRefrescar"), false);
@@ -301,10 +315,10 @@ $(document).ready(function () {
      
     });
 
-    //Cargar grid precios historicos
-    fn_partesHisSublimado();
+
 
     $("#btnConsular").click(function (e) {
+        xIdRdConsulta = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
         let g = $("#gridPartesHis").data("kendoGrid");
         g.dataSource.read();
         g.pager.page(1);
@@ -344,12 +358,98 @@ $(document).ready(function () {
 
     //#endregion
 
-    fn_partesHisCambios();
+
     $("#chkMostrarTodos").click(function () {
         $("#gridPartesHisCambios").data("kendoGrid").dataSource.read();
     });
 
+    //Cargar grid precios historicos
+    fn_partesHisSublimado();
+
+    fn_partesHisCambios();
+
+    if ((sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente")) !== "") {
+        kdoChkSetValue($('#chkRangFechas'), xchkRanF === "true" ? 1 : 0);
+        Fn_ConsultarSibli(sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_CmbIdCliente"));
+        KdoButtonEnable($("#btnCambioEstado"), fn_SNCambiarEstados(true));
+        KdoButtonEnable($("#btnRefrescar"), true);
+        KdoButtonEnable($("#btnEditarOT"), fn_SNCambiarEstados(true));
+        KdoDatePikerEnable($("#dFechaDesde"), xchkRanF === "true" ? true : false);
+        KdoDatePikerEnable($("#dFechaHasta"), xchkRanF === "true" ? true : false);
+        KdoCheckBoxEnable($('#chkRangFechas'), true);
+        KdoButtonEnable($("#btnConsular"), true);
+        KdoMultiColumnCmbEnable($("#TxtNoOrdeTrabajo"), true);
+        //KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), "");
+        //KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo")); 
+        var multicolumncombobox = $('[name="TxtNoOrdeTrabajo"]').data("kendoMultiColumnComboBox");
+        multicolumncombobox.select(function (dataItem) { return dataItem.IdRequerimiento === sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo") === null ? "" : Number(sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo")); });
+        multicolumncombobox.search(sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc"));
+        multicolumncombobox.refresh();
+        multicolumncombobox.text(sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc"));
+        multicolumncombobox.close();
+        xIdRdConsulta = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo") === null ? null : Number(sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo"));
+        if (xIdRdConsulta === null) {
+            kdoChkSetValue($('#chkRangFechas'), 1);
+            KdoDatePikerEnable($("#dFechaDesde"), true);
+            KdoDatePikerEnable($("#dFechaHasta"), true);
+        }
+        fn_ConsultarHis();
+        KdoButtonEnable($("#btnGuardar"), true);
+        $("#TxtComentarios").attr("disabled", false);
+    }
+
+    $("#dFechaDesde").data("kendoDatePicker").bind("change", function () {
+        fn_ConsultarHis();
+        sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde", kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'));
+    });
+
+    $("#dFechaHasta").data("kendoDatePicker").bind("change", function () {
+        fn_ConsultarHis();
+        sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta", kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'));
+    });
+
+    $("#chkRangFechas").click(function () {
+        fn_ConsultarHis();
+        sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_chkRangFechas", this.checked);
+    });
+
+    $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+          
+            xIdRdConsulta = this.dataItem(e.item.index()).IdRequerimiento; 
+            fn_ConsultarHis();
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo", this.dataItem(e.item.index()).IdRequerimiento);
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc", this.dataItem(e.item.index()).NoOT);
+
+
+        } else {
+            xIdRdConsulta = null;
+            fn_ConsultarHis();
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo", "");
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc", "");
+        }
+    });
+
+    $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdRequerimiento === Number(this.value()));
+        if (data === undefined) {
+            xIdRdConsulta = null;
+            fn_ConsultarHis();
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajo", "");
+            sessionStorage.setItem("SublimacionPreciosOrdenesTrabajos_TxtNoOrdeTrabajoNodoc", "");
+        }
+
+    });
+
+
 });
+
+let fn_ConsultarHis = function () {
+    let g = $("#gridPartesHis").data("kendoGrid");
+    g.dataSource.read();
+    g.pager.page(1);
+};
 let fn_verHisCambioPrecios = function (xidreq, xidCatPre, xidUbi, xNodoc) {
     xIdReqChis = xidreq;
     xIdCatPrendaChis = xidCatPre;
@@ -487,7 +587,8 @@ let fn_partesSublimado = function () {
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    InstruccionesEspeciales: { type: "string" }
+                    InstruccionesEspeciales: { type: "string" },
+                    NoPrograma: { type: "string" }
                 }
             }
         },
@@ -547,6 +648,15 @@ let fn_partesSublimado = function () {
                 editor: function (container, options) {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlSelecionOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")));
                 }, hidden: true
+            },
+            {
+                field: "NoPrograma", title: "No Programa",
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
             },
             {
                 field: "NombreProgra", title: "Programa",lockable: true,
@@ -701,7 +811,7 @@ let fn_partesHisSublimado = function () {
                         FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
                         FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
                         IdCliente: KdoCmbGetValue($("#CmbIdCliente")),
-                        IdRequerimiento: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"))
+                        IdRequerimiento: xIdRdConsulta === 0 ? null : xIdRdConsulta  //KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"))
                     }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
@@ -747,7 +857,8 @@ let fn_partesHisSublimado = function () {
                     Precio: { type: "number" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    InstruccionesEspeciales: { type: "string" }
+                    InstruccionesEspeciales: { type: "string" },
+                    NoPrograma:{type:"string"}
                 }
             }
         },
@@ -783,6 +894,15 @@ let fn_partesHisSublimado = function () {
             {
                 field: "IdRequerimiento", title: "No Orden Trabajo",
                 hidden: true
+            },
+            {
+                field: "NoPrograma", title: "No Programa",
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
             },
             {
                 field: "NombreProgra", title: "Programa", lockable: true,
