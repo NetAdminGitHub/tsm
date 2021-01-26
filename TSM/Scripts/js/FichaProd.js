@@ -442,15 +442,22 @@ $(document).ready(function () {
 
 $("#btnImprimir").click(function (e) {
 
-    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion}`;
-
+    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion},"base64_1","base64_1"`;
 
     e.preventDefault();
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: window.location.origin + "/ReportesStr/crptFichaProduccion/FichaProduccion/GetFicha/" + encodeURIComponent(paramficha) ,
+        url: window.location.origin + "/ReportesCreate",
         dataType: 'json',
-        type: 'GET',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFichaProduccion",
+                controlador: "FichaProduccion",
+                accion: "GetFicha",
+                id: paramficha
+            }
+        ),
         contentType: "application/json; charset=utf-8",
         success: function (respuesta) {
             let MiRpt = window.open(respuesta, "_blank");
