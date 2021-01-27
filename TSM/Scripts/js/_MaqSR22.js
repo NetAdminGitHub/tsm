@@ -500,7 +500,7 @@ var fn_RTCargarMaquina = function () {
 
             if (node) {
 
-                if (maq.find(q => q.IdEstacion === Number(xidb)) && vhb === true) {
+                if (maq.find(q => q.IdEstacion === Number(xidb))) {
                     let data = maq.find(q => q.IdEstacion === Number(xidb));
                     // update tooltip
                     var mousePos = node.getStage().getPointerPosition();

@@ -183,13 +183,7 @@ var fn_DMCargarConfiguracion = function () {
             _usapositivos = this.dataItem().Positivos;
         }
 
-        KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), _usapositivos);
         KdoNumerictextboxEnable($("#NumLPelicula"), _usapositivos);
-
-        if (!_usapositivos) {
-            kdoNumericSetValue($("#NumLPelicula"), 0);
-            KdoCmbSetValue($("#CmbIdOrientacionPositivo"), "");
-        }
     });
 
     //$("#btnBTDis").data("kendoButton").bind('click', function () {
