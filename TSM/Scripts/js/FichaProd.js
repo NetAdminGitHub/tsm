@@ -5,7 +5,7 @@ let UrlApiCAtInstrucciones = TSM_Web_APi + "CatInstrucciones";
 let UrlClientesTolerancia = TSM_Web_APi + "ClientesToleranciaMedida";
 let UrlSolicitudProd = TSM_Web_APi + "SolicitudProduccionesInstrucciones"; // ficha de producción
 let UrlSolicitudProdTolerancia = TSM_Web_APi + "SolicitudProduccionesToleranciaMedida"; // ficha de producción
-let UrlSolicitudProdHeader =  TSM_Web_APi + "SolicitudProducciones"
+let UrlSolicitudProdHeader = TSM_Web_APi + "SolicitudProducciones";
 var xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 let UrlApiAAdj = TSM_Web_APi + "ArteAdjuntos";
 let UrlApiArteAdj = TSM_Web_APi + "ArteAdjuntos";
@@ -224,6 +224,11 @@ $(document).ready(function () {
         ActualizaComentariosFicha();
     });
 
+    $('#plLavado').on("change", function (e) {
+
+        ActualizaComentariosFicha();
+    });
+
 
 
     //Control para subir los adjutos
@@ -425,6 +430,7 @@ $(document).ready(function () {
     if (Permisos.SNEditar === false || Permisos.SNBorrar === false) {
         $('#plStrikeOff').attr('enable', false);
         $('#plMigracion').attr('enable', false);
+        $('#plLavado').attr('enable', false);
         $('#plMuestraAprobada').attr('enable', false);//
         $('#plTrama').attr('enable', false);
         $("#instruccionesProd").data("kendoMultiSelect").enable(false);
@@ -442,15 +448,22 @@ $(document).ready(function () {
 
 $("#btnImprimir").click(function (e) {
 
-    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion}`;
-
+    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion},"base64_1","base64_1"`;
 
     e.preventDefault();
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: window.location.origin + "/ReportesStr/crptFichaProduccion/FichaProduccion/GetFicha/" + encodeURIComponent(paramficha) ,
+        url: window.location.origin + "/ReportesCreate",
         dataType: 'json',
-        type: 'GET',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFichaProduccion",
+                controlador: "FichaProduccion",
+                accion: "GetFicha",
+                id: paramficha
+            }
+        ),
         contentType: "application/json; charset=utf-8",
         success: function (respuesta) {
             let MiRpt = window.open(respuesta, "_blank");
@@ -511,6 +524,7 @@ let fn_GetOTRequerimiento = function () {
                 $("#plStrikeOff").prop("checked", Boolean(Number(datos.TieneStrikeOff)));
                 $("#plTermofijado").prop("checked", Boolean(Number(datos.UsarTermofijado)));
                 $("#plMigracion").prop("checked", Boolean(Number(datos.Migracion)));
+                $("#plLavado").prop("checked", Boolean(Number(datos.Lavado)));
                 $("#plMuestraAprobada").prop("checked", Boolean(Number(datos.Muestra)));
                 $("#plTrama").prop("checked", Boolean(Number(datos.Trama)));
 
@@ -704,7 +718,9 @@ let fn_ObtieneConfiguracionBrazos = function () {
                     DesArea: { type: "string" },
                     Peso: { type: "number" },
                     IdUnidadPeso: { type: "number" },
-                    DesPeso: { type: "string" }
+                    DesPeso: { type: "string" },
+                    IdSeda: { type: "string" },
+                    SedaNombre: {type:"string"}
                    
                 }
             }
@@ -718,6 +734,8 @@ let fn_ObtieneConfiguracionBrazos = function () {
             { field: "IdEstacion", title: "Estación" },
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
+            { field: "IdSeda", title: "IdSeda", hidden: true  },
+            { field: "SedaNombre", title: "Seda" },
             { field: "Letra", title: "Letra" },
             { field: "Capilar", title: "Capilar", format: "{0:n2}" },
             { field: "NoPasadas", title: "NoPasadas" },
@@ -1599,6 +1617,7 @@ let ActualizaComentariosFicha = function () {
                 InstruccionesGen: $("#TxtInstrucciones").val(),
                 InstruccionesTermo: $("#TxtComentarios").val(),
                 Migracion: $('#plMigracion')[0].checked,
+                Lavado: $('#plLavado')[0].checked,
                 Muestra: $('#plMuestraAprobada')[0].checked,
                 Trama: $('#plTrama')[0].checked,
                 Placement: $('#plPlacement')[0].checked,
