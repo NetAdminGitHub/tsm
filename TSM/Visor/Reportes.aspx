@@ -57,7 +57,7 @@
                      DataColumn pla = new DataColumn("Imgplacement", typeof(byte[]));
                     pla.DefaultValue = Convert.FromBase64String(param["imgPla"].ToString());
                     ds.Tables[0].Columns.Add(cat);
-                    ds.Tables[0].Columns.Add(pla);
+                    ds.Tables[0].Columns.Add(pla); 
 
                 }
 
