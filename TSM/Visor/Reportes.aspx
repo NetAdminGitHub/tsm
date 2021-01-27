@@ -29,21 +29,38 @@
             {
                 ViewState["ds"] = Session[Datos];
                 ViewState["rpt"] = Session["rpt-" + Datos];
+                ViewState["params"] = Session["Parametros_" + Datos];
                 Session[Datos] = null;
                 Session["rpt" + Datos] = null;
+                Session["Parametros_" + Datos] = null;
             }
 
             DataSet ds;
 
             try
             {
+                // Si solo trae un dataTable y falla para al catch
                 ds = new DataSet("reportData");
-                ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString()));
-
+             ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString()));
+               
             }
             catch
             {
                 ds = JsonConvert.DeserializeObject<DataSet>(ViewState["ds"].ToString());
+                 // si reporte Ficha Producción
+                if(ViewState["rpt"].ToString() == "crptFichaProduccion")
+                {
+                   
+                    Dictionary<string,object> param = JsonConvert.DeserializeObject<Dictionary<string,object>>(ViewState["params"].ToString());
+                    DataColumn cat = new DataColumn("ImgCatalogo", typeof(byte[]));
+                    cat.DefaultValue = Convert.FromBase64String(param["imgCat"].ToString());
+                     DataColumn pla = new DataColumn("Imgplacement", typeof(byte[]));
+                    pla.DefaultValue = Convert.FromBase64String(param["imgPla"].ToString());
+                    ds.Tables[0].Columns.Add(cat);
+                    ds.Tables[0].Columns.Add(pla);
+
+                }
+
             }
 
 
@@ -53,13 +70,13 @@
 
             if (ds.Tables.Count > 1)
             {
-             
+
                 int subreportes = 0;
 
                 foreach (var srpt in reporte.Subreports)
                 {
 
-                     reporte.Subreports[subreportes].SetDataSource(ds.Tables[subreportes+1]);
+                    reporte.Subreports[subreportes].SetDataSource(ds.Tables[subreportes+1]);
 
                     subreportes++;
                 }

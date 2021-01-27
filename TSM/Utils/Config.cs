@@ -64,9 +64,10 @@ namespace TSM.Utils
         public static string GetBase64Image(string path)
         {
             string imgstr;
+            string realPath = HttpContext.Current.Server.MapPath(path);
             try
             {
-                using (Image img = Image.FromFile(path))
+                using (Image img = Image.FromFile(realPath))
                 {
                     using (MemoryStream m = new MemoryStream())
                     {
@@ -82,6 +83,11 @@ namespace TSM.Utils
             }
 
           return imgstr;
+        }
+
+        public static byte[] GetBytesFromB64(string raw)
+        {
+            return Convert.FromBase64String(raw);
         }
 
 

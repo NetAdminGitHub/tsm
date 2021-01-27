@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net.Http;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace TSM.Controllers
 {
@@ -57,15 +59,24 @@ namespace TSM.Controllers
 
         [HttpPost]
         [Route("Reportes/ReportesCreate/")]
-        public JsonResult CallReport(Dictionary<string, object> val)
+        public JsonResult CallReport()
         {
-            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, val["controlador"].ToString(), val["accion"].ToString(), val["id"].ToString()));
+            Dictionary<string, object> ds = new Dictionary<string, object>();
+
+            Stream req = Request.InputStream;
+            req.Seek(0, System.IO.SeekOrigin.Begin);
+            string json = new StreamReader(req).ReadToEnd();
+
+
+            ds = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, ds["controlador"].ToString(), ds["accion"].ToString(), ds["id"].ToString()));
 
             string NombreDatos = Guid.NewGuid().ToString();
-
+            
             Session[NombreDatos] = data;
-            Session["Parametros_" + NombreDatos] = val;
-            Session["rpt-" + NombreDatos] = val["rptName"].ToString();
+            Session["Parametros_" + NombreDatos] = JsonConvert.SerializeObject(ds);
+            Session["rpt-" + NombreDatos] = ds["rptName"].ToString();
 
             string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~/Visor/Reportes.aspx") + "?ds=" + NombreDatos;
 
