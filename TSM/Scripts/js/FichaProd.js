@@ -448,15 +448,22 @@ $(document).ready(function () {
 
 $("#btnImprimir").click(function (e) {
 
-    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion}`;
-
+    let paramficha = `${xIdOt},${idSimulacion},${idCotizacion},"base64_1","base64_1"`;
 
     e.preventDefault();
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: window.location.origin + "/ReportesStr/crptFichaProduccion/FichaProduccion/GetFicha/" + encodeURIComponent(paramficha),
         dataType: 'json',
-        type: 'GET',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFichaProduccion",
+                controlador: "FichaProduccion",
+                accion: "GetFicha",
+                id: paramficha
+            }
+        ),
         contentType: "application/json; charset=utf-8",
         success: function (respuesta) {
             let MiRpt = window.open(respuesta, "_blank");
@@ -713,8 +720,8 @@ let fn_ObtieneConfiguracionBrazos = function () {
                     IdUnidadPeso: { type: "number" },
                     DesPeso: { type: "string" },
                     IdSeda: { type: "string" },
-                    SedaNombre: { type: "string" }
-
+                    SedaNombre: {type:"string"}
+                   
                 }
             }
         }
@@ -727,7 +734,7 @@ let fn_ObtieneConfiguracionBrazos = function () {
             { field: "IdEstacion", title: "Estación" },
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
-            { field: "IdSeda", title: "IdSeda", hidden: true },
+            { field: "IdSeda", title: "IdSeda", hidden: true  },
             { field: "SedaNombre", title: "Seda" },
             { field: "Letra", title: "Letra" },
             { field: "Capilar", title: "Capilar", format: "{0:n2}" },

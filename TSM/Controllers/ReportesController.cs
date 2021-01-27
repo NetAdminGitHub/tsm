@@ -55,6 +55,21 @@ namespace TSM.Controllers
             return Json(baseUrl, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [Route("ReportesCreate")]
+        public JsonResult VisorCrpt(Dictionary<string, object> value)
+        {
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, value["controlador"].ToString(), value["accion"].ToString(), value["id"].ToString()));
 
+            string NombreDatos = Guid.NewGuid().ToString();
+
+            Session[NombreDatos] = data;
+            Session["Parametros_" + NombreDatos] = value;
+            Session["rpt-" + NombreDatos] = value["rptName"].ToString();
+
+            string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~/Visor/Reportes.aspx") + "?ds=" + NombreDatos;
+
+            return Json(baseUrl, JsonRequestBehavior.AllowGet);
+        }
     }
 }

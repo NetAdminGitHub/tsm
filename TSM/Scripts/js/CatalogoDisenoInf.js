@@ -270,7 +270,7 @@ let fn_gridOT = function () {
                         KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#TxtMotivoCambio").val("");
                         $("#ModalGeneraOT").data("kendoDialog").open();
-                        xidRq = dataItem.IdRequerimiento;
+                        xidRq=dataItem.IdRequerimiento;
                         xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
 
@@ -347,7 +347,7 @@ let fn_gridOT = function () {
                     NoDocumento: { type: "string" },
                     SNExisteFichaProd: { type: "bool" },
                     EstadoCotizacionNombre: { type: "string" },
-                    FechaAprobacion: { type: "date" }
+                    FechaAprobacion: {type: "date"}
                 }
             }
         }
@@ -381,7 +381,7 @@ let fn_gridOT = function () {
             },
             { field: "EstadoCotizacionNombre", title: "Estado" },
             { field: "FechaAprobacion", title: "Fecha Apro cot.", format: "{0: dd/MM/yyyy}" },
-            { field: "SNExisteFichaProd", title: "Ficha Producción", template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "SNExisteFichaProd"); } },
+            { field: "SNExisteFichaProd", title: "Ficha Producción",  template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "SNExisteFichaProd"); } },
             { field: "IdSimulacionRentabilidad", title: "cod. Simulación Rentabilidad", hidden: true },
             { field: "PorcUtilidadConsiderada", title: "PorcUtilidad Considerada", editor: Grid_ColNumeric, values: ["required", "-100", "100", "P2", 4], format: "{0:P2}", hidden: true },
             { field: "UtilidadDolares", title: "Utilidad Dolares", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
