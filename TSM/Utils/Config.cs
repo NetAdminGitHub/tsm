@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Configuration;
 using System.Net.Http;
+using System.Drawing;
+using System.IO;
 
 namespace TSM.Utils
 {
@@ -58,5 +60,38 @@ namespace TSM.Utils
                 return response;
             }
         }
+
+        public static string GetBase64Image(string path)
+        {
+            string imgstr;
+            string realPath = HttpContext.Current.Server.MapPath(path);
+            try
+            {
+                using (Image img = Image.FromFile(realPath))
+                {
+                    using (MemoryStream m = new MemoryStream())
+                    {
+                        img.Save(m, img.RawFormat);
+                        byte[] bimg = m.ToArray();
+                        imgstr = Convert.ToBase64String(bimg);
+                     }
+                }
+            }
+            catch (Exception)
+            {
+                imgstr = "MA=="; //0 en base 64 para manejo de error 
+            }
+
+          return imgstr;
+        }
+
+        public static byte[] GetBytesFromB64(string raw)
+        {
+            return Convert.FromBase64String(raw);
+        }
+
+
+
+
     }
 }
