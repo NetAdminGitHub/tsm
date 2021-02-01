@@ -109,8 +109,13 @@ $(document).ready(function () {
         animation: { open: { effects: "fadeIn" } }
     }).data("kendoTabStrip");
 
-
+    $("#UbicacionHorInf").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#UbicacionVerInf").autogrow({ vertical: true, horizontal: false, flickering: false });
+    $("#UbicacionHorInf").attr("disabled", true);
+    $("#UbicacionVerInf").attr("disabled", true);
     $('#rbDesplazarRight').prop('checked', true);
+    $("#TxtDirectorioArchivosInfo").attr("readonly",true);
+
     PanelBarConfig($("#BarPanelInfo"));
     kendo.ui.progress($(document.body), true);
     //cargando los accesorios maquinas
@@ -592,6 +597,8 @@ $(document).ready(function () {
             fn_ActualizarAlerta(0, "M");
         }
     });
+
+
     
 });
 var fn_ConsultarDetalle = function () {
@@ -699,6 +706,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#swchCobDiseno").data("kendoSwitch").check(datos.CobrarDiseno);
     $("#swchCobDiseno").data("kendoSwitch").enable(false);
     $("#TxtNoRegPrenda").val(datos.NoDocumentoRegPrenda);
+    $("#UbicacionHorInf").val(datos.UbicacionHorizontal);
+    $("#UbicacionVerInf").val(datos.UbicacionVertical);
+    $("#TxtDirectorioArchivosInfo").val(datos.DirectorioArchivos);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
