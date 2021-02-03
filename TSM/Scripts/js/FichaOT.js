@@ -112,7 +112,10 @@ let fn_MostrarEstMarcos = function () {
                     DesPeso: { type: "string" },
                     ResolucionDPI: { type: "numeber" },
                     LineajeLPI: { type: "number" },
-                    Pixeles: { type: "number" }
+                    Pixeles: { type: "number" },
+                    IdSeda: { type: "number" },
+                    SedaNombre: { type: "string" },
+                    DurezaEscurridor: { type: "number" }
                 }
             }
         }
@@ -125,6 +128,9 @@ let fn_MostrarEstMarcos = function () {
             { field: "IdEstacion", title: "Estación" },
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
+            { field: "IdSeda", title: "IdSeda", hidden: true },
+            { field: "SedaNombre", title: "Seda" },
+            { field: "DurezaEscurridor", title: "Dureza Escurridor" },
             { field: "Letra", title: "Letra" },
             { field: "Capilar", title: "Capilar", format: "{0:n2}" },
             { field: "NoPasadas", title: "NoPasadas" },

@@ -30,38 +30,43 @@ $(document).ready(function () {
     KdoButton($("#btnGeneraCotiPro"), "gear", " Generar cotización por programa");
     KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
     KdoButton($("#btnIrCoti"), "hyperlink-open-sm", "Ir a Simulaciones");
-    KdoButtonEnable($("#btnGeneraCotiPro"), vEstCoti !== "EDICION" ? false: true);
+    KdoButtonEnable($("#btnGeneraCotiPro"), vEstCoti !== "EDICION" ? false : true);
     KdoButtonEnable($("#btnCambioEstado"), vEstCoti !== "EDICION" ? false : fn_SNCambiarEstados(true));
-    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false : fn_SNAgregar(true));    
+    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false : fn_SNAgregar(true));
 
     var Valid = $("#frmCondiciones").kendoValidator(
         {
-            ContactoRules: {
+            rules: {
                 Mayor0: function (input) {
-                    if (input.is("[name='Contacto']")) {
+                    if (input.is("[name='TxtContacto']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
                 TransporteRules: function (input) {
-                    if (input.is("[name='Transporte']")) {
+                    if (input.is("[name='TxtTransPorte']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
                 NumeroSeteosRules: function (input) {
-                    if (input.is("[name='Transporte']")) {
+                    if (input.is("[name='TxtNumeroSeteos']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
-
-                messages: {
-                    ContactoRules: "Longitud máxima del campo es 200",
-                    TransporteRules: "Longitud máxima del campo es 200",
-                    NumeroSeteosRules: "Longitud máxima del campo es 200",
-                    required: "Requerido"
+                Decimales: function (input) {
+                    if (input.is("[name='txtCantidadDecimales']")) {
+                        return input.val() !== "" && !isNaN(input.val());
+                    }
+                    return true;
                 }
+            },
+            messages: {
+                Mayor0: "Longitud máxima del campo es 200",
+                TransporteRules: "Longitud máxima del campo es 200",
+                NumeroSeteosRules: "Longitud máxima del campo es 200",
+                Decimales: "Requerido"
             }
         }
     ).data("kendoValidator");

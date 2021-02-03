@@ -107,7 +107,7 @@ var fn_VSCargarJSEtapa = function () {
 
     $("#CantidadColores").kendoNumericTextBox({
         min: 0,
-        max: 12,
+        //max: 12,
         format: "#",
         restrictDecimals: true,
         decimals: 0,

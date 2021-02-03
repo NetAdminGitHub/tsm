@@ -97,6 +97,7 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa) {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
     SetGrid($("#gridAgenda").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 450);
     SetGrid_CRUD_ToolbarTop($("#gridAgenda").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridAgenda").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridAgenda").data("kendoGrid"), dsetOTEstados, 20);
 
     var selrow1 = [];
@@ -110,7 +111,7 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa) {
 };
 
 var fn_CargarAgenda = function (vIdOt, vIdEtapa) {
-     vIdEtapaOrigen = vIdEtapa;
+    vIdEtapaOrigen = vIdEtapa;
     $("#gridAgenda").data("kendoGrid").dataSource.read();
 
 };
