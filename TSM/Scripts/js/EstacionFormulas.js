@@ -821,6 +821,9 @@ var fn_gridAjustePrima = function (gd) {
             }
 
             Grid_requestEnd(e);
+        },
+        error: function (e) {
+            ErrorMsg(e.xhr);
         }
     });
 
