@@ -455,7 +455,7 @@ var fn_GridEstaciones = function (gd) {
                         type: "string"
 
                     },
-                    NombreColorEstacion: {
+                    CodigoPantone: {
                         type: "string"
                     },
                     EstadoFormula: {
@@ -469,6 +469,9 @@ var fn_GridEstaciones = function (gd) {
                     },
                     AplicaMarco: {
                         type: "bool"
+                    },
+                    IgualarColor: {
+                        type: "string"
                     }
                 }
             }
@@ -506,11 +509,13 @@ var fn_GridEstaciones = function (gd) {
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
-            { field: "EstadoFormula", title: "Estado Formula", minResizableWidth: 120 },
+            { field: "CodigoPantone", title: "Pantone", minResizableWidth: 120 },
             {
-                field: "ColorHex", title: "Color", minResizableWidth: 120,
+                field: "ColorHex", title: "Color", minResizableWidth: 100,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' },
-            { field: "NombreColorEstacion", title: "Nombre", minResizableWidth: 120 },
+        
+            { field: "IgualarColor", title: "Igualar a:", minResizableWidth: 120 },
+            { field: "EstadoFormula", title: "Estado Formula", minResizableWidth: 120 },
             { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 },
             { field: "EstadoAlerta", title: "EstadoAlerta", minResizableWidth: 120, hidden: true },
             { field: "AplicaTintas", title: "AplicaTintas", minResizableWidth: 50, hidden: true ,menu:false},
