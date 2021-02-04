@@ -1459,6 +1459,12 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
                     },
                     ID: {
                         type: "string"
+                    },
+                    IdTipoIgualacionColor: {
+                        type: "string"
+                    },
+                    NombreIgualacion: {
+                        type: "string"
                     }
                 }
             }
@@ -1476,6 +1482,7 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
             KdoHideCampoPopup(e.container, "Item");
             KdoHideCampoPopup(e.container, "CodigoPantone");
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
+            KdoHideCampoPopup(e.container, "NombreIgualacion");
 
             $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
@@ -1518,6 +1525,7 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
             },
             { field: "Item", title: "Item", editor: Grid_ColIntNumSinDecimal, hidden: true },
             { field: "Color", title: "Color Diseño" },
+            { field: "CodigoPantone", title: "Codigó Pantone" },
             {
                 field: "ColorHex", title: "Muestra",
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>',
@@ -1525,7 +1533,9 @@ var fn_gridColorEstacion = function (gd, xvIdSeteo) {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).kendoColorPicker();
                 }
             },
-            { field: "CodigoPantone", title: "Codigó Pantone", hidden: true, menu: false },
+            { field: "IdTipoIgualacionColor", title: "Igualar Color a:", values: ["IdTipoIgualacionColor", "Nombre", TSM_Web_APi + "/TiposIgualacionesColores", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "NombreIgualacion", title: "Igualar a:" },
+          
             { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
         ]
     });
