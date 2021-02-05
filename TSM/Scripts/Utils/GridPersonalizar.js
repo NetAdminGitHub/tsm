@@ -285,8 +285,9 @@ var Grid_ColRadiobutton = function (container, options) {
 
 // Columna como CheckBox
 var Grid_ColTemplateCheckBox = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
-        "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
+    let guid = kendo.guid();
+    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+        "<label class=\"k-checkbox-label\" for=\"" + guid + "\"></label>";
 };
 
 // Columna como CheckBox
