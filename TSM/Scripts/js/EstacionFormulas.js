@@ -1016,7 +1016,7 @@ let fn_UpdAjusteMarcoGrilla = function () {
 
 
 let Fn_UpdGridEstacion_AjusteMarco = function (g, estado, uid) {
-    if (estado === "FINALIZADO") {
+    if (estado === "TERMINADO") {
         g.set("EstadoAlerta", "FINALIZADA");
         LimpiaMarcaCelda_Formula();
         $("tr[data-uid= '" + uid + "']").removeAttr("style"); 
