@@ -47,10 +47,10 @@ var fn_VSCargarJSEtapa = function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
         fn_ConsultarCatalogoDiseno("ConsultaCataloDis", $("#IdCliente").val());
     });
-    $("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
-        $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
-        $("#NoReferencia").val(Datos.NoReferencia);
-    });
+    //$("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
+    //    $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
+    //    $("#NoReferencia").val(Datos.NoReferencia);
+    //});
     //#region Inicialización de variables y controles Kendo
  
     KdoButton($("#Guardar"), "save", "Guardar");
