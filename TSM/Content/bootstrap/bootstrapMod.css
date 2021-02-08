@@ -1,9 +1,6 @@
 ﻿body {
     font-family: "Helvetica Neue";
 }
-[class*="k-"]:not([class*="k-icon"]) {
-    font-family: inherit !important;
-}
 /*#region Cambios Bootstrap*/
 /*Menos bordenes para resoluciones FHD*/
 @media (min-width: 1700px) {
