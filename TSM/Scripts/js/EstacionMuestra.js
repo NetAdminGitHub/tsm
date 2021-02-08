@@ -616,6 +616,12 @@ var fn_GridEstacionesDiseno_Mues = function (gd) {
                     Peso: { type: "number" },
                     Comentario: {
                         type: "string"
+                    },
+                    CodigoPantone: {
+                        type: "string"
+                    },
+                    IgualarColor: {
+                        type: "string"
                     }
                 }
             }
@@ -651,12 +657,14 @@ var fn_GridEstacionesDiseno_Mues = function (gd) {
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
             { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n2", 2], format: "{0:n2}", footerTemplate: "#: data.Peso ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "CodigoPantone", title: "Pantone", minResizableWidth: 120 },
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
             },
-            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 },
+            { field: "IgualarColor", title: "Igualar a:", minResizableWidth: 120 },
             { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 }
+         
         ]
     });
 

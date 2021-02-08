@@ -47,10 +47,10 @@ var fn_VSCargarJSEtapa = function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
         fn_ConsultarCatalogoDiseno("ConsultaCataloDis", $("#IdCliente").val());
     });
-    $("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
-        $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
-        $("#NoReferencia").val(Datos.NoReferencia);
-    });
+    //$("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
+    //    $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
+    //    $("#NoReferencia").val(Datos.NoReferencia);
+    //});
     //#region Inicialización de variables y controles Kendo
  
     KdoButton($("#Guardar"), "save", "Guardar");
@@ -107,7 +107,7 @@ var fn_VSCargarJSEtapa = function () {
 
     $("#CantidadColores").kendoNumericTextBox({
         min: 0,
-        max: 12,
+        //max: 12,
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -578,13 +578,17 @@ var fn_VSCargarJSEtapa = function () {
                             return $("#IdRequerimiento").val();
                         }
                     },
-                   Color: {
+                    Color: {
                         type: "string",
                         validation: {
                             maxlength: function (input) {
                                 if (input.is("[name='Color']") && input.val().length > 200) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
+                                }
+                                if (input.is("[name='IdTipoIgualacionColor']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTipoIgualacionColor").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 return true;
                             }
@@ -614,8 +618,15 @@ var fn_VSCargarJSEtapa = function () {
                     },
                     ID: {
                         type: "string"
+                    },
+                    IdTipoIgualacionColor: {
+                        type: "string"
+                    },
+                    NombreIgualacion: {
+                        type: "string"
                     }
                 }
+                
             }
         }
     });    
@@ -629,6 +640,7 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "Item");
             KdoHideCampoPopup(e.container, "CodigoPantone");
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
+            KdoHideCampoPopup(e.container, "NombreIgualacion");
 
             //$('[name="ColorHex"]').data("kendoColorPicker").enable(false);
 
@@ -685,7 +697,8 @@ var fn_VSCargarJSEtapa = function () {
                 hidden: true
             },
             { field: "Item", editor: Grid_ColIntNumSinDecimal, hidden: true },
-            { field: "Color",title: "Color Diseño" },
+            { field: "Color", title: "Color Diseño" },
+            { field: "CodigoPantone", title: "Codigó Pantone" },
             {
                 field: "ColorHex", title: "Muestra", width: "120px",
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>',
@@ -693,7 +706,9 @@ var fn_VSCargarJSEtapa = function () {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).kendoColorPicker();
                 }
             },
-            { field: "CodigoPantone", title: "Codigó Pantone", hidden: true, menu: false },
+            { field: "IdTipoIgualacionColor", title: "Igualar Color a:", values: ["IdTipoIgualacionColor", "Nombre", TSM_Web_APi + "/TiposIgualacionesColores", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "NombreIgualacion", title: "Igualar a:" },
+
             { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
         ]
     });

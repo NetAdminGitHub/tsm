@@ -350,6 +350,7 @@
     <Compile Include="Controllers\TiposAdjuntosController.cs" />
     <Compile Include="Controllers\TiposEmulsionesController.cs" />
     <Compile Include="Controllers\TiposFormulacionesController.cs" />
+    <Compile Include="Controllers\TiposIgualacionesColoresController.cs" />
     <Compile Include="Controllers\TiposLucesController.cs" />
     <Compile Include="Controllers\TiposMaquinasController.cs" />
     <Compile Include="Controllers\TiposMarcosController.cs" />
@@ -1051,6 +1052,7 @@
     <Content Include="Scripts\js\TiposAcabados.js" />
     <Content Include="Scripts\js\TiposAdjuntos.js" />
     <Content Include="Scripts\js\TiposFormulaciones.js" />
+    <Content Include="Scripts\js\TiposIgualacionesColores.js" />
     <Content Include="Scripts\js\TiposLuces.js" />
     <Content Include="Scripts\js\TiposMaquinas.js" />
     <Content Include="Scripts\js\TiposMarcos.js" />
@@ -1550,6 +1552,7 @@
     <Content Include="Views\TiposAdjuntos\Index.cshtml" />
     <Content Include="Views\MotivosSolicitudesCambios\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitudReactivacionOrdenTrabajo.cshtml" />
+    <Content Include="Views\TiposIgualacionesColores\Index.cshtml" />
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>

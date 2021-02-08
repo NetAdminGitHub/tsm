@@ -953,7 +953,14 @@ var fn_GridEstacionesColor = function (gd) {
                     },
                     NombreColorEstacion: {
                         type: "string"
+                    },
+                    CodigoPantone: {
+                        type: "string"
+                    },
+                    IgualarColor: {
+                        type: "string"
                     }
+
                 }
             }
         },
@@ -974,11 +981,13 @@ var fn_GridEstacionesColor = function (gd) {
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50 },
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
+            { field: "CodigoPantone", title: "Pantone", minResizableWidth: 120 },
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
                 template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
             },
-            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120 }
+            { field: "IgualarColor", title: "Igualar a:", minResizableWidth: 120 }
+         
         ]
     });
 

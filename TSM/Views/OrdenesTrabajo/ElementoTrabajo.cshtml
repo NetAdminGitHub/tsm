@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|v20111051";
+    ViewBag.IdVersion = "TSM0101088|v2002011";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -75,11 +75,11 @@
                         <label for="TxtNoRegPrenda" id="lblTxtNoRegPrenda"><strong>No Reg. Prenda:</strong></label>
                         <input id="TxtNoRegPrenda" name="TxtNoRegPrenda" class="k-textbox form-control" , disabled="disabled" />
                     </div>
-                    <div class="form-group col-lg-6 col-md-4">
+                    <div class="form-group col-lg-6 col-md-3">
                         <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
                         <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled"></textarea>
                     </div>
-                    <div class="col-lg-2 col-md-2 align-self-center">
+                    <div class="form-group  col-lg-2 col-md-2 align-self-center">
                         <div class="input-group">
                             <div style="width: 100%;">
                                 <button type="button" id="btnAgenda" class="form-control"></button>
@@ -170,6 +170,10 @@
                                             <label for="txtNombrePrenda" id="lblNombrePrenda">Prenda:</label>
                                             <input id="txtNombrePrenda" name="NombrePrenda" class="k-textbox form-control" , disabled="disabled" />
                                         </div>
+                                        <div class="form-group col-lg-3 col-md-6">
+                                            <label for="TxtDirectorioArchivosInfo">Directorio Archivos:</label>
+                                            <input id="TxtDirectorioArchivosInfo" name="TxtDirectorioArchivosInfo" type="text" class="k-textbox form-control" />
+                                        </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-lg-3 col-md-6">
@@ -205,6 +209,16 @@
                                                     <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label id="LblUbicacionVerInf" for="UbicacionVerInf">Ubicación Vertical: </label>
+                                            <textarea id="UbicacionVerInf" rows="2" name="UbicacionVerInf" type="text" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label id="LblUbicacionHorInf" for="UbicacionHorInf">Ubicación Horizontal:</label>
+                                            <textarea id="UbicacionHorInf" rows="2" name="UbicacionHorInf" type="text" class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-row">

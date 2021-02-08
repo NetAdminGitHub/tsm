@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Definición Tipos de Igualaciones para Colores";
+    ViewBag.IdVersion = "TSM0101095|v200020301";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlTIC = "@string.Format("{0}TiposIgualacionesColores", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/TiposIgualacionesColores.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
