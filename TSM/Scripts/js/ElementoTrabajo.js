@@ -159,7 +159,7 @@ $(document).ready(function () {
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
     KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
-
+    KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
 
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
@@ -975,6 +975,10 @@ $("#btnSolicitarRegistroCambio").click(function (e) {
 
 $("#btnAgenda").click(function (e) {
     fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso);
+});
+
+$("#btnHistorial").click(function (e) {
+    fn_OrdenesTrabajosVersionesSeteos("historialSeteos", idOrdenTrabajo);
 });
 
 

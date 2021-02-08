@@ -446,7 +446,7 @@ var fn_VSCargarJSEtapa = function () {
                                     return $("#IdUnidad").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='DimensionesRelativas']")) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000.");
+                                    input.attr("data-maxlength-msg", "Requerido");
                                     return $('[name="C3"]').is(':checked') === true ? input.val().length > 0 && input.val().length <= 2000 : input.val().length <= 2000;
                                 }
 
