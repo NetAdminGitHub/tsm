@@ -1,12 +1,8 @@
 ﻿var Permisos;
 
 var fn_VerifMuesCC = function () {
-    KdoButton($("#btnDespla_VerifMue"), "arrows-kpi", "Desplazar/Intercambiar");
-    KdoButton($("#btnDuplicar_VerifMue"), "copy", "Duplicar");
-    //KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
-    //KdoButton($("#btnMuest"), "delete", "Limpiar");
-    KdoButton($("#btnCPesosVerifMues"), "search", "Consultar");
 
+    KdoButton($("#btnCPesosVerifMues"), "search", "Consultar");
     KdoButton($("#btnFinOTVerifMue"), "gear", "Finalizar OT");
     KdoButton($("#btnAcepFinVerifMue"), "check", "Finalizar");
     $("#dFechaFinVerifMue").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -32,20 +28,8 @@ var fn_VerifMuesCC = function () {
     });
     //kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's')
     // colocar grid para arrastre
-
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-    let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquina_VerifMue"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquina_VerifMue"), false);
-    KdoCmbSetValue($("#CmbMaquina_VerifMue"), maq[0].IdMaquina);
-
-   
-
-    //$("#btnMuest").data("kendoButton").bind('click', function () {
-    //    ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
-    //});
-
     //FINALIZAR OT
     let ValidFrmFinVerifMue = $("#FrmFinVerifMue").kendoValidator({
         rules: {
@@ -78,66 +62,22 @@ var fn_VerifMuesCC = function () {
     });
     fn_ConsultaPesosVerifMue($("#gridEstacionPesoVerifMue"));
 
-
-    fn_gridAccesoriosEstacion($("#dgAccesorios_VerifMue"));
-    $("#dgAccesorios_VerifMue").data("Estacion", "MEstacionAccesoriosVerifMuest"); // guardar nombre vista modal
-    $("#dgAccesorios_VerifMue").data("EstacionJS", "EstacionAccesoriosVerifMuest.js"); // guardar nombre archivo JS
-    $("#dgAccesorios_VerifMue").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
-    $("#dgAccesorios_VerifMue").data("Formulacion", ""); //guarda el idformulacion
-
-
-    $("#btnDespla_VerifMue").click(function (e) {
-        fn_OpenModalDesplazamiento();
-
-    });
-
-    $("#btnDuplicar_VerifMue").click(function (e) {
-        fn_OpenModalDuplicar();
-
-    });
-
-    //$("#btnAjuste_Mues").click(function (e) {
-    //    fn_OpenModalEstacionAjuste();
-
-    //});
 };
 
 var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
-    //KdoButtonEnable($("#btnMuest"), vhb);
-    KdoButtonEnable($("#btnDespla_VerifMue"), vhb);
-    //KdoButtonEnable($("#btnAjuste_Mues"), vhb);
-    KdoButtonEnable($("#btnDuplicar_VerifMue"), vhb);
-    Grid_HabilitaToolbar($("#dgAccesorios_VerifMue"), vhb, vhb, vhb);
 };
 
-// Agregar a lista de ejecucion funcion dibujado de maquina.
-var EtapaPush = {};
-EtapaPush.IdEtapa = idEtapaProceso;
-EtapaPush.FnEtapa = fn_RTCargarMaquina;
-fun_ListDatos.push(EtapaPush);
-//Agregar a Lista de ejecucion funcion configurar 
 
+//Agregar a Lista de ejecucion funcion configurar 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_VerifMuesCC);
-
-//var EtapaPush2 = {};
-//EtapaPush2.IdEtapa = idEtapaProceso;
-//EtapaPush2.FnEtapa = fn_VerifMuesCC;
-//fun_ListDatos.push(EtapaPush2);
-
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
 EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_VerifMueCEtapa;
 fun_ListDatos.push(EtapaPush3);
-
-// activa DropTarget
-var EtapaPush4 = {};
-EtapaPush4.IdEtapa = idEtapaProceso;
-EtapaPush4.FnEtapa = fn_RTActivaDropTarget;
-fun_ListDatos.push(EtapaPush4);
 
 
 let fn_FinOT_VM = function () {
@@ -156,9 +96,7 @@ let fn_FinOT_VM = function () {
             RequestEndMsg(datos, "Post");
             $("#MbtnFinVerifMue").data("kendoDialog").close();
             CargarInfoEtapa(false);
-            //KdoButtonEnable($("#btnFinOT"), false);
-            //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
-            //fn_GetArteDis_VM(); se cometarea ya que ahora el FM del catalogo se genera en la solicitud del cliente.
+            
         },
         error: function (data) {
             ErrorMsg(data);
