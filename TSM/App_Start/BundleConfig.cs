@@ -16,7 +16,7 @@ namespace TSM
                                                                 "~/Scripts/jquery/jszip.min.js", //Exportar grids a excel
                                                                 "~/Scripts/jquery/jquery.signalR-{version}.js", //websockets
                                                                 "~/Scripts/jquery/jquery.smartWizard.js", //control step wizard
-                                                                "~/Scripts/jquery/jquery.ns-autogrow.min.js" 
+                                                                "~/Scripts/jquery/jquery.ns-autogrow.min.js"  //Textboxs Multi line
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));
