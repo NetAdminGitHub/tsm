@@ -8,7 +8,7 @@ let gAlto = 300;
 //#region Programacion Analisis Requerimiento Factibilidad
 var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
-    //TiEst = fn_GetTipoEstaciones();
+    TiEst = fn_GetTipoEstaciones();
 };
 
 var fn_RTMostrarGrid = function () {

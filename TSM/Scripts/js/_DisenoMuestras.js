@@ -37,6 +37,7 @@ var fn_DMCargarConfiguracion = function () {
     });
 
     maq = fn_GetMaquinas();
+    TiEst = fn_GetTipoEstaciones();
    
     //***************************
 
