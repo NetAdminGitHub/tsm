@@ -1,4 +1,6 @@
-﻿
+﻿[class*="k-"]:not([class*="k-icon"]) {
+    font-family: inherit !important;
+}
 /*#region Kendo Bootstrap*/
 
 /*Linea final en el contenido de un Grid*/

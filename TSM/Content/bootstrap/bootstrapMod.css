@@ -2,33 +2,27 @@
     font-family: "Helvetica Neue";
 }
 /*#region Cambios Bootstrap*/
-
 /*Menos bordenes para resoluciones FHD*/
 @media (min-width: 1700px) {
     .container {
         max-width: 1540px;
     }
 }
-
 /*Color Barra superior*/
 .navbar-dark {
     background-color: #002D72;
 }
-
 /*Ver botón menu, siempre*/
 @media (min-width: 578px) {
     .navbar-expand .navbar-toggler {
         display: inline-block;
     }
 }
-
 /*Espacio entre boton menu y Nombre de la App*/
 .navbar-toggler {
     margin-right: 15px;
 }
-
 /*#endregion Cambios Bootstrap*/
-
 /*#region estilos iconos*/
 i[class*="ficonm"] {
     font-size: 30px;
@@ -36,24 +30,16 @@ i[class*="ficonm"] {
     text-rendering: auto;
     display: inline-block;
 }
-
-
 /*#endregion estilos iconos*/
-
-
-
 .sw-theme-arrows > ul.step-anchor {
     text-align:center;
 
-}
-span[class*="ficonEtp"] {
+} span[class*="ficonEtp"] {
     font-size:25px;
     line-height: 30px;
     text-rendering: auto;
     display: inline-block;
-}
-
-.TSM-notif-icon {
+} .TSM-notif-icon {
     display: inline-flex;
     width: 40px;
     height: 40px;
@@ -62,75 +48,51 @@ span[class*="ficonEtp"] {
     justify-content: center;
     background: #eee;
     border-radius: 50%;
-}
-
-.TSM-notif-Alta {
+} .TSM-notif-Alta {
     background: #f3545d !important;
     color: #fff !important;
-}
-
-.TSM-notif-Baja {
+} .TSM-notif-Baja {
     background: #177dff !important;
     color: #fff !important;
-}
-
-.TSM-notif-Media {
+} .TSM-notif-Media {
     background: #35cd3a !important;
     color: #fff !important;
-}
-
-.list-group-messages .list-group-item {
+} .list-group-messages .list-group-item {
     padding-top: 0.50rem;
     padding-bottom: 0.50rem;
-}
-
-div.TablaFomula {
+} div.TablaFomula {
     height: 175px;
     /*width: 200px;*/
     overflow-y: scroll;
-}
-div.TablaEstacion {
+} div.TablaEstacion {
     height: 800px;
     /*width: 200px;*/
     overflow-y: scroll;
-}
-
-.TSM-avatar-sm {
+} .TSM-avatar-sm {
     width: 2rem;
     height: 2rem;
-}
-
-.card .TSM-card-header {
+} .card .TSM-card-header {
     padding-top: 0rem;
     padding-right: 1.25rem;
     padding-bottom: 0.25rem;
     padding-left: 1.25rem;
     background-color: transparent;
     border-bottom: 1px solid #ebecec !important;
-}
-
-.card .TSM-card-footer {
+} .card .TSM-card-footer {
     padding-top: 0.0rem;
     padding-right: 1.25rem;
     padding-bottom: 0.0rem;
     padding-left: 1.25rem;
     font-size: 13px
-}
-.TSM-table {
-     margin-bottom: 0rem;
-}
-
-
-.TSM-card-title {
+} .TSM-table {
+    margin-bottom: 0rem;
+} .TSM-card-title {
     margin: 0;
     color: #575962;
     font-size: 18px;
     font-weight: 400;
     line-height: 1.6;
-}
-
-
-.TSM-card-subtitle {
+} .TSM-card-subtitle {
     margin: 0;
     color: #575962;
     font-size: 13px;
