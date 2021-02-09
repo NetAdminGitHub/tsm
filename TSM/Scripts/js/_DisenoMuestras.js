@@ -2,10 +2,7 @@
 var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
-    KdoButton($("#btnBTDis"), "delete", "Limpiar");
-    KdoButton($("#btnDesplaCambio_Dis"), "arrows-kpi", "Desplazar/Intercambiar");
-    KdoButtonEnable($("#btnBTDis"), false);
-    KdoButtonEnable($("#btnDesplaCambio_Dis"), false);
+ 
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -40,40 +37,9 @@ var fn_DMCargarConfiguracion = function () {
     });
 
     maq = fn_GetMaquinas();
-    // colocar grid para arrastre
-    fn_gridColorEstacion($("#dgColorDis"),maq[0].IdSeteo);
-    $("#dgColorDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
-    $("#dgColorDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgColorDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
-    $("#dgColorDis").data("Formulacion", "COLOR"); // guardar nombre archivo JS
-
-    fn_gridTecnicaEstacion($("#dgTecnicaDis"),maq[0].IdSeteo);
-    $("#dgTecnicaDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
-    $("#dgTecnicaDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgTecnicaDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
-    $("#dgTecnicaDis").data("Formulacion", "TECNICA"); //guarda el idformulacion
-
-    fn_gridBasesEstacion($("#dgBasesDis"));
-    $("#dgBasesDis").data("Estacion", "MEstacionDisenos"); // guardar nombre vista modal
-    $("#dgBasesDis").data("EstacionJS", "EstacionDisenos.js"); // guardar nombre archivo JS
-    $("#dgBasesDis").data("TipoEstacion", "MARCO"); // guardar nombre archivo JS
-    $("#dgBasesDis").data("Formulacion", "BASE"); // guarda el idformulacion
-
-    fn_gridAccesoriosEstacion($("#dgAccesoriosDis"));
-    $("#dgAccesoriosDis").data("Estacion", "MEstacionAccesoriosDis"); // guardar nombre vista modal
-    $("#dgAccesoriosDis").data("EstacionJS", "EstacionAccesoriosDis.js"); // guardar nombre archivo JS
-    $("#dgAccesoriosDis").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
-    $("#dgAccesoriosDis").data("Formulacion", ""); // guarda el idformulacion
-
     TiEst = fn_GetTipoEstaciones();
-    let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquinaDis"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquinaDis"), false);
-
-    KdoCmbSetValue($("#CmbMaquinaDis"), maq[0].IdMaquina);
-
-
-    //*****************************
+   
+    //***************************
 
     KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
     $("#CmbIdUnidad").data("kendoComboBox").setDataSource(fn_UnidadMedida("14,5,19,22"));
@@ -186,19 +152,12 @@ var fn_DMCargarConfiguracion = function () {
         KdoNumerictextboxEnable($("#NumLPelicula"), _usapositivos);
     });
 
-    //$("#btnBTDis").data("kendoButton").bind('click', function () {
-    //    ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
 
-    //});
-    $("#btnDesplaCambio_Dis").click(function (e) {
-        fn_OpenModalDesplazamiento();
-    });
 };
 
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     fn_GetDisenoMuestra();
-    KdoButtonEnable($("#btnDesplaCambio_Dis"), vhb);
     KdoComboBoxEnable($("#CmbIdOrientacionPositivo"), vhb);
     KdoComboBoxEnable($("#CmbIdTipoSeparacion"), vhb);
     KdoComboBoxEnable($("#CmbIdImpresor"), vhb);
@@ -206,30 +165,18 @@ var fn_DMCargarEtapa = function () {
     KdoNumerictextboxEnable($("#NumLPelicula"), vhb);
     KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
     TextBoxEnable($("#TxtObservaciones"), vhb);
-    Grid_HabilitaToolbar($("#dgColorDis"), vhb, vhb, vhb);
-    Grid_HabilitaToolbar($("#dgTecnicaDis"), vhb, vhb, vhb);
-    Grid_HabilitaToolbar($("#dgBasesDis"), vhb, vhb, vhb);
-    Grid_HabilitaToolbar($("#dgAccesoriosDis"), vhb, vhb, vhb);
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
 fun_List.push(fn_DMCargarConfiguracion);
-// Agregar a lista de ejecucion funcion dibujado de maquina.
-var EtapaPush = {};
-EtapaPush.IdEtapa = idEtapaProceso;
-EtapaPush.FnEtapa = fn_RTCargarMaquina;
-fun_ListDatos.push(EtapaPush);
-//Agregar a lista de ejecucion funcion mostrar grid y carga de etapa
+
+//Agregar a lista de ejecucion funcion mostrar grid y carga de etapa8
 var EtapaPush2 = {};
 EtapaPush2.IdEtapa = idEtapaProceso;
 EtapaPush2.FnEtapa = fn_DMCargarEtapa;
 fun_ListDatos.push(EtapaPush2);
-// activa DropTarget
-var EtapaPush3 = {};
-EtapaPush3.IdEtapa = idEtapaProceso;
-EtapaPush3.FnEtapa = fn_RTActivaDropTarget;
-fun_ListDatos.push(EtapaPush3);
+
 
 let fn_GetDisenoMuestra = function () {
     kendo.ui.progress($("#vistaParcial"), true);
