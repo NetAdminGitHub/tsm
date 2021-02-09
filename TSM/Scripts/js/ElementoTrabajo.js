@@ -849,7 +849,7 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
 };
 
 $("#vAsignarUsuario").kendoDialog({
-    height: "auto",
+    height: "50%",
     width: "30%",
     title: "Asignación de Usuarios",
     visible: false,
@@ -893,7 +893,7 @@ $("#vCamEtapa").kendoDialog({
 });
 
 $("#vRegistroCambio").kendoDialog({
-    height: "auto",
+    height: "80%",
     width: "60%",
     title: "Historial de Cambios",
     visible: false,
@@ -910,7 +910,7 @@ $("#vRegistroCambio").kendoDialog({
 });
 
 $("#vDesplazarCambiar").kendoWindow({
-    height: "auto",
+    height: "90%",
     width: "40%",
     minHeight:750,
     title: "Desplazamiento /Intercambio de estaciones ",
@@ -1905,7 +1905,7 @@ var fn_gridEstacionIntercambio= function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 700);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 650);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
     var srow3 = [];
