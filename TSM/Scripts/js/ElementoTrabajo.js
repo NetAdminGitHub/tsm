@@ -598,7 +598,7 @@ $(document).ready(function () {
         }
     });
 
-
+    TipoTintas = fn_TipoTintas();
     
 });
 var fn_ConsultarDetalle = function () {
