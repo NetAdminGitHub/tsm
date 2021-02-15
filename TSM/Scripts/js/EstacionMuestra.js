@@ -415,13 +415,13 @@ var fn_SeccionTitasFormulas_Mues = function (datos) {
 var fn_GuardarEstacionMues = function () {
 
     GuardarEstacionDesaMues(idBra);
-    var a = stage.find("#TxtInfo" + idBra);
-    a.text($("#TxtOpcSelec_Mues").val());
-    var b = stage.find("#brazo" + idBra);
-    b.IdSeteo = maq[0].IdSeteo;
-    b.IdTipoFormulacion = Te;
-    //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    layer.draw();
+    //var a = stage.find("#TxtInfo" + idBra);
+    //a.text($("#TxtOpcSelec_Mues").val());
+    //var b = stage.find("#brazo" + idBra);
+    //b.IdSeteo = maq[0].IdSeteo;
+    //b.IdTipoFormulacion = Te;
+    ////Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
+    //layer.draw();
 };
 
 var fn_GuardarEstaMarcoMues = function (xIdBrazo) {
