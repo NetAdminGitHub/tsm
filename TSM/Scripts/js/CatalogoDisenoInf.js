@@ -525,7 +525,7 @@ let fn_GenerarOT = function () {
             method: "POST",
             dataType: "json",
             data: JSON.stringify({
-                IdRequerimiento: fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString(),
+                IdRequerimiento:xidRq,
                 IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString() ,
                 IdTipoMuestra: KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
                 Comentario: $("#TxtMotivoCambio").val()
