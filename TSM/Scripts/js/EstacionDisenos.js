@@ -628,13 +628,13 @@ var fn_SeccionTitasFormulas_Dis = function (datos) {
 var fn_GuardarEstacionDiseno = function () {
 
     fn_GuardarEstacionDisArea(idBra);
-    var a = stage.find("#TxtInfo" + idBra);
-    a.text($("#TxtOpcSelec_Dis").val());
-    var b = stage.find("#brazo" + idBra);
-    b.IdSeteo = maq[0].IdSeteo;
-    b.IdTipoFormulacion = Te;
-    //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    layer.draw();
+    //var a = stage.find("#TxtInfo" + idBra);
+    //a.text($("#TxtOpcSelec_Dis").val());
+    //var b = stage.find("#brazo" + idBra);
+    //b.IdSeteo = maq[0].IdSeteo;
+    //b.IdTipoFormulacion = Te;
+    ////Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
+    //layer.draw();
 };
 
 var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
