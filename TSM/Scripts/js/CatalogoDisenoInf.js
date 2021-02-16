@@ -31,9 +31,9 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     });
 
     $("#ModalGeneraOT").kendoDialog({
-        height: "auto",
-        width: "20%",
-        maxHeight: "700 px",
+        height: "50%",
+        width: "25%",
+        maxHeight: "50%",
         title: "Generar Orden de Trabajo",
         visible: false,
         closable: true,
@@ -269,11 +269,13 @@ let fn_gridOT = function () {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
                         KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#TxtMotivoCambio").val("");
-                        $("#ModalGeneraOT").data("kendoDialog").open();
+                        let dialog= $("#ModalGeneraOT").data("kendoDialog");
+                        dialog.open();
                         xidRq=dataItem.IdRequerimiento;
                         xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
-                      
+                        dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
+                        
                     }
                 },
                 width: "70px",
@@ -525,7 +527,7 @@ let fn_GenerarOT = function () {
             method: "POST",
             dataType: "json",
             data: JSON.stringify({
-                IdRequerimiento: fn_getIdRequerimiento($("#gConOT").data("kendoGrid")).toString(),
+                IdRequerimiento:xidRq,
                 IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString() ,
                 IdTipoMuestra: KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
                 Comentario: $("#TxtMotivoCambio").val()
