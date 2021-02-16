@@ -598,8 +598,7 @@ $(document).ready(function () {
         }
     });
 
-    TipoTintas = fn_TipoTintas();
-    
+    TipoTintas = fn_TipoTintas();    
 });
 var fn_ConsultarDetalle = function () {
     var SelItem = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
@@ -1069,6 +1068,7 @@ var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInici
             kendo.ui.progress($("#vDesplazarCambiar"), false);
             if (res.Error === undefined) {
                 fn_Desplazar(res.Resumen.toString());
+                maquinaEl.vueComponent.desplazarBrazo(xBrazoInicial, xCantDesplazar, xDireccion);
             } else {
               
                 $("#kendoNotificaciones").data("kendoNotification").show(res.Detalle.toString(), "error");
@@ -1125,6 +1125,34 @@ var fn_Duplicar = function (EstacionO, EstacionD) {
         }
     });
 };
+
+///<summary> Método Copiar/Pegar para máquina de Vue </summary>
+///<param name="varObjeto"> variable que contiene ref al objeto máquina </param>
+///<param name="dataCopia"> contiene arreglo con datos de estación a copiar  </param>
+var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
+        type: "Post",
+        data: JSON.stringify({
+            idSeteo: maq[0].IdSeteo,
+            idEstacionOrigen: dataCopia.data[0].IdEstacion,
+            idEstacionDestino: dataCopia.numeroBrazo,
+            idUsuario: getUser()
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            varObjeto.vueComponent.agregarConfiguracion(dataCopia.numeroBrazo, dataCopia.tipo, dataCopia.data[0]); // actualiza máquina en vista.
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+//
 
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
@@ -1769,6 +1797,100 @@ var fn_gridBasesEstacion = function (gd) {
         group: "gridGroup"
     });
 
+};
+
+/**Obtiene los tipos de maquinas para la maquina de Vue */
+var fn_GetFormasMaquina = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: 'https://tsmapiuat.techno-screen.com/api/FormasMaquinas',
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataTipoMaquina(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**
+ * Obtiene los colores de la orden de trabajo para la maquina de Vue
+ * @param {number} idSeteo
+ */
+var fn_GetColores = function (maquina, idSeteo) {
+    let datos = [];
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaColores/GetSeteoMaquinaColoresByIdSeteo/" + idSeteo,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataColores(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**
+ * Obtiene las tareas de la orden de trabajo para la maquina de Vue
+ * @param {Number} idSeteo
+ */
+var fn_Tecnicas = function (maquina, idSeteo) {
+    let datos = [];
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + idSeteo,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataTecnicas(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**Obtiene las bases de la orden de trabajo para la maquina de Vue */
+var fn_Bases = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: TSM_Web_APi + "BasesMuestras",
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataBases(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**Obtiene los acesorios de la orden de trabajo para la maquina de Vue */
+var fn_Accesorios = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: TSM_Web_APi + "AccesoriosMaquinas",
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataAccesorios(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+var fn_VerDetalleBrazoMaquina = function (e) {
+    var dataEstacion = e.detail[0];
+    fn_verEditar(dataEstacion.accessories[0].tipo, dataEstacion.number);
 };
 
 var fn_gridAccesoriosEstacion = function (gd) {
