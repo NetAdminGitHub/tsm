@@ -31,9 +31,9 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     });
 
     $("#ModalGeneraOT").kendoDialog({
-        height: "auto",
+        height: "50%",
         width: "25%",
-        maxHeight: "700 px",
+        maxHeight: "50%",
         title: "Generar Orden de Trabajo",
         visible: false,
         closable: true,
