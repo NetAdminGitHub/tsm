@@ -32,7 +32,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
 
     $("#ModalGeneraOT").kendoDialog({
         height: "auto",
-        width: "20%",
+        width: "25%",
         maxHeight: "700 px",
         title: "Generar Orden de Trabajo",
         visible: false,
@@ -269,11 +269,13 @@ let fn_gridOT = function () {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
                         KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#TxtMotivoCambio").val("");
-                        $("#ModalGeneraOT").data("kendoDialog").open();
+                        let dialog= $("#ModalGeneraOT").data("kendoDialog");
+                        dialog.open();
                         xidRq=dataItem.IdRequerimiento;
                         xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
-                      
+                        dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
+                        
                     }
                 },
                 width: "70px",
