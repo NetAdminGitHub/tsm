@@ -413,15 +413,7 @@ var fn_SeccionTitasFormulas_VerifMues = function (datos) {
 };
 
 var fn_GuardarEstacionVerifMues = function () {
-
     GuardarEstacionDesaVerifMues(idBra);
-    //var a = stage.find("#TxtInfo" + idBra);
-    //a.text($("#TxtOpcSelec_VerifMues").val());
-    //var b = stage.find("#brazo" + idBra);
-    //b.IdSeteo = maq[0].IdSeteo;
-    //b.IdTipoFormulacion = Te;
-    ////Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    //layer.draw();
 };
 
 var GuardarEstaMarcoVerifMues = function (xIdBrazo) {
@@ -528,7 +520,7 @@ var fn_GuardarMarcoFormuVerifMues = function (xIdBrazo, xidRequerimientoColor, x
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionVerifMuestra").data("kendoWindow").close();
+            $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
             RequestEndMsg(data, xType);
         },
         error: function (data) {

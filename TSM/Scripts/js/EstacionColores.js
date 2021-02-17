@@ -652,15 +652,7 @@ var fn_SeccionTitasFormulas = function (datos) {
 };
 
 var fn_GuardarEstacionColor = function () {
-
     fn_GuardarEstacion(idBra);
-    //var a = stage.find("#TxtInfo" + idBra);
-    //a.text($("#TxtOpcSelec").val());
-    //var b = stage.find("#brazo" + idBra);
-    //b.IdSeteo = maq[0].IdSeteo;
-    //b.IdTipoFormulacion = Te;
-    // //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    //layer.draw();
 };
 
 var fn_GuardarEstaMarco = function (xIdBrazo) {
@@ -770,6 +762,8 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
                 fn_TintasFormulaciones_EC(maq[0].IdSeteo, xIdBrazo);
             }
             RequestEndMsg(data, xType);
+            maq = fn_GetMaquinas();
+            $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionColor"), false);
