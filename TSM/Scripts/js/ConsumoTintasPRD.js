@@ -71,7 +71,7 @@ $(document).ready(function () {
     $("#gConsolidado").kendoGrid({
         toolbar: ["excel"],
         excel: {
-            fileName: "ConsumosDetalle_" + kendo.toString(kendo.parseDate(Fhoy()), 'yyyyMMdd') + ".xlsx",
+            fileName: "ConsumosConsolidados.xlsx",
             filterable: true,
             allPages: true
         },
@@ -241,9 +241,7 @@ $(document).ready(function () {
     $("#gDetalle").kendoGrid({
         toolbar: ["excel"],
         excel: {
-            fileName: function () {
-                return "ConsumosDetalle_" + kendo.toString(kendo.parseDate(Fhoy()), 'yyyyMMdd') + ".xlsx";
-            },
+            fileName: "ConsumosDetalle.xlsx",
             filterable: true,
             allPages: true
         },
