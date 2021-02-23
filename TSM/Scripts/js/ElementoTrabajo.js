@@ -52,10 +52,11 @@ var InicioModalRT = 0;
 var InicioModalAD = 0;
 var InicioModalMU = 0;
 var InicioModalFor = 0;
-var CantidadBrazos = 22;
+var CantidadBrazos = 0;
 var XSeteo = 0;
 var xNoPermiteActualizar = false;
 var LEstaciones = "";
+var maquinaVueEl = "";
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -164,7 +165,7 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
 
-    KdoButton($("#btnDesplazarEstacion"), "check", "Comentarios por departamento");
+    KdoButton($("#btnDesplazarEstacion"), "check", "Desplazar Estacion");
     KdoButton($("#btnCambiarEstacion"), "check", "Desplazar / Intercambiar");
     KdoButton($("#btnDuplicarEstacion"), "gear", "Duplicar");
     KdoButton($("#btnRegAjuste"), "save", "Solicitar Ajuste");
@@ -223,7 +224,7 @@ $(document).ready(function () {
     });
 
     //Iniciar Grid de intercambio
-    fn_gridEstacionIntercambio($("#gridInter"));
+    //fn_gridEstacionIntercambio($("#gridInter"));
 
 
     //#region Grid soliciud
@@ -598,8 +599,7 @@ $(document).ready(function () {
         }
     });
 
-    TipoTintas = fn_TipoTintas();
-    
+    TipoTintas = fn_TipoTintas();    
 });
 var fn_ConsultarDetalle = function () {
     var SelItem = $("#gridRegistroCambios").data("kendoGrid").dataItem($("#gridRegistroCambios").data("kendoGrid").select());
@@ -910,10 +910,10 @@ $("#vRegistroCambio").kendoDialog({
 });
 
 $("#vDesplazarCambiar").kendoWindow({
-    height: "auto",
+    height: "30%",
     width: "40%",
-    minHeight:750,
-    title: "Desplazamiento /Intercambio de estaciones ",
+    minHeight:"40%",
+    title: "Desplazamiento de Estación",
     visible: false,
     closable: true,
     modal: true,
@@ -980,7 +980,7 @@ $("#btnAgenda").click(function (e) {
 
 $("#btnDesplazarEstacion").click(function () {
     if (ValidarDesplazar.validate()) {
-        fn_EjecutarDesplazamiento($("#rbDesplazarRight").is(':checked') === true ? "right" : "left", $("#chkRespetaVacio").is(':checked'), kdoNumericGetValue($("#NumBrazoIni")), kdoNumericGetValue($("#NumCntCantDesplazar")));
+        fn_EjecutarDesplazamiento($("#rbDesplazarRight").is(':checked') === true ? "right" : "left", $("#chkRespetaVacio").is(':checked'), kdoNumericGetValue($("#NumBrazoIni")), kdoNumericGetValue($("#NumCntCantDesplazar")), maquinaVueEl);
     } else {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
     }
@@ -1015,16 +1015,17 @@ $("#btnRegAjuste").click(function () {
     //}
 });
 
-var fn_OpenModalDesplazamiento = function () {
+var fn_OpenModalDesplazamiento = function (EstacionIni, xMaquina,xCantidadEstaciones) {
+    maquinaVueEl = xMaquina;
+    CantidadBrazos = xCantidadEstaciones;
     $("#vDesplazarCambiar").data("kendoWindow").center().open();
     tabStrip.select(fn_getItem(0));
     kdoNumericSetValue($("#NumCntCantDesplazar"), 0);
-    kdoNumericSetValue($("#NumBrazoIni"), 0);
-    //kdoNumericSetValue($("#NumBrazoA"), 0);
-    //kdoNumericSetValue($("#NumBrazoB"), 0);
+    kdoNumericSetValue($("#NumBrazoIni"), EstacionIni);
+    KdoNumerictextboxEnable($("#NumBrazoIni"), false);
     $('#rbDesplazarRight').prop('checked', true);
-    $("#NumBrazoIni").data("kendoNumericTextBox").focus();
-    $("#gridInter").data("kendoGrid").dataSource.read();
+    $("#NumCntCantDesplazar").data("kendoNumericTextBox").focus();
+    //$("#gridInter").data("kendoGrid").dataSource.read();
 
 };
 
@@ -1043,7 +1044,7 @@ var fn_OpenModalDuplicar = function () {
     $("#NumOrigenA").data("kendoNumericTextBox").focus();
 };
 
-var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInicial, xCantDesplazar) {
+var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInicial, xCantDesplazar, maquinaEl) {
     kendo.ui.progress($("#vDesplazarCambiar"), true);
      var ListaEstaciones = [];
     $.each(maq, function (item, elemento) {
@@ -1069,6 +1070,7 @@ var fn_EjecutarDesplazamiento = function (xDireccion, xRespetaVacio, xBrazoInici
             kendo.ui.progress($("#vDesplazarCambiar"), false);
             if (res.Error === undefined) {
                 fn_Desplazar(res.Resumen.toString());
+                maquinaEl.data("maquinaSerigrafia").maquinaVue.desplazarBrazo(xBrazoInicial, xCantDesplazar, xDireccion ==="right" ? "R":"L");
             } else {
               
                 $("#kendoNotificaciones").data("kendoNotification").show(res.Detalle.toString(), "error");
@@ -1089,8 +1091,6 @@ var fn_Desplazar = function (StrEstaciones) {
         success: function (data) {
             kendo.ui.progress($("#vDesplazarCambiar"), false);
             $("#vDesplazarCambiar").data("kendoWindow").close();
-            fn_RTCargarMaquina();
-            fn_RTActivaDropTarget();
             RequestEndMsg(data, "Put");
         },
         error: function (data) {
@@ -1125,6 +1125,34 @@ var fn_Duplicar = function (EstacionO, EstacionD) {
         }
     });
 };
+
+///<summary> Método Copiar/Pegar para máquina de Vue </summary>
+///<param name="varObjeto"> variable que contiene ref al objeto máquina </param>
+///<param name="dataCopia"> contiene arreglo con datos de estación a copiar  </param>
+var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
+        type: "Post",
+        data: JSON.stringify({
+            idSeteo: maq[0].IdSeteo,
+            idEstacionOrigen: dataCopia.data[0].IdEstacion,
+            idEstacionDestino: dataCopia.numeroBrazo,
+            idUsuario: getUser()
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            varObjeto.vueComponent.agregarConfiguracion(dataCopia.numeroBrazo, dataCopia.tipo, dataCopia.data[0]); // actualiza máquina en vista.
+            RequestEndMsg(data, "Post");
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+//
 
 var CargarAsignacionUsuarios = function () {
     if ($("#gridUsuarioAsignados").data("kendoGrid") === undefined) {
@@ -1771,6 +1799,103 @@ var fn_gridBasesEstacion = function (gd) {
 
 };
 
+/**Obtiene los tipos de maquinas para la maquina de Vue */
+var fn_GetFormasMaquina = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: TSM_Web_APi + "FormasMaquinas",
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataTipoMaquina(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**
+ * Obtiene los colores de la orden de trabajo para la maquina de Vue
+ * @param {number} idSeteo
+ */
+var fn_GetColores = function (maquina, idSeteo) {
+    let datos = [];
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaColores/GetSeteoMaquinaColoresByIdSeteo/" + idSeteo,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataColores(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**
+ * Obtiene las tareas de la orden de trabajo para la maquina de Vue
+ * @param {Number} idSeteo
+ */
+var fn_Tecnicas = function (maquina, idSeteo) {
+    let datos = [];
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaTecnicas/GetSeteoMaquinaTecnicasByIdSeteo/" + idSeteo,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataTecnicas(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**Obtiene las bases de la orden de trabajo para la maquina de Vue */
+var fn_Bases = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: TSM_Web_APi + "BasesMuestras",
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataBases(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+/**Obtiene los acesorios de la orden de trabajo para la maquina de Vue */
+var fn_Accesorios = function (maquina) {
+    let datos = [];
+
+    $.ajax({
+        url: TSM_Web_APi + "AccesoriosMaquinas",
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (Respuesta) {
+            maquina.cargarDataAccesorios(Respuesta);
+        }
+    });
+
+    return datos;
+};
+
+var fn_VerDetalleBrazoMaquina = function (e) {
+    var dataEstacion = e.detail[0];
+    if (dataEstacion.accessories[0] !== undefined) {
+        fn_verEditar(dataEstacion.accessories[0].tipo, dataEstacion.number);
+    }
+   
+};
+
 var fn_gridAccesoriosEstacion = function (gd) {
 
     var dsAcce = new kendo.data.DataSource({
@@ -1969,8 +2094,9 @@ var fn_gridEstacionIntercambio= function (gd) {
  * Eliminacion de configuracion por brazo o el seteo de toda la maquina cuando el idestacion sea igual undefined
  * @param {any} xIdSeteo codigo de seteo de la maquina
  * @param {any} xIdestacion numero de estacion del brazo o estacion 
+ * @param {any} xMaquina numero de estacion del brazo o estacion
  */
-var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
+var fn_EliminarEstacion = function (xIdSeteo, xIdestacion, xMaquina) {
     kendo.ui.progress($(document.body), true);
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
     $.ajax({
@@ -1979,19 +2105,9 @@ var fn_EliminarEstacion = function (xIdSeteo, xIdestacion) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             RequestEndMsg(data, "Delete");
-            var a = stage.find("#TxtInfo" + xIdestacion);
-            if (xIdestacion !== undefined) {
-                a.text("");
-                maq = fn_GetMaquinas();
-                var b = stage.find("#brazo" + xIdestacion);
-                b.IdSeteo = 0;
-                b.IdTipoFormulacion = "";
-                layer.draw();
+            maq = fn_GetMaquinas();
+            xMaquina.data("maquinaSerigrafia").cargarDataMaquina(maq);
 
-            } else {
-                fn_RTCargarMaquina();
-                fn_RTActivaDropTarget();
-            }
         },
         error: function (data) {
             ErrorMsg(data);
@@ -2539,4 +2655,57 @@ var fn_GetSeteoMaquinasAlertasValidacion = function (IdSeteo) {
           
         }
     });
+};
+
+
+var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina,reducirEtacion) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/UpdSeteoMaquinas_Forma/" + maq[0].IdSeteo,
+        type: "Put",
+        data: JSON.stringify({
+            IdEstructuraMaquina: idFormaMaquina
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Put");
+            maquina.data("maquinaSerigrafia").maquinaVue.initialize(cantidadEstaciones, nomFiguraMaquina);
+            if (reducirEtacion === 0) {
+                maq = fn_GetMaquinas();
+            } else {
+                fn_ReduccionEstacionesMaq(maq[0].IdSeteo, cantidadEstaciones);
+            }
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+            maq = fn_GetMaquinas();
+            maquina.data("maquinaSerigrafia").cargarDataMaquina(maq);
+        }
+    });
+
+};
+
+var fn_ReduccionEstacionesMaq = function (xIdSeteo,xCantidadEstaciones) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/ReduccionEstacionesMaq",
+        type: "Post",
+        data: JSON.stringify({
+            idSeteo: xIdSeteo,
+            noEstaciones_Cambio:xCantidadEstaciones
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Put");
+            maq = fn_GetMaquinas();
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+
 };

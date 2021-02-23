@@ -262,6 +262,7 @@
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
+    <Compile Include="Controllers\CategoriaMaquinasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasUbicacionesController.cs" />
     <Compile Include="Controllers\CategoriaTallasController.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultarFichaOTController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
@@ -432,6 +434,28 @@
     <Content Include="Content\Font-HelveticaNeue.css" />
     <Content Include="Content\Font-TS-Icons.css" />
     <Content Include="Content\Font-TSM-General.css" />
+    <Content Include="Content\icons\arrow-down.svg" />
+    <Content Include="Content\icons\arrow-up.svg" />
+    <Content Include="Content\icons\emulsion.svg" />
+    <Content Include="Content\icons\fill.svg" />
+    <Content Include="Content\icons\hamburger.svg" />
+    <Content Include="Content\icons\hide.svg" />
+    <Content Include="Content\icons\layers.svg" />
+    <Content Include="Content\icons\14.svg" />
+    <Content Include="Content\icons\16.svg" />
+    <Content Include="Content\icons\22.svg" />
+    <Content Include="Content\icons\circular.svg" />
+    <Content Include="Content\icons\ovalar.svg" />
+    <Content Include="Content\icons\optimize.svg" />
+    <Content Include="Content\icons\oven.svg" />
+    <Content Include="Content\icons\pen.svg" />
+    <Content Include="Content\icons\rango.svg" />
+    <Content Include="Content\icons\save.svg" />
+    <Content Include="Content\icons\team.svg" />
+    <Content Include="Content\icons\trash.svg" />
+    <Content Include="Content\icons\user.svg" />
+    <Content Include="Content\icons\view.svg" />
+    <Content Include="Content\icons\warning.svg" />
     <Content Include="Content\kendo\Black\editor.png" />
     <Content Include="Content\kendo\Black\imagebrowser.png" />
     <Content Include="Content\kendo\Black\indeterminate.gif" />
@@ -790,6 +814,7 @@
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
+    <Content Include="Scripts\js\CategoriaMaquinas.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
@@ -802,6 +827,7 @@
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
+    <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
     <Content Include="Scripts\js\FichaOT.js" />
@@ -1093,6 +1119,7 @@
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js.map" />
     <Content Include="Scripts\kendo\jszip.min.js" />
+    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\kendo.angular.min.js" />
@@ -1362,6 +1389,10 @@
     <Content Include="Scripts\Utils\powerbi.min.js" />
     <Content Include="Scripts\Utils\sortable.min.js" />
     <Content Include="Scripts\Utils\TSM-LayoutSet.js" />
+    <Content Include="Scripts\VueComp\inquisalva-components.js" />
+    <Content Include="Scripts\VueComp\inquisalva-components.min.js" />
+    <Content Include="Scripts\VueComp\maquinaSerigrafia.js" />
+    <Content Include="Scripts\Vue\Vue.js" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -1552,6 +1583,8 @@
     <Content Include="Views\MotivosSolicitudesCambios\Index.cshtml" />
     <Content Include="Views\Shared\_SolicitudReactivacionOrdenTrabajo.cshtml" />
     <Content Include="Views\TiposIgualacionesColores\Index.cshtml" />
+    <Content Include="Views\EstructuraMaquinas\Index.cshtml" />
+    <Content Include="Views\CategoriaMaquinas\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

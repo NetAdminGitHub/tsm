@@ -643,6 +643,7 @@ let fn_GetOTRequerimiento = function () {
         error: function () { kendo.ui.progress($(document.body), false); },
         complete: function () {
             fn_ObtieneConfFoil();
+            fn_DibujarSeccionMaqui();
             fn_ObtieneConfiguracionBrazos();
             fn_ObtenerDimensiones(reqid);
             let parametros = `${xIdOt},${idSimulacion},${idCotizacion}`;
@@ -1181,6 +1182,50 @@ let EliminarArtAdjFicha = function (UrlAA, Fn) {
 
     return eliminado;
 };
+
+
+let fn_DibujarSeccionMaqui = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/" + xIdSeteo,
+        type: 'GET',
+        success: function (datos) {
+            //if (datos !== null) {
+            maq = fn_GetMQ(datos.IdEtapaProceso, datos.Item);
+            $("#maquinaConsultaOT").maquinaSerigrafia({
+                maquina: {
+                    data: maq
+                }
+            });
+            //}
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
+var fn_GetMQ = function (xetp, xitem) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + xIdOt + "/" + xetp + "/" + xitem,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
