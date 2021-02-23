@@ -892,6 +892,7 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
         KdoComboBoxEnable($("#CmbBasePigmento_color"), false);
         TextBoxEnable($("#TxtFormulaSug"), false);
         KdoComboBoxEnable($("#CmbTecnica_color"), false);
+        Grid_HabilitaToolbar($("#TablaFormula"), false, false, false);
     } else {
         KdoComboBoxEnable($("#CmbIdTipoEstacion"), true);
         KdoButtonEnable($("#btnAddMCE"), true);
@@ -901,6 +902,7 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
         KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
         TextBoxEnable($("#TxtFormulaSug"), true);
         KdoComboBoxEnable($("#CmbTecnica_color"), true);
+        Grid_HabilitaToolbar($("#TablaFormula"), false, false, false);
     }
 };
 
@@ -915,7 +917,7 @@ let fn_TintasFormulaciones_EC = function (_idSeteo,_idBrazo) {
         success: function (data) {
             if (data && data.length > 0) {
                 $("#TxtIdform").val(data[0].IdFormula);
-                Grid_HabilitaToolbar($("#TablaFormula"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#TablaFormula"), vhb !== false ? Permisos.SNAgregar : false, vhb !== false ? Permisos.SNEditar : false, vhb !== false ? Permisos.SNBorrar : false);
             }
             else {
                 $("#TxtIdform").val(0);
