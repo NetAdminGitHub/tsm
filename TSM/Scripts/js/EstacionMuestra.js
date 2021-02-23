@@ -688,11 +688,11 @@ let LimpiaMarcaCelda_Mues = function () {
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_Mues"), habilitarMarco);
-    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumCapilar_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumPasadas_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), habilitarMarco);
+    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumPasadas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), vhb !== false ? habilitarMarco : false);
 
     if (!habilitarMarco) {
         KdoCmbSetValue($("#CmbSedas_Mues"), "");
@@ -700,5 +700,18 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
         kdoNumericSetValue($("#NumCapilar_Mues"), 0);
         kdoNumericSetValue($("#NumPasadas_Mues"), 0);
         kdoNumericSetValue($("#EscurridorDureza_Mues"), 0);
+    }
+
+    if (vhb === false) {
+        KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), false);
+        KdoNumerictextboxEnable($("#NumPeso_Mues"), false);
+        TextBoxEnable($("#TxtLetra_Mues"), false);
+        KdoButtonEnable($("#btnAddMCE_Mues"), false);
+    } else {
+        KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), true);
+        KdoNumerictextboxEnable($("#NumPeso_Mues"), true);
+        TextBoxEnable($("#TxtLetra_Mues"), true);
+        KdoButtonEnable($("#btnAddMCE_Mues"), true);
+
     }
 };

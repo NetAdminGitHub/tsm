@@ -62,11 +62,60 @@ var fn_VerifMuesCC = function () {
     });
     fn_ConsultaPesosVerifMue($("#gridEstacionPesoVerifMue"));
 
+
+
+    $("#maquinaValidacionMues").maquinaSerigrafia({
+        maquina: {
+            data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
+            eventos: {
+                nuevaEstacion: function (e) {
+                    AgregaEstacion(e);
+                    maq = fn_GetMaquinas();
+                    $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                },
+                abrirEstacion: fn_VerDetalleBrazoMaquina,
+                editarEstacion: fn_VerDetalleBrazoMaquina,
+                pegarEstacion: function (e) {
+                    var dataCopy = e.detail[0];
+                    fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy);
+                },
+                trasladarEstacion: function () {
+                    var informacionTraslado = e.detail[0];
+                    $("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                },
+                desplazamientoEstacion: function () {
+                    var elementoADesplazar = e.detail[0];
+                    var sType = $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaValidacionMues"), sType.CantidadEstaciones);
+                },
+                eliminarEstacion: function (e) {
+                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaValidacionMues"));
+                }
+            }
+        },
+        accesorios: { mostrar: true }
+    });
+
+    fn_Accesorios($("#maquinaValidacionMues").data("maquinaSerigrafia"));
+
+    //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
+
 };
 
 var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
+};
+
+var elementoSeleccionado_ValidMues = function (e) {
+
+    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+        fn_UpdFormaRevTec(e, $("#maquinaValidacionMues"));
+    } else {
+        $("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
+    }
 };
 
 

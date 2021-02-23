@@ -674,9 +674,9 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
     }
     if (xVistaFormulario.toUpperCase() === "_DISENOMUESTRAS") {
 
-        switch (IdTipoFormulacion) {
+        switch (tipoFormulacion.toUpperCase()) {
             case "COLOR":
-                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + xNumEstacion.toString();
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + numEstacion.toString();
                 ModalEstacion = "MEstacionDisenos";
                 TipoEstacion = "MARCO";
                 Formulacion = "COLOR";
@@ -709,7 +709,7 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
     }
     if (xVistaFormulario.toUpperCase() === "_TINTASFORMULACIONES") {
 
-        switch (IdTipoFormulacion) {
+        switch (tipoFormulacion.toUpperCase()) {
             case "COLOR":
                 Titulo = "TINTAS Y REVELADO COLOR ESTACIÓN #" + numEstacion.toString();
                 ModalEstacion = "MEstacionFormulas";
@@ -741,7 +741,7 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
         }
     }
     if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
-        switch (IdTipoFormulacion) {
+        switch (tipoFormulacion.toUpperCase()) {
             case "COLOR":
                 Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + numEstacion.toString();
                 ModalEstacion = "MEstacionMuestra";
@@ -773,7 +773,7 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
         }
     }
     if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
-        switch (IdTipoFormulacion) {
+        switch (tipoFormulacion.toUpperCase()) {
             case "COLOR":
                 Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + numEstacion.toString();
                 ModalEstacion = "MEstacionVerifMuestra";

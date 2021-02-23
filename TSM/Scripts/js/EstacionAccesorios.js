@@ -27,9 +27,7 @@ var fn_VistaEstacionAccesorios = function () {
 var fn_GuardarEstacionAccesorio = function () {
 
     fn_GuardarEstacionAcce(idBraAcce);
-    var a = stage.find("#TxtInfo" + idBraAcce);
-    a.text($("#TxtOpcSelecAcce").val());
-    layer.draw();
+
 };
 
 var fn_GuardarEstacionAcce = function (xIdBrazo) {
@@ -56,9 +54,11 @@ var fn_GuardarEstacionAcce = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
-            maq = fn_GetMaquinas();
+      
             $("#MEstacionAccesorios").data("kendoWindow").close();
             RequestEndMsg(data, xType);
+            maq = fn_GetMaquinas();
+            $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);
