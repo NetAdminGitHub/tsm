@@ -554,6 +554,7 @@ let fn_GetOTRequerimiento = function () {
                 $("#plTermofijado").prop("checked", Boolean(Number(datos.UsarTermofijado)));
                 $("#plMigracion").prop("checked", Boolean(Number(datos.Migracion)));
                 $("#plLavado").prop("checked", Boolean(Number(datos.Lavado)));
+                $("#plPlacement").prop("checked", Boolean(Number(datos.Placement)));
                 $("#plMuestraAprobada").prop("checked", Boolean(Number(datos.Muestra)));
                 $("#plTrama").prop("checked", Boolean(Number(datos.Trama)));
 
@@ -1618,10 +1619,13 @@ let getTolerancia = function (Url, objeto) {
         type: 'GET',
         success: function (respuesta) {
             var lista = "";
-            $.each(respuesta, function (index, elemento) {
-                lista = lista + elemento.IdTolerancia + ",";
-            });
-            objeto.data("kendoMultiSelect").value(lista.split(","));
+            if (respuesta !== null) {
+                $.each(respuesta, function (index, elemento) {
+                    lista = lista + elemento.IdTolerancia + ",";
+                });
+                objeto.data("kendoMultiSelect").value(lista.split(","));
+            }
+           
             kendo.ui.progress($(document.body), false);
         },
         error: function (data) {

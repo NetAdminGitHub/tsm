@@ -12,7 +12,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
      $("#row-1").prop("hidden", true);
     $("#row-2").prop("hidden", true);
 
-    $("#NumConsuAncho").kendoNumericTextBox({
+    $("#NumAncho").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -20,7 +20,8 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
         decimals: 2,
         value: 0
     });
-    $("#NumConsuAlto").kendoNumericTextBox({
+
+    $("#NumAlto").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -28,6 +29,37 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
         decimals: 2,
         value: 0
     });
+    
+    let txtAnchoConsu = $("#NumConsuAncho").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0,        
+    });
+    let txtAltoConsu = $("#NumConsuAlto").kendoNumericTextBox({
+        min: 0.00,
+        max: 99999999999999.99,
+        format: "{0:n2}",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+
+    KdoNumerictextboxEnable(txtAnchoConsu, false);
+    KdoNumerictextboxEnable(txtAltoConsu, false);
+
+    $("#NumAncho").bind("change", function (e) {
+        var val = parseFloat(this.value);
+        $("#NumConsuAncho").data("kendoNumericTextBox").value(val + 0.5);
+    });
+
+    $("#NumAlto").bind("change", function (e) {
+        var val = parseFloat(this.value);
+        $("#NumConsuAlto").data("kendoNumericTextBox").value(val + 0.5);
+    });
+
     var frmAcce = $("#FrmGenEACC").kendoValidator({
         rules: {
             vuni: function (input) {
@@ -44,15 +76,15 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
             },
             anchoc: function (input) {
 
-                if (input.is("[name='NumConsuAncho']")) {
-                    return AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString()) !== undefined ? $("#NumConsuAncho").data("kendoNumericTextBox").value() > 0 : true;
+                if (input.is("[name='NumAncho']")) {
+                    return AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString()) !== undefined ? $("#NumAncho").data("kendoNumericTextBox").value() > 0 : true;
                 }
                 return true;
             },
             altoc: function (input) {
 
-                if (input.is("[name='NumConsuAlto']")) {
-                    return AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString()) !== undefined ? $("#NumConsuAlto").data("kendoNumericTextBox").value() > 0: true;
+                if (input.is("[name='NumAlto']")) {
+                    return AccesMaquinaArt.find(q => q.IdAccesorio === $("#TxtOpcSelecAcce_Dis").data("IdAccesorio").toString()) !== undefined ? $("#NumAlto").data("kendoNumericTextBox").value() > 0: true;
                 }
                 return true;
             }
@@ -73,8 +105,8 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
     } else {
         $("#row-1").prop("hidden", true);
         $("#row-2").prop("hidden", true);
-        kdoNumericSetValue($("#NumConsuAncho"), 0);
-        kdoNumericSetValue($("#NumConsuAlto"), 0);
+        kdoNumericSetValue($("#NumAncho"), 0);
+        kdoNumericSetValue($("#NumAlto"), 0);
         KdoCmbSetValue($("#CmbSetFoil"), "");
         KdoCmbSetValue($("#CmbConsUnidad"), "");
     }
@@ -112,6 +144,8 @@ var fn_VistaEstacionAccesoriosDis = function () {
         if (xSeteoMEA !== null) {
             KdoCmbSetValue($("#CmbSetFoil"), xSeteoMEA.IdArticulo === undefined ? "" : xSeteoMEA.IdArticulo);
             KdoCmbSetValue($("#CmbConsUnidad"), xSeteoMEA.IdUnidadDimensionesConsumo === undefined ? "" : xSeteoMEA.IdUnidadDimensionesConsumo);
+            kdoNumericSetValue($("#NumAncho"), xSeteoMEA.Ancho);
+            kdoNumericSetValue($("#NumAlto"), xSeteoMEA.Alto);
             kdoNumericSetValue($("#NumConsuAncho"), xSeteoMEA.AnchoConsumo);
             kdoNumericSetValue($("#NumConsuAlto"), xSeteoMEA.AltoConsumo);
         } else {
@@ -121,6 +155,8 @@ var fn_VistaEstacionAccesoriosDis = function () {
     } else {
         $("#row-1").prop("hidden", true);
         $("#row-2").prop("hidden", true);
+        kdoNumericSetValue($("#NumAncho"), 0);
+        kdoNumericSetValue($("#NumAlto"), 0);
         kdoNumericSetValue($("#NumConsuAncho"), 0);
         kdoNumericSetValue($("#NumConsuAlto"), 0);
         KdoCmbSetValue($("#CmbSetFoil"), "");
@@ -198,6 +234,8 @@ var fn_GuardarSeteoAccesDis = function (xIdBrazo) {
             Tiempo: 0,
             IdSeteo: maq[0].IdSeteo,
             IdArticulo: KdoCmbGetValue($("#CmbSetFoil")),
+            Alto: kdoNumericGetValue($("#NumAlto")),
+            Ancho: kdoNumericGetValue($("#NumAncho")),
             AltoConsumo: kdoNumericGetValue($("#NumConsuAlto")),
             AnchoConsumo: kdoNumericGetValue($("#NumConsuAncho")),
             IdUnidadDimensionesConsumo: KdoCmbGetValue($("#CmbConsUnidad"))
