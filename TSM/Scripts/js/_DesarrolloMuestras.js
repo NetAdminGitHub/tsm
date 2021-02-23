@@ -31,6 +31,45 @@ var fn_DMueCargarConfiguracion = function () {
         fn_OpenModalEstacionAjuste();
 
     });
+
+    $("#maquinaDesarrolloMues").maquinaSerigrafia({
+        maquina: {
+            data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
+            eventos: {
+                nuevaEstacion: function (e) {
+                    AgregaEstacion(e);
+                    maq = fn_GetMaquinas();
+                    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                },
+                abrirEstacion: fn_VerDetalleBrazoMaquina,
+                editarEstacion: fn_VerDetalleBrazoMaquina,
+                pegarEstacion: function (e) {
+                    var dataCopy = e.detail[0];
+                    fn_DuplicarBrazoMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquina, dataCopy);
+                },
+                trasladarEstacion: function () {
+                    var informacionTraslado = e.detail[0];
+                    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                },
+                desplazamientoEstacion: function () {
+                    var elementoADesplazar = e.detail[0];
+                    var sType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDesarrolloMues"), sType.CantidadEstaciones);
+                },
+                eliminarEstacion: function (e) {
+                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaDesarrolloMues"));
+                }
+            }
+        },
+        accesorios: { mostrar: true }
+    });
+
+
+    fn_Accesorios($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+
+    //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true); 
 };
 
 var fn_DMCargarEtapa = function () {
@@ -38,6 +77,15 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
 
 };
+
+
+//var elementoSeleccionado_DesarrolloMues = function (e) {
+//    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+//        fn_UpdFormaRevTec(e, $("#maquinaDesarrolloMues"));
+//    } else {
+//        $("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
+//    }
+//};
 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_DMueCargarConfiguracion);

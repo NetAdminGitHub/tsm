@@ -13,7 +13,8 @@
                 pegarEstacion: undefined,
                 trasladarEstacion: undefined,
                 desplazamientoEstacion: undefined,
-                eliminarEstacion: undefined
+                eliminarEstacion: undefined,
+                reduccionMaquina: undefined
             }
         },
         tipoMaquina: {
@@ -140,7 +141,10 @@
                 this.maquina.setEvento('desplazamiento-brazo', this.options.maquina.eventos.desplazamientoEstacion);
 
             if (this.options.maquina.eventos.eliminarEstacion)
-                this.maquina.setEvento('configuracion-eliminada', this.options.maquina.eventos.eliminarEstacion);                
+                this.maquina.setEvento('configuracion-eliminada', this.options.maquina.eventos.eliminarEstacion);  
+            
+            if (this.options.maquina.eventos.reduccionMaquina)
+                this.maquina.setEvento('cambio-aprobado', this.options.maquina.eventos.reduccionMaquina);     
 
             this.cargarDataMaquina(this.options.maquina.data);
         },
@@ -207,8 +211,8 @@
 
         // HELPER FUNCTIONS
 
-        _mapearData: function () {
-            let mapeo = (this.options.maquina.data.map(function (d) {
+        _mapearData: function (datos) {
+            let mapeo = datos.map(function (d) {
                 let result = {
                     number: d.IdEstacion,
                     accessories: [{
@@ -219,7 +223,7 @@
                 };
 
                 return result;
-            }));
+            });
 
             return mapeo;
         },

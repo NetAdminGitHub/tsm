@@ -13,11 +13,11 @@ var fn_RTCargarConfiguracion = function () {
     $("#maquinaRevTec").maquinaSerigrafia({
         maquina: {
             data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
                     AgregaEstacion(e);
-                    maq = fn_GetMaquinas();
-                    $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
@@ -29,12 +29,19 @@ var fn_RTCargarConfiguracion = function () {
                     var informacionTraslado = e.detail[0];
                     $("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
                 },
-                desplazamientoEstacion: function () {
+                desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];
-                    $("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.desplazarBrazo(elementoADesplazar.number, 2, 'R');
+                    var sType = $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaRevTec"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number);
+                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaRevTec"));
+                },
+                reduccionMaquina: function (e) {
+                    var selType = $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaRevTec"),1); 
+
+
                 }
             }
         },
@@ -52,7 +59,8 @@ var fn_RTCargarConfiguracion = function () {
     });
 
     fn_GetFormasMaquina($("#maquinaRevTec").data("maquinaSerigrafia"));
-    fn_GetColores($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo)
+    $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
+    fn_GetColores($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
     fn_Tecnicas($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
     fn_Bases($("#maquinaRevTec").data("maquinaSerigrafia"));
     fn_Accesorios($("#maquinaRevTec").data("maquinaSerigrafia"));
@@ -61,14 +69,18 @@ var fn_RTCargarConfiguracion = function () {
 };
 
 
-let fn_VerDetalle = 
+//let fn_VerDetalle = 
 
 var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
 };
 
 var elementoSeleccionado = function (e) {
-    $("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
+    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+        if ($("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina) === "OK") {
+            fn_UpdFormaRevTec(e.detail[0].CantidadEstaciones, e.detail[0].IdFormaMaquina, e.detail[0].NomFiguraMaquina, $("#maquinaRevTec"),0); 
+        }
+    } 
 };
 
 ///*Funciones para Maquina de Vue*/

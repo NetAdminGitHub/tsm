@@ -14,6 +14,8 @@ $(document).ready(function () {
     $("#btnIrGOT").click(function () {
         window.location.href = "/ConsultarFichaOT";
     });
+
+    
 });
 
 let fn_GetOTRequerimiento = function () {
@@ -53,9 +55,9 @@ let fn_GetOTRequerimiento = function () {
             fn_MostraFormulaCab();
             fn_MostrarEstMarcos();
             fn_OTMostrarEstados();
+            fn_DibujarSeccionMaqui();
             kendo.ui.progress($(document.body), false);
         }
-
     });
 };
 
@@ -326,6 +328,48 @@ let fn_OTMostrarEstados = function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
     SetGrid($("#gEstados").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 350);
     Set_Grid_DataSource($("#gEstados").data("kendoGrid"), dsetOTEstados,20);
+};
+
+let fn_DibujarSeccionMaqui = function () {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/" + xIdSeteo,
+        type: 'GET',
+        success: function (datos) {
+            //if (datos !== null) {
+                maq=fn_GetMQ(datos.IdEtapaProceso, datos.Item);
+                $("#maquinaConsultaOT").maquinaSerigrafia({
+                    maquina: {
+                        data: maq
+                    }
+                });
+            //}
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
+var fn_GetMQ = function (xetp, xitem) {
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + xIdOt + "/" + xetp + "/" + xitem,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
 };
 
 fPermisos = function (datos) {

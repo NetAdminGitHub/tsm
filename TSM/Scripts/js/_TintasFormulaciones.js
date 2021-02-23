@@ -81,7 +81,24 @@ var fn_TintasFCargarConfiguracion = function () {
         Grid_SelectRow($("#gridresumen"), selectedRows);
     });
 
-    
+    $("#maquinaTintasRev").maquinaSerigrafia({
+        maquina: {
+            data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
+            eventos: {
+                nuevaEstacion: function (e) {
+                    AgregaEstacion(e);
+                    maq = fn_GetMaquinas();
+                    $("#maquinaTintasRev").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                },
+                abrirEstacion: fn_VerDetalleBrazoMaquina,
+                editarEstacion: fn_VerDetalleBrazoMaquina
+            }
+        }
+
+    });
+
 
 };
 
@@ -89,6 +106,15 @@ var fn_TintasFCargarConfiguracion = function () {
 var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
 };
+
+//var elementoSeleccionado_TintasRev = function (e) {
+//    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+//        fn_UpdFormaRevTec(e, $("#maquinaTintasRev"));
+//    } else {
+//        $("#maquinaTintasRev").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
+//    }
+
+//};
 
 
 //Agregar a Lista de ejecucion funcion configurar 
