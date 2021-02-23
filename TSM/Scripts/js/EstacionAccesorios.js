@@ -22,12 +22,12 @@ var fn_VistaEstacionAccesorios = function () {
     } else {
         $("#TxtOpcSelecAcce").data("IdAccesorio", TxtIdsec);
     }
+
+    KdoButtonEnable($("#btnAddMEA"), vhb);
 };
 
 var fn_GuardarEstacionAccesorio = function () {
-
     fn_GuardarEstacionAcce(idBraAcce);
-
 };
 
 var fn_GuardarEstacionAcce = function (xIdBrazo) {
