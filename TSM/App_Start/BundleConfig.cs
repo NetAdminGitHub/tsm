@@ -9,14 +9,14 @@ namespace TSM
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery/jquery-{version}.js",
-                                                                "~/Scripts/jquery/jquery.sparkline.min.js",
-                                                                "~/Scripts/jquery/jquery.scrollbar.min.js",
+                                                                "~/Scripts/jquery/jquery.sparkline.min.js", //Mini graficas
+                                                                "~/Scripts/jquery/jquery.scrollbar.min.js", //Incluir scrollbars a divs
                                                                 "~/Scripts/jquery/jquery-ui.min.js",
-                                                                "~/Scripts/js.cookie.js",
-                                                                "~/Scripts/jquery/jszip.min.js",
-                                                                "~/Scripts/jquery/jquery.signalR-{version}.js",
-                                                                "~/Scripts/jquery/jquery.smartWizard.js",
-                                                                "~/Scripts/jquery/jquery.ns-autogrow.min.js"
+                                                                "~/Scripts/js.cookie.js", //Manejo de cookies
+                                                                "~/Scripts/jquery/jszip.min.js", //Exportar grids a excel
+                                                                "~/Scripts/jquery/jquery.signalR-{version}.js", //websockets
+                                                                "~/Scripts/jquery/jquery.smartWizard.js", //control step wizard
+                                                                "~/Scripts/jquery/jquery.ns-autogrow.min.js"  //Textboxs Multi line
                                                                 ));
             
             bundles.Add(new ScriptBundle("~/bundles/jqueryAjax").Include("~/Scripts/jqueryAjax/jquery.unobtrusive-ajax.js"));
