@@ -1619,10 +1619,13 @@ let getTolerancia = function (Url, objeto) {
         type: 'GET',
         success: function (respuesta) {
             var lista = "";
-            $.each(respuesta, function (index, elemento) {
-                lista = lista + elemento.IdTolerancia + ",";
-            });
-            objeto.data("kendoMultiSelect").value(lista.split(","));
+            if (respuesta !== null) {
+                $.each(respuesta, function (index, elemento) {
+                    lista = lista + elemento.IdTolerancia + ",";
+                });
+                objeto.data("kendoMultiSelect").value(lista.split(","));
+            }
+           
             kendo.ui.progress($(document.body), false);
         },
         error: function (data) {
