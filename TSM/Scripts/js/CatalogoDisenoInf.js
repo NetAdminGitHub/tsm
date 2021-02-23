@@ -269,11 +269,11 @@ let fn_gridOT = function () {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
                         KdoCmbSetValue($("#CmbTiposMuestras"), "");
                         $("#TxtMotivoCambio").val("");
-                        let dialog= $("#ModalGeneraOT").data("kendoDialog");
-                        dialog.open();
                         xidRq=dataItem.IdRequerimiento;
                         xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
+                        let dialog = $("#ModalGeneraOT").data("kendoDialog");
+                        dialog.open();
                         dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
                         
                     }
