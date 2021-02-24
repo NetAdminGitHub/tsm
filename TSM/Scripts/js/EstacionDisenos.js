@@ -885,6 +885,7 @@ let fn_DeshabilitarCamposMarco_Dis = function (utilizaMarco) {
         KdoComboBoxEnable($("#CmbSistemaPigmento_Dis"), true);
         KdoComboBoxEnable($("#CmbBasePigmento_Dis"), true);
         KdoNumerictextboxEnable($("#NumResolucionDPI_Dis"), true);
+        KdoNumerictextboxEnable($("#NumPixeles_Dis"), true);
         KdoNumerictextboxEnable($("#NumLineajeLPI_Dis"), true);
         TextBoxEnable($("#TxtFormulaSug_Dis"), true);
         KdoComboBoxEnable($("#CmbTecnica_Dis"), true);
