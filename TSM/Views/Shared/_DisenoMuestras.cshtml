@@ -19,10 +19,10 @@
                 <div class="form-group col-lg-3">
                     <label for="CmbIdTipoSeparacion">Tipo Separción</label>
                     <input id="CmbIdTipoSeparacion" name="CmbIdTipoSeparacion" class="form-control" required validationMessage="Requerido" />
-                </div>                
+                </div>
             </div>
             <div class="form-row">
-              
+
 
             </div>
             <div class="form-row">
@@ -73,40 +73,9 @@
         </form>
     </div>
 </div>
+
 <div class="form-row">
-    <div class="form-group col-lg-3">
-        <div id="dgColorDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgTecnicaDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgBasesDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgAccesoriosDis"></div>
-    </div>
+    <div id="maquinaDiseno"></div>
 </div>
-<div class="form-row">
-    <div class="form-group col-lg-12">
-        <div class="form-row">
-            <div class="form-group col-lg-3">
-                <label for="CmbMaquinaDis">Selección de Maquina:</label>
-                <input id="CmbMaquinaDis" name="CmbMaquinaDis" required validationMessage="Requerido" type="text" class="form-control" />
-            </div>
-            <div class="form-group col-lg-3 col-md-4 align-self-lg-end" hidden="hidden"> 
-                <button type="button" id="btnBTDis" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                        <span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo
-                </button>
-            </div>
-            <div class="form-group col-lg-3 align-self-lg-end">
-                <button type="button" id="btnDesplaCambio_Dis" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="form-row" id="EtapaSeteo_8">@*div utilizado para el dibujado de maquina por etapa*@</div>
 <div id="MEstacionDisenos" data-url='@Url.Action("EstacionDisenos","Estaciones")'></div>
 <div id="MEstacionAccesoriosDis" data-url='@Url.Action("EstacionAccesoriosDis","Estaciones")'></div>

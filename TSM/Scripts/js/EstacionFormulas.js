@@ -232,6 +232,14 @@ var fn_VistaEstacionFormulas = function () {
             }
         });
     });
+
+    KdoButtonEnable($("#btnAddMFAjuste"), vhb);
+    KdoButtonEnable($("#btnAddMFAHistori"), vhb);
+    KdoButtonEnable($("#btnCambioEstado"), vhb);
+    KdoButtonEnable($("#btnAutRet"), vhb);
+    vhb !== false ? $("#gridFormulas").data("kendoGrid").showColumn("cambiarEstado") : $("#gridFormulas").data("kendoGrid").hideColumn("cambiarEstado");
+    vhb !== false ? Grid_HabilitaToolbar($("#gridFormulas"), false, Permisos.SNEditar, false) : Grid_HabilitaToolbar($("#gridFormulas"), false, false, false);
+
 };
 
 var fn_gridFormulas = function (gd) {
@@ -384,6 +392,7 @@ var fn_gridFormulas = function (gd) {
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             {
+                field: "cambiarEstado", title: "&nbsp;",
                 command: {
                     name: "cambiarEstado",
                     iconClass: "TS-icon-ARROW",

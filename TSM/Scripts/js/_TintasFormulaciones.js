@@ -1,14 +1,7 @@
 ﻿var Permisos;
 var fn_TintasFCargarConfiguracion = function () {
-    KdoButton($("#btnBTTintas"), "delete", "Limpiar");
-    KdoButtonEnable($("#btnBTTintas"), false);
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-    let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquinaTintas"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquinaTintas"), false);
-    KdoCmbSetValue($("#CmbMaquinaTintas"), maq[0].IdMaquina);
-
 
     // crea dataSource para grid
     var dataSource = new kendo.data.DataSource({
@@ -88,28 +81,46 @@ var fn_TintasFCargarConfiguracion = function () {
         Grid_SelectRow($("#gridresumen"), selectedRows);
     });
 
-    
+    $("#maquinaTintasRev").maquinaSerigrafia({
+        maquina: {
+            data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
+            eventos: {
+                nuevaEstacion: function (e) {
+                    AgregaEstacion(e);
+                    maq = fn_GetMaquinas();
+                    $("#maquinaTintasRev").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                },
+                abrirEstacion: fn_VerDetalleBrazoMaquina,
+                editarEstacion: fn_VerDetalleBrazoMaquina
+            }
+        }
+
+    });
+
 
 };
 
 
 var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    $("#maquinaTintasRev").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
-// Agregar a lista de ejecucion funcion dibujado de maquina.
-var EtapaPush = {};
-EtapaPush.IdEtapa = idEtapaProceso;
-EtapaPush.FnEtapa = fn_RTCargarMaquina;
-fun_ListDatos.push(EtapaPush);
+
+//var elementoSeleccionado_TintasRev = function (e) {
+//    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+//        fn_UpdFormaRevTec(e, $("#maquinaTintasRev"));
+//    } else {
+//        $("#maquinaTintasRev").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
+//    }
+
+//};
+
 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_TintasFCargarConfiguracion);
 
-//Agregar a Lista de ejecucion funcion configurar 
-//var EtapaPush2 = {};
-//EtapaPush2.IdEtapa = idEtapaProceso;
-//EtapaPush2.FnEtapa = fn_TintasFCargarConfiguracion;
-//fun_ListDatos.push(EtapaPush2);
 
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
