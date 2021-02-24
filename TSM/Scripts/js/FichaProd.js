@@ -1195,7 +1195,9 @@ let fn_DibujarSeccionMaqui = function () {
             maq = fn_GetMQ(datos.IdEtapaProceso, datos.Item);
             $("#maquinaConsultaOT").maquinaSerigrafia({
                 maquina: {
-                    data: maq
+                    data: maq,
+                    formaMaquina: maq[0].NomFiguraMaquina,
+                    cantidadBrazos: maq[0].CantidadEstaciones
                 }
             });
             //}

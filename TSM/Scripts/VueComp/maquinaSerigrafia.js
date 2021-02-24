@@ -314,7 +314,23 @@
          */
         setEvento: function (nombreEvento, funcion) {
             this.addEventListener(nombreEvento, funcion);
+        },
+        /**
+         * Elimina una estación en la maquina.
+         * @param {JSON} estacion estacion 
+         */
+        eliminarEstacion: function (estacion) {
+            this.maquinaVue.eliminarConfiguracion(estacion);
+        },
+        /**
+         * Activa la maquina en modo lectura
+         * @param {boolean} opcion true or False
+         */
+        activarSoloLectura: function (opcion) {
+            this.maquinaVue.readOnly(opcion);
         }
+        
+
     });
 
     // Wrapper

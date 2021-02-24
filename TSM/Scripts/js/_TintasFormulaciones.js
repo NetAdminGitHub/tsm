@@ -105,6 +105,7 @@ var fn_TintasFCargarConfiguracion = function () {
 
 var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    $("#maquinaTintasRev").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
 //var elementoSeleccionado_TintasRev = function (e) {

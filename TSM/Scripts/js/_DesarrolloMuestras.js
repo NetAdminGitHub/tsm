@@ -59,7 +59,7 @@ var fn_DMueCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDesarrolloMues"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaDesarrolloMues"));
+                    fn_EliminarEstacion(maq[0].IdSeteo,e, $("#maquinaDesarrolloMues"));
                 }
             }
         },
@@ -75,6 +75,7 @@ var fn_DMueCargarConfiguracion = function () {
 var fn_DMCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
+    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 
 };
 

@@ -2092,25 +2092,25 @@ var fn_gridEstacionIntercambio= function (gd) {
 };
 /**
  * Eliminacion de configuracion por brazo o el seteo de toda la maquina cuando el idestacion sea igual undefined
- * @param {any} xIdSeteo codigo de seteo de la maquina
- * @param {any} xIdestacion numero de estacion del brazo o estacion 
- * @param {any} xMaquina numero de estacion del brazo o estacion
+ * @param {Number} xIdSeteo codigo de seteo de la maquina
+ * @param {JSON} data data retornada por el evento de eliminación
+ * @param {Number} xMaquina numero de estacion del brazo o estacion
  */
-var fn_EliminarEstacion = function (xIdSeteo, xIdestacion, xMaquina) {
+var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
     kendo.ui.progress($(document.body), true);
+    let xIdestacion = data.detail[0].number;
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
     $.ajax({
         url: Urldel,
         type: "Delete",
         contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            RequestEndMsg(data, "Delete");
+        success: function (resultado) {
+            RequestEndMsg(resultado, "Delete");
             maq = fn_GetMaquinas();
-            xMaquina.data("maquinaSerigrafia").cargarDataMaquina(maq);
-
+            xMaquina.data("maquinaSerigrafia").eliminarEstacion(data.detail[0]);
         },
-        error: function (data) {
-            ErrorMsg(data);
+        error: function (resultado) {
+            ErrorMsg(resultado);
         },
         complete: function () {
             kendo.ui.progress($(document.body), false);

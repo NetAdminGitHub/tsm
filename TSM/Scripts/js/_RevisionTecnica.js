@@ -35,7 +35,7 @@ var fn_RTCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaRevTec"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaRevTec"));
+                        fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaRevTec"));
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
@@ -73,6 +73,7 @@ var fn_RTCargarConfiguracion = function () {
 
 var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
+    $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
 var elementoSeleccionado = function (e) {

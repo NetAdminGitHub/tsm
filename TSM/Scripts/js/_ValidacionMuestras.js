@@ -91,7 +91,7 @@ var fn_VerifMuesCC = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaValidacionMues"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaValidacionMues"));
+                        fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"));
                 }
             }
         },
@@ -107,6 +107,7 @@ var fn_VerifMuesCC = function () {
 var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
+    $("#maquinaValidacionMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
 var elementoSeleccionado_ValidMues = function (e) {
