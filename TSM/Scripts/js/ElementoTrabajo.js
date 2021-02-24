@@ -160,7 +160,7 @@ $(document).ready(function () {
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
     KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
-
+    KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
 
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
@@ -849,7 +849,7 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
 };
 
 $("#vAsignarUsuario").kendoDialog({
-    height: "auto",
+    height: "50%",
     width: "30%",
     title: "Asignación de Usuarios",
     visible: false,
@@ -893,7 +893,7 @@ $("#vCamEtapa").kendoDialog({
 });
 
 $("#vRegistroCambio").kendoDialog({
-    height: "auto",
+    height: "80%",
     width: "60%",
     title: "Historial de Cambios",
     visible: false,
@@ -975,6 +975,10 @@ $("#btnSolicitarRegistroCambio").click(function (e) {
 
 $("#btnAgenda").click(function (e) {
     fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso);
+});
+
+$("#btnHistorial").click(function (e) {
+    fn_OrdenesTrabajosVersionesSeteos("historialSeteos", idOrdenTrabajo);
 });
 
 
@@ -2026,7 +2030,7 @@ var fn_gridEstacionIntercambio= function (gd) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 700);
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, true, redimensionable.Si, 650);
     Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
 
     var srow3 = [];
