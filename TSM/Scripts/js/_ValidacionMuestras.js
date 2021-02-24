@@ -18,7 +18,7 @@ var fn_VerifMuesCC = function () {
     });
 
     $("#MbtCVerifMue").kendoDialog({
-        height: "auto",
+        height: "70%",
         width: "40%",
         title: "Detalle de pesos en muestra",
         closable: true,

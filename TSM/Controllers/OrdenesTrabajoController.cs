@@ -53,6 +53,11 @@ namespace TSM.Controllers
             return PartialView("_RegistroOrdenesTrabajosAgendas");
         }
 
+        public ActionResult HistoricoSeteos()
+        {
+            return PartialView("_HistoricoSeteos");
+        }
+
         [HttpPost]
         public ActionResult VistaParcial(string id)
         {

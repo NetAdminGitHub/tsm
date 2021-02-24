@@ -5,7 +5,7 @@ var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
     $("#MbtConsulta").kendoDialog({
-        height: "auto",
+        height: "70%",
         width: "40%",
         title: "Detalle de pesos en muestra",
         closable: true,

@@ -67,8 +67,8 @@ function RequestEndMsg(e, type) {
             windowMensaje = $("<div />").kendoWindow({
                 title: "Información",
                 visible: false,
-                width: "500px",
-                height: "200px",
+                width: "30%", //500px
+                height: "30%", //200Px
                 modal: true
             }).data("kendoWindow");
 
@@ -93,8 +93,8 @@ function ErrorMsg(e) {
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
-            width: "400px",
-            height: "200px",
+            width: "30%",
+            height: "30%",
             modal: true
         }).data("kendoWindow");
 
@@ -108,8 +108,8 @@ function ErrorMsg(e) {
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
-            width: "400px",
-            height: "200px",
+            width: "30%", //400px
+            height: "30%",//200px
             modal: true
         }).data("kendoWindow");
 
@@ -132,8 +132,8 @@ function ConfirmacionMsg(Mensaje, funcion, functionNo) {
     windowConfirmar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
-        width: "400px",
-        height: "200px",
+        width: "30%",
+        height: "30%",
         modal: true
     }).data("kendoWindow");
 
@@ -1241,8 +1241,8 @@ var fn_ShowModalFH = function (cargarJs, data, divCcf) {
         //$("#" + divCcf + "").children().remove();
     };
     $("#" + divCcf + "").kendoDialog({
-        height: "auto",// $(window).height() - "300" + "px",
-        width: "auto",
+        height: "85%",// $(window).height() - "300" + "px",
+        width: "80%",
         title: "Formulas Historicas",
         closable: true,
         modal: true,
@@ -1517,8 +1517,8 @@ var fn_ShowModalAutRet = function (cargarJs, data, divAutRet, retIdot, retIdEtap
         //$("#" + divAutRet + "").children().remove();
     };
     $("#" + divAutRet + "").kendoDialog({
-        height: "auto",
-        width: "auto",
+        height: "50%",
+        width: "50%",
         title: "Autorizar retenciones",
         closable: true,
         modal: true,
@@ -1663,15 +1663,15 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
     };
 
     $("#" + divSolIngCambio + "").kendoDialog({
-        height: "auto",
-        width: "auto",
+        height: "70%",
+        width: "30%",
         title: "Solicitar cambio",
         closable: true,
         modal: true,
         content: data,
         visible: false,
         //maxHeight: 800,
-        minWidth: "20%",
+        minWidth: "30%",
         actions: [
             { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () {return fn_RegistrarSolicitudCambio(sicIdot, sicIdEtapa, sicItem);} },
             { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
@@ -1769,7 +1769,7 @@ var fn_ShowModalOrdenesTrabajosAgenda = function (cargarJs, data, divAgen, Idot,
     };
 
     $("#" + divAgen + "").kendoDialog({
-        height: "auto",
+        height: "60%",
         width: "70%",
         title: "Agendar Cambios",
         closable: true,
@@ -1786,6 +1786,107 @@ var fn_ShowModalOrdenesTrabajosAgenda = function (cargarJs, data, divAgen, Idot,
 
 };
 //#endregion
+
+//#region Historico de versiones de Seteos
+/**
+ * 
+ * @param {HtmlElementId} divVerSeteos Id del div que contendra la vista de ingreso de cambio
+ * @param {number} Idot id orden de trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_OrdenesTrabajosVersionesSeteos = function (divVerSeteos, Idot, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divVerSeteos + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/HistoricoSeteos",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalOrdenesTrabajosVersionesSeteos(resultado, divVerSeteos, Idot, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalOrdenesTrabajosVersionesSeteos("", divVerSeteos, Idot, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divVerSeteos Id del div que contendra la vista de Ingreso de cambios
+ * @param {number} Idot id orden de trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalOrdenesTrabajosVersionesSeteos = function (data, divVerSeteos, Idot, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("_HistoricoSeteos.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/_HistoricoSeteos.js";
+        script.onload = function () {
+            fn_ShowModalOrdenesTrabajosVersionesSeteos(true, data, divVerSeteos, Idot, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalOrdenesTrabajosVersionesSeteos(false, data, divVerSeteos, Idot, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divVerSeteos  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} Idot id orden de trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalOrdenesTrabajosVersionesSeteos = function (cargarJs, data, divVerSeteos, Idot, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarVersionesSeteos(Idot);
+        } else {
+            fn_CargarVersionesSeteos(Idot);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined || fn === "") {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divVerSeteos + "").kendoDialog({
+        height: "90%",
+        width: "70%",
+        title: "Historial de versiones seteos",
+        closable: true,
+        modal: {
+            preventScroll: true
+        },
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divVerSeteos + "").data("kendoDialog").open().toFront();
+};
+//#endregion
+
 var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
 
     return new kendo.data.DataSource({
