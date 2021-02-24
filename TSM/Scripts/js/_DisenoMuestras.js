@@ -179,7 +179,7 @@ var fn_DMCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDiseno"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e.detail[0].number, $("#maquinaDiseno"));
+                    fn_EliminarEstacion(maq[0].IdSeteo,e,$("#maquinaDiseno"));
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
@@ -232,6 +232,7 @@ var fn_DMCargarEtapa = function () {
     KdoNumerictextboxEnable($("#NumTiempoTra"), vhb);
     TextBoxEnable($("#TxtObservaciones"), vhb);
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
+    $("#maquinaDiseno").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
