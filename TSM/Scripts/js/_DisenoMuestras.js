@@ -169,11 +169,12 @@ var fn_DMCargarConfiguracion = function () {
                     var dataCopy = e.detail[0];
                     fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy);
                 },
-                trasladarEstacion: function () {
+                trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    $("#maquinaDiseno").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    //$("#maquinaDiseno").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaDiseno"));
                 },
-                desplazamientoEstacion: function () {
+                desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];
                     var sType = $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDiseno"), sType.CantidadEstaciones);

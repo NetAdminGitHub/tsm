@@ -49,11 +49,12 @@ var fn_DMueCargarConfiguracion = function () {
                     var dataCopy = e.detail[0];
                     fn_DuplicarBrazoMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquina, dataCopy);
                 },
-                trasladarEstacion: function () {
+                trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    //$("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaDesarrolloMues"));
                 },
-                desplazamientoEstacion: function () {
+                desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];
                     var sType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDesarrolloMues"), sType.CantidadEstaciones);
@@ -63,10 +64,15 @@ var fn_DMueCargarConfiguracion = function () {
                 }
             }
         },
+        tipoMaquina:
+        {
+            mostrar: true
+        },
         accesorios: { mostrar: true }
     });
 
-
+    fn_GetFormasMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
     fn_Accesorios($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
 
     //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true); 

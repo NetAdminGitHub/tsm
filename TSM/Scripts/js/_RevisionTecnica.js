@@ -25,9 +25,10 @@ var fn_RTCargarConfiguracion = function () {
                     var dataCopy = e.detail[0];
                     fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy);
                 },
-                trasladarEstacion: function () {
+                trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    $("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    //$("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaRevTec"));
                 },
                 desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];

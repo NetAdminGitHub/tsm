@@ -2713,3 +2713,26 @@ var fn_ReduccionEstacionesMaq = function (xIdSeteo,xCantidadEstaciones) {
     });
 
 };
+
+var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio,maquina) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasEstaciones/OperacionMaquina/" + maq[0].IdSeteo,
+        type: "Put",
+        data: JSON.stringify(brazoInicio.number.toString() + "|" + brazoDestino.number.toString() + "," + brazoDestino.number.toString() + "|" + brazoInicio.number.toString()),
+        contentType: 'application/json; charset=utf-8',
+        success: function (resultado) {
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(resultado, "Put");
+            maquina.data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(brazoDestino,tipo, data, brazoInicio);
+        },
+        error: function (resultado) {
+            ErrorMsg(resultado);
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+
+
+
+}

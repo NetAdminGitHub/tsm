@@ -81,11 +81,12 @@ var fn_VerifMuesCC = function () {
                     var dataCopy = e.detail[0];
                     fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy);
                 },
-                trasladarEstacion: function () {
+                trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    $("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    //$("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaValidacionMues"));
                 },
-                desplazamientoEstacion: function () {
+                desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];
                     var sType = $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaValidacionMues"), sType.CantidadEstaciones);
@@ -95,9 +96,14 @@ var fn_VerifMuesCC = function () {
                 }
             }
         },
+        tipoMaquina:
+        {
+            mostrar: true
+        },
         accesorios: { mostrar: true }
     });
-
+    fn_GetFormasMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia"));
+    $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
     fn_Accesorios($("#maquinaValidacionMues").data("maquinaSerigrafia"));
 
     //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
