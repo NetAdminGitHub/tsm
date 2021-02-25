@@ -161,8 +161,8 @@ var fn_VistaEstacionColorDocuReady = function () {
     });
 
     $("#CmbTipoTinta_color").data("kendoComboBox").bind("select", function (e) {
-        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), true);
-        KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
+        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), vhb);
+        KdoComboBoxEnable($("#CmbBasePigmento_color"), vhb);
         let TipoTin = e.dataItem.IdTipoTinta;
         KdoCmbSetValue($("#CmbSistemaPigmento_Color"), "");
         $("#CmbSistemaPigmento_Color").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(TipoTin));
@@ -494,10 +494,10 @@ var fn_SeccionMarcosFormulacion = function (datos) {
                 $("#TxtOpcSelec").val(setFor.NomIdRequerimientoColor === undefined ? "" : setFor.NomIdRequerimientoColor);
                 KdoCmbSetValue($("#CmbTecnica_color"), setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 fn_TecnicasArticuloSugerido($("#ArticuloSugerido"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
-                KdoComboBoxEnable($("#CmbTecnica_color"), true);
+                KdoComboBoxEnable($("#CmbTecnica_color"), vhb);
                 $("#CmbTecnica_color").data("kendoComboBox").dataSource.read();
-                KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
-                KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), true);
+                KdoComboBoxEnable($("#CmbBasePigmento_color"), vhb);
+                KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), vhb);
 
                 break;
             case "TECNICA":
@@ -542,9 +542,9 @@ var fn_SeccionMarcosFormulacion = function (datos) {
         KdoCmbSetValue($("#CmbSistemaPigmento_Color"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
         KdoCmbSetValue($("#CmbBasePigmento_color"), setFor.IdBasePigmento === undefined ? "" : setFor.IdBasePigmento);
 
-        KdoComboBoxEnable($("#CmbTipoTinta_color"), KdoCmbGetValue($("#CmbTipoTinta_color")) !== "");
-        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), KdoCmbGetValue($("#CmbSistemaPigmento_Color")) !== "");
-        KdoComboBoxEnable($("#CmbBasePigmento_color"), KdoCmbGetValue($("#CmbBasePigmento_color")) !== "");
+        KdoComboBoxEnable($("#CmbTipoTinta_color"), vhb !== false ? KdoCmbGetValue($("#CmbTipoTinta_color")) !== "" : false);
+        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), vhb !== false ? KdoCmbGetValue($("#CmbSistemaPigmento_Color")) !== "" : false);
+        KdoComboBoxEnable($("#CmbBasePigmento_color"), vhb !== false ? KdoCmbGetValue($("#CmbBasePigmento_color")) !== "" : false);
 
         //$("#FrmGenEColor").data("kendoValidator").validate();
         Kendo_CmbFocus($("#CmbQuimica_color"));
@@ -555,10 +555,10 @@ var fn_SeccionMarcosFormulacion = function (datos) {
         KdoButtonEnable($("#btnDelFT"), false);
         switch (Te) {
             case "COLOR":
-                KdoComboBoxEnable($("#CmbTecnica_color"), true);
+                KdoComboBoxEnable($("#CmbTecnica_color"), vhb);
                 $("#CmbTecnica_color").data("kendoComboBox").dataSource.read();
-                KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
-                KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), true);
+                KdoComboBoxEnable($("#CmbBasePigmento_color"), vhb);
+                KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), vhb);
                 break;
             case "TECNICA":
                 KdoCmbSetValue($("#CmbTecnica_color"), "");
@@ -652,15 +652,7 @@ var fn_SeccionTitasFormulas = function (datos) {
 };
 
 var fn_GuardarEstacionColor = function () {
-
     fn_GuardarEstacion(idBra);
-    var a = stage.find("#TxtInfo" + idBra);
-    a.text($("#TxtOpcSelec").val());
-    var b = stage.find("#brazo" + idBra);
-    b.IdSeteo = maq[0].IdSeteo;
-    b.IdTipoFormulacion = Te;
-     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    layer.draw();
 };
 
 var fn_GuardarEstaMarco = function (xIdBrazo) {
@@ -761,8 +753,7 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            maq = fn_GetMaquinas();
-          
+         
             if ($("#gridEstacionMq_C").data("kendoGrid").dataSource.total() === 0) {
                 $("#MEstacionColor").data("kendoWindow").close();
             }
@@ -770,6 +761,8 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
                 fn_TintasFormulaciones_EC(maq[0].IdSeteo, xIdBrazo);
             }
             RequestEndMsg(data, xType);
+            maq = fn_GetMaquinas();
+            $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionColor"), false);
@@ -876,11 +869,11 @@ var fn_DelFormulaHis = function () {
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_color"), habilitarMarco);
-    KdoComboBoxEnable($("#CmbTipoEmulsion_color"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumCapilar"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumPasadas"), habilitarMarco);
-    KdoNumerictextboxEnable($("#EscurridorDureza"), habilitarMarco);
+    KdoComboBoxEnable($("#CmbSedas_color"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbTipoEmulsion_color"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumPasadas"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#EscurridorDureza"), vhb !== false ? habilitarMarco : false);
 
     if (!habilitarMarco) {
         KdoCmbSetValue($("#CmbSedas_color"), "");
@@ -888,6 +881,28 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
         kdoNumericSetValue($("#NumCapilar"), 0);
         kdoNumericSetValue($("#NumPasadas"), 0);
         kdoNumericSetValue($("#EscurridorDureza"), 0);
+    }
+
+    if (vhb === false) {
+        KdoComboBoxEnable($("#CmbIdTipoEstacion"), false);
+        KdoButtonEnable($("#btnAddMCE"), false);
+        KdoComboBoxEnable($("#CmbQuimica_color"), false);
+        KdoComboBoxEnable($("#CmbTipoTinta_color"), false);
+        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), false);
+        KdoComboBoxEnable($("#CmbBasePigmento_color"), false);
+        TextBoxEnable($("#TxtFormulaSug"), false);
+        KdoComboBoxEnable($("#CmbTecnica_color"), false);
+        Grid_HabilitaToolbar($("#TablaFormula"), false, false, false);
+    } else {
+        KdoComboBoxEnable($("#CmbIdTipoEstacion"), true);
+        KdoButtonEnable($("#btnAddMCE"), true);
+        KdoComboBoxEnable($("#CmbQuimica_color"), true);
+        KdoComboBoxEnable($("#CmbTipoTinta_color"), true);
+        KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), true);
+        KdoComboBoxEnable($("#CmbBasePigmento_color"), true);
+        TextBoxEnable($("#TxtFormulaSug"), true);
+        KdoComboBoxEnable($("#CmbTecnica_color"), true);
+        Grid_HabilitaToolbar($("#TablaFormula"), false, false, false);
     }
 };
 
@@ -902,7 +917,7 @@ let fn_TintasFormulaciones_EC = function (_idSeteo,_idBrazo) {
         success: function (data) {
             if (data && data.length > 0) {
                 $("#TxtIdform").val(data[0].IdFormula);
-                Grid_HabilitaToolbar($("#TablaFormula"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+                Grid_HabilitaToolbar($("#TablaFormula"), vhb !== false ? Permisos.SNAgregar : false, vhb !== false ? Permisos.SNEditar : false, vhb !== false ? Permisos.SNBorrar : false);
             }
             else {
                 $("#TxtIdform").val(0);
