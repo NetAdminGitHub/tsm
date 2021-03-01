@@ -93,12 +93,21 @@ var fn_VerifMuesCC = function () {
                 },
                 eliminarEstacion: function (e) {
                         fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"));
+                },
+                reduccionMaquina: function (e) {
+                    var selType = $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaValidacionMues"), 1);
+
+
                 }
             }
         },
         tipoMaquina:
         {
-            mostrar: true
+            mostrar: true,
+            eventos: {
+                onChange: elementoSeleccionado_ValidMues
+            }
         },
         accesorios: { mostrar: true }
     });
@@ -117,16 +126,14 @@ var fn_VerifMueCEtapa = function () {
 };
 
 var elementoSeleccionado_ValidMues = function (e) {
-
     if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
-        fn_UpdFormaRevTec(e, $("#maquinaValidacionMues"));
-    } else {
-        $("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
-    }
+        if ($("#maquinaValidacionMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina) === "OK") {
+            fn_UpdFormaRevTec(e.detail[0].CantidadEstaciones, e.detail[0].IdFormaMaquina, e.detail[0].NomFiguraMaquina, $("#maquinaValidacionMues"), 0);
+        }
+    } 
 };
 
 
-//Agregar a Lista de ejecucion funcion configurar 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_VerifMuesCC);
 //Agregar a Lista de ejecucion funcion validación 
@@ -135,6 +142,11 @@ EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_VerifMueCEtapa;
 fun_ListDatos.push(EtapaPush3);
 
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = function () { return $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq); };
+fun_ListDatos.push(EtapaPush);
 
 let fn_FinOT_VM = function () {
     kendo.ui.progress($(".k-dialog"), true);

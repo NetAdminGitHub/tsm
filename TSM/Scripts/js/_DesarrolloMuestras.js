@@ -61,12 +61,21 @@ var fn_DMueCargarConfiguracion = function () {
                 },
                 eliminarEstacion: function (e) {
                     fn_EliminarEstacion(maq[0].IdSeteo,e, $("#maquinaDesarrolloMues"));
+                },
+                reduccionMaquina: function (e) {
+                    var selType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDesarrolloMues"), 1);
+
+
                 }
             }
         },
         tipoMaquina:
         {
-            mostrar: true
+            mostrar: true,
+            eventos: {
+                onChange: elementoSeleccionado_DesarrolloMues
+            }
         },
         accesorios: { mostrar: true }
     });
@@ -86,13 +95,13 @@ var fn_DMCargarEtapa = function () {
 };
 
 
-//var elementoSeleccionado_DesarrolloMues = function (e) {
-//    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
-//        fn_UpdFormaRevTec(e, $("#maquinaDesarrolloMues"));
-//    } else {
-//        $("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
-//    }
-//};
+var elementoSeleccionado_DesarrolloMues = function (e) {
+    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+        if ($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina) === "OK") {
+            fn_UpdFormaRevTec(e.detail[0].CantidadEstaciones, e.detail[0].IdFormaMaquina, e.detail[0].NomFiguraMaquina, $("#maquinaDesarrolloMues"), 0);
+        }
+    } 
+};
 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_DMueCargarConfiguracion);
@@ -103,6 +112,12 @@ EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_DMCargarEtapa;
 fun_ListDatos.push(EtapaPush3);
 
+
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = function () { return $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq); };
+fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;
