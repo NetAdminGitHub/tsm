@@ -2,7 +2,9 @@
 var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
- 
+
+    KdoButton($("#btnAddColorDis"), "plus-circle", "Agregar color o técnica");
+
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
         max: 99999999999999.99,
@@ -210,7 +212,11 @@ var fn_DMCargarConfiguracion = function () {
     fn_Bases($("#maquinaDiseno").data("maquinaSerigrafia"));
     fn_Accesorios($("#maquinaDiseno").data("maquinaSerigrafia"));
 
+    $("#btnAddColorDis").click(function () {
+        fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis();});
+    });
 };
+
 
 var elementoSeleccionado_Diseno = function (e) {
 
@@ -219,6 +225,18 @@ var elementoSeleccionado_Diseno = function (e) {
             fn_UpdFormaRevTec(e.detail[0].CantidadEstaciones, e.detail[0].IdFormaMaquina, e.detail[0].NomFiguraMaquina, $("#maquinaDiseno"), 0);
         }
     } 
+};
+
+var fn_closeDis = function () {
+    fn_GetColores($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
+    fn_Tecnicas($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
+};
+
+
+var fn_load_maquina_ColorTec_dis = function () {
+    $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
+    fn_GetColores($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
+    fn_Tecnicas($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
 };
 
 
@@ -234,6 +252,7 @@ var fn_DMCargarEtapa = function () {
     TextBoxEnable($("#TxtObservaciones"), vhb);
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
     $("#maquinaDiseno").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+    KdoButtonEnable($("#btnAddColorDis"), vhb);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
@@ -245,6 +264,11 @@ EtapaPush2.IdEtapa = idEtapaProceso;
 EtapaPush2.FnEtapa = fn_DMCargarEtapa;
 fun_ListDatos.push(EtapaPush2);
 
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = fn_load_maquina_ColorTec_dis;
+fun_ListDatos.push(EtapaPush);
 
 let fn_GetDisenoMuestra = function () {
     kendo.ui.progress($("#vistaParcial"), true);
