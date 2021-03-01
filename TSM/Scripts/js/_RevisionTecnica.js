@@ -9,6 +9,7 @@ let gAlto = 300;
 var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
+    KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
 
     $("#maquinaRevTec").maquinaSerigrafia({
         maquina: {
@@ -66,15 +67,28 @@ var fn_RTCargarConfiguracion = function () {
     fn_Bases($("#maquinaRevTec").data("maquinaSerigrafia"));
     fn_Accesorios($("#maquinaRevTec").data("maquinaSerigrafia"));
 
-    //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
+    $("#btnAddColorRev").click(function () {
+        fn_OpenModaAddColoresTecnicas(function () { return fn_closeRevTec(); });
+    });
 };
 
 
-//let fn_VerDetalle = 
+var fn_closeRevTec = function () {
+    fn_GetColores($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
+    fn_Tecnicas($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
+};
+
+var fn_load_maquina_ColorTec_Rev = function () {
+    $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
+    fn_GetColores($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
+    fn_Tecnicas($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
+};
+
 
 var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
     $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+    KdoButtonEnable($("#btnAddColorRev"), vhb);
 };
 
 var elementoSeleccionado = function (e) {
@@ -121,6 +135,12 @@ var EtapaPush2 = {};
 EtapaPush2.IdEtapa = idEtapaProceso;
 EtapaPush2.FnEtapa = fn_RTMostrarGrid;
 fun_ListDatos.push(EtapaPush2);
+
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa =  fn_load_maquina_ColorTec_Rev;
+fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;

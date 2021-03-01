@@ -106,6 +106,7 @@ var fn_TintasFCargarConfiguracion = function () {
 var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     $("#maquinaTintasRev").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+    $("#gridresumen").data("kendoGrid").dataSource.read();
 };
 
 //var elementoSeleccionado_TintasRev = function (e) {
@@ -121,13 +122,17 @@ var fn_TintasFCargarEtapa = function () {
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_TintasFCargarConfiguracion);
 
-
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
 EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_TintasFCargarEtapa;
 fun_ListDatos.push(EtapaPush3);
 
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = function () { return $("#maquinaTintasRev").data("maquinaSerigrafia").cargarDataMaquina(maq); };
+fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;
