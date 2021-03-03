@@ -624,9 +624,16 @@ var fn_VSCargarJSEtapa = function () {
                     },
                     NombreIgualacion: {
                         type: "string"
-                    }
+                    },
+                    IdTipoRequerimientoColor: {
+                        type: "string",
+                        defaultValue: function () {
+                            return "1";
+                        }
+                    },
+                    NombreTipoReqColor: { type: "string" }
                 }
-                
+
             }
         }
     });    
@@ -641,6 +648,8 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "CodigoPantone");
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
             KdoHideCampoPopup(e.container, "NombreIgualacion");
+            KdoHideCampoPopup(e.container, "IdTipoRequerimientoColor");
+            KdoHideCampoPopup(e.container, "NombreTipoReqColor");
 
             //$('[name="ColorHex"]').data("kendoColorPicker").enable(false);
 
@@ -658,8 +667,8 @@ var fn_VSCargarJSEtapa = function () {
                         $('[name="Item"]').data("kendoNumericTextBox").trigger("change");
                         $('[name="IdTipoPantonera"]').val(data.IdTipoPantonera);
                         $('[name="IdTipoPantonera"]').trigger("change");
-                    } 
-                    
+                    }
+
                 } else {
 
                     //$('[name="Item"]').val(data.Item);
@@ -676,14 +685,14 @@ var fn_VSCargarJSEtapa = function () {
                 $('[name="ID"]').data("kendoMultiColumnComboBox").search(e.model.ID);
                 $('[name="ID"]').data("kendoMultiColumnComboBox").refresh();
                 $('[name="ID"]').data("kendoMultiColumnComboBox").close();
-         
+
             }
             if (e.model.isNew()) {
                 Grid_Focus(e, "ID");
             } else {
                 Grid_Focus(e, "Color");
             }
-      
+
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -708,8 +717,9 @@ var fn_VSCargarJSEtapa = function () {
             },
             { field: "IdTipoIgualacionColor", title: "Igualar Color a:", values: ["IdTipoIgualacionColor", "Nombre", TSM_Web_APi + "/TiposIgualacionesColores", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
             { field: "NombreIgualacion", title: "Igualar a:" },
-
-            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
+            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false },
+            { field: "IdTipoRequerimientoColor", title: "Tipo requerimiento", hidden: true },
+            { field: "NombreTipoReqColor", title: "Requerimiento"}
         ]
     });
 
@@ -789,7 +799,14 @@ var fn_VSCargarJSEtapa = function () {
                     },
                     IdUsuarioMod: {
                         type: "string"
-                    }
+                    },
+                    IdTipoRequerimientoTecnica: {
+                        type: "string",
+                        defaultValue: function () {
+                            return "1";
+                        }
+                    },
+                    Nombre1: { type: "string" }
                 }
             }
         }
@@ -804,6 +821,9 @@ var fn_VSCargarJSEtapa = function () {
             KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
             KdoHideCampoPopup(e.container, "IdRequerimiento");
             KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "IdTipoRequerimientoTecnica");
+            KdoHideCampoPopup(e.container, "Nombre1");
+
             Grid_Focus(e, "IdTecnica");
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -811,7 +831,9 @@ var fn_VSCargarJSEtapa = function () {
             { field: "IdRequerimientoTecnica", title: "Código. Muestra Técnica", hidden: true },
             { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
             { field: "IdTecnica", title: "Técnicas", editor: Grid_Combox, values: ["IdTecnica", "Nombre", UrlApiVTec, "GetbyServicio/" + $("#IdServicio").val(), "Seleccione un Técnica....", "", "", ""], hidden: true },
-            { field: "Nombre", title: "Nombre técnica" }
+            { field: "Nombre", title: "Nombre técnica" },
+            { field: "IdTipoRequerimientoTecnica", title: "Tipo requerimiento", hidden: true },
+            { field: "Nombre1", title: "Requerimiento" }
 
         ]
 
