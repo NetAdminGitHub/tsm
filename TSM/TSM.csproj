@@ -358,6 +358,7 @@
     <Compile Include="Controllers\TiposMarcosController.cs" />
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
+    <Compile Include="Controllers\TiposRequerimientoColoresController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
@@ -652,6 +653,7 @@
     <Content Include="Scripts\js\TiposMarcos.js" />
     <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\TiposRequerimientoColores.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
     <Content Include="Scripts\js\TiposSolicitudesDesarrollos.js" />
@@ -686,7 +688,6 @@
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-SV.min.js.map" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js.map" />
-    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\messages\kendo.messages.en-US.min.js" />
@@ -905,6 +906,8 @@
     <Content Include="Views\EstructuraMaquinas\Index.cshtml" />
     <Content Include="Views\CategoriaMaquinas\Index.cshtml" />
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
+    <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
+    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

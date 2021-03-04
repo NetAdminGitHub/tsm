@@ -147,7 +147,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
         title: "Confirmación",
         visible: false,
         width: "400px",
-        height: "200px",
+        height: "30%",
         modal: true
     }).data("kendoWindow");
 

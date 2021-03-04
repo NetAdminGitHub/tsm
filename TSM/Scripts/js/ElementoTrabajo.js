@@ -163,6 +163,7 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarAsignado"), "user");
     KdoButton($("#btnAsignarUsuario"), "save");
     KdoButton($("#btnCambiarEtapa"), "gear");
+    KdoButton($("#btnCambiorEstadoOT"), "gear");
     KdoButton($("#btnAutorizarRetenciones"), "warning");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
@@ -608,7 +609,20 @@ $(document).ready(function () {
     });
 
     TipoTintas = fn_TipoTintas();    
+    // carga vista para el cambio de estado
+    // 1. configurar vista.
+    Fn_VistaCambioEstado($("#vCambioEstadoOT"), function () {
+        CargarInfoEtapa(false);
+    });
+    // 2. boton cambio de estado.
+    $("#btnCambiorEstadoOT").click(function () {
 
+        var lstId = {
+            IdOrdenTrabajo: idOrdenTrabajo
+        };
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajos", xEstadoOT, TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajos_CambiarEstado", "Sp_CambioEstado", lstId, undefined);
+    });
+    
 
     fn_gridColorEstacion($("#gridAddColor"));
     fn_gridTecnicaEstacion($("#gridAddTecnica"));
@@ -727,7 +741,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
+    KdoButtonEnable($("#btnCambiorEstadoOT"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
@@ -1498,6 +1513,10 @@ var fn_gridColorEstacion = function (gd) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
                                 }
+                                if (input.is("[name='IdTipoRequerimientoColor']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTipoRequerimientoColor").data("kendoComboBox").selectedIndex >= 0;
+                                }
                                 return true;
                             }
                         }
@@ -1537,7 +1556,11 @@ var fn_gridColorEstacion = function (gd) {
                     },
                     NombreIgualacion: {
                         type: "string"
-                    }
+                    },
+                    IdTipoRequerimientoColor: {
+                        type: "string"
+                    },
+                    NombreTipoReqColor: { type: "string" }
                 }
             }
         }
@@ -1555,6 +1578,7 @@ var fn_gridColorEstacion = function (gd) {
             KdoHideCampoPopup(e.container, "CodigoPantone");
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
             KdoHideCampoPopup(e.container, "NombreIgualacion");
+            KdoHideCampoPopup(e.container, "NombreTipoReqColor");
 
             $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
@@ -1608,7 +1632,9 @@ var fn_gridColorEstacion = function (gd) {
             { field: "IdTipoIgualacionColor", title: "Igualar Color a:", values: ["IdTipoIgualacionColor", "Nombre", TSM_Web_APi + "/TiposIgualacionesColores", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
             { field: "NombreIgualacion", title: "Igualar a:" },
           
-            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
+            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false },
+            { field: "IdTipoRequerimientoColor", title: "Tipo requerimiento", values: ["IdTipoRequerimientoColor", "Nombre", TSM_Web_APi + "/TiposRequerimientoColores/GetTecnicos", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true},
+            { field: "NombreTipoReqColor", title: "Requerimiento" }
         ]
     });
 
@@ -1703,6 +1729,10 @@ var fn_gridTecnicaEstacion = function (gd) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdTecnica").data("kendoComboBox").selectedIndex >= 0;
                                 }
+                                if (input.is("[name='IdTipoRequerimientoTecnica']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdTipoRequerimientoTecnica").data("kendoComboBox").selectedIndex >= 0;
+                                }
                                 return true;
                             }
                         }
@@ -1715,7 +1745,14 @@ var fn_gridTecnicaEstacion = function (gd) {
                     },
                     IdUsuarioMod: {
                         type: "string"
-                    }
+                    },
+                    IdTipoRequerimientoTecnica: {
+                        type: "string",
+                        defaultValue: function () {
+                            return "2";
+                        }
+                    },
+                    Nombre1: { type: "string" }
                 }
             }
         }
@@ -1730,6 +1767,7 @@ var fn_gridTecnicaEstacion = function (gd) {
             KdoHideCampoPopup(e.container, "IdRequerimientoTecnica");
             KdoHideCampoPopup(e.container, "IdRequerimiento");
             KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "Nombre1");
             Grid_Focus(e, "IdTecnica");
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -1737,7 +1775,9 @@ var fn_gridTecnicaEstacion = function (gd) {
             { field: "IdRequerimientoTecnica", title: "Código. Muestra Técnica", hidden: true },
             { field: "IdRequerimiento", title: "IdRequerimiento", editor: Grid_ColInt64NumSinDecimal, hidden: true },
             { field: "IdTecnica", title: "Técnicas", editor: Grid_Combox, values: ["IdTecnica", "Nombre", Urltec, "GetbyServicio/" + 1, "Seleccione un Técnica....", "", "", ""], hidden: true },
-            { field: "Nombre", title: "Nombre técnica" }
+            { field: "Nombre", title: "Nombre técnica" },
+            { field: "IdTipoRequerimientoTecnica", title: "Tipo requerimiento", values: ["IdTipoRequerimientoTecnica", "Nombre", TSM_Web_APi + "/TiposRequerimientoTecnicas/GetTecnicos", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre1", title: "Requerimiento" }
 
         ]
     });
