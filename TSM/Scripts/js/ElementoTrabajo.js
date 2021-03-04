@@ -154,6 +154,7 @@ $(document).ready(function () {
     KdoButton($("#btnCambiarAsignado"), "user");
     KdoButton($("#btnAsignarUsuario"), "save");
     KdoButton($("#btnCambiarEtapa"), "gear");
+    KdoButton($("#btnCambiorEstadoOT"), "gear");
     KdoButton($("#btnAutorizarRetenciones"), "warning");
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
@@ -598,7 +599,19 @@ $(document).ready(function () {
         }
     });
 
+    // carga vista para el cambio de estado
+    // 1. configurar vista.
+    Fn_VistaCambioEstado($("#vCambioEstadoOT"), function () {
+        CargarInfoEtapa(false);
+    });
+    // 2. boton cambio de estado.
+    $("#btnCambiorEstadoOT").click(function () {
 
+        var lstId = {
+            IdOrdenTrabajo: idOrdenTrabajo
+        };
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajos", xEstadoOT, TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajos_CambiarEstado", "Sp_CambioEstado", lstId, undefined);
+    });
     
 });
 var fn_ConsultarDetalle = function () {
@@ -715,7 +728,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     NombreQui = datos.NombreQui;
     KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
     KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
+    KdoButtonEnable($("#btnCambiorEstadoOT"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
