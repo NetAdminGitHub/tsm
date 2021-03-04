@@ -127,14 +127,11 @@ var fn_VistaEstacionAccesoriosVerifMues = function () {
         KdoCmbSetValue($("#CmbConsUnidad_VerifMues"), "");
     }
 
+    KdoButtonEnable($("#btnAddMEA_VerifMues"), vhb);
 };
 
 var fn_GuardarEstacionAccesorioVerifMues = function () {
-
     fn_GuardarEstacionAcceVerifMues(idBraAcce);
-    var a = stage.find("#TxtInfo" + idBraAcce);
-    a.text($("#TxtOpcSelecAcce_VerifMues").val());
-    layer.draw();
 };
 
 var fn_GuardarEstacionAcceVerifMues = function (xIdBrazo) {
@@ -164,9 +161,10 @@ var fn_GuardarEstacionAcceVerifMues = function (xIdBrazo) {
                 fn_GuardarSeteoAccesMues(xIdBrazo);
             } else {
                 kendo.ui.progress($("#MEstacionAccesoriosVerifMuest"), false);
-                maq = fn_GetMaquinas();
                 $("#MEstacionAccesoriosVerifMuest").data("kendoWindow").close();
                 RequestEndMsg(data, xType);
+                maq = fn_GetMaquinas();
+                $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
             }
         },
         error: function (data) {

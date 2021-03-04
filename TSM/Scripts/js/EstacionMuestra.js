@@ -413,15 +413,7 @@ var fn_SeccionTitasFormulas_Mues = function (datos) {
 };
 
 var fn_GuardarEstacionMues = function () {
-
     GuardarEstacionDesaMues(idBra);
-    var a = stage.find("#TxtInfo" + idBra);
-    a.text($("#TxtOpcSelec_Mues").val());
-    var b = stage.find("#brazo" + idBra);
-    b.IdSeteo = maq[0].IdSeteo;
-    b.IdTipoFormulacion = Te;
-    //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
-    layer.draw();
 };
 
 var fn_GuardarEstaMarcoMues = function (xIdBrazo) {
@@ -528,7 +520,7 @@ var fn_GuardarMarcoFormuMues = function (xIdBrazo, xidRequerimientoColor, xidReq
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             maq = fn_GetMaquinas();
-            //$("#MEstacionMuestra").data("kendoWindow").close();
+            $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
             RequestEndMsg(data, xType);
         },
         error: function (data) {
@@ -696,11 +688,11 @@ let LimpiaMarcaCelda_Mues = function () {
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_Mues"), habilitarMarco);
-    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumCapilar_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#NumPasadas_Mues"), habilitarMarco);
-    KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), habilitarMarco);
+    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumPasadas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), vhb !== false ? habilitarMarco : false);
 
     if (!habilitarMarco) {
         KdoCmbSetValue($("#CmbSedas_Mues"), "");
@@ -708,5 +700,18 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
         kdoNumericSetValue($("#NumCapilar_Mues"), 0);
         kdoNumericSetValue($("#NumPasadas_Mues"), 0);
         kdoNumericSetValue($("#EscurridorDureza_Mues"), 0);
+    }
+
+    if (vhb === false) {
+        KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), false);
+        KdoNumerictextboxEnable($("#NumPeso_Mues"), false);
+        TextBoxEnable($("#TxtLetra_Mues"), false);
+        KdoButtonEnable($("#btnAddMCE_Mues"), false);
+    } else {
+        KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), true);
+        KdoNumerictextboxEnable($("#NumPeso_Mues"), true);
+        TextBoxEnable($("#TxtLetra_Mues"), true);
+        KdoButtonEnable($("#btnAddMCE_Mues"), true);
+
     }
 };
