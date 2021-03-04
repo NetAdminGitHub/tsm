@@ -688,7 +688,6 @@
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-SV.min.js.map" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.es-US.min.js.map" />
-    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\messages\kendo.messages.en-US.min.js" />
@@ -910,6 +909,7 @@
     <Content Include="Views\CategoriaMaquinas\Index.cshtml" />
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
+    <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
