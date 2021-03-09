@@ -497,6 +497,8 @@ let fn_Consultar = function (idOrdenTrabajo) {
     $("#txtValorTotal").val("");
     $("#txtCostoPorPieza").val("");
     $("#txtDiferencia").val("");
+    $("#txtProyeccionProducida").val("");
+    $("#txtFacPerdidaGanancia").val("");
 
     $("#gConsolidado").data("kendoGrid").dataSource.read().then(fn_CargarCabecera);
     $("#gDetalle").data("kendoGrid").dataSource.read();
@@ -515,6 +517,8 @@ let fn_CargarCabecera = function () {
         $("#txtValorTotal").val(kendo.toString(view[0].ValorTotal, "c4"));
         $("#txtCostoPorPieza").val(kendo.toString(view[0].CostoPorPieza, "c4"));
         $("#txtDiferencia").val(kendo.toString(view[0].Diferencia, "n0"));
+        $("#txtFacPerdidaGanancia").val(kendo.toString(view[0].FacPerdidaGanancia, "c4"));
+        $("#txtProyeccionProducida").val(kendo.toString(view[0].ProyeccionProducida, "c4"));
 
         fn_HabilitarControles(true);
     }
