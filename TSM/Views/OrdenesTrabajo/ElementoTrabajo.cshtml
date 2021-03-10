@@ -13,6 +13,9 @@
         var loadedview = "ElementoTrabajo";
     </script>
 
+    <script src="~/Scripts/Vue/Vue.js"></script>
+    <script src="~/Scripts/VueComp/inquisalva-components.min.js"></script>
+    <script src="~/Scripts/VueComp/maquinaSerigrafia.js"></script>
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
     <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
@@ -30,6 +33,7 @@
                     <div class="col-lg-8 col-md-8">
                         <button type="button" id="btnCambiarAsignado">&nbsp;Asignaci&oacute;n de usuarios</button>
                         <button type="button" id="btnCambiarEtapa">&nbsp;Cambiar de etapa</button>
+                        <button type="button" id="btnCambiorEstadoOT" name="btnCambioEstado">&nbsp;Cambiar estado</button>
                         <button type="button" id="btnAutorizarRetenciones">&nbsp;Retenciones</button>
                         <button type="button" id="btnRegistroCambio">&nbsp;Historial de cambios</button>
                     </div>
@@ -390,9 +394,9 @@
                 <li class="k-state-active">
                     Desplazar
                 </li>
-                <li>
-                    Intercambio
-                </li>
+                @*<li>
+                        Intercambio
+                    </li>*@
             </ul>
             <div id="TP_1">
                 <form id="FrmDesplazar" enctype="multipart/form-data">
@@ -436,14 +440,14 @@
                     </div>
                 </form>
             </div>
-            <div id="TP_2">
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <div id="gridInter" class="form-control"></div>
+            @*<div id="TP_2">
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <div id="gridInter" class="form-control"></div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
+                </div>*@
         </div>
     </div>
 </div>
@@ -514,3 +518,36 @@
 </div>
 
 <div id="vCambioEstadoAlert"></div>
+@*vista agregar colores. *@
+<div id="vColoresTecnicas">
+    <div class="form-group col-lg-12">
+        <div id="tabColoresTecnicas">
+            <ul>
+                <li class="k-state-active">
+                    Agregar Color
+                </li>
+                <li>
+                    Agregar Técnica
+                </li>
+            </ul>
+            <div id="TPcolor_1">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridAddColor" class="form-control"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="TPcolor_2">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridAddTecnica" class="form-control"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="vCambioEstadoOT"></div>
