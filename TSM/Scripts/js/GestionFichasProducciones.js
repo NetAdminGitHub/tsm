@@ -1,35 +1,54 @@
 ﻿let UrlClie = TSM_Web_APi + "Clientes";
 let UrlServ = TSM_Web_APi + "Servicios";
+let xFechaDesde=null;
+let xFechaHasta=null;
+let xIdServicio=null;
+let xCliente=null;
+let xNoOt=null;
+let xIdPrograma = null;
+let xIdCatalogoDiseno = null;
 var Permisos;
 $(document).ready(function () {
 
     //covertir a kendo combobox
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente") === null ? "" : sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente")); 
 
+    Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
+    KdoCmbSetValue($("#CmbIdServicio"), sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio") === null ? "" : sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio")); 
+
+    $("#CmbFmCata").ControlSelecionFMCatalogo();
+    KdoMultiColumnCmbSetValue($("#CmbFmCata"), sessionStorage.getItem("GestionFichasProduccion_CmbFmCata") === null ? "" : sessionStorage.getItem("GestionFichasProduccion_CmbFmCata")); 
     //convertir a Kendo boutton
     KdoButton($("#btnConsultar"), "search", "Consultar");
 
     //convertir a Kendo date picker
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
+    //$("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
+    $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("GestionFichasProduccion_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("GestionFichasProduccion_dFechaDesde"));
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
+    $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("GestionFichasProduccion_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("GestionFichasProduccion_dFechaHasta"));
 
     //checkbox
-    $('#chkRangFechas').prop('checked', 1);
+    //$('#chkRangFechas').prop('checked', 1);
+
+    $('#chkRangFechas').prop('checked', sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === null ? 0 : sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === "true" ? 1 : 0);
+    //$('#chkMe').prop('checked', sessionStorage.getItem("GestionFichasProduccion_chkMe") === null ? 0 : sessionStorage.getItem("GestionFichasProduccion_chkMe") === "true" ? 1 : 0);
 
     // convertir a kendo Multicolum combobox
     $("#TxtNoOrdeTrabajo").ControlSelecionOTSolicitudesProducion();
+    KdoMultiColumnCmbSetValue($("#TxtNoOrdeTrabajo"), sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo") === null ? "" : sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo")); 
+
     $("#CmbPrograma").ControlSelecionPrograma();
+    KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("GestionFichasProduccion_CmbPrograma") === null ? "" : sessionStorage.getItem("GestionFichasProduccion_CmbPrograma")); 
 
-
-    $("#btnConsultar").click(function () {
-        let g = $("#grid").data("kendoGrid");
-        g.dataSource.read();
-        g.pager.page(1);
-    });
+    //$("#btnConsultar").click(function () {
+    //    let g = $("#grid").data("kendoGrid");
+    //    g.dataSource.read();
+    //    g.pager.page(1);
+    //});
 
     //#region configuracion del grid
 
@@ -37,26 +56,28 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: function (datos) {
+                kendo.ui.progress($(document.body), true);
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
                     url: TSM_Web_APi + "SolicitudProducciones/GetConsultaFichasProducciones",
                     data: JSON.stringify({
-                        FechaDesde: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                        FechaHasta: $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
-                        IdServicio: KdoCmbGetValue($("#CmbIdServicio")),
-                        IdCliente: KdoCmbGetValue($("#CmbIdCliente")),
-                        NoOt: KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo")),
-                        IdPrograma: KdoMultiColumnCmbGetValue($("#CmbPrograma"))
-                      
-                       
+                        FechaDesde: xFechaDesde, //$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                        FechaHasta:xFechaHasta,// $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                        IdServicio: xIdServicio,//KdoCmbGetValue($("#CmbIdServicio")),
+                        IdCliente: xCliente, // KdoCmbGetValue($("#CmbIdCliente")),
+                        NoOt: xNoOt, //KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo")),
+                        IdPrograma: xIdPrograma, //KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+                        IdCatalogoDiseno: xIdCatalogoDiseno
                     }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
+                        kendo.ui.progress($(document.body), false);
                     },
                     error: function () {
                         options.error(result);
+                        kendo.ui.progress($(document.body), false);
                     }
                 });
             }
@@ -107,7 +128,9 @@ $(document).ready(function () {
                     IdCotizacion: { type: "number" },
                     NoDocumentoCoti: { type: "string" },
                     IdRequerimiento: { type: "number" },
-                    NoDocumentoReq: { type: "string" }
+                    NoDocumentoReq: { type: "string" },
+                    IdCatalogoDiseno: { type: "number" },
+                    NoDocumentoCatalogo: { type: "string" }
                 
                 }
             }
@@ -134,46 +157,50 @@ $(document).ready(function () {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "NoDocumento", title: "No. O.T", minResizableWidth: 120 },
+            { field: "NoDocumentoCatalogo", title: "N° FM", minResizableWidth: 100 },
+            { field: "NoDocumento", title: "No. OT", minResizableWidth: 100 },
             { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true },
-            { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
-            { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },
-            { field: "NoDocumentoReq", title: "No Doc Requerimiento", minResizableWidth: 150 },
-            { field: "NoDocumentoSim", titel: "No Doc Simulación", minResizableWidth: 150 },
-            { field: "NoDocumentoCoti", titel: "No Doc Cotización", minResizableWidth: 150 },
+            { field: "NombreDiseño", title: "Nombre del diseño", minResizableWidth: 150 },
+            { field: "EstiloDiseno", title: "Estilo del diseño", minResizableWidth: 150 },
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
+            { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
+            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
+            { field: "IdPrograma", title: "Cod. programa", hidden: true },
+            { field: "NoDocPrograma", title: "No Programa", minResizableWidth: 100 },
+            { field: "NombrePrograma", title: "Programa", minResizableWidth: 150 },
+            { field: "NoDocumentoReq", title: "No Doc Requerimiento", hidden: true, minResizableWidth: 100 },
+            { field: "EstadoFP", title: "Estado", minResizableWidth: 100 },
+            { field: "NombreCliente", title: "Nombre Cliente", minResizableWidth: 120 },
+            { field: "NoDocumentoSim", title: "Simulación", minResizableWidth: 100 },
+            { field: "NoDocumentoCoti", title: "Cotización", minResizableWidth: 100 },
             { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },
             { field: "NombreUbicacion", title: "Ubicación", hidden: true, minResizableWidth: 120 },
-            { field: "IdPrograma", title: "Cod. programa", hidden: true },
-            { field: "NoDocPrograma", title: "No Doc Programa", minResizableWidth: 120 },
-            { field: "NombrePrograma", title: "Programa", minResizableWidth: 120 },
             { field: "IdTemporada", title: "Cod. temporada", hidden: true },
-            { field: "NombreTemp", title: "Temporada", minResizableWidth: 120 },
+            { field: "NombreTemp", title: "Temporada", minResizableWidth: 120, hidden: true },
             { field: "IdTipoOrdenTrabajo", title: "Cod. tipo Orden trabajo", hidden: true },
             { field: "TipoOrdenTrabajo", title: "Tipo de orden", hidden: true,minResizableWidth: 120 },
-            { field: "FechaOrdenTrabajo", title: "Fecha O. T.", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "FechaOrdenTrabajo", title: "Solicitud", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "EstadoFormulas", title: "Estado Fórmulas", hidden: true, minResizableWidth: 120 },
-            { field: "FechaInicio", title: "Fecha inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
-            { field: "FechaFinal", title: "Fecha final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "FechaInicio", title: "Inicio", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
+            { field: "FechaFinal", title: "Final", format: "{0: dd/MM/yyyy}", minResizableWidth: 120 },
             { field: "IdSolicitudDisenoPrenda", title: "cod. Solicitud diseño prenda", hidden: true },
             { field: "IdPrioridadOrdenTrabajo", title: "Prioridad orden trabajo", hidden: true },
             { field: "Prioridad", title: "Prioridad", hidden: true,minResizableWidth: 120 },
             { field: "Estado", title: "Estado orden", hidden: true },
             { field: "Comentarios", title: "Comentarios", hidden: true },
             { field: "IdCliente", title: "Cliente", hidden: true },
-            { field: "NombreCliente", title: "Nombre Cliente", minResizableWidth: 120 },
             { field: "IdServicio", title: "Cod. servicio", hidden: true },
             { field: "Servicio", title: "Servicio", minResizableWidth: 120 },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", hidden: true ,minResizableWidth: 150 },
             { field: "UbicacionVertical", title: "Ubicación vertical", hidden: true , minResizableWidth: 150 },
             { field: "ColorTela", title: "Color tela", hidden: true },
-            { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
-            { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
             { field: "IdSimulacion", title: "Cod. Simulación", hidden: true,minResizableWidth: 150 },
             { field: "IdCotizacion", title: "Cod. Cotizacion", hidden: true, minResizableWidth: 150 },
             { field: "IdRequerimiento", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 },
-            { field: "NoDocumentoReq", title: "No Doc Requerimiento", hidden: true, minResizableWidth: 150 }
+            { field: "NoDocumentoReq", title: "No Doc Requerimiento", hidden: true, minResizableWidth: 150 },
+            { field: "IdCatalogoDiseno", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 }
+
             
         
 
@@ -188,17 +215,281 @@ $(document).ready(function () {
     //#endregion 
 
 
-    $("#chkRangFechas").click(function () {
-        if (this.checked) {
-            KdoDatePikerEnable($("#dFechaDesde"), true);
-            KdoDatePikerEnable($("#dFechaHasta"), true);
+   
+
+    $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = this.dataItem(e.item.index()).IdOrdenTrabajo;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_TxtNoOrdeTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
 
         } else {
 
-            KdoDatePikerEnable($("#dFechaDesde"), false);
-            KdoDatePikerEnable($("#dFechaHasta"), false);
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = null;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_TxtNoOrdeTrabajo", "");
         }
     });
+
+    $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value() === "" ? this.value(): this.dataItems()[0].IdOrdenTrabajo));
+        if (data === undefined) {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = null;
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_TxtNoOrdeTrabajo", "");
+        }
+
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = this.dataItem(e.item.index()).IdPrograma;
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
+
+
+        } else {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = null;
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbPrograma", "");
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value() === "" ? this.value() : this.dataItems()[0].IdPrograma));
+        if (data === undefined) {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            xIdPrograma = null;
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbPrograma", "");
+        }
+
+    });
+
+    $("#dFechaDesde").data("kendoDatePicker").bind("change", function () {
+        xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+        xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+        xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+        xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+        xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+        xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+        xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+        fn_ConsultarFicha();
+        sessionStorage.setItem("GestionFichasProduccion_dFechaDesde", kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'));
+    });
+
+    $("#dFechaHasta").data("kendoDatePicker").bind("change", function () {
+       
+        xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+        xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+        xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+        xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+        xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+        xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+        xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+        fn_ConsultarFicha();
+        sessionStorage.setItem("GestionFichasProduccion_dFechaHasta", kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'));
+    });
+
+    $("#chkRangFechas").click(function () {
+
+        KdoDatePikerEnable($("#dFechaDesde"), this.checked);
+        KdoDatePikerEnable($("#dFechaHasta"), this.checked);
+        xFechaDesde = this.checked=== false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+        xFechaHasta = this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+        xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+        xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+        xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+        xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+        xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+        fn_ConsultarFicha();
+        sessionStorage.setItem("GestionFichasProduccion_chkRangFechas", this.checked);
+    });
+
+
+    $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = this.dataItem(e.item.index()).IdCliente;
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
+        }
+        else {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = null;
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbIdCliente", "");
+        }
+    });
+
+    $("#CmbIdCliente").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = null;
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbIdCliente", "");
+        }
+    });
+
+
+    $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = this.dataItem(e.item.index()).IdServicio;
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbIdServicio", this.dataItem(e.item.index()).IdServicio);
+        } else {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = null;
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbIdServicio", "");
+        }
+    });
+
+    $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
+        let value = this.value();
+        if (value === "") {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = null;
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdCatalogoDiseno = KdoMultiColumnCmbGetValue($("#CmbFmCata"));
+            fn_ConsultarFicha();
+        }
+    });
+
+
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma =  KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = this.dataItem(e.item.index()).IdCatalogoDiseno;
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbFmCata", this.dataItem(e.item.index()).IdCatalogoDiseno);
+
+
+        } else {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            fn_ConsultarFicha();
+            xIdCatalogoDiseno = null;
+            sessionStorage.setItem("GestionFichasProduccion_CmbFmCata", "");
+        }
+    });
+
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value() === "" ? this.value() : this.dataItems()[0].IdCatalogoDiseno));
+        if (data === undefined) {
+            xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+            xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+            xIdServicio = KdoCmbGetValue($("#CmbIdServicio"));
+            xCliente = KdoCmbGetValue($("#CmbIdCliente"));
+            xNoOt = KdoMultiColumnCmbGetValue($("#TxtNoOrdeTrabajo"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdCatalogoDiseno = null;
+            fn_ConsultarFicha();
+            sessionStorage.setItem("GestionFichasProduccion_CmbFmCata", "");
+        }
+    });
+
+
+    if (sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio") !== null || sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente") !== null || sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_CmbPrograma") !== null || sessionStorage.getItem("GestionFichasProduccion_CmbPrograma") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo") !== null || sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_CmbFmCata") !== null || sessionStorage.getItem("GestionFichasProduccion_CmbFmCata") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_dFechaDesde") !== null || sessionStorage.getItem("GestionFichasProduccion_dFechaDesde") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_dFechaHasta") !== null || sessionStorage.getItem("GestionFichasProduccion_dFechaHasta") !== "" ||
+        sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") !== null || sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") !== ""
+    ) {
+        xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
+        xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+        xIdServicio = sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio");
+        xCliente = sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente");
+        xNoOt = sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo");
+        xIdPrograma = sessionStorage.getItem("GestionFichasProduccion_CmbPrograma") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbPrograma");
+        xIdCatalogoDiseno = sessionStorage.getItem("GestionFichasProduccion_CmbFmCata") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbFmCata");
+        fn_ConsultarFicha();
+    }
+
+    
+
 
 });
 
@@ -240,6 +531,12 @@ $.fn.extend({
     }
 });
 
+
+let fn_ConsultarFicha = function () {
+    let g = $("#grid").data("kendoGrid");
+    g.dataSource.read();
+    g.pager.page(1);
+};
 fPermisos = function (datos) {
     Permisos = datos;
 };

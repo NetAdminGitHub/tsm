@@ -25,6 +25,9 @@
                     <span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>
                     REQUERIMIENTO DE DESARROLLO
                     <div class="form-group col-lg-12">
+                        <div class="col-lg-8 col-md-8">
+                            <button type="button" id="btnCambiarEstadoFP" name="btnCambioEstado">&nbsp;Cambiar estado</button>
+                        </div>
                         <br />
                         <div class="form-row">
                             <div class="form-group col-lg-4">
@@ -46,12 +49,19 @@
                                     <br />
                                     <div class="form-row">
                                         <div class="col-lg-6">
-                                            <h5 class="font-weight-bold">N° OT: </h5>
-                                            <p id="plNoDocumento"></p>
+
+                                            <div class="form-group col-lg-12">
+                                                <label for="plCatalogo">No FM </label>
+                                                <input id="plCatalogo" name="plCatalogo" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+
                                         </div>
                                         <div class="col-lg-6 ">
-                                            <h5 class="font-weight-bold">Fecha OT</h5>
-                                            <p id="plFechaOrdenTrabajo"></p>
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNoDocumento">N° OT:</label>
+                                                <input id="plNoDocumento" name="plNoDocumento" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -59,13 +69,17 @@
 
                                     <div class="form-row">
                                         <div class="col-lg-6 ">
-                                            <h5 class="font-weight-bold">Cliente</h5>
-                                            <p id="plNombre"></p>
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombre">Cliente </label>
+                                                <input id="plNombre" name="plNombre" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <h5 class="font-weight-bold">Programa</h5>
-                                            <p id="plNombrePrograma"></p>
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombrePrograma">Programa </label>
+                                                <input id="plNombrePrograma" name="plNombrePrograma" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
 
 
@@ -74,26 +88,42 @@
                                     <div class="form-row">
 
                                         <div class="col-lg-6">
-                                            <h5 class="font-weight-bold">N° Diseño</h5>
-                                            <p id="plIdDiseno"></p>
+                                            @*<h5 class="font-weight-bold">N° Diseño</h5>
+                            <p id="plIdDiseno"></p>*@
+
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombreDiseno">Nombre de diseño </label>
+                                                <input id="plNombreDiseno" name="plNombreDiseno" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <h5 class="font-weight-bold">Nombre de diseño</h5>
-                                            <p id="plNombreDiseno"></p>
+                                            @*<h5 class="font-weight-bold">Nombre de diseño</h5>
+                            <p id="plNombreDiseno"></p>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plEstiloDiseno">Estilo </label>
+                                                <input id="plEstiloDiseno" name="plEstiloDiseno" class="k-input k-textbox form-control" , style="width:100%" />
+                                            </div>
                                         </div>
-
-
                                     </div>
 
                                     <div class="form-row">
                                         <div class="col-lg-6">
-                                            <h5 class="font-weight-bold">Estilo </h5>
-                                            <p id="plEstiloDiseno"></p>
+                                            @*<h5 class="font-weight-bold">Estilo </h5>
+                            <p id="plEstiloDiseno"></p>*@
+
+                                            <div class="form-group col-lg-12">
+                                                <label for="plIdDiseno">N° Diseño </label>
+                                                <input id="plIdDiseno" name="plIdDiseno" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-6 ">
-                                            <h5 class="font-weight-bold">Ejecutivo(a) </h5>
-                                            <p id="plNombreEjecutivoCuentas"></p>
+                                            @*<h5 class="font-weight-bold">Ejecutivo(a) </h5>
+                            <p id="plNombreEjecutivoCuentas"></p>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombreEjecutivoCuentas">Ejecutivo(a)</label>
+                                                <input id="plNombreEjecutivoCuentas" name="plNombreEjecutivoCuentas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
                                     </div>
 
@@ -101,14 +131,26 @@
                                     <div class="form-row">
 
                                         <div class="col-lg-6 ">
-                                            <h5 class="font-weight-bold">Piezas</h5>
-                                            <p id="plCantPiezas"></p>
+                                            @*<h5 class="font-weight-bold">Piezas</h5>
+                            <p id="plCantPiezas"></p>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plCantPiezas">Piezas</label>
+                                                <input id="plCantPiezas" name="plCantPiezas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
                                         </div>
 
+
                                         <div class="col-lg-6 ">
-                                            <h5 class="font-weight-bold">N° de referencia</h5>
-                                            <p id="plCatalogo"></p>
+                                            @*<h5 class="font-weight-bold">N° de referencia</h5>
+                            <p id="plCatalogo"></p>*@
+
+                                            <div class="form-group col-lg-12">
+                                                <label for="plFechaOrdenTrabajo">Fecha OT </label>
+                                                <input id="plFechaOrdenTrabajo" name="plFechaOrdenTrabajo" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+
                                         </div>
+
 
                                     </div>
 
@@ -124,27 +166,40 @@
                                         </div>
                                         <br />
                                         <div class="form-row">
-                                            <div class="col-lg-4 ">
-                                                <h5 class="font-weight-bold">Color: </h5>
+                                            @*<div class="col-lg-4 ">
+                                <h5 class="font-weight-bold">Color: </h5>
+                            </div>
+                            <div class="col-lg-8"> <p id="plColor"></p> </div>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plColor">Color </label>
+                                                <input id="plColor" name="plColor" class="k-input k-textbox form-control" , style="width:100%" />
                                             </div>
-                                            <div class="col-lg-8"> <p id="plColor"></p> </div>
+
                                         </div>
 
                                         <div class="form-row">
-                                            <div class="col-lg-4 ">
-                                                <h5 class="font-weight-bold">Composici&oacute;n </h5>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p id="plNombreCPT"></p>
+                                            @*<div class="col-lg-4 ">
+                                <h5 class="font-weight-bold">Composici&oacute;n </h5>
+                            </div>
+                            <div class="col-lg-8">
+                                <p id="plNombreCPT"></p>
+                            </div>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombreCPT">Composici&oacute;n</label>
+                                                <input id="plNombreCPT" name="plNombreCPT" class="k-input k-textbox form-control" , disabled="disabled" ,style="width:100%" />
                                             </div>
                                         </div>
 
                                         <div class="form-row">
-                                            <div class="col-lg-4">
-                                                <h5 class="font-weight-bold">Construcc&oacute;n </h5>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p id="plNombreCCT"></p>
+                                            @*<div class="col-lg-4">
+                                <h5 class="font-weight-bold">Construcc&oacute;n </h5>
+                            </div>
+                            <div class="col-lg-8">
+                                <p id="plNombreCCT"></p>
+                            </div>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombreCCT">Construcc&oacute;n</label>
+                                                <input id="plNombreCCT" name="plNombreCCT" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                             </div>
                                         </div>
 
@@ -161,28 +216,41 @@
                                         </div>
                                         <br />
                                         <div class="form-row">
-                                            <div class="col-lg-4 ">
-                                                <h5 class="font-weight-bold">Prenda</h5>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p id="plNombrePrenda"></p>
+                                            @*<div class="col-lg-4 ">
+                                <h5 class="font-weight-bold">Prenda</h5>
+                            </div>
+                            <div class="col-lg-8">
+                                <p id="plNombrePrenda"></p>
+                            </div>*@
+
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombrePrenda">Prenda</label>
+                                                <input id="plNombrePrenda" name="plNombrePrenda" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                             </div>
                                         </div>
 
                                         <div class="form-row">
-                                            <div class="col-lg-4 ">
-                                                <h5 class="font-weight-bold">Parte</h5>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p id="plParte"></p>
+                                            @*<div class="col-lg-4 ">
+                                <h5 class="font-weight-bold">Parte</h5>
+                            </div>
+                            <div class="col-lg-8">
+                                <p id="plParte"></p>
+                            </div>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plParte">Parte</label>
+                                                <input id="plParte" name="plParte" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-lg-4">
-                                                <h5 class="font-weight-bold">Confecci&oacute;n </h5>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p id="plNombreCFT"></p>
+                                            @*<div class="col-lg-4">
+                                <h5 class="font-weight-bold">Confecci&oacute;n </h5>
+                            </div>
+                            <div class="col-lg-8">
+                                <p id="plNombreCFT"></p>
+                            </div>*@
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNombreCFT">Confecci&oacute;n</label>
+                                                <input id="plNombreCFT" name="plNombreCFT" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                             </div>
                                         </div>
 
@@ -262,34 +330,51 @@
                                 <div class="form-row"> <br />  </div>
 
                                 <div class="form-row">
-                                    <div class="col-lg-3 ">
-                                        <h5 class="font-weight-bold">Combos</h5>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <p id="plCombos"></p>
+                                    @*<div class="col-lg-3 ">
+            <h5 class="font-weight-bold">Combos</h5>
+        </div>
+        <div class="col-lg-3">
+            <p id="plCombos"></p>
+        </div>*@
+
+                                    <div class="form-group col-lg-6">
+                                        <label for="plCombos">Combos</label>
+                                        <input id="plCombos" name="plCombos" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                     </div>
 
-                                    <div class="col-lg-3 ">
-                                        <h5 class="font-weight-bold">Cambios de talla</h5>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <p id="plCambioTalla"></p>
+                                    @*<div class="col-lg-3 ">
+            <h5 class="font-weight-bold">Cambios de talla</h5>
+        </div>
+        <div class="col-lg-3">
+            <p id="plCambioTalla"></p>
+        </div>*@
+                                    <div class="form-group col-lg-6">
+                                        <label for="plCambioTalla">Cambios de talla</label>
+                                        <input id="plCambioTalla" name="plCambioTalla" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                     </div>
 
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-lg-3 ">
-                                        <h5 class="font-weight-bold">Montajes</h5>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <p id="plMontajes"></p>
+                                    @*<div class="col-lg-3 ">
+            <h5 class="font-weight-bold">Montajes</h5>
+        </div>
+        <div class="col-lg-3">
+            <p id="plMontajes"></p>
+        </div>*@
+                                    <div class="form-group col-lg-6">
+                                        <label for="plMontajes">Montajes</label>
+                                        <input id="plMontajes" name="plMontajes" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                     </div>
 
-                                    <div class="col-lg-3 ">
-                                        <h5 class="font-weight-bold">Producción/hora</h5>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <p id="plProdHora"></p>
+                                    @*<div class="col-lg-3 ">
+            <h5 class="font-weight-bold">Producción/hora</h5>
+        </div>
+        <div class="col-lg-3">
+            <p id="plProdHora"></p>
+        </div>*@
+                                    <div class="form-group col-lg-6">
+                                        <label for="plProdHora">Producción</label>
+                                        <input id="plProdHora" name="plProdHora" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
                                     </div>
 
                                 </div>
@@ -460,7 +545,7 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-lg-12">
-                                        <label for="TxtComentarios">Instrucciones:</label>
+                                        <label for="TxtInstrucciones">Instrucciones:</label>
                                         <input id="TxtInstrucciones" name="TxtInstrucciones" class="form-control k-text" />
                                     </div>
                                 </div>
@@ -519,7 +604,7 @@
 
                         <div class="form-row">
                             <div class="border-bottom  card-header-pills ">
-                                <h7 class="my-0 font-weight-normal">TAMAÑO DE POSITIVOS</h7>
+                                <h7 class="my-0 font-weight-normal">TAMAÑO DE POSITIVOS (REQUERIMIENTO)</h7>
                             </div>
                         </div>
                         <div class="form-row">
@@ -538,7 +623,16 @@
                                 <div id="gFoil"></div>
                             </div>
                         </div>
-
+                        <div class="form-row">
+                            <div class="border-bottom  card-header-pills ">
+                                <h7 class="my-0 font-weight-normal">TAMAÑOS / CANTIDAD DE PIEZAS (FICHA PRODUCCION)</h7>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gSolicitudProdDimension"></div>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-group col-lg-12">
                                 <div id="maquinaConsultaOT"></div>
@@ -563,6 +657,8 @@
         </div>
     </div>
 </div>
+
+<div id="vCambioEstadoFicha"></div>
 
 
 
