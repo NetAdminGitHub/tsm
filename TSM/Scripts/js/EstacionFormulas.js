@@ -196,7 +196,7 @@
 
     // carga vista para el cambio de estado
     // 1. configurar vista.
-    Fn_VistaCambioEstado($("#vCambioEstado"));
+    //Fn_VistaCambioEstado($("#vCambioEstado"));
      // 2. boton cambio de estado.
     $("#btnCambioEstado").click(function () {
        
