@@ -31,7 +31,7 @@ var fn_InicializaAutorizacion = function (retIdot, retIdEtapa, retItem) {
         fn_MostrarNoti(view);
     });
     //1. configurar vista.
-    Fn_VistaCambioEstado($("#vCambioEstado"), fn_CambioEstadoBtnClose);
+    //Fn_VistaCambioEstado($("#vCambioEstado"), fn_CambioEstadoBtnClose);
     dataSource.read();
 };
 
@@ -130,5 +130,5 @@ var fn_CambioEstado = function (elemento) {
             Item: Item
 
         };
-    Fn_VistaCambioEstadoVisualizar("OrdenesTrabajosDetallesRetenciones", estado, TSM_Web_APi + "OrdenesTrabajosDetallesRetenciones/OrdenesTrabajosDetallesRetenciones_CambiarEstado", "", lstId);
+    Fn_VistaCambioEstadoVisualizar("OrdenesTrabajosDetallesRetenciones", estado, TSM_Web_APi + "OrdenesTrabajosDetallesRetenciones/OrdenesTrabajosDetallesRetenciones_CambiarEstado", "", lstId, undefined, fn_CambioEstadoBtnClose);
 };
