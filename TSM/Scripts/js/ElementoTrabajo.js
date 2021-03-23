@@ -548,7 +548,7 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             //{ selectable: true, width: "50px" },
-            { field: "IdEstacion", title: "Estación", editor: Grid_ColNumeric, values: ["required", "1", CantidadBrazos, "#", 0] },
+            { field: "IdEstacion", title: "Estación" },
             { field: "DescripcionEstacion", title: "Descripción", minResizableWidth: 120 },
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
