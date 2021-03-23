@@ -59,12 +59,12 @@ var fn_TintasFCargarConfiguracion = function () {
         columns: [
             { field: "IdSeteo", title: "IdSeteo", hidden:true },
             { field: "IdSeda", title: "Id Seda", minResizableWidth: 120 ,hidden:true},
-            { field:"DesSeda", title: "Seda" , minResizableWidth:120},
+            { field:"DesSeda", title: "Seda" , minResizableWidth:100},
             { field: "IdTipoEmulsion", title: "Id Tipo Emulsión", minResizableWidth: 120, hidden:true },
-            { field: "DesTipoEmulsion", title: "Tipo de Emulsión", minResizableWidth: 120 },
-            { field: "Capilar", title: "Capilar", minResizableWidth: 120 },
-            { field: "CantidadEstaciones", title: "Cant. de estaciones", minResizableWidth: 120 },
-            { field: "Estaciones", title: "Estaciones ", minResizableWidth: 120 }
+            { field: "DesTipoEmulsion", title: "Emulsión", minResizableWidth: 110 },
+            { field: "Capilar", title: "Capilar", minResizableWidth: 100 },
+            { field: "CantidadEstaciones", title: "Cant. de Marcos", minResizableWidth: 100 },
+            { field: "Estaciones", title: "Lista de Estaciones ", minResizableWidth: 100 }
             
             //{ field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
             
@@ -72,7 +72,7 @@ var fn_TintasFCargarConfiguracion = function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridresumen").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si,300);
+    SetGrid($("#gridresumen").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si,300);
     SetGrid_CRUD_ToolbarTop($("#gridresumen").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridresumen").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridresumen").data("kendoGrid"), dataSource);
@@ -99,7 +99,7 @@ var fn_TintasFCargarConfiguracion = function () {
 
     });
 
-
+    fn_ConsultaEstacionesCambioEstado($("#gridCamEstadoMarco"));
 };
 
 
@@ -107,17 +107,150 @@ var fn_TintasFCargarEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     $("#maquinaTintasRev").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     $("#gridresumen").data("kendoGrid").dataSource.read();
+    $("#gridCamEstadoMarco").data("kendoGrid").dataSource.read();
+    vhb === true ? $("#gridCamEstadoMarco").data("kendoGrid").showColumn("Finalizar") : $("#gridCamEstadoMarco").data("kendoGrid").hideColumn("Finalizar");
 };
 
-//var elementoSeleccionado_TintasRev = function (e) {
-//    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
-//        fn_UpdFormaRevTec(e, $("#maquinaTintasRev"));
-//    } else {
-//        $("#maquinaTintasRev").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina);
-//    }
+var fn_ConsultaEstacionesCambioEstado = function (gd) {
 
-//};
+    var dsMp = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetByIdSeteoMaquina/" + maq[0].IdSeteo; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/UpdEstatusMarcoFinalizado/" + datos.IdSeteo + "/" + datos.IdEstacion; },
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "IdEstacion",
+                fields: {
+                    IdSeteo: {
+                        type: "number"
+                    },
+                    IdEstacion: {
+                        type: "number"
+                    },
+                    DescripcionEstacion: {
+                        type: "string"
 
+                    },
+                    ColorHex: {
+                        type: "string"
+
+                    },
+                    NombreColorEstacion: {
+                        type: "string"
+                    },
+                    Peso: { type: "number" },
+                    IdSeda: {
+                        type: "number"
+                    },
+                    NombreSeda: {
+                        type: "string"
+
+                    },
+                    IdTipoEmulsion: {
+                        type: "number"
+                    },
+                    NombreEmulsion: {
+                        type: "string"
+
+                    },
+                    Capilar: {
+                        type: "number"
+                    },
+                    Estado: {
+                        type: "string"
+                    },
+                    NombreEstado: {
+                        type: "string"
+
+                    },
+                    Finalizado: {
+                        type: "bool"
+
+                    }
+                }
+            }
+        },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        }
+    });
+    //CONFIGURACION DEL GRID,CAMPOS
+    gd.kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+
+        columns: [
+            { field: "Finalizado", title: "Finalizado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Finalizado"); } },
+            { field: "Estado", title: "Cod. estado", hidden: true },
+            { field: "NombreEstado", title: "Estado", minResizableWidth: 120 },
+            { field: "IdEstacion", title: "Estación", minResizableWidth: 50},
+            { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "DescripcionEstacion", title: "Color", minResizableWidth: 120 },
+            {
+                field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
+                template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>'
+            },
+            { field: "NombreColorEstacion", title: "Color Estacion", minResizableWidth: 120, hidden: true},
+            { field: "IdSeda", title: "Cod. Seda", hidden: true },
+            { field: "NombreSeda", title: "Seda", minResizableWidth: 120 },
+            { field: "IdTipoEmulsion", title: "Cod. emulsion", hidden: true },
+            { field: "NombreEmulsion", title: "Emulsión", minResizableWidth: 120 },
+            { field: "Capilar", title: "Capilar" },
+            {
+                field: "Finalizar", title: "&nbsp;",
+                command: {
+                    name: "Finalizar",
+          
+                    iconClass: "k-icon k-i-success",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        e.preventDefault();
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        dataItem.set("Estado", "FINALIZADO");
+                        this.saveChanges();
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
+        
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+
+    SetGrid(gd.data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 300);
+    SetGrid_CRUD_ToolbarTop(gd.data("kendoGrid"), false);
+    SetGrid_CRUD_Command(gd.data("kendoGrid"), false, false);
+    Set_Grid_DataSource(gd.data("kendoGrid"), dsMp);
+
+    var srowgr = [];
+    gd.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow(gd, srowgr);
+    });
+
+    gd.data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow(gd, srowgr);
+    });
+};
 
 //Agregar a Lista de ejecucion funcion configurar 
 fun_List.push(fn_TintasFCargarConfiguracion);
