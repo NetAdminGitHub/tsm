@@ -3,6 +3,10 @@ var fn_TintasFCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
 
+    Kendo_CmbFiltrarGrid($("#cmbTipoMarco"), TSM_Web_APi + "TiposMarcos", "Nombre", "IdTiposMarco", "Seleccione...");
+
+    KdoCmbSetValue($("#cmbTipoMarco"), maq[0].IdTiposMarco);
+
     // crea dataSource para grid
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -100,6 +104,17 @@ var fn_TintasFCargarConfiguracion = function () {
     });
 
     fn_ConsultaEstacionesCambioEstado($("#gridCamEstadoMarco"));
+
+
+
+    $("#cmbTipoMarco").data("kendoComboBox").bind("change", function (e) {
+        var value = this.value();
+        if (value !== "") {
+            fn_UpdTipoMarco(this.value());
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un tipo de marco", "error");
+        }
+    });
 };
 
 
@@ -109,6 +124,7 @@ var fn_TintasFCargarEtapa = function () {
     $("#gridresumen").data("kendoGrid").dataSource.read();
     $("#gridCamEstadoMarco").data("kendoGrid").dataSource.read();
     vhb === true ? $("#gridCamEstadoMarco").data("kendoGrid").showColumn("Finalizar") : $("#gridCamEstadoMarco").data("kendoGrid").hideColumn("Finalizar");
+    KdoCmbSetValue($("#cmbTipoMarco"), maq[0].IdTiposMarco);
 };
 
 var fn_ConsultaEstacionesCambioEstado = function (gd) {
@@ -181,6 +197,12 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
                     Finalizado: {
                         type: "bool"
 
+                    },
+                    Letra: {
+                        type: "string"
+                    },
+                    Comentario: {
+                        type: "string"
                     }
                 }
             }
@@ -192,13 +214,26 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
     //CONFIGURACION DEL GRID,CAMPOS
     gd.kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
-
+        dataBound: function () {
+           
+            var grid = gd.data("kendoGrid");
+            var data = grid.dataSource.data();
+            $.each(data, function (i, row) {
+                if (row.Comentario !== '') {
+                    $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                } else {
+                    $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                }
+            });
+        },
         columns: [
             { field: "Finalizado", title: "Finalizado", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Finalizado"); } },
             { field: "Estado", title: "Cod. estado", hidden: true },
-            { field: "NombreEstado", title: "Estado", minResizableWidth: 120 },
+            { field: "NombreEstado", title: "Estado", minResizableWidth: 120, hidden: true },
+            { field: "Comentario", title: "Comentario de Ajuste", minResizableWidth: 120 },
             { field: "IdEstacion", title: "Estación", minResizableWidth: 50},
             { field: "IdSeteo", title: "Cod. Seteo", hidden: true },
+            { field: "Letra", title: "Letra" },
             { field: "DescripcionEstacion", title: "Color", minResizableWidth: 120 },
             {
                 field: "ColorHex", title: "Color Muestra", minResizableWidth: 120,
@@ -250,6 +285,7 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
     gd.data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow(gd, srowgr);
     });
+
 };
 
 //Agregar a Lista de ejecucion funcion configurar 
@@ -269,4 +305,27 @@ fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;
+};
+
+var fn_UpdTipoMarco = function ( idTiposMarco) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinas/UpdSeteoMaquinas_TipoMarco/" + maq[0].IdSeteo,
+        type: "Put",
+        data: JSON.stringify({
+            IdTiposMarco: idTiposMarco
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Put");
+            maq = fn_GetMaquinas();
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+            maq = fn_GetMaquinas();
+        }
+    });
+
 };

@@ -1,7 +1,7 @@
 ﻿var Permisos;
 
 var fn_VerifMuesCC = function () {
-
+    KdoButton($("#btnAjuste_Valid"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnCPesosVerifMues"), "search", "Consultar");
     KdoButton($("#btnFinOTVerifMue"), "gear", "Finalizar OT");
     KdoButton($("#btnAcepFinVerifMue"), "check", "Finalizar");
@@ -116,6 +116,12 @@ var fn_VerifMuesCC = function () {
     fn_Accesorios($("#maquinaValidacionMues").data("maquinaSerigrafia"));
 
     //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
+    $("#btnAjuste_Valid").click(function (e) {
+        //fn_OpenModalEstacionAjuste();
+        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo);
+
+    });
+
 
 };
 

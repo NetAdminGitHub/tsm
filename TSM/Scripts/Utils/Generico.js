@@ -2028,3 +2028,112 @@ var fn_ShowModalSolicitudReactivacionOT = function (cargarJs, data, divSolIngCam
 
 };
 //#endregion
+
+//#region Solicitar Ajustes Tintas/Diseño/revelado
+/**
+ * 
+ * @param {HtmlElementId} divSolIngAjuste Id del div que contendra la vista de ingreso de Ajustes
+ * @param {number} siaIdot id orden de trabajo
+ * @param {number} siaIdEtapa etapa del proceso
+ * @param {number} siaItem item de la etapa
+ * @param {number} siaIdSeteo item de la etapa
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_SolicitarIngresoAjuste = function (divSolIngAjuste, siaIdot, siaIdEtapa, siaItem,siaIdSeteo,fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divSolIngAjuste + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/SolicitarIngresoAjustes",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalSolictudIngresoAjuste(resultado, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo,fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalSolictudIngresoAjuste("", divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngAjuste Id del div que contendra la vista de Ingreso de Ajustes
+ * @param {number} siaIdot id orden de trabajo
+ * @param {number} siaIdEtapa etapa del proceso
+ * @param {number} siaItem item de la etapa
+ * @param {number} siaIdSeteo  seteo maquina
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo,fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitarIngresoAjustes.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/SolicitarIngresoAjustes.js";
+        script.onload = function () {
+            fn_ShowModalSolictudIngresoAjuste(true, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalSolictudIngresoAjuste(false, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngAjuste  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} siaIdot id orden de trabajo
+ * @param {number} siaIdEtapa etapa del proceso
+ * @param {number} siaItem item de la etapa
+ * @param {function} siaIdSeteo seteo maquina
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+
+ */
+var fn_ShowModalSolictudIngresoAjuste = function (cargarJs, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarCargaVistaAjuste(siaIdot, siaIdEtapa, siaItem,siaIdSeteo);
+        } else {
+            fn_RegistroAjuste(siaIdot, siaIdEtapa, siaItem, siaIdSeteo);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divSolIngAjuste + "").kendoDialog({
+        height: "80%",
+        width: "70%",
+        title: "Solicitar Ajustes",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "30%",
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divSolIngAjuste + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
