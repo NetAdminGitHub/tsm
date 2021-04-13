@@ -911,7 +911,6 @@
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
     <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
-    <Content Include="Views\Shared\_Cambio_Estado.cshtml" />
     <Content Include="Views\Shared\_SolicitarIngresoAjustes.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
