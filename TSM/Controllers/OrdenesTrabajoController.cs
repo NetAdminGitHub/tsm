@@ -58,6 +58,11 @@ namespace TSM.Controllers
             return PartialView("_HistoricoSeteos");
         }
 
+        public ActionResult SolicitarIngresoAjustes()
+        {
+
+            return PartialView("_SolicitarIngresoAjustes");
+        }
         [HttpPost]
         public ActionResult VistaParcial(string id)
         {

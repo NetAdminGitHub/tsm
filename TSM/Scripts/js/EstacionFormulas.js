@@ -436,7 +436,7 @@ var fn_GridEstaciones = function (gd) {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetByIdSeteo/" +xIdSeteoMq;  },
+                url: function () { return TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetByIdSeteoTintas/" +xIdSeteoMq;  },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -500,17 +500,10 @@ var fn_GridEstaciones = function (gd) {
             var grid = gd.data("kendoGrid");
             var data = grid.dataSource.data();
             $.each(data, function (i, row) {
-                if (row.EstadoAlerta === 'ACTIVA' && row.AplicaTintas===true) {
+                if (row.Comentario !== '') {
                     $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
-                }
-                else {
-                    if (row.EstadoAlerta === 'ACTIVA' && row.AplicaMarco === true) {
-                        $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#ffa534");
-                    } else {
-
-                        $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
-                    }
-
+                } else {
+                    $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
                 }
             });
         },

@@ -2,11 +2,11 @@
 let UrlServ = TSM_Web_APi + "Servicios";
 let xFechaDesde=null;
 let xFechaHasta=null;
-let xIdServicio=null;
-let xCliente=null;
-let xNoOt=null;
-let xIdPrograma = null;
-let xIdCatalogoDiseno = null;
+let xIdServicio=0;
+let xCliente=0;
+let xNoOt=0;
+let xIdPrograma = 0;
+let xIdCatalogoDiseno = 0;
 var Permisos;
 $(document).ready(function () {
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
     //$("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
-    $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("GestionFichasProduccion_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("GestionFichasProduccion_dFechaDesde"));
+    $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("GestionFichasProduccion_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 6, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("GestionFichasProduccion_dFechaDesde"));
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("GestionFichasProduccion_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("GestionFichasProduccion_dFechaHasta"));
@@ -34,7 +34,7 @@ $(document).ready(function () {
     //checkbox
     //$('#chkRangFechas').prop('checked', 1);
 
-    $('#chkRangFechas').prop('checked', sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === null ? 0 : sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === "true" ? 1 : 0);
+    $('#chkRangFechas').prop('checked', sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === null ? 1 : sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === "true" ? 1 : 0);
     //$('#chkMe').prop('checked', sessionStorage.getItem("GestionFichasProduccion_chkMe") === null ? 0 : sessionStorage.getItem("GestionFichasProduccion_chkMe") === "true" ? 1 : 0);
 
     // convertir a kendo Multicolum combobox
@@ -480,6 +480,8 @@ $(document).ready(function () {
     ) {
         xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
         xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
+        KdoDatePikerEnable($("#dFechaDesde"), sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === "true" || sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === null ? 1 : 0);
+        KdoDatePikerEnable($("#dFechaHasta"), sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === "true" || sessionStorage.getItem("GestionFichasProduccion_chkRangFechas") === null ? 1 : 0);
         xIdServicio = sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbIdServicio");
         xCliente = sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_CmbIdCliente");
         xNoOt = sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo") === "" ? null : sessionStorage.getItem("GestionFichasProduccion_TxtNoOrdeTrabajo");
