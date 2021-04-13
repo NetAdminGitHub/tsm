@@ -28,7 +28,8 @@ var fn_DMueCargarConfiguracion = function () {
     fn_ConsultaPesos($("#gridEstacionPeso"));
 
     $("#btnAjuste_Mues").click(function (e) {
-        fn_OpenModalEstacionAjuste();
+        //fn_OpenModalEstacionAjuste();
+        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo);
 
     });
 
@@ -203,3 +204,7 @@ var fn_ConsultaPesos = function (gd) {
         Grid_SelectRow(gd, srow4);
     });
 };
+
+var fn_cerrarModal = function () {
+    $("#vSoliIngresoAjuste").data("kendoDialog").close();
+}
