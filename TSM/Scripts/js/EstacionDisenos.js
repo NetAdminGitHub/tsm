@@ -964,8 +964,12 @@ var fn_GridEstacionesDiseno_Dis = function (gd) {
             var grid = gd.data("kendoGrid");
             var data = grid.dataSource.data();
             $.each(data, function (i, row) {
-                if (row.Comentario !== '') {
-                    $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                if (row.Comentario !==  '') {
+                    if (row.Comentario === undefined) {
+                        $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                    } else {
+                        $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                    }
                 } else {
                     $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
                 }

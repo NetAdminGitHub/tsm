@@ -245,7 +245,7 @@ $(document).ready(function () {
 
     $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#TxtNoOrdeTrabajo").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value() === "" ? this.value(): this.dataItems()[0].IdOrdenTrabajo));
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
             xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
             xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
@@ -289,7 +289,7 @@ $(document).ready(function () {
 
     $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value() === "" ? this.value() : this.dataItems()[0].IdPrograma));
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
             xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
             xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
@@ -454,7 +454,7 @@ $(document).ready(function () {
 
     $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value() === "" ? this.value() : this.dataItems()[0].IdCatalogoDiseno));
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
         if (data === undefined) {
             xFechaDesde = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's');
             xFechaHasta = $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's');
