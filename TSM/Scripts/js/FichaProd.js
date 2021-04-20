@@ -795,7 +795,9 @@ let fn_ObtieneConfiguracionBrazos = function () {
                     DesPeso: { type: "string" },
                     IdSeda: { type: "string" },
                     SedaNombre: { type: "string" },
-                    NomTipoTinta: { type: "string" }
+                    NomTipoTinta: { type: "string" },
+                    IdQuimica: { type: "number" },
+                    QuimicaNombre: { type: "string" }
                    
                 }
             }
@@ -810,6 +812,8 @@ let fn_ObtieneConfiguracionBrazos = function () {
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
             { field: "NomTipoTinta", title: "Tipo tinta" },
+            { field: "IdQuimica", title: "IdQuimica", hidden: true },
+            { field: "QuimicaNombre", title: "Química" },
             { field: "IdSeda", title: "IdSeda", hidden: true  },
             { field: "SedaNombre", title: "Seda" },
             { field: "Letra", title: "Letra" },
