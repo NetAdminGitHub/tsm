@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Definición de Criterios Críticos de Calidad (CTQs)";
+    ViewBag.IdVersion = "TSM0101092|v21041501";
+}
+@section Scripts {
+    <script src="~/Scripts/js/CriteriosCriticosCalidad.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <ul id="bpecm">
+                    <li class="k-state-active form-control">
+                        <span class="TS-icon-AJUSTES" style="font-size: 1.7em; ">&nbsp</span>
+                        Configuración de criterios críticos de calidad (CTQs) y niveles de exigencia
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="lblgridCalidadCriterio" class="k-font-weight-bold">Configuración de CTQs:</label>
+                                        <div id="gridCtq" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="lblgridCalidadPruebas" class="k-font-weight-bold"> Configuración de niveles de exigencia:</label>
+                                        <div id="gridExigencia" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="k-state-active form-control">
+                        <span class="TS-icon-LAPIZ" style="font-size: 1.7em;">&nbsp</span>
+                        Configuración de perfiles de CTQs
+                        
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="lblgridCalidadCriteriosPruebas" class="k-font-weight-bold">Crear perfil de CTQ: </label>
+                                <div id="gridPerfilCriteriosCriticos" class="form-control"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="gridCalidadComposicion">Agregar criterios para <span id="NPerfil" class="k-font-weight-bold"></span>:</label>
+                                <div id="gridPerfilCriteriosCriticosItems" class="form-control"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
