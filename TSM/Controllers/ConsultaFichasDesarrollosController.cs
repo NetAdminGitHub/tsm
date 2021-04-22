@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TSM.Controllers
 {
-    public class ConsultarFichaOTController : Controller
+    public class ConsultaFichasDesarrollosController : Controller
     {
         // GET: ConsultarFichaOT
         public ActionResult Index()
@@ -16,7 +16,7 @@ namespace TSM.Controllers
         }
 
         [HttpGet]
-        [Route("ConsultarFichaOT/FichaOT/{IdOrdenTrabajo}")]
+        [Route("ConsultaFichasDesarrollos/FichaOT/{IdOrdenTrabajo}")]
         public ActionResult FichaOT(long IdOrdenTrabajo)
         {
             ViewData["IdOrdenTrabajo"] = IdOrdenTrabajo;

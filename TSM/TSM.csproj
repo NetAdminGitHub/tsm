@@ -272,7 +272,7 @@
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
-    <Compile Include="Controllers\ConsultarFichaOTController.cs" />
+    <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
@@ -483,7 +483,7 @@
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
-    <Content Include="Scripts\js\ConsultarFichaOT.js" />
+    <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
@@ -874,8 +874,8 @@
     <Content Include="Scripts\Utils\powerbi.js.map" />
     <Content Include="Scripts\powerbi.js.map" />
     <Content Include="Views\Impresores\Index.cshtml" />
-    <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
-    <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
+    <Content Include="Views\ConsultaFichasDesarrollos\Index.cshtml" />
+    <Content Include="Views\ConsultaFichasDesarrollos\FichaOT.cshtml" />
     <Content Include="Views\CatalogoDisenos\ConsultarCatalogoDisenos.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
