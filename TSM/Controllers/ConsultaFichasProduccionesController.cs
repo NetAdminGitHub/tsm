@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TSM.Controllers
 {
-    public class GestionFichasProduccionesController : Controller
+    public class ConsultaFichasProduccionesController : Controller
     {
         // GET: GestionFichasProducciones
         public ActionResult Index()

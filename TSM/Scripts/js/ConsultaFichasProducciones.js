@@ -130,7 +130,9 @@ $(document).ready(function () {
                     IdRequerimiento: { type: "number" },
                     NoDocumentoReq: { type: "string" },
                     IdCatalogoDiseno: { type: "number" },
-                    NoDocumentoCatalogo: { type: "string" }
+                    NoDocumentoCatalogo: { type: "string" },
+                    IdCategoriaTallaDesarrollada: { type: "number" },
+                    TallaDesarrollada: { type: "string" }
                 
                 }
             }
@@ -164,6 +166,8 @@ $(document).ready(function () {
             { field: "EstiloDiseno", title: "Estilo del diseño", minResizableWidth: 150 },
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
+            { field: "IdCategoriaTallaDesarrollada", title: "Cod. categoría talla", hidden: true },
+            { field: "TallaDesarrollada", title: "Talla Desarrollada", minResizableWidth: 150 },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
             { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
             { field: "IdPrograma", title: "Cod. programa", hidden: true },

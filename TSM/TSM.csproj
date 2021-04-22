@@ -286,7 +286,7 @@
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
-    <Compile Include="Controllers\GestionFichasProduccionesController.cs" />
+    <Compile Include="Controllers\ConsultaFichasProduccionesController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
@@ -496,7 +496,7 @@
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
     <Content Include="Scripts\js\FichaOT.js" />
-    <Content Include="Scripts\js\GestionFichasProducciones.js" />
+    <Content Include="Scripts\js\ConsultaFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\GestionOTDesarrollosCobrosApro.js" />
     <Content Include="Scripts\js\GetCipher.js" />
@@ -882,7 +882,7 @@
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
     <Content Include="Views\GetCipher\Index.cshtml" />
-    <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
+    <Content Include="Views\ConsultaFichasProducciones\Index.cshtml" />
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
