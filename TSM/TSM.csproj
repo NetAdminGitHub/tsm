@@ -910,6 +910,8 @@
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
     <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <Content Include="Views\Shared\_SolicitarIngresoAjustes.cshtml" />
+    <Content Include="Scripts\VueComp\inquisalva-components.js.map" />
+    <Content Include="Scripts\VueComp\inquisalva-components.min.js.map" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
