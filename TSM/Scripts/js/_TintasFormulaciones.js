@@ -115,6 +115,14 @@ var fn_TintasFCargarConfiguracion = function () {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un tipo de marco", "error");
         }
     });
+
+
+    $("#chkTodasEsta").click(function () {
+        if (this.checked) {
+            fn_UpdFinalizarMarco();
+        }
+    });
+    fn_GetNoFinalizadas(maq[0].IdSeteo);
 };
 
 
@@ -125,6 +133,7 @@ var fn_TintasFCargarEtapa = function () {
     $("#gridCamEstadoMarco").data("kendoGrid").dataSource.read();
     vhb === true ? $("#gridCamEstadoMarco").data("kendoGrid").showColumn("Finalizar") : $("#gridCamEstadoMarco").data("kendoGrid").hideColumn("Finalizar");
     KdoCmbSetValue($("#cmbTipoMarco"), maq[0].IdTiposMarco);
+    fn_GetNoFinalizadas(maq[0].IdSeteo);
 };
 
 var fn_ConsultaEstacionesCambioEstado = function (gd) {
@@ -209,6 +218,7 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            fn_GetNoFinalizadas(maq[0].IdSeteo);
         }
     });
     //CONFIGURACION DEL GRID,CAMPOS
@@ -220,7 +230,12 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
             var data = grid.dataSource.data();
             $.each(data, function (i, row) {
                 if (row.Comentario !== '') {
-                    $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                    if (row.Comentario === undefined) {
+                        $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
+                    } else {
+                        $('tr[data-uid="' + row.uid + '"] ').css("background-color", "#e8e855");
+                    }
+                   
                 } else {
                     $('tr[data-uid="' + row.uid + '"] ').removeAttr("style");
                 }
@@ -258,6 +273,7 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
                         dataItem.set("Estado", "FINALIZADO");
                         this.saveChanges();
+                 
                     }
                 },
                 width: "70px",
@@ -328,4 +344,47 @@ var fn_UpdTipoMarco = function ( idTiposMarco) {
         }
     });
 
+};
+
+var fn_UpdFinalizarMarco = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/CambiarEstadoEstacionesTodas",//
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            IdSeteo: maq[0].IdSeteo
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            RequestEndMsg(data, "Post");
+            $("#gridCamEstadoMarco").data("kendoGrid").dataSource.read();
+            kendo.ui.progress($(document.body), false);
+            fn_GetNoFinalizadas(maq[0].IdSeteo);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
+
+var fn_GetNoFinalizadas = function (IdSeteo) {
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/GetNoFinalizadas/" + IdSeteo,
+        type: 'GET',
+        success: function (datos) {
+            if (datos === null) {
+                $('#chkTodasEsta').prop('checked', true);
+                KdoCheckBoxEnable($('#chkTodasEsta'), false);
+
+            } else {
+                $('#chkTodasEsta').prop('checked', datos.MarcoPendientes > 0 ? false : true);
+                KdoCheckBoxEnable($('#chkTodasEsta'), datos.MarcoPendientes > 0 ? true : false);
+                
+            }
+
+        }
+    });
 };
