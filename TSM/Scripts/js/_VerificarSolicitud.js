@@ -633,10 +633,9 @@ var fn_VSCargarJSEtapa = function () {
                     },
                     NombreTipoReqColor: { type: "string" }
                 }
-
             }
         }
-    });    
+    });
 
     $("#GRReqDesColor").kendoGrid({
         edit: function (e) {
