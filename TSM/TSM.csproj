@@ -309,6 +309,7 @@
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
+    <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -509,6 +510,7 @@
     <Content Include="Scripts\js\MotivosSolicitudesCambios.js" />
     <Content Include="Scripts\js\OrdenesTrabajosTerminadas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
+    <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
@@ -666,6 +668,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_CriteriosCriticos.js" />
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
@@ -726,6 +729,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\OrdenesTrabajo\ElementoTrabajo.cshtml" />
+    <Content Include="Views\PiezasDesarrolladas\Index.cshtml" />
     <Content Include="Views\Programas\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -918,7 +922,7 @@
     <Content Include="Views\CriteriosCriticosCalidad\Index.cshtml"/>
     <Content Include="Scripts\VueComp\inquisalva-components.js.map" />
     <Content Include="Scripts\VueComp\inquisalva-components.min.js.map" />
-
+    <Content Include="Views\PiezasDesarrolladas\_CriteriosCriticos.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
