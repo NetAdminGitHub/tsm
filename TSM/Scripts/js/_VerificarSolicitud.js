@@ -47,6 +47,9 @@ var fn_VSCargarJSEtapa = function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
         fn_ConsultarCatalogoDiseno("ConsultaCataloDis", $("#IdCliente").val());
     });
+
+    Kendo_CmbFiltrarGrid($("#CmbCriterioCritico"), TSM_Web_APi + "PerfilesCriteriosCriticosCalidad/GetPerfilesCriteriosCriticosCalidadByCliente/" + $("#IdCliente").val() , "NombrePerfil", "IdPerfilCriterio", "Seleccione...");
+
     //$("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
     //    $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
     //    $("#NoReferencia").val(Datos.NoReferencia);
@@ -242,6 +245,12 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
+                MsgPerfilCriterioCritico: function (input) {
+                    if (input.is("[name='CmbCriterioCritico']")) {
+                        return $("#CmbCriterioCritico").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
                 MsgCmbMotivo: function (input) {
                     if (input.is("[name='CmbMotivoDesarrollo']")) {
                         return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
@@ -293,7 +302,8 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbMotivo: "Requerido",
                 //MsgCmbAcabado: "Requerido",
                 MsgCmbTMuestra: "Requerido",
-                vQui:"Requerido"
+                vQui: "Requerido",
+                MsgPerfilCriterioCritico:"Debe seleccionar un perfil de CTQ's"
             }
         }
     ).data("kendoValidator");
@@ -1427,6 +1437,7 @@ var fn_VSCargar = function () {
         KdoComboBoxEnable($("#IdCategoriaConfeccion"), false);
         KdoComboBoxEnable($("#IdConstruccionTela"), false);
         KdoComboBoxEnable($("#IdComposicionTela"), false);
+        KdoComboBoxEnable($("#CmbCriterioCritico"), false);
         $("#TxtColorTela").attr("disabled", true);
         $("#Nombre").attr("disabled", true);
         KdoComboBoxEnable($("#CmbTipoAcabado"), false);
@@ -1511,6 +1522,7 @@ let getRD = function (UrlRD) {
                 $("#CmbMotivoDesarrollo").data("kendoComboBox").value(elemento.IdMotivoDesarrollo);
                 $("#CmbTipoAcabado").data("kendoComboBox").value(elemento.IdTipoAcabado);
                 $("#CmbTMuestra").data("kendoComboBox").value(elemento.IdTipoMuestra);
+                $("#CmbCriterioCritico").data("kendoComboBox").value(elemento.IdPerfilCriterio);
                 KdoCmbSetValue($("#CmbQuimica"), elemento.IdQuimica);
                 //consultar grid
                 VarIDReq = elemento.IdRequerimiento;
@@ -1541,6 +1553,7 @@ let getRD = function (UrlRD) {
                     KdoComboBoxEnable($("#CmbTipoLuz"),true);
                     KdoComboBoxEnable($("#CmbTMuestra"), true);
                     KdoComboBoxEnable($("#CmbQuimica"), true);
+                    KdoComboBoxEnable($("#CmbCriterioCritico"), true);
                     $("#swchSolTelaSustituta").data("kendoSwitch").enable(true);
                     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(true);
                     $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(true);
@@ -1814,6 +1827,7 @@ let GuardarRequerimiento = function (UrlRD) {
             IdUnidadVelocidad: null,
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
+            IdPerfilCriterio: $("#CmbCriterioCritico").data("kendoComboBox").value(),
             IdBase: null,
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
@@ -2068,6 +2082,7 @@ let HabilitaFormObje = function (ToF) {
     KdoComboBoxEnable($("#CmbTMuestra"), ToF);
     KdoComboBoxEnable($("#CmbQuimica"), ToF);
     KdoComboBoxEnable($("#CmbMotivoDesarrollo"), ToF);
+    KdoComboBoxEnable($("#CmbCriterioCritico"), ToF);
     $("#swchSolTelaSustituta").data("kendoSwitch").enable(ToF);
     $("#CmbIdCalidadCriterio").data("kendoMultiColumnComboBox").enable(ToF);
     $("#swchSolDesarrolloOEKO").data("kendoSwitch").enable(ToF);
