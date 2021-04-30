@@ -51,7 +51,7 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
-                    url: UrlOT + "/GetConsultarFichaOT",
+                    url: UrlOT + "/GetConsultarFichasDesarrollos",
                     data: JSON.stringify({
                         FechaDesde: xFechaDesde,// $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
                         FechaHasta: xFechaHasta, //$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
@@ -125,7 +125,9 @@ $(document).ready(function () {
                     IdCatalogoDiseno: { type: "number" },
                     NoDocumentoCatalogo: { type: "string" },
                     IdMotivoDesarrollo: { type: "number" },
-                    NombreMotivoDes: { type: "string" }
+                    NombreMotivoDes: { type: "string" },
+                    IdCategoriaTallaDesarrollada: { type: "number" },
+                    TallaDesarrollada: { type: "string" }
                 }
             }
         }
@@ -144,7 +146,7 @@ $(document).ready(function () {
      
                 //fn_VerEtapas("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#grid"), true);
-                window.open("/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
+                window.open("/ConsultaFichasDesarrollos/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString());
                 kendo.ui.progress($("#grid"), false);
             });
             Grid_SetSelectRow($("#grid"), selectedRows);
@@ -158,6 +160,8 @@ $(document).ready(function () {
             { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
+            { field: "IdCategoriaTallaDesarrollada", title: "Cod. categoría talla", hidden: true },
+            { field: "TallaDesarrollada", title: "Talla Desarrollada", minResizableWidth: 150 },
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
             { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
             { field: "IdUbicacion", title: "Cod. ubicación", hidden: true },

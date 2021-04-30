@@ -2,7 +2,7 @@
 var vIdIdDisenoMuestra;
 
 var fn_DMCargarConfiguracion = function () {
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+  
     KdoButton($("#btnAddColorDis"), "plus-circle", "Agregar color o técnica");
 
     $("#NumAltoDiseno").kendoNumericTextBox({
@@ -194,7 +194,7 @@ var fn_DMCargarConfiguracion = function () {
         },
         tipoMaquina:
         {
-            mostrar: vhb,
+            mostrar: true,
             eventos: {
                 onChange: elementoSeleccionado_Diseno
             }
@@ -206,9 +206,9 @@ var fn_DMCargarConfiguracion = function () {
     });
 
     fn_GetFormasMaquina($("#maquinaDiseno").data("maquinaSerigrafia"));
-    if (vhb) {
-        $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
-    }
+
+    $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
+ 
     fn_GetColores($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
     fn_Tecnicas($("#maquinaDiseno").data("maquinaSerigrafia"), maq[0].IdSeteo);
     fn_Bases($("#maquinaDiseno").data("maquinaSerigrafia"));

@@ -38,9 +38,9 @@ $(document).ready(function () {
 
     //Configuracion de panel
     PanelBarConfig($("#bpanel"));
-
+    
     KdoButton($("#btnImprimir"), "print", "Imprimir Ficha de Producción");
-    KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
+    KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");    
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Placement");
     Kendo_MultiSelect($("#instruccionesProd"), UrlApiCAtInstrucciones+"/PROD", "Descripcion", "IdInstruccion", "Seleccione ...");
     Kendo_MultiSelect($("#instruccionesCalidad"), UrlApiCAtInstrucciones + "/CALI", "Descripcion", "IdInstruccion", "Seleccione ...");
@@ -143,7 +143,7 @@ $(document).ready(function () {
         }
 
     });
-    // para instruccionesCalidad
+     // para instruccionesCalidad
 
     $("#instruccionesCalidad").data("kendoMultiSelect").bind("deselect", function (e) {
         if (xIdOt > 0) {
@@ -215,11 +215,11 @@ $(document).ready(function () {
 
     });
 
-
+    
     $('#TxtInstrucciones').on("change", function (e) {
 
         ActualizaComentariosFicha();
-    });
+    }); 
 
     $('#TxtComentarios').on("change", function (e) {
 
@@ -227,22 +227,22 @@ $(document).ready(function () {
     });
 
     $('#plPlacement').on("change", function (e) {
-
+    
         ActualizaComentariosFicha();
     });
 
     $('#plTrama').on("change", function (e) {
-
+       
         ActualizaComentariosFicha();
     });
 
     $('#plMuestraAprobada').on("change", function (e) {
-
+       
         ActualizaComentariosFicha();
     });
 
     $('#plMigracion').on("change", function (e) {
-
+     
         ActualizaComentariosFicha();
     });
 
@@ -281,7 +281,7 @@ $(document).ready(function () {
             }
         }
 
-    });
+    }); 
 
     let fn_LeerImagen = function (event, blobs) {
         kendo.ui.progress($("#vistaParcial"), true);
@@ -580,7 +580,7 @@ let fn_GetOTRequerimiento = function () {
                 xNoDocumento = datos.NodocReq;
                 if (Number(datos.UsarTermofijado) === 1) { $("#TxtComentarios").attr("readonly", false); }
                 else { $("#TxtComentarios").attr("readonly", true); }
-
+                
                 xIdArte = datos.IdArte === null ? 0 : datos.IdArte;
                 xIdSeteo = datos.IdSeteoActual === null ? 0 : datos.IdSeteoActual;
                 // Multiselect de Tolerancia
@@ -723,7 +723,7 @@ let fn_getAdjunto = function () {
             });
 
             Fn_LeerImagenesMejorado($("#Mycarousel"), "/Adjuntos/" + xNoDocumento + "", filtro2);
-
+           
             Fn_LeerImagenesMejorado($("#Mycarouselwp"), "/Adjuntos/" + xNoDocumento + "", filtro);
              
             var imgCatologo = document.querySelector('#Mycarouselwp0');
@@ -827,7 +827,7 @@ let fn_ObtieneConfiguracionBrazos = function () {
             { field: "Peso", title: "Peso", format: "{0:n2}" },
             { field: "IdUnidadPeso", title: "Id Uni Peso", hidden: true },
             { field: "DesPeso", title: "Unidad Peso" }
-
+            
         ]
     });
 
@@ -865,8 +865,8 @@ let fn_ObtieneConfFoil = function () {
                     AltoConsumo: { type: "number" },
                     NombreArticulo: { type: "string" },
                     AreaCuadrada: { type: "number" },
-                    UnidadMedida: { type: "string" }
-
+                    UnidadMedida: {type:"string"}
+                    
                 }
             }
         }
@@ -883,9 +883,9 @@ let fn_ObtieneConfFoil = function () {
             { field: "IdArticulo", title: "Producto" },
             { field: "NombreArticulo", title: "Nombre de Producto", width: 200 },
             { field: "IdEstacion", title: "Estación", width: 160 },
-            { field: "Power", title: "Power", hidden: true },
-            { field: "Temperatura", title: "Temperatura", width: 160 },
-            { field: "Tiempo", title: "TIempo", width: 160 },
+            { field: "Power", title: "Power", hidden:true },
+            { field: "Temperatura", title: "Temperatura", width:160 },
+            { field: "Tiempo", title: "TIempo",width:160 },
             { field: "AltoConsumo", title: "Alto", width: 100 },
             { field: "AnchoConsumo", title: "Ancho", width: 100 },
             { field: "AreaCuadrada", title: "Área", width: 100 },
@@ -968,18 +968,18 @@ let fn_ObtenerDimensiones = function (req) {
     var dsDim = new kendo.data.DataSource({
 
         transport: {
-            read: {
-
+            read:  {
+               
                 url: function (datos) { return TSM_Web_APi + "Dimensiones/GetDimensionByReqId/" + req; },
                 contentType: "application/json; charset=utf-8"
-
+            
             },
             update: {
                 url: function (datos) { return TSM_Web_APi + "Dimensiones/" + datos.IdRequerimiento.toString() + "/" + datos.IdDimension.toString(); },
                 type: "PUT",
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (datos) {
+                contentType: "application/json; charset=utf-8"    ,           
+                 success: function (datos) {
                     datos.success(result);
                 }
             },
@@ -993,7 +993,7 @@ let fn_ObtenerDimensiones = function (req) {
             model: {
                 id: "Llave",
                 fields: {
-
+                    
                     IdRequerimiento: { type: "number" },
                     IdDimension: { type: "number" },
                     IdCategoriaTalla: { type: "number" },
@@ -1001,11 +1001,11 @@ let fn_ObtenerDimensiones = function (req) {
                     Nombre: { type: "string" },
                     Alto: { type: "number" },
                     Ancho: { type: "number" },
-                    AltoEstamp: { type: "number" },
+                    AltoEstamp: {type: "number"},
                     AnchoEstamp: { type: "number" },
                     Tallas: { type: "string" },
                     DimensionesRelativas: { type: "string" }
-
+                   
                 }
             }
         }
@@ -1013,8 +1013,8 @@ let fn_ObtenerDimensiones = function (req) {
     //CONFIGURACION DEL gCHFor,CAMPOS
     var selectedRows = [];
     $("#gDimensiones").kendoGrid({
-
-        edit: function (e) {
+        
+         edit: function (e) {
             // Ocultar
             KdoHideCampoPopup(e.container, "Llave");
             KdoHideCampoPopup(e.container, "IdRequerimiento");
@@ -1027,23 +1027,23 @@ let fn_ObtenerDimensiones = function (req) {
             KdoHideCampoPopup(e.container, "Tallas");
             KdoHideCampoPopup(e.container, "DimensionesRelativas");
             Grid_Focus(e, "IdCategoriaTalla");
-
+           
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "Llave", title: "Llave", hidden: true },
             { field: "IdRequerimiento", title: "Requerimiento", width: 160, hidden: true },
             { field: "IdDimension", title: "Dimensión", width: 160, hidden: true },
-            { field: "IdCategoriaTalla", title: "Categoría talla", width: 50, hidden: true },
-            { field: "IdUnidad", title: "idUnidad", hidden: true, width: 200 },
-            { field: "Nombre", title: "Tipo de Medida", width: 200 },
-            { field: "Alto", title: "Alto", width: 100 },
+            { field: "IdCategoriaTalla", title: "Categoría talla" ,width:50, hidden:true},
+            { field: "IdUnidad", title: "idUnidad", hidden: true,width:200},
+            { field: "Nombre", title: "Tipo de Medida",width:200 },
+            { field: "Alto", title: "Alto",width:100 },
             { field: "Ancho", title: "Ancho", width: 200 },
             { field: "AltoEstamp", title: "Alto Estampado", width: 100 },
             { field: "AnchoEstamp", title: "Ancho Estampado", width: 100 },
-            { field: "Tallas", title: "Tallas", width: 100 },
-            { field: "DimensionesRelativas", title: "Dimensiones Relativas", hidden: true }
-
+            { field: "Tallas", title: "Tallas" ,width:100 },
+            { field: "DimensionesRelativas", title: "Dimensiones Relativas", hidden: true}
+           
         ]
     });
 
@@ -1051,7 +1051,7 @@ let fn_ObtenerDimensiones = function (req) {
     SetGrid($("#gDimensiones").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false,redimensionable.Si, 0);
     Set_Grid_DataSource($("#gDimensiones").data("kendoGrid"), dsDim, 20);
     SetGrid_CRUD_Command($("#gDimensiones").data("kendoGrid"), Permisos.SNEditar);
-
+    
     $("#gDimensiones").getKendoGrid().one("dataBound", function (e) {
         var grid = this;
 
@@ -1283,7 +1283,7 @@ let ActualizaComentariosFicha = function () {
         kendo.ui.progress($(document.body), true);
         //var item = e.item;
         $.ajax({
-            url: UrlSolicitudProdHeader + "/" + `${xIdOt}/${idSimulacion}/${idCotizacion}`,//
+            url: UrlSolicitudProdHeader +"/"+ `${xIdOt}/${idSimulacion}/${idCotizacion}`,//
             type: "Put",
             dataType: "json",
             data: JSON.stringify({

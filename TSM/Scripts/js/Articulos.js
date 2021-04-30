@@ -46,8 +46,7 @@ $(document).ready(function () {
                     TamanoParticula: { type: "string" },
                     TipoUso: { type: "string" },
                     Marca: { type: "string" },
-                    AditivoPorcentajeMaxCarga: { type: "number" },
-                    PigmentoPorcentajeMaxCarga: { type: "number" }
+                    PorcentajeMaxCarga: { type: "number" }
 
                 }
             }
@@ -84,6 +83,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "EstatusOEKOTEX");
             KdoHideCampoPopup(e.container, "TamanoParticula");
             KdoHideCampoPopup(e.container, "TipoUso");
+            KdoHideCampoPopup(e.container, "PorcentajeMaxCarga");
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
@@ -219,15 +219,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "AditivoPorcentajeMaxCarga", title: "Aditivo %Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
-                filterable: {
-                    cell: {
-                        enabled: false
-                    }
-                }
-            },
-            {
-                field: "PigmentoPorcentajeMaxCarga", title: "Pigmento %Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
+                field: "PorcentajeMaxCarga", title: "%Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
                 filterable: {
                     cell: {
                         enabled: false
@@ -251,7 +243,7 @@ $(document).ready(function () {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 0, true, "row");
-    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, false);
+    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
     var selectedRows = [];
