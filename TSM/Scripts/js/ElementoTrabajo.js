@@ -143,7 +143,7 @@ $(document).ready(function () {
         }
     });
     Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
-    Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasAnterioresSiguientesByIdEtapaProceso/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosFlujo/0/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbTpAjuste"), TSM_Web_APi + "Alertas", "Nombre", "IdAlerta", "Seleccione...");
     KdoCmbSetValue($("#cmbTpAjuste"), 1);
@@ -825,7 +825,7 @@ var get_cmbEtpSigAnt = function ( etp, tipo) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "EtapasProcesos/GetByIdEtapaProcesoTipoOrden/" + etp.toString() + "/" + tipo.toString(),
+                    url: TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosFlujo/" + etp.toString() + "/" + tipo.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);

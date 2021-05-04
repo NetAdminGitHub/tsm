@@ -2037,9 +2037,10 @@ var fn_ShowModalSolicitudReactivacionOT = function (cargarJs, data, divSolIngCam
  * @param {number} siaIdEtapa etapa del proceso
  * @param {number} siaItem item de la etapa
  * @param {number} siaIdSeteo item de la etapa
+ * @param {function} SiaIdTipoOT Orden de trabajo
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_SolicitarIngresoAjuste = function (divSolIngAjuste, siaIdot, siaIdEtapa, siaItem,siaIdSeteo,fnclose) {
+var fn_SolicitarIngresoAjuste = function (divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT,fnclose) {
     kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divSolIngAjuste + "").children().length === 0) {
         $.ajax({
@@ -2049,13 +2050,13 @@ var fn_SolicitarIngresoAjuste = function (divSolIngAjuste, siaIdot, siaIdEtapa, 
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.activeElement), false);
-                fn_CargarVistaModalSolictudIngresoAjuste(resultado, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo,fnclose);
+                fn_CargarVistaModalSolictudIngresoAjuste(resultado, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT,fnclose);
 
             }
         });
     } else {
         kendo.ui.progress($(document.activeElement), false);
-        fn_CargarVistaModalSolictudIngresoAjuste("", divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+        fn_CargarVistaModalSolictudIngresoAjuste("", divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT, fnclose);
 
     }
 };
@@ -2068,9 +2069,10 @@ var fn_SolicitarIngresoAjuste = function (divSolIngAjuste, siaIdot, siaIdEtapa, 
  * @param {number} siaIdEtapa etapa del proceso
  * @param {number} siaItem item de la etapa
  * @param {number} siaIdSeteo  seteo maquina
+ * @param {function} SiaIdTipoOT Orden de trabajo
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo,fnclose) {
+var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT,fnclose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -2082,12 +2084,12 @@ var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, 
         script.type = "text/javascript";
         script.src = "/Scripts/js/SolicitarIngresoAjustes.js";
         script.onload = function () {
-            fn_ShowModalSolictudIngresoAjuste(true, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+            fn_ShowModalSolictudIngresoAjuste(true, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT, fnclose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalSolictudIngresoAjuste(false, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose);
+        fn_ShowModalSolictudIngresoAjuste(false, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT,fnclose);
     }
 };
 /**
@@ -2099,13 +2101,14 @@ var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, 
  * @param {number} siaIdEtapa etapa del proceso
  * @param {number} siaItem item de la etapa
  * @param {function} siaIdSeteo seteo maquina
+ * @param {function} SiaIdTipoOT Orden de trabajo
  * @param {function} fnclose funcion a ejecutar al cerrar modal
 
  */
-var fn_ShowModalSolictudIngresoAjuste = function (cargarJs, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, fnclose) {
+var fn_ShowModalSolictudIngresoAjuste = function (cargarJs, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT, fnclose) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InicializarCargaVistaAjuste(siaIdot, siaIdEtapa, siaItem,siaIdSeteo);
+            fn_InicializarCargaVistaAjuste(siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT);
         } else {
             fn_RegistroAjuste(siaIdot, siaIdEtapa, siaItem, siaIdSeteo);
         }

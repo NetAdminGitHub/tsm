@@ -285,18 +285,18 @@ let fn_gridOT = function () {
             { field: "IdOrdenTrabajoOrigen", title: "Cod. OT Origen", hidden: true },
             { field: "RoundMuestra", title: "Round Muestra", width: "100px" },
             { field: "TallaDesarrollada", title: "Talla Desarrollada", width: "150px" },
-            { field: "NoDocumentoOrigen", title: "No OT Origen", width: "120px" },
+            { field: "FechaInicio", title: "Inicio de OT", format: "{0: dd/MM/yyyy}" },
             { field: "NoReq", title: "Requerimiento", width: "120px", hidden:true },
             { field: "EstadoOT", title: "Estado OT", width: "120px", hidden: true },
             { field: "NombreEstOT", title: "Estado", width: "100px" },
             { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
-            { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
             { field: "MUFIAPRO", title: "Muestra Fisica Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUFIAPRO"); } },
             { field: "MUCOTIZADA", title: "Muestra Cotizada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOTIZADA"); } },
             { field: "MUPREAPRO", title: "Muestra con Precio Aprob", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUPREAPRO"); } },
             { field: "REQMP", title: "Requisicion de Materia Prima", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "REQMP"); } },
             //{ field: "MUAPROPROD", title: "Muestra Aprob Producción", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUAPROPROD"); } },
+            { field: "NoDocumentoOrigen", title: "No OT Origen", width: "120px" },
             {
                 command: {
                     name: "Generar OT",
@@ -670,7 +670,7 @@ let Fn_getCotizacion = function (g) {
     $("#InfNombreDisOT").val(elemento.NombreDisOT);
     $("#InfEstiloDisenoOT").val(elemento.EstiloDisenoOT);
     $("#InfNumDisenoOT").val(elemento.NumeroDisenoOT);
-
+    $("#InfCodigoFM").val(elemento.NoReferencia);
     $("#InfFechaInicio").val(kendo.toString(kendo.parseDate(elemento.FechaInicio), 'dd/MM/yyyy'));
     $("#InfFechaFinal").val(kendo.toString(kendo.parseDate(elemento.FechaFinal), 'dd/MM/yyyy'));
 };
