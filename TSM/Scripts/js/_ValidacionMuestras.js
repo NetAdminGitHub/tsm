@@ -118,7 +118,7 @@ var fn_VerifMuesCC = function () {
     //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
     $("#btnAjuste_Valid").click(function (e) {
         //fn_OpenModalEstacionAjuste();
-        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo);
+        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo, idTipoOrdenTrabajo.toString());
 
     });
 
