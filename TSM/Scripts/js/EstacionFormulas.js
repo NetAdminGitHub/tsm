@@ -139,12 +139,12 @@
 
     var frmNajus = $("#FrmNuevoAjuste").kendoValidator({
         rules: {
-            vcnt: function (input) {
-                if (input.is("[id='NumCntIni_Recibida']") ) {
-                    return kdoNumericGetValue($("#NumCntIni_Recibida")) >= (KdoRbGetValue($("#rbAjuste")) ? 1 : 0) && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
-                }
-                return true;
-            },
+            //vcnt: function (input) {
+            //    if (input.is("[id='NumCntIni_Recibida']") ) {
+            //        return kdoNumericGetValue($("#NumCntIni_Recibida")) >= (KdoRbGetValue($("#rbAjuste")) ? 1 : 0) && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
+            //    }
+            //    return true;
+            //},
             vMtAjus: function (input) {
                 if (input.is("[id='CmbMotivoAjus']")) {
                     return $("#CmbMotivoAjus").data("kendoComboBox").selectedIndex >= 0;
@@ -153,7 +153,7 @@
             }
         },
         messages: {
-            vcnt: "Cantidad no mayor a 500",
+            //vcnt: "Cantidad no mayor a 500",
             vMtAjus: "Requerido"
         }
     }).data("kendoValidator");

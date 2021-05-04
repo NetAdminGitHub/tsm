@@ -7,7 +7,7 @@ var fn_InicialarCargaVistaCambio = function (sicIdot, sicIdEtapa, sicItem, Sicid
     kendo.ui.progress($(document.activeElement), true);
     KdoComboBoxbyData($("#cmbUsuarioEtpImp"), "[]", "Nombre", "IdUsuario", "Seleccione...", "", "");
     Kendo_CmbFiltrarGrid($("#cmbMotivoSolCambio"), TSM_Web_APi + "MotivosSolicitudesCambios/GetMotivosSolicitudesCambiosLista", "Nombre", "IdMotivoSolicitudCambio", "Seleccione Motivo...");
-    $("#cmbCatalogoCambios").ControlSelecionSolicitudesCambios();
+    $("#cmbCatalogoCambios").ControlSelecionSolicitudesCambiosTipoOT(SicidTipoOrdenTrabajo);
     $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
     xIdEtapa = sicIdEtapa;
  
