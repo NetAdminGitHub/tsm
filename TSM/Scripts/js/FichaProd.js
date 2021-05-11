@@ -44,9 +44,8 @@ $(document).ready(function () {
     KdoButton($("#myBtnAdjunto"), "attachment", "Adjuntar Placement");
     Kendo_MultiSelect($("#instruccionesProd"), UrlApiCAtInstrucciones+"/PROD", "Descripcion", "IdInstruccion", "Seleccione ...");
     Kendo_MultiSelect($("#instruccionesCalidad"), UrlApiCAtInstrucciones + "/CALI", "Descripcion", "IdInstruccion", "Seleccione ...");
-
     Kendo_MultiSelect($("#ToleranciaMed"), UrlClientesTolerancia + "/" + idcliente, "Tolerancia", "IdTolerancia", "Seleccione ...");
- 
+    Kendo_CmbFiltrarGrid($("#plNombreCPT"), TSM_Web_APi + "ComposicionTelas", "Nombre", "IdComposicionTela", "Seleccione ...");
     fn_GetOTRequerimiento();
 
     $('#plStrikeOff').attr('readonly', true);
@@ -261,6 +260,9 @@ $(document).ready(function () {
         ActualizaComentariosFicha();
     });
 
+    $("#plNombreCPT").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
 
     //Control para subir los adjutos
     $("#Adjunto").kendoUpload({
@@ -547,7 +549,7 @@ let fn_GetOTRequerimiento = function () {
                 $("#plNombreEjecutivoCuentas").val(datos.NombreEjecutivoCuentas);
                 $("#plNombreTalla").val(datos.NombreTalla);
                 $("#plNombreQui").val(datos.NombreQui);
-                $("#plNombreCPT").val(datos.NombreCPT);
+                KdoCmbSetValue($("#plNombreCPT"), datos.IdComposicionTela);
                 $("#plNombreCCT").val(datos.NombreCCT);
                 $("#plNombreUbicacion").val(datos.NombreUbicacion);
                 $("#plSolicitaTelaSustituta").val(datos.SolicitaTelaSustituta === true ? "Si" : "No");
@@ -564,7 +566,7 @@ let fn_GetOTRequerimiento = function () {
                 $("#plTipoLuz").val(datos.TipoLuz);
                 $("#TxtInstrucciones").val(datos.InstruccionesGen);
                 $("#TxtComentarios").val(datos.InstruccionesTermo);
-
+                $("#plEstadoFichaProd").val(datos.EstadoFichaProd);
                 $("#plStrikeOff").prop("checked", Boolean(Number(datos.TieneStrikeOff)));
                 $("#plTermofijado").prop("checked", Boolean(Number(datos.UsarTermofijado)));
                 $("#plMigracion").prop("checked", Boolean(Number(datos.Migracion)));
@@ -692,6 +694,7 @@ let fn_GetOTRequerimiento = function () {
 
                 Grid_HabilitaToolbar($("#gDimensiones"), false, false, false);
                 Grid_HabilitaToolbar($("#gSolicitudProdDimension"), false, false, false);
+                KdoComboBoxEnable($("#plNombreCPT"), false);
              
             }
         }
@@ -997,8 +1000,9 @@ let fn_ObtenerDimensiones = function (req) {
                     IdRequerimiento: { type: "number" },
                     IdDimension: { type: "number" },
                     IdCategoriaTalla: { type: "number" },
+                    Nombre: {type:"string"},
                     IdUnidad: { type: "number" },
-                    Nombre: { type: "string" },
+                    Nombre1: { type: "string" },
                     Alto: { type: "number" },
                     Ancho: { type: "number" },
                     AltoEstamp: {type: "number"},
@@ -1021,6 +1025,7 @@ let fn_ObtenerDimensiones = function (req) {
             KdoHideCampoPopup(e.container, "IdDimension");
             KdoHideCampoPopup(e.container, "IdCategoriaTalla");
             KdoHideCampoPopup(e.container, "IdUnidad");
+            KdoHideCampoPopup(e.container, "Nombre1");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Alto");
             KdoHideCampoPopup(e.container, "Ancho");
@@ -1034,14 +1039,15 @@ let fn_ObtenerDimensiones = function (req) {
             { field: "Llave", title: "Llave", hidden: true },
             { field: "IdRequerimiento", title: "Requerimiento", width: 160, hidden: true },
             { field: "IdDimension", title: "Dimensión", width: 160, hidden: true },
-            { field: "IdCategoriaTalla", title: "Categoría talla" ,width:50, hidden:true},
+            { field: "IdCategoriaTalla", title: "Categoría talla", width: 50, hidden: true },
+            { field: "Nombre", title: "Tamaño", width: 200 },
             { field: "IdUnidad", title: "idUnidad", hidden: true,width:200},
-            { field: "Nombre", title: "Tipo de Medida",width:200 },
-            { field: "Alto", title: "Alto",width:100 },
-            { field: "Ancho", title: "Ancho", width: 200 },
+            { field: "Nombre1", title: "Tipo de Medida",width:200 },
+            { field: "Alto", title: "Alto", width: 100, hidden: true, menu: false},
+            { field: "Ancho", title: "Ancho", width: 200, hidden: true, menu: false },
             { field: "AltoEstamp", title: "Alto Estampado", width: 100 },
             { field: "AnchoEstamp", title: "Ancho Estampado", width: 100 },
-            { field: "Tallas", title: "Tallas" ,width:100 },
+            { field: "Tallas", title: "Tallas", width: 100, hidden: true,menu:false },
             { field: "DimensionesRelativas", title: "Dimensiones Relativas", hidden: true}
            
         ]
@@ -1150,7 +1156,10 @@ let fn_ObtenerFichaTamanos = function (req) {
                         validation: {
                             required: true,
                             maxlength: function (input) {
-                               
+                                if (input.is("[name='Tallas']")) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200.");
+                                    return input.val().length <= 200;
+                                }
                                 if (input.is("[name='Alto']")) {
                                     input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
                                     return $("[name='Alto']").data("kendoNumericTextBox").value() > 0;
@@ -1178,6 +1187,19 @@ let fn_ObtenerFichaTamanos = function (req) {
                     },
                     Ancho: {
                         type: "number"
+                    },
+                    Tallas: {
+                        type: "string"
+                    },
+                    DesarrollarTalla: {
+                        type: "bool"
+                    },
+                    IdRequerimiento: {
+                        type: "number", defaultValue: function (e) { return null; }
+                  
+                    },
+                    IdDimension: {
+                        type: "number", defaultValue: function (e) { return null; }
                     }
                 }
             }
@@ -1197,7 +1219,7 @@ let fn_ObtenerFichaTamanos = function (req) {
             KdoHideCampoPopup(e.container, "IdCotizacion");
             KdoHideCampoPopup(e.container, "Abreviatura");
             KdoHideCampoPopup(e.container, "Nombre");
-            KdoHideCampoPopup(e.container, "IdUnidad");
+            //KdoHideCampoPopup(e.container, "IdUnidad");
 
         },
 
@@ -1209,9 +1231,10 @@ let fn_ObtenerFichaTamanos = function (req) {
             { field: "IdCotizacion", title: "cod. Cotización", hidden: true },
             { field: "IdCategoriaTalla", title: "Cod. Talla", editor: Grid_Combox, values:["IdCategoriaTalla", "Nombre", UrlApiCT, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Nombre", title: "Tamaño" },
+            { field: "Tallas", title: "Rango de Tallas" },
             { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "IdUnidad", title: "Unidad", hidden: true, editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"]},
+            { field: "IdUnidad", title: "Unidad",  editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"]},
             { field: "Abreviatura", title: "Unidad de Medida" },
             { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "#", 0], format: "{0:n0}", footerTemplate: "Total: #: data.CantidadPiezas ? kendo.format('{0:n0}',sum ): 0 #"}
         ]
@@ -1220,7 +1243,7 @@ let fn_ObtenerFichaTamanos = function (req) {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
     SetGrid($("#gSolicitudProdDimension").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
     Set_Grid_DataSource($("#gSolicitudProdDimension").data("kendoGrid"), dsDimTamaño, 20);
-    SetGrid_CRUD_ToolbarTop($("#gSolicitudProdDimension").data("kendoGrid"), false);
+    SetGrid_CRUD_ToolbarTop($("#gSolicitudProdDimension").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gSolicitudProdDimension").data("kendoGrid"), Permisos.SNEditar, false);
 
    
@@ -1301,7 +1324,9 @@ let ActualizaComentariosFicha = function () {
                 IdUsuarioMod: getUser(),
                 FechaMod: xFecha,
                 ColorTela: $("#plColor").val(),
-                EstiloDiseno: $("#plEstiloDiseno").val()
+                EstiloDiseno: $("#plEstiloDiseno").val(),
+                IdComposicionTela: KdoCmbGetValue($("#plNombreCPT"))
+
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {

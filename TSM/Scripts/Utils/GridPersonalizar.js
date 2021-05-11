@@ -695,3 +695,32 @@ var Grid_ColTextArea = function (container, options) {
     $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-textarea"></textarea>')
         .appendTo(container);
 };
+
+/**
+ * Crea un MultiSelect para ser utlizado en un editor de un Kendo.UI.Grid.
+ * @param {kendo.ui.Grid} container Grid contenedor de la funcion.
+ * @param {string[]} options Listado de opciones: 0 - dataValue, 1 - dataText, 2 - urlRead, 3 - paramsUrlRead, 4 - placeHolder, 5 - required, 6 - cascadeFrom, 7 - validationMessage
+ */
+function Grid_MultiSelect(container, options) {
+    var required = givenOrDefault(options.values[5], "");
+    var Message = givenOrDefault(options.values[7], "");
+    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+    $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+        .appendTo(container)
+        .kendoMultiSelect({
+            valuePrimitive: true,
+            autoBind: true,
+            dataTextField: options.values[1],
+            dataValueField: options.values[0],
+            autoWidth: true,
+            cascadeFrom: givenOrDefault(options.values[6], ""),
+            placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
+            filter: "contains",
+            dataSource: {
+                sort: { field: options.values[1], dir: "asc" },
+                transport: {
+                    read: options.values[3] === "" ? options.values[2] : options.values[2] + "/" + options.values[3]
+                }
+            }
+        });
+}

@@ -128,6 +128,7 @@ var fn_VerifMuesCC = function () {
 var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
+    KdoButtonEnable($("#btnAjuste_Valid"), vhb);
     $("#maquinaValidacionMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
