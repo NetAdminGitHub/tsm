@@ -341,7 +341,7 @@ let fn_DibujarKanban = function (ds) {
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoReferencia + '</h1>' +
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.NoPrograma + '</h1>' +
                         '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
-                        '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '&nbsp;&nbsp;' + elemento.Estatus + '<br/> Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
+                        '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '&nbsp;&nbsp;' + elemento.Estatus + '<br/><span style="white-space:normal;font-weight: bold;">' + elemento.NombreTipoOrden + '</span><br/> Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
                         'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas +'</p>' +
                         '</div>' +
                         '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +

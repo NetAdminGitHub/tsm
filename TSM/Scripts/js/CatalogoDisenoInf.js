@@ -26,7 +26,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     $("#TxtTallaDesarrollada").val("");
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras", "Nombre", "IdTipoMuestra", "Seleccione...");
-    Kendo_CmbFiltrarGrid($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas/GetCategoriaTallaFiltro/1", "Nombre", "IdCategoriaTalla", "Seleccione...");
     KdoComboBoxEnable($("#CmbTallas"), false);
     KdoCmbSetValue($("#CmbTallas"), "");
     $('#swchkCambiaTalla').prop('checked', 0);
