@@ -436,8 +436,8 @@ var fn_VSCargarJSEtapa = function () {
                             required: true,
                             maxlength: function (input) {
                                 if (input.is("[name='Tallas']")) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 60.");
-                                    return input.val().length <= 60;
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200.");
+                                    return input.val().length <= 200;
                                 }
                                 if (input.is("[name='Alto']")) {
                                     input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");

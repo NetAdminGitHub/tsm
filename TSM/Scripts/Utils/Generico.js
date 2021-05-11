@@ -1004,6 +1004,15 @@ var KdoMultiSelectHide = function (InputElem) {
 var KdoMultiSelectShow = function (InputElem) {
     InputElem.data("kendoMultiSelect").wrapper.show();
 };
+/**
+ * Habilita o Inhabilita kendo multi select combo
+ * @param {HTMLInputElement} InputElem elemento div que contiene la funcion Combo box
+ * @param {boolean} enable true o false
+ */
+var KdoMultiSelectEnable = function (InputElem, enable) {
+    var MultiSelect = InputElem.data("kendoMultiSelect");
+    MultiSelect.enable(enable);
+};
 var opcionesFormaSmartWizard = {
     Defecto: "default",
     Flechas: "arrows",
