@@ -1231,3 +1231,20 @@ $("#ConsultaCataloDis").on("GetRowCatalogo", function (event, data) {
     $('[name="NombreDiseno"]').trigger("change");
     $('[name="IdPrograma"]').data("kendoMultiColumnComboBox").input.focus().select();
 });
+
+var fn_btnCrearPren = function () {
+    let creado = false;
+    if ($("#FrmModalCliePrenda").data("kendoValidator").validate()) {
+
+        if (KdoMultiColumnCmbGetValue($('[name="IdPrograma"]')) !== null) {
+            creado = fn_CrearPrenda();
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Antes de registrar seleccione un programa", "error");
+        }
+
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
+    }
+
+    return creado;
+};
