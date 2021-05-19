@@ -1329,7 +1329,13 @@ var fn_CargarVistaModalCatalogoDiseno = function (data, divCD, idcli) {
  */
 var fn_ShowModalCD = function (cargarJs, data, divCD, idcli) {
     let onShow = function () {
-        fn_getCatalogoDisenos(idcli, divCD);
+        if (cargarJs === true) {
+            fn_LoadCatalogoDisenos(idcli, divCD);
+        }
+        else {
+            fn_GetCatalogoDisenos(idcli, divCD);
+        }
+        
     };
     let onClose = function () {
         //$("#" + divCcf + "").children().remove();
