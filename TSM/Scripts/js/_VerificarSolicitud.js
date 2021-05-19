@@ -41,19 +41,20 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_VSCargarJSEtapa = function () {
-    KdoButton($("#btnCCDis"), "search", "Catalogo de Diseños");
-
-    $("#btnCCDis").data("kendoButton").bind("click", function () {
-        //FormulaHist: es el nombre del div en la vista elementoTrabajo
-        fn_ConsultarCatalogoDiseno("ConsultaCataloDis", $("#IdCliente").val());
+    KdoButton($("#btnCopyCDis"), "copy", "Catalogo de Diseños");
+    KdoButton($("#btnAcepCopy"), "check", "Aceptar");
+  
+    $("#modalCopyFMOT").kendoDialog({
+        height: "auto",
+        width: "20%",
+        title: "Copiar Información desde una OT",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
     });
-
     Kendo_CmbFiltrarGrid($("#CmbCriterioCritico"), TSM_Web_APi + "PerfilesCriteriosCriticosCalidad/GetPerfilesCriteriosCriticosCalidadByCliente/" + $("#IdCliente").val() , "NombrePerfil", "IdPerfilCriterio", "Seleccione...");
 
-    //$("#ConsultaCataloDis").on("GetRowCatalogo", function (event, Datos) {
-    //    $("#IdCatalogoDiseno").val(Datos.IdCatalogoDiseno);
-    //    $("#NoReferencia").val(Datos.NoReferencia);
-    //});
     //#region Inicialización de variables y controles Kendo
  
     KdoButton($("#Guardar"), "save", "Guardar");
@@ -326,6 +327,8 @@ var fn_VSCargarJSEtapa = function () {
     Kendo_CmbFiltrarGrid($("#CmbTipoAcabado"), UrlTA, "Nombre", "IdTipoAcabado", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbTMuestra"), UrlTMues, "Nombre", "IdTipoMuestra", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#CmbQuimica"), UrlQuimi, "Nombre", "IdQuimica", "Seleccione ...");
+   
+    $("#CmbOtporFM").ControlSeleccionOtporFM();
 
     //solicita tela sustituta
     $("#swchSolTelaSustituta").kendoSwitch();
@@ -1412,7 +1415,22 @@ var fn_VSCargarJSEtapa = function () {
     $("#UbicacionVer").autogrow({ vertical: true, horizontal: false, flickering: false });
     $("#UbicacionHor").autogrow({ vertical: true, horizontal: false, flickering: false });
 
- 
+    $("#btnCopyCDis").data("kendoButton").bind("click", function () {
+        $("#modalCopyFMOT").data("kendoDialog").open();
+        $("#CmbOtporFM").data("kendoMultiColumnComboBox").dataSource.read();
+        KdoMultiColumnCmbSetValue($("#CmbOtporFM"), "");
+
+    });
+
+    $("#btnAcepCopy").data("kendoButton").bind("click", function () {
+        if ($("#CmbOtporFM").data("kendoMultiColumnComboBox").selectedIndex >= 0) {
+            fn_CopiarOT();
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una Orden de trabajo", "error");
+        }
+
+    });
+
   
 }; // FIN DOCUMENT READY
 
@@ -1456,6 +1474,7 @@ var fn_VSCargar = function () {
         KdoNumerictextboxEnable($("#CantidadTallas"), false);
         KdoButtonEnable($("#Guardar"), false);
         KdoButtonEnable($("#myBtnAdjunto"), false);
+        KdoButtonEnable($("#btnCopyCDis"), false);
         Grid_HabilitaToolbar($("#GRDimension"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesColor"), false, false, false);
         Grid_HabilitaToolbar($("#GRReqDesTec"), false, false, false);
@@ -2077,6 +2096,7 @@ let HabilitaFormObje = function (ToF) {
     TextBoxEnable($("#EstiloDiseno"), ToF);
     TextBoxReadOnly($("#TxtDirectorioArchivos"), ToF);
     KdoButtonEnable($("#Guardar"), ToF);
+    KdoButtonEnable($("#btnCopyCDis"), ToF);
     KdoComboBoxEnable($("#CmbTipoLuz"), ToF);
     KdoComboBoxEnable($("#CmbTipoAcabado"), ToF);
     KdoComboBoxEnable($("#CmbTMuestra"), ToF);
@@ -2303,6 +2323,90 @@ var Fn_GetTecnicasArtSugeridos = function (vIdTec) {
                     }
                 });
             }
+        }
+    });
+};
+
+
+var Fn_GetOTporFM = function (idCatalogoDiseno, idOrdenTrabajo) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "NoDocumento", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "CatalogoDisenos/GetOrdenesTrabajosCopy/" + idCatalogoDiseno.toString() + "/"+ idOrdenTrabajo.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
+
+
+$.fn.extend({
+    ControlSeleccionOtporFM: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Seleccione...",
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "CatalogoDisenos/GetOrdenesTrabajosCopy/" + $("#IdCatalogoDiseno").val() + "/" + $("#txtIdOrdenTrabajo").val();
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+
+                },
+                columns: [
+                    { field: "NoDocumento", title: "Orden Trabajo" },
+                    { field: "FechaOrdenTrabajo", title: "Fecha" }
+
+                ]
+            });
+        });
+    }
+});
+
+var fn_CopiarOT = function () {
+    kendo.ui.progress($(".k-dialog"), true);
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajos/CopiarOtAOtDestino",
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            IdOtOrigen: KdoMultiColumnCmbGetValue($("#CmbOtporFM")),
+            IdOtDestino: $("#txtIdOrdenTrabajo").val()
+        }),
+        success: function (datos) {
+            RequestEndMsg(datos, "Post");
+            $("#modalCopyFMOT").data("kendoDialog").close();
+            fn_VSCargar();
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($(".k-dialog"), false);
+
+        },
+        complete: function () {
+            kendo.ui.progress($(".k-dialog"), false);
         }
     });
 };

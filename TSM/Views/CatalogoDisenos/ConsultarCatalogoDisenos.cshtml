@@ -1,11 +1,50 @@
 ﻿
-    <div class="card">
-        <div class="container my-5">
-            <section>
-                <div class="tab-pane fade show in active" id="panel31" role="tabpanel">
-                    <div class="form-row" id="RowPn31"></div>
+    <form id="FrmModalFM" enctype="multipart/form-data">
+        <span style="font-size: 1.2em;font-weight: bold;">Nueva Ficha de Muestra   </span>
+        <br />
+        <div class="border p-md-1 p-lg-1 ">
+            <div class="form-row">
+                <div class="form-group col-lg-3">
+                    <label for="TxtNombreDis_FM">Nombre del Diseño:</label>
+                    <input id="TxtNombreDis_FM" name="TxtNombreDis_FM" type="text" class="k-textbox form-control" required validationMessage="Requerido" />
                 </div>
-            </section>
+                <div class="form-group col-lg-3">
+                    <label for="TxtEstiloDis_FM">Estilo del Diseño:</label>
+                    <input id="TxtEstiloDis_FM" name="TxtEstiloDis_FM" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-lg-3">
+                    <label for="TxtNumeroDis_FM">Numero del Diseño:</label>
+                    <input id="TxtNumeroDis_FM" name="TxtNumeroDis_FM" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="form-group col-lg-3 align-self-lg-end">
+                    <div class="input-group">
+                        <div style="width: 100%;">
+                            <button type="button" id="btnGuardarFM" name="btnGuardarFM"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group col-lg-12"><div id="pager"></div></div>
+        <br />
+    </form>
+<div class="form-row">
+    <div class="form-group col-lg-3">
+        <label for="CmbFmCata">Filtrar por FM:</label>
+        <input id="CmbFmCata" name="CmbFmCata" type="text" class="form-control" />
     </div>
+    <div class="form-group col-lg-3 align-self-end">
+        <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox">
+        <label class="k-checkbox-label" for="chkVerTodas">Ver todos los FM </label>
+    </div>
+</div>
+
+<div class="card">
+    <div class="container my-5">
+        <section>
+            <div class="tab-pane fade show in active" id="panel31" role="tabpanel">
+                <div class="form-row" id="RowPn31"></div>
+            </div>
+        </section>
+    </div>
+    <div class="form-group col-lg-12"><div id="pager"></div></div>
+</div>
