@@ -891,6 +891,8 @@ let fn_CrearPrenda = function () {
         success: function (data) {
             dataPren = data;
             $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").dataSource.read().then(function () {
+                KdoMultiColumnCmbSetValue($('[name="IdRegistroSolicitudPrenda"]'), data[0].IdRegistroSolicitudPrenda);
+                $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").trigger("change");
                 $("#ModalCliePrenda").data("kendoDialog").close();
             });
             kendo.ui.progress($(document.body), false);
