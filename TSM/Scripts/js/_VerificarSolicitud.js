@@ -246,12 +246,12 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                MsgPerfilCriterioCritico: function (input) {
-                    if (input.is("[name='CmbCriterioCritico']")) {
-                        return $("#CmbCriterioCritico").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+                //MsgPerfilCriterioCritico: function (input) {
+                //    if (input.is("[name='CmbCriterioCritico']")) {
+                //        return $("#CmbCriterioCritico").data("kendoComboBox").selectedIndex >= 0;
+                //    }
+                //    return true;
+                //},
                 MsgCmbMotivo: function (input) {
                     if (input.is("[name='CmbMotivoDesarrollo']")) {
                         return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
@@ -303,8 +303,8 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbMotivo: "Requerido",
                 //MsgCmbAcabado: "Requerido",
                 MsgCmbTMuestra: "Requerido",
-                vQui: "Requerido",
-                MsgPerfilCriterioCritico:"Debe seleccionar un perfil de CTQ's"
+                vQui: "Requerido"
+                //MsgPerfilCriterioCritico:"Debe seleccionar un perfil de CTQ's"
             }
         }
     ).data("kendoValidator");
