@@ -4,7 +4,7 @@ var xaItem = 0;
 var xaIdRegistroSolicitudAjuste = 0;
 var xaIdSolicitudCambio = 0;
 var xaIdSeteo = 0;
-var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem,siaIdSeteo) {
+var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT) {
     xaIdEtapa = siaIdEtapa;
     xaIdOrdenTrabajo = siaIdot;
     xaItem = siaItem;
@@ -12,7 +12,7 @@ var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem,siaI
     KdoComboBoxbyData($("#cmbMotivoAjuste"), "[]", "Nombre", "IdMotivoSolicitudAjuste", "Seleccione...", "", "");
     KdoComboBoxbyData($("#cmbReproceso"), "[]", "Nombre", "IdReproceso", "Seleccione...", "", "");
     KdoMultiSelectDatos($("#MultEstacion"), "[]", "Nombre", "IdEstacion", "Seleccione ...", 100, true);
-    $("#cmbCambioSolicitud").ControlSelecionSolicitudesCambiosAjustes();
+    $("#cmbCambioSolicitud").ControlSelecionSolicitudesCambiosAjustesTipoOT(SiaIdTipoOT);
     fn_GridAjuste();
     $("#cmbCambioSolicitud").data("kendoMultiColumnComboBox").bind("change", function (e) {
         var multicolumncombobox = $("#cmbCambioSolicitud").data("kendoMultiColumnComboBox");

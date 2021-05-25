@@ -9,11 +9,16 @@
         <div class="border p-md-1 p-lg-1 rounded">
             <fieldset disabled>
                 <div class="form-row">
-                    <div class="form-group col-lg-6">
+                    <div class="form-group col-lg-12">
                         <label for="InfCliente">Cliente</label>
                         <input type="text" id="InfCliente" class="form-control">
                     </div>
-
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="InfCodigoFM">Código FM</label>
+                        <input type="text" id="InfCodigoFM" class="form-control">
+                    </div>
                     <div class="form-group col-lg-6">
                         <label for="InfFecha">Fecha</label>
                         <input type="text" id="InfFecha" class="form-control">
@@ -103,22 +108,58 @@
 <div class="form-row">
     <div id="ModalGeneraOT">
         <form id="FrmGeneraOT" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-row">
-                <div class="form-group col-lg-12">
-                    <label for="CmbMotivoDesarrollo">Motivo de Desarrollo</label>
-                    <input id="CmbMotivoDesarrollo" name="CmbMotivoDesarrollo" required validationMessage="Requerido" type="text" class="form-control" />
+            
+            <div class="border p-md-1 p-lg-1">
+                <span style="font-size: 1.2em;">Información</span>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="TxtPren">Ubicación del estampado:</label>
+                        <input id="TxtPren" name="TxtPren" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="TxtUbicacion">Ubicación del estampado:</label>
+                        <input id="TxtUbicacion" name="TxtUbicacion" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="TxtColorTela">Color tela: </label>
+                        <input id="TxtColorTela" name="TxtColorTela" class="k-textbox form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="TxtTallaDesarrollada">Talla Desarrollada:</label>
+                        <input id="TxtTallaDesarrollada" name="TxtTallaDesarrollada" class="k-textbox form-control" />
+                    </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-lg-12">
-                    <label for="CmbTiposMuestras">Tipos de Muestras</label>
-                    <input id="CmbTiposMuestras" name="CmbTiposMuestras" required validationMessage="Requerido" type="text" class="form-control" />
+            <br />
+            <div class="border p-md-1 p-lg-1">
+                <span style="font-size: 1.2em;">Generar OT.</span>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label for="CmbMotivoDesarrollo">Motivo de Desarrollo</label>
+                        <input id="CmbMotivoDesarrollo" name="CmbMotivoDesarrollo" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="CmbTiposMuestras">Tipos de Muestras</label>
+                        <input id="CmbTiposMuestras" name="CmbTiposMuestras" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-lg-12">
-                    <label for="TxtMotivoCambio">Detalle de Cambios:</label>
-                    <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
+                <div class="form-row">
+                    <div class="form-group col-md-6 col-lg-8">
+                        <label for="CmbTallas">Seleccion de talla a desarrollar</label>
+                        <input id="CmbTallas" name="CmbTallas" required validationMessage="Requerido" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6 col-lg-4 align-self-end">
+                        <input type="checkbox" id="swchkCambiaTalla" name="swchkCambiaTalla" />
+                        <label for="swchkCambiaTalla">Cambiar talla:</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="TxtMotivoCambio">Detalle de Cambios:</label>
+                        <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
+                    </div>
                 </div>
             </div>
         </form>

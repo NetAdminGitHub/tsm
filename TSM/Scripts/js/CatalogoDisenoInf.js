@@ -16,24 +16,48 @@ var fn_verKanbanEtapa = function (IdOrdenTrabajo) {
 };
 
 var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
+    TextBoxEnable($("#TxtPren"), false);
+    TextBoxEnable($("#TxtUbicacion"), false);
+    TextBoxEnable($("#TxtColorTela"), false);
+    TextBoxEnable($("#TxtTallaDesarrollada"), false);
+    $("#TxtPren").val("");
+    $("#TxtUbicacion").val("");
+    $("#TxtColorTela").val("");
+    $("#TxtTallaDesarrollada").val("");
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras", "Nombre", "IdTipoMuestra", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas/GetCategoriaTallaFiltro/1", "Nombre", "IdCategoriaTalla", "Seleccione...");
+    KdoComboBoxEnable($("#CmbTallas"), false);
+    KdoCmbSetValue($("#CmbTallas"), "");
+    $('#swchkCambiaTalla').prop('checked', 0);
     $("#TxtMotivoCambio").autogrow({ vertical: true, horizontal: false, flickering: false });
     KdoButton($("#btnReactivarOT"), "track-changes");
     $("#btnReactivarOT").click(function (e) {
         fn_SolicituReactivacionOrdenTrabajo("SoliIngresoCambio", fn_getIdOT($("#gConOT").data("kendoGrid")), fn_getIdEtp($("#gConOT").data("kendoGrid")), fn_getItem($("#gConOT").data("kendoGrid")), fn_getIdToT($("#gConOT").data("kendoGrid")), function () { return $("#gConOT").data("kendoGrid").dataSource.read(); });
     });
+    $("#swchkCambiaTalla").click(function () {
+        if (this.checked) {
+            KdoComboBoxEnable($("#CmbTallas"), true);
+            KdoCmbSetValue($("#CmbTallas"), "");
+            KdoCmbFocus($("#CmbTallas"));
+
+        } else {
+            KdoComboBoxEnable($("#CmbTallas"), false);
+            KdoCmbSetValue($("#CmbTallas"), "");
+            KdoCmbFocus($("#CmbMotivoDesarrollo"));
+        }
+    });
 
     fn_gridOT();
+    //fn_Dimensiones_OT();
     $("#tab_inf").kendoTabStrip({
         tabPosition: "top",
         animation: { open: { effects: "fadeIn" } }
     });
 
     $("#ModalGeneraOT").kendoDialog({
-        height: "50%",
-        width: "25%",
-        maxHeight: "50%",
+        height: "80%",
+        width: "40%",
         title: "Generar Orden de Trabajo",
         visible: false,
         closable: true,
@@ -62,6 +86,12 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                     }
                     return true;
                 },
+                MsgTall: function (input) {
+                    if (input.is("[name='CmbTallas']")) {
+                        return $("#chkDisenoFullColor").is(':checked') ? true : $("#CmbTallas").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
                 Msg3: function (input) {
                     if (input.is("[name='TxtMotivoCambio']")) {
                         return input.val().length > 0 && input.val().length <= 2000;
@@ -72,7 +102,8 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
             messages: {
                 MsgDesarrollo: "Requerido",
                 MsgTP: "Requerido",
-                Msg3: "requerido"
+                Msg3: "Requerido",
+                MsgTall: "Requerido"
             }
         }).data("kendoValidator");
 
@@ -86,7 +117,6 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     });
 
     fn_CargarInfDetalle(divCDInf, xidCatalogo, xidArte);
-
 };
 
 var fn_CargarInfDetalle = function (divCDInf, xidCatalogo, xidArte) {
@@ -103,7 +133,7 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo, xidArte) {
             if (dato.length > 0) {
                 $("#InfCliente").val(dato[0].NombreCli);
                 $("#InfFecha").val(kendo.toString(kendo.parseDate(dato[0].Fecha), 'dd/MM/yyyy'));
-                $("#" + divCDInf + "").data("kendoDialog").title(dato[0].NombreDiseno);
+                $("#" + divCDInf + "").data("kendoDialog").title("Diseño: " + dato[0].NoReferencia + " " + dato[0].NombreDiseno  );
                 $("#gConOT").data("kendoGrid").dataSource.read().then(function () { fn_GetAdjuntos(); });
             } else {
                 $("#InfCliente").val("");
@@ -199,7 +229,11 @@ let fn_gridOT = function () {
                     MUFIAPRO: { type: "bool" },
                     MUPREAPRO: { type: "bool" },
                     EstadoOT: { type: "bool" },
-                    NombreEstOT: { type: "bool" }
+                    NombreEstOT: { type: "bool" },
+                    IdOrdenTrabajoOrigen: { type: "number" },
+                    NoDocumentoOrigen: { type: "sring" },
+                    RoundMuestra: { type: "number" },
+                    TallaDesarrollada: { type: "sring"}
 
                 }
             }
@@ -248,17 +282,21 @@ let fn_gridOT = function () {
                     return "<button class='btn btn-link nav-link' onclick='fn_verKanbanEtapa(" + data["IdOrdenTrabajo"] + ")'>" + data["NoOT"] + "</button>";
                 }, width: "120px"
             },
-            { field: "NoReq", title: "Requerimiento", width: "120px" },
+            { field: "IdOrdenTrabajoOrigen", title: "Cod. OT Origen", hidden: true },
+            { field: "RoundMuestra", title: "Round Muestra", width: "100px" },
+            { field: "TallaDesarrollada", title: "Talla Desarrollada", width: "150px" },
+            { field: "FechaInicio", title: "Inicio de OT", format: "{0: dd/MM/yyyy}" },
+            { field: "NoReq", title: "Requerimiento", width: "120px", hidden:true },
             { field: "EstadoOT", title: "Estado OT", width: "120px", hidden: true },
             { field: "NombreEstOT", title: "Estado", width: "100px" },
             { field: "FechaSolicitud", title: "Fecha Solicitud", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
-            { field: "FechaInicio", title: "Fecha Inicio de OT", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "FechaFinal", title: "Fecha Final de OT", format: "{0: dd/MM/yyyy}", width: "120px", hidden: true },
             { field: "MUFIAPRO", title: "Muestra Fisica Aprobada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUFIAPRO"); } },
             { field: "MUCOTIZADA", title: "Muestra Cotizada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOTIZADA"); } },
             { field: "MUPREAPRO", title: "Muestra con Precio Aprob", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUPREAPRO"); } },
             { field: "REQMP", title: "Requisicion de Materia Prima", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "REQMP"); } },
             //{ field: "MUAPROPROD", title: "Muestra Aprob Producción", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUAPROPROD"); } },
+            { field: "NoDocumentoOrigen", title: "No OT Origen", width: "120px" },
             {
                 command: {
                     name: "Generar OT",
@@ -272,9 +310,14 @@ let fn_gridOT = function () {
                         xidRq=dataItem.IdRequerimiento;
                         xIdServ = dataItem.IdServicio;
                         $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
+                        fn_GetRequerimientoInfo();
+                        KdoComboBoxEnable($("#CmbTallas"), false);
+                        $('#swchkCambiaTalla').prop('checked', 0);
+                        KdoCmbSetValue($("#CmbTallas"), "");
                         let dialog = $("#ModalGeneraOT").data("kendoDialog");
                         dialog.open();
                         dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
+                        KdoCmbFocus($("#CmbMotivoDesarrollo"));
                         
                     }
                 },
@@ -527,10 +570,12 @@ let fn_GenerarOT = function () {
             method: "POST",
             dataType: "json",
             data: JSON.stringify({
-                IdRequerimiento:xidRq,
-                IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString() ,
+                IdRequerimiento: xidRq,
+                IdMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDesarrollo")).toString(),
                 IdTipoMuestra: KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
-                Comentario: $("#TxtMotivoCambio").val()
+                Comentario: $("#TxtMotivoCambio").val(),
+                snCambiaTalla: $("#swchkCambiaTalla").is(':checked') ? 1 : 0,
+                IdCategoriaTalla: KdoCmbGetValue($("#CmbTallas"))
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
@@ -625,7 +670,7 @@ let Fn_getCotizacion = function (g) {
     $("#InfNombreDisOT").val(elemento.NombreDisOT);
     $("#InfEstiloDisenoOT").val(elemento.EstiloDisenoOT);
     $("#InfNumDisenoOT").val(elemento.NumeroDisenoOT);
-
+    $("#InfCodigoFM").val(elemento.NoReferencia);
     $("#InfFechaInicio").val(kendo.toString(kendo.parseDate(elemento.FechaInicio), 'dd/MM/yyyy'));
     $("#InfFechaFinal").val(kendo.toString(kendo.parseDate(elemento.FechaFinal), 'dd/MM/yyyy'));
 };
@@ -681,4 +726,31 @@ let fn_GenerarSolicitudProducciones = function (data) {
             ErrorMsg(data);
         }
     });
+};
+
+let fn_GetRequerimientoInfo = function () {
+    kendo.ui.progress($("#ModalGeneraOT"), true);
+    $.ajax({
+        url: TSM_Web_APi + "CatalogoDisenos/GetRequerimientoInf/" + xidRq,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato!==null ) {
+                $("#TxtPren").val(dato.NombrePrenda);
+                $("#TxtUbicacion").val(dato.NombreParte);
+                $("#TxtColorTela").val(dato.Color);
+                $("#TxtTallaDesarrollada").val(dato.TallaDesarrollada);
+            } else {
+                $("#TxtPren").val("");
+                $("#TxtUbicacion").val("");
+                $("#TxtColorTela").val("");
+                $("#TxtTallaDesarrollada").val("");
+            }
+            kendo.ui.progress($("#ModalGeneraOT"), false);
+        },
+        error: function () {
+            kendo.ui.progress($("#ModalGeneraOT"), false);
+        }
+    });
+
 };

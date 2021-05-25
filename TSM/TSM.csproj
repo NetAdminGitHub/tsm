@@ -257,6 +257,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
@@ -272,7 +273,7 @@
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
-    <Compile Include="Controllers\ConsultarFichaOTController.cs" />
+    <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
     <Compile Include="Controllers\ContactosClientesController.cs" />
     <Compile Include="Controllers\CostoTecnicasController.cs" />
@@ -286,7 +287,7 @@
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
-    <Compile Include="Controllers\GestionFichasProduccionesController.cs" />
+    <Compile Include="Controllers\ConsultaFichasProduccionesController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
@@ -304,10 +305,12 @@
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
+    <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
+    <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -358,6 +361,7 @@
     <Compile Include="Controllers\TiposMarcosController.cs" />
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
+    <Compile Include="Controllers\TiposPiezasController.cs" />
     <Compile Include="Controllers\TiposRequerimientoColoresController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
@@ -476,6 +480,7 @@
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CriteriosCriticosCalidad.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
@@ -483,7 +488,7 @@
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
-    <Content Include="Scripts\js\ConsultarFichaOT.js" />
+    <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
@@ -496,7 +501,7 @@
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
     <Content Include="Scripts\js\FichaOT.js" />
-    <Content Include="Scripts\js\GestionFichasProducciones.js" />
+    <Content Include="Scripts\js\ConsultaFichasProducciones.js" />
     <Content Include="Scripts\js\GestionOTAsignaciones.js" />
     <Content Include="Scripts\js\GestionOTDesarrollosCobrosApro.js" />
     <Content Include="Scripts\js\GetCipher.js" />
@@ -505,8 +510,10 @@
     <Content Include="Scripts\js\Maquinas.js" />
     <Content Include="Scripts\js\MotivosAjustesTintas.js" />
     <Content Include="Scripts\js\MotivosSolicitudesCambios.js" />
+    <Content Include="Scripts\js\NivelesExigencias.js" />
     <Content Include="Scripts\js\OrdenesTrabajosTerminadas.js" />
     <Content Include="Scripts\js\pbiReporte.js" />
+    <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
@@ -654,6 +661,7 @@
     <Content Include="Scripts\js\TiposMarcos.js" />
     <Content Include="Scripts\js\TiposOperacionesSublimaciones.js" />
     <Content Include="Scripts\js\TiposOrdenesTrabajos.js" />
+    <Content Include="Scripts\js\TiposPiezas.js" />
     <Content Include="Scripts\js\TiposRequerimientoColores.js" />
     <Content Include="Scripts\js\TiposRetenciones.js" />
     <Content Include="Scripts\js\TiposSeparaciones.js" />
@@ -664,6 +672,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_CriteriosCriticos.js" />
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
@@ -724,6 +733,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\OrdenesTrabajo\ElementoTrabajo.cshtml" />
+    <Content Include="Views\PiezasDesarrolladas\Index.cshtml" />
     <Content Include="Views\Programas\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -738,8 +748,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
@@ -872,15 +884,15 @@
     <Content Include="Scripts\Utils\powerbi.js.map" />
     <Content Include="Scripts\powerbi.js.map" />
     <Content Include="Views\Impresores\Index.cshtml" />
-    <Content Include="Views\ConsultarFichaOT\Index.cshtml" />
-    <Content Include="Views\ConsultarFichaOT\FichaOT.cshtml" />
+    <Content Include="Views\ConsultaFichasDesarrollos\Index.cshtml" />
+    <Content Include="Views\ConsultaFichasDesarrollos\FichaOT.cshtml" />
     <Content Include="Views\CatalogoDisenos\ConsultarCatalogoDisenos.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionOrdenesTrabajos\SublimacionOrdenesTrabajosReg.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SublimacionPreciosOrdenesTrabajos\SublimacionOrdenesTrabajosPreciosApro.cshtml" />
     <Content Include="Views\GetCipher\Index.cshtml" />
-    <Content Include="Views\GestionFichasProducciones\Index.cshtml" />
+    <Content Include="Views\ConsultaFichasProducciones\Index.cshtml" />
     <Content Include="Views\Simulaciones\_CostosPorPartes.cshtml" />
     <Content Include="Views\EtapasOrdenesTrabajos\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_Recalcular.cshtml" />
@@ -910,8 +922,12 @@
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
     <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
     <Content Include="Views\Shared\_SolicitarIngresoAjustes.cshtml" />
+    <Content Include="Views\CriteriosCriticosCalidad\Index.cshtml" />
     <Content Include="Scripts\VueComp\inquisalva-components.js.map" />
     <Content Include="Scripts\VueComp\inquisalva-components.min.js.map" />
+    <Content Include="Views\PiezasDesarrolladas\_CriteriosCriticos.cshtml" />
+    <Content Include="Views\TiposPiezas\Index.cshtml" />
+    <Content Include="Views\NivelesExigencias\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

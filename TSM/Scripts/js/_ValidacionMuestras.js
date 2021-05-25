@@ -118,7 +118,7 @@ var fn_VerifMuesCC = function () {
     //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true);
     $("#btnAjuste_Valid").click(function (e) {
         //fn_OpenModalEstacionAjuste();
-        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo);
+        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo, idTipoOrdenTrabajo.toString());
 
     });
 
@@ -128,6 +128,7 @@ var fn_VerifMuesCC = function () {
 var fn_VerifMueCEtapa = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
+    KdoButtonEnable($("#btnAjuste_Valid"), vhb);
     $("#maquinaValidacionMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 };
 
