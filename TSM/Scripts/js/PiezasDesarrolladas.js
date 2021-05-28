@@ -1,5 +1,7 @@
 ﻿var Permisos;
 let _IdOrdenTrabajo;
+let _IdPiezaDesarrollada;
+let Turnos = [{ "nombre": "A","valor":"A" }, { "nombre": "B", "valor":"B"}];
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstado"), "check-circle");
     KdoButton($("#btnCriteriosCalidad"), "track-changes-accept");
@@ -8,6 +10,7 @@ $(document).ready(function () {
 
     $("#CmbOrdenTrabajo").ControlSeleccionOrdenesTrabajos();
 
+  
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
             fn_ObtenerMuestras(this.dataItem(e.item.index()).IdOrdenTrabajo);
@@ -63,7 +66,12 @@ $(document).ready(function () {
             }
         },
         //FINALIZACIÓN DE UNA PETICIÓN
-        requestEnd: Grid_requestEnd,
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+            if (e.type === "update" || e.type === "create" || e.type === "destroy") {
+                $("#grid").data("kendoGrid").dataSource.read();
+            }
+        },
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
         schema: {
@@ -97,6 +105,7 @@ $(document).ready(function () {
                     Enmienda: { type: "boolean" },
                     Segunda: { type: "boolean" },
                     AuditoriaExterna: { type: "boolean" },
+                    FechaRegistro: {type:"date"},
                 }
             }
         }
@@ -112,7 +121,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "NomEstado");
             KdoHideCampoPopup(e.container, "NomTipoPieza");
-
+            KdoHideCampoPopup(e.container, "FechaRegistro");
             Grid_Focus(e, "NoPieza");
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -121,16 +130,18 @@ $(document).ready(function () {
             { field: "IdPiezaDesarrollada", title: "IdPiezaDesarrollada", hidden: true },
             { field: "IdSeteo", title: "Seteo", hidden: true },
             { field: "NoPieza", title: "No. Muestra" },
+            { field: "FechaRegistro", title: "Fecha Registrada", format: "{0:dd/MM/yyyy HH:MM}" },
             { field: "IdTipoPieza", title: "Tipo de Pieza", editor: Grid_Combox, values: ["IdTipoPieza", "Nombre", varTiposPiezas, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NomTipoPieza", title: "Tipo de Pieza" },
             { field: "Estado", title: "Resultado", hidden: true },
             { field: "NomEstado", title: "Resultado" },
             { field: "Comentarios", title: "Comentarios" },
             { field: "IdPlanta", title: "Planta", editor: Grid_ColNumeric, values: ["required", "1", "3", "#", 0] },
-            { field: "IdTurno", title: "Turno" },
+            { field: "IdTurno", title: "Turno", editor: Grid_ColRadiobuttonGroup, values: [Turnos] },
             { field: "Enmienda", title: "Enmienda", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Enmienda"); } },
             { field: "Segunda", title: "Segunda", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Segunda"); } },
             { field: "AuditoriaExterna", title: "Auditoria Externa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AuditoriaExterna"); } }
+            
         ]
     });
 
@@ -140,6 +151,8 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
+   
+
     var selectedRows = [];
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#grid"), selectedRows);
@@ -148,11 +161,9 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
-    $(window).on("resize", function () {
-        Fn_Grid_Resize($("#grid"), $(window).height() - "371");
-    });
 
-    Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+
+
 
     // carga vista para el cambio de estado
     // 1. configurar vista.
@@ -167,6 +178,86 @@ $(document).ready(function () {
         };
         Fn_VistaCambioEstadoMostrar("PiezasDesarrolladas", fn_getEstadoPD($("#grid").data("kendoGrid")), TSM_Web_APi + "PiezasDesarrolladas/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
+
+
+    let dataSourceEstados = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) {
+                    return crudServiceBaseUrl + "/GetEstados/" + (_IdPiezaDesarrollada === undefined || _IdPiezaDesarrollada === null ? 0 : _IdPiezaDesarrollada);
+                },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdPiezaDesarrollada",
+                fields: {
+                    IdPiezaDesarrollada: {
+                        type: "numeric"
+
+                    },
+                    FechaEstado: { type: "date" },
+                    Estado: { type: "string" },
+                    Motivo: { type: "string" },
+                    IdUsuario: { type: "string" },
+
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#gridEstados").kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdPiezaDesarrollada", title: "Pieza desarrollada", hidden: true },
+            { field: "FechaEstado", title: "Fecha de cambio", hidden: false, format: "{0:dd/MM/yyyy HH:MM}" },
+            { field: "Estado", title: "Estado" },
+            { field: "Motivo", title: "Motivo" },
+            { field: "IdUsuario", title: "Usuario", format: "{0:dd/MM/yyyy HH:MM}" }
+
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridEstados").data("kendoGrid"), ModoEdicion.NoEditable, true, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#gridEstados").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridEstados").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridEstados").data("kendoGrid"), dataSourceEstados);
+
+    var seleRows2 = []
+    $("#grid").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#grid"), seleRows2);
+        _IdPiezaDesarrollada = fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid"));
+
+        if (_IdPiezaDesarrollada != undefined) {
+            $("#gridEstados").data("kendoGrid").dataSource.read();
+        }
+     
+    });
+
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+        Fn_Grid_Resize($("#gridEstados"), $(window).height() - "371");
+    });
+
+    Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+
+    Fn_Grid_Resize($("#gridEstados"), $(window).height() - "371");
+
+
 });
 
 $("#btnCriteriosCalidad").click(function (e) {
@@ -268,6 +359,22 @@ let fn_getEstadoPD = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Estado;
 };
+
+//IdPiezaDesarrollada: fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid"))
+
+let fn_muestraEstados = function () {
+    
+    /*  <div class="form-group col-lg-8">
+                        <label id="labelcons" class="k-grid-toolbar"><h3>Piezas desarrolladas</h3></label>
+
+                        <div id="Estados"></div>
+                    </div>*/
+
+  
+
+
+};
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
