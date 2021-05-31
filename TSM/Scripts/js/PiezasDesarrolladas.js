@@ -236,15 +236,21 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridEstados").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridEstados").data("kendoGrid"), dataSourceEstados);
 
+    if (Permisos.SNConfidencial === false) { $("#statusSection").hide();   }
+
     var seleRows2 = []
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), seleRows2);
         _IdPiezaDesarrollada = fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid"));
-
-        if (_IdPiezaDesarrollada != undefined) {
+        let nombrePieza = fn_getNoPiezaDesarrollada($("#grid").data("kendoGrid"));
+        if (_IdPiezaDesarrollada != undefined && Permisos.SNConfidencial === true) {
             $("#gridEstados").data("kendoGrid").dataSource.read();
+
+
+            document.getElementById('lblstatus').innerHTML = "<h3>Cambios de estados de " + nombrePieza + " </h3>";
         }
-     
+
+
     });
 
 
@@ -355,25 +361,18 @@ let fn_getIdPiezaDesarrollada = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdPiezaDesarrollada;
 };
+
+
+let fn_getNoPiezaDesarrollada = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.NoPieza;
+};
+
 let fn_getEstadoPD = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Estado;
 };
 
-//IdPiezaDesarrollada: fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid"))
-
-let fn_muestraEstados = function () {
-    
-    /*  <div class="form-group col-lg-8">
-                        <label id="labelcons" class="k-grid-toolbar"><h3>Piezas desarrolladas</h3></label>
-
-                        <div id="Estados"></div>
-                    </div>*/
-
-  
-
-
-};
 
 fPermisos = function (datos) {
     Permisos = datos;
