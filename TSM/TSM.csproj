@@ -310,6 +310,7 @@
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
+    <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
@@ -498,6 +499,7 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
+    <Content Include="Scripts\js\PruebasLaboratorio.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
     <Content Include="Scripts\js\FichaOT.js" />
@@ -677,6 +679,7 @@
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
     <Content Include="Scripts\js\_HistoricoSeteos.js" />
+    <Content Include="Scripts\js\_InfoPruebaLaboratorio.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
     <Content Include="Scripts\js\_RevisionTecnica.js" />
     <Content Include="Scripts\js\_SimulacionMuestrasDatos.js" />
@@ -928,6 +931,8 @@
     <Content Include="Views\PiezasDesarrolladas\_CriteriosCriticos.cshtml" />
     <Content Include="Views\TiposPiezas\Index.cshtml" />
     <Content Include="Views\NivelesExigencias\Index.cshtml" />
+    <Content Include="Views\PruebasLaboratorio\Index.cshtml" />
+    <Content Include="Views\PruebasLaboratorio\_InfoPruebaLaboratorio.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
