@@ -1,0 +1,188 @@
+﻿<div class="form-row">
+    <div class="form-group">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-3" id="SeccionAjuste_1" hidden="hidden">
+                        <div class="form-row">
+                            <div id="gridEstacionMq_Ajuste" class="form-control"></div>
+                        </div>
+                        <div class="form-row">
+                            <div id="gridDet_Ajuste" class="form-control"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9" id="SeccionAjuste_2">
+                        <div class="form-row" id="tsFormulasAjuste">
+                            <ul>
+                                <li class="k-state-active">
+                                    FORMULACIONES
+                                </li>
+                                <li>
+                                    ANALISIS DEL DISEÑO
+                                </li>
+                            </ul>
+                            <div class="form-group col-lg-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                        <label for="TxtOpcSelecFormulas_Ajuste" id="OpcSelecFormulas_Ajuste"></label>
+                                        <input id="TxtOpcSelecFormulas_Ajuste" name="TxtOpcSelecFormulas_Ajuste" type="text" class="k-textbox form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="TxtNombreQuiForm_Ajuste">Química para utilizar</label>
+                                        <input id="TxtNombreQuiForm_Ajuste" name="TxtNombreQuiForm_Ajuste" type="text" class="k-textbox form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="TxtFormulaSugTint_Ajuste">Formulación Sugerida </label>
+                                        <input id="TxtFormulaSugTint_Ajuste" name="TxtFormulaSugTint_Ajuste" type="text" class="k-textbox form-control" />
+                                    </div>
+                                    <div class="form-group col-lg-3 align-self-lg-end">
+                                        <button type="button" id="btnAddMFAjusteTintas" data-toggle="modal" data-target="#MNuevoAjustes">Nuevo Ajuste</button>
+                                        @*<button type="button" id="btnAddMFEditar" data-toggle="modal" data-target="#MAjustes">Editar Ajuste</button>*@
+                                        <button type="button" id="btnAddMFAHistori_Ajuste" data-toggle="modal" data-target="#MHitorico">Historicas</button>
+
+                                        <button type="button" id="btnAutRet_Ajuste" data-toggle="modal">Retenciones</button>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="txtArticuloSugeridoTint_Ajuste">Materia Prima Sugerida</label>
+                                        <input id="txtArticuloSugeridoTint_Ajuste" name="txtArticuloSugeridoTint_Ajuste" type="text" class="k-textbox form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <div id="gridFormulasAjuste" class="form-control"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <div id="gridFormulasMPAjuste" class="form-control"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <form id="FrmGenAjusteEst" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbIdTipoEstacion_Ajuste">Tipo de Estación</label>
+                                            <input name="CmbIdTipoEstacion_Ajuste" id="CmbIdTipoEstacion_Ajuste" required validationMessage="Requerido" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="TxtOpcSelec_Ajuste" id="OpcSelec_Ajuste"></label>
+                                            <input id="TxtOpcSelec_Ajuste" name="TxtOpcSelec_Ajuste" type="text" class="k-textbox form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbQuimica_Ajuste">Química Utilizar</label>
+                                            <input id="CmbQuimica_Ajuste" name="CmbQuimica_Ajuste" required validationMessage="Requerido" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbTipoTinta_Ajuste">Tipo de Tintas</label>
+                                            <input name="CmbTipoTinta_Ajuste" id="CmbTipoTinta_Ajuste" required validationMessage="Requerido" type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbSedas_Ajuste">Seda:</label>
+                                            <input id="CmbSedas_Ajuste" name="CmbSedas_Ajuste" required validationMessage="Requerido" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbTipoEmulsion_Ajuste">Emulsiones</label>
+                                            <input id="CmbTipoEmulsion_Ajuste" name="CmbTipoEmulsion_Ajuste" required validationMessage="Requerido" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="NumCapilar_Ajuste">Capilar</label>
+                                            <input id="NumCapilar_Ajuste" name="NumCapilar_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="EscurridorDureza_Ajuste">Dureza Escurridor</label>
+                                            <input id="EscurridorDureza_Ajuste" name="EscurridorDureza_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="NumPasadas_Ajuste">Número de Pasadas</label>
+                                            <input id="NumPasadas_Ajuste" name="NumPasadas_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbBasePigmento_Ajuste">Base Mezcla</label>
+                                            <input id="CmbBasePigmento_Ajuste" name="CmbBasePigmento_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbSistemaPigmento_Ajuste">Sistema Pigmentos</label>
+                                            <input id="CmbSistemaPigmento_Ajuste" name="CmbSistemaPigmento_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="NumResolucionDPI_Ajuste">Resolución</label>
+                                            <input id="NumResolucionDPI_Ajuste" name="NumResolucionDPI_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="NumPixeles_Ajuste">Pixeles</label>
+                                            <input id="NumPixeles_Ajuste" name="NumPixeles_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="NumLineajeLPI_Ajuste">Lineaje</label>
+                                            <input id="NumLineajeLPI_Ajuste" name="NumLineajeLPI_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <label for="NumArea_Ajuste">Área</label>
+                                                    <input id="NumArea_Ajuste" name="NumArea_Ajuste" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="CmdIdUnidadArea_Ajuste">Unidad área</label>
+                                                    <input id="CmdIdUnidadArea_Ajuste" name="CmdIdUnidadArea_Ajuste" required validationMessage="Requerido" type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="TxtLetra">Letra</label>
+                                            <input id="TxtLetra" name="TxtLetra" type="text" class="k-textbox form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="CmbTecnica_Ajuste">Técnica a Aplicar</label>
+                                            <input id="CmbTecnica_Ajuste" name="CmbTecnica_Ajuste" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="ArticuloSugerido_Ajuste">Materia Prima Sugerida</label>
+                                            <input id="ArticuloSugerido_Ajuste" name="ArticuloSugerido_Ajuste" type="text" class="k-textbox form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="TxtFormulaSug_Ajuste">Formulación Sugerida</label>
+                                            <input id="TxtFormulaSug_Ajuste" name="TxtFormulaSug_Ajuste" type="text" class="k-textbox form-control" />
+                                        </div>
+                                      
+                                    </div>
+                                </form>
+                            </div>
+                   
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="form-row">
+                    <button type="button" class=" k-primary" id="btnAddMCE_Ajuste">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*seccion html que se utilizara para la vista modal de Autorizacion de retenciones *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="RetAut_Ajuste"></div>
+    </div>
+</div>
+
+

@@ -4,8 +4,8 @@
     KdoButton($("#btnAddMFAjuste"), "gear", "Ajuste");
     //KdoButton($("#btnAddMFEditar"), "edit", "Editar");
     KdoButton($("#btnAddMFAHistori"), "search", "Formulas Historica");
-    KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
-    kdoRbSetValue($("#rbAjuste"), true);
+    //KdoButton($("#btnAcepAjuste"), "check", "Aceptar");
+    //kdoRbSetValue($("#rbAjuste"), true);
     KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
     KdoButton($("#btnAutRet"), "warning","Retenciones");
     //informacion de revelado
@@ -94,37 +94,38 @@
     TextBoxEnable($("#CmbTipoEmulsion_MaRev"), false);
     TextBoxEnable($("#TxtNombreEstado"), false);
 
-    $("#NumCntIni_Recibida").kendoNumericTextBox({
-        min: 0.00,
-        max: 99999999999999.99,
-        format: "{0:n2}",
-        restrictDecimals: false,
-        decimals: 2,
-        value: 0
-    });
+    //$("#NumCntIni_Recibida").kendoNumericTextBox({
+    //    min: 0.00,
+    //    max: 99999999999999.99,
+    //    format: "{0:n2}",
+    //    restrictDecimals: false,
+    //    decimals: 2,
+    //    value: 0
+    //});
 
     xidEstacion = 0;
     fn_GridEstaciones($("#gridEstacion"));
     fn_gridFormulas($("#gridFormulas"));
     fn_gridAjustePrima($("#gridFormulasMP"));
 
-    $("#MbtnAjuste").kendoDialog({
-        height: "auto",
-        width: "20%",
-        title: "Crear ajuste",
-        closable: true,
-        modal: true,
-        visible: false,
-        maxHeight: 900
-    });
+    //$("#MbtnAjuste").kendoDialog({
+    //    height: "auto",
+    //    width: "20%",
+    //    title: "Crear ajuste",
+    //    closable: true,
+    //    modal: true,
+    //    visible: false,
+    //    maxHeight: 900
+    //});
 
     $("#btnAddMFAjuste").bind("click", function () {
-        kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
-        KdoCmbSetValue($("#CmbMotivoAjus"), "");
-        kdoRbSetValue($("#rbAjuste"), true);
-        $("#MbtnAjuste").data("kendoDialog").open().toFront();
-        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
-        frmNajus.hideMessages();
+        //kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
+        //KdoCmbSetValue($("#CmbMotivoAjus"), "");
+        //kdoRbSetValue($("#rbAjuste"), true);
+        //$("#MbtnAjuste").data("kendoDialog").open().toFront();
+        //$("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
+        //frmNajus.hideMessages();
+        fn_CrearNuevoAjusteFormulas("vCrearNuevoAjuste", maq[0].IdSeteo, xidEstacion, function () { return fn_focoFilaAjustada(); });
     });
 
     $("#btnAutRet").bind("click", function () {
@@ -134,57 +135,52 @@
 
     });
 
-    let urtMo = TSM_Web_APi + "MotivosAjustesTintas";
-    Kendo_CmbFiltrarGrid($("#CmbMotivoAjus"), urtMo, "Nombre", "IdMotivo", "Seleccione un motivo de ajuste ....");
+    //let urtMo = TSM_Web_APi + "MotivosAjustesTintas";
+    //Kendo_CmbFiltrarGrid($("#CmbMotivoAjus"), urtMo, "Nombre", "IdMotivo", "Seleccione un motivo de ajuste ....");
 
-    var frmNajus = $("#FrmNuevoAjuste").kendoValidator({
-        rules: {
-            //vcnt: function (input) {
-            //    if (input.is("[id='NumCntIni_Recibida']") ) {
-            //        return kdoNumericGetValue($("#NumCntIni_Recibida")) >= (KdoRbGetValue($("#rbAjuste")) ? 1 : 0) && kdoNumericGetValue($("#NumCntIni_Recibida")) <=500;
-            //    }
-            //    return true;
-            //},
-            vMtAjus: function (input) {
-                if (input.is("[id='CmbMotivoAjus']")) {
-                    return $("#CmbMotivoAjus").data("kendoComboBox").selectedIndex >= 0;
-                }
-                return true;
-            }
-        },
-        messages: {
-            //vcnt: "Cantidad no mayor a 500",
-            vMtAjus: "Requerido"
-        }
-    }).data("kendoValidator");
+    //var frmNajus = $("#FrmNuevoAjuste").kendoValidator({
+    //    rules: {
+    //        vMtAjus: function (input) {
+    //            if (input.is("[id='CmbMotivoAjus']")) {
+    //                return $("#CmbMotivoAjus").data("kendoComboBox").selectedIndex >= 0;
+    //            }
+    //            return true;
+    //        }
+    //    },
+    //    messages: {
+    //        //vcnt: "Cantidad no mayor a 500",
+    //        vMtAjus: "Requerido"
+    //    }
+    //}).data("kendoValidator");
 
-    $("#btnAcepAjuste").bind("click", function (e) {
-        e.preventDefault();
-        if (frmNajus.validate()) {
-            fn_Ajuste();
+    //$("#btnAcepAjuste").bind("click", function (e) {
+    //    e.preventDefault();
+    //    if (frmNajus.validate()) {
+    //        fn_Ajuste();
 
-        } else {
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar la cantidad devuelta", "error");
-        }
+    //    } else {
+    //        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar la cantidad devuelta", "error");
+    //    }
 
-    });
+    //});
 
-    $("#rbAjusteLimpio").click(function () {
-        kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
-        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
-        $('[for= "NumCntIni_Recibida"]').text("Cantidad Inicial:");
-        frmNajus.hideMessages();
-    });
+    //$("#rbAjusteLimpio").click(function () {
+    //    kdoNumericSetValue($("#NumCntIni_Recibida"), 0.00);
+    //    $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
+    //    $('[for= "NumCntIni_Recibida"]').text("Cantidad Inicial:");
+    //    frmNajus.hideMessages();
+    //});
 
-    $("#rbAjuste").click(function () {
-        KdoNumerictextboxEnable($("#NumCntIni_Recibida"), true);
-        $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
-        $('[for= "NumCntIni_Recibida"]').text("Cantidad Recibida:");
-        frmNajus.hideMessages();
-    });
+    //$("#rbAjuste").click(function () {
+    //    KdoNumerictextboxEnable($("#NumCntIni_Recibida"), true);
+    //    $("#NumCntIni_Recibida").data("kendoNumericTextBox").focus();
+    //    $('[for= "NumCntIni_Recibida"]').text("Cantidad Recibida:");
+    //    frmNajus.hideMessages();
+    //});
 
     $("#btnAddMFAHistori").data("kendoButton").bind("click", function () {
         //FormulaHist: es el nombre del div en la vista elementoTrabajo
+         //ir a ElementoTrabajos.js y configurar la etapa para obtener la formula Metodos : "ObtenerFormula" y "SetValorBusqueda"
         fn_FormulaHistorica("FormulaHist");
     });
 
@@ -702,39 +698,37 @@ var fn_getEstado = function (g) {
     return SelItem === null ? 0 : SelItem.Estado;
 
 };
-var fn_Ajuste = function () {
-    kendo.ui.progress($(".k-window-content"), true);
-        $.ajax({
-            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntIni_Recibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
-            type: "Post",
-            dataType: "json",
-            data: JSON.stringify({ id: null }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                //$("#gridFormulas").data("kendoGrid").dataSource.read();
-                kendo.ui.progress($(".k-window-content"), false);
-                $("#MbtnAjuste").data("kendoDialog").close();
-                RequestEndMsg(data, "Post");
-                let g = $("#gridFormulas").data("kendoGrid");
-                g.dataSource.read().then(function () {
-                    if (data[0] !== null) {
-                        var items = g.items();
-                        items.each(function (idx, row) {
-                            var dataItem = g.dataItem(row);
-                            if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
-                                g.select(row);
-                            }
-                        });
-                    }
+//var fn_Ajuste = function () {
+//    kendo.ui.progress($(".k-window-content"), true);
+//        $.ajax({
+//            url: TSM_Web_APi + "TintasFormulaciones/Ajustar/" + maq[0].IdSeteo + "/" + xidEstacion + "/" + kdoNumericGetValue($("#NumCntIni_Recibida")) + "/" + (KdoRbGetValue($("#rbAjusteLimpio"))===true ? "1" : "0") + "/" + KdoCmbGetValue($("#CmbMotivoAjus")),
+//            type: "Post",
+//            dataType: "json",
+//            data: JSON.stringify({ id: null }),
+//            contentType: 'application/json; charset=utf-8',
+//            success: function (data) {
+//                kendo.ui.progress($(".k-window-content"), false);
+//                RequestEndMsg(data, "Post");
+//                let g = $("#gridFormulas").data("kendoGrid");
+//                g.dataSource.read().then(function () {
+//                    if (data[0] !== null) {
+//                        var items = g.items();
+//                        items.each(function (idx, row) {
+//                            var dataItem = g.dataItem(row);
+//                            if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
+//                                g.select(row);
+//                            }
+//                        });
+//                    }
                    
-                });
-            },
-            error: function (data) {
-                kendo.ui.progress($(".k-window-content"), false);
-                ErrorMsg(data);
-            }
-        });
-};
+//                });
+//            },
+//            error: function (data) {
+//                kendo.ui.progress($(".k-window-content"), false);
+//                ErrorMsg(data);
+//            }
+//        });
+//};
 var fn_gridAjustePrima = function (gd) {
     var dsAjusMp = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -948,46 +942,46 @@ var fn_gridAjustePrima = function (gd) {
     });
 
 };
-var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
-    kendo.ui.progress($(".k-window-content"), true);
-    let xType = "Post";
-    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
-    $.ajax({
-        url: xUrl,
-        type: xType,
-        data: JSON.stringify({
-            IdFormula: 0,
-            IdSeteo: maq[0].IdSeteo,
-            IdEstacion: xIdBrazo,
-            CodigoColor: xCodigoColor
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            kendo.ui.progress($(".k-window-content"), false);
-            $("#MbtnAjuste").data("kendoDialog").close();
-            RequestEndMsg(data, "Post");
-            let g = $("#gridFormulas").data("kendoGrid");
-            g.dataSource.read().then(function () {
-                    var items = g.items();
-                    items.each(function (idx, row) {
-                        var dataItem = g.dataItem(row);
-                        if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
-                            g.select(row);
-                        }
-                    });
+//var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
+//    kendo.ui.progress($(".k-window-content"), true);
+//    let xType = "Post";
+//    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
+//    $.ajax({
+//        url: xUrl,
+//        type: xType,
+//        data: JSON.stringify({
+//            IdFormula: 0,
+//            IdSeteo: maq[0].IdSeteo,
+//            IdEstacion: xIdBrazo,
+//            CodigoColor: xCodigoColor
+//        }),
+//        contentType: 'application/json; charset=utf-8',
+//        success: function (data) {
+//            kendo.ui.progress($(".k-window-content"), false);
+//            $("#MbtnAjuste").data("kendoDialog").close();
+//            RequestEndMsg(data, "Post");
+//            let g = $("#gridFormulas").data("kendoGrid");
+//            g.dataSource.read().then(function () {
+//                    var items = g.items();
+//                    items.each(function (idx, row) {
+//                        var dataItem = g.dataItem(row);
+//                        if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
+//                            g.select(row);
+//                        }
+//                    });
                
-            });
-        },
-        complete: function () {
-            kendo.ui.progress($(".k-window-content"), false);
-        },
-        error: function (data) {
-            kendo.ui.progress($(".k-window-content"), false);
-            ErrorMsg(data);
-        }
-    });
+//            });
+//        },
+//        complete: function () {
+//            kendo.ui.progress($(".k-window-content"), false);
+//        },
+//        error: function (data) {
+//            kendo.ui.progress($(".k-window-content"), false);
+//            ErrorMsg(data);
+//        }
+//    });
 
-};
+//};
 
 let Fn_UpdGridEstacion_Formula = function (g, estado) {
     g.set("EstadoFormula", estado);
@@ -1044,4 +1038,21 @@ let fn_getMasaEntregada = function (g) {
 let fn_getMasaTotal = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.C2;
+};
+
+var fn_focoFilaAjustada = function () {
+    let g = $("#gridFormulas").data("kendoGrid");
+    g.dataSource.read().then(function () {
+        //success_Data esta variable se llena despues de el nuevo Ajuste
+        if (success_Data[0] !== null) {
+            var items = g.items();
+            items.each(function (idx, row) {
+                var dataItem = g.dataItem(row);
+                if (dataItem[g.dataSource.options.schema.model.id] === Number(success_Data[0].IdFormula)) {
+                    g.select(row);
+                }
+            });
+        }
+
+    });
 };

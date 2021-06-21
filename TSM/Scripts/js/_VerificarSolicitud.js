@@ -246,12 +246,6 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                //MsgPerfilCriterioCritico: function (input) {
-                //    if (input.is("[name='CmbCriterioCritico']")) {
-                //        return $("#CmbCriterioCritico").data("kendoComboBox").selectedIndex >= 0;
-                //    }
-                //    return true;
-                //},
                 MsgCmbMotivo: function (input) {
                     if (input.is("[name='CmbMotivoDesarrollo']")) {
                         return $("#CmbMotivoDesarrollo").data("kendoComboBox").selectedIndex >= 0;
@@ -264,12 +258,6 @@ var fn_VSCargarJSEtapa = function () {
                     }
                     return true;
                 },
-                //MsgCmbAcabado: function (input) {
-                //    if (input.is("[name='CmbTipoAcabado']")) {
-                //        return $("#CmbTipoAcabado").data("kendoComboBox").selectedIndex >= 0;
-                //    }
-                //    return true;
-                //},
                 vQui: function (input) {
                     if (input.is("[name='CmbQuimica']")) {
                         return $("#CmbQuimica").data("kendoComboBox").selectedIndex >= 0;
@@ -1437,7 +1425,8 @@ var fn_VSCargarJSEtapa = function () {
 var fn_VSCargar = function () {
     let RdVUrl = TSM_Web_APi + "RequerimientoDesarrollos/" + $("#txtId").val();
     getRD(RdVUrl);
-    if ($("#txtEstado").val() !== "ACTIVO" || EtpSeguidor===true || EtpAsignado===false) {
+    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false;
+    if (vhb) {
     
         KdoDatePikerEnable($("#Fecha"), false);
         TextBoxEnable($("#TxtEjecutivoCuenta"), false);
