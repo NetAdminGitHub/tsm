@@ -60,7 +60,7 @@ var fn_CargarEtapaAjuste = function () {
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
                     //$("#maquinaAjusteMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
-                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaAjusteMues"));
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaAjusteMues"), function () { return fn_Refrescar(); });
                 },
                 desplazamientoEstacion: function (e) {
                     var elementoADesplazar = e.detail[0];
@@ -517,7 +517,7 @@ var fn_MostrarEtapa = function () {
     Acceso_Reve = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoRevelado === false || EtpAsignado === false || DienoAfectaSecuencia===true); 
     Acceso_Diseno = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoDiseno === false || EtpAsignado === false ); 
     fn_GetDisenoMuestra_Ajuste();
-    $("#maquinaAjusteMues").data("maquinaSerigrafia").activarSoloLectura(!Acceso_Tintas || !Acceso_Reve || !Acceso_Diseno);
+    DienoAfectaSecuencia === true ? $("#maquinaAjusteMues").data("maquinaSerigrafia").activarSoloLectura(false) : $("#maquinaAjusteMues").data("maquinaSerigrafia").activarSoloLectura(!Acceso_Tintas || !Acceso_Reve || !Acceso_Diseno);
     $("#gridresumen_Ajuste").data("kendoGrid").dataSource.read();
     $("#gridCamEstadoMarco_Ajuste").data("kendoGrid").dataSource.read();
     Acceso_Reve === true ? $("#gridCamEstadoMarco_Ajuste").data("kendoGrid").showColumn("Finalizar") : $("#gridCamEstadoMarco_Ajuste").data("kendoGrid").hideColumn("Finalizar");
@@ -741,4 +741,10 @@ let fn_GuardarDM_Ajuste = function () {
         }
 
     });
+};
+
+let fn_Refrescar = function () {
+    $("#gridCamEstadoMarco_Ajuste").data("kendoGrid").dataSource.read();
+    $("#gridresumen_Ajuste").data("kendoGrid").dataSource.read();
+
 };
