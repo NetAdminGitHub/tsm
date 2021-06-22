@@ -315,10 +315,15 @@ var fn_CargarEtapaAjuste = function () {
 
     fn_GridDetAjusteTinta($("#gridDetAjuste"));
 
-    $("#btnAddColorDis_Ajuste").click(function () {
-        fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis(); });
+    $("#btnAddColorDisAjuste").click(function () {
+        fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis_Ajuste(); });
     });
 
+};
+
+var fn_closeDis_Ajuste = function () {
+    fn_GetColores($("#maquinaAjusteMues").data("maquinaSerigrafia"), maq[0].IdSeteo);
+    fn_Tecnicas($("#maquinaAjusteMues").data("maquinaSerigrafia"), maq[0].IdSeteo);
 };
 
 var fn_ConsultaEstacionesCambioEstado_Ajuste = function (gd) {
@@ -532,7 +537,7 @@ var fn_MostrarEtapa = function () {
     KdoNumerictextboxEnable($("#NumTiempoTra_Ajuste"), Acceso_Diseno);
     TextBoxEnable($("#TxtObservaciones_Ajuste"), Acceso_Diseno);
     KdoButtonEnable($("#btnGuardarDiseñoMuesAjuste"), Acceso_Diseno);
-    KdoButtonEnable($("#btnAddColorDisAjuste"), Acceso_Diseno);
+    DienoAfectaSecuencia === true ? KdoButtonEnable($("#btnAddColorDisAjuste"), Acceso_Diseno) : KdoButtonEnable($("#btnAddColorDisAjuste"), false);
 
 
 };
@@ -699,6 +704,7 @@ let fn_GetDisenoMuestra_Ajuste = function () {
                 kdoNumericSetValue($("#NumLPelicula_Ajuste"), respuesta.LongitudPelicula);
                 KdoCmbSetValue($("#CmbIdUnidadLP_Ajuste"), respuesta.IdUnidadLongitudPelicula);
                 kdoNumericSetValue($("#NumTiempoTra_Ajuste"), respuesta.TiempoTrabajo);
+
             }
         },
         error: function () {
