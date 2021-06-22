@@ -2806,7 +2806,15 @@ var fn_ReduccionEstacionesMaq = function (xIdSeteo,xCantidadEstaciones) {
 
 };
 
-var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maquina) {
+var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maquina,fn) {
+
+    let fn_Completado = function () {
+        if (fn === undefined || fn === "") {
+            return true;
+        } else {
+            return fn();
+        }
+    };
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/OperacionMaquina/" + maq[0].IdSeteo,
@@ -2817,6 +2825,8 @@ var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maqu
             kendo.ui.progress($(document.body), false);
             RequestEndMsg(resultado, "Put");
             maquina.data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(brazoDestino, tipo, data, brazoInicio);
+            fn_Completado();
+           
         },
         error: function (resultado) {
             ErrorMsg(resultado);
