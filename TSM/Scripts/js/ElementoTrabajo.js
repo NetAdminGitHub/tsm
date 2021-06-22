@@ -148,9 +148,9 @@ $(document).ready(function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosFlujo/0/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
-    Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbTpAjuste"), TSM_Web_APi + "Alertas", "Nombre", "IdAlerta", "Seleccione...");
     KdoCmbSetValue($("#cmbTpAjuste"), 1);
     KdoComboBoxEnable($("#cmbTpAjuste"), false);
@@ -817,7 +817,7 @@ var get_cmbUsuario = function (tipoOrd, etp) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipoOrd.toString() + "/" + etp.toString(),
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/" + tipoOrd.toString() + "/" + etp.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -875,7 +875,7 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipo.toString() + "/" + etpAS.toString(),
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/" + tipo.toString() + "/" + etpAS.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
