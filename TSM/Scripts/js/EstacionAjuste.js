@@ -1238,7 +1238,7 @@ let LimpiaMarcaCelda_Ajuste = function () {
                             //var lstId = {
                             //    IdFormula: dataItem.IdFormula
                             //};
-                            Fn_VistaCambioEstadoMostrar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, function () { return fn_UpdEstadoGrilla(); });
+                            Fn_VistaCambioEstadoMostrar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, undefined);
                         }
                     },
                     width: "70px",

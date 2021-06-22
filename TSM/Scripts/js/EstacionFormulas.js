@@ -942,54 +942,53 @@ var fn_gridAjustePrima = function (gd) {
     });
 
 };
-//var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
-//    kendo.ui.progress($(".k-window-content"), true);
-//    let xType = "Post";
-//    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
-//    $.ajax({
-//        url: xUrl,
-//        type: xType,
-//        data: JSON.stringify({
-//            IdFormula: 0,
-//            IdSeteo: maq[0].IdSeteo,
-//            IdEstacion: xIdBrazo,
-//            CodigoColor: xCodigoColor
-//        }),
-//        contentType: 'application/json; charset=utf-8',
-//        success: function (data) {
-//            kendo.ui.progress($(".k-window-content"), false);
-//            $("#MbtnAjuste").data("kendoDialog").close();
-//            RequestEndMsg(data, "Post");
-//            let g = $("#gridFormulas").data("kendoGrid");
-//            g.dataSource.read().then(function () {
-//                    var items = g.items();
-//                    items.each(function (idx, row) {
-//                        var dataItem = g.dataItem(row);
-//                        if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
-//                            g.select(row);
-//                        }
-//                    });
+var fn_GuardarFormulaEst = function (xIdBrazo, xCodigoColor) {
+    kendo.ui.progress($(".k-window-content"), true);
+    let xType = "Post";
+    xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
+    $.ajax({
+        url: xUrl,
+        type: xType,
+        data: JSON.stringify({
+            IdFormula: 0,
+            IdSeteo: maq[0].IdSeteo,
+            IdEstacion: xIdBrazo,
+            CodigoColor: xCodigoColor
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            kendo.ui.progress($(".k-window-content"), false);
+            RequestEndMsg(data, "Post");
+            let g = $("#gridFormulas").data("kendoGrid");
+            g.dataSource.read().then(function () {
+                    var items = g.items();
+                    items.each(function (idx, row) {
+                        var dataItem = g.dataItem(row);
+                        if (dataItem[g.dataSource.options.schema.model.id] === Number(data[0].IdFormula)) {
+                            g.select(row);
+                        }
+                    });
                
-//            });
-//        },
-//        complete: function () {
-//            kendo.ui.progress($(".k-window-content"), false);
-//        },
-//        error: function (data) {
-//            kendo.ui.progress($(".k-window-content"), false);
-//            ErrorMsg(data);
-//        }
-//    });
+            });
+        },
+        complete: function () {
+            kendo.ui.progress($(".k-window-content"), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(".k-window-content"), false);
+            ErrorMsg(data);
+        }
+    });
 
-//};
+};
 
 let Fn_UpdGridEstacion_Formula = function (g, estado) {
     g.set("EstadoFormula", estado);
     LimpiaMarcaCelda_Formula();
-    if (estado === "FORMULA VIGENTE") {
-        g.set("EstadoAlerta", "FINALIZADA");
-    }
-    LimpiaMarcaCelda_Formula();
+    //if (estado === "FORMULA VIGENTE") {
+    //    g.set("EstadoAlerta", "FINALIZADA");
+    //}
+    //LimpiaMarcaCelda_Formula();
 };
 
 let LimpiaMarcaCelda_Formula = function () {
