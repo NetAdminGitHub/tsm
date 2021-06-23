@@ -495,6 +495,8 @@
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
+    <Content Include="Scripts\js\EstacionAjuste.js" />
+    <Content Include="Scripts\js\EstacionAjusteAccesorio.js" />
     <Content Include="Scripts\js\EstacionFormulas.js" />
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
@@ -651,6 +653,7 @@
     <Content Include="Scripts\js\Tecnicas.js" />
     <Content Include="Scripts\js\Telas.js" />
     <Content Include="Scripts\js\Temporadas.js" />
+    <Content Include="Scripts\js\TintasFormulacionesNuevoAjuste.js" />
     <Content Include="Scripts\js\TipoEstaciones.js" />
     <Content Include="Scripts\js\TipoMuestras.js" />
     <Content Include="Scripts\js\TipoNotificaciones.js" />
@@ -674,6 +677,7 @@
     <Content Include="Scripts\js\UnidadesMedidas.js" />
     <Content Include="Scripts\js\UsuariosRoles.js" />
     <Content Include="Scripts\js\VelocidadesTransferencias.js" />
+    <Content Include="Scripts\js\_AjusteMuestras.js" />
     <Content Include="Scripts\js\_CriteriosCriticos.js" />
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
@@ -931,6 +935,10 @@
     <Content Include="Views\PiezasDesarrolladas\_CriteriosCriticos.cshtml" />
     <Content Include="Views\TiposPiezas\Index.cshtml" />
     <Content Include="Views\NivelesExigencias\Index.cshtml" />
+    <Content Include="Views\Shared\_AjusteMuestras.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAjuste.cshtml" />
+    <Content Include="Views\Estaciones\EstacionAjusteAccesorio.cshtml" />
+    <Content Include="Views\Shared\_TintasFormulacionesNuevoAjuste.cshtml" />
     <Content Include="Views\PruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\PruebasLaboratorio\_InfoPruebaLaboratorio.cshtml" />
     <None Include="Web.IST.config">
