@@ -1172,10 +1172,10 @@ let fn_ObtenerFichaTamanos = function (req) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdCategoriaTalla").data("kendoComboBox").selectedIndex >= 0;
                                 }
-                                if (input.is("[name='CantidadPiezas']")) {
-                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
-                                    return $("[name='CantidadPiezas']").data("kendoNumericTextBox").value() > 0;
-                                }
+                                //if (input.is("[name='CantidadPiezas']")) {
+                                //    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                //    return $("[name='CantidadPiezas']").data("kendoNumericTextBox").value() > 0;
+                                //}
                                 if (input.is("[name='IdUnidad']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdUnidad").data("kendoComboBox").selectedIndex >= 0;

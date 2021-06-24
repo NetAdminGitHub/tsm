@@ -886,6 +886,9 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
     });
 };
 
+// VISTA MODAL QUE TIENE LA FUNCIONALIDAD DE ASIGNAR
+// UNA ORDEN DE TRABAJO A LOS USUARIOS LIGADOS A UN DEPARTAMENTO
+
 $("#vAsignarUsuario").kendoDialog({
     height: "50%",
     width: "30%",
@@ -900,7 +903,7 @@ $("#vAsignarUsuario").kendoDialog({
     ],
     close: function (e) {
         if (e.userTriggered && EtpAsignado === false && EtpSeguidor === false) {
-            window.history.go(-2);
+            //window.history.go(-2);
             //window.location.href = "/GestionOT";
             return false;
         }
