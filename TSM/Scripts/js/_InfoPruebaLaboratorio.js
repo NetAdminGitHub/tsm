@@ -131,7 +131,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     HornoBandaSegundos: { type: "number" },
                     EscalaHornoTemperaturaCurado: { type: "string" },
                     Comentarios: { type: "string" },
-                    ColorTelaHex: { type: "string" },
+                    ColorTelaHex: { type: "string", defaultValue: function () { return "transparent"; }},
                     ItemPantonera: { type: "number" },
                     IdTipoPantonera: { type: "number" },
                     ID: { type: "string" }
@@ -145,12 +145,12 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
 
         beforeEdit: function (e) {
             let g = $("#gridEspecimen").data("kendoGrid");
-            if (g.dataSource.total() > 0 && e.model.isNew() ) {
-                e.preventDefault();
+            //if (g.dataSource.total() > 0 && e.model.isNew() ) {
+            //    e.preventDefault();
 
-                $("#kendoNotificaciones").data("kendoNotification").show("Ya existe un espécimen", "error");
-                $("#gridEspecimen").data('kendoGrid').dataSource.cancelChanges();
-            }   
+            //    $("#kendoNotificaciones").data("kendoNotification").show("Ya existe un espécimen", "error");
+            //    $("#gridEspecimen").data('kendoGrid').dataSource.cancelChanges();
+            //}   
 
         },
         edit: function (e) {
@@ -256,6 +256,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     SetGrid($("#gridEspecimen").data("kendoGrid"), ModoEdicion.EnPopup,true, false, true, false, redimensionable.No,400);
     SetGrid_CRUD_ToolbarTop($("#gridEspecimen").data("kendoGrid"), true,false,false);
     SetGrid_CRUD_Command($("#gridEspecimen").data("kendoGrid"), Permisos.SNEditar, false);
+    Set_Grid_DataSource($("#gridEspecimen").data("kendoGrid"), dsPiezasLaboratorio, 20);
     
 
     var verSeteoSelrows = [];
@@ -441,7 +442,9 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     SetGrid($("#gridResultado").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.No, 400);
     SetGrid_CRUD_ToolbarTop($("#gridResultado").data("kendoGrid"), true, false, false);
     SetGrid_CRUD_Command($("#gridResultado").data("kendoGrid"), Permisos.SNEditar,Permisos.SNBorrar);
-  
+    Set_Grid_DataSource($("#gridResultado").data("kendoGrid"), dsResultadoLaboratorio, 20);
+    
+
 
     var selectedRows = [];
     $("#gridEspecimen").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -537,16 +540,17 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         };
         Fn_VistaCambioEstadoMostrar("PruebasLaboratorio", EstadoActual, TSM_Web_APi + "PruebasLaboratorio/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
-
+    
     if (_NuevoRegistro === false) {
-        Set_Grid_DataSource($("#gridResultado").data("kendoGrid"), dsResultadoLaboratorio, 20);
-        Set_Grid_DataSource($("#gridEspecimen").data("kendoGrid"), dsPiezasLaboratorio, 20);
+       
         getSolicitud();
     } else {
 
         $("#gridResultado").data("kendoGrid").dataSource.data([]);
 
+        $("#gridResultado").data("kendoGrid").dataSource.read();
         $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
+        $("#gridEspecimen").data("kendoGrid").dataSource.read();
         $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Date.now()), 'dd/MM/yyyy'));
     }
 
@@ -693,11 +697,14 @@ let CrearHeaderSolicitud = function () {
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            _idPruebaLaboratorio = data[0].IdPruebaLaboratorio;
+            EstadoActual = data[0].Estado;
+            _NuevoRegistro = false;
             getSolicitud();
-            console.log("success");
-
-            //habilitar botones
-            //$("#myBtnAdjunto").data("kendoButton").enable(true);
+            $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
+            $("#gridEspecimen").data("kendoGrid").dataSource.read();
+            $("#gridResultado").data("kendoGrid").dataSource.data([]);
+            $("#gridResultado").data("kendoGrid").dataSource.read();
             RequestEndMsg(data, "Put");
             kendo.ui.progress($("#FrmPruebaGeneral"), false);
 
