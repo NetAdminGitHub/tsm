@@ -1,10 +1,16 @@
 ﻿let _idPruebaLaboratorio;
 let tabStrip;
-var NuevoRegistro = false;// inicializa la variable modo nuevo registro
+var _NuevoRegistro = false;// inicializa la variable modo nuevo registro
 let EstadoActual = 'ING'; // lo inicializa como ingresado si el form está en blanco
 let CodCliente = 0;
-var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
+var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = false) {
+
+    KdoButton($("#btnActualizarEstado"), "check-circle");
+   
+    KdoButtonEnable($("#btnActualizarEstado"), true);
+   
     _idPruebaLaboratorio = vIdPruebaLaboratorio;
+    if (NewReg !== undefined) { _NuevoRegistro = NewReg; }
 
     tabStrip = $("#TabDesplazar").kendoTabStrip({
         tabPosition: "top",
@@ -250,7 +256,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
     SetGrid($("#gridEspecimen").data("kendoGrid"), ModoEdicion.EnPopup,true, false, true, false, redimensionable.No,400);
     SetGrid_CRUD_ToolbarTop($("#gridEspecimen").data("kendoGrid"), true,false,false);
     SetGrid_CRUD_Command($("#gridEspecimen").data("kendoGrid"), Permisos.SNEditar, false);
-    Set_Grid_DataSource($("#gridEspecimen").data("kendoGrid"), dsPiezasLaboratorio, 20);
+    
 
     var verSeteoSelrows = [];
     $("#gridEspecimen").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -326,10 +332,10 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
                     CalificacionGrises: { type: "number" },
                     IdMotivoEvaluacion: { type: "number" },
                     MotivoEvaluacion: { type: "string" },
-                    ColorHexEvaluado: { type: "string" },
-                    ItemPantonera: { type: "number" },
-                    IdTipoPantonera: { type: "number" },
-                    ID: { type: "string" },
+                    ColorHexEvaluado: { type: "string", defaultValue: function () { return "transparent"; }},
+                    ItemPantoneraEva: { type: "number" },
+                    IdTipoPantoneraEva: { type: "number" },
+                    IDColor: { type: "string" },
                     Comentarios: { type: "string" },
                     IdTipoTinta: { type: "number" },
                     NombreTipoTinta: { type:"string"}
@@ -342,26 +348,26 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
 
 
     $("#gridResultado").kendoGrid({
-
+       
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IdPiezaPrueba");
             KdoHideCampoPopup(e.container, "IdResultado");
             KdoHideCampoPopup(e.container, "ItemResultado");
             KdoHideCampoPopup(e.container, "NombreReferencia");
             KdoHideCampoPopup(e.container, "MotivoEvaluacion");
-             KdoHideCampoPopup(e.container, "IdTipoPantonera");
-            KdoHideCampoPopup(e.container, "ItemPantonera");
+             KdoHideCampoPopup(e.container, "IdTipoPantoneraEva");
+            KdoHideCampoPopup(e.container, "ItemPantoneraEva");
             KdoHideCampoPopup(e.container, "NombreTipoTinta");
 
-            $('[name="ColorHexEvaluado"]').data("kendoColorPicker").enable(false);
-
+          $('[name="ColorHexEvaluado"]').data("kendoColorPicker").enable(false);
+           
             $(e.container).parent().css({
                 width: '40%',
                 height: '80%'
             });
             Grid_Focus(e, "Comentario");
 
-            $('[name="ID"]').on("change", function (e) {
+            $('[name="IDColor"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
                     if ($(this).data("kendoMultiColumnComboBox").selectedIndex >= 0) {
                         var data = $(this).data("kendoMultiColumnComboBox").dataItem();
@@ -369,31 +375,33 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
                         $('[name="ColorHexEvaluado"]').data("kendoColorPicker").value(data.ColorHex);
                         $('[name="ColorHexEvaluado"]').data("kendoColorPicker").trigger("change");
 
-                        $('[name="ItemPantonera1"]').data("kendoNumericTextBox").value(data.Item);
-                        $('[name="ItemPantonera1"]').data("kendoNumericTextBox").trigger("change");
-                        $('[name="IdTipoPantonera1"]').data("kendoNumericTextBox").value(data.IdTipoPantonera);
-                        $('[name="IdTipoPantonera1"]').data("kendoNumericTextBox").trigger("change");
+                        $('[name="ItemPantoneraEva"]').data("kendoNumericTextBox").value(data.Item);
+                        $('[name="ItemPantoneraEva"]').data("kendoNumericTextBox").trigger("change");
+                        $('[name="IdTipoPantoneraEva"]').data("kendoNumericTextBox").value(data.IdTipoPantonera);
+                        $('[name="IdTipoPantoneraEva"]').data("kendoNumericTextBox").trigger("change");
                     }
 
                 } else {
 
-                    $('[name="ItemPantonera1"]').data("kendoNumericTextBox").value(null);
-                    $('[name="ItemPantonera1"]').data("kendoNumericTextBox").trigger("change");
-                    $('[name="IdTipoPantonera1"]').data("kendoNumericTextBox").value(null);
-                    $('[name="IdTipoPantonera1"]').data("kendoNumericTextBox").trigger("change");
+                    $('[name="ItemPantoneraEva"]').data("kendoNumericTextBox").value(null);
+                    $('[name="ItemPantoneraEva"]').data("kendoNumericTextBox").trigger("change");
+                    $('[name="IdTipoPantoneraEva"]').data("kendoNumericTextBox").value(null);
+                    $('[name="IdTipoPantoneraEva"]').data("kendoNumericTextBox").trigger("change");
                 }
             });
 
             if (!e.model.isNew() && e.model.Item !== null) {
-                $('[name="ID"]').data("kendoMultiColumnComboBox").text(e.model.ID);
-                $('[name="ID"]').data("kendoMultiColumnComboBox").trigger("change");
-                $('[name="ID"]').data("kendoMultiColumnComboBox").search(e.model.ID);
-                $('[name="ID"]').data("kendoMultiColumnComboBox").refresh();
-                $('[name="ID"]').data("kendoMultiColumnComboBox").close();
-
+                $('[name="IDColor"]').data("kendoMultiColumnComboBox").text(e.model.ID);
+                $('[name="IDColor"]').data("kendoMultiColumnComboBox").trigger("change");
+                $('[name="IDColor"]').data("kendoMultiColumnComboBox").search(e.model.ID);
+                $('[name="IDColor"]').data("kendoMultiColumnComboBox").refresh();
+                $('[name="IDColor"]').data("kendoMultiColumnComboBox").close();
+              
             }
             if (e.model.isNew()) {
-                Grid_Focus(e, "ID");
+                
+
+                Grid_Focus(e, "IdReferenciaPrueba");
             }
         },  
         //DEFICNICIÓN DE LOS CAMPOS
@@ -407,7 +415,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
             { field: "IdMotivoEvaluacion", title: "IdMotivoEvaluacion", hidden: true, width: 200, editor: Grid_Combox, values: ["IdMotivoEvaluacion", "MotivoEvaluacion", TSM_Web_APi + "MotivosEvaluacionPruebasLaboratorio", "", "Seleccione...."]  },
             { field: "MotivoEvaluacion", title: "Motivo", hidden: false, width: 100 },
             {
-                field: "ID", title: "Evaluando",
+                field: "IDColor", title: "Evaluando",
                 editor: function (container, options) {
                     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantonesLaboratorio();
                 },
@@ -421,10 +429,10 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
                 }
             },                   
              { field: "Comentarios", title: "Comentarios", width: 100, hidden: false, width: 250 },
-            { field: "ItemPantonera1", editor: Grid_ColIntNumSinDecimal, hidden: true },
-            { field: "IdTipoPantonera1", title: "Tipo Pantone", hidden: true, menu: false },
+            { field: "ItemPantoneraEva", editor: Grid_ColIntNumSinDecimal, hidden: true },
+            { field: "IdTipoPantoneraEva", title: "Tipo Pantone", hidden: true },
             { field: "IdTipoTinta", title: "IdTipoTinta", hidden: true, width: 200, editor: Grid_Combox, values: ["IdTipoTinta", "Nombre", TSM_Web_APi + "TiposTintas", "", "Seleccione...."] },
-            { field: "NombreTipoTinta", title: "Tipo de tinta", hidden: false, menu: false,width:200 }
+            { field: "NombreTipoTinta", title: "Tipo de tinta", hidden: false,width:200 }
         ]
     });
 
@@ -432,8 +440,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
     // Funciones degrid
     SetGrid($("#gridResultado").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.No, 400);
     SetGrid_CRUD_ToolbarTop($("#gridResultado").data("kendoGrid"), true, false, false);
-    SetGrid_CRUD_Command($("#gridResultado").data("kendoGrid"), Permisos.SNEditar, false);
-    Set_Grid_DataSource($("#gridResultado").data("kendoGrid"), dsResultadoLaboratorio, 20);
+    SetGrid_CRUD_Command($("#gridResultado").data("kendoGrid"), Permisos.SNEditar,Permisos.SNBorrar);
+  
 
     var selectedRows = [];
     $("#gridEspecimen").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -501,7 +509,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
     $("#GuardarSolicitud").click(function (event) {
         event.preventDefault();
         if (ValidaFormSolicitud.validate()) {
-            GuardarHeaderSolicitud();
+            if (_NuevoRegistro === true) { GuardarHeaderSolicitud(); } else { CrearHeaderSolicitud();}
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         }
@@ -516,19 +524,84 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio) {
 
     });
 
+    // carga vista para el cambio de estado
+    // 1. configurar vista.
+    Fn_VistaCambioEstado($("#vCambioEstadoPD"), function () {
+        getSolicitud();
+    });
+    // 2. boton cambio de estado.
+    $("#btnActualizarEstado").click(function () {
 
-    getSolicitud();
+        var lstId = {
+            IdPruebaLaboratorio: _idPruebaLaboratorio
+        };
+        Fn_VistaCambioEstadoMostrar("PruebasLaboratorio", EstadoActual, TSM_Web_APi + "PruebasLaboratorio/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
+    });
+
+    if (_NuevoRegistro === false) {
+        Set_Grid_DataSource($("#gridResultado").data("kendoGrid"), dsResultadoLaboratorio, 20);
+        Set_Grid_DataSource($("#gridEspecimen").data("kendoGrid"), dsPiezasLaboratorio, 20);
+        getSolicitud();
+    } else {
+
+        $("#gridResultado").data("kendoGrid").dataSource.data([]);
+
+        $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
+        $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Date.now()), 'dd/MM/yyyy'));
+    }
+
+
+    validaCampos();
 
 };
 
 
+let validaCampos = function () {
 
+
+    if (Permisos.SNEditar === true || EstadoActual === "EVA" || _NuevoRegistro  === true) {
+
+        HabilitarCampos(true);
+
+    }
+    else { HabilitarCampos(false)}
+
+
+};
 
 
 function fn_getPiezaLab(g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdPiezaPrueba;
 }
+
+
+let HabilitarCampos = function (bloquea) {
+
+    $("#NoSolicitud").data("kendoTextBox").enable(false);
+     $("#FechaCreacion").data("kendoDatePicker").enable(false);
+    $("#CmbClientePrueba").data("kendoComboBox").enable(bloquea);
+    $("#CmbNombreDiseno").data("kendoComboBox").enable(bloquea);
+
+    $("#CmbCalidadPrueba").data("kendoComboBox").enable(bloquea);
+   
+    $("#CmbTipoOrdenTrabajo").data("kendoComboBox").enable(bloquea);
+    $("#CmbOrigenPrueba").data("kendoComboBox").enable(bloquea);
+    $("#NumCantLavadas").data("kendoNumericTextBox").enable(bloquea);
+    $("#NumCantQuemadas").data("kendoNumericTextBox").enable(bloquea);
+    $('#SNLectura').prop('enable', bloquea);
+    $("#IdPlanta").data("kendoNumericTextBox").enable(bloquea);
+    $("#IdTurno").data("kendoTextBox").enable(bloquea);
+    $("#IdMaquina").data("kendoNumericTextBox").enable(bloquea);
+    $("#IdCorte").data("kendoTextBox").enable(bloquea);
+    $("#IdBulto").data("kendoTextBox").enable(bloquea);
+    
+     Grid_HabilitaToolbar($("#gridResultado"),bloquea);
+    Grid_HabilitaToolbar($("#gridEspecimen"), bloquea);
+    
+
+};
+
 
 let getSolicitud = function () {
     kendo.ui.progress($("#vistaParcial"), true);
@@ -559,27 +632,25 @@ let getSolicitud = function () {
                 $("#IdMaquina").data("kendoNumericTextBox").value(respuesta.IdMaquina);
                 $("#IdCorte").data("kendoTextBox").value(respuesta.IdCorte);
                 $("#IdBulto").data("kendoTextBox").value(respuesta.IdBulto);
-
+                KdoButtonEnable($("#btnActualizarEstado"), true);
 
                 kendo.ui.progress($("#vistaParcial"), false);
               //  UrlApiArteAdj = UrlApiArteAdj + "/GetVistaImagenes/" + respuesta.IdArte;
                // getAdjun(UrlApiArteAdj);
                 //KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false : true);
                 //$("#GridAdjuntos").data("kendoGrid").dataSource.read();
-
+                validaCampos();
             } else {
-                //LimpiarArte();
-               // Fn_DibujarCarrousel($("#Mycarousel"), "", null);
+               
                 kendo.ui.progress($("#vistaParcial"), false);
-             //   $("#myBtnAdjunto").data("kendoButton").enable(false);
-               // $("#IdArte").val("0");
+                KdoButtonEnable($("#btnActualizarEstado"), false);
+            
             }
-
-
-         //   $("#IdRequerimiento").val() !== "0" && $("#Estado").val() === "EDICION" && $("#IdArte").val() !== "0" ? KdoButtonEnable($("#myBtnAdjunto"), $("#txtEstado").val() !== "ACTIVO" ? false : true) : $("#myBtnAdjunto").data("kendoButton").enable(false);
         },
         error: function () {
             kendo.ui.progress($("#vistaParcial"), false);
+            KdoButtonEnable($("#btnActualizarEstado"), false);
+           
         }
     });
 
@@ -589,6 +660,58 @@ let getSolicitud = function () {
 
 };
 
+
+
+let CrearHeaderSolicitud = function () {
+    kendo.ui.progress($("#FrmPruebaGeneral"), true);
+
+    $.ajax({
+        url: TSM_Web_APi + "PruebasLaboratorio/Crear",
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            IdPruebaLaboratorio: 0,
+            IdCalidadPrueba: $("#CmbCalidadPrueba").data("kendoComboBox").value(),
+            Estado: 'ING',
+            
+            CantidadLavadas: $("#NumCantLavadas").data("kendoNumericTextBox").value(),
+            CantidadQuemadas: $("#NumCantQuemadas").data("kendoNumericTextBox").value(),
+            IdCliente: $("#CmbClientePrueba").data("kendoComboBox").value(),
+            IdOrigenPrueba: $("#CmbOrigenPrueba").data("kendoComboBox").value(),
+            IdCatalogoDiseno: $("#CmbNombreDiseno").data("kendoComboBox").value(),
+            IdTipoOrdenTrabajo: KdoCmbGetValue($("#CmbTipoOrdenTrabajo")),
+            IdPlanta: $("#IdPlanta").data("kendoNumericTextBox").value(),
+            IdTurno: $("#IdTurno").data("kendoTextBox").value(),
+            IdMaquina: $("#IdMaquina").data("kendoNumericTextBox").value(),
+            IdCorte: $("#IdCorte").data("kendoTextBox").value(),
+            IdBulto: $("#IdBulto").data("kendoTextBox").value(),
+            Lectura: $("#SNLectura").is(':checked'),
+            IdUsuario: getUser(),
+            OrigenPieza:false
+
+
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            getSolicitud();
+            console.log("success");
+
+            //habilitar botones
+            //$("#myBtnAdjunto").data("kendoButton").enable(true);
+            RequestEndMsg(data, "Put");
+            kendo.ui.progress($("#FrmPruebaGeneral"), false);
+
+
+        },
+        error: function (data) {
+
+            kendo.ui.progress($("#FrmPruebaGeneral"), false);
+            ErrorMsg(data);
+            // $("#Nombre").focus().select();
+        }
+    });
+
+};
 
 
 
@@ -619,35 +742,12 @@ let GuardarHeaderSolicitud = function () {
             NoSolicitud: $("#NoSolicitud").data("kendoTextBox").value(),
             IdUsuario: getUser()
 
-
-            /*
-             $("#IdPlanta").data("kendoNumericTextBox").value(respuesta.IdPlanta);
-                $("#IdTurno").data("kendoTextBox").value(respuesta.IdTurno);
-                $("#IdMaquina").data("kendoNumericTextBox").value(respuesta.IdMaquina);
-                $("#IdCorte").data("kendoTextBox").value(respuesta.IdCorte);
-                $("#IdBulto").data("kendoTextBox").value(respuesta.IdBulto);
-             
-             
-             */
-            
-            //Entidad prendas
-           // IdCategoriaPrenda: $("#IdCategoriaPrenda").data("kendoMultiSelect").value().toString(),
-          
-            //PoseeDocumentacionAduanal: $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(),
-            
+                        
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             getSolicitud();
             console.log("success");
-
-            //Grid_HabilitaToolbar($("#GRDimension"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-            //Grid_HabilitaToolbar($("#GRReqDesColor"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-            //Grid_HabilitaToolbar($("#GRReqDesTec"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-            //Grid_HabilitaToolbar($("#GRReqDesFoil"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-            //Grid_HabilitaToolbar($("#GRReqDesArtSug"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-
-
 
             //habilitar botones
             //$("#myBtnAdjunto").data("kendoButton").enable(true);
@@ -658,9 +758,9 @@ let GuardarHeaderSolicitud = function () {
         },
         error: function (data) {
 
-            kendo.ui.progress($("#BPform"), false);
+            kendo.ui.progress($("#FrmPruebaGeneral"), false);
             ErrorMsg(data);
-           // $("#Nombre").focus().select();
+          
         }
     });
 

@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
-
+    /*
 
     $("#CmbEtapasProcesos").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
@@ -111,6 +111,8 @@ $(document).ready(function () {
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos", "");
         }
     });
+
+*/
 
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();

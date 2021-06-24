@@ -16,6 +16,9 @@ var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
 $(document).ready(function () {
     let dtfecha = new Date();
 
+    KdoButton($("#btnNuevaSolicitud"), "plus-outline","Nueva solicitud");
+    KdoButtonEnable($("#btnNuevaSolicitud"), true);
+
     Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModuloActivas/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
     KdoCmbSetValue($("#CmbEtapasProcesos"), sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos") === null ? "" : sessionStorage.getItem("EtapasOrdenesTrabajos_CmbEtapasProcesos")); 
 
@@ -359,7 +362,10 @@ $(document).ready(function () {
         fn_CriteriosCriticos("CriteriosCriticos", fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid")));
     });
     */
+    $("#btnNuevaSolicitud").click(function () {
 
+        fn_Obtieneinfosolicitud('InfoPruebaLaboratorio',0,true);
+    });
 
 
 
@@ -369,7 +375,7 @@ $(document).ready(function () {
 
 });
 
-let fn_Obtieneinfosolicitud = function (div, idPruebaLaboratorio, fnclose) {
+let fn_Obtieneinfosolicitud = function (div, idPruebaLaboratorio,ModoNuevo, fnclose) {
     
     kendo.ui.progress($(document.activeElement), true);
     if ($("#" + div + "").children().length === 0) {
@@ -385,12 +391,12 @@ let fn_Obtieneinfosolicitud = function (div, idPruebaLaboratorio, fnclose) {
         });
     } else {
         kendo.ui.progress($(document.activeElement), false);
-        fn_CargarVistaModalInfoLaboratorio("", div, idPruebaLaboratorio, fnclose);
+        fn_CargarVistaModalInfoLaboratorio("", div, idPruebaLaboratorio,ModoNuevo, fnclose);
     }
 };
 
 
-let fn_CargarVistaModalInfoLaboratorio = function (data, divPruebaLab, idPruebaLaboratorio, fnclose) {
+let fn_CargarVistaModalInfoLaboratorio = function (data, divPruebaLab, idPruebaLaboratorio, ModoNuevo, fnclose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -406,15 +412,15 @@ let fn_CargarVistaModalInfoLaboratorio = function (data, divPruebaLab, idPruebaL
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
-        fn_ShowModalInfoLaboratorio(false, data, divPruebaLab, idPruebaLaboratorio, fnclose);
+        fn_ShowModalInfoLaboratorio(false, data, divPruebaLab, idPruebaLaboratorio,ModoNuevo, fnclose);
     }
 };
 
 
-let fn_ShowModalInfoLaboratorio = function (cargarJs, data, divVerInfoLaboratorio, idPruebaLaboratorio, fnclose) {
+let fn_ShowModalInfoLaboratorio = function (cargarJs, data, divVerInfoLaboratorio, idPruebaLaboratorio,Nuevo, fnclose) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InicializarInfoLaboratorio(idPruebaLaboratorio);
+            fn_InicializarInfoLaboratorio(idPruebaLaboratorio,Nuevo);
         } else {
             fn_CargarInfoLaboratorio(idPruebaLaboratorio);
         }
@@ -503,15 +509,12 @@ let fn_DibujarKanbanSolicitudesLab = function (ds) {
                         '<div ' + vClass + ' style="font-size: 32px;position:absolute;"  data-toggle="tooltip" title="'+elemento.CalidadPrueba  +'" > ' +
                                 '</div >' +   
                         '<div class= "TSM-card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
-                        //'< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
+                      
                         '<a class= "btn-link stretched-link" onclick="fn_Obtieneinfosolicitud(1,1,1);" > </a >' +
                         '<ul id="Menu_' + elemento.Rowid + '" >' + // + StyleEstadoOT + '>' +
                         '<li class="emptyItem">' +
                         '<span class="empty">' + elemento.NoSolicitud + '</span>' +
-                        '<ul>' +
-                        ///'<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>' +
-                        //'<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>' +
-                        '</ul>' +
+                       
                         '</li>' +
                         '</ul>' +
                         '</div > ' +
