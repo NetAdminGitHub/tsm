@@ -1,0 +1,140 @@
+﻿
+
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <button type="button" id="btnActualizarEstado">Cambiar Estado</button>
+
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <div id="TabDesplazar">
+                    <ul>
+                        <li class="k-state-active">
+                            General
+                        </li>
+                        <li>
+                            Espécimen de prueba
+                        </li>
+                    </ul>
+                    <div id="TP_1">
+                        <form id="FrmPruebaGeneral" enctype="multipart/form-data" autocomplete="off">
+                            <div class="form-row">
+                                @*<input id="TxtIdDisenoMuestra" name="TxtIdDisenoMuestra" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />*@
+                                @* <input id="TxtIdRequerimiento" name="TxtIdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />*@
+                                <div class="form-group col-lg-3">
+                                    <label for="NoSolicitud">Solicitud</label>
+                                    <input id="NoSolicitud" name="NoSolicitud" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label for="FechaCreacion">Fecha de registro</label>
+                                    <input id="FechaCreacion" name="FechaCreacion" class="form-control" required validationMessage="Requerido" />
+                                </div>
+                                <div class="form-group col-lg-5">
+                                    <label for="CmbClientePrueba">Cliente</label>
+                                    <input id="CmbClientePrueba" name="CmbClientePrueba" class="form-control" validationMessage="Requerido" />
+                                </div>
+
+
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbCalidadPrueba">Prueba</label>
+                                    <input id="CmbCalidadPrueba" name="CmbCalidadPrueba" class="form-control" required validationMessage="Requerido" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbTipoOrdenTrabajo">Tipo de OT</label>
+                                    <input id="CmbTipoOrdenTrabajo" name="CmbTipoOrdenTrabajo" class="form-control" required validationMessage="Requerido" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbNombreDiseno">Diseño</label>
+                                    <input id="CmbNombreDiseno" name="CmbNombreDiseno" class="form-control" required validationMessage="Requerido" />
+                                </div>
+
+
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label for="CmbOrigenPrueba">Origen</label>
+                                    <input id="CmbOrigenPrueba" name="CmbOrigenPrueba" class="form-control" required validationMessage="Requerido" />
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label for="NumCantLavadas">Número de lavadas</label>
+                                    <input id="NumCantLavadas" name="NumCantLavadas" class="form-control" required value="0" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="NumCantQuemadas">Número de quemadas</label>
+                                    <input id="NumCantQuemadas" name="NumCantQuemadas" class="form-control" required value="0" />
+                                </div>
+
+                                <div class="form-group col-lg-2 align-self-end">
+                                    <input type="checkbox" id="SNLectura" name="SNLectura" class="k-checkbox">
+                                    <label class="k-checkbox-label" for="SNLectura">Incluye lectura</label>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="IdPlanta">Planta</label>
+                                    <input id="IdPlanta" name="IdPlanta" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-lg-3">
+                                    <label for="IdTurno">Turno</label>
+                                    <input id="IdTurno" name="IdTurno" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="IdMaquina">Máquina</label>
+                                    <input id="IdMaquina" name="CmbIdUnidadLP" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="IdCorte">Corte</label>
+                                    <input id="IdCorte" name="IdCorte" class=" form-control" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="IdBulto">Bulto</label>
+                                    <input id="IdBulto" name="IdBulto" class=" form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4 align-self-end">
+                                    <div class="input-group-prepend">
+                                        <div style="width: 100%;">
+                                            <button type="button" id="GuardarSolicitud" name="GuardarSolicitud"></button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="TP_2">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gridEspecimen" class="form-control"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <div id="gridResultado" class="form-control"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+<div id="vCambioEstadoPD"></div>
