@@ -630,7 +630,9 @@ var fn_GridDetAjusteTinta = function () {
                     IdSeteo: { type: "number" },
                     IdEstacion: { type: "number" },
                     MotivoAjuste: { type: "string" },
-                    Comentarios: { type: "string" }
+                    Comentarios: { type: "string" },
+                    Estado: { type: "string" },
+                    NombreEstado: { type: "string" }
                 }
             }
         }
@@ -646,7 +648,9 @@ var fn_GridDetAjusteTinta = function () {
             { field: "IdSeteo", title: "Cod.IdSeteo", hidden: true },
             { field: "MotivoAjuste", title: "Motivo ", hidden: true },
             { field: "IdEstacion", title: "Estacion", hidden: true },
-            { field: "Comentarios", title: "Comentarios" }
+            { field: "Comentarios", title: "Comentarios" },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NombreEstado", title: "Estado" }
         ]
     });
 
@@ -750,7 +754,32 @@ let fn_GuardarDM_Ajuste = function () {
 };
 
 let fn_Refrescar = function () {
+    kendo.ui.progress($(document.body), true);
     $("#gridCamEstadoMarco_Ajuste").data("kendoGrid").dataSource.read();
     $("#gridresumen_Ajuste").data("kendoGrid").dataSource.read();
+    if ($("#gridDet_Ajuste").length > 0) { $("#gridDet_Ajuste").data("kendoGrid").dataSource.read(); }
+    if ($("#gridDet_Ajuste").length > 0) { fn_GetSeteoFormulacion(maq[0].IdSeteo, xidEstacion); }
+   
+    kendo.ui.progress($(document.body), false);
+};
 
+var fn_Refres_Vista_Ajuste = function () {
+    fn_Refrescar();
+};
+
+var fn_GetSeteoFormulacion = function (xIdSeteo, xIdestacion) {
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + xIdSeteo + "/" + xIdestacion,
+        type: 'GET',
+        success: function (setFor) {
+            if (setFor !== null) {
+                $("#TxtFormulaSugTint_Ajuste").val(setFor.SugerenciaFormula);
+                $("#TxtNombreQuiForm_Ajuste").val(setFor.NomIdQuimica);
+            }
+            else {
+                $("#TxtFormulaSugTint_Ajuste").val("");
+                $("#TxtNombreQuiForm_Ajuste").val("");
+            }
+        }
+    });
 };
