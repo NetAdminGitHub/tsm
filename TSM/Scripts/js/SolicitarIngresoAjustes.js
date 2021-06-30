@@ -27,6 +27,7 @@ var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem, sia
     KdoButton($("#btnAjustesSolicitud"), "save", "Solicitar Ajuste");
     KdoButton($("#btnBorraAjustesSolicitud"), "delete", "Borrar");
     KdoButtonEnable($("#btnBorraAjustesSolicitud"), false);
+    KdoCheckBoxEnable($("#chkAjuste_Todas"), false);
 
     $("#cmbReproceso").data("kendoComboBox").bind("change", function () {
         var value = this.value();
@@ -68,6 +69,9 @@ var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem, sia
                     RequestEndMsg(data, "Delete");
                     kendo.ui.progress($(document.body), false);
                     $("#grid_Ajustes").data("kendoGrid").dataSource.read();
+                    $('#chkAjuste_Todas').prop('checked', false);
+                    KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
+                 
                 },
                 error: function (data) {
                     kendo.ui.progress($(document.body), false);
@@ -101,6 +105,8 @@ var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem, sia
                     RequestEndMsg(data, "Post");
                     kendo.ui.progress($(document.body), false);
                     $("#grid_Ajustes").data("kendoGrid").dataSource.read();
+                    fn_GetRevisaCheckTodas();
+
                 },
                 error: function (data) {
                     fn_getEstacionesMultiSelect();
@@ -129,6 +135,12 @@ var fn_InicializarCargaVistaAjuste = function (siaIdot, siaIdEtapa, siaItem, sia
     });
 
 
+    $("#chkAjuste_Todas").click(function () {
+        if (this.checked) {
+            fn_SeleccionTodasEstaciones();
+        }
+    });
+
 };
 
 var fn_RegistroAjuste = function (siaIdot, siaIdEtapa, siaItem, siaIdSeteo) {
@@ -139,6 +151,8 @@ var fn_RegistroAjuste = function (siaIdot, siaIdEtapa, siaItem, siaIdSeteo) {
 
     fn_getRegistroSolicitudAjustes(siaIdot, siaIdEtapa, siaItem);
     $("#MultEstacion").data("kendoMultiSelect").setDataSource(get_EstacionesMaquinas(xaIdSeteo));
+    $('#chkAjuste_Todas').prop('checked', false);
+    KdoCheckBoxEnable($("#chkAjuste_Todas"), false);
 
 };
 
@@ -171,6 +185,7 @@ var fn_insRegistroSolicitudAjuste = function (xidSolicitudCambio) {
                 $("#cmbReproceso").data("kendoComboBox").enable(true);
                 $("#cmbMotivoAjuste").data("kendoComboBox").enable(true);
                 KdoMultiselectEnable($("#MultEstacion"), true);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
             },
             error: function (data) {
                 kendo.ui.progress($(document.body), false);
@@ -195,6 +210,7 @@ var fn_getRegistroSolicitudAjustes = function (siaIdot, siaIdEtapa, siaItem) {
                 KdoButtonEnable($("#btnBorraAjustesSolicitud"), true);
                 $("#cmbReproceso").data("kendoComboBox").enable(true);
                 $("#cmbMotivoAjuste").data("kendoComboBox").enable(true);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
                 KdoMultiselectEnable($("#MultEstacion"), true);
             } else {
                 xaIdRegistroSolicitudAjuste = 0;
@@ -207,6 +223,7 @@ var fn_getRegistroSolicitudAjustes = function (siaIdot, siaIdEtapa, siaItem) {
                 $("#cmbReproceso").data("kendoComboBox").enable(false);
                 $("#cmbMotivoAjuste").data("kendoComboBox").enable(false);
                 KdoMultiselectEnable($("#MultEstacion"), false);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), false);
                 
             }
             $("#grid_Ajustes").data("kendoGrid").dataSource.read();
@@ -291,6 +308,13 @@ let fn_getEstacionesMultiSelect = function () {
             });
             $("#MultEstacion").data("kendoMultiSelect").value(lista.split(","));
             kendo.ui.progress($(document.body), false);
+            if (respuesta.length > 0) {
+                $('#chkAjuste_Todas').prop('checked', respuesta[0].SeleccionoTodas);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), !respuesta[0].SeleccionoTodas);
+            } else {
+                $('#chkAjuste_Todas').prop('checked', false);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"),true);
+            }
         },
         error: function (data) {
             kendo.ui.progress($(document.body), false);
@@ -392,8 +416,7 @@ fn_GridAjuste = function () {
             if (e.type === "destroy"){
                 fn_getEstacionesMultiSelect();
             }
-            
-            
+           
         },
         group: {
             field: "MotivoAjuste"
@@ -413,6 +436,7 @@ fn_GridAjuste = function () {
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
                     IdEtapaProceso: { type: "number" }
+            
                 }
             }
         }
@@ -469,3 +493,58 @@ fn_GridAjuste = function () {
 
 };
 
+var fn_SeleccionTodasEstaciones = function () {
+    if (xaIdRegistroSolicitudAjuste > 0 && $("#cmbReproceso").data("kendoComboBox").selectedIndex >= 0 && $("#cmbMotivoAjuste").data("kendoComboBox").selectedIndex >= 0) {
+        kendo.ui.progress($(document.body), true);
+        $.ajax({
+            url: TSM_Web_APi + "RegistroSolicitudAjustesMotivos/AjusteTodasEstacionesIns",//
+            type: "Post",
+            dataType: "json",
+            data: JSON.stringify({
+                IdRegistroSolicitudAjuste: xaIdRegistroSolicitudAjuste,
+                IdSeteo: xaIdSeteo,
+                IdMotivoSolicitudAjuste: KdoCmbGetValue($("#cmbMotivoAjuste"))
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                RequestEndMsg(data, "Post");
+                $("#grid_Ajustes").data("kendoGrid").dataSource.read();
+                fn_getEstacionesMultiSelect();
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
+                kendo.ui.progress($(document.body), false);
+            },
+            error: function (data) {
+                kendo.ui.progress($(document.body), false);
+                ErrorMsg(data);
+            }
+        });
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar los campos requeridos", "error");
+        KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
+        $('#chkAjuste_Todas').prop('checked', false);
+    }
+   
+
+};
+
+let fn_GetRevisaCheckTodas = function () {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "RegistroSolicitudAjustesMotivos/GetbyMotivo/" + xaIdRegistroSolicitudAjuste + "/" + (KdoCmbGetValue($("#cmbMotivoAjuste")) === null ? 0 : KdoCmbGetValue($("#cmbMotivoAjuste"))),
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            kendo.ui.progress($(document.body), false);
+            if (respuesta.length > 0) {
+                $('#chkAjuste_Todas').prop('checked', respuesta[0].SeleccionoTodas);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), !respuesta[0].SeleccionoTodas);
+            } else {
+                $('#chkAjuste_Todas').prop('checked', false);
+                KdoCheckBoxEnable($("#chkAjuste_Todas"), true);
+            }
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
