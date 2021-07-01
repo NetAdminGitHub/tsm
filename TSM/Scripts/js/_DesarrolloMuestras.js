@@ -32,9 +32,10 @@ var fn_DMueCargarConfiguracion = function () {
     $("#btnCambiarEstadoEtapa").click(function (event) {
         var lstId = {
             IdOrdenTrabajo: idOrdenTrabajo,
-            IdEtapaProceso: idEtapaProceso
+            IdEtapaProceso: idEtapaProceso,
+            Item: $("#txtItem").val(),
         };
-        Fn_VistaCambioEstadoMostrar("OrdenesTrabajosDetalles", $("#txtEstado").val(), TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajos_CambiarEstado", "Sp_CambioEstado", lstId, undefined);
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajosDetalles", $("#txtEstado").val(), TSM_Web_APi + "OrdenesTrabajosDetalles/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
 
     fn_ConsultaPesos($("#gridEstacionPeso"));
@@ -101,7 +102,7 @@ var fn_DMueCargarConfiguracion = function () {
 };
 
 var fn_DMCargarEtapa = function () {
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    vhb = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
     $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 

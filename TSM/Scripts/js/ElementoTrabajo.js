@@ -66,6 +66,8 @@ var dtoDiseno=false;
 var dtoTintas=false;
 var dtoRevelado = false;
 var DienoAfectaSecuencia = false;
+var estadoPermiteEdicion = false;
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -706,13 +708,16 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtIdEtapaProceso").val(datos.IdEtapaProceso);
     $("#IdCliente").val(datos.IdCliente);
     $("#txtEstado").val(datos.Estado);
+
+    if (datos.Estado === "ACTIVO" || datos.Estado === "ENSETEO" || datos.Estado === "ENAJUSTE" || datos.Estado === "ENAPROBACION")
+        estadoPermiteEdicion = true;
+
     $("#txtId").val(datos.Id);
     $("#txtNomServicio").val(datos.NomServicio);
     $("#txtNombre").val(datos.Nombre);
     $("#txtEstiloDiseno").val(datos.EstiloDiseno);
     $("#txtNombreDiseno").val(datos.NombreDiseno);
     $("#lblNomIdEtapaProceso").text(datos.NomIdEtapaProceso);
-    $("#txtEstado").val(datos.Estado);
     $("#txtNoDocumentoOT").val(datos.NoDocumento);
     $("#txtFechaOrdenTrabajo").val(fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' + fecha.getFullYear());
     $("#txtNomEstado").val(datos.NomEstado);
@@ -747,13 +752,16 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     xIdQuimica = datos.IdQuimica;
     NombreQui = datos.NombreQui;
 
+    if ($("#txtEstadoEtapa").length > 0)
+        $("#txtEstadoEtapa").val(datos.NomEstadoDetalle);
+
     //habilitar botones de acciones o de flujo de la OT
-    KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
-    KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnCambiorEstadoOT"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnCambiarAsignado"), !estadoPermiteEdicion || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
+    KdoButtonEnable($("#btnCambiarEtapa"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnCambiorEstadoOT"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
-    KdoButtonEnable($("#btnAgenda"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnAgenda"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
 
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
