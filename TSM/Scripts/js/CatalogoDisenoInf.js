@@ -257,6 +257,11 @@ let fn_gridOT = function () {
             KdoHideCampoPopup(e.container, "IdEtapaProceso");
             KdoHideCampoPopup(e.container, "Item");
             KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "RoundMuestra");
+            KdoHideCampoPopup(e.container, "NoDocumentoOrigen");
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajoOrigen");
+            KdoHideCampoPopup(e.container, "TallaDesarrollada");
+
             KdoCheckBoxEnable($('[name="MUFIAPRO"]'), false);
             KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), false);
             if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {

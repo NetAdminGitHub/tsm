@@ -23,6 +23,14 @@
 
 
     };
+    notif.client.actualizarVistaAjuste = function (data) {
+        let d = JSON.parse(data);
+        if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo &&  d.Data.IdEtapa===12 ) {
+            fn_Refres_Vista_Ajuste();
+            $("#kendoNotificaciones").data("kendoNotification").show(d.Data.Mensaje, "success");
+        }
+    
+    };
 
     $.connection.hub.url = TSM_Web_APi.replace("api/", "") + "signalr/hub";
     $.connection.hub.qs = { 'u': Cookies.get("user") };

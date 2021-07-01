@@ -468,7 +468,7 @@ var fn_GetMarcoFormulacion_Ajuste = function (xIdSeteo, xIdestacion) {
         //async: false,
         type: 'GET',
         success: function (datos) {
-            fn_fn_SeccionMarcosFormulacion_Ajuste(datos);
+            fn_SeccionMarcosFormulacion_Ajuste(datos);
         },
         complete: function () {
             kendo.ui.progress($("#MEstacionAjuste"), false);
@@ -476,7 +476,7 @@ var fn_GetMarcoFormulacion_Ajuste = function (xIdSeteo, xIdestacion) {
     });
 };
 
-var fn_fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
+var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
     setFor = datos;
     if (setFor !== null) {
         $("#NumResolucionDPI_Ajuste").data("kendoNumericTextBox").focus();
@@ -540,6 +540,7 @@ var fn_fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
         $("#TxtFormulaSug_Ajuste").val(setFor.SugerenciaFormula);
         $("#TxtFormulaSugTint_Ajuste").val(setFor.SugerenciaFormula);
         $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
+        $("#TxtNombreQuiForm_Ajuste").val(setFor.NomIdQuimica);
 
         KdoCmbSetValue($("#CmbIdTipoEstacion_Ajuste"), setFor.IdTipoEstacion === undefined ? "" : setFor.IdTipoEstacion);
         $("#CmbIdTipoEstacion_Ajuste").data("kendoComboBox").trigger("change");
@@ -593,6 +594,7 @@ var fn_fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
                 KdoComboBoxEnable($("#CmbSistemaPigmento_Ajuste"), false);
                 break;
         }
+    
     }
 
 };
@@ -737,6 +739,7 @@ var fn_GuardarMarcoFormu_Ajuste = function (xIdBrazo) {
             }
             xResolucion = kdoNumericGetValue($("#NumResolucionDPI_Ajuste"));
             xLineaje = kdoNumericGetValue($("#NumLineajeLPI_Ajuste"));
+         
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionAjuste"), false);
@@ -1238,7 +1241,8 @@ let LimpiaMarcaCelda_Ajuste = function () {
                             //var lstId = {
                             //    IdFormula: dataItem.IdFormula
                             //};
-                            Fn_VistaCambioEstadoMostrar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, undefined);
+                            Fn_VistaCambioEstadoMostrar("TintasFormulaciones", dataItem.Estado, TSM_Web_APi + "TintasFormulaciones/TintasFormulaciones_CambiarEstado", "", dataItem.IdFormula, undefined, function () {
+                                return fn_UpdEstadoGrilla_Ajuste();   });
                         }
                     },
                     width: "70px",
@@ -1566,7 +1570,9 @@ var fn_GridDetAjuste = function () {
                     IdSeteo: { type: "number" },
                     IdEstacion: { type: "number" },
                     MotivoAjuste: { type: "string" },
-                    Comentarios: { type: "string" }
+                    Comentarios: { type: "string" },
+                    Estado: { type: "string" },
+                    NombreEstado: { type: "string" }
                 }
             }
         }
@@ -1582,7 +1588,9 @@ var fn_GridDetAjuste = function () {
             { field: "IdSeteo", title: "Cod.IdSeteo", hidden: true },
             { field: "MotivoAjuste", title: "Motivo ", hidden: true },
             { field: "IdEstacion", title: "Estacion", hidden: true },
-            { field: "Comentarios", title: "Comentarios" }
+            { field: "Comentarios", title: "Comentarios" },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NombreEstado", title: "Estado" }
         ]
     });
 
@@ -1603,5 +1611,30 @@ var fn_GridDetAjuste = function () {
 
 
 };
+
+let fn_UpdEstadoGrilla_Ajuste = function () {
+    // como esta funcion es Async =false es valido colocar este codigo
+    let ge = $("#gridEstacionMq_Ajuste").data("kendoGrid");
+    var uid = ge.dataSource.get(xidEstacion).uid;
+    Fn_UpdGridEstacion_Formula_Ajuste(ge.dataItem("tr[data-uid='" + uid + "']"), KdoCmbGetText($("#cmbEstados")));
+    $("tr[data-uid= '" + uid + "']").removeAttr("style");
+    $("#gridDet_Ajuste").data("kendoGrid").dataSource.read(); 
+    return true;
+};
+
+let Fn_UpdGridEstacion_Formula_Ajuste = function (g, estado) {
+    g.set("EstadoFormula", estado);
+    LimpiaMarcaCelda_Formula_Ajuste();
+    //if (estado === "FORMULA VIGENTE") {
+    //    g.set("EstadoAlerta", "FINALIZADA");
+    //}
+    //LimpiaMarcaCelda_Formula();
+};
+let LimpiaMarcaCelda_Formula_Ajuste = function () {
+    $(".k-dirty-cell", $("#gridEstacionMq_Ajuste")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gridEstacionMq_Ajuste")).remove();
+};
+
+
 
 //#endregion 

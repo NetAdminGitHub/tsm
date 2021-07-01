@@ -6,6 +6,7 @@ var Permisos;
 let VIdSer =0;
 let VIdCliente = 0;
 let VIdOrdenTra = 0;
+let vIdPrograma = 0;
 let data=null;
 $(document).ready(function () {
     $("#MbtnSimu").kendoDialog({
@@ -59,6 +60,9 @@ $(document).ready(function () {
     $("#CmbNoOrdenTrabajo").OrdenesTrabajosSimulacion();
     KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo")); 
 
+
+    $("#CmbPrograma").ControlSelecionPrograma();
+    KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("SimulacionesMuestras_CmbPrograma") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbPrograma")); 
 
     $("#CmbNoOT").data("kendoMultiColumnComboBox").bind("change", function (e) {
         if (this.dataItem() !== undefined) {
@@ -305,7 +309,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo + "/" + VIdOrdenTra; },
+                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo + "/" + VIdOrdenTra + "/" + vIdPrograma; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -555,10 +559,10 @@ $(document).ready(function () {
     $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
        
         if (e.item) {
-            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdServicio",this.dataItem(e.item.index()).IdServicio);
         } else {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdServicio","");
         }
 
@@ -567,17 +571,17 @@ $(document).ready(function () {
     $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdServicio", "");
         }
     });
 
     $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
         } else {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdCliente", "");
         }
     });
@@ -585,7 +589,7 @@ $(document).ready(function () {
     $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")));
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbIdCliente", "");
         }
 
@@ -596,9 +600,9 @@ $(document).ready(function () {
         if (e.item) {
             KdoCmbSetValue($("#CmbIdServicio"), this.dataItem(e.item.index()).IdServicio);
             Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio, Kendo_CmbGetvalue($("#CmbIdCliente")), this.dataItem(e.item.index()).IdOrdenTrabajo);
-            sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
+            sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
         } else {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0);
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo","");
         }
     });
@@ -607,11 +611,35 @@ $(document).ready(function () {
         var multicolumncombobox = $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0);
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo", "");
         }
 
     });
+
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
+
+        if (e.item) {
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), this.dataItem(e.item.index()).IdPrograma);
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), this.dataItem(e.item.index()).IdPrograma);
+            sessionStorage.setItem("SimulacionesMuestras_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
+        } else {
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),0);
+            sessionStorage.setItem("SimulacionesMuestras_CmbPrograma", "");
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),0);
+            sessionStorage.setItem("SimulacionesMuestras_CmbPrograma", "");
+        }
+
+    });
+
 
     //#endregion
  
@@ -674,8 +702,12 @@ $(document).ready(function () {
     });
 
     //Coloca el filtro de cliente guardado en la sesion
-    if (sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio") !== null || sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente") !== null || sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo") !== null) {
-        Fn_ConsultarSimu(sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio"), sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente"), sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo"));
+    if (sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio") !== null || sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente") !== null ||
+        sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo") !== null || sessionStorage.getItem("SimulacionesMuestras_CmbPrograma") !== null) {
+        Fn_ConsultarSimu(sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio"),
+                          sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente"),
+                          sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo"),
+                          sessionStorage.getItem("SimulacionesMuestras_CmbPrograma") );
 
     }
 });
@@ -689,11 +721,12 @@ let fn_hbbtnSimu = function () {
         $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
     }
 };
-let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra) {
+let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra, IdPrograma) {
     kendo.ui.progress($("#splitter"), true);
     VIdSer = Number(IdServicio);
     VIdCliente = Number(IdCliente);
     VIdOrdenTra = Number(IdOrdenTra);
+    vIdPrograma = Number(IdPrograma);
     //leer grid
     $("#gridSimulacion").data("kendoGrid").dataSource.data([]);
     $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () { fn_hbbtnSimu(); });
