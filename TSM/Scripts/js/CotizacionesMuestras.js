@@ -276,7 +276,8 @@ $(document).ready(function () {
 
     Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
 
-    //#endregion FIN PROGRAMACIÓN DEL GRID cotizacion
+    //#endregion FIN PROGRAMACIÓN DEL GRID cotizacion
+
     //#region seleccion de servicio y cliente
 
 
@@ -503,6 +504,7 @@ let fn_TablaEnMemoria = function (ds) {
         $.each(ds, function (index, elemento) {
             e = '<tr>' +
                 '<td>' + elemento.NoSimulacion + '</td>' +
+                '<td>' + elemento.NoFM + '</td>' +
                 '<td>' + elemento.NoOrdenTrabajo + '</td>' +
                 '<td>' + elemento.Nombre + '</td>' +
                 '<td>' + kendo.format("{0:dd/MM/yyyy HH:mm:ss}", kendo.parseDate(elemento.Fecha)) + '</td>' +
@@ -516,6 +518,7 @@ let fn_TablaEnMemoria = function (ds) {
             '<thead style="color: #fff !important;">' +
             '<tr>' +
             '<th scope="col">Simulación</th>' +
+            '<th scope="col">No FM</th>' +
             '<th scope="col">Orden de Trabajo</th>' +
             '<th scope="col">Diseño</th>' +
             '<th scope="col">Fecha</th>' +

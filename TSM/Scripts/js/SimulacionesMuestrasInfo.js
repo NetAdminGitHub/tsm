@@ -952,6 +952,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
         $("#txtPorcVariacion").data("kendoNumericTextBox").value(elemento.PorcVariacion);
         $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
+        $("#txtFM").val(elemento.NoFM);
         $("#TxtOrdenTrabajo").val(elemento.NoOT);
 
         var dataChart = [];
