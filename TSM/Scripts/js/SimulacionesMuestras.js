@@ -360,7 +360,9 @@ $(document).ready(function () {
                     Montajes: { type: "number" },
                     PersonalExtra: { type: "number" },
                     CantidadPiezas: { type: "number" },
-                    PorcVariacion: { type: "number" }
+                    PorcVariacion: { type: "number" },
+                    ProductividadHora: { type: "number" },
+                    NoReferencia: { type: "string" }
                 }
             }
         }
@@ -383,6 +385,15 @@ $(document).ready(function () {
                 filterable: {
                     cell: {
                         enabled: false
+                    }
+                }
+            },
+            {
+                field: "NoReferencia", title: "No FM", width: 150,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
                     }
                 }
             },
