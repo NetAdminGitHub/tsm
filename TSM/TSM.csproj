@@ -271,6 +271,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\DepartamentosController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
@@ -493,6 +494,7 @@
     <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
+    <Content Include="Scripts\js\Departamentos.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
     <Content Include="Scripts\js\EstacionAjuste.js" />
@@ -941,6 +943,7 @@
     <Content Include="Views\Shared\_TintasFormulacionesNuevoAjuste.cshtml" />
     <Content Include="Views\PruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\PruebasLaboratorio\_InfoPruebaLaboratorio.cshtml" />
+    <Content Include="Views\Departamentos\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -956,6 +959,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CrystalReferences\" />
+    <Folder Include="Data\" />
     <Folder Include="Views\Imagen\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
