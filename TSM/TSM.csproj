@@ -257,6 +257,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
@@ -482,6 +483,7 @@
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CategoriasMotivosLaboratorio.js" />
     <Content Include="Scripts\js\CriteriosCriticosCalidad.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
@@ -944,6 +946,7 @@
     <Content Include="Views\PruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\PruebasLaboratorio\_InfoPruebaLaboratorio.cshtml" />
     <Content Include="Views\Departamentos\Index.cshtml" />
+    <Content Include="Views\CategoriasMotivosLaboratorio\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
