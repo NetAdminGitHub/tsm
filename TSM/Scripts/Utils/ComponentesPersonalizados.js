@@ -31,7 +31,21 @@
             });
         });
     },
-    ControlPantonesLaboratorio: function () {
+    ControlPantonesLaboratorio: function (opt) {
+        var strcontroller = "";
+        var defaults = {
+            modoNuevo: false,
+            idSeteo: 0
+        }
+        var params = $.extend({}, defaults, opt);
+        if (params.modoNuevo) {
+            strcontroller = "/Pantoneras/GetBusquedaPantoneraLab";
+        } else {
+
+            strcontroller = "/ResultadosPiezasPruebasLaboratorio/ColoresDiseno/" + params.idSeteo;
+        }
+       // strcontroller: "/Pantoneras/GetBusquedaPantoneraLab",
+
 
 
         return this.each(function () {
@@ -47,7 +61,7 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "/Pantoneras/GetBusquedaPantoneraLab"; },
+                            url: function (datos) { return TSM_Web_APi + strcontroller; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }

@@ -3,6 +3,7 @@ let tabStrip;
 var _NuevoRegistro = false;// inicializa la variable modo nuevo registro
 let EstadoActual = 'ING'; // lo inicializa como ingresado si el form está en blanco
 let CodCliente = 0;
+let ListadoTurnos = [{ "nombre": "A", "valor": "A" }, { "nombre": "B", "valor": "B" }];
 var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = false) {
 
     KdoButton($("#btnActualizarEstado"), "check-circle");
@@ -24,7 +25,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     //Kendo_CmbFiltrarGrid($("#CmbEstado"), TSM_Web_APi + "Estados/", "Nombre", "Estado", "Seleccione...");
 
     $("#NoSolicitud").kendoTextBox();
-    $("#IdTurno").kendoTextBox();
+  
     $("#IdCorte").kendoTextBox();
     $("#IdBulto").kendoTextBox();
     Kendo_CmbFiltrarGrid($("#CmbTipoOrdenTrabajo"), TSM_Web_APi + "TiposOrdenesTrabajos/", "Nombre", "IdTipoOrdenTrabajo", "Seleccione...");
@@ -33,6 +34,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     Kendo_CmbFiltrarGrid($("#CmbCalidadPrueba"), TSM_Web_APi + "CalidadPruebas/" , "Nombre", "IdCalidadPrueba", "Seleccione...");
    // Kendo_CmbFiltrarGrid($("#CmbNombreDiseno"), TSM_Web_APi + "CatalogoDisenos/GetCatalogoByCliente/" + CodCliente, "Nombre", "IdCatalogoDiseno", "Seleccione...");
     KdoComboBoxbyData($("#CmbNombreDiseno"), "[]", "Nombre", "IdCatalogoDiseno", "Seleccione un diseño...", "", "");
+    KdoComboBoxbyData($("#IdTurno"), ListadoTurnos, "nombre", "valor", "seleccione un turno", "", "");
     /*
 
    
@@ -92,6 +94,11 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
+            create: {
+                url: TSM_Web_APi + "PiezasPruebasLaboratorio",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -113,7 +120,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                 id: "IdPiezaPrueba",
                 fields: {
                     IdPiezaPrueba: { type: "number" },
-                    IdPruebaLaboratorio: { type: "number" },
+                    IdPruebaLaboratorio: {
+                        type: "number", defaultValue: function () { return _idPruebaLaboratorio; } },
                     IdPiezaDesarrollada: { type: "number" },
                     NoPieza: { type: "string" },
                     IdCategoriaTalla: { type: "number" },
@@ -125,7 +133,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     ConstruccionTela: { type: "string" },
                     IdCategoriaConfeccion: { type: "number" },
                     CategoriaConfeccion: { type: "string" },
-                    TelaSustituta: { type: "boolean" },
+                    TelaSustituta: { type: "bool" },
                     IdHorno: { type: "number" },
                     HornoTemperaturaCurado: { type: "number" },
                     HornoBandaSegundos: { type: "number" },
@@ -163,6 +171,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             KdoHideCampoPopup(e.container, "CategoriaConfeccion");
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
             KdoHideCampoPopup(e.container, "ItemPantonera");
+            KdoHideCampoPopup(e.container, "NoPieza");
 
 
             $('[name="ColorTelaHex"]').data("kendoColorPicker").enable(false);
@@ -216,7 +225,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             { field: "IdPruebaLaboratorio", title: "IdPruebaLaboratorio", hidden: true },
             { field: "IdPiezaDesarrollada", title: "IdPiezaDesarrollada", hidden: true },
             { field: "NoPieza", title: "Pieza desarrollada", hidden: false, width:100 },
-            { field: "IdCategoriaTalla", title: "IdCategoriaTalla", hidden: true },
+            { field: "IdCategoriaTalla", title: "IdCategoriaTalla", hidden: true, editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", TSM_Web_APi + "CategoriaTallas", "", "Seleccione...."] },
             { field: "NombreTalla", title: "Categoría talla", hidden: false, width: 200 },
             { field: "TallaCliente", title: "Talla cliente", hidden: false, width: 100 },
             { field: "IdComposicionTela", title: "IdComposicionTela", hidden: true, editor: Grid_Combox, values: ["IdComposicionTela", "Nombre", TSM_Web_APi + "ComposicionTelas", "", "Seleccione...."] },
@@ -241,11 +250,11 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             },
             
             { field: "IdHorno", title: "Horno", hidden: false },
-            { field: "HornoTemperaturaCurado", title: "Temperatura horno" },
-            { field: "EscalaHornoTemperaturaCurado", title: "Escala horno" },
-            { field: "HornoBandaSegundos", title:  "Velocidad banda (seg)" },
+            { field: "HornoTemperaturaCurado", title: "Temperatura horno" , hidden:false },
+            { field: "EscalaHornoTemperaturaCurado", title: "Escala horno", hidden: false },
+            { field: "HornoBandaSegundos", title: "Tiempo en banda (seg)", hidden: false },
           
-            { field: "TelaSustituta", title: "Tela sustituta", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "TelaSustituta"); } },
+            { field: "TelaSustituta", title: "Tela sustituta", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "TelaSustituta"); }, hidden: false },
             { field: "Comentarios", title: "Comentarios", width: 100, hidden: false, width: 250 },
             { field: "ItemPantonera", editor: Grid_ColIntNumSinDecimal, hidden: true },
             { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
@@ -336,7 +345,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     ColorHexEvaluado: { type: "string", defaultValue: function () { return "transparent"; }},
                     ItemPantoneraEva: { type: "number" },
                     IdTipoPantoneraEva: { type: "number" },
-                    IDColor: { type: "string" },
+                    ID: { type: "string" },
                     Comentarios: { type: "string" },
                     IdTipoTinta: { type: "number" },
                     NombreTipoTinta: { type:"string"}
@@ -368,7 +377,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             });
             Grid_Focus(e, "Comentario");
 
-            $('[name="IDColor"]').on("change", function (e) {
+            $('[name="ID"]').on("change", function (e) {
                 if ($(this).data("kendoMultiColumnComboBox").dataItem() !== undefined) {
                     if ($(this).data("kendoMultiColumnComboBox").selectedIndex >= 0) {
                         var data = $(this).data("kendoMultiColumnComboBox").dataItem();
@@ -392,11 +401,11 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             });
 
             if (!e.model.isNew() && e.model.Item !== null) {
-                $('[name="IDColor"]').data("kendoMultiColumnComboBox").text(e.model.ID);
-                $('[name="IDColor"]').data("kendoMultiColumnComboBox").trigger("change");
-                $('[name="IDColor"]').data("kendoMultiColumnComboBox").search(e.model.ID);
-                $('[name="IDColor"]').data("kendoMultiColumnComboBox").refresh();
-                $('[name="IDColor"]').data("kendoMultiColumnComboBox").close();
+                $('[name="ID"]').data("kendoMultiColumnComboBox").text(e.model.ID);
+                $('[name="ID"]').data("kendoMultiColumnComboBox").trigger("change");
+                $('[name="ID"]').data("kendoMultiColumnComboBox").search(e.model.ID);
+                $('[name="ID"]').data("kendoMultiColumnComboBox").refresh();
+                $('[name="ID"]').data("kendoMultiColumnComboBox").close();
               
             }
             if (e.model.isNew()) {
@@ -412,13 +421,13 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             { field: "ItemResultado", title: "ItemResultado", hidden: true },
             { field: "IdReferenciaPrueba", title: "IdReferenciaPrueba", hidden: true, editor: Grid_Combox, values: ["IdReferenciaPrueba", "Referencia", TSM_Web_APi + "ReferenciasPruebasLaboratorio", "", "Seleccione...."]  },
             { field: "NombreReferencia", title: "Evaluado contra", hidden: false, width: 100 },
-            { field: "CalificacionGrises", title: "Calificación", hidden: false, editor: Grid_ColNumeric, values: ["required", "1", "5", "#", 0] },
+            { field: "CalificacionGrises", title: "Calificación", hidden: false, editor: Grid_ColNumeric, values: ["required", "1", "5", "#.##", 2,0.01] },
             { field: "IdMotivoEvaluacion", title: "IdMotivoEvaluacion", hidden: true, width: 200, editor: Grid_Combox, values: ["IdMotivoEvaluacion", "MotivoEvaluacion", TSM_Web_APi + "MotivosEvaluacionPruebasLaboratorio", "", "Seleccione...."]  },
             { field: "MotivoEvaluacion", title: "Motivo", hidden: false, width: 100 },
             {
-                field: "IDColor", title: "Evaluando",
+                field: "ID", title: "Evaluando",
                 editor: function (container, options) {
-                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantonesLaboratorio();
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantonesLaboratorio({ modoNuevo: _NuevoRegistro, idSeteo: 123 });
                 },
                 hidden: true
             },
@@ -580,6 +589,62 @@ function fn_getPiezaLab(g) {
 }
 
 
+
+
+function fn_LimpiaModal() {
+
+
+    /*
+       $("#NoSolicitud").data("kendoTextBox").value(respuesta.NoSolicitud);
+               // $("#CmbEstado").data("kendoComboBox").value(respuesta.Estado);
+                $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaCreacion), 'dd/MM/yyyy'));
+                $("#CmbClientePrueba").data("kendoComboBox").value(respuesta.IdCliente);
+                $("#CmbNombreDiseno").data("kendoComboBox").setDataSource(fn_ObtieneDisenos(respuesta.IdCliente));
+
+                $("#CmbNombreDiseno").data("kendoComboBox").dataSource.read();
+                $("#CmbCalidadPrueba").data("kendoComboBox").value(respuesta.IdCalidadPrueba);
+                $("#CmbNombreDiseno").data("kendoComboBox").value(respuesta.IdCatalogoDiseno);
+                $("#CmbTipoOrdenTrabajo").data("kendoComboBox").value(respuesta.IdTipoOrdenTrabajo);
+                $("#CmbOrigenPrueba").data("kendoComboBox").value(respuesta.IdOrigenPrueba);
+              
+              $("#NumCantLavadas").data("kendoNumericTextBox").value(respuesta.CantidadLavadas);
+                $("#NumCantQuemadas").data("kendoNumericTextBox").value(respuesta.CantidadQuemadas);
+              
+              $('#SNLectura').prop('checked', respuesta.Lectura );
+              
+              $("#IdPlanta").data("kendoNumericTextBox").value(respuesta.IdPlanta);
+                $("#IdTurno").data("kendoComboBox").value(respuesta.IdTurno);
+                $("#IdMaquina").data("kendoNumericTextBox").value(respuesta.IdMaquina);
+                $("#IdCorte").data("kendoTextBox").value(respuesta.IdCorte);
+                $("#IdBulto").data("kendoTextBox").value(respuesta.IdBulto);
+                KdoButtonEnable($("#btnActualizarEstado"), true);
+     
+     
+     */
+
+    //$("#IdRequerimiento").val("0");
+   
+    $("#CmbClientePrueba").data("kendoComboBox").value("");
+    $("#CmbNombreDiseno").data("kendoComboBox").value("");
+    $("#FechaCreacion").data("kendoDatePicker").value("");
+    $("#CmbCalidadPrueba").data("kendoComboBox").value("");
+    $("#CmbTipoOrdenTrabajo").data("kendoComboBox").value("");
+    $("#CmbOrigenPrueba").data("kendoComboBox").value("");
+    $("#NumCantLavadas").data("kendoNumericTextBox").value("");
+    $("#NumCantQuemadas").data("kendoNumericTextBox").value("");
+    $("#IdPlanta").data("kendoNumericTextBox").value("");
+    $("#IdMaquina").data("kendoNumericTextBox").value("");
+    $("#IdCorte").data("kendoTextBox").value("");
+    $("#IdBulto").data("kendoTextBox").value("");
+    $('#SNLectura').prop('checked', false);
+    KdoButtonEnable($("#btnActualizarEstado"), false);
+    $("#IdTurno").data("kendoComboBox").value("");
+    
+
+}
+
+
+
 let HabilitarCampos = function (bloquea) {
 
     $("#NoSolicitud").data("kendoTextBox").enable(false);
@@ -595,7 +660,7 @@ let HabilitarCampos = function (bloquea) {
     $("#NumCantQuemadas").data("kendoNumericTextBox").enable(bloquea);
     $('#SNLectura').prop('enable', bloquea);
     $("#IdPlanta").data("kendoNumericTextBox").enable(bloquea);
-    $("#IdTurno").data("kendoTextBox").enable(bloquea);
+    $("#IdTurno").data("kendoComboBox").enable(bloquea);
     $("#IdMaquina").data("kendoNumericTextBox").enable(bloquea);
     $("#IdCorte").data("kendoTextBox").enable(bloquea);
     $("#IdBulto").data("kendoTextBox").enable(bloquea);
@@ -632,7 +697,7 @@ let getSolicitud = function () {
                 $("#NumCantQuemadas").data("kendoNumericTextBox").value(respuesta.CantidadQuemadas);
                 $('#SNLectura').prop('checked', respuesta.Lectura );
                 $("#IdPlanta").data("kendoNumericTextBox").value(respuesta.IdPlanta);
-                $("#IdTurno").data("kendoTextBox").value(respuesta.IdTurno);
+                $("#IdTurno").data("kendoComboBox").value(respuesta.IdTurno);
                 $("#IdMaquina").data("kendoNumericTextBox").value(respuesta.IdMaquina);
                 $("#IdCorte").data("kendoTextBox").value(respuesta.IdCorte);
                 $("#IdBulto").data("kendoTextBox").value(respuesta.IdBulto);
@@ -685,7 +750,7 @@ let CrearHeaderSolicitud = function () {
             IdCatalogoDiseno: $("#CmbNombreDiseno").data("kendoComboBox").value(),
             IdTipoOrdenTrabajo: KdoCmbGetValue($("#CmbTipoOrdenTrabajo")),
             IdPlanta: $("#IdPlanta").data("kendoNumericTextBox").value(),
-            IdTurno: $("#IdTurno").data("kendoTextBox").value(),
+            IdTurno: KdoCmbGetValue($("#IdTurno")) ,// $("#IdTurno").data("kendoComboBox").selectedIndex.value(),
             IdMaquina: $("#IdMaquina").data("kendoNumericTextBox").value(),
             IdCorte: $("#IdCorte").data("kendoTextBox").value(),
             IdBulto: $("#IdBulto").data("kendoTextBox").value(),
@@ -741,7 +806,7 @@ let GuardarHeaderSolicitud = function () {
             IdCatalogoDiseno: $("#CmbNombreDiseno").data("kendoComboBox").value(),
             IdTipoOrdenTrabajo: KdoCmbGetValue($("#CmbTipoOrdenTrabajo")),
             IdPlanta: $("#IdPlanta").data("kendoNumericTextBox").value(),
-            IdTurno: $("#IdTurno").data("kendoTextBox").value(),
+            IdTurno: $("#IdTurno").data("kendoComboBox").value(),
             IdMaquina: $("#IdMaquina").data("kendoNumericTextBox").value(),
             IdCorte: $("#IdCorte").data("kendoTextBox").value(),
             IdBulto: $("#IdBulto").data("kendoTextBox").value(),
@@ -798,6 +863,12 @@ var fn_ObtieneDisenos = function (CodCliente) {
 
 
 var fn_CargarInfoLaboratorio = function (vIdPruebaLaboratorio) {
-    _idPiezaDesarrollada = vIdPruebaLaboratorio;
-   // $("#gridEspecimen").data("kendoGrid").dataSource.read();
+    _idPruebaLaboratorio = vIdPruebaLaboratorio;
+    fn_LimpiaModal();
+    getSolicitud();
+    $("#gridResultado").data("kendoGrid").dataSource.data([]);
+
+    $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
+    $("#gridEspecimen").data("kendoGrid").dataSource.read();
+    $("#gridResultado").data("kendoGrid").dataSource.read();
 };

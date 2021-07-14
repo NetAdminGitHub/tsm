@@ -369,6 +369,14 @@ $(document).ready(function () {
 
 
 
+    $(".Kanban-view-topscroll").scroll(function () {
+        $(".board")
+            .scrollLeft($(".Kanban-view-topscroll").scrollLeft());
+    });
+    $(".board").scroll(function () {
+        $(".Kanban-view-topscroll")
+            .scrollLeft($(".board").scrollLeft());
+    });
 
 
 
@@ -408,7 +416,7 @@ let fn_CargarVistaModalInfoLaboratorio = function (data, divPruebaLab, idPruebaL
         script.type = "text/javascript";
         script.src = "/Scripts/js/_InfoPruebaLaboratorio.js";
         script.onload = function () {
-            fn_ShowModalInfoLaboratorio(true, data, divPruebaLab, idPruebaLaboratorio, fnclose);
+            fn_ShowModalInfoLaboratorio(true, data, divPruebaLab, idPruebaLaboratorio, ModoNuevo,fnclose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
@@ -422,6 +430,7 @@ let fn_ShowModalInfoLaboratorio = function (cargarJs, data, divVerInfoLaboratori
         if (cargarJs === true) {
             fn_InicializarInfoLaboratorio(idPruebaLaboratorio,Nuevo);
         } else {
+           // fn_InicializarInfoLaboratorio(idPruebaLaboratorio, Nuevo);
             fn_CargarInfoLaboratorio(idPruebaLaboratorio);
         }
     };
@@ -505,7 +514,7 @@ let fn_DibujarKanbanSolicitudesLab = function (ds) {
 
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.Rowid + '" >' +
                         //'<div class= "form-group col-lg-2">' +
-                        '<div class="card border-success mb-3 " style="max-width: 18rem;" onclick="fn_Obtieneinfosolicitud(\'InfoPruebaLaboratorio\','+elemento.IdPruebaLaboratorio+');">' +
+                        '<div class="card border-success mb-3 " style="max-width: 18rem;" onclick="fn_Obtieneinfosolicitud(\'InfoPruebaLaboratorio\','+elemento.IdPruebaLaboratorio+', '+false+');">' +
                         '<div ' + vClass + ' style="font-size: 32px;position:absolute;"  data-toggle="tooltip" title="'+elemento.CalidadPrueba  +'" > ' +
                                 '</div >' +   
                         '<div class= "TSM-card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
@@ -580,6 +589,8 @@ let fn_DibujarKanbanSolicitudesLab = function (ds) {
             });
 
 
+            $(".scroll-div1").css("width", $(".board")[0].scrollWidth);
+            $(".Kanban-view-topscroll").css("width", $(".board")[0].scrollWidth);
             fn_IniciarKanban();
 
 
