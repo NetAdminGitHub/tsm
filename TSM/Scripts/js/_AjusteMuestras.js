@@ -518,9 +518,10 @@ var fn_GetNoFinalizadas_Ajuste = function (IdSeteo) {
 var fn_MostrarEtapa = function () {
 
     fn_GetAfectaSecuencia(maq[0].IdSeteo);
-    Acceso_Tintas = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoTintas === false || EtpAsignado === false || DienoAfectaSecuencia === true); 
-    Acceso_Reve = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoRevelado === false || EtpAsignado === false || DienoAfectaSecuencia===true); 
-    Acceso_Diseno = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoDiseno === false || EtpAsignado === false ); 
+    Acceso_Tintas = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoTintas === false || alertTintas === false || EtpAsignado === false || DienoAfectaSecuencia === true);
+    Acceso_Reve = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoRevelado === false || alertRevelado === false || EtpAsignado === false || DienoAfectaSecuencia === true);
+    Acceso_Diseno = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || !(dtoDiseno === false || alertDiseno === false || EtpAsignado === false);
+
     fn_GetDisenoMuestra_Ajuste();
     DienoAfectaSecuencia === true ? $("#maquinaAjusteMues").data("maquinaSerigrafia").activarSoloLectura(false) : $("#maquinaAjusteMues").data("maquinaSerigrafia").activarSoloLectura(!Acceso_Tintas || !Acceso_Reve || !Acceso_Diseno);
     $("#gridresumen_Ajuste").data("kendoGrid").dataSource.read();
@@ -632,7 +633,9 @@ var fn_GridDetAjusteTinta = function () {
                     MotivoAjuste: { type: "string" },
                     Comentarios: { type: "string" },
                     Estado: { type: "string" },
-                    NombreEstado: { type: "string" }
+                    NombreEstado: { type: "string" },
+                    NombreDeptResponsable: {type:"string"}
+
                 }
             }
         }
@@ -648,6 +651,7 @@ var fn_GridDetAjusteTinta = function () {
             { field: "IdSeteo", title: "Cod.IdSeteo", hidden: true },
             { field: "MotivoAjuste", title: "Motivo ", hidden: true },
             { field: "IdEstacion", title: "Estacion", hidden: true },
+            { field: "NombreDeptResponsable", title: "Departamento" },
             { field: "Comentarios", title: "Comentarios" },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NombreEstado", title: "Estado" }

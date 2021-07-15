@@ -1572,7 +1572,8 @@ var fn_GridDetAjuste = function () {
                     MotivoAjuste: { type: "string" },
                     Comentarios: { type: "string" },
                     Estado: { type: "string" },
-                    NombreEstado: { type: "string" }
+                    NombreEstado: { type: "string" },
+                    NombreDeptResponsable: { type: "string" }
                 }
             }
         }
@@ -1588,6 +1589,7 @@ var fn_GridDetAjuste = function () {
             { field: "IdSeteo", title: "Cod.IdSeteo", hidden: true },
             { field: "MotivoAjuste", title: "Motivo ", hidden: true },
             { field: "IdEstacion", title: "Estacion", hidden: true },
+            { field: "NombreDeptResponsable", title: "Departamento" },
             { field: "Comentarios", title: "Comentarios" },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NombreEstado", title: "Estado" }
