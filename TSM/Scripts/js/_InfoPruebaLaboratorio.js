@@ -4,10 +4,14 @@ var _NuevoRegistro = false;// inicializa la variable modo nuevo registro
 let EstadoActual = 'ING'; // lo inicializa como ingresado si el form está en blanco
 let CodCliente = 0;
 let ListadoTurnos = [{ "nombre": "A", "valor": "A" }, { "nombre": "B", "valor": "B" }];
+let xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = false) {
 
     KdoButton($("#btnActualizarEstado"), "check-circle");
-   
+    KdoButton($("#btnActualizaMotivosRechazo"), "track-changes-enable");
+    KdoButton($("#btnAgregarMotivosRechazo"), "save","Guardar");
+    Kendo_MultiSelect($("#CmbMultiComboMotivosLaboratorio"), TSM_Web_APi + 'MotivosLaboratorio', "Motivo", "IdMotivo", "Seleccione ...");
+    getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${_idPruebaLaboratorio}`, $("#CmbMultiComboMotivosLaboratorio"));
     KdoButtonEnable($("#btnActualizarEstado"), true);
    
     _idPruebaLaboratorio = vIdPruebaLaboratorio;
@@ -121,7 +125,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                 fields: {
                     IdPiezaPrueba: { type: "number" },
                     IdPruebaLaboratorio: {
-                        type: "number", defaultValue: function () { return _idPruebaLaboratorio; } },
+                        type: "number", defaultValue: function () { return _idPruebaLaboratorio; }
+                    },
                     IdPiezaDesarrollada: { type: "number" },
                     NoPieza: { type: "string" },
                     IdCategoriaTalla: { type: "number" },
@@ -139,10 +144,11 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     HornoBandaSegundos: { type: "number" },
                     EscalaHornoTemperaturaCurado: { type: "string" },
                     Comentarios: { type: "string" },
-                    ColorTelaHex: { type: "string", defaultValue: function () { return "transparent"; }},
+                    ColorTelaHex: { type: "string", defaultValue: function () { return "transparent"; } },
                     ItemPantonera: { type: "number" },
                     IdTipoPantonera: { type: "number" },
-                    ID: { type: "string" }
+                    ID: { type: "string" },
+                    IdSeteo: {type:"number"}
                 }
             }
         }
@@ -172,7 +178,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             KdoHideCampoPopup(e.container, "IdTipoPantonera");
             KdoHideCampoPopup(e.container, "ItemPantonera");
             KdoHideCampoPopup(e.container, "NoPieza");
-
+            KdoHideCampoPopup(e.container, "IdSeteo");
 
             $('[name="ColorTelaHex"]').data("kendoColorPicker").enable(false);
 
@@ -257,7 +263,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             { field: "TelaSustituta", title: "Tela sustituta", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "TelaSustituta"); }, hidden: false },
             { field: "Comentarios", title: "Comentarios", width: 100, hidden: false, width: 250 },
             { field: "ItemPantonera", editor: Grid_ColIntNumSinDecimal, hidden: true },
-            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false }
+            { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false },
+            { field: "IdSeteo", title: "Seteo", hidden: true}
         ]
     });
 
@@ -427,7 +434,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
             {
                 field: "ID", title: "Evaluando",
                 editor: function (container, options) {
-                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantonesLaboratorio({ modoNuevo: _NuevoRegistro, idSeteo: 123 });
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />').appendTo(container).ControlPantonesLaboratorio({ modoNuevo: _NuevoRegistro, idSeteo: fn_getIdSeteo($("#gridEspecimen").data("kendoGrid")) });
                 },
                 hidden: true
             },
@@ -549,6 +556,27 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         };
         Fn_VistaCambioEstadoMostrar("PruebasLaboratorio", EstadoActual, TSM_Web_APi + "PruebasLaboratorio/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
+
+
+    $("#ModalRechazoLab").kendoDialog({
+        height: "auto",
+        width: "30%",
+        title: "Motivos de rechazo",
+        closable: true,
+        modal: true,
+        visible: false,
+        maxHeight: 900
+    });
+
+    //popup rechazos
+    $("#btnActualizaMotivosRechazo").click(function () {
+
+        var lstId = {
+            IdPruebaLaboratorio: _idPruebaLaboratorio
+        };
+        $("#ModalRechazoLab").data("kendoDialog").open().toFront();
+    });
+
     
     if (_NuevoRegistro === false) {
        
@@ -563,10 +591,110 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Date.now()), 'dd/MM/yyyy'));
     }
 
+    
+
+    $("#CmbMultiComboMotivosLaboratorio").data("kendoMultiSelect").bind("deselect", function (e) {
+        if (_idPruebaLaboratorio > 0) {
+            let idins = e.dataItem.IdMotivo;
+            kendo.ui.progress($(document.body), true);
+            let parametros = `${_idPruebaLaboratorio},${idins}`;
+
+
+            url = TSM_Web_APi + 'PruebasLaboratorioRechazadasMotivos' + "/"+ _idPruebaLaboratorio+"/" +idins //+ encodeURIComponent(parametros);
+            $.ajax({
+                url: url,//
+                type: "Delete",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //CargarInfoEtapa(false);
+                    RequestEndMsg(data, "Delete");
+                    kendo.ui.progress($(document.body), false);
+                },
+                error: function (data) {
+                    let parametros = `${_idPruebaLaboratorio}`;
+
+
+                    getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
+                    kendo.ui.progress($(document.body), false);
+                    ErrorMsg(data);
+                }
+            });
+
+        }
+
+    });
+    
+    $("#CmbMultiComboMotivosLaboratorio").data("kendoMultiSelect").bind("select", function (e) {
+        //si el requerimiento de Desarrollo existe 
+        //se permite agregar un nuevo registro de prendas
+        if (_idPruebaLaboratorio > 0) {
+            kendo.ui.progress($(document.body), true);
+            //var item = e.item;
+            $.ajax({
+                url: TSM_Web_APi + 'PruebasLaboratorioRechazadasMotivos',//
+                type: "Post",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdPuebaLaboratorio: _idPruebaLaboratorio,
+                    IdMotivo: e.dataItem.IdMotivo,
+                    IdUsuarioMod: getUser(),
+                    FechaMod: xFecha
+                 
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //CargarInfoEtapa(false);
+                    RequestEndMsg(data, "Post");
+                    kendo.ui.progress($(document.body), false);
+                },
+                error: function (data) {
+
+                    let parametros = `${_idPruebaLaboratorio}`;
+
+
+                    getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
+                    kendo.ui.progress($(document.body), false);
+                    ErrorMsg(data);
+                }
+            });
+        }
+
+    });
+     
+
+
 
     validaCampos();
 
 };
+
+
+
+
+let getMotivosRechazo = function (Url, objeto) {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: Url,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            var lista = "";
+            $.each(respuesta, function (index, elemento) {
+                lista = lista + elemento.IdPruebaRechazada + ",";
+            });
+            objeto.data("kendoMultiSelect").value(lista.split(","));
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
+
+
+
+
 
 
 let validaCampos = function () {
@@ -588,7 +716,10 @@ function fn_getPiezaLab(g) {
     return SelItem === null ? 0 : SelItem.IdPiezaPrueba;
 }
 
-
+function fn_getIdSeteo(s) {
+    var SelItem = s.dataItem(s.select());
+    return SelItem.IdSeteo === null ? 0 : SelItem.IdSeteo;
+}
 
 
 function fn_LimpiaModal() {

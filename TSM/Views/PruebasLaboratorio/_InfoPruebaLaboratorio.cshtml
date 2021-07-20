@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <button type="button" id="btnActualizarEstado">Cambiar Estado</button>
-
+                    <button type="button" id="btnActualizaMotivosRechazo">Motivos de rechazo</button>
                 </div>
             </div>
             <div class="form-group col-lg-12">
@@ -141,4 +141,26 @@
 
 
 </div>
+
+
+<div id="ModalRechazoLab">
+    <form id="FrmModalRechazoLab" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+     
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="CmbMultiComboMotivosLaboratorio">Motivos de rechazo:</label>
+                <input id="CmbMultiComboMotivosLaboratorio" name="CmbMultiComboMotivosLaboratorio" type="text" class="form-control" />
+            </div>
+        </div>
+ 
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <button type="button"  id="btnAgregarMotivosRechazo">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <div id="vCambioEstadoPD"></div>
