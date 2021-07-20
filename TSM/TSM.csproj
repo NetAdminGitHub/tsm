@@ -507,6 +507,7 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
+    <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\PruebasLaboratorio.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
@@ -950,6 +951,7 @@
     <Content Include="Views\Departamentos\Index.cshtml" />
     <Content Include="Views\CategoriasMotivosLaboratorio\Index.cshtml" />
     <Content Include="Views\DefectosEncontrados\Index.cshtml" />
+    <Content Include="Views\Shared\_GenerarFichaProduccion.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
