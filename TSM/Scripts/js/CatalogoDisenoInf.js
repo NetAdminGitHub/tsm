@@ -228,6 +228,7 @@ let fn_gridOT = function () {
                     MUCOTIZADA: { type: "bool" },
                     MUFIAPRO: { type: "bool" },
                     MUPREAPRO: { type: "bool" },
+                    FICHAPROD: { type: "bool" },
                     EstadoOT: { type: "bool" },
                     NombreEstOT: { type: "bool" },
                     IdOrdenTrabajoOrigen: { type: "number" },
@@ -259,12 +260,14 @@ let fn_gridOT = function () {
             KdoHideCampoPopup(e.container, "IdTipoOrdenTrabajo");
             KdoCheckBoxEnable($('[name="MUFIAPRO"]'), false);
             KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), false);
-            if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
-                KdoCheckBoxEnable($('[name="MUPREAPRO"]'), false);
-                KdoCheckBoxEnable($('[name="REQMP"]'), false);
-            } else {
+            //if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
+            //    KdoCheckBoxEnable($('[name="MUPREAPRO"]'), false);
+            //    KdoCheckBoxEnable($('[name="REQMP"]'), false);
+            //} else {
                 KdoCheckBoxEnable($('[name="MUPREAPRO"]'), e.model.SNFichaProd === true ? false : true);
-            }
+                KdoCheckBoxEnable($('[name="REQMP"]'), e.model.SNFichaProd === true ? false : true);
+                KdoCheckBoxEnable($('[name="FICHAPROD"]'), e.model.SNFichaProd === true ? false : true);
+            //}
             //KdoCheckBoxEnable($('[name="MUFIAPRO"]'), e.model.SNOTMuestraFin === true ? true : false);
             //KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), e.model.SNMuCotizada === true ? true : false);
         },
@@ -295,6 +298,7 @@ let fn_gridOT = function () {
             { field: "MUCOTIZADA", title: "Muestra Cotizada", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUCOTIZADA"); } },
             { field: "MUPREAPRO", title: "Muestra con Precio Aprob", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUPREAPRO"); } },
             { field: "REQMP", title: "Requisicion de Materia Prima", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "REQMP"); } },
+            { field: "FICHAPROD", title: "Selección para Ficha P.", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "FICHAPROD"); } },
             //{ field: "MUAPROPROD", title: "Muestra Aprob Producción", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "MUAPROPROD"); } },
             { field: "NoDocumentoOrigen", title: "No OT Origen", width: "120px" },
             {

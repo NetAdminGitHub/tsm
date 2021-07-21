@@ -664,6 +664,7 @@ let fn_GetOTRequerimiento = function () {
             fn_ObtieneConfiguracionBrazos();
             fn_ObtenerFichaTamanos();
             fn_ObtenerDimensiones(reqid);
+            fn_TallasProducir();
             let parametros = `${xIdOt},${idSimulacion},${idCotizacion}`;
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesProd"));
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesCalidad"));
@@ -1172,10 +1173,10 @@ let fn_ObtenerFichaTamanos = function (req) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdCategoriaTalla").data("kendoComboBox").selectedIndex >= 0;
                                 }
-                                if (input.is("[name='CantidadPiezas']")) {
-                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
-                                    return $("[name='CantidadPiezas']").data("kendoNumericTextBox").value() > 0;
-                                }
+                                //if (input.is("[name='CantidadPiezas']")) {
+                                //    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                //    return $("[name='CantidadPiezas']").data("kendoNumericTextBox").value() > 0;
+                                //}
                                 if (input.is("[name='IdUnidad']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdUnidad").data("kendoComboBox").selectedIndex >= 0;
@@ -1470,4 +1471,153 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 
+//* TALLAS A PRODUCIR
 
+let fn_TallasProducir = function (req) {
+    var dsDimTamaño = new kendo.data.DataSource({
+
+        transport: {
+            read: {
+
+                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/GetTallasOT/" + `${xIdOt}/${idSimulacion}/${idCotizacion}`; },
+                contentType: "application/json; charset=utf-8"
+
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/" + datos.IdOrdenTrabajo.toString() + "/" + datos.IdSimulacion.toString() + "/" + datos.IdCotizacion.toString() + "/" + datos.IdOrdenTrabajoProduccion.toString(); },
+                type: "PUT",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (datos) {
+                    datos.success(result);
+                }
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/" + datos.IdOrdenTrabajo.toString() + "/" + datos.IdSimulacion.toString() + "/" + datos.IdCotizacion.toString() + "/" + datos.IdOrdenTrabajoProduccion.toString(); },
+                dataType: "json",
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        // VALIDAR ERROR
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdOrdenTrabajoProduccion",
+                fields: {
+                    IdOrdenTrabajo: {
+                        type: "number",
+                        defaultValue: function () {
+                            return xIdOt;
+                        }
+                    },
+                    IdSimulacion: {
+                        type: "number",
+                        defaultValue: function () {
+                            return idSimulacion;
+                        }
+                    },
+                    IdCotizacion: {
+                        type: "number",
+                        defaultValue: function () {
+                            return idCotizacion;
+                        }
+                    },
+                    IdOrdenTrabajoProduccion: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='IdOrdenTrabajoProduccion']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdOrdenTrabajoProduccion").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    IdCategoriaTalla: {
+                        type: "number"
+                    },
+                    IdDimension: {
+                        type: "number"
+                    },
+                    Tamano: {
+                        type: "string"
+                    },
+                    NoDocumentoPro: {
+                        type: "string"
+                    }
+                }
+            }
+        },
+        aggregate: [
+            { field: "CantidadPiezas", aggregate: "sum" }
+        ],
+    });
+    //CONFIGURACION DEL gCHFor,CAMPOS
+    var selectOTTamano = [];
+    $("#gTallasProducir").kendoGrid({
+
+        edit: function (e) {
+            // Ocultar
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "IdSimulacion");
+            KdoHideCampoPopup(e.container, "IdCotizacion");
+            KdoHideCampoPopup(e.container, "IdRequerimiento");
+            KdoHideCampoPopup(e.container, "IdCategoriaTalla");
+            KdoHideCampoPopup(e.container, "IdDimension");
+            KdoHideCampoPopup(e.container, "Tamano");
+            KdoHideCampoPopup(e.container, "Tallas");
+            KdoHideCampoPopup(e.container, "NoDocumentoPro");
+     
+        },
+
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+
+            { field: "IdOrdenTrabajo", title: "cod. Orden trabajo", hidden: true },
+            { field: "IdSimulacion", title: "Cod. Simulación", hidden: true },
+            { field: "IdCotizacion", title: "cod. Cotización", hidden: true },
+            {
+                field: "IdOrdenTrabajoProduccion", title: "Orden de Trabajo", hidden: true,
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" id ="' + options.field + '" />').appendTo(container).ControlSelecionSolicitudProdOT(xIdOt);
+                }
+            },
+            { field: "IdRequerimiento", title: "cod. Id Requerimiento", hidden: true },
+            { field: "IdCategoriaTalla", title: "cod. Categoria Talla", hidden: true },
+            { field: "IdDimension", title: "cod. Dimension", hidden: true },
+            { field: "NoDocumentoPro", title: "No Orden Trabajo" },
+            { field: "Tamano", title: "Tamaño" },
+            { field: "Tallas", title: "Rango de Tallas" }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gTallasProducir").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
+    Set_Grid_DataSource($("#gTallasProducir").data("kendoGrid"), dsDimTamaño, 20);
+    SetGrid_CRUD_ToolbarTop($("#gTallasProducir").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gTallasProducir").data("kendoGrid"), false, Permisos.SNBorrar);
+
+
+
+    $("#gTallasProducir").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gTallasProducir"), selectOTTamano);
+    });
+
+};
