@@ -1115,6 +1115,9 @@ let fn_ObtenerFichaTamanos = function (req) {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            if (e.type === "update") {
+                $("#gTallasProducir").data("kendoGrid").dataSource.read();
+            }
         },
         // VALIDAR ERROR
         error: Grid_error,
@@ -1221,6 +1224,9 @@ let fn_ObtenerFichaTamanos = function (req) {
             KdoHideCampoPopup(e.container, "Abreviatura");
             KdoHideCampoPopup(e.container, "Nombre");
             //KdoHideCampoPopup(e.container, "IdUnidad");
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdCategoriaTalla");
+            }
 
         },
 
@@ -1250,7 +1256,7 @@ let fn_ObtenerFichaTamanos = function (req) {
    
 
     $("#gSolicitudProdDimension").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#grid"), selectedTamno);
+        Grid_SelectRow($("#gSolicitudProdDimension"), selectedTamno);
     });
 
 };
@@ -1512,6 +1518,10 @@ let fn_TallasProducir = function (req) {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd(e);
+            if (e.type === "update") {
+                $("#gSolicitudProdDimension").data("kendoGrid").dataSource.read();
+            }
+           
         },
         // VALIDAR ERROR
         error: Grid_error,
@@ -1567,7 +1577,7 @@ let fn_TallasProducir = function (req) {
         },
         aggregate: [
             { field: "CantidadPiezas", aggregate: "sum" }
-        ],
+        ]
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     var selectOTTamano = [];
@@ -1582,8 +1592,13 @@ let fn_TallasProducir = function (req) {
             KdoHideCampoPopup(e.container, "IdCategoriaTalla");
             KdoHideCampoPopup(e.container, "IdDimension");
             KdoHideCampoPopup(e.container, "Tamano");
-            KdoHideCampoPopup(e.container, "Tallas");
+          
             KdoHideCampoPopup(e.container, "NoDocumentoPro");
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdOrdenTrabajoProduccion");
+            } else {
+                 KdoHideCampoPopup(e.container, "Tallas");
+            }
      
         },
 
@@ -1612,7 +1627,7 @@ let fn_TallasProducir = function (req) {
     SetGrid($("#gTallasProducir").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
     Set_Grid_DataSource($("#gTallasProducir").data("kendoGrid"), dsDimTamaño, 20);
     SetGrid_CRUD_ToolbarTop($("#gTallasProducir").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gTallasProducir").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gTallasProducir").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
 
 
 
