@@ -9,10 +9,11 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
 
     KdoButton($("#btnActualizarEstado"), "check-circle");
     KdoButton($("#btnActualizaMotivosRechazo"), "track-changes-enable");
-    KdoButton($("#btnAgregarMotivosRechazo"), "save","Guardar");
+    //KdoButton($("#btnAgregarMotivosRechazo"), "save","Guardar");
     Kendo_MultiSelect($("#CmbMultiComboMotivosLaboratorio"), TSM_Web_APi + 'MotivosLaboratorio', "Motivo", "IdMotivo", "Seleccione ...");
     getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${_idPruebaLaboratorio}`, $("#CmbMultiComboMotivosLaboratorio"));
-    KdoButtonEnable($("#btnActualizarEstado"), true);
+    KdoButtonEnable($("#btnActualizarEstado"), false);
+    $("#btnActualizaMotivosRechazo").hide();
    
     _idPruebaLaboratorio = vIdPruebaLaboratorio;
     if (NewReg !== undefined) { _NuevoRegistro = NewReg; }
@@ -557,6 +558,9 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         Fn_VistaCambioEstadoMostrar("PruebasLaboratorio", EstadoActual, TSM_Web_APi + "PruebasLaboratorio/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
 
+   
+
+
 
     $("#ModalRechazoLab").kendoDialog({
         height: "auto",
@@ -574,6 +578,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         var lstId = {
             IdPruebaLaboratorio: _idPruebaLaboratorio
         };
+        getMotivosRechazo(TSM_Web_APi + 'PruebasLaboratorioRechazadasMotivos' + `/${_idPruebaLaboratorio}`, $("#CmbMultiComboMotivosLaboratorio"));
+       
         $("#ModalRechazoLab").data("kendoDialog").open().toFront();
     });
 
@@ -615,7 +621,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     let parametros = `${_idPruebaLaboratorio}`;
 
 
-                    getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
+                    getMotivosRechazo(TSM_Web_APi + 'PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
                     kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
@@ -636,7 +642,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                 type: "Post",
                 dataType: "json",
                 data: JSON.stringify({
-                    IdPuebaLaboratorio: _idPruebaLaboratorio,
+                    IdPruebaLaboratorio: _idPruebaLaboratorio,
                     IdMotivo: e.dataItem.IdMotivo,
                     IdUsuarioMod: getUser(),
                     FechaMod: xFecha
@@ -653,7 +659,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                     let parametros = `${_idPruebaLaboratorio}`;
 
 
-                    getMotivosRechazo(TSM_Web_APi + '/PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
+                    getMotivosRechazo(TSM_Web_APi + 'PruebasLaboratorioRechazadasMotivos' + `/${parametros}`, $("#CmbMultiComboMotivosLaboratorio"));
                     kendo.ui.progress($(document.body), false);
                     ErrorMsg(data);
                 }
@@ -813,6 +819,12 @@ let getSolicitud = function () {
         success: function (respuesta) {
             if (respuesta !== null) {
                 EstadoActual = respuesta.Estado;
+                if (EstadoActual === 'REC')
+                {
+                    $("#btnActualizaMotivosRechazo").show();
+                    KdoButtonEnable($("#btnActualizarEstado"), true);
+                }
+
                 $("#NoSolicitud").data("kendoTextBox").value(respuesta.NoSolicitud);
                // $("#CmbEstado").data("kendoComboBox").value(respuesta.Estado);
                 $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaCreacion), 'dd/MM/yyyy'));
