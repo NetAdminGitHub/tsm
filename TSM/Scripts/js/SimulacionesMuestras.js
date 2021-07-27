@@ -7,6 +7,7 @@ let VIdSer =0;
 let VIdCliente = 0;
 let VIdOrdenTra = 0;
 let vIdPrograma = 0;
+let vNoFM = "";
 let data=null;
 $(document).ready(function () {
     $("#MbtnSimu").kendoDialog({
@@ -43,7 +44,7 @@ $(document).ready(function () {
     KdoCmbSetValue($("#CmbIdServicio"), sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbIdServicio")); 
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente")); 
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbIdCliente"));
 
     Kendo_MultiSelect($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
     Kendo_MultiSelect($("#CmbTallasRecalcular"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
@@ -55,11 +56,12 @@ $(document).ready(function () {
     $("#CmbTallas").data("kendoMultiSelect").trigger("change");
 
     // transformar div en multicolumn
+    $("#cmbNoFM").ControlSelecionFMCatalogo();
     $("#CmbNoOT").OrdenesTrabajos();
 
     $("#CmbNoOrdenTrabajo").OrdenesTrabajosSimulacion();
-    KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo")); 
-
+    KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbNoOrdenTrabajo"));
+    KdoMultiColumnCmbSetValue($("#cmbNoFM"), sessionStorage.getItem("SimulacionesMuestras_cmbNoFM") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_cmbNoFM"));
 
     $("#CmbPrograma").ControlSelecionPrograma();
     KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("SimulacionesMuestras_CmbPrograma") === null ? "" : sessionStorage.getItem("SimulacionesMuestras_CmbPrograma")); 
@@ -309,13 +311,23 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo + "/" + VIdOrdenTra + "/" + vIdPrograma; },
+                url: function () { return TSM_Web_APi + "SimulacionesMuestras/GetSimulacionesMuestrasOT/"; },
                 dataType: "json",
+                type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
+                } else if(type === "read") {
+                    return kendo.stringify({
+                        'idServicio': VIdSer,
+                        'idCliente': VIdCliente,
+                        'idOrdentrabajo': VIdOrdenTra,
+                        'idPrograma': vIdPrograma,
+                        'IdModulo': vIdModulo,
+                        'noFM': vNoFM
+                        });
                 }
             }
         },
@@ -610,7 +622,7 @@ $(document).ready(function () {
      
         if (e.item) {
             KdoCmbSetValue($("#CmbIdServicio"), this.dataItem(e.item.index()).IdServicio);
-            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio, Kendo_CmbGetvalue($("#CmbIdCliente")), this.dataItem(e.item.index()).IdOrdenTrabajo);
+            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio, Kendo_CmbGetvalue($("#CmbIdCliente")), this.dataItem(e.item.index()).IdOrdenTrabajo, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
         } else {
             Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
@@ -626,6 +638,43 @@ $(document).ready(function () {
             sessionStorage.setItem("SimulacionesMuestras_CmbNoOrdenTrabajo", "");
         }
 
+    });
+
+    $("#cmbNoFM").data("kendoMultiColumnComboBox").bind("select", function (e) { 
+        if (e.item) {
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")),
+                this.dataItem(e.item.index()).NoReferencia
+            );
+            sessionStorage.setItem("SimulacionesMuestras_cmbNoFM", this.dataItem(e.item.index()).NoReferencia);
+        } else {
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")),
+                ""
+            );
+            sessionStorage.setItem("SimulacionesMuestras_cmbNoFM", "");
+        }
+    });
+
+    $("#cmbNoFM").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#cmbNoFM").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        if (data === undefined) {
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")),
+                ""
+            );
+            sessionStorage.setItem("SimulacionesMuestras_cmbNoFM", "");
+        }
     });
 
 
@@ -732,12 +781,14 @@ let fn_hbbtnSimu = function () {
         $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
     }
 };
-let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra, IdPrograma) {
+let Fn_ConsultarSimu = function (IdServicio, IdCliente,IdOrdenTra, IdPrograma, NoFM = "") {
     kendo.ui.progress($("#splitter"), true);
     VIdSer = Number(IdServicio);
     VIdCliente = Number(IdCliente);
     VIdOrdenTra = Number(IdOrdenTra);
     vIdPrograma = Number(IdPrograma);
+    vNoFM = NoFM;
+
     //leer grid
     $("#gridSimulacion").data("kendoGrid").dataSource.data([]);
     $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () { fn_hbbtnSimu(); });
