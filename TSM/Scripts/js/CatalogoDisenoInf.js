@@ -265,6 +265,7 @@ let fn_gridOT = function () {
             KdoHideCampoPopup(e.container, "RoundMuestra");
             KdoHideCampoPopup(e.container, "TallaDesarrollada");
             KdoHideCampoPopup(e.container, "NoDocumentoOrigen");
+            KdoHideCampoPopup(e.container, "FICHAPROD");
 
             //if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
             //    KdoCheckBoxEnable($('[name="MUPREAPRO"]'), false);

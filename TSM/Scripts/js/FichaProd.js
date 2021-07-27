@@ -46,10 +46,18 @@ $(document).ready(function () {
     Kendo_MultiSelect($("#instruccionesCalidad"), UrlApiCAtInstrucciones + "/CALI", "Descripcion", "IdInstruccion", "Seleccione ...");
     Kendo_MultiSelect($("#ToleranciaMed"), UrlClientesTolerancia + "/" + idcliente, "Tolerancia", "IdTolerancia", "Seleccione ...");
     Kendo_CmbFiltrarGrid($("#plNombreCPT"), TSM_Web_APi + "ComposicionTelas", "Nombre", "IdComposicionTela", "Seleccione ...");
+
+    Kendo_CmbFiltrarGrid($("#plNombrePrenda"), TSM_Web_APi + "CategoriaPrendas", "Nombre", "IdCategoriaPrenda", "Seleccione ...");
+    Kendo_CmbFiltrarGrid($("#plParte"), TSM_Web_APi + "Ubicaciones", "Nombre", "IdUbicacion", "Seleccione ...");
+    Kendo_CmbFiltrarGrid($("#plNombreCFT"), TSM_Web_APi + "CategoriaConfecciones", "Nombre", "IdCategoriaConfeccion", "Seleccione ...");
+    Kendo_CmbFiltrarGrid($("#plNombreCCT"), TSM_Web_APi + "ConstruccionTelas", "Nombre", "IdConstruccionTela", "Seleccione ...");
+    Kendo_CmbFiltrarGrid($("#plNombreEjecutivoCuentas"), TSM_Web_APi + "EjecutivoCuentas", "Nombre", "IdEjecutivoCuenta", "Seleccione ...");
+
     fn_GetOTRequerimiento();
 
     $('#plStrikeOff').attr('readonly', true);
     $('#plTermofijado').attr('readonly', true);
+
 
     $("#btnIrGOT").click(function () {
         window.location.href = "/ConsultarFichaOT";
@@ -255,12 +263,38 @@ $(document).ready(function () {
         ActualizaComentariosFicha();
     });
 
+    $('#plIdDiseno').on("change", function (e) {
+
+        ActualizaComentariosFicha();
+    });
+
     $('#plColor').on("change", function (e) {
 
         ActualizaComentariosFicha();
     });
 
+
     $("#plNombreCPT").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
+
+    $("#plNombrePrenda").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
+
+    $("#plParte").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
+
+    $("#plNombreCFT").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
+
+    $("#plNombreCCT").data("kendoComboBox").bind("change", function (e) {
+        ActualizaComentariosFicha();
+    });
+
+    $("#plNombreEjecutivoCuentas").data("kendoComboBox").bind("change", function (e) {
         ActualizaComentariosFicha();
     });
 
@@ -575,6 +609,12 @@ let fn_GetOTRequerimiento = function () {
                 $("#plMuestraAprobada").prop("checked", Boolean(Number(datos.Muestra)));
                 $("#plTrama").prop("checked", Boolean(Number(datos.Trama)));
 
+                KdoCmbSetValue($("#plNombrePrenda"), datos.IdCategoriaPrenda);
+                KdoCmbSetValue($("#plParte"), datos.IdUbicacion);
+                KdoCmbSetValue($("#plNombreCFT"), datos.IdCategoriaConfeccion);
+                KdoCmbSetValue($("#plNombreCCT"), datos.IdConstruccionTela);
+                KdoCmbSetValue($("#plNombreEjecutivoCuentas"), datos.IdEjecutivoCuenta);
+
                 reqid = Number(datos.IdRequerimiento);
                 idSimulacion = Number(datos.IdSimulacion);
                 EstadoFichaProd = datos.EstadoFichaProd;
@@ -695,7 +735,15 @@ let fn_GetOTRequerimiento = function () {
 
                 Grid_HabilitaToolbar($("#gDimensiones"), false, false, false);
                 Grid_HabilitaToolbar($("#gSolicitudProdDimension"), false, false, false);
+                Grid_HabilitaToolbar($("#gTallasProducir"), false, false, false);
                 KdoComboBoxEnable($("#plNombreCPT"), false);
+
+                KdoComboBoxEnable($("#plNombrePrenda"),false);
+                KdoComboBoxEnable($("#plParte"), false);
+                KdoComboBoxEnable($("#plNombreCFT"),false);
+                KdoComboBoxEnable($("#plNombreCCT"), false);
+                KdoComboBoxEnable($("#plNombreEjecutivoCuentas"), false);
+                TextBoxEnable($("#plIdDiseno"), false);
              
             }
         }
@@ -1313,7 +1361,7 @@ let ActualizaComentariosFicha = function () {
         kendo.ui.progress($(document.body), true);
         //var item = e.item;
         $.ajax({
-            url: UrlSolicitudProdHeader +"/"+ `${xIdOt}/${idSimulacion}/${idCotizacion}`,//
+            url: UrlSolicitudProdHeader + "/" + `${xIdOt}/${idSimulacion}/${idCotizacion}`,//
             type: "Put",
             dataType: "json",
             data: JSON.stringify({
@@ -1332,8 +1380,13 @@ let ActualizaComentariosFicha = function () {
                 FechaMod: xFecha,
                 ColorTela: $("#plColor").val(),
                 EstiloDiseno: $("#plEstiloDiseno").val(),
-                IdComposicionTela: KdoCmbGetValue($("#plNombreCPT"))
-
+                IdComposicionTela: KdoCmbGetValue($("#plNombreCPT")),
+                IdCategoriaPrenda: KdoCmbGetValue($("#plNombrePrenda")),
+                IdUbicacion: KdoCmbGetValue($("#plParte")),
+                IdCategoriaConfeccion: KdoCmbGetValue($("#plNombreCFT")),
+                IdConstruccionTela: KdoCmbGetValue($("#plNombreCCT")),
+                IdEjecutivoCuenta: KdoCmbGetValue($("#plNombreEjecutivoCuentas")),
+                NumeroDiseno: $("#plIdDiseno").val()
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
