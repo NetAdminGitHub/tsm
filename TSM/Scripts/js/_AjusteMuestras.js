@@ -8,6 +8,7 @@ var fn_CargarEtapaAjuste = function () {
     TiEst = fn_GetTipoEstaciones();
 
     KdoButton($("#btnAddColorDisAjuste"), "plus-circle", "Agregar color o técnica");
+    KdoButton($("#btnCambiarEstadoEtapa"), "gear", "Cambiar Estado Muestra");
 
     $("#NumAltoDiseno_Ajuste").kendoNumericTextBox({
         min: 0.00,
@@ -40,6 +41,15 @@ var fn_CargarEtapaAjuste = function () {
         restrictDecimals: true,
         decimals: 0,
         value: 0
+    });
+
+    $("#btnCambiarEstadoEtapa").click(function (event) {
+        var lstId = {
+            IdOrdenTrabajo: idOrdenTrabajo,
+            IdEtapaProceso: idEtapaProceso,
+            Item: $("#txtItem").val(),
+        };
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajosDetalles", $("#txtEstado").val(), TSM_Web_APi + "OrdenesTrabajosDetalles/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
 
     $("#maquinaAjusteMues").maquinaSerigrafia({
