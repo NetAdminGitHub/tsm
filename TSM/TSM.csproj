@@ -257,6 +257,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Controllers\ColumnasDinamicasController.cs" />
     <Compile Include="Controllers\ComposicionTelasController.cs" />
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
+    <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
@@ -311,6 +313,7 @@
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
+    <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
@@ -482,6 +485,7 @@
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CategoriasMotivosLaboratorio.js" />
     <Content Include="Scripts\js\CriteriosCriticosCalidad.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
@@ -494,6 +498,7 @@
     <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
+    <Content Include="Scripts\js\DefectosEncontrados.js" />
     <Content Include="Scripts\js\Departamentos.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
@@ -503,6 +508,7 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
+    <Content Include="Scripts\js\OrigenesPruebasLaboratorio.js" />
     <Content Include="Scripts\js\PruebasLaboratorio.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
     <Content Include="Scripts\js\FichaProd.js" />
@@ -944,6 +950,9 @@
     <Content Include="Views\PruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\PruebasLaboratorio\_InfoPruebaLaboratorio.cshtml" />
     <Content Include="Views\Departamentos\Index.cshtml" />
+    <Content Include="Views\CategoriasMotivosLaboratorio\Index.cshtml" />
+    <Content Include="Views\DefectosEncontrados\Index.cshtml" />
+    <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
