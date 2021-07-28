@@ -67,6 +67,9 @@ var dtoTintas=false;
 var dtoRevelado = false;
 var DienoAfectaSecuencia = false;
 var estadoPermiteEdicion = false;
+var alertDiseno = false;
+var alertTintas = false;
+var alertRevelado = false;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -595,7 +598,7 @@ $(document).ready(function () {
     $("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) {
         //Grid_SelectRow($("#gridAlerAjus"), srow5);
         //alert("prueba");
-        fn_GetSeteoMaquinasAlertasValidacion(XSeteo);
+        //fn_GetSeteoMaquinasAlertasValidacion(XSeteo);
 
     });
     //actualizar columnas aplica tintas y marcos
@@ -700,6 +703,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1, false);
     //obtenere los departametos a los que pertenece un usuario
     fn_GetDeptoRoles();
+
     var fecha = new Date(datos.FechaOrdenTrabajo);
     $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
     $("#txtIdSolicitud").val(datos.IdSolicitud);
@@ -774,6 +778,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + datos.IdArte, datos.NodocReq);
     
     maq = fn_GetMaquinas();
+    //obtener el tipo de alerta activa o no
+    fn_GetAlertaEstatus(maq[0].IdSeteo);
+
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
@@ -2894,6 +2901,33 @@ var fn_GetAfectaSecuencia = function (IdSeteo) {
         }
     });
 };
+
+
+var fn_GetAlertaEstatus = function (IdSeteo) {
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasAlertas/GetAlertasEstatus/" + IdSeteo,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            $.each(datos, function (index, elemento) {
+                switch (elemento.IdAlerta) {
+                    case 3:
+                        alertDiseno = elemento.EstaActiva;
+                        break;
+                    case 1:
+                        alertTintas = elemento.EstaActiva;
+                        break;
+                    case 2:
+                        alertRevelado = elemento.EstaActiva;
+                        break;
+                    default:
+                }
+
+            });
+        }
+    });
+};
+
 $("#body").on("cerrar_Modal_Color", function (event, param1, param2) {
     alert(param1 + "\n" + param2);
 });

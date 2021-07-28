@@ -13,6 +13,9 @@ var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
     window.location.href = "/GestionOTAsignaciones/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
 };
 $(document).ready(function () {
+
+
+
     let dtfecha = new Date();
 
     Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModuloActivas/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
@@ -353,7 +356,16 @@ $(document).ready(function () {
 
     }
 
-    //fn_DibujarKanban("[]");
+
+
+    $(".Kanban-view-topscroll").scroll(function () {
+        $(".board")
+            .scrollLeft($(".Kanban-view-topscroll").scrollLeft());
+    });
+    $(".board").scroll(function () {
+        $(".Kanban-view-topscroll")
+            .scrollLeft($(".board").scrollLeft());
+    });
 
 });
 
@@ -472,7 +484,8 @@ let fn_DibujarKanban = function (ds) {
 
             });
 
-
+            $(".scroll-div1").css("width", $(".board")[0].scrollWidth);
+            $(".Kanban-view-topscroll").css("width", $(".board")[0].scrollWidth);
             //fn_IniciarKanban();
 
 

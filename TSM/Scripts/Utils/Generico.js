@@ -409,14 +409,14 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
@@ -509,7 +509,7 @@ var Fn_DibujarCarrousel = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '<div class= "caption">'
                         + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
                          + '</div>'
@@ -519,7 +519,7 @@ var Fn_DibujarCarrousel = function (Objecarousel, src, DataSource) {
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha)+'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '<div class= "caption">'
                         + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
                         + '</div>'
@@ -2261,3 +2261,7 @@ var fn_ShowModalNuevoAjusteFormulas = function (cargarJs, data, divSolIngAjuste,
 
 };
 //#endregion
+
+var fn_GetUnixTimestamp = function (fecha) {
+    return new Date(kendo.toString(kendo.parseDate(fecha), 's')).getTime() / 1000;
+};

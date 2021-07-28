@@ -161,22 +161,19 @@ var fn_insRegistroSolicitudAjuste = function (xidSolicitudCambio) {
     if (xaIdOrdenTrabajo > 0) {
         kendo.ui.progress($(document.body), true);
         $.ajax({
-            url: TSM_Web_APi + "RegistroSolicitudAjustes",
+            url: TSM_Web_APi + "RegistroSolicitudAjustes/InsAjuste",
             type: "Post",
             dataType: "json",
             data: JSON.stringify({
-                IdRegistroSolicitudAjuste: 0,
                 IdSolicitudCambio: xidSolicitudCambio,
-                ItemSolicitud: 0,
                 IdEtapaProceso: xaIdEtapa,
                 Item: xaItem,
-                IDOrdenTrabajo: xaIdOrdenTrabajo,
-                Fecha: Fhoy()
+                IDOrdenTrabajo: xaIdOrdenTrabajo
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 RequestEndMsg(data, "Post");
-                xaIdRegistroSolicitudAjuste = data[0].IdRegistroSolicitudAjuste;
+                xaIdRegistroSolicitudAjuste = data[0];
                 KdoMultiColumnCmbEnable($("#cmbCambioSolicitud"), false);
                 kendo.ui.progress($(document.body), false);
                 KdoButtonEnable($("#btnBorraAjustesSolicitud"), true);
@@ -358,7 +355,7 @@ var fn_GenerarSolicitud= function () {
 var fn_BorrarSolicitud = function () {
     kendo.ui.progress($(document.activeElement), true);
     $.ajax({
-        url: TSM_Web_APi + "/RegistroSolicitudAjustes/" + xaIdRegistroSolicitudAjuste.toString() ,//
+        url: TSM_Web_APi + "/OrdenesTrabajosSolicitudesCambios/DelRegistroAjuste/" + xaIdRegistroSolicitudAjuste.toString() ,//
         type: "Delete",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
@@ -397,12 +394,12 @@ fn_GridAjuste = function () {
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return TSM_Web_APi + "RegistroSolicitudAjustesMotivos/" + datos.IdRegistroSolicitudAjuste + "/" + datos.IdMotivoSolicitudAjuste + "/" + datos.ItemSolicitudAjuste; },
+                url: function (datos) { return TSM_Web_APi + "RegistroSolicitudAjustesMotivos/" + datos.IdRegistroSolicitudAjuste + "/" + datos.IdMotivoSolicitudAjuste + "/" + datos.IdEstacion; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "RegistroSolicitudAjustesMotivos/" + datos.IdRegistroSolicitudAjuste + "/" + datos.IdMotivoSolicitudAjuste + "/" + datos.ItemSolicitudAjuste; },
+                url: function (datos) { return TSM_Web_APi + "RegistroSolicitudAjustesMotivos/" + datos.IdRegistroSolicitudAjuste + "/" + datos.IdMotivoSolicitudAjuste + "/" + datos.IdEstacion; },
                 type: "DELETE"
             },
             parameterMap: function (data, type) {
