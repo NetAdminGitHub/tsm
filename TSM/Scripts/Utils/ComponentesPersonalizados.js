@@ -31,7 +31,21 @@
             });
         });
     },
-    ControlPantonesLaboratorio: function () {
+    ControlPantonesLaboratorio: function (opt) {
+        var strcontroller = "";
+        var defaults = {
+            modoNuevo: false,
+            idSeteo: 0
+        }
+        var params = $.extend({}, defaults, opt);
+        if (params.modoNuevo === true || params.idSeteo ===0) {
+            strcontroller = "/Pantoneras/GetBusquedaPantoneraLab";
+        } else {
+
+            strcontroller = "/ResultadosPiezasPruebasLaboratorio/ColoresDiseno/" + params.idSeteo;
+        }
+       // strcontroller: "/Pantoneras/GetBusquedaPantoneraLab",
+
 
 
         return this.each(function () {
@@ -47,16 +61,16 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "/Pantoneras/GetBusquedaPantoneraLab"; },
+                            url: function (datos) { return TSM_Web_APi + strcontroller; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
                 },
                 columns: [
-                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50,hidden:true },
-                    { field: "Item", title: "Posición", width: 50, hidden: true },
-                    { field: "NomIdTipoPantonera", title: "Pantonera", width: 200,hidden:true },
-                    { field: "Codigo", title: "Pantone", width: 200, hidden: true },
+                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50,width:"0px" },
+                    { field: "Item", title: "Posición", width: 50, width: "0px" },
+                    { field: "NomIdTipoPantonera", title: "Pantonera", width: 200, width: "0px" },
+                    { field: "Codigo", title: "Pantone", width: 200, width: "0px" },
                     { field: "Nombre", title: "Nombre", width: 200 },
                     { field: "ColorHex", title: "&nbsp;", width: 50, template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' }
                 ]
