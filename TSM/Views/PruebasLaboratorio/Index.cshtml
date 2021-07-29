@@ -9,6 +9,21 @@
         //var Catalogo_IdOrdenTrabajo =@ViewData["Catalogo_IdOrdenTrabajo"];
     </script>
 }
+<style>
+    .Kanban-view-topscroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: none 0px RED;
+        height: 20px;
+    }
+
+    .scroll-div1 {
+        overflow-x: auto;
+        overflow-y: hidden;
+        height: 20px;
+    }
+</style>
+
 <div class="form-row">
     <div class="col-lg-12">
         <div class="card">
@@ -87,16 +102,22 @@
 
                 </div>
                 <div class="form-row">
+                    <div class="Kanban-view-topscroll">
+                        <div class="scroll-div1">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div id="solKanban" class="board">
                         @*espacio para dibujar el kanban*@
                     </div>
                 </div>
 
             </div>
-        
-            
-        
-        
+
+
+
+
         </div>
     </div>
 </div>

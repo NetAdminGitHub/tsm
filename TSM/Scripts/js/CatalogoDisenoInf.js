@@ -265,6 +265,17 @@ let fn_gridOT = function () {
 
             KdoCheckBoxEnable($('[name="MUFIAPRO"]'), false);
             KdoCheckBoxEnable($('[name="MUCOTIZADA"]'), false);
+
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajoOrigen");
+            KdoHideCampoPopup(e.container, "RoundMuestra");
+            KdoHideCampoPopup(e.container, "TallaDesarrollada");
+            KdoHideCampoPopup(e.container, "NoDocumentoOrigen");
+            KdoHideCampoPopup(e.container, "FICHAPROD");
+
+            //if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
+            //    KdoCheckBoxEnable($('[name="MUPREAPRO"]'), false);
+            //    KdoCheckBoxEnable($('[name="REQMP"]'), false);
+            //} else {
             //if ($("#gridCotizacionDetalle").data("kendoGrid").dataSource.total() === 0) {
             //    KdoCheckBoxEnable($('[name="MUPREAPRO"]'), false);
             //    KdoCheckBoxEnable($('[name="REQMP"]'), false);
