@@ -354,5 +354,32 @@
             });
         });
     },
+    ControlSelecionSolicitudProdOT: function (idOT) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de ordenes para producción",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/GetOrdenesTrabajoFichaProd/" + idOT; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "No Orden Trabajo", width: 150 },
+                    { field: "Tamaño", title: "Tamaño", width: 300 }
+                ]
+            });
+        });
+    }
 
 });
