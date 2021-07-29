@@ -301,14 +301,15 @@ $(document).ready(function () {
     //Control para subir los adjutos
     $("#Adjunto").kendoUpload({
         async: {
-            saveUrl: "/RequerimientoDesarrollos/SubirArchivo",
+            saveUrl: "/RequerimientoDesarrollos/SubirArchivoAdjunto",
             autoUpload: true
         },
+        select: onSelect,
         localization: {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + xNoDocumento;
+            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + xNoDocumento + "/" + e.files[0].name.replace(e.files[0].extension, "");
         },
         showFileList: false,
         success: function (e) {
@@ -318,7 +319,11 @@ $(document).ready(function () {
         }
 
     }); 
-
+    function onSelect(e) {
+        $.each(e.files, function (index, value) {
+            value.name = value.name.replace(/[^A-Za-z0-9.]/g, "");
+        });
+    }
     let fn_LeerImagen = function (event, blobs) {
         kendo.ui.progress($("#vistaParcial"), true);
 
