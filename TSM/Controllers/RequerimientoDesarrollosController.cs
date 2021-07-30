@@ -159,8 +159,13 @@ namespace TSM.Controllers
                     if (System.IO.File.Exists(physicalPath))
                     {
                         physicalPathDestino = Path.Combine(physicalPathDestino, nombre + Path.GetExtension(file.FileName));
-                        System.IO.File.Copy(physicalPath, physicalPathDestino);
-                        System.IO.File.Delete(physicalPath);
+                        if (file.FileName != nombre + Path.GetExtension(file.FileName))
+                        {
+                            System.IO.File.Copy(physicalPath, physicalPathDestino,true);
+                            System.IO.File.Delete(physicalPath);
+                        }
+
+
                     }
 
 
