@@ -1105,7 +1105,13 @@ var fn_VSCargarJSEtapa = function () {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + $("#NoDocumento").val() + "/" + e.files[0].name.replace(e.files[0].extension, "");
+            if (e.files[0].name.replace(e.files[0].extension, "") !== "") {
+                e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + $("#NoDocumento").val() + "/" + e.files[0].name.replace(e.files[0].extension, "");
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show("Nombre del archivo no es valido", "error");
+                return false;
+            }
+       
         },
         showFileList: false,
 
