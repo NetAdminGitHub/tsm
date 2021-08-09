@@ -778,9 +778,10 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + datos.IdArte, datos.NodocReq);
     
     maq = fn_GetMaquinas();
-    //obtener el tipo de alerta activa o no
-    fn_GetAlertaEstatus(maq[0].IdSeteo);
-
+    if (maq.length !== 0) {
+        //obtener el tipo de alerta activa o no
+        fn_GetAlertaEstatus(maq[0].IdSeteo);
+    }
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
