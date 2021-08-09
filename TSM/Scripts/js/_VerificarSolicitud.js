@@ -1093,19 +1093,28 @@ var fn_VSCargarJSEtapa = function () {
 
     //#region CRUD Manejo de Arte Adjuntos
 
+
     //Control para subir los adjutos
     $("#Adjunto").kendoUpload({
         async: {
-            saveUrl: "/RequerimientoDesarrollos/SubirArchivo",
+            saveUrl: "/RequerimientoDesarrollos/SubirArchivoAdjunto",
             autoUpload: true
         },
+        select: onSelect,
         localization: {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val();
+            if (e.files[0].name.replace(e.files[0].extension, "") !== "") {
+                e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + $("#NoDocumento").val() + "/" + e.files[0].name.replace(e.files[0].extension, "");
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show("Nombre del archivo no es valido", "error");
+                return false;
+            }
+       
         },
         showFileList: false,
+
         success: function (e) {
             if (e.operation === "upload") {
                 fn_GuardarArchivoAdjunto(UrlApiAAdj, e.files[0].name);
@@ -1113,6 +1122,12 @@ var fn_VSCargarJSEtapa = function () {
         }
 
     });
+    function onSelect(e) {
+        $.each(e.files, function (index, value) {
+            value.name = value.name.replace(/[^A-Za-z0-9.]/g, "");
+        });
+    }
+
 
     
     let fn_LeerImagen = function (event, blobs) {

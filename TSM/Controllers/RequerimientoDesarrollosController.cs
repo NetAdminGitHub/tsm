@@ -138,6 +138,44 @@ namespace TSM.Controllers
 
 
         }
+        [HttpPost]
+        [Route("RequerimientoDesarrollos/SubirArchivoAdjunto/{id}/{nombre}")]
+        public ActionResult SubirArchivoAdjunto(string id, string nombre, IEnumerable<HttpPostedFileBase> Adjunto)
+        {
+            if (Adjunto != null)
+            {
+                foreach (var file in Adjunto)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var rutaFisica = Server.MapPath("~/Adjuntos");
+                    var physicalPath = Path.Combine(rutaFisica, id);
+                    var physicalPathDestino = Path.Combine(rutaFisica, id);
+
+                    if (!Directory.Exists(physicalPath))
+                        Directory.CreateDirectory(physicalPath);
+
+                    physicalPath = Path.Combine(physicalPath, fileName);
+                    file.SaveAs(physicalPath);
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        physicalPathDestino = Path.Combine(physicalPathDestino, nombre + Path.GetExtension(file.FileName));
+                        if (file.FileName != nombre + Path.GetExtension(file.FileName))
+                        {
+                            System.IO.File.Copy(physicalPath, physicalPathDestino,true);
+                            System.IO.File.Delete(physicalPath);
+                        }
+
+
+                    }
+
+
+                }
+            }
+
+            return Content("");
+        }
+
+
 
         [HttpPost]
         [Route("RequerimientoDesarrollos/SubirArchivoCatalogo")]
