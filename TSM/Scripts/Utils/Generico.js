@@ -2262,6 +2262,115 @@ var fn_ShowModalNuevoAjusteFormulas = function (cargarJs, data, divSolIngAjuste,
 };
 //#endregion
 
+//#region Generar ficha de producción
+/**
+ * Generar ficha de produccion
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divGenFP + "").children().length === 0) {
+        $.ajax({
+            url: "/CatalogoDisenos/GenerarFichaProduccion",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalGenerarFichaProd(resultado, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalGenerarFichaProd("", divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+
+    }
+};
+
+/**
+ * cargar ficha de produccion
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("GenerarFichaProduccion.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/GenerarFichaProduccion.js";
+        script.onload = function () {
+            fn_ShowModalGenFichaProd(true, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalGenFichaProd(false, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarCargarFichaProd(gFpIdot);
+        } else {
+            fn_CrearFichaProd(gFpIdot);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divGenFP + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Generar ficha de produccion",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion); } },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+        ],
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divGenFP + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
 var fn_GetUnixTimestamp = function (fecha) {
     return new Date(kendo.toString(kendo.parseDate(fecha), 's')).getTime() / 1000;
 };
