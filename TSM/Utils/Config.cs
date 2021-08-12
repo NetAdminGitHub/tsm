@@ -62,7 +62,14 @@ namespace TSM.Utils
             }
         }
 
-
+        /// <summary>
+        /// método para cambiar tamano. Si no recibe nuevo ancho o alto , divide tamano actual por la mitad.
+        /// </summary>
+        /// <param name="imagen"></param>
+        /// <param name="tamanoActual">tamano actual objeto de tipo Size</param>
+        /// <param name="newWidth">nuevo ancho</param>
+        /// <param name="newHeight">nuevo alto</param>
+        /// <returns></returns>
         public static Image ResizeImage(Image imagen, Size tamanoActual, int newWidth = 0, int newHeight = 0  ) {
 
             Size nuevoTamano = (newWidth != 0 && newHeight != 0) ? new Size(newWidth, newHeight) : new Size(tamanoActual.Width / 2, tamanoActual.Height / 2);
@@ -70,7 +77,7 @@ namespace TSM.Utils
         }
 
         public static string GetBase64Image(string path)
-        {
+        { 
             string imgstr;
             string realPath = HttpContext.Current.Server.MapPath(path);
             try
@@ -79,7 +86,8 @@ namespace TSM.Utils
                 {                                                 
                     using (MemoryStream m = new MemoryStream())
                     {
-                         ResizeImage(img, img.Size).Save(m, ImageFormat.Png);
+
+                        ResizeImage(img, img.Size).Save(m, img.RawFormat);
                         byte[] bimg = m.ToArray();
                         imgstr = Convert.ToBase64String(bimg);
                      }
