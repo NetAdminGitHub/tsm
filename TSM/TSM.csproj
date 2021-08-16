@@ -957,7 +957,6 @@
     <Content Include="Views\DefectosEncontrados\Index.cshtml" />
     <Content Include="Views\Shared\_GenerarFichaProduccion.cshtml" />
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
-    <Content Include="Views\MotivosLaboratorio.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
