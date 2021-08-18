@@ -2,9 +2,11 @@
 let vItemOrigen;
 let Url_upd = TSM_Web_APi + "OrdenesTrabajosAgendas/Actualizar";
 let Url_Del = TSM_Web_APi + "OrdenesTrabajosAgendas/Eliminar";
+let permiteEdit = false;
 var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
     vIdEtapaOrigen = vIdEtapa;
     vItemOrigen = vItem;
+    permiteEdit = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true;
     var dsetOTEstados = new kendo.data.DataSource({
         transport: {
             read: function (datos) {
@@ -210,11 +212,17 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
     $("#gridAgenda").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridAgenda"), selrow1);
     });
+
+    Grid_HabilitaToolbar($("#gridAgenda"), permiteEdit, permiteEdit, permiteEdit);
 };
 
 var fn_CargarAgenda = function (vIdOt, vIdEtapa,vItem) {
     vIdEtapaOrigen = vIdEtapa;
     vItemOrigen = vItem;
     $("#gridAgenda").data("kendoGrid").dataSource.read();
+
+    permiteEdit = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true;
+    Grid_HabilitaToolbar($("#gridAgenda"), permiteEdit, permiteEdit, permiteEdit);
+  
 
 };

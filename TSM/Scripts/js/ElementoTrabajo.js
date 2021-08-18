@@ -765,7 +765,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     KdoButtonEnable($("#btnCambiorEstadoOT"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
-    KdoButtonEnable($("#btnAgenda"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnAgenda"), true);
 
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
