@@ -24,7 +24,7 @@ $(document).ready(function () {
     let dtfecha = new Date();
     $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
     //$("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
-    $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("ConsultarFichaOT_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 6, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("ConsultarFichaOT_dFechaDesde"));
+    $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("ConsultarFichaOT_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("ConsultarFichaOT_dFechaDesde"));
     $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("ConsultarFichaOT_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("ConsultarFichaOT_dFechaHasta"));
@@ -127,7 +127,12 @@ $(document).ready(function () {
                     IdMotivoDesarrollo: { type: "number" },
                     NombreMotivoDes: { type: "string" },
                     IdCategoriaTallaDesarrollada: { type: "number" },
-                    TallaDesarrollada: { type: "string" }
+                    TallaDesarrollada: { type: "string" },
+                    MesFechaOT: { type: "string" },
+                    NoDocRSP: { type: "string" },
+                    CantidadPiezas: { type: "number" },
+                    CantidadSTrikeOff: { type: "number" },
+                    StrikeOffAdicional: { type: "number" }
                 }
             }
         }
@@ -152,13 +157,22 @@ $(document).ready(function () {
             Grid_SetSelectRow($("#grid"), selectedRows);
         },
         //DEFICNICIÓN DE LOS CAMPOS
+        toolbar: ["excel"],
+        excel: {
+            fileName: "FichasdeDesarrollos.xlsx",
+            filterable: true,
+            allPages: true
+        },
         columns: [
             { field: "NoDocumentoCatalogo", title: "N° FM", minResizableWidth: 100 },
             { field: "NoDocumento", title: "No. O.T", minResizableWidth: 120 },
+            { field: "MesFechaOT", title: "Mes", minResizableWidth: 50 },
             { field: "IdOrdenTrabajo", title: "Cod. Orden Trabajo", hidden: true },
             { field: "NombreDiseño", title: "Nombre diseño", minResizableWidth: 150 },
             { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },
+            { field: "ColorTela", title: "Color tela", minResizableWidth: 150 },
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },
+            { field: "NoDocRSP", title: "Registro de Prenda", minResizableWidth: 100 },
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
             { field: "IdCategoriaTallaDesarrollada", title: "Cod. categoría talla", hidden: true },
             { field: "TallaDesarrollada", title: "Talla Desarrollada", minResizableWidth: 150 },
@@ -190,18 +204,20 @@ $(document).ready(function () {
             { field: "Tabla", title: "Tabla", hidden: true },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", minResizableWidth: 150 },
             { field: "UbicacionVertical", title: "Ubicación vertical", minResizableWidth: 150 },
-            { field: "ColorTela", title: "Color tela", hidden: true },
             { field: "IdCatalogoDiseno", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 },
             { field: "IdMotivoDesarrollo", title: "Cod. Motivo desarrollo", hidden: true },
             { field: "NombreMotivoDes", title: "Motivo desarrollo", minResizableWidth: 120 },
             { field: "IdServicio", title: "Cod. servicio", hidden: true },
-            { field: "Servicio", title: "Servicio", minResizableWidth: 120 }
+            { field: "Servicio", title: "Servicio", minResizableWidth: 120 },
+            { field: "CantidadPiezas", title: "Cantidad Piezas", minResizableWidth: 50 },
+            { field: "CantidadSTrikeOff", title: "STrikeOff", minResizableWidth: 50 },
+            { field: "StrikeOffAdicional", title: "StrikeOff Adicional", minResizableWidth: 50 }
+           
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 

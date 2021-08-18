@@ -52,6 +52,7 @@ var InicioModalRT = 0;
 var InicioModalAD = 0;
 var InicioModalMU = 0;
 var InicioModalFor = 0;
+var InicioModal_Ajuste = 0;
 var CantidadBrazos = 0;
 var XSeteo = 0;
 var xNoPermiteActualizar = false;
@@ -60,6 +61,16 @@ var maquinaVueEl = "";
 var tabStrip;
 var tabStripColor;
 var fn_close_Modal_ColorTec; //funcion para ejecutar despues del cierre
+var dEpartamentoUsuario; //almacena los departamentos a los que pertene el usuario
+var dtoDiseno=false;
+var dtoTintas=false;
+var dtoRevelado = false;
+var DienoAfectaSecuencia = false;
+var estadoPermiteEdicion = false;
+var alertDiseno = false;
+var alertTintas = false;
+var alertRevelado = false;
+
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -142,9 +153,9 @@ $(document).ready(function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbUsuario"), TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbEtpSigAnt"), TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosFlujo/0/0", "Nombre", "IdEtapaProcesoAS", "Seleccione...");
-    Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/0/0", "Nombre", "IdUsuario", "Seleccione...");
+    Kendo_CmbFiltrarGrid($("#cmbUsuarioEtp"), TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/0/0", "Nombre", "IdUsuario", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#cmbTpAjuste"), TSM_Web_APi + "Alertas", "Nombre", "IdAlerta", "Seleccione...");
     KdoCmbSetValue($("#cmbTpAjuste"), 1);
     KdoComboBoxEnable($("#cmbTpAjuste"), false);
@@ -159,7 +170,7 @@ $(document).ready(function () {
     $("#Menu_Volver").kendoMenu({
         openOnClick: true
     });
-
+    //definicion de botones de flujo o accion
     KdoButton($("#btnCambiarAsignado"), "user");
     KdoButton($("#btnAsignarUsuario"), "save");
     KdoButton($("#btnCambiarEtapa"), "gear");
@@ -587,7 +598,7 @@ $(document).ready(function () {
     $("#gridAlerAjus").data("kendoGrid").bind("dataBound", function (e) {
         //Grid_SelectRow($("#gridAlerAjus"), srow5);
         //alert("prueba");
-        fn_GetSeteoMaquinasAlertasValidacion(XSeteo);
+        //fn_GetSeteoMaquinasAlertasValidacion(XSeteo);
 
     });
     //actualizar columnas aplica tintas y marcos
@@ -689,7 +700,9 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
 
     //}
     //calcular retenciones si existen
-    fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1,false);
+    fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1, false);
+    //obtenere los departametos a los que pertenece un usuario
+    fn_GetDeptoRoles();
 
     var fecha = new Date(datos.FechaOrdenTrabajo);
     $("#IdServicio").val(datos.IdServicio); //Aun no es kendo
@@ -699,13 +712,16 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtIdEtapaProceso").val(datos.IdEtapaProceso);
     $("#IdCliente").val(datos.IdCliente);
     $("#txtEstado").val(datos.Estado);
+
+    if (datos.Estado === "ACTIVO" || datos.Estado === "ENSETEO" || datos.Estado === "ENAJUSTE" || datos.Estado === "ENAPROBACION")
+        estadoPermiteEdicion = true;
+
     $("#txtId").val(datos.Id);
     $("#txtNomServicio").val(datos.NomServicio);
     $("#txtNombre").val(datos.Nombre);
     $("#txtEstiloDiseno").val(datos.EstiloDiseno);
     $("#txtNombreDiseno").val(datos.NombreDiseno);
     $("#lblNomIdEtapaProceso").text(datos.NomIdEtapaProceso);
-    $("#txtEstado").val(datos.Estado);
     $("#txtNoDocumentoOT").val(datos.NoDocumento);
     $("#txtFechaOrdenTrabajo").val(fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' + fecha.getFullYear());
     $("#txtNomEstado").val(datos.NomEstado);
@@ -739,11 +755,18 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
     NombreQui = datos.NombreQui;
-    KdoButtonEnable($("#btnCambiarAsignado"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
-    KdoButtonEnable($("#btnCambiarEtapa"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
-    KdoButtonEnable($("#btnCambiorEstadoOT"), $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true);
+
+    if ($("#txtEstadoEtapa").length > 0)
+        $("#txtEstadoEtapa").val(datos.NomEstadoDetalle);
+
+    //habilitar botones de acciones o de flujo de la OT
+    KdoButtonEnable($("#btnCambiarAsignado"), !estadoPermiteEdicion || EtpSeguidor === true || datos.EstadoOT === 'TERMINADO'? false : true);
+    KdoButtonEnable($("#btnCambiarEtapa"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
+    KdoButtonEnable($("#btnCambiorEstadoOT"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
+    KdoButtonEnable($("#btnAgenda"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
+
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
     xvNodocReq = datos.NodocReq;
@@ -755,6 +778,10 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     fn_getImagen(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + datos.IdArte, datos.NodocReq);
     
     maq = fn_GetMaquinas();
+    if (maq.length !== 0) {
+        //obtener el tipo de alerta activa o no
+        fn_GetAlertaEstatus(maq[0].IdSeteo);
+    }
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
             elemento.call(document, jQuery);
@@ -806,7 +833,7 @@ var get_cmbUsuario = function (tipoOrd, etp) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipoOrd.toString() + "/" + etp.toString(),
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/" + tipoOrd.toString() + "/" + etp.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -864,7 +891,7 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesUsuarios/" + tipo.toString() + "/" + etpAS.toString(),
+                    url: TSM_Web_APi + "ConfiguracionEtapasOrdenesDepartamentos/" + tipo.toString() + "/" + etpAS.toString(),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -874,6 +901,9 @@ var get_cmbUsuarioEtp = function (tipo, etpAS) {
         }
     });
 };
+
+// VISTA MODAL QUE TIENE LA FUNCIONALIDAD DE ASIGNAR
+// UNA ORDEN DE TRABAJO A LOS USUARIOS LIGADOS A UN DEPARTAMENTO
 
 $("#vAsignarUsuario").kendoDialog({
     height: "50%",
@@ -889,7 +919,7 @@ $("#vAsignarUsuario").kendoDialog({
     ],
     close: function (e) {
         if (e.userTriggered && EtpAsignado === false && EtpSeguidor === false) {
-            window.history.go(-2);
+            //window.history.go(-2);
             //window.location.href = "/GestionOT";
             return false;
         }
@@ -1013,18 +1043,20 @@ $("#btnCambiarEtapa").click(function (e) {
     KdoCmbFocus($("#cmbEtpSigAnt"));
     kendo.ui.progress($(document.body), false);
 });
+
+//boton registro de solicitu de cambios
 $("#btnSolicitarRegistroCambio").click(function (e) {
     fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
 });
 
+//llamar a la vista registro de comentarios en la agenda
 $("#btnAgenda").click(function (e) {
-    fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso);
+    fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val());
 });
-
+// llmar a la vista historial de seteos.
 $("#btnHistorial").click(function (e) {
     fn_OrdenesTrabajosVersionesSeteos("historialSeteos", idOrdenTrabajo);
 });
-
 
 $("#btnDesplazarEstacion").click(function () {
     if (ValidarDesplazar.validate()) {
@@ -1033,14 +1065,6 @@ $("#btnDesplazarEstacion").click(function () {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
     }
 });
-
-//$("#btnCambiarEstacion").click(function () {
-//    if (ValidarCambiarEst.validate()) {
-//        fn_Desplazar(kdoNumericGetValue($("#NumBrazoA")).toString() + "|" + kdoNumericGetValue($("#NumBrazoB")).toString() + "," + kdoNumericGetValue($("#NumBrazoB")).toString() + "|" + kdoNumericGetValue($("#NumBrazoA")).toString());
-//    } else {
-//        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-//    }
-//});
 
 $("#btnDuplicarEstacion").click(function () {
     if (ValidarDuplicarEst.validate()) {
@@ -1051,16 +1075,7 @@ $("#btnDuplicarEstacion").click(function () {
 });
 
 $("#btnRegAjuste").click(function () {
-    //if (ValidarSoliAjuste.validate()) {
-    //    if (LEstaciones === "" || LEstaciones === null) {
-    //        $("#kendoNotificaciones").data("kendoNotification").show("Seleccione una o más estaciones a ajustar", "error");
-    //    } else {
     fn_AlertasBatch();
-
-    //    }
-    //} else {
-    //    $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
-    //}
 });
 
 var fn_OpenModalDesplazamiento = function (EstacionIni, xMaquina,xCantidadEstaciones) {
@@ -2561,7 +2576,9 @@ var fn_RTActivaDropTarget = function () {
         group: "gridGroup"
     });
 };
+//#region Formulas historicas Metodos Obtener formula, seteo del valor de busqueda
 
+//debe configuarse por etapas
 $("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
     fn_GuardaCodigoColor(CodigoColor);
 });
@@ -2580,10 +2597,15 @@ $("#FormulaHist").on("SetValorBusqueda", function (event) {
             TxtFilNombreColor= $("#TxtOpcSelecFormulas").val();//este campo contiene el valor del nombre color para la etapa de Tintas, cuando el marco sea de tipo de formulacion color,base y tecnica
             FilCumpleOEKOTEX= CumpleOEKOTEX;
             break;
+        case "12":
+            TxtFilNombreColor = $("#TxtOpcSelec_Ajuste").val();//este campo contiene el valor del nombre color para la etapa de Tintas, cuando el marco sea de tipo de formulacion color,base y tecnica
+            FilCumpleOEKOTEX = CumpleOEKOTEX;
+            break;
     }
 });
 
 var fn_GuardaCodigoColor = function (xCodColor) {
+    //Los metodos se definen en cada etapa correspondiente.
     switch (idEtapaProceso) {
         case "6":
             fn_GuardarEstacionFormula(idBra, xCodColor);
@@ -2594,9 +2616,15 @@ var fn_GuardaCodigoColor = function (xCodColor) {
         case "9":
             fn_GuardarFormulaEst(xidEstacion, xCodColor);
             break;
+        case "12":
+            fn_GuardarFormulaEst_Ajuste(xidEstacion, xCodColor);
+            break;
     }
   
 };
+
+//#endregion
+
 //metodo que se activa cuando se cierra ventana modal
 var onCloseCambioEstado = function (e) {
     fn_GetDatosSeteoMaquinasEstacionesMarcos(maq[0].IdSeteo, xidEstacion);
@@ -2797,7 +2825,15 @@ var fn_ReduccionEstacionesMaq = function (xIdSeteo,xCantidadEstaciones) {
 
 };
 
-var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maquina) {
+var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maquina,fn) {
+
+    let fn_Completado = function () {
+        if (fn === undefined || fn === "") {
+            return true;
+        } else {
+            return fn();
+        }
+    };
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/OperacionMaquina/" + maq[0].IdSeteo,
@@ -2808,6 +2844,8 @@ var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maqu
             kendo.ui.progress($(document.body), false);
             RequestEndMsg(resultado, "Put");
             maquina.data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(brazoDestino, tipo, data, brazoInicio);
+            fn_Completado();
+           
         },
         error: function (resultado) {
             ErrorMsg(resultado);
@@ -2817,6 +2855,79 @@ var fn_TrasladarEstacion = function (brazoDestino, tipo, data, brazoInicio, maqu
 
 };
 
+//obtener los departamentos a los que pertenece un usuario
+//******
+
+var fn_GetDeptoRoles = function () {
+    $.ajax({
+        url: TSM_Web_APi + "/DepartamentosRoles/GetByIdUsuario/" + getUser(),
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            JSON.parse(JSON.stringify(datos), function (key, value) {
+                if (value !== null) {
+                    //if (value.Placement === true) filtro.push(value);
+                    //if (value.Catalogo === true) filtro2.push(value);
+                    switch (value.IdDepartamento) {
+                        case 3:
+                            dtoDiseno = true;
+                            break;
+                        case 4:
+                            dtoTintas = true;
+                            break;
+                        case 5:
+                            dtoRevelado = true;
+                            break;
+                        default:
+                    }
+                }
+                return value;
+            });
+        }
+    });
+};
+
+
+var fn_GetAfectaSecuencia = function (IdSeteo) {
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasAlertas/GetAfectaSecuencia/" + IdSeteo,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            if (datos.length > 0) {
+                DienoAfectaSecuencia = true;
+            } else {
+                DienoAfectaSecuencia = false;
+            }
+        }
+    });
+};
+
+
+var fn_GetAlertaEstatus = function (IdSeteo) {
+    $.ajax({
+        url: TSM_Web_APi + "/SeteoMaquinasAlertas/GetAlertasEstatus/" + IdSeteo,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            $.each(datos, function (index, elemento) {
+                switch (elemento.IdAlerta) {
+                    case 3:
+                        alertDiseno = elemento.EstaActiva;
+                        break;
+                    case 1:
+                        alertTintas = elemento.EstaActiva;
+                        break;
+                    case 2:
+                        alertRevelado = elemento.EstaActiva;
+                        break;
+                    default:
+                }
+
+            });
+        }
+    });
+};
 
 $("#body").on("cerrar_Modal_Color", function (event, param1, param2) {
     alert(param1 + "\n" + param2);
