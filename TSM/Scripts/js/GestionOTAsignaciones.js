@@ -265,6 +265,15 @@ $(document).ready(function () {
 
     }
 
+    $(".Kanban-view-topscroll").scroll(function () {
+        $(".board")
+            .scrollLeft($(".Kanban-view-topscroll").scrollLeft());
+    });
+    $(".board").scroll(function () {
+        $(".Kanban-view-topscroll")
+            .scrollLeft($(".board").scrollLeft());
+    });
+
 });
 
 let fn_DibujarKanban = function (ds) {
@@ -365,10 +374,9 @@ let fn_DibujarKanban = function (ds) {
 
             });
 
-
+            $(".scroll-div1").css("width", $(".board")[0].scrollWidth);
+            $(".Kanban-view-topscroll").css("width", $(".board")[0].scrollWidth);
             fn_IniciarKanban();
-
-
         },
         complete: function () {
             kendo.ui.progress($(document.body), false);

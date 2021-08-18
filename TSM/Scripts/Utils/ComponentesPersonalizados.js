@@ -1,6 +1,8 @@
 ﻿$.fn.extend({
     ControlPantones: function () {
-        return this.each(function () {
+     
+        
+            return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Codigo",
                 dataValueField: "ID",
@@ -23,6 +25,52 @@
                     { field: "Item", title: "Posición", width: 50 },
                     { field: "NomIdTipoPantonera", title: "Pantonera", width: 200 },
                     { field: "Codigo", title: "Pantone", width: 200 },
+                    { field: "Nombre", title: "Nombre", width: 200 },
+                    { field: "ColorHex", title: "&nbsp;", width: 50, template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' }
+                ]
+            });
+        });
+    },
+    ControlPantonesLaboratorio: function (opt) {
+        var strcontroller = "";
+        var defaults = {
+            modoNuevo: false,
+            idSeteo: 0
+        }
+        var params = $.extend({}, defaults, opt);
+        if (params.modoNuevo === true || params.idSeteo ===0) {
+            strcontroller = "/Pantoneras/GetBusquedaPantoneraLab";
+        } else {
+
+            strcontroller = "/ResultadosPiezasPruebasLaboratorio/ColoresDiseno/" + params.idSeteo;
+        }
+       // strcontroller: "/Pantoneras/GetBusquedaPantoneraLab",
+
+
+
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Codigo",
+                dataValueField: "ID",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + strcontroller; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50,width:"0px" },
+                    { field: "Item", title: "Posición", width: 50, width: "0px" },
+                    { field: "NomIdTipoPantonera", title: "Pantonera", width: 200, width: "0px" },
+                    { field: "Codigo", title: "Pantone", width: 200, width: "0px" },
                     { field: "Nombre", title: "Nombre", width: 200 },
                     { field: "ColorHex", title: "&nbsp;", width: 50, template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' }
                 ]

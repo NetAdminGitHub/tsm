@@ -283,6 +283,22 @@ var Grid_ColRadiobutton = function (container, options) {
     $('<label class="k-radio-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
+
+var Grid_ColRadiobuttonGroup = function (container, options) {
+    var guid = kendo.guid();
+    var radioArray = options.values[0]; //recibe el array de valores posibles para el radiobutton
+    for (var element in radioArray) {
+
+
+        $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
+        $('<label class="k-radio-label" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
+ 
+    }
+
+};
+
+
+
 // Columna como CheckBox
 var Grid_ColTemplateCheckBox = function (data, columna) {
     let guid = kendo.guid();

@@ -33,5 +33,11 @@ namespace TSM.Controllers
             ViewData["IdArte"] = idArte;
             return PartialView("CatalogoDisenoInf");
         }
+
+        public ActionResult GenerarFichaProduccion()
+        {
+            return PartialView("_GenerarFichaProduccion");
+        }
     }
 }
+ 

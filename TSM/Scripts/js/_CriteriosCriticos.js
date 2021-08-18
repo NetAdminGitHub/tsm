@@ -74,7 +74,7 @@ var fn_InicializarCriteriosCriticos = function (vIdPiezaDesarrollada) {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gridCriteriosCriticos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, false, redimensionable.Si, 450);
+    SetGrid($("#gridCriteriosCriticos").data("kendoGrid"), ModoEdicion.EnLinea, true, true, true, false, redimensionable.Si, 450);
     SetGrid_CRUD_ToolbarTop($("#gridCriteriosCriticos").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridCriteriosCriticos").data("kendoGrid"), Permisos.SNEditar, false);
     Set_Grid_DataSource($("#gridCriteriosCriticos").data("kendoGrid"), dsCriteriosCriticos, 20);

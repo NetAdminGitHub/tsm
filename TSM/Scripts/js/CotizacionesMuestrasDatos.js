@@ -325,7 +325,8 @@ $(document).ready(function () {
                     NumeroDiseno: { type: "string" },
                     IdArte: { type: "numeric" },
                     IdRequerimiento: { type: "numeric" },
-                    IdSimulacion: { type: "numeric" }
+                    IdSimulacion: { type: "numeric" },
+                    NoReferencia: { type: "string" }
                 }
             }
         }
@@ -356,7 +357,8 @@ $(document).ready(function () {
             { field: "FacturacionCliente", title: "Facturacion Cliente", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionTS", title: "Facturacion Techno Screen", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionVenta", title: "Facturacion Venta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
-            { field: "NoOT", title: "No Orden Trabajo"},
+            { field: "NoReferencia", title: "Código FM" },
+            { field: "NoOT", title: "No Orden Trabajo" },
             { field: "IdAnalisisDiseno", title: "Cod. AnalisisDiseno", hidden: true },
             { field: "NombreArte", title: "Nombre Diseño" },
             { field: "EstiloDiseno", title: "Estilo de Diseño" },
@@ -365,7 +367,6 @@ $(document).ready(function () {
             { field: "IdRequerimiento", title: "Código Requerimiento", hidden: true },
             { field: "NoRequerimiento", title: "No Requerimiento", hidden: true },
             { field: "IdSimulacion", title: "Código Simulación", hidden: true }
-            
         ]
     });
 
