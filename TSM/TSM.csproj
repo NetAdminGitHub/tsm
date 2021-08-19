@@ -308,6 +308,7 @@
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\MotivosSolicitudesAjustesController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
@@ -511,6 +512,7 @@
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
+    <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
     <Content Include="Scripts\js\OrigenesPruebasLaboratorio.js" />
     <Content Include="Scripts\js\PruebasLaboratorio.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
@@ -958,6 +960,7 @@
     <Content Include="Views\Shared\_GenerarFichaProduccion.cshtml" />
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
+    <Content Include="Views\MotivosSolicitudesAjustes\Index.cshtml" />
     <None Include="Web.IST.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
