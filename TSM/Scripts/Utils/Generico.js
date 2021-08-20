@@ -1441,15 +1441,14 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,idA
     };
 
     $("#" + divCDInf + "").kendoDialog({
-        height: "80%",
-        width: "80%",
+        height: "100%",
+        width: "95%",
         title: "Detalle",
         closable: true,
         modal: true,
         content: data,
         visible: false,
-        maxHeight: 800,
-        show: onShow,
+         show: onShow,
         close: onClose
 
     });
