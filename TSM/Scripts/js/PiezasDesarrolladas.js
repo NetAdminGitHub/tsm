@@ -1,15 +1,21 @@
 ﻿var Permisos;
 let _IdOrdenTrabajo;
 let _IdPiezaDesarrollada;
+let dataItem;
 let Turnos = [{ "nombre": "A","valor":"A" }, { "nombre": "B", "valor":"B"}];
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstado"), "check-circle");
     KdoButton($("#btnCriteriosCalidad"), "track-changes-accept");
     KdoButtonEnable($("#btnCambiarEstado"), false);
     KdoButtonEnable($("#btnCriteriosCalidad"), false);
-
+    Kendo_CmbFiltrarGrid($("#CmbCalidadPrueba"), TSM_Web_APi + "CalidadPruebas/", "Nombre", "IdCalidadPrueba", "Seleccione...");
     $("#CmbOrdenTrabajo").ControlSeleccionOrdenesTrabajos();
-
+    
+    $("#ComentariosLab").kendoTextArea({
+        rows: 5,
+        maxLength: 500,
+        placeholder: "Ingrese su comentario..."
+    });
   
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
@@ -140,7 +146,29 @@ $(document).ready(function () {
             { field: "IdTurno", title: "Turno", editor: Grid_ColRadiobuttonGroup, values: [Turnos] },
             { field: "Enmienda", title: "Enmienda", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Enmienda"); } },
             { field: "Segunda", title: "Segunda", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Segunda"); } },
-            { field: "AuditoriaExterna", title: "Auditoria Externa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AuditoriaExterna"); } }
+            { field: "AuditoriaExterna", title: "Auditoria Externa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AuditoriaExterna"); } },
+            {
+                command: {
+                    name: "Enviar a laboratorio ",
+                    iconClass: "k-icon k-i-file",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                         dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                        Grid_SetSelectRow($("#grid"), selectedRows);
+                        let dialog = $("#ModalInfoComplementariaLab").data("kendoDialog");
+                        dialog.open();
+                        dialog.title("Información de solicitud " + dataItem.NoPieza);
+                        
+
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
             
         ]
     });
@@ -253,6 +281,8 @@ $(document).ready(function () {
 
     });
 
+    
+
 
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#grid"), $(window).height() - "371");
@@ -262,6 +292,39 @@ $(document).ready(function () {
     Fn_Grid_Resize($("#grid"), $(window).height() - "371");
 
     Fn_Grid_Resize($("#gridEstados"), $(window).height() - "371");
+
+    $("#ModalInfoComplementariaLab").kendoDialog({
+        height: "60%",
+        width: "40%",
+        title: "Solicitud de laboratorio",
+        visible: false,
+        closable: true,
+        modal: true,
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspCrear solicitud', primary: false, action: function () { return fn_CrearSolicitudLaboratorio(); } },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbsp;Cerrar' }
+        ],
+        close: function (e) {
+           
+        }
+    });
+
+    $("#NumCantLavadas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+    $("#NumCantQuemadas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
 
 
 });
@@ -287,6 +350,67 @@ let fn_CriteriosCriticos = function (div, idPiezaDesarrollada, fnclose) {
         kendo.ui.progress($(document.activeElement), false);
         fn_CargarVistaModalCriteriosCriticos("", div, idPiezaDesarrollada, fnclose);
     }
+};
+
+let fn_LimpiaModal = function () {
+    $("#CmbCalidadPrueba").data("kendoComboBox").value("");
+    $("#NumCantLavadas").data("kendoNumericTextBox").value("0");
+    $("#NumCantQuemadas").data("kendoNumericTextBox").value("0");
+    $("#ComentariosLab").data("kendoTextArea").value("");
+    $("#SNLectura").is(':unchecked');
+};
+
+
+let fn_CrearSolicitudLaboratorio = function (ditem) {
+    kendo.ui.progress($("#FrmPruebaGeneral"), true);
+    
+    $.ajax({
+        url: TSM_Web_APi + "PruebasLaboratorio/Crear",
+        type: "Post",
+        dataType: "json",
+        data: JSON.stringify({
+            IdPruebaLaboratorio: 0,
+            IdCalidadPrueba: $("#CmbCalidadPrueba").data("kendoComboBox").value(),
+            Estado: 'ING',
+            CantidadLavadas: $("#NumCantLavadas").data("kendoNumericTextBox").value(),
+            CantidadQuemadas: $("#NumCantQuemadas").data("kendoNumericTextBox").value(),
+           IdOrigenPrueba: 1,
+           IdPlanta: dataItem.IdPlanta,//fn_getIdPLanta($("#grid").data("kendoGrid")),
+           IdTurno: dataItem.IdTurno,//fn_getIdTurno($("#grid").data("kendoGrid")),
+            Lectura: $("#SNLectura").is(':checked'),
+            IdUsuario: getUser(),
+            OrigenPieza: true,
+            IdPiezaPrueba: dataItem.IdPiezaDesarrollada,//fn_getIdPiezaDesarrollada($("#grid").data("kendoGrid")),
+            Comentario: $("#ComentariosLab").data("kendoTextArea").value(),
+             IdCorte: null,
+            IdBulto: 0,
+            IdMaquina: 0,
+            IdTipoOrdenTrabajo: 0,
+            IdCatalogoDiseno: 0,
+            IdCliente: 0
+
+
+
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+           
+            RequestEndMsg(data, "Put");
+            kendo.ui.progress($("#FrmPruebaGeneral"), false);
+
+            fn_LimpiaModal();
+            this.close();
+            RequestEndMsg(data, "Post");
+
+        },
+        error: function (data) {
+
+            kendo.ui.progress($("#FrmPruebaGeneral"), false);
+            ErrorMsg(data);
+            
+        }
+    });
+
 };
 
 let fn_CargarVistaModalCriteriosCriticos = function (data, divVerCriteriosCriticos, idPiezaDesarrollada, fnclose) {
@@ -361,6 +485,17 @@ let fn_getIdPiezaDesarrollada = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdPiezaDesarrollada;
 };
+
+let fn_getIdPLanta = function (g) {
+    let SetPlanta = g.dataItem(g.select());
+    return SetPlanta === null ? 0 : SetPlanta.IdPlanta;
+};
+
+let fn_getIdTurno = function (g) {
+    let SetIdTurno = g.dataItem(g.select());
+    return SetIdTurno === null ? 0 : SetIdTurno.IdPlanta;
+};
+
 
 
 let fn_getNoPiezaDesarrollada = function (g) {
