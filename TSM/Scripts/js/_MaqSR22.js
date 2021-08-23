@@ -843,7 +843,8 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
 var AgregaEstacion = function (e) {
 
     e.preventDefault();
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    // verifica estado si esta activo
+    vhb = (Number(idEtapaProceso) === 10 ? !estadoPermiteEdicion : $("#txtEstado").val() !== "ACTIVO") || EtpSeguidor === true || EtpAsignado === false ? false : true; 
 
     kendo.ui.progress($("#body"), true);
     HizoDropDown = true;
