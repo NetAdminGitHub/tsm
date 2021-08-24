@@ -1725,7 +1725,7 @@ function getSimulacionGrid(g) {
         kdoNumericSetValue($("#TxtCostoTotalTrans"), elemento.CostoTotalTrans);
         kdoNumericSetValue($("#TxtCostoPrimoSubli"), elemento.CostoPrimo);
         kdoNumericSetValue($("#NumCostoPrimoTransSubli"), elemento.CostoPrimoTrans);
-        kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal);
+        kdoNumericSetValue($("#TxtCostoTotalMasTrans"), elemento.CostoTotalTrans + elemento.CostoTotal + elemento.CostoLimpieza);
         $("#TxtComentariosTecnicos").val(elemento.Comentarios);
         kdoNumericSetValue($("#NumCostoPapelImp"), elemento.CostoPapelImp);
         kdoNumericSetValue($("#NumCostoTinta"), elemento.CostoTinta);
