@@ -2358,7 +2358,7 @@ var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpI
         //maxHeight: 800,
         minWidth: "20%",
         actions: [
-            { text: '<span class="k-icon k-i-check"></span>&nbspCambiar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion); } },
+            { text: '<span class="k-icon k-i-check"></span>&nbspGenerar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion); } },
             { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
         ],
         show: onShow,
