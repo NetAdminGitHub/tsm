@@ -182,7 +182,7 @@ $(document).ready(function () {
             grid.tbody.find("tr").dblclick(function (e) {
                 kendo.ui.progress($("#grid"), true);
                 //window.location.href = "/ConsultarFichaOT/FichaOT/" + grid.dataItem(this).IdOrdenTrabajo.toString();
-                window.open("/FichaProduccion/Ficha/" + grid.dataItem(this).IdOrdenTrabajo.toString());
+                window.open("/FichaProduccion/Ficha/" + grid.dataItem(this).IdOrdenTrabajo.toString() + "/" + grid.dataItem(this).IdSimulacion.toString() + "/" + grid.dataItem(this).IdCotizacion.toString());
                 kendo.ui.progress($("#grid"), false);
                
             });
