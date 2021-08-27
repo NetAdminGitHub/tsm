@@ -5,6 +5,9 @@
 @section Scripts {
     <script type="text/javascript">
         var xIdOt =@ViewData["IdOrdenTrabajo"];
+        var xIdSimu =@ViewData["IdSimulacion"];
+        var xIdCoti =@ViewData["IdCotizacion"];
+
     </script>
     <script src="~/Scripts/js/FichaProd.js"></script>
     <script src="~/Scripts/Vue/Vue.js"></script>
@@ -155,6 +158,13 @@
 
                                     </div>
                                     <div class="form-row">
+                                        <div class="col-lg-6 ">
+                                            <div class="form-group col-lg-12">
+                                                <label for="plNoDocCotizacion">No Cotizacíon </label>
+                                                <input id="plNoDocCotizacion" name="plNoDocCotizacion" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                            </div>
+
+                                        </div>
                                         <div class="col-lg-6 ">
                                             <div class="form-group col-lg-12">
                                                 <label for="plEstadoFichaProd">Estado </label>
