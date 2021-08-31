@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- Dev
 
 pool:
   vmImage: 'windows-latest'
@@ -20,9 +20,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-- task: GitVersion@5
+- task: gitversion/setup@0
   inputs:
-    runtime: 'full'
+    versionSpec: '5.x'
+- task: gitversion/execute@0
+  displayName: 'Calculate SemVer'
 - task: CopyFiles@2
   displayName: 'Copy config Files to artifacts directory'
   inputs:
@@ -51,5 +53,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'TSM$(Build.BuildId)-$(GitVersion.SemVer).zip'
+    ArtifactName: 'TSM-$(GitVersion.SemVer).zip'
     publishLocation: 'Container'
