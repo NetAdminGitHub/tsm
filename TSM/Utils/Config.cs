@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Drawing;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace TSM.Utils
 {
@@ -56,28 +57,43 @@ namespace TSM.Utils
                 httpClient.DefaultRequestHeaders.Add("t", token);
 
                 var response = httpClient.GetStringAsync(new Uri(url)).Result;
-               
+
                 return response;
             }
         }
 
+        /// <summary>
+        /// método para cambiar tamano. Si no recibe nuevo ancho o alto , divide tamano actual por la mitad.
+        /// </summary>
+        /// <param name="imagen"></param>
+        /// <param name="tamanoActual">tamano actual objeto de tipo Size</param>
+        /// <param name="newWidth">nuevo ancho</param>
+        /// <param name="newHeight">nuevo alto</param>
+        /// <returns></returns>
+        public static Image ResizeImage(Image imagen, Size tamanoActual, int newWidth = 0, int newHeight = 0  ) {
+
+            Size nuevoTamano = (newWidth != 0 && newHeight != 0) ? new Size(newWidth, newHeight) : new Size(tamanoActual.Width / 2, tamanoActual.Height / 2);
+            return (Image)(new Bitmap(imagen, nuevoTamano));                    
+        }
+
         public static string GetBase64Image(string path)
-        {
+        { 
             string imgstr;
             string realPath = HttpContext.Current.Server.MapPath(path);
             try
             {
                 using (Image img = Image.FromFile(realPath))
-                {
+                {                                                 
                     using (MemoryStream m = new MemoryStream())
                     {
-                        img.Save(m, img.RawFormat);
+
+                        ResizeImage(img, img.Size).Save(m, img.RawFormat);
                         byte[] bimg = m.ToArray();
                         imgstr = Convert.ToBase64String(bimg);
                      }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 imgstr = "MA=="; //0 en base 64 para manejo de error 
             }
