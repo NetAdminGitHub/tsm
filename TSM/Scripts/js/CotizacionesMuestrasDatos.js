@@ -30,38 +30,43 @@ $(document).ready(function () {
     KdoButton($("#btnGeneraCotiPro"), "gear", " Generar cotización por programa");
     KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
     KdoButton($("#btnIrCoti"), "hyperlink-open-sm", "Ir a Simulaciones");
-    KdoButtonEnable($("#btnGeneraCotiPro"), vEstCoti !== "EDICION" ? false: true);
+    KdoButtonEnable($("#btnGeneraCotiPro"), vEstCoti !== "EDICION" ? false : true);
     KdoButtonEnable($("#btnCambioEstado"), vEstCoti !== "EDICION" ? false : fn_SNCambiarEstados(true));
-    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false : fn_SNAgregar(true));    
+    KdoButtonEnable($("#btnGuardar"), vEstCoti !== "EDICION" ? false : fn_SNAgregar(true));
 
     var Valid = $("#frmCondiciones").kendoValidator(
         {
-            ContactoRules: {
+            rules: {
                 Mayor0: function (input) {
-                    if (input.is("[name='Contacto']")) {
+                    if (input.is("[name='TxtContacto']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
                 TransporteRules: function (input) {
-                    if (input.is("[name='Transporte']")) {
+                    if (input.is("[name='TxtTransPorte']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
                 NumeroSeteosRules: function (input) {
-                    if (input.is("[name='Transporte']")) {
+                    if (input.is("[name='TxtNumeroSeteos']")) {
                         return input.val().length <= 200;
                     }
                     return true;
                 },
-
-                messages: {
-                    ContactoRules: "Longitud máxima del campo es 200",
-                    TransporteRules: "Longitud máxima del campo es 200",
-                    NumeroSeteosRules: "Longitud máxima del campo es 200",
-                    required: "Requerido"
+                Decimales: function (input) {
+                    if (input.is("[name='txtCantidadDecimales']")) {
+                        return input.val() !== "" && !isNaN(input.val());
+                    }
+                    return true;
                 }
+            },
+            messages: {
+                Mayor0: "Longitud máxima del campo es 200",
+                TransporteRules: "Longitud máxima del campo es 200",
+                NumeroSeteosRules: "Longitud máxima del campo es 200",
+                Decimales: "Requerido"
             }
         }
     ).data("kendoValidator");
@@ -231,6 +236,14 @@ $(document).ready(function () {
         decimals: 2,
         value: 0
     });
+    $("#txtCantidadDecimales").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 4,
+        min: 0,
+        max: 4
+    });
     $("#TxtComentarios").kendoEditor({
         encoded: false,
         tools: []
@@ -312,7 +325,8 @@ $(document).ready(function () {
                     NumeroDiseno: { type: "string" },
                     IdArte: { type: "numeric" },
                     IdRequerimiento: { type: "numeric" },
-                    IdSimulacion: { type: "numeric" }
+                    IdSimulacion: { type: "numeric" },
+                    NoReferencia: { type: "string" }
                 }
             }
         }
@@ -343,7 +357,8 @@ $(document).ready(function () {
             { field: "FacturacionCliente", title: "Facturacion Cliente", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionTS", title: "Facturacion Techno Screen", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
             { field: "FacturacionVenta", title: "Facturacion Venta", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}", hidden: true },
-            { field: "NoOT", title: "No Orden Trabajo"},
+            { field: "NoReferencia", title: "Código FM" },
+            { field: "NoOT", title: "No Orden Trabajo" },
             { field: "IdAnalisisDiseno", title: "Cod. AnalisisDiseno", hidden: true },
             { field: "NombreArte", title: "Nombre Diseño" },
             { field: "EstiloDiseno", title: "Estilo de Diseño" },
@@ -352,7 +367,6 @@ $(document).ready(function () {
             { field: "IdRequerimiento", title: "Código Requerimiento", hidden: true },
             { field: "NoRequerimiento", title: "No Requerimiento", hidden: true },
             { field: "IdSimulacion", title: "Código Simulación", hidden: true }
-            
         ]
     });
 
@@ -431,6 +445,7 @@ let Fn_getCotizacion = function () {
             $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
             $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
             $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+            kdoNumericSetValue($("#txtCantidadDecimales"), respuesta === null ? 4 : respuesta.CantidadDecimales);
             xCliente = respuesta === null ? 0 : respuesta.IdCliente;
             Kendo_CmbFiltrarGrid($("#CmbIdAcuerdo"), TSM_Web_APi + "ClientesAcuerdosPlantillas/GetNombreByCliente/" + xCliente, "Nombre", "IdAcuerdo", "Seleccione...");
             kendo.ui.progress($(document.body), false);
@@ -529,7 +544,8 @@ let Fn_GuardarCondicionesCM = function (UrlCotizacion) {
                 ExcesoSetup: $("#txtExcesoSetup").val(),
                 PrecioSetup: $("#txtPrecioSetup").val(),
                 RepeticionesDesarrollo: $("#txtRepeticionesDesarrollo").val(),
-                RepeticionesCTL: $("#txtRepeticionesCTL").val()
+                RepeticionesCTL: $("#txtRepeticionesCTL").val(),
+                CantidadDecimales: kdoNumericGetValue($("#txtCantidadDecimales"))
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
@@ -773,6 +789,7 @@ let fn_CargarPlantilla = function () {
                 $("#txtPrecioSetup").val(respuesta === null ? "" : respuesta.PrecioSetup);
                 $("#txtRepeticionesDesarrollo").val(respuesta === null ? "" : respuesta.RepeticionesDesarrollo);
                 $("#txtRepeticionesCTL").val(respuesta === null ? "" : respuesta.RepeticionesCTL);
+                kdoNumericSetValue($("#txtCantidadDecimales"), respuesta === null ? "" : respuesta.CantidadDecimales);
 
                 $("#frmCondiciones").submit();
                 $("#ModalAcuerdos").data("kendoDialog").close();

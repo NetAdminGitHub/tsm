@@ -81,7 +81,7 @@
                                                 </div>
                                                 <div class="form-row" id="Row4RD">
                                                     <!-- Row4RD este id se utiliza para oculatar la fila dependiendo del servicio-->
-                                               
+
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <label for="Combo" id="lblCombo">Combo:</label>
                                                         <input id="Combo" name="Combo" type="text" required class="form-control" />
@@ -110,7 +110,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
+
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -156,9 +156,9 @@
                                                         </div>
                                                     </div>
                                                     @*<div class="form-group col-md-3 col-lg-3">
-                                                        <label for="CmbIdCalidadCriterio">Criterio de Calidad:</label>
-                                                        <input id="CmbIdCalidadCriterio" name="CmbIdCalidadCriterio" class="form-control" />
-                                                    </div>*@
+                                                            <label for="CmbIdCalidadCriterio">Criterio de Calidad:</label>
+                                                            <input id="CmbIdCalidadCriterio" name="CmbIdCalidadCriterio" class="form-control" />
+                                                        </div>*@
                                                     <div class="form-group col-md-3 col-lg-3">
                                                         <label for="IdUbicacion">Ubicación del Estampado:</label>
                                                         <input id="IdUbicacion" name="IdUbicacion" class="form-control" />
@@ -185,7 +185,7 @@
                                                 <div class="form-row">
                                                     <div class="col-lg-6"><label class="font-weight-bold">Diseño</label></div>
                                                     <div class="col-lg-6"> <input id="IdArte" name="IdArte" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
-                                                    <div class="col-lg-3"> <input id="IdCatalogoDiseno" name="IdCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" /></div>
+
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6 col-lg-3">
@@ -202,12 +202,12 @@
                                                     </div>
                                                     <div class="form-group col-md-6 col-lg-3">
                                                         <div class="form-row">
-                                                            <div class="form-group col-md-12 col-lg-12">
+                                                            <div class="form-group col-md-6 col-lg-6">
                                                                 <label for="NoReferencia">No Catalogo Diseño:</label>
                                                                 <input id="NoReferencia" name="NoReferencia" class="k-textbox form-control" , disabled="disabled" />
                                                             </div>
-                                                            <div class="form-group col-md-5 col-lg-2 align-self-end" hidden="hidden">
-                                                                <button type="button" id="btnCCDis"></button>
+                                                            <div class="form-group col-md-6 col-lg-6 align-self-end">
+                                                                <button type="button" id="btnCopyCDis"></button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -247,7 +247,7 @@
                                                 <div class="form-row">
                                                     <div class="form-group col-lg-6">
                                                         <div class="form-row">
-                                                            
+
                                                             <div class="form-group col-md-6 col-lg-6">
                                                                 <label for="CmbIdCalidadCriterio">Criterio de Calidad:</label>
                                                                 <input id="CmbIdCalidadCriterio" name="CmbIdCalidadCriterio" class="form-control" />
@@ -276,8 +276,26 @@
 
                                                         </div>
                                                     </div>
-                                                   
+
                                                 </div>
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-6">
+                                                        <div class="form-row">
+
+                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                <label for="CmbCriterioCritico">Perfil de criterios criticos (CTQ's):</label>
+                                                                <input id="CmbCriterioCritico" name="CmbCriterioCritico" class="form-control" />
+                                                            </div>
+                                                            <div class="form-row col-md-6 col-lg-6">
+                                                                <div class="form-row" id="ListaCriterios">
+                                                                    <!--seccion para listar los criterios-->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="form-row"> <div class="form-group col-lg-12"></div></div>
@@ -296,7 +314,7 @@
                                 <li id="BPGRDimension">
                                     <span class="TS-icon-TEXTO-2" style="font-size: 1.7em;">&nbsp</span>
                                     Dimensiones
-                                    <div class="form-row"><br/></div>
+                                    <div class="form-row"><br /></div>
                                     <div class="form-row" id="DimenGrid">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -311,13 +329,13 @@
                                     <div class="form-row" id="ColorTecGrid">
                                         <div class="form-group col-lg-12">
                                             <div class="form-row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-7">
                                                     <div class="form-group">
                                                         <label for="GRReqDesColor"><strong>Registro de color</strong></label>
                                                         <div id="GRReqDesColor"></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-5">
                                                     <div class="form-group">
                                                         <label for="GRReqDesTec"><strong>Registro de técnica</strong></label>
                                                         <div id="GRReqDesTec"></div>
@@ -325,13 +343,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-7">
                                                     <div class="form-group">
                                                         <label for="GRReqDesFoil"><strong>Registro de Foil</strong></label>
                                                         <div id="GRReqDesFoil"></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-5">
                                                     <div class="form-group">
                                                         <label for="GRReqDesArtSug"><strong>Registro de artículo sugerido</strong></label>
                                                         <div id="GRReqDesArtSug"></div>
@@ -349,5 +367,24 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+
+<div class="form-row">
+    <div id="modalCopyFMOT">
+        <form id="FrmModalCopyFMOT" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class=" form-group col-lg-12">
+                        <label for="CmbOtporFM">Orden de trabajo origen:</label>
+                        <input id="CmbOtporFM" name="CmbOtporFM" type="text" class="form-control" />
+                 </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group cl-lg-12">
+                    <button type="button" class=" k-primary" id="btnAcepCopy">Aceptar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

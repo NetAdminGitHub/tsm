@@ -9,20 +9,20 @@
                     <input id="DtFecha" name="DtFecha" class="form-control" />
                 </div>
                 <div class="form-group col-lg-3">
+                    <label for="CmbIdImpresor">Impresor</label>
+                    <input id="CmbIdImpresor" name="CmbIdImpresor" class="form-control" required validationMessage="Requerido" />
+                </div>
+                <div class="form-group col-lg-3">
                     <label for="CmbIdOrientacionPositivo">Orientacion Positivos:</label>
-                    <input id="CmbIdOrientacionPositivo" name="CmbIdOrientacionPositivo" class="form-control" required validationMessage="Requerido" />
+                    <input id="CmbIdOrientacionPositivo" name="CmbIdOrientacionPositivo" class="form-control" validationMessage="Requerido" />
                 </div>
                 <div class="form-group col-lg-3">
                     <label for="CmbIdTipoSeparacion">Tipo Separción</label>
                     <input id="CmbIdTipoSeparacion" name="CmbIdTipoSeparacion" class="form-control" required validationMessage="Requerido" />
                 </div>
-                <div class="form-group col-lg-3">
-                    <label for="TxtDirectorio">Directorio Archivos</label>
-                    <input id="TxtDirectorio" name="TxtDirectorio" type="text" class="k-textbox form-control" readonly="readonly" />
-                </div>
             </div>
             <div class="form-row">
-              
+
 
             </div>
             <div class="form-row">
@@ -39,8 +39,8 @@
                     <input id="CmbIdUnidad" name="CmbIdUnidad" class="form-control" required validationMessage="Requerido" />
                 </div>
                 <div class="form-group col-lg-3">
-                    <label for="CmbIdImpresor">Impresor</label>
-                    <input id="CmbIdImpresor" name="CmbIdImpresor" class="form-control" required validationMessage="Requerido" />
+                    <label for="TxtDirectorio">Directorio Archivos</label>
+                    <input id="TxtDirectorio" name="TxtDirectorio" type="text" class="k-textbox form-control" readonly="readonly" />
                 </div>
             </div>
             <div class="form-row">
@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group col-lg-3">
                     <label for="NumLPelicula">Longitud de Pel&iacute;cula</label>
-                    <input id="NumLPelicula" name="NumLPelicula" class="form-control" required value="0" />
+                    <input id="NumLPelicula" name="NumLPelicula" class="form-control" value="0" />
                 </div>
                 <div class="form-group col-lg-3">
                     <label for="CmbIdUnidadLP">Unidad Medida</label>
@@ -66,6 +66,7 @@
                     <div class="input-group-prepend">
                         <div style="width: 100%;">
                             <button type="button" id="btnGuardarDiseñoMues" name="btnGuardarDiseñoMues"></button>
+                            <button type="button" id="btnAddColorDis" name="btnAddColorDis"></button>
                         </div>
                     </div>
                 </div>
@@ -73,40 +74,9 @@
         </form>
     </div>
 </div>
+
 <div class="form-row">
-    <div class="form-group col-lg-3">
-        <div id="dgColorDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgTecnicaDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgBasesDis"></div>
-    </div>
-    <div class="form-group col-lg-3">
-        <div id="dgAccesoriosDis"></div>
-    </div>
+    <div id="maquinaDiseno"></div>
 </div>
-<div class="form-row">
-    <div class="form-group col-lg-12">
-        <div class="form-row">
-            <div class="form-group col-lg-3">
-                <label for="CmbMaquinaDis">Selección de Maquina:</label>
-                <input id="CmbMaquinaDis" name="CmbMaquinaDis" required validationMessage="Requerido" type="text" class="form-control" />
-            </div>
-            <div class="form-group col-lg-3 col-md-4 align-self-lg-end"> 
-                <button type="button" id="btnBTDis" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                        <span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo
-                </button>
-            </div>
-            <div class="form-group col-lg-3 align-self-lg-end">
-                <button type="button" id="btnDesplaCambio_Dis" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="form-row" id="EtapaSeteo_8">@*div utilizado para el dibujado de maquina por etapa*@</div>
 <div id="MEstacionDisenos" data-url='@Url.Action("EstacionDisenos","Estaciones")'></div>
 <div id="MEstacionAccesoriosDis" data-url='@Url.Action("EstacionAccesoriosDis","Estaciones")'></div>

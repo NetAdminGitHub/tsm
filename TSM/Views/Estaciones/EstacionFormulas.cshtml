@@ -2,7 +2,6 @@
     .table-hover tr:hover {
         background: #00ff00;
     }
-
 </style>
 <div class="form-row">
     <div class="form-group col-lg-12" style="width:1700px;">
@@ -40,6 +39,8 @@
                                         <button type="button" id="btnAddMFAjuste" data-toggle="modal" data-target="#MNuevoAjustes">Nuevo Ajuste</button>
                                         @*<button type="button" id="btnAddMFEditar" data-toggle="modal" data-target="#MAjustes">Editar Ajuste</button>*@
                                         <button type="button" id="btnAddMFAHistori" data-toggle="modal" data-target="#MHitorico">Historicas</button>
+                                        
+                                        <button type="button" id="btnAutRet" data-toggle="modal" >Retenciones</button>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -139,11 +140,11 @@
                                         <div class="form-group col-lg-4">
                                             <label for="TxtNombreEstado">Estado del Marco</label>
                                             <input id="TxtNombreEstado" name="TxtNombreEstado" type="text" class="k-textbox form-control" />
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-lg-4 align-self-lg-end">
-                                            <button type="button" id="btnCambioEstado" name="btnCambioEstado">Cambio de estado del marco</button>
+                                            <button type="button" id="btnCambioEstado" name="btnCambioEstado" hidden="hidden">Cambio de estado del marco</button>
                                         </div>
                                     </div>
                                 </div>
@@ -153,16 +154,7 @@
                 </div>
             </div>
         </div>
-        @*<div id="MbtnEditForm">
-            <form id="FrmAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
-                <div class="form-row">
-                    <div class="form-group cl-lg-12">
-                        <div id="gridFormulasAjusMP"></div>
-                    </div>
-                </div>
-            </form>
-        </div>*@
-        <div id="MbtnAjuste">
+        @*<div id="MbtnAjuste">
             <form id="FrmNuevoAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="form-row">
                     <div class="form-group col-lg-6">
@@ -193,13 +185,19 @@
                     </div>
                 </div>
             </form>
-        </div>
-
-
-
+        </div>*@
     </div>
 </div>
 
+@*seccion html que se utilizara para la vista modal de Autorizacion de retenciones *@
+<div class="form-row">
+    <div class="form-group col-lg-12">
+        <div id="RetAut"></div>
+    </div>
+</div>
+
+@*div para controlar el evento del warning*@
+<div id="ElementoTrabajo_action"></div>
 
 <div id="FormulaEstacionTinta"></div>
 <div id="vCambioEstado"></div>

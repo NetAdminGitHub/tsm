@@ -227,16 +227,35 @@ let fn_DibujarKanban = function (ds) {
     kendo.ui.progress($(document.body), true);
 
     const result = [];
-    const map = new Map();
-    for (const item of ds) {
-        if (!map.has(item.IdEstatusColumna)) {
-            map.set(item.IdEstatusColumna, true);    // set any value to Map
-            result.push({
-                IdEstatusColumna: item.IdEstatusColumna,
-                EstatusColumna: item.EstatusColumna
-            });
-        }
-    }
+    //const map = new Map();
+    //for (const item of ds) {
+    //    if (!map.has(item.IdEstatusColumna)) {
+    //        map.set(item.IdEstatusColumna, true);    // set any value to Map
+    //        result.push({
+    //            IdEstatusColumna: item.IdEstatusColumna,
+    //            EstatusColumna: item.EstatusColumna
+    //        });
+    //    }
+    //}
+
+    result.push({
+        IdEstatusColumna: "C1",
+        EstatusColumna: "PENDIENTE"
+    });
+
+    result.push({
+        IdEstatusColumna: "C2",
+        EstatusColumna: "EN PROGRESO"
+    });
+    result.push({
+        IdEstatusColumna: "C3",
+        EstatusColumna: "FINALIZADO"
+    });
+
+    result.push({
+        IdEstatusColumna: "C4",
+        EstatusColumna: "EN SIMULACIÓN"
+    });
 
     ResultOrden = [];
     ResultOrden = sortByKeyAsc(result, "IdEstatusColumna");
@@ -284,12 +303,14 @@ let fn_DibujarKanban = function (ds) {
 
         $.each(filtro, function (index, elemento) {
             let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
+            let NoReferencia = elemento.NoReferencia === null ? '' : elemento.NoReferencia;
             let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
             let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
+            let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
             MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                 //'<div class= "form-group col-lg-2">' +
                 '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
+                '<div class= "TSM-card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
                 //'<a class="btn-link stretched-link" target="_blank" href="/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '">' + elemento.NoDocumento + '<a />' +
                 '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>' +
                 '<li class="emptyItem">' +
@@ -301,13 +322,16 @@ let fn_DibujarKanban = function (ds) {
                 '</ul>' +
                 '</div>' +
                 '<div class="card-body">' +
-                '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
-                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
-                '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
-                '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/> Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
-                'Color Tela: ' + elemento.ColorTela + '</p>' +
+                '<h5 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
+                '<h1 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.TallaDesarrollar + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + NoReferencia + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.NoPrograma + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
+                '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
+                '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/><span style="white-space:normal;font-weight: bold;">' + elemento.NombreTipoOrden + '</span><br/> Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
+                'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas +'</p>' +
                 '</div>' +
-                '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
+                '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                 '</div>' +
                 //'</div>' +
                 '</div>');

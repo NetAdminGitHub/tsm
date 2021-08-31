@@ -4,7 +4,8 @@ var xNoReferenciaCT = "";
 var xNombreArchivoCT = "";
 var xIdPrograma = 0;
 var xIdOT = 0;
-let dataSource
+var XIdCata = 0;
+let dataSource;
 let fn_GetMotivoDes = function () {
     //preparar crear datasource para obtner la tecnica filtrado por base
     return new kendo.data.DataSource({
@@ -31,11 +32,11 @@ $(document).ready(function () {
     $("#btnAXaTSM").click(function () {
         $("#ModalGeneraOT_AX").data("kendoDialog").open();
         $("#CmbMotivoDes").data("kendoComboBox").setDataSource(fn_GetMotivoDes());
-        KdoMultiColumnCmbEnable($("#CmbProg"), false);
+        //KdoMultiColumnCmbEnable($("#CmbProg"), false);
         KdoComboBoxEnable($("#CmbMotivoDes"), false);
         KdoButtonEnable($("#btnGenOT_AX"), false);
         KdoCmbSetValue($("#CmbMotivoDes"), "");
-        KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+        //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
         KdoMultiColumnCmbSetValue($("#CmbFM"), "");
         KdoCmbSetValue($("#Cmb_Tallas"), "");
 
@@ -59,19 +60,25 @@ var fn_getArtesAdjuntos = function () {
 
 
     $("#CmbPrograma").ControlSelecionPrograma();
-    $("#CmbProg").ControlSelecionProg();
+    //$("#CmbProg").ControlSelecionProg();
     $("#CmbFM").ControlSelecionFM_AX();
-
-    KdoMultiColumnCmbEnable($("#CmbProg"), false);
+    $("#CmbFmCata").ControlSelecionFMCatalogo();
+    //KdoMultiColumnCmbEnable($("#CmbProg"), false);
     KdoComboBoxEnable($("#CmbMotivoDes"), false);
     KdoButtonEnable($("#btnGenOT_AX"), false);
 
     KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbPrograma")); 
+    KdoMultiColumnCmbSetValue($("#CmbFmCata"), sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbFmCata")); 
 
     $("#CmbOrdenTrabajo").CatalogoOrdenesTrabajos();
     KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === null ? "" : sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo"));
     Kendo_CmbFiltrarGrid($("#Cmb_Tallas"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Selecione una talla...");
+    Kendo_CmbFiltrarGrid($("#Cmb_Prenda"), TSM_Web_APi + "CategoriaPrendas", "Nombre", "IdCategoriaPrenda", "Selecione una prenda...");
+    Kendo_CmbFiltrarGrid($("#Cmb_Partes"), TSM_Web_APi + "Ubicaciones", "Nombre", "IdUbicacion", "Selecione una parte de prenda...");
+
     KdoComboBoxEnable($("#Cmb_Tallas"), false);
+    KdoComboBoxEnable($("#Cmb_Prenda"), false);
+    KdoComboBoxEnable($("#Cmb_Partes"), false);
 
     $("#ModalGeneraOT_AX").kendoDialog({
         height: "auto",
@@ -83,9 +90,11 @@ var fn_getArtesAdjuntos = function () {
         modal: true,
         close: function (e) {
             KdoCmbSetValue($("#CmbMotivoDes"), "");
-            KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+            //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
             KdoMultiColumnCmbSetValue($("#CmbFM"), "");
             KdoCmbSetValue($("#Cmb_Tallas"), "");
+            KdoCmbSetValue($("#Cmb_Prenda"), "");
+            KdoCmbSetValue($("#Cmb_Partes"), "");
             $("#CmbFM").data("kendoMultiColumnComboBox").dataSource.data([]);
             fn_getFM(null);
        
@@ -97,7 +106,7 @@ var fn_getArtesAdjuntos = function () {
             read: {
                 url: function () {
                     kendo.ui.progress($(document.body), true);
-                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString();
+                    return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoConsulta/" + xidClie.toString() + "/" + xIdPrograma.toString() + "/" + xIdOT.toString() + "/" + XIdCata.toString();
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -123,15 +132,27 @@ var fn_getArtesAdjuntos = function () {
                     }
                     return true;
                 },
-                MsgPro: function (input) {
-                    if (input.is("[name='CmbProg']")) {
-                        return $("#CmbProg").data("kendoMultiColumnComboBox").selectedIndex >= 0;
-                    }
-                    return true;
-                },
+                //MsgPro: function (input) {
+                //    if (input.is("[name='CmbProg']")) {
+                //        return $("#CmbProg").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                //    }
+                //    return true;
+                //},
                 MsgTalla: function (input) {
                     if (input.is("[name='Cmb_Tallas']")) {
                         return $("#Cmb_Tallas").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
+                MsgPrenda: function (input) {
+                    if (input.is("[name='Cmb_Prenda']")) {
+                        return $("#Cmb_Prenda").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
+                },
+                MsgPartes: function (input) {
+                    if (input.is("[name='Cmb_Partes']")) {
+                        return $("#Cmb_Partes").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
                 }
@@ -139,7 +160,9 @@ var fn_getArtesAdjuntos = function () {
             messages: {
                 MsgDesarrollo: "Requerido",
                 MsgPro: "Requerido",
-                MsgTalla: "Requerido"
+                MsgTalla: "Requerido",
+                MsgPrenda: "Requerido",
+                MsgPartes: "Requerido"
             }
         }).data("kendoValidator");
 
@@ -237,6 +260,7 @@ var fn_getArtesAdjuntos = function () {
             xIdPrograma = this.dataItem(e.item.index()).IdPrograma;
             xidClie = this.dataItem(e.item.index()).IdCliente;
             xIdOT = this.dataItem(e.item.index()).IdOrdenTrabajo;
+            kdoChkSetValue($("#CmbCliente"), xIdOT);
             dataSource.read();
             sessionStorage.setItem("CatalogoDisenos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdOrdenTrabajo);
 
@@ -250,8 +274,8 @@ var fn_getArtesAdjuntos = function () {
     });
 
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
-        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
@@ -262,10 +286,48 @@ var fn_getArtesAdjuntos = function () {
 
     });
 
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            KdoCmbSetValue($("#CmbCliente"), this.dataItem(e.item.index()).IdCliente);
+            xidClie = this.dataItem(e.item.index()).IdCliente;
+            xIdPrograma = 0;
+            xIdOT = 0;
+            XIdCata = this.dataItem(e.item.index()).IdCatalogoDiseno;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbFmCata", this.dataItem(e.item.index()).IdCatalogoDiseno);
+            sessionStorage.setItem("CatalogoDisenos_CmbCliente", this.dataItem(e.item.index()).IdCliente);
+
+        } else {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdOT = 0;
+            XIdCata = 0;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbFmCata", "");
+        }
+    });
+
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        if (data === undefined) {
+            xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
+            xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
+            xIdOT = 0;
+            XIdCata = 0;
+            dataSource.read();
+            sessionStorage.setItem("CatalogoDisenos_CmbOrdenTrabajo", "");
+        }
+
+    });
+
+
     if (sessionStorage.getItem("CatalogoDisenos_CmbCliente") !== null || sessionStorage.getItem("CatalogoDisenos_CmbPrograma") !== null || sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") !== null) {
         xidClie = sessionStorage.getItem("CatalogoDisenos_CmbCliente") === "" || sessionStorage.getItem("CatalogoDisenos_CmbCliente") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbCliente");
         xIdPrograma = sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === "" || sessionStorage.getItem("CatalogoDisenos_CmbPrograma") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbPrograma");
         xIdOT = sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === "" || sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbOrdenTrabajo");
+        XIdCata = sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === "" || sessionStorage.getItem("CatalogoDisenos_CmbFmCata") === null ? 0 : sessionStorage.getItem("CatalogoDisenos_CmbFmCata");
+        dataSource.read();
     }
 };
 
@@ -301,7 +363,7 @@ var fn_DibujarCatalogo = function (data) {
             '<h5 class="k-card-title">' + elemento.NombreDiseno + '</h5>' +
             '<h6 class="k-card-subtitle">Estilo: ' + elemento.EstiloDiseno + '</h6>' +
             '</div >' +
-            '<img class="k-card-image"  src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" />' +
+            '<img class="k-card-image"  id="Img_' + elemento.IdCatalogoDiseno + '" src="/Adjuntos/' + elemento.NoReferencia + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)" />' +
             '<div class="k-card-body">' +
             '<p>Numero:' + elemento.NumeroDiseno + '</p>' +
             '<p>Archivo:' + elemento.NombreArchivo + '</p>' +
@@ -392,7 +454,10 @@ $.fn.extend({
                     { field: "CODIGOPROGRAMA", title: "Código de Programa", width: 100 },
                     { field: "NOMBREDISENO", title: "Nombre Diseño", width: 200 },
                     { field: "ESTILODISENO", title: "Estilo Diseño", width: 150 },
-                    { field: "NUMERODISENOCLIENTE", title: "Numero Diseño", width: 150 }
+                    { field: "NUMERODISENOCLIENTE", title: "Numero Diseño", width: 150 },
+                    { field: "PRENDADISENO", title: "Prenda", width: 200 },
+                    { field: "PARTEDISENO", title: "Parte", width: 200 },
+                    { field: "TALLAS", title: "Tallas", width: 200 }
                 ]
             });
         });
@@ -437,11 +502,15 @@ let fn_getFM = function (g) {
         $("#TxtEstiloDisenoOT").val(g.ESTILODISENO);
         $("#txtNumDisenoOT").val(g.NUMERODISENOCLIENTE);
         $("#TxtTallas").val(g.TALLAS);
+        $("#TxtPrenda").val(g.PRENDADISENO);
+        $("#TxtParte").val(g.PARTEDISENO);
         $("#TxtPrograma").val(g.CODIGOPROGRAMA + " " + g.NOMBREPROGRAMA);
         $("#TxtFecha").val(kendo.toString(kendo.parseDate(g.FECHADISENO), 'dd/MM/yyyy'));
-        KdoMultiColumnCmbEnable($("#CmbProg"), true);
+        //KdoMultiColumnCmbEnable($("#CmbProg"), true);
         KdoComboBoxEnable($("#CmbMotivoDes"), true);
         KdoComboBoxEnable($("#Cmb_Tallas"), true);
+        KdoComboBoxEnable($("#Cmb_Prenda"), true);
+        KdoComboBoxEnable($("#Cmb_Partes"), true);
         KdoButtonEnable($("#btnGenOT_AX"), true);
 
     } else {
@@ -451,12 +520,18 @@ let fn_getFM = function (g) {
         $("#TxtTallas").val("");
         $("#TxtPrograma").val("");
         $("#TxtFecha").val("");
-        KdoMultiColumnCmbEnable($("#CmbProg"), false);
+        $("#TxtPrenda").val("");
+        $("#TxtParte").val("");
+        //KdoMultiColumnCmbEnable($("#CmbProg"), false);
         KdoComboBoxEnable($("#CmbMotivoDes"), false);
         KdoComboBoxEnable($("#Cmb_Tallas"), false);
+        KdoComboBoxEnable($("#Cmb_Prenda"), false);
+        KdoComboBoxEnable($("#Cmb_Partes"), false);
         KdoButtonEnable($("#btnGenOT_AX"), false);
+        KdoComboBoxEnable($("#Cmb_Prenda"), false);
+        KdoComboBoxEnable($("#Cmb_Partes"), false);
         KdoCmbSetValue($("#CmbMotivoDes"), "");
-        KdoMultiColumnCmbSetValue($("#CmbProg"), "");
+        //KdoMultiColumnCmbSetValue($("#CmbProg"), "");
         KdoCmbSetValue($("#Cmb_Tallas"), "");
     }
 
@@ -465,11 +540,23 @@ let fn_getFM = function (g) {
 let fn_GenerarOT_FMAX= function () {
     if (ValidarFrmGeneraOT_FMAX.validate()) {
         // obtener indice de la etapa siguiente
+
+   
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
-            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo_FMAX/" + KdoMultiColumnCmbGetValue($("#CmbFM")).toString() + "/" + KdoMultiColumnCmbGetValue($("#CmbProg")).toString() + "/1/" + KdoCmbGetValue($("#CmbMotivoDes")).toString() + "/" + KdoCmbGetValue($("#Cmb_Tallas")).toString() ,
+            url: TSM_Web_APi + "CatalogoDisenos/GenerarOrdenTrabajoCatalogo_FMAX",
             method: "POST",
             dataType: "json",
+            data: JSON.stringify({
+                codigoDiseno: KdoMultiColumnCmbGetValue($("#CmbFM")).toString(),
+                //idPrograma: KdoMultiColumnCmbGetValue($("#CmbProg")).toString(),
+                IdServicio: 1,
+                idMotivoDesarrollo: KdoCmbGetValue($("#CmbMotivoDes")).toString(),
+                idCategoriaTalla: KdoCmbGetValue($("#Cmb_Tallas")).toString(),
+                RutaArchivo: RutaFisicaAdj,
+                idCategoriaPrenda: KdoCmbGetValue($("#Cmb_Prenda")).toString(),
+                idUbicacion: KdoCmbGetValue($("#Cmb_Partes")).toString()
+            }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 RequestEndMsg(datos, "Post");
@@ -487,6 +574,8 @@ let fn_GenerarOT_FMAX= function () {
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
     }
 };
+
+
 
 fPermisos = function (datos) {
     Permisos = datos;

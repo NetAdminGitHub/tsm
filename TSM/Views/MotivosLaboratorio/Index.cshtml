@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Definición de Motivos de Laboratorio";
+    ViewBag.IdVersion = "TSM0101105|v21081201";
+}
+
+@section Scripts {
+    <script src="~/Scripts/js/MotivosLaboratorio.js"></script>
+    <script type="text/javascript">
+    var UrlCategoriasMotivosLaboratorio = "@string.Format("{0}CategoriasMotivosLaboratorio", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

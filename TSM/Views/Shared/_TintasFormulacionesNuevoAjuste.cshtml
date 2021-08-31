@@ -1,0 +1,33 @@
+﻿
+<div id="MbtnAjuste">
+    <form id="FrmNuevoAjuste" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbAjuste" name="rbvAjusteForm" class="k-radio form-control">
+                <label class="k-radio-label" for="rbAjuste">Ajustar</label>
+            </div>
+            <div class="form-group col-lg-6">
+                <input type="radio" id="rbAjusteLimpio" name="rbvAjusteForm" class="k-radio form-control">
+                <label class="k-radio-label" for="rbAjusteLimpio">Ajuste en Limpio</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="NumCntIni_Recibida">Cantidad Recibida:</label>
+                <input id="NumCntIni_Recibida" name="NumCntIni_Recibida" class="form-control" required />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="CmbMotivoAjus">Motivo del Ajutes:</label>
+                <input id="CmbMotivoAjus" name="CmbMotivoAjus" required validationMessage="Requerido" type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group cl-lg-12">
+                <button type="button" class=" k-primary" id="btnAcepAjuste">Aceptar</button>
+            </div>
+        </div>
+    </form>
+</div>

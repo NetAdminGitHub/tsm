@@ -1,27 +1,13 @@
 ﻿var Permisos;
 
 var fn_DMueCargarConfiguracion = function () {
-    KdoButton($("#btnDesplaCambio_Mues"), "arrows-kpi", "Desplazar/Intercambiar");
-    KdoButton($("#btnDuplicar_Mues"), "copy", "Duplicar");
-    KdoButton($("#btnMuest"), "delete", "Limpiar");
-    KdoButton($("#btnConsultarPesos"), "search", "Consultar");
 
-    KdoButton($("#btnFinOT"), "gear", "Finalizar OT");
-    KdoButton($("#btnAceptarFin"), "check", "Finalizar");
-    $("#dFechaFinMue").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFechaFinMue").data("kendoDatePicker").value(Fhoy());
-    $("#MbtnFinMue").kendoDialog({
-        height: "auto",
-        width: "20%",
-        title: "Finalizar Orden de Trabajo",
-        closable: true,
-        modal: true,
-        visible: false,
-        maxHeight: 900
-    });
+    KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
+    KdoButton($("#btnConsultarPesos"), "search", "Consultar");
+    KdoButton($("#btnCambiarEstadoEtapa"), "gear", "Cambiar Estado Muestra");
 
     $("#MbtConsulta").kendoDialog({
-        height: "auto",
+        height: "70%",
         width: "40%",
         title: "Detalle de pesos en muestra",
         closable: true,
@@ -34,98 +20,105 @@ var fn_DMueCargarConfiguracion = function () {
 
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-    let UrlMq = TSM_Web_APi + "Maquinas";
-    Kendo_CmbFiltrarGrid($("#CmbMaquinaMues"), UrlMq, "Nombre", "IdMaquina", "Seleccione una maquina ....");
-    KdoComboBoxEnable($("#CmbMaquinaMues"), false);
-    KdoCmbSetValue($("#CmbMaquinaMues"), maq[0].IdMaquina);
-
-    let UrlUMDM = TSM_Web_APi + "UnidadesMedidas";
-    Kendo_CmbFiltrarGrid($("#CmbIdUnidad"), UrlUMDM, "Abreviatura", "IdUnidad", "Seleccione...");
-    let UrlDM_OP = TSM_Web_APi + "OrientacionPositivos";
-    Kendo_CmbFiltrarGrid($("#CmbIdOrientacionPositivo"), UrlDM_OP, "Nombre", "IdOrientacionPositivo", "Seleccione...");
-    let UrlDM_TS = TSM_Web_APi + "TiposSeparaciones";
-    Kendo_CmbFiltrarGrid($("#CmbIdTipoSeparacion"), UrlDM_TS, "Nombre", "IdTipoSeparacion", "Seleccione...");
-    KdoButton($("#btnGuardarDiseñoMues"), "save", "Guardar");
-
-    $("#btnMuest").data("kendoButton").bind('click', function () {
-        ConfirmacionMsg("¿Esta seguro de eliminar la configuración de todas las estaciones?", function () { return fn_EliminarEstacion(maq[0].IdSeteo); });
-    });
-
-     //FINALIZAR OT
-    let ValidFrmFinMue = $("#FrmFinMue").kendoValidator({
-        rules: {
-            FM: function (input) {
-                if (input.is("[name='dFechaFinMue']")) {
-                    return kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's') !== null;
-                }
-                return true;
-            }
-
-        },
-        messages: {
-            FM: "requerido"
-        }
-    }).data("kendoValidator");
-
-    $("#btnFinOT").click(function () {
-        $("#MbtnFinMue").data("kendoDialog").open();
-        $("#dFechaFinMue").data("kendoDatePicker").element.focus();
-    });
-
+   
     $("#btnConsultarPesos").click(function () {
         $("#MbtConsulta").data("kendoDialog").open();
         $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
         $("#gridEstacionPeso").data("kendoGrid").refresh();
     });
 
-    $("#btnAceptarFin").click(function () {
-        if (ValidFrmFinMue.validate()) { fn_FinOT(); }
+    //Fn_VistaCambioEstado($("#vCamEstado"));
+
+    $("#btnCambiarEstadoEtapa").click(function (event) {
+        var lstId = {
+            IdOrdenTrabajo: idOrdenTrabajo,
+            IdEtapaProceso: idEtapaProceso,
+            Item: $("#txtItem").val(),
+        };
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajosDetalles", $("#txtEstado").val(), TSM_Web_APi + "OrdenesTrabajosDetalles/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
+
     fn_ConsultaPesos($("#gridEstacionPeso"));
 
-
-    fn_gridAccesoriosEstacion($("#dgAccesorios_Muest"));
-    $("#dgAccesorios_Muest").data("Estacion", "MEstacionAccesoriosMuest"); // guardar nombre vista modal
-    $("#dgAccesorios_Muest").data("EstacionJS", "EstacionAccesoriosMuest.js"); // guardar nombre archivo JS
-    $("#dgAccesorios_Muest").data("TipoEstacion", "ACCESORIO"); // guardar nombre archivo JS
-    $("#dgAccesorios_Muest").data("Formulacion", ""); //guarda el idformulacion
-
-
-    $("#btnDesplaCambio_Mues").click(function (e) {
-        fn_OpenModalDesplazamiento();
-
-    });
-
-    $("#btnDuplicar_Mues").click(function (e) {
-        fn_OpenModalDuplicar();
-
-    });
-
     $("#btnAjuste_Mues").click(function (e) {
-        fn_OpenModalEstacionAjuste();
+        //fn_OpenModalEstacionAjuste();
+        fn_SolicitarIngresoAjuste("vSoliIngresoAjuste", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), maq[0].IdSeteo, idTipoOrdenTrabajo.toString());
 
     });
+
+    $("#maquinaDesarrolloMues").maquinaSerigrafia({
+        maquina: {
+            data: maq,
+            formaMaquina: maq[0].NomFiguraMaquina,
+            cantidadBrazos: maq[0].CantidadEstaciones,
+            eventos: {
+                nuevaEstacion: function (e) {
+                    AgregaEstacion(e);
+                    maq = fn_GetMaquinas();
+                    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                },
+                abrirEstacion: fn_VerDetalleBrazoMaquina,
+                editarEstacion: fn_VerDetalleBrazoMaquina,
+                pegarEstacion: function (e) {
+                    var dataCopy = e.detail[0];
+                    fn_DuplicarBrazoMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquina, dataCopy);
+                },
+                trasladarEstacion: function (e) {
+                    var informacionTraslado = e.detail[0];
+                    //$("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
+                    fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaDesarrolloMues"));
+                },
+                desplazamientoEstacion: function (e) {
+                    var elementoADesplazar = e.detail[0];
+                    var sType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDesarrolloMues"), sType.CantidadEstaciones);
+                },
+                eliminarEstacion: function (e) {
+                    fn_EliminarEstacion(maq[0].IdSeteo,e, $("#maquinaDesarrolloMues"));
+                },
+                reduccionMaquina: function (e) {
+                    var selType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDesarrolloMues"), 1);
+
+
+                }
+            }
+        },
+        tipoMaquina:
+        {
+            mostrar: true,
+            eventos: {
+                onChange: elementoSeleccionado_DesarrolloMues
+            }
+        },
+        accesorios: { mostrar: true }
+    });
+
+    fn_GetFormasMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
+    fn_Accesorios($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+
+    //$("#maquina").data("maquinaSerigrafia").maquinaVue.readOnly(true); 
 };
 
 var fn_DMCargarEtapa = function () {
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
-    KdoButtonEnable($("#btnFinOT"), vhb);
-    KdoButtonEnable($("#btnMuest"), vhb);
-    KdoButtonEnable($("#btnDesplaCambio_Mues"), vhb);
-    KdoButtonEnable($("#btnDuplicar_Mues"), vhb);
-    Grid_HabilitaToolbar($("#dgAccesorios_Muest"), vhb, vhb, vhb);
+    vhb = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    KdoButtonEnable($("#btnAjuste_Mues"), vhb);
+    $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+
 };
 
-// Agregar a lista de ejecucion funcion dibujado de maquina.
-var EtapaPush = {};
-EtapaPush.IdEtapa = idEtapaProceso;
-EtapaPush.FnEtapa = fn_RTCargarMaquina;
-fun_ListDatos.push(EtapaPush);
+
+var elementoSeleccionado_DesarrolloMues = function (e) {
+    if (Number(maq[0].IdFormaMaquina) !== Number(e.detail[0].IdFormaMaquina)) {
+        if ($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.initialize(e.detail[0].CantidadEstaciones, e.detail[0].NomFiguraMaquina) === "OK") {
+            fn_UpdFormaRevTec(e.detail[0].CantidadEstaciones, e.detail[0].IdFormaMaquina, e.detail[0].NomFiguraMaquina, $("#maquinaDesarrolloMues"), 0);
+        }
+    } 
+};
+
 //Agregar a Lista de ejecucion funcion configurar 
-var EtapaPush2 = {};
-EtapaPush2.IdEtapa = idEtapaProceso;
-EtapaPush2.FnEtapa = fn_DMueCargarConfiguracion;
-fun_ListDatos.push(EtapaPush2);
+fun_List.push(fn_DMueCargarConfiguracion);
 
 //Agregar a Lista de ejecucion funcion validación 
 var EtapaPush3 = {};
@@ -133,85 +126,15 @@ EtapaPush3.IdEtapa = idEtapaProceso;
 EtapaPush3.FnEtapa = fn_DMCargarEtapa;
 fun_ListDatos.push(EtapaPush3);
 
-// activa DropTarget
-var EtapaPush4 = {};
-EtapaPush4.IdEtapa = idEtapaProceso;
-EtapaPush4.FnEtapa = fn_RTActivaDropTarget;
-fun_ListDatos.push(EtapaPush4);
+
+// Agregar a lista de ejecucion funcion dibujado de maquina.
+var EtapaPush = {};
+EtapaPush.IdEtapa = idEtapaProceso;
+EtapaPush.FnEtapa = function () { return $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq); };
+fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;
-};
-
-let fn_FinOT = function () {
-    kendo.ui.progress($(".k-dialog"), true);
-    $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajos/OrdenesTrabajosFinalizar",
-        method: "POST",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val() ,
-            IdEtapaProcesoFinalizar: idEtapaProceso,
-            FechaFinMuestra: kendo.toString(kendo.parseDate($("#dFechaFinMue").val()), 's')
-        }),
-        success: function (datos) {
-            RequestEndMsg(datos, "Post");
-            $("#MbtnFinMue").data("kendoDialog").close();
-            KdoButtonEnable($("#btnFinOT"), false);
-            //obneter los datos del arte y trasladar el diseño a la carpeta de catalogos
-            fn_GetArteDis();
-        },
-        error: function (data) {
-            ErrorMsg(data);
-            kendo.ui.progress($(".k-dialog"), false);
-            KdoButtonEnable($("#btnFinOT"), true);
-        },
-        complete: function () {
-            kendo.ui.progress($(".k-dialog"), false);
-        }
-    });
-
-};
-
-let fn_GetArteDis = function () {
-    kendo.ui.progress($(document.body), true);
-    $.ajax({
-        url: TSM_Web_APi + "Artes/GetArteByIdReq/" + $("#txtIdRequerimiento").val(),
-        dataType: 'json',
-        type: 'GET',
-        success: function (respuesta) {
-            if (respuesta !== null) {
-                var dsres = [{
-                    NoDocumento: xvNodocReq,
-                    NoReferencia: respuesta.NoReferencia,
-                    NombreArchivo: respuesta.NombreArchivo
-                }];
-                SubirArchivoCatalogo(dsres);
-            
-            }
-            CargarInfoEtapa(false);
-            kendo.ui.progress($(document.body), false);
-        },
-        error: function () {
-            kendo.ui.progress($(document.body), false);
-        }
-    });
-};
-
-let SubirArchivoCatalogo = function (ds) {
-    kendo.ui.progress($(document.body), true);
-    $.ajax({
-        type: "Post",
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify(ds),
-        url: "/RequerimientoDesarrollos/SubirArchivoCatalogo",
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            kendo.ui.progress($(document.body), false);
-        }
-    });
 };
 
 var fn_ConsultaPesos = function (gd) {
@@ -294,3 +217,7 @@ var fn_ConsultaPesos = function (gd) {
         Grid_SelectRow(gd, srow4);
     });
 };
+
+var fn_cerrarModal = function () {
+    $("#vSoliIngresoAjuste").data("kendoDialog").close();
+}

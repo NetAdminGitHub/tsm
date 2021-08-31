@@ -46,7 +46,7 @@ var ReadyMenuJs = function () {
 
 var ReadyMenuPerfil = function () {
     fn_getPerfilUsuario(getUser());
-}
+};
 
 //#region Generarion de menu primera version 
 function getOpcionesMenu() {
@@ -180,11 +180,11 @@ function Fn_getOpcionesMenu() {
     $.ajax({
         url: UrlMenu + "/GetMenusbyUsuario/" + getUser(),
         dataType: 'json',
-        async: false,
         type: 'GET',
         success: function (respuesta) {
             if (respuesta !== null) {
                 fn_CrearOpcionesMenu(respuesta);
+                ReadyMenuPerfil();
             }
             kendo.ui.progress($("#body"), false);
             RequestEndMsg(respuesta, "Get");
@@ -395,7 +395,6 @@ var fn_getPerfilUsuario = function (user) {
     }).done(function (data) {
         fn_MostrarPerfil(data);
     });
-
 };
 
 var fn_MostrarPerfil = function (data) {

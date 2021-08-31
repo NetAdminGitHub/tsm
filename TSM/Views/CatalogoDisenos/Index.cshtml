@@ -1,10 +1,17 @@
 ﻿@{
     ViewBag.Title = "Catalogo de Diseños";
     ViewBag.IdVersion = "TMS0101085|v19041201";
+    ViewBag.Ruta = (new TSM.FrwkSeguridadSrv.SeguridadClient("BasicHttpBinding_ISeguridad")).Encriptar(Server.MapPath("~/Adjuntos"), TSM.Utils.Config.App);
 }
 @section Scripts {
     <script src="~/Scripts/js/CatalogoDisenos.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
+    <script type="text/javascript">
+        var RutaFisicaAdj = "@ViewBag.Ruta";
+    </script>
 }
+<link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
+<link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
 <link href="~/Content/CatalogoDisenos.css" rel="stylesheet" />
 
 <style>
@@ -49,6 +56,14 @@
                 <label for="CmbOrdenTrabajo">Orden de Trabajo:</label>
                 <input id="CmbOrdenTrabajo" name="CmbOrdenTrabajo" type="text" class="form-control" />
             </div>
+            <div class="form-group col-lg-3">
+                <label for="CmbFmCata">Código FM:</label>
+                <input id="CmbFmCata" name="CmbFmCata" type="text" class="form-control" />
+            </div>
+            
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-9"></div>
             <div class="form-group col-lg-3 align-self-end">
                 <div class="input-group">
                     <div style="width: 100%;">
@@ -56,15 +71,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-row">
             @*<div class="container my-5">
-                    <section>
-                        <div class="tab-pane fade show in active" id="panel31" role="tabpanel">
-                            <div class="form-row" id="RowPn31"></div>
-                        </div>
-                    </section>
-                </div>*@
+            <section>
+                <div class="tab-pane fade show in active" id="panel31" role="tabpanel">
+                    <div class="form-row" id="RowPn31"></div>
+                </div>
+            </section>
+        </div>*@
 
             <div class="container" id="RowPn31">
 
@@ -118,22 +131,42 @@
                         <input type="text" id="TxtFecha" class="form-control">
                     </div>
                 </div>
-            </fieldset>           
-            
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label for="TxtPrenda">Prenda</label>
+                        <input type="text" id="TxtPrenda" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="TxtParte">Parte</label>
+                        <input type="text" id="TxtParte" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+
             <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label for="CmbMotivoDes">Motivo de Desarrollo</label>
                     <input id="CmbMotivoDes" name="CmbMotivoDes" required validationMessage="Requerido" type="text" class="form-control" />
                 </div>
+                @*<div class="form-group col-lg-4">
+                        <label for="CmbProg">Programa</label>
+                        <input id="CmbProg" name="CmbProg" type="text" class="form-control" />
+                    </div>*@
                 <div class="form-group col-lg-4">
-                    <label for="CmbProg">Programa</label>
-                    <input id="CmbProg" name="CmbProg" type="text" class="form-control" />
+                    <label for="Cmb_Prenda">Prendas</label>
+                    <input id="Cmb_Prenda" name="Cmb_Prenda" required validationMessage="Requerido" type="text" class="form-control" />
                 </div>
+                <div class="form-group col-lg-4">
+                    <label for="Cmb_Partes">Partes</label>
+                    <input id="Cmb_Partes" name="Cmb_Partes" required validationMessage="Requerido" type="text" class="form-control" />
+                </div>
+
+            </div>
+            <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label for="Cmb_Tallas">Talla</label>
                     <input id="Cmb_Tallas" name="Cmb_Tallas" required validationMessage="Requerido" type="text" class="form-control" />
                 </div>
-              
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-4 align-self-end">

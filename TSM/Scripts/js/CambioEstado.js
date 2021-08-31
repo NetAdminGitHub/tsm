@@ -5,7 +5,7 @@ var VistaCambioEsta = "";
 
 var fn_DocRIniciaVistaCambio = function () {
     UrlEstado = TSM_Web_APi + "EstadosSiguientes/GetEstadosSiguientes";
-    Kendo_CmbFiltrarGrid($("#cmbEstados"), UrlEstado + "/Estados/undefined/true", "Nombre", "EstadoSiguiente", "Seleccione un Servicio ....","","",false);
+    Kendo_CmbFiltrarGrid($("#cmbEstados"), UrlEstado + "/Estados/undefined/true", "Nombre", "EstadoSiguiente", "Seleccione un estado...","","",false);
 };
 /**
  * Inicializa la ventana modal
@@ -84,8 +84,7 @@ function Fn_Cambio() {
     }
     else {
         return false;
-    }
-    
+    }    
 }
 /**
  * ejecuta el evento ajax para el cambio de estado

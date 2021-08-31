@@ -1,28 +1,34 @@
-﻿<div class="form-row">
-    <div class="form-group col-lg-12">
-        <div class="form-row">
-            <div class="form-group col-lg-3">
-                <label for="CmbMaquinaTintas">Selección de Maquina:</label>
-                <input id="CmbMaquinaTintas" name="CmbMaquinaTintas" required validationMessage="Requerido" type="text" class="form-control" />
-            </div>
-            <div class="form-group col-lg-3 col-md-4 align-self-lg-end"> <button type="button" id="btnBTTintas" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button></div>
-            <div class="form-group col-lg-3 align-self-lg-end">
-                <button type="button" id="btnAjuste_Tint" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-warning"></span>&nbsp;Ingresar ajuste tinta/marco
-                </button>
-            </div>
+﻿
+    <div class="form-row">
+        <div class="form-group col-lg-6">
+            <label for="cmbTipoMarco">Tipo de Marco:</label>
+            <input id="cmbTipoMarco" name="cmbTipoMarco" required validationMessage="Requerido" class="form-control" />
+        </div>
+        <div class="form-group col-md-6 col-lg-6 align-self-end">
+            <input type="checkbox" id="chkTodasEsta" name="chkTodasEsta" class="k-checkbox">
+            <label class="k-checkbox-label" for="chkTodasEsta" id="lblchkTodasEsta">Estaciones Todas</label>
+        </div>
+    </div>   
+ <div class="form-row">
+        <div class="form-group col-lg-7">
+            <label for="gridCamEstadoMarco" tabindex="0"><span>Cambiar estado al marco:</span> </label>
+            <div id="gridCamEstadoMarco"></div>
+        </div>
+        <div class="form-group col-lg-5">
+            <label for="gridresumen" tabindex="0"><span>Resumen de marcos:</span> </label>
+            <div id="gridresumen"></div>
         </div>
     </div>
+
+    
+
+<div class="form-row">
+    <div id="maquinaTintasRev"></div>
 </div>
-<div class="form-row col-lg-12">
-    <label for="gridresumen" tabindex="0"><span>Resumen de marcos:</span> </label>
 
-    <div id="gridresumen" class="form-group col-lg-12">
 
-    </div>
-
-</div>
-<div class="form-row" id="EtapaSeteo_9"> @*div utilizado para el dibuhjado de maquina por etapa*@</div>
+<br/>
+<br/>
 <div id="MEstacionFormulas" data-url='@Url.Action("EstacionFormulas","Estaciones")'></div>
 
 

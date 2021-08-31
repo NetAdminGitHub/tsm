@@ -60,6 +60,10 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdArticulo").data("kendoComboBox").selectedIndex >= 0;
                                 }
+                                if (input.is("[name='IdPrograma']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdPrograma").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                                }
                                 return true;
                             }
                         }
@@ -114,10 +118,71 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Comentarios");
             KdoHideCampoPopup(e.container, "NoDocumentoPrograma");
 
+            let div = e.container.find("label[for=IdPrograma]").parent().next("div .k-edit-field");
+
+            div.after("<div id='tablaSimulaciones' style='width: 100%; float: left; clear: left;'></div>");
+
+            $('[name="IdPrograma"]').data("kendoMultiColumnComboBox").bind("select", function (e) {
+                if (e.dataItem) {
+                    kendo.ui.progress($(e.container), true);
+                    $.ajax({
+                        url: TSM_Web_APi + "CotizacionesMuestrasSimulaciones/GetSimulacionesByPrograma/" + e.dataItem.IdPrograma,
+                        type: "Get",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            fn_MostraTabla(data, $("#tablaSimulaciones"));
+                        },
+                        error: function (data) {
+                            kendo.ui.progress($(document.body), false);
+                            ErrorMsg(data);
+                        }
+                    });
+                } else {
+                    $("#tablaSimulaciones").children().remove();
+                    kendo.ui.progress($(e.container), false);
+                }
+            });
+
+            $('[name="IdPrograma"]').data("kendoMultiColumnComboBox").bind("select", function (e) {
+                if (e.dataItem) {
+                    kendo.ui.progress($(e.container), true);
+                    $.ajax({
+                        url: TSM_Web_APi + "CotizacionesMuestrasSimulaciones/GetSimulacionesByPrograma/" + e.dataItem.IdPrograma,
+                        type: "Get",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            fn_MostraTabla(data, $("#tablaSimulaciones"));
+                        },
+                        error: function (data) {
+                            kendo.ui.progress($(document.body), false);
+                            ErrorMsg(data);
+                        }
+                    });
+                } else {
+                    $("#tablaSimulaciones").children().remove();
+                    kendo.ui.progress($(e.container), false);
+                }
+            });
+
+            $('[name="IdPrograma"]').data("kendoMultiColumnComboBox").bind("change", function () {
+                var multicolumncombobox = $('[name="IdPrograma"]').data("kendoMultiColumnComboBox");
+                let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+                if (data === undefined) {
+                    $("#tablaSimulaciones").children().remove();
+                }
+            });
+
             if (!e.model.isNew()) {
                 KdoComboBoxEnable($('[name="IdPrograma"]'), false);
             }
             $('[name="FechaCreacion"]').data("kendoDatePicker").enable(false);
+        },
+        editable: {
+            "window": {
+                "width": 700
+            }
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -156,7 +221,13 @@ $(document).ready(function () {
                     }
                 }
             },
-            { field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "CmbIdCliente", "requerido"], hidden: true },
+            //{ field: "IdPrograma", title: "Programa", editor: Grid_Combox, values: ["IdPrograma", "Nombre", UrlPro, "", "Seleccione....", "required", "CmbIdCliente", "requerido"], hidden: true },
+            {
+                field: "IdPrograma", title: "Programa", hidden: true,
+                editor: function (container, options) {
+                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" id ="' + options.field + '" />').appendTo(container).SelecionProgramas();
+                }
+            },
             {
                 field: "NoDocumentoPrograma", title: "No Programa",
                 filterable: {
@@ -205,7 +276,8 @@ $(document).ready(function () {
 
     Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
 
-    //#endregion FIN PROGRAMACIÓN DEL GRID cotizacion
+    //#endregion FIN PROGRAMACIÓN DEL GRID cotizacion
+
     //#region seleccion de servicio y cliente
 
 
@@ -233,6 +305,7 @@ $(document).ready(function () {
     $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
             KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
+            Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
             Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente, this.dataItem(e.item.index()).IdPrograma);
             sessionStorage.setItem("CotizacionesMuestras_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
         } else {
@@ -246,6 +319,7 @@ $(document).ready(function () {
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
             Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
+            if (KdoCmbGetValue($("#CmbIdCliente")) === null) Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
             sessionStorage.setItem("CotizacionesMuestras_CmbPrograma", "");
         }
 
@@ -264,8 +338,37 @@ $(document).ready(function () {
 
     //Coloca el filtro de cliente guardado en la sesion
     if ((sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente")) !== null || (sessionStorage.getItem("CotizacionesMuestras_CmbPrograma") === "" ? null : sessionStorage.getItem("CotizacionesMuestras_CmbPrograma")) !== null) {
+
+        Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, false, Permisos.SNBorrar);
         Fn_ConsultarCotiza(sessionStorage.getItem("CotizacionesMuestras_CmbIdCliente"), sessionStorage.getItem("CotizacionesMuestras_CmbPrograma"));
     }
+        
+    $("#gridCotizacion").kendoTooltip({
+        filter: "tr[data-uid]",
+        position: "buttom",
+        content: function (e) {
+            var dataItem = $("#gridCotizacion").data("kendoGrid").dataItem(e.target.closest("tr"));
+            var result = "";
+            if (dataItem) {
+                $.ajax({
+                    url: TSM_Web_APi + "CotizacionesMuestrasSimulaciones/GetSimulacionesByCotizacion/" + dataItem.IdCotizacion,
+                    type: "Get",
+                    async: false,
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        result = fn_TablaEnMemoria(data);
+                    },
+                    error: function (data) {
+                        kendo.ui.progress($(document.body), false);
+                        ErrorMsg(data);
+                    }
+                });
+            }
+
+            return result;
+        }
+    });
 });
 
 let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
@@ -307,6 +410,132 @@ $.fn.extend({
         });
     }
 });
+
+$.fn.extend({
+    SelecionProgramas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                filterFields: ["IdPrograma", "NoDocumento", "Nombre"],
+                autoBind: false,
+                //minLength: 3,
+                height: 400,
+                placeholder: "Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "Programas/GetByCliente/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")));
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function (data, type) {
+                            if (type !== "read" && data.models) {
+                                return kendo.stringify(data.models[0]);
+                            }
+                        }
+                    },
+                    schema: {
+                        total: "count",
+                        model: {
+                            id: "IdPrograma",
+                            fields: {
+                                IdPrograma: { type: "number" },
+                                NoDocumento: { type: "string" },
+                                Nombre: { type: "string" }
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 }
+                ]
+            });
+        });
+    }
+});
+
+let fn_MostraTabla = function (ds, tabla) {
+    tabla.children().remove();
+    if (ds.length > 0) {
+        tabla.append('<table class="table mt-3" >' +
+            '<thead>' +
+            '<tr>' +
+            '<th scope="col">Simulación</th>' +
+            '<th scope="col">Orden de Trabajo</th>' +
+            '<th scope="col">Diseño</th>' +
+            '<th scope="col">Fecha</th>' +
+            '<th scope="col">Cant Piezas</th>' +
+            '<th scope="col">Costo</th>' +
+            '<th scope="col">Precio Aprov.</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody id="' + tabla.id + '_Det">' +
+            '</tbody>' +
+            '</table>'
+        );
+
+        let tablaDet = $("#" + tabla.id + "_Det");
+        tablaDet.children().remove();
+        $.each(ds, function (index, elemento) {
+            tablaDet.append('<tr>' +
+                '<td>' + elemento.NoSimulacion + '</td>' +
+                '<td>' + elemento.NoOrdenTrabajo + '</td>' +
+                '<td>' + elemento.Nombre + '</td>' +
+                '<td>' + kendo.format("{0:dd/MM/yyyy HH:mm:ss}", kendo.parseDate(elemento.Fecha)) + '</td>' +
+                '<td>' + kendo.format("{0:n}", elemento.CantidadPiezas) + '</td>' +
+                '<td>' + kendo.format("{0:c4}", elemento.CostoUnitario) + '</td>' +
+                '<td>' + kendo.format("{0:c4}", elemento.PrecioVenta) + '</td>' +
+                '</tr>');
+        });
+    }
+};
+
+let fn_TablaEnMemoria = function (ds) {
+    let e;
+
+    if (ds.length > 0) {
+        $.each(ds, function (index, elemento) {
+            e = '<tr>' +
+                '<td>' + elemento.NoSimulacion + '</td>' +
+                '<td>' + elemento.NoFM + '</td>' +
+                '<td>' + elemento.NoOrdenTrabajo + '</td>' +
+                '<td>' + elemento.Nombre + '</td>' +
+                '<td>' + kendo.format("{0:dd/MM/yyyy HH:mm:ss}", kendo.parseDate(elemento.Fecha)) + '</td>' +
+                '<td>' + kendo.format("{0:n}", elemento.CantidadPiezas) + '</td>' +
+                '<td>' + kendo.format("{0:c4}", elemento.CostoUnitario) + '</td>' +
+                '<td>' + kendo.format("{0:c4}", elemento.PrecioVenta) + '</td>' +
+                '</tr>';
+        });
+
+        e = '<table class="table mt-3" style="color: #fff !important;" >' +
+            '<thead style="color: #fff !important;">' +
+            '<tr>' +
+            '<th scope="col">Simulación</th>' +
+            '<th scope="col">No FM</th>' +
+            '<th scope="col">Orden de Trabajo</th>' +
+            '<th scope="col">Diseño</th>' +
+            '<th scope="col">Fecha</th>' +
+            '<th scope="col">Cant Piezas</th>' +
+            '<th scope="col">Costo</th>' +
+            '<th scope="col">Precio Aprov.</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody">' +
+            e +
+            '</tbody>' +
+            '</table>';        
+    }
+
+    return e;
+};
+
 var fPermisos = function (datos) {
     Permisos = datos;
 };

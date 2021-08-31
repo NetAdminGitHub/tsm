@@ -33,6 +33,10 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult EstacionAccesoriosVerifMuest()
+        {
+            return PartialView();
+        }
         public ActionResult EstacionFormulas()
         {
             return PartialView();
@@ -41,9 +45,27 @@ namespace TSM.Controllers
         {
             return PartialView();
         }
+        public ActionResult EstacionVerifMuestra()
+        {
+            return PartialView();
+        }
+        public ActionResult EstacionAjuste()
+        {
+            return PartialView();
+        }
+        public ActionResult EstacionAjusteAccesorio()
+        {
+            return PartialView();
+        }
         public ActionResult _MaqSR22()
         {
             return PartialView();
+        }
+
+        public ActionResult TintasFormulacionesNuevoAjuste()
+        {
+
+            return PartialView("_TintasFormulacionesNuevoAjuste");
         }
     }
 }

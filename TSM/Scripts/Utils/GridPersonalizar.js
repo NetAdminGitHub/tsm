@@ -147,7 +147,7 @@ function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
         title: "Confirmación",
         visible: false,
         width: "400px",
-        height: "200px",
+        height: "30%",
         modal: true
     }).data("kendoWindow");
 
@@ -283,10 +283,27 @@ var Grid_ColRadiobutton = function (container, options) {
     $('<label class="k-radio-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
+
+var Grid_ColRadiobuttonGroup = function (container, options) {
+    var guid = kendo.guid();
+    var radioArray = options.values[0]; //recibe el array de valores posibles para el radiobutton
+    for (var element in radioArray) {
+
+
+        $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
+        $('<label class="k-radio-label" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
+ 
+    }
+
+};
+
+
+
 // Columna como CheckBox
 var Grid_ColTemplateCheckBox = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
-        "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
+    let guid = kendo.guid();
+    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+        "<label class=\"k-checkbox-label\" for=\"" + guid + "\"></label>";
 };
 
 // Columna como CheckBox
@@ -694,3 +711,32 @@ var Grid_ColTextArea = function (container, options) {
     $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-textarea"></textarea>')
         .appendTo(container);
 };
+
+/**
+ * Crea un MultiSelect para ser utlizado en un editor de un Kendo.UI.Grid.
+ * @param {kendo.ui.Grid} container Grid contenedor de la funcion.
+ * @param {string[]} options Listado de opciones: 0 - dataValue, 1 - dataText, 2 - urlRead, 3 - paramsUrlRead, 4 - placeHolder, 5 - required, 6 - cascadeFrom, 7 - validationMessage
+ */
+function Grid_MultiSelect(container, options) {
+    var required = givenOrDefault(options.values[5], "");
+    var Message = givenOrDefault(options.values[7], "");
+    var validationMessage = Message === "" ? "" : " validationMessage =" + Message;
+    $('<input ' + required + validationMessage + ' id="' + options.field + '" name="' + options.field + '"/>')
+        .appendTo(container)
+        .kendoMultiSelect({
+            valuePrimitive: true,
+            autoBind: true,
+            dataTextField: options.values[1],
+            dataValueField: options.values[0],
+            autoWidth: true,
+            cascadeFrom: givenOrDefault(options.values[6], ""),
+            placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
+            filter: "contains",
+            dataSource: {
+                sort: { field: options.values[1], dir: "asc" },
+                transport: {
+                    read: options.values[3] === "" ? options.values[2] : options.values[2] + "/" + options.values[3]
+                }
+            }
+        });
+}

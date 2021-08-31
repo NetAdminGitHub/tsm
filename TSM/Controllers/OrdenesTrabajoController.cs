@@ -40,6 +40,12 @@ namespace TSM.Controllers
 
             return PartialView("_SolicitarIngresoCambios");
         }
+        public ActionResult SolicitudReactivacionOrdenTrabajo()
+        {
+
+            return PartialView("_SolicitudReactivacionOrdenTrabajo");
+        }
+
 
         public ActionResult RegistroOrdenesTrabajosAgendas()
         {
@@ -47,6 +53,16 @@ namespace TSM.Controllers
             return PartialView("_RegistroOrdenesTrabajosAgendas");
         }
 
+        public ActionResult HistoricoSeteos()
+        {
+            return PartialView("_HistoricoSeteos");
+        }
+
+        public ActionResult SolicitarIngresoAjustes()
+        {
+
+            return PartialView("_SolicitarIngresoAjustes");
+        }
         [HttpPost]
         public ActionResult VistaParcial(string id)
         {

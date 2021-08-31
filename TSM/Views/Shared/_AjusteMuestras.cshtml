@@ -1,0 +1,124 @@
+﻿
+    <div class="form-row">
+        <div class="form-group col-lg-12">
+            <form id="FrmDM_Ajuste" enctype="multipart/form-data" autocomplete="off">
+                <div class="form-row">
+                    <input id="TxtIdDisenoMuestra_Ajuste" name="TxtIdDisenoMuestra_Ajuste" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <input id="TxtIdRequerimiento_Ajuste" name="TxtIdRequerimiento_Ajuste" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
+                    <div class="form-group col-lg-3">
+                        <label for="DtFecha_Ajuste">Fecha</label>
+                        <input id="DtFecha_Ajuste" name="DtFecha_Ajuste" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdImpresor_Ajuste">Impresor</label>
+                        <input id="CmbIdImpresor_Ajuste" name="CmbIdImpresor_Ajuste" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdOrientacionPositivo_Ajuste_Ajuste">Orientacion Positivos:</label>
+                        <input id="CmbIdOrientacionPositivo_Ajuste" name="CmbIdOrientacionPositivo_Ajuste" class="form-control" validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdTipoSeparacion_Ajuste">Tipo Separción</label>
+                        <input id="CmbIdTipoSeparacion_Ajuste" name="CmbIdTipoSeparacion_Ajuste" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                </div>
+                <div class="form-row">
+
+
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="NumAnchoDiseno_Ajuste">Ancho</label>
+                        <input id="NumAnchoDiseno_Ajuste" name="NumAnchoDiseno_Ajuste" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="NumAltoDiseno_Ajuste">Alto</label>
+                        <input id="NumAltoDiseno_Ajuste" name="NumAltoDiseno_Ajuste" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdUnidad_Ajuste">Unidad Medida</label>
+                        <input id="CmbIdUnidad_Ajuste" name="CmbIdUnidad_Ajuste" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="TxtDirectorio_Ajuste">Directorio Archivos</label>
+                        <input id="TxtDirectorio_Ajuste" name="TxtDirectorio_Ajuste" type="text" class="k-textbox form-control" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label for="NumTiempoTra_Ajuste">Tiempo Trabajo (min)</label>
+                        <input id="NumTiempoTra_Ajuste" name="NumTiempoTra_Ajuste" class="form-control" required value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="NumLPelicula_Ajuste">Longitud de Pel&iacute;cula</label>
+                        <input id="NumLPelicula_Ajuste" name="NumLPelicula_Ajuste" class="form-control" value="0" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="CmbIdUnidadLP_Ajuste">Unidad Medida</label>
+                        <input id="CmbIdUnidadLP_Ajuste" name="CmbIdUnidadLP_Ajuste" class="form-control" required validationMessage="Requerido" />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="TxtObservaciones_Ajuste">Comentarios</label>
+                        <input id="TxtObservaciones_Ajuste" name="TxtObservaciones_Ajuste" class="k-textbox form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-auto">
+                        <div class="input-group-prepend">
+                            <div style="width: 100%;">
+                                <button type="button" id="btnGuardarDiseñoMuesAjuste" name="btnGuardarDiseñoMuesAjuste"></button>
+                                <button type="button" id="btnAddColorDisAjuste" name="btnAddColorDisAjuste"></button>
+                                <button type="button" id="btnCambiarEstadoEtapa">Cambiar Estado Muestra</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-auto align-middle">
+                        <label for="txtEstadoEtapa" id="lblEstadoEtapa">Estado Muestra:</label>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <input type="text" id="txtEstadoEtapa" class="k-textbox form-control" disabled="disabled" />
+                    </div>
+                </div>
+</form>
+        </div>
+    </div>
+<div class="form-row">
+    <div class="form-group col-lg-6">
+        <label for="cmbTipoMarco_Ajuste">Tipo de Marco:</label>
+        <input id="cmbTipoMarco_Ajuste" name="cmbTipoMarco_Ajuste" required validationMessage="Requerido" class="form-control" />
+    </div>
+    <div class="form-group col-md-6 col-lg-6 align-self-end">
+        <input type="checkbox" id="chkTodasEsta_Ajuste" name="chkTodasEsta" class="k-checkbox">
+        <label class="k-checkbox-label" for="chkTodasEsta_Ajuste" id="lblchkTodasEsta">Estaciones Todas</label>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-lg-7">
+        <label for="gridCamEstadoMarco_Ajuste" tabindex="0"><span>Cambiar estado al marco:</span> </label>
+        <div id="gridCamEstadoMarco_Ajuste"></div>
+    </div>
+    <div class="form-group col-lg-5">
+        <label for="gridDetAjuste" tabindex="0"><span>Detalle Ajustes:</span> </label>
+        <div id="gridDetAjuste"></div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-lg-7">
+        <label for="gridresumen_Ajuste" tabindex="0"><span>Resumen de marcos:</span> </label>
+        <div id="gridresumen_Ajuste"></div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div id="maquinaAjusteMues"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*llamar al controlador estaciones y ejecutar vistas parciales*@
+<div id="MEstacionAjuste" data-url='@Url.Action("EstacionAjuste","Estaciones")'></div>
+<div id="MEstacionAjusteAccesorio" data-url='@Url.Action("EstacionAjusteAccesorio","Estaciones")'></div>

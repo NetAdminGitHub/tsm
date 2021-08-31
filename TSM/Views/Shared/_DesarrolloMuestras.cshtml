@@ -1,63 +1,34 @@
 ﻿<div class="form-row">
     <div class="form-group col-lg-12">
-        <div class="form-row">
-            <div class="form-group col-lg-3">
-                <label for="CmbMaquinaMues">Selección de Maquina:</label>
-                <input id="CmbMaquinaMues" name="CmbMaquinaMues" required validationMessage="Requerido" type="text" class="form-control" />
-            </div>
-            <div class="col-lg-3"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-lg-12 align-self-lg-end">
-                <button type="button" id="btnMuest" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0"><span class="k-icon k-i-hyperlink-open-sm"></span>&nbsp;Limpiar Seteo</button>
-                <button type="button" id="btnFinOT">Finalizar OT</button>
-                <button type="button" id="btnConsultarPesos">Detalle de pesos</button>
-                <button type="button" id="btnDesplaCambio_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-arrows-kpi"></span>&nbsp;Desplazar/Intercambiar
-                </button>
-                <button type="button" id="btnDuplicar_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-copy"></span>&nbsp;Duplicar Estación
-                </button>
 
-                <button type="button" id="btnAjuste_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
-                    <span class="k-icon k-i-warning"></span>&nbsp;Ingresar ajuste tinta/marco
-                </button>
-            </div>
-        </div>
         <div class="form-row">
-            <div class="form-group col-lg-3">
-                <div id="dgAccesorios_Muest"></div>
+            <div class="form-group col-lg-4">
+                <button type="button" id="btnConsultarPesos">Detalle de pesos</button>
+                <button type="button" id="btnAjuste_Mues" data-role="button" class="k-button k-button-icontext" role="button" aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-warning"></span>&nbsp;Ajustes
+                </button>
+                <button type="button" id="btnCambiarEstadoEtapa">Cambiar Estado Muestra</button>
+            </div>
+            <div class="form-group col-lg-auto align-middle">
+                <label for="txtEstadoEtapa" id="lblEstadoEtapa">Estado Muestra:</label>
+            </div>
+            <div class="form-group col-lg-4">
+                <input type="text" id="txtEstadoEtapa" class="k-textbox form-control" disabled="disabled" />
             </div>
         </div>
     </div>
 </div>
-<div class="form-row" id="EtapaSeteo_10">@*div utilizado para el dibujado de maquina por etapa*@</div>
-<div id="MEstacionMuestra" data-url='@Url.Action("EstacionMuestra","Estaciones")'></div>
-<div id="MEstacionAccesoriosMuest" data-url='@Url.Action("EstacionAccesoriosMuest","Estaciones")'></div>
-
-<div id="vCamEstado"></div>
 
 <div class="form-row">
-    <div id="MbtnFinMue">
-        <form id="FrmFinMue" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-row">
-                <div class=" form-group col-lg-12">
-                    <label for="dFechaFinMue">Fecha Fin Muestra:</label>
-                    <input id="dFechaFinMue" name="dFechaFinMue" class="form-control" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group cl-lg-12">
-                    <button type="button" class=" k-primary" id="btnAceptarFin">Aceptar</button>
-                </div>
-            </div>
-        </form>
-    </div>
+    <div id="maquinaDesarrolloMues"></div>
 </div>
+<div id="MEstacionMuestra" data-url='@Url.Action("EstacionMuestra","Estaciones")'></div>
+<div id="MEstacionAccesoriosMuest" data-url='@Url.Action("EstacionAccesoriosMuest","Estaciones")'></div>
+<div id="vCamEstado"></div>
 <div id="MbtConsulta">
-        <div class="form-row">
-            <div class=" form-group col-lg-12">
-               <div id="gridEstacionPeso"></div>
-            </div>
+    <div class="form-row">
+        <div class=" form-group col-lg-12">
+            <div id="gridEstacionPeso"></div>
         </div>
+    </div>
 </div>

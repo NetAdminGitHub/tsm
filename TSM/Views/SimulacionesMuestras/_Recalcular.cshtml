@@ -1,6 +1,42 @@
 ﻿<div class="form-row">
     <div id="MbtnSimuRecalcular">
         <form id="FrmRecalcularSim" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row" id="row4">
+                <div class="form-group col-lg-6">
+                    <label for="TxtNuevaCantidadPiezasRecalcular">Cantidad de Piezas:</label>
+                    <input id="TxtNuevaCantidadPiezasRecalcular" name="TxtNuevaCantidadPiezasRecalcular" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="TxtNoMontajeRecalcular">Montajes:</label>
+                    <input id="TxtNoMontajeRecalcular" name="TxtNoMontajeRecalcular" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row" id="row6">
+                <div class="form-group col-lg-6">
+                    <label for="txtPersonalExtraRecalcular">Personal Extra:</label>
+                    <input id="txtPersonalExtraRecalcular" name="txtPersonalExtraRecalcular" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="txtCombosRecalcular">Cantidad de Combos:</label>
+                    <input id="txtCombosRecalcular" name="txtCombosRecalcular" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row" id="row8">
+                <div class="form-group col-lg-6">
+                    <label for="txtVeloMaquinaRecalcular">Velocidad Maquina:</label>
+                    <input id="txtVeloMaquinaRecalcular" name="txtVeloMaquinaRecalcular" class="form-control" required />
+                </div>
+                <div class="form-group col-lg-6 align-self-end">
+                    <label for="txtPorcVariacionRecalcular">Porcentaje de Variación de Talla:</label>
+                    <input id="txtPorcVariacionRecalcular" name="txtPorcVariacionRecalcular" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row" id="row8">
+                <div class="form-group col-lg-6 align-self-end">
+                    <input id="chkUsarTermofijadoRecalcular" type="checkbox" name="chkUsarTermofijadoRecalcular" class="k-checkbox" />
+                    <label class="k-checkbox-label" for="chkUsarTermofijadoRecalcular">Utilizar Termofijado</label>
+                </div>
+            </div>
             <div class="form-row">
                 <div class="form-group col-lg-9">
                     <label for="CmbTallasRecalcular">Tallas:</label>
@@ -19,4 +55,3 @@
         </form>
     </div>
 </div>
-

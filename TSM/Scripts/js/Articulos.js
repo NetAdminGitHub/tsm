@@ -35,7 +35,6 @@ $(document).ready(function () {
                     NombreEstado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Costo: { type: "number" },
                     Alto: { type: "number" },
                     Ancho: { type: "number" },
                     Quimica: { type: "string" },
@@ -47,8 +46,7 @@ $(document).ready(function () {
                     TamanoParticula: { type: "string" },
                     TipoUso: { type: "string" },
                     Marca: { type: "string" },
-                    AditivoPorcentajeMaxCarga: { type: "number" },
-                    PigmentoPorcentajeMaxCarga: { type: "number" }
+                    PorcentajeMaxCarga: { type: "number" }
 
                 }
             }
@@ -73,7 +71,6 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdArticulo");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Alias");
-            KdoHideCampoPopup(e.container, "Costo");
             KdoHideCampoPopup(e.container, "Alto");
             KdoHideCampoPopup(e.container, "Ancho");
             KdoHideCampoPopup(e.container, "IdUnidadMedida");
@@ -86,6 +83,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "EstatusOEKOTEX");
             KdoHideCampoPopup(e.container, "TamanoParticula");
             KdoHideCampoPopup(e.container, "TipoUso");
+            KdoHideCampoPopup(e.container, "PorcentajeMaxCarga");
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
@@ -123,14 +121,6 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Costo", title: "Costo",  format: "{0:c6}",
-                filterable: {
-                    cell: {
-                        enabled: false
-                    }
-                }
-            },
-            {
                 field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2],
                 filterable: {
                     cell: {
@@ -146,7 +136,7 @@ $(document).ready(function () {
                     }
                 }
             },
-            { field: "IdUnidadMedida", title: "Código Unidad" },
+            { field: "IdUnidadMedida", title: "Código Unidad" , hidden:true},
             {
                 field: "NombreUnidad", title: "Unidad Med", minResizableWidth: 200,
                 filterable: {
@@ -229,15 +219,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "AditivoPorcentajeMaxCarga", title: "Aditivo %Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
-                filterable: {
-                    cell: {
-                        enabled: false
-                    }
-                }
-            },
-            {
-                field: "PigmentoPorcentajeMaxCarga", title: "Pigmento %Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
+                field: "PorcentajeMaxCarga", title: "%Max Carga", editor: Grid_ColNumeric, values: ["required", "0", "100", "P2", 4], format: "{0:P2}",
                 filterable: {
                     cell: {
                         enabled: false
@@ -261,7 +243,7 @@ $(document).ready(function () {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 0, true, "row");
-    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, false);
+    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
     var selectedRows = [];

@@ -23,6 +23,14 @@
 
 
     };
+    notif.client.actualizarVistaAjuste = function (data) {
+        let d = JSON.parse(data);
+        if (d.Vista === loadedview && (loadedview !== undefined || loadedview !== "") && idOrdenTrabajo === d.Data.IdOrdenTrabajo &&  d.Data.IdEtapa===12 ) {
+            fn_Refres_Vista_Ajuste();
+            $("#kendoNotificaciones").data("kendoNotification").show(d.Data.Mensaje, "success");
+        }
+    
+    };
 
     $.connection.hub.url = TSM_Web_APi.replace("api/", "") + "signalr/hub";
     $.connection.hub.qs = { 'u': Cookies.get("user") };
@@ -34,7 +42,7 @@
 
 
 let fn_AlertActualizaVista = function (dt) {
-    $("#KendoAlerta").kendoAlert({
+    $("#KendoAlerta").kendoDialog({
         content: '<div class="form-row">' +
             '<div class= "form-group col-lg-4 text-center" >' +
             '<i class="k-icon k-i-warning" style="font-size:120px;"></i>' +
@@ -46,16 +54,20 @@ let fn_AlertActualizaVista = function (dt) {
         title: "Alerta!",
         height: "auto",
         width: "30%",
+        closable:true,
         actions: [{
+            text: "OK",
             action: function (e) {
-                $("#" + dt.Vista + "_action").trigger("Action_Ok");
+        
                 return true;
             },
             primary: true
         }],
-        messages: {
-            okText: "OK"
+        close: function (e) {
+            e.preventDefault();
+            fn_IrKanbanEtapa();
         }
+     
     }).data("kendoAlert");
 
   

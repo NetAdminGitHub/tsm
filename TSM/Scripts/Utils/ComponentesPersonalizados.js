@@ -1,9 +1,11 @@
 ﻿$.fn.extend({
     ControlPantones: function () {
-        return this.each(function () {
+     
+        
+            return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Codigo",
-                dataValueField: "IdTipoPantonera",
+                dataValueField: "ID",
                 filter: "contains",
                 autoBind: false,
                 minLength: 3,
@@ -29,6 +31,52 @@
             });
         });
     },
+    ControlPantonesLaboratorio: function (opt) {
+        var strcontroller = "";
+        var defaults = {
+            modoNuevo: false,
+            idSeteo: 0
+        }
+        var params = $.extend({}, defaults, opt);
+        if (params.modoNuevo === true || params.idSeteo ===0) {
+            strcontroller = "/Pantoneras/GetBusquedaPantoneraLab";
+        } else {
+
+            strcontroller = "/ResultadosPiezasPruebasLaboratorio/ColoresDiseno/" + params.idSeteo;
+        }
+       // strcontroller: "/Pantoneras/GetBusquedaPantoneraLab",
+
+
+
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Codigo",
+                dataValueField: "ID",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + strcontroller; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50,width:"0px" },
+                    { field: "Item", title: "Posición", width: 50, width: "0px" },
+                    { field: "NomIdTipoPantonera", title: "Pantonera", width: 200, width: "0px" },
+                    { field: "Codigo", title: "Pantone", width: 200, width: "0px" },
+                    { field: "Nombre", title: "Nombre", width: 200 },
+                    { field: "ColorHex", title: "&nbsp;", width: 50, template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' }
+                ]
+            });
+        });
+    },
     ControlSelecionMateriaPrima: function (idQuimica) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
@@ -38,7 +86,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
-                valuePrimitive:true,
+                valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
@@ -72,7 +120,7 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) {  return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/1"; },
+                            url: function (datos) { return TSM_Web_APi + "Articulos/GetArticulosMateriaPrima/" + idQuimica + "/1"; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -125,7 +173,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
-                placeholder:"Selección de Programas",
+                placeholder: "Selección de Programas",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -154,14 +202,15 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
-                placeholder: "Selección de Ordenes de trabajo",
+                placeholder: "Selección de Ordenes de Trabajo",
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosConsulta"; },
+                                return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosConsulta";
+                            },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -206,4 +255,179 @@
             });
         });
     },
+    ControlSelecionSolicitudesCambiosAjustes: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdSolicitudCambio",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de solicitudes cambio",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudesCambios/GetEtapasImpactoAjuste"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdSolicitudCambio", title: "Solicitud Cambio", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "EtapasImpacto", title: "Etapas de impacto", width: 500 }
+                ]
+            });
+        });
+    },
+    ControlSelecionSolicitudesCambiosAjustesTipoOT: function (idTipoOT) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdSolicitudCambio",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de solicitudes cambio",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudesCambios/GetEtapasImpactoAjusteTipoOT/" + idTipoOT; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdSolicitudCambio", title: "Solicitud Cambio", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "EtapasImpacto", title: "Etapas de impacto", width: 500 }
+                ]
+            });
+        });
+    },
+    ControlSelecionFMCatalogo: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoReferencia",
+                dataValueField: "IdCatalogoDiseno",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de FM",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                //filterFields: ["NoReferencia", "Nombre"],
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoFiltro"; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "NombreCliente", title: "Cliente", width: 300 }
+                ]
+            });
+        });
+    },
+    ControlSeleccionRequerimeintoSubli: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdRequerimiento",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Ordenes de trabajo",
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "RequerimientoDesarrollos/GetSubliConsulta";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+
+                },
+                columns: [
+                    { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
+                    { field: "Nombre", title: "Nombre del Diseño", width: 200 },
+                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 }
+
+                ]
+            });
+        });
+    },
+    ControlSelecionSolicitudesCambiosTipoOT: function (idTipoOt) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdSolicitudCambio",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de solicitudes cambio",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudesCambios/GetEtapasImpactoTipoOT/" + idTipoOt; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdSolicitudCambio", title: "Solicitud Cambio", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "EtapasImpacto", title: "Etapas de impacto", width: 500 }
+                ]
+            });
+        });
+    },
+    ControlSelecionSolicitudProdOT: function (idOT) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdOrdenTrabajo",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de ordenes para producción",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/GetOrdenesTrabajoFichaProd/" + idOT; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "No Orden Trabajo", width: 150 },
+                    { field: "Tamaño", title: "Tamaño", width: 300 }
+                ]
+            });
+        });
+    }
+
 });

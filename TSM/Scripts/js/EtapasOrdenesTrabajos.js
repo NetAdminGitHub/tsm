@@ -13,6 +13,9 @@ var fn_VerKanbanAsig = function (xidOrdenTrabajo, xidEtapaProceso) {
     window.location.href = "/GestionOTAsignaciones/" + xidEtapaProceso + "/" + xidOrdenTrabajo;
 };
 $(document).ready(function () {
+
+
+
     let dtfecha = new Date();
 
     Kendo_CmbFiltrarGrid($("#CmbEtapasProcesos"), TSM_Web_APi + "EtapasProcesos/GetByModuloActivas/2", "Nombre", "IdEtapaProceso", "Seleccione una etapa", "");
@@ -43,7 +46,7 @@ $(document).ready(function () {
 
     KdoDatePikerEnable($("#dFechaDesde"), false);
     KdoDatePikerEnable($("#dFechaHasta"), false);
-
+    /*
 
     $("#CmbEtapasProcesos").data("kendoComboBox").bind("select", function (e) {
         if (e.item) {
@@ -111,6 +114,8 @@ $(document).ready(function () {
             sessionStorage.setItem("EtapasOrdenesTrabajos_CmbTiposOrdenesTrabajos", "");
         }
     });
+
+*/
 
     $("#CmbTiposOrdenesTrabajos").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
@@ -316,8 +321,8 @@ $(document).ready(function () {
         fn_ObtenerOTs(KdoCmbGetValue($("#CmbEtapasProcesos")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
             KdoCmbGetValue($("#CmbCliente")),
             KdoMultiColumnCmbGetValue($("#CmbPrograma")), $("#chkVerTodas").is(':checked'), KdoCmbGetValue($("#CmbTiposOrdenesTrabajos")),
-            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-            this.checked === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+            this.checked === false ? null : $("#chkRangFechas").is(':checked') ? kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'):null,
+            this.checked === false ? null : $("#chkRangFechas").is(':checked') ? kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'):null,
             $("#chkMe").is(':checked')
         );
 
@@ -351,7 +356,16 @@ $(document).ready(function () {
 
     }
 
-    //fn_DibujarKanban("[]");
+
+
+    $(".Kanban-view-topscroll").scroll(function () {
+        $(".board")
+            .scrollLeft($(".Kanban-view-topscroll").scrollLeft());
+    });
+    $(".board").scroll(function () {
+        $(".Kanban-view-topscroll")
+            .scrollLeft($(".board").scrollLeft());
+    });
 
 });
 
@@ -389,44 +403,42 @@ let fn_DibujarKanban = function (ds) {
 
                 $.each(filtro, function (index, elemento) {
                     let NoRegPrenda = elemento.NoDocumentoRegPrenda === null ? '' : elemento.NoDocumentoRegPrenda;
+                    let NoReferencia = elemento.NoReferencia === null ? '' : elemento.NoReferencia;
                     let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
                     let UsuarioKB = elemento.NombreUsuario === null ? '</br>' : elemento.NombreUsuario;
+                    let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
+
                     MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                         //'<div class= "form-group col-lg-2">' +
                         '<div class="card border-success mb-3" style="max-width: 18rem;">' +
-                        '<div class= "card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">'+
-                       // '< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
-                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>'+
-                            '<li class="emptyItem">'+
-                             '<span class="empty">' + elemento.NoDocumento +'</span>'+
-                                '<ul>'+
-                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>'+
-                        '<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso +');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>'+
-                                '</ul>'+
-                            '</li>'+
-                        '</ul>'+
+                        '<div class= "TSM-card-header bg-transparent border-success" style = "white-space:normal;font-weight: bold;">' +
+                        // '< a class= "btn-link stretched-link" target = "_blank" href = "/OrdenesTrabajo/ElementoTrabajo/' + elemento.IdOrdenTrabajo + '/' + elemento.IdEtapaProceso + '" > ' + elemento.NoDocumento + '</a >' +
+                        '<ul id="Menu_' + elemento.IdRow + '" ' + StyleEstadoOT + '>' +
+                        '<li class="emptyItem">' +
+                        '<span class="empty">' + elemento.NoDocumento + '</span>' +
+                        '<ul>' +
+                        '<li onclick=\"fn_VerOt(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"> <span class="k-icon k-i-file-txt"></span>Ver orden de trabajo</li>' +
+                        '<li  onclick=\"fn_VerKanbanAsig(' + elemento.IdOrdenTrabajo + "," + elemento.IdEtapaProceso + ');\"><span class="k-icon k-i-user"></span>Asignar orden trabajo</li>' +
+                        '</ul>' +
+                        '</li>' +
+                        '</ul>' +
                         '</div > ' +
                         '<div class="card-body">' +
-                        '<h5 class="card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
-                        '<h1 class="card-title" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
-                        '<div class="user">' +
-                        '<div class="avatar-sm float-left mr-2" id="MyPhoto1">' +
-                        '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
+                        '<h5 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.NombreDiseño + '</h5>' +
+                        '<h1 class="TSM-card-title" style="white-space:normal;font-weight: bold;">' + elemento.TallaDesarrollar + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoReferencia + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + elemento.NoPrograma  + '</h1>' +
+                        '<h1 class="TSM-card-subtitle" style="white-space:normal;">' + NoRegPrenda + '</h1>' +
+                        '<table class="table TSM-table">' +
+                        '<tbody id="U_' + elemento.IdRow + '">' +
+                        '</tbody>' +
+                        '</table>' +
+                        '<p class="card-text" style="white-space:normal;"><br/><span style="white-space:normal;font-weight: bold;">' + elemento.NombreTipoOrden + '</span><br/>Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
+                        'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas +'</p>' +
                         '</div>' +
-                        '<div class="info">' +
-                        '<a data-toggle="collapse">' +
-                        '<span>' +
-                        '<span id="MyUserName" style="white-space:normal;">' + UsuarioKB + '</span>' +
-                        '</span>' +
-                        '</a>' +
+                        '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                         '</div>' +
-                        '</div>' +
-                        '<p class="card-text" style="white-space:normal;"><br/>Programa: ' + elemento.NoPrograma + " " + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/> " +
-                        'Color Tela: ' + elemento.ColorTela + '</p>' +
-                        '</div>' +
-                        '<div class="card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
-                        '</div>' +
-                        //'</div>' +
+                        //'</div>' + 
                         '</div>');
 
 
@@ -439,12 +451,41 @@ let fn_DibujarKanban = function (ds) {
                         openOnClick: true
                     });
 
+                    var KanbanUsuarios = elemento.NombreUsuariosAsigConcat;
+                    var ArrNombreUsuarios = KanbanUsuarios.split(',');
+                    let TbUsuario = $("#U_" + elemento.IdRow + "");
+                    TbUsuario.children().remove();
+
+                    $.each(ArrNombreUsuarios, function (index, elemento) {
+
+                        TbUsuario.append('<tr class="d-flex">' + //columna Id de Tabla
+                            '<th class="col-12" scope="row"> ' +
+                            '<div class="user" style="font-size:inherit;">' +
+                            '<div class="TSM-avatar-sm float-left mr-2" id="MyPhoto1">' +
+                            '<img src="/Images/DefaultUser.png" alt="..." class="avatar-img rounded-circle">' +
+                            '</div>' +
+                            //'<div class="info">' +
+                            //'<a data-toggle="collapse">' +
+                            //'<span>' +
+                            '<span id="MyUserName" style="white-space:normal;">' + elemento.toString() + '</span>' +
+                            //'</span>' +
+                            //'</a>' +
+                            //'</div>' +
+                            '</div>' +
+                            '</th>' +
+                            '</tr>');
+                      
+
+
+
+                    });
 
                 });
 
             });
 
-
+            $(".scroll-div1").css("width", $(".board")[0].scrollWidth);
+            $(".Kanban-view-topscroll").css("width", $(".board")[0].scrollWidth);
             //fn_IniciarKanban();
 
 
@@ -456,6 +497,8 @@ let fn_DibujarKanban = function (ds) {
 
 
 };
+
+
 
 let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdPrograma, xSNTodas, xIdTipoOrdenTrabajo, xFechaDesde, xFechaHasta, xSNAsignadas) {
     kendo.ui.progress($(document.body), true);
@@ -472,7 +515,8 @@ let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdP
             IdTipoOrdenTrabajo: xIdTipoOrdenTrabajo,
             FechaDesde: xFechaDesde,
             FechaHasta: xFechaHasta,
-            SNAsignadas: xSNAsignadas
+            SNAsignadas: xSNAsignadas,
+            Opcion:0
 
         }),
         contentType: "application/json; charset=utf-8",
@@ -489,7 +533,7 @@ let fn_ObtenerOTs = function (xIdEtapaProceso, xIdOrdenTrabajo, xIdCliente, xIdP
 
 let fn_IniciarKanban = function () {
 
-    var TSMboardDemo = {
+    var TSMboardK = {
         init: function init() {
 
             this.bindUIActions();
@@ -549,7 +593,7 @@ let fn_IniciarKanban = function () {
         }
     };
 
-    TSMboardDemo.init();
+    TSMboardK.init();
 
 };
 
