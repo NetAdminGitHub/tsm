@@ -132,7 +132,8 @@ $(document).ready(function () {
                     IdCatalogoDiseno: { type: "number" },
                     NoDocumentoCatalogo: { type: "string" },
                     IdCategoriaTallaDesarrollada: { type: "number" },
-                    TallaDesarrollada: { type: "string" }
+                    TallaDesarrollada: { type: "string" },
+                    Tecnicas: { type: "string" }
                 
                 }
             }
@@ -203,7 +204,8 @@ $(document).ready(function () {
             { field: "IdCotizacion", title: "Cod. Cotizacion", hidden: true, minResizableWidth: 150 },
             { field: "IdRequerimiento", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 },
             { field: "NoDocumentoReq", title: "No Doc Requerimiento", hidden: true, minResizableWidth: 150 },
-            { field: "IdCatalogoDiseno", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 }
+            { field: "IdCatalogoDiseno", title: "Cod. Requerimiento", hidden: true, minResizableWidth: 150 },
+            { field: "Tecnica", title: "Técnica", minResizableWidth: 150 }//Ancho minimo de la columna recomendada por William Sobado
 
             
         
