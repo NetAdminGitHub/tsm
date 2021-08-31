@@ -205,7 +205,11 @@ $(document).ready(function () {
                     },
                     FechaMod: {
                         type: "date"
+                    },
+                    IncluirPorDefecto: {
+                        type:"boolean"
                     }
+
                 }
             }
         }
@@ -220,6 +224,10 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Nombre1");
             KdoHideCampoPopup(e.container, "Nombre2");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
+
+            if (!e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "IdEtapaProceso");
+            }
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
@@ -231,15 +239,17 @@ $(document).ready(function () {
             { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "ConfiguracionEtapasOrdenes", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
             { field: "Nombre2", title: "Estado" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IncluirPorDefecto", title: "IncluirPorDefecto", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "IncluirPorDefecto"); } }
         ]
+        
     });
 
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gridConfEp
     SetGrid($("#gridConfEp").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridConfEp").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridConfEp").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridConfEp").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridConfEp").data("kendoGrid"), daSCofEpo);
 
     Grid_HabilitaToolbar($("#gridConfEp"), false, false, false);

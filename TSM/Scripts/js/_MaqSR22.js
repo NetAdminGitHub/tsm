@@ -804,6 +804,38 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
                 break;
         }
     }
+    if (xVistaFormulario.toUpperCase() === "_AJUSTEMUESTRAS") {
+        switch (tipoFormulacion.toUpperCase()) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS COLOR ESTACIÓN #" + numEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                TipoEstacion = "MARCO";
+                Formulacion = "COLOR";
+                ModalEstacionJS = "EstacionAjuste.js";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS TÉCNICAS ESTACIÓN #" + numEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                ModalEstacionJS = "EstacionAjuste.js";
+                TipoEstacion = "MARCO";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN AREAS BASES ESTACIÓN #" + numEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionAjuste.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + numEstacion.toString();
+                ModalEstacion = "MEstacionAjusteAccesorio";
+                ModalEstacionJS = "EstacionAjusteAccesorio.js";
+                TipoEstacion = "ACCESORIO";
+                Formulacion = "";
+                break;
+        }
+    }
 };
 
 
@@ -811,7 +843,8 @@ var ParametrosModalConf = function (tipoFormulacion, numEstacion) {
 var AgregaEstacion = function (e) {
 
     e.preventDefault();
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    // verifica estado si esta activo
+    vhb = (Number(idEtapaProceso) === 10 ? !estadoPermiteEdicion : $("#txtEstado").val() !== "ACTIVO") || EtpSeguidor === true || EtpAsignado === false ? false : true; 
 
     kendo.ui.progress($("#body"), true);
     HizoDropDown = true;
@@ -1160,6 +1193,38 @@ var fn_verEditar = function (IdTipoFormulacion, xEstacionBra) {
                 break;
         }
     }
+    if (xVistaFormulario.toUpperCase() === "_AJUSTEMUESTRAS") {
+        switch (IdTipoFormulacion.toUpperCase()) {
+            case "COLOR":
+                Titulo = "CONFIGURACIÓN ESTACIÓN COLORES ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionAjuste.js";
+                Formulacion = "COLOR";
+                break;
+            case "TECNICA":
+                Titulo = "CONFIGURACIÓN ESTACIÓN TECNICA ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionAjuste.js";
+                Formulacion = "TECNICA";
+                break;
+            case "BASE":
+                Titulo = "CONFIGURACIÓN ESTACIÓN BASES ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAjuste";
+                TipoEstacion = "MARCO";
+                ModalEstacionJS = "EstacionAjuste.js";
+                Formulacion = "BASE";
+                break;
+            default:
+                Titulo = "CONFIGURACIÓN ESTACIÓN ACCESORIOS ESTACIÓN #" + xNumEstacion.toString();
+                ModalEstacion = "MEstacionAjusteAccesorio";
+                ModalEstacionJS = "EstacionAjusteAccesorio.js";
+                TipoEstacion = "ACCESORIO";
+                Formulacion = "";
+                break;
+        }
+    }
     if (ModalEstacion !== undefined) {
 
         let Url = $("#" + ModalEstacion + "").data("url");
@@ -1292,6 +1357,26 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
                     default:
                 }
             }
+            if (xVistaFormulario.toUpperCase() === "_AJUSTEMUESTRAS") {
+                switch (Formulacion) {
+                    case "COLOR":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_Ajuste").data("IdRequerimientoColor", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Ajuste"]').text('Nombre de Color');
+                        break;
+                    case "TECNICA":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_Ajuste").data("IdRequerimientoTecnica", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Ajuste"]').text('Nombre de Técnica');
+                        break;
+                    case "BASE":
+                        //guardo en Memoria la llave del tipo de selección
+                        if (HizoDropDown === true) $("#TxtOpcSelec_Ajuste").data("IdBase", TxtIdsec);
+                        $("#" + ModalEstacion + "").find('[id="OpcSelec_Ajuste"]').text('Nombre de Base');
+                        break;
+                    default:
+                }
+            }
         }
 
         if (TiEst.find(q => q.IdTipoEstacion === TipoEstacion.toString()).UtilizaMarco === false) {
@@ -1316,8 +1401,8 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             }
             if (xVistaFormulario.toUpperCase() === "_VALIDACIONMUESTRAS") {
                 //guardo en Memoria la llave del tipo de selección
-                if (HizoDropDown === true) $("#TxtOpcSelecAcce_VerifMues").data("IdAccesorio", TxtIdsec);
-                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_VerifMues"]').text('Nombre del Accesorio');
+                if (HizoDropDown === true) $("#TxtOpcSelecAcce_Ajuste").data("IdAccesorio", TxtIdsec);
+                $("#" + ModalEstacion + "").find('[id="OpcSelecAcce_Ajuste"]').text('Nombre del Accesorio');
             }
         }
         HizoDropDown = false;
@@ -1390,7 +1475,6 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             $("#TxtOpcSelecFormulas").data("IdBrazo", xvbrazo);
         }
     }
-
     if (xVistaFormulario.toUpperCase() === "_DESARROLLOMUESTRAS") {
 
         if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
@@ -1423,6 +1507,23 @@ let fn_ShowModalPW = function (m, data, titulo, xvbrazo, ViewModal, CargarConfig
             $("#TxtOpcSelec_VerifMues").data("TipoEstacion", ViewTipoEstacion);
             $("#TxtOpcSelec_VerifMues").data("Formulacion", ViewFormulacion);
             $("#TxtOpcSelec_VerifMues").data("IdBrazo", xvbrazo);
+        }
+    }
+    if (xVistaFormulario.toUpperCase() === "_AJUSTEMUESTRAS") {
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === false) {
+            $("#TxtOpcSelecAcce_Ajuste").data("name", TxtSecName);
+            $("#TxtOpcSelecAcce_Ajuste").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelecAcce_Ajuste").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelecAcce_Ajuste").data("IdBrazo", xvbrazo);
+
+        }
+
+        if (TiEst.find(q => q.IdTipoEstacion === ViewTipoEstacion.toString()).UtilizaMarco === true) {
+            $("#TxtOpcSelec_Ajuste").data("name", TxtSecName);
+            $("#TxtOpcSelec_Ajuste").data("TipoEstacion", ViewTipoEstacion);
+            $("#TxtOpcSelec_Ajuste").data("Formulacion", ViewFormulacion);
+            $("#TxtOpcSelec_Ajuste").data("IdBrazo", xvbrazo);
         }
     }
 

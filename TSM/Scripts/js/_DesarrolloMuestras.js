@@ -4,6 +4,8 @@ var fn_DMueCargarConfiguracion = function () {
 
     KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
+    KdoButton($("#btnCambiarEstadoEtapa"), "gear", "Cambiar Estado Muestra");
+
     $("#MbtConsulta").kendoDialog({
         height: "70%",
         width: "40%",
@@ -23,6 +25,17 @@ var fn_DMueCargarConfiguracion = function () {
         $("#MbtConsulta").data("kendoDialog").open();
         $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
         $("#gridEstacionPeso").data("kendoGrid").refresh();
+    });
+
+    //Fn_VistaCambioEstado($("#vCamEstado"));
+
+    $("#btnCambiarEstadoEtapa").click(function (event) {
+        var lstId = {
+            IdOrdenTrabajo: idOrdenTrabajo,
+            IdEtapaProceso: idEtapaProceso,
+            Item: $("#txtItem").val(),
+        };
+        Fn_VistaCambioEstadoMostrar("OrdenesTrabajosDetalles", $("#txtEstado").val(), TSM_Web_APi + "OrdenesTrabajosDetalles/CambiarEstado", "Sp_CambioEstado", lstId, undefined);
     });
 
     fn_ConsultaPesos($("#gridEstacionPeso"));
@@ -89,7 +102,7 @@ var fn_DMueCargarConfiguracion = function () {
 };
 
 var fn_DMCargarEtapa = function () {
-    vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
+    vhb = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
     $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 

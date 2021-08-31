@@ -16,10 +16,12 @@ namespace TSM.Controllers
         }
 
         [HttpGet]
-        [Route("FichaProduccion/Ficha/{IdOrdenTrabajo}")]
-        public ActionResult FichaOT(long IdOrdenTrabajo)
+        [Route("FichaProduccion/Ficha/{IdOrdenTrabajo}/{IdSimulacion}/{IdCotizacion}")]
+        public ActionResult FichaOT(long IdOrdenTrabajo, long IdSimulacion,long IdCotizacion)
         {
             ViewData["IdOrdenTrabajo"] = IdOrdenTrabajo;
+            ViewData["IdSimulacion"] = IdSimulacion;
+            ViewData["IdCotizacion"] = IdCotizacion;
             return View("Ficha");
         }
     }

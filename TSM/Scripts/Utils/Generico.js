@@ -409,14 +409,14 @@ var Fn_LeerImagenes = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '</div > '
                     );
                 }
@@ -509,7 +509,7 @@ var Fn_DibujarCarrousel = function (Objecarousel, src, DataSource) {
                 if (index === 0) {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 active">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '"  src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha) +'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '<div class= "caption">'
                         + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
                          + '</div>'
@@ -519,7 +519,7 @@ var Fn_DibujarCarrousel = function (Objecarousel, src, DataSource) {
                 else {
                     lista.append(
                         '<div class="carousel-item col-md-6 col-lg-6 ">'
-                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
+                        + '<img class="img-fluid mx-auto d-block" id="Img_N' + index + '" src="' + src + '/' + elemento.NombreArchivo + '?v=' + fn_GetUnixTimestamp(elemento.Fecha)+'" onerror="imgError(this)" onclick="fn_click_Imagen(this)">'
                         + '<div class= "caption">'
                         + '<p style="font-size: 16px;"><strong>' + elemento.CaptionImg + '</strong></p>'
                         + '</div>'
@@ -1441,15 +1441,14 @@ var fn_ShowModalCDInf = function (cargarJs, data, divCDInf, idCatalogoDiseno,idA
     };
 
     $("#" + divCDInf + "").kendoDialog({
-        height: "80%",
-        width: "80%",
+        height: "100%",
+        width: "95%",
         title: "Detalle",
         closable: true,
         modal: true,
         content: data,
         visible: false,
-        maxHeight: 800,
-        show: onShow,
+         show: onShow,
         close: onClose
 
     });
@@ -1708,9 +1707,10 @@ var fn_ShowModalSolictudIngresoCambio = function (cargarJs, data, divSolIngCambi
  * @param {HtmlElementId} divAgen Id del div que contendra la vista de ingreso de cambio
  * @param {number} Idot id orden de trabajo
  * @param {number} IdEtapa etapa del proceso
+ * @param {number} Item item del proceso
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_OrdenesTrabajosAgendas = function (divAgen,Idot,IdEtapa, fnclose) {
+var fn_OrdenesTrabajosAgendas = function (divAgen,Idot,IdEtapa, Item,fnclose) {
     kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divAgen + "").children().length === 0) {
         $.ajax({
@@ -1720,13 +1720,13 @@ var fn_OrdenesTrabajosAgendas = function (divAgen,Idot,IdEtapa, fnclose) {
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.activeElement), false);
-                fn_CargarVistaModalOrdenesTrabajosAgenda(resultado, divAgen, Idot, IdEtapa, fnclose);
+                fn_CargarVistaModalOrdenesTrabajosAgenda(resultado, divAgen, Idot, IdEtapa, Item,fnclose);
 
             }
         });
     } else {
         kendo.ui.progress($(document.activeElement), false);
-        fn_CargarVistaModalOrdenesTrabajosAgenda("", divAgen, Idot, IdEtapa, fnclose);
+        fn_CargarVistaModalOrdenesTrabajosAgenda("", divAgen, Idot, IdEtapa, Item, fnclose);
 
     }
 };
@@ -1737,9 +1737,10 @@ var fn_OrdenesTrabajosAgendas = function (divAgen,Idot,IdEtapa, fnclose) {
  * @param {HtmlElementId} divAgen Id del div que contendra la vista de Ingreso de cambios
  * @param {number} Idot id orden de trabajo
  * @param {number} IdEtapa etapa del proceso
+ * @param {number} Item item del proceso
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, IdEtapa,fnclose) {
+var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, IdEtapa,Item,fnclose) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -1751,13 +1752,13 @@ var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, Id
         script.type = "text/javascript";
         script.src = "/Scripts/js/RegistroOrdenesTrabajosAgendas.js";
         script.onload = function () {
-            fn_ShowModalOrdenesTrabajosAgenda(true, data, divAgen, Idot, IdEtapa, fnclose);
+            fn_ShowModalOrdenesTrabajosAgenda(true, data, divAgen, Idot, IdEtapa, Item,fnclose);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalOrdenesTrabajosAgenda(false, data, divAgen, Idot, IdEtapa, fnclose);
-    }
+        fn_ShowModalOrdenesTrabajosAgenda(false, data, divAgen, Idot, IdEtapa, Item, fnclose);
+    } 
 };
 /**
  * 
@@ -1766,14 +1767,15 @@ var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, Id
  * @param {HtmlElementId} divAgen  Id del div que contendra la vista de Ingreso de cambio
  * @param {number} Idot id orden de trabajo
  * @param {number} IdEtapa etapa del proceso
+ * @param {number} Item item del proceso
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_ShowModalOrdenesTrabajosAgenda = function (cargarJs, data, divAgen, Idot, IdEtapa, fnclose) {
+var fn_ShowModalOrdenesTrabajosAgenda = function (cargarJs, data, divAgen, Idot, IdEtapa, Item, fnclose) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InicializarAgenda(Idot, IdEtapa);
+            fn_InicializarAgenda(Idot, IdEtapa, Item);
         } else {
-            fn_CargarAgenda(Idot, IdEtapa);
+            fn_CargarAgenda(Idot, IdEtapa, Item);
         }
     };
 
@@ -2155,3 +2157,219 @@ var fn_ShowModalSolictudIngresoAjuste = function (cargarJs, data, divSolIngAjust
 
 };
 //#endregion
+
+
+//#region Crreacion de Nuevo Ajuste 
+/**
+ * 
+ * @param {HtmlElementId} divSolIngAjuste Id del div que contendra la vista de Crear Nuevo Ajuste
+ * @param {number} IdSeteo codigo del seteo
+ * @param {number} IdEstacion codigo de estacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CrearNuevoAjusteFormulas = function (divSolIngAjuste, IdSeteo,IdEstacion, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divSolIngAjuste + "").children().length === 0) {
+        $.ajax({
+            url: "/Estaciones/TintasFormulacionesNuevoAjuste",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalNuevoAjusteFormulas(resultado, divSolIngAjuste, IdSeteo, IdEstacion, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalNuevoAjusteFormulas("", divSolIngAjuste, IdSeteo, IdEstacion, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngAjuste Id del div que contendra la vista de Ingreso de Ajustes
+ * @param {number} IdSeteo  seteo maquina
+ * @param {number} IdEstacion codigo estacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalNuevoAjusteFormulas = function (data, divSolIngAjuste, IdSeteo, IdEstacion, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("TintasFormulacionesNuevoAjuste.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/TintasFormulacionesNuevoAjuste.js";
+        script.onload = function () {
+            fn_ShowModalNuevoAjusteFormulas(true, data, divSolIngAjuste, IdSeteo, IdEstacion,  fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalNuevoAjusteFormulas(false, data, divSolIngAjuste, IdSeteo, IdEstacion,  fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divSolIngAjuste  Id del div que contendra la vista de Ingreso de cambio
+ * @param {number} IdSeteo seteo maquina
+ * @param {number} IdEstacion codigo estacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+
+ */
+var fn_ShowModalNuevoAjusteFormulas = function (cargarJs, data, divSolIngAjuste, IdSeteo, IdEstacion,  fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarNuevoAjuste(IdSeteo, IdEstacion, divSolIngAjuste);
+        } else {
+            fn_CargarNuevoAjuste(IdSeteo, IdEstacion, divSolIngAjuste);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divSolIngAjuste + "").kendoDialog({
+        height: "auto",
+        width: "20%",
+        title: "Crear ajuste",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        show: onShow,
+        close: fn_CloseSIC,
+        maxHeight: 900
+    });
+
+    $("#" + divSolIngAjuste + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
+//#region Generar ficha de producción
+/**
+ * Generar ficha de produccion
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divGenFP + "").children().length === 0) {
+        $.ajax({
+            url: "/CatalogoDisenos/GenerarFichaProduccion",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalGenerarFichaProd(resultado, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalGenerarFichaProd("", divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+
+    }
+};
+
+/**
+ * cargar ficha de produccion
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    if (listJs.filter(listJs => listJs.toString().endsWith("GenerarFichaProduccion.js")).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/GenerarFichaProduccion.js";
+        script.onload = function () {
+            fn_ShowModalGenFichaProd(true, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalGenFichaProd(false, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divGenFP Id del div que contendra la vista de generar fp
+ * @param {number} gFpIdot id orden de trabajo
+ * @param {number} gFpIdSimulacion id simulacion
+ * @param {number} gFpIdCotizacion id cotizacion
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarCargarFichaProd(gFpIdot);
+        } else {
+            fn_CrearFichaProd(gFpIdot);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divGenFP + "").kendoDialog({
+        height: "auto",
+        width: "auto",
+        title: "Generar ficha de produccion",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "20%",
+        actions: [
+            { text: '<span class="k-icon k-i-check"></span>&nbspGenerar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion); } },
+            { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
+        ],
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divGenFP + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
+var fn_GetUnixTimestamp = function (fecha) {
+    return new Date(kendo.toString(kendo.parseDate(fecha), 's')).getTime() / 1000;
+};

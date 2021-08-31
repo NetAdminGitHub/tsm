@@ -926,7 +926,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#chkUsarTermo").prop("checked", elemento.UsarTermofijado);
         $("#TxtNoDocumento").val(elemento.NoDocumento);
         $("#TxtEstado").val(elemento.Estado);
-
+        $("#TxtCliente").val(elemento.NombreCliente);
         $("#TxtCostoMP").data("kendoNumericTextBox").value(elemento.CostoMP);
         $("#TxtCostoPrimo").data("kendoNumericTextBox").value(elemento.CostoPrimo);
         $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
@@ -952,6 +952,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
         $("#txtPorcVariacion").data("kendoNumericTextBox").value(elemento.PorcVariacion);
         $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
+        $("#txtFM").val(elemento.NoFM);
         $("#TxtOrdenTrabajo").val(elemento.NoOT);
 
         var dataChart = [];

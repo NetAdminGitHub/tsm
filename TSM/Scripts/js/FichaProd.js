@@ -575,7 +575,7 @@ $("#btnImprimir").click(function (e) {
 let fn_GetOTRequerimiento = function () {
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: TSM_Web_APi + "FichaProduccion/GetInfoRequerimientoDesarrolloFicha/" + xIdOt,
+        url: TSM_Web_APi + "FichaProduccion/GetInfoRequerimientoDesarrolloFicha/" + xIdOt + "/" + xIdSimu + "/" + xIdCoti,
         type: 'GET',
         success: function (datos) {
             if (datos !== null) {
@@ -612,6 +612,7 @@ let fn_GetOTRequerimiento = function () {
                 $("#TxtInstrucciones").val(datos.InstruccionesGen);
                 $("#TxtComentarios").val(datos.InstruccionesTermo);
                 $("#plEstadoFichaProd").val(datos.EstadoFichaProd);
+                $("#plNoDocCotizacion").val(datos.NoDocCotizacion);
                 $("#plStrikeOff").prop("checked", Boolean(Number(datos.TieneStrikeOff)));
                 $("#plTermofijado").prop("checked", Boolean(Number(datos.UsarTermofijado)));
                 $("#plMigracion").prop("checked", Boolean(Number(datos.Migracion)));
