@@ -158,7 +158,8 @@ $(document).ready(function () {
                     NoDocRSP: { type: "string" },
                     CantidadPiezas: { type: "number" },
                     CantidadSTrikeOff: { type: "number" },
-                    StrikeOffAdicional: { type: "number" }
+                    StrikeOffAdicional: { type: "number" },
+                    Tecnicas: { type: "string" }
                 }
             }
         }
@@ -237,7 +238,8 @@ $(document).ready(function () {
             { field: "Servicio", title: "Servicio", minResizableWidth: 120 },
             { field: "CantidadPiezas", title: "Cantidad Piezas", minResizableWidth: 50 },
             { field: "CantidadSTrikeOff", title: "STrikeOff", minResizableWidth: 50 },
-            { field: "StrikeOffAdicional", title: "StrikeOff Adicional", minResizableWidth: 50 }
+            { field: "StrikeOffAdicional", title: "StrikeOff Adicional", minResizableWidth: 50 },
+            { field: "Tecnica", title: "Técnica", minResizableWidth: 150}//Ancho minimo de la columna recomendada por William Sobado
            
         ]
     });
