@@ -25,30 +25,16 @@ steps:
     versionSpec: '5.x'
 - task: gitversion/execute@0
   displayName: 'Calculate SemVer'
-- task: CopyFiles@2
-  displayName: 'Copy config Files to artifacts directory'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/$(solutionDirectory)/'
-    Contents: 'Web.*.config'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:IsTransformWebConfigDisabled=true /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/drop"'
+    msbuildArgs: ' /p:IsTransformWebConfigDisabled=true /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\TSM-$(GitVersion.SemVer).zip"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/drop/$(Build.BuildId)-$(GitVersion.SemVer).zip'
-    replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
