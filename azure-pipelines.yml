@@ -25,12 +25,6 @@ steps:
     versionSpec: '5.x'
 - task: gitversion/execute@0
   displayName: 'Calculate SemVer'
-- task: CopyFiles@2
-  displayName: 'Copy config Files to artifacts directory'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/$(solutionDirectory)/'
-    Contents: 'Web.*.config'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
