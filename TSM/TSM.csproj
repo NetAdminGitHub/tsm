@@ -961,17 +961,9 @@
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosSolicitudesAjustes\Index.cshtml" />
-    <None Include="Web.IST.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.PRD.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.UAT.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Web.IST.config"></Content>
+    <Content Include="Web.PRD.config"></Content>
+    <Content Include="Web.UAT.config"></Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
