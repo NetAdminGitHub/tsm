@@ -3,9 +3,9 @@ var xIdCliente = 0;
 
 $(document).ready(function () {
     $("#ModalAcuerdos").kendoDialog({
-        height: "auto",
-        width: "70%",
-        maxHeight: "700 px",
+        height: "80%",
+        width: "80%",
+        //maxHeight: "700 px",
         title: "Plantillas de Acuerdos Comerciales",
         visible: false,
         closable: true,
@@ -397,7 +397,7 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gAcuerdos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 550);
+    SetGrid($("#gAcuerdos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 620);
     SetGrid_CRUD_ToolbarTop($("#gAcuerdos").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gAcuerdos").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gAcuerdos").data("kendoGrid"), dsAcuerdos);
