@@ -263,7 +263,13 @@ var fn_VSCargarJSEtapa = function () {
                         return $("#CmbQuimica").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
-                }
+                },
+                TxtNoContratoRuler: function (input) {
+                    if (input.is("[name='TxtNoContrato']")) {
+                        return input.val().length > 0 && input.val().length <= 20;
+                    }
+                    return true;
+                },
 
             },
             messages: {
@@ -291,7 +297,8 @@ var fn_VSCargarJSEtapa = function () {
                 MsgCmbMotivo: "Requerido",
                 //MsgCmbAcabado: "Requerido",
                 MsgCmbTMuestra: "Requerido",
-                vQui: "Requerido"
+                vQui: "Requerido",
+                TxtNoContratoRuler: "Requerido Longitud máxima del campo es 20"
                 //MsgPerfilCriterioCritico:"Debe seleccionar un perfil de CTQ's"
             }
         }
@@ -1453,6 +1460,7 @@ var fn_VSCargar = function () {
         $("#UbicacionHor").attr("disabled", true);
         KdoComboBoxEnable($("#CmbIdUnidadMedidaCantidad"), false);
         $("#InstruccionesEspeciales").attr("disabled", true);
+        $("#TxtNoContrato").attr("disabled", true);
         $("#NumeroDiseno").attr("disabled", true);
         $("#EstiloDiseno").attr("disabled", true);
         $("#TxtDirectorioArchivos").attr("disabled", true);
@@ -1533,6 +1541,7 @@ let getRD = function (UrlRD) {
                 $("#Combo").data("kendoNumericTextBox").value(elemento.Combo);
                 $("#Fecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(elemento.Fecha), 'dd/MM/yyyy'));
                 $("#InstruccionesEspeciales").val(elemento.InstruccionesEspeciales);
+                $("#TxtNoContrato").val(elemento.NoContrato);
                 $("#Estado").val(elemento.Estado);
                 $('#chkDisenoFullColor').prop('checked', elemento.DisenoFullColor);
                 $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(elemento.IdUnidadMedidaCantidad);
@@ -1852,6 +1861,7 @@ let GuardarRequerimiento = function (UrlRD) {
             DisenoFullColor: $("#chkDisenoFullColor").is(':checked'),
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
             IdPerfilCriterio: $("#CmbCriterioCritico").data("kendoComboBox").value(),
+            NoContrato: $("#TxtNoContrato").val(),
             IdBase: null,
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
@@ -1878,6 +1888,8 @@ let GuardarRequerimiento = function (UrlRD) {
             StandarOEKOTEX: $("#swchSolDesarrolloOEKO").data("kendoSwitch").check(),
             PoseeDocumentacionAduanal: $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").check(),
             CobrarDiseno: $("#swchCobrarDiseno").data("kendoSwitch").check()
+        
+
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1996,6 +2008,7 @@ let LimpiarReq = function () {
     $("#TallaPrincipal").val("");
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     $("#InstruccionesEspeciales").val("");
+    $("#TxtNoContrato").val("");
     $("#Estado").val("");
     $('#chkDisenoFullColor').prop('checked', 0);
     $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value("");
@@ -2095,6 +2108,7 @@ let HabilitaFormObje = function (ToF) {
     //KdoMultiselectEnable($("#IdSistemaTinta"), ToF);
     KdoCheckBoxEnable($("#chkDisenoFullColor"), ToF);
     TextBoxEnable($("#InstruccionesEspeciales"), ToF);
+    TextBoxEnable($("#TxtNoContrato"), ToF);
     TextBoxEnable($("#TxtColorTela"), ToF);
     TextBoxEnable($("#Nombre"), ToF);
     TextBoxEnable($("#NumeroDiseno"), ToF);
