@@ -119,14 +119,17 @@ let fn_MostrarEstMarcos = function () {
                     DurezaEscurridor: { type: "number" }
                 }
             }
-        }
+        },
+        aggregate: [//Se agrega el campo peso para sumarse
+            { field: "Peso", aggregate: "sum" }
+        ]
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     $("#gMarcos").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdFormula", title: "No Formula", hidden: true },
-            { field: "IdEstacion", title: "Estación" },
+            { field: "IdEstacion", title: "Estación" , footerTemplate: "Totales" },
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
             { field: "IdSeda", title: "IdSeda", hidden: true },
@@ -140,7 +143,7 @@ let fn_MostrarEstMarcos = function () {
             { field: "Area", title: "Area", format: "{0:n2}" },
             { field: "IdUnidadArea", title: "Id Area", hidden: true },
             { field: "DesArea", title: "Unidad Area" },
-            { field: "Peso", title: "Peso", format: "{0:n2}" },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n4", 4], format: "{0:n4}", footerTemplate: "#: data.Peso ? kendo.format('{0:n4}', sum) : 0 #" },
             { field: "IdUnidadPeso", title: "Id Uni Peso", hidden: true },
             { field: "DesPeso", title: "Unidad Peso" },
             { field: "ResolucionDPI", title: "Resolucion DPI" },
