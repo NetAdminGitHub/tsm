@@ -1,5 +1,4 @@
-﻿
-var fn_VistaEstacionMuestraDocuReady = function () {
+﻿var fn_VistaEstacionMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_Mues"), "check", "Agregar");
 
     $("#EscurridorDureza_Mues").kendoNumericTextBox({
@@ -168,11 +167,9 @@ var fn_VistaEstacionMuestra = function () {
     TextBoxReadOnly($("#ArticuloSugerido_Mues"), false);
     KdoComboBoxEnable($("#CmbSistemaPigmentos_Mues"), false);
     KdoComboBoxEnable($("#CmbTipoTinta_Mues"), false);
+    TextBoxEnable($("#TxtLetra_Mues"), false);
+    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"),false);
     $("#TxtOpcSelec_Mues").val($("#TxtOpcSelec_Mues").data("name"));
-    //idBra = $("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", "");
-    //Te = $("#TxtOpcSelec_Mues").data("Formulacion");
-    //setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra);
-    //estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, $("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""));
     xIdSeteoMq = EstacionBra === null ? 0 : maq[0].IdSeteo;
 
@@ -188,38 +185,7 @@ var fn_VistaEstacionMuestra = function () {
             }
         });
     });
-    //$.ajax({
-    //    url: TSM_Web_APi + "SeteoMarcosFormulaciones/" + maq[0].IdSeteo + "/" + $("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""),
-    //    type: 'GET',
-    //    success: function (datos) {
-    //        if (datos !== null) {
-    //            $("#SeccionMue_1").removeAttr("hidden");
-    //            $("#SeccionMue_2").removeClass('col-lg-12');
-    //            $("#SeccionMue_2").addClass('col-lg-9');
-    //            $("#MEstacionMuestra").data("kendoWindow").center();
-    //            grid.dataSource.read().then(function () {
-    //                var items = grid.items();
-    //                items.each(function (idx, row) {
-    //                    var dataItem = grid.dataItem(row);
-    //                    if (dataItem[grid.dataSource.options.schema.model.id] === Number($("#TxtOpcSelec_Mues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""))) {
-    //                        grid.select(row);
-    //                    }
-    //                });
-    //            });
-
-    //        } else {
-    //            $("#SeccionMue_1").attr("hidden", true);
-    //            $("#SeccionDis_2").removeClass('col-lg-9');
-    //            $("#SeccionDis_2").addClass('col-lg-12');
-    //            $("#MEstacionMuestra").data("kendoWindow").center();
-    //            fn_Consultar_Mues(grid);
-    //        }
-    //    },
-    //    complete: function () {
-    //        kendo.ui.progress($(document.body), false);
-    //    }
-    //});
-    //EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra,"VIGENTE");
+   
 
 };
 //// funciones
@@ -689,14 +655,14 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
 
     KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? habilitarMarco : false);
-    KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);
+ /*   KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);*/
     KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#NumPasadas_Mues"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), vhb !== false ? habilitarMarco : false);
 
     if (!habilitarMarco) {
         KdoCmbSetValue($("#CmbSedas_Mues"), "");
-        KdoCmbSetValue($("#CmbTipoEmulsion_Mues"), "");
+  /*      KdoCmbSetValue($("#CmbTipoEmulsion_Mues"), "");*/
         kdoNumericSetValue($("#NumCapilar_Mues"), 0);
         kdoNumericSetValue($("#NumPasadas_Mues"), 0);
         kdoNumericSetValue($("#EscurridorDureza_Mues"), 0);
@@ -705,12 +671,10 @@ let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     if (vhb === false) {
         KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), false);
         KdoNumerictextboxEnable($("#NumPeso_Mues"), false);
-        TextBoxEnable($("#TxtLetra_Mues"), false);
         KdoButtonEnable($("#btnAddMCE_Mues"), false);
     } else {
         KdoComboBoxEnable($("#CmdIdUnidadPeso_Mues"), true);
         KdoNumerictextboxEnable($("#NumPeso_Mues"), true);
-        TextBoxEnable($("#TxtLetra_Mues"), true);
         KdoButtonEnable($("#btnAddMCE_Mues"), true);
 
     }
