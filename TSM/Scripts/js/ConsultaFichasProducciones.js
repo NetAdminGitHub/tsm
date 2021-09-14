@@ -106,7 +106,7 @@ $(document).ready(function () {
                         datos.success(result);
                         kendo.ui.progress($(document.body), false);
                     },
-                    error: function () {
+                    error: function (result) {
                         options.error(result);
                         kendo.ui.progress($(document.body), false);
                     }
