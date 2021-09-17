@@ -410,7 +410,7 @@ let fn_Obtieneinfosolicitud = function (div, idPruebaLaboratorio,ModoNuevo, fncl
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.activeElement), false);
-                fn_CargarVistaModalInfoLaboratorio(resultado, div, idPruebaLaboratorio, fnclose);
+                fn_CargarVistaModalInfoLaboratorio(resultado, div, idPruebaLaboratorio,ModoNuevo, fnclose);
             }
         });
     } else {

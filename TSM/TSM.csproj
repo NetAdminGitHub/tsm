@@ -308,6 +308,7 @@
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\MotivosSolicitudesAjustesController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
@@ -511,6 +512,7 @@
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
+    <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
     <Content Include="Scripts\js\OrigenesPruebasLaboratorio.js" />
     <Content Include="Scripts\js\PruebasLaboratorio.js" />
     <Content Include="Scripts\js\EtapasOrdenesTrabajos.js" />
@@ -765,12 +767,8 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
+    <Content Include="Web.Debug.config"></Content>
+    <Content Include="Web.Release.config"></Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
     <Content Include="Views\AnalisisDisenos\Index.cshtml" />
@@ -958,17 +956,10 @@
     <Content Include="Views\Shared\_GenerarFichaProduccion.cshtml" />
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
-    <None Include="Web.IST.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.PRD.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.UAT.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Views\MotivosSolicitudesAjustes\Index.cshtml" />
+    <Content Include="Web.IST.config"></Content>
+    <Content Include="Web.PRD.config"></Content>
+    <Content Include="Web.UAT.config"></Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

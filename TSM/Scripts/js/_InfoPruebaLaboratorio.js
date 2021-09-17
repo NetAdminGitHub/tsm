@@ -7,6 +7,10 @@ let ListadoTurnos = [{ "nombre": "A", "valor": "A" }, { "nombre": "B", "valor": 
 let xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = false) {
 
+    _idPruebaLaboratorio = vIdPruebaLaboratorio;
+    if (NewReg !== undefined) { _NuevoRegistro = NewReg; }
+
+
     KdoButton($("#btnActualizarEstado"), "check-circle");
     KdoButton($("#btnActualizaMotivosRechazo"), "track-changes-enable");
     //KdoButton($("#btnAgregarMotivosRechazo"), "save","Guardar");
@@ -15,9 +19,6 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     KdoButtonEnable($("#btnActualizarEstado"), false);
     $("#btnActualizaMotivosRechazo").hide();
    
-    _idPruebaLaboratorio = vIdPruebaLaboratorio;
-    if (NewReg !== undefined) { _NuevoRegistro = NewReg; }
-
     tabStrip = $("#TabDesplazar").kendoTabStrip({
         tabPosition: "top",
         animation: { open: { effects: "fadeIn" } }
@@ -28,10 +29,16 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
   //  $("#FechaCreacion").data("kendoDatePicker").value(Fhoy());
    
     //Kendo_CmbFiltrarGrid($("#CmbEstado"), TSM_Web_APi + "Estados/", "Nombre", "Estado", "Seleccione...");
+    $("#ComentariosLab").kendoTextArea({
+        rows: 5,
+        maxLength: 500,
+        placeholder: "Ingrese su comentario..."
+    });
 
     $("#NoSolicitud").kendoTextBox();
   
     $("#IdCorte").kendoTextBox();
+    $("#ComentariosLab").kendoTextArea();
     $("#IdBulto").kendoTextBox();
     Kendo_CmbFiltrarGrid($("#CmbTipoOrdenTrabajo"), TSM_Web_APi + "TiposOrdenesTrabajos/", "Nombre", "IdTipoOrdenTrabajo", "Seleccione...");
 
@@ -256,12 +263,12 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
                 }
             },
             
-            { field: "IdHorno", title: "Horno", hidden: false },
-            { field: "HornoTemperaturaCurado", title: "Temperatura horno" , hidden:false },
-            { field: "EscalaHornoTemperaturaCurado", title: "Escala horno", hidden: false },
-            { field: "HornoBandaSegundos", title: "Tiempo en banda (seg)", hidden: false },
+            { field: "IdHorno", title: "Horno", hidden: false, width: 100 },
+            { field: "HornoTemperaturaCurado", title: "Temperatura horno", hidden: false, width: 100 },
+            { field: "EscalaHornoTemperaturaCurado", title: "Escala horno", hidden: false, width: 100 },
+            { field: "HornoBandaSegundos", title: "Tiempo en banda (seg)", hidden: false, width: 100 },
           
-            { field: "TelaSustituta", title: "Tela sustituta", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "TelaSustituta"); }, hidden: false },
+            { field: "TelaSustituta", title: "Tela sustituta", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "TelaSustituta"); }, hidden: false, width: 100 },
             { field: "Comentarios", title: "Comentarios", width: 100, hidden: false, width: 250 },
             { field: "ItemPantonera", editor: Grid_ColIntNumSinDecimal, hidden: true },
             { field: "IdTipoPantonera", title: "Tipo Pantone", hidden: true, menu: false },
@@ -529,7 +536,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     $("#GuardarSolicitud").click(function (event) {
         event.preventDefault();
         if (ValidaFormSolicitud.validate()) {
-            if (_NuevoRegistro === true) { GuardarHeaderSolicitud(); } else { CrearHeaderSolicitud();}
+            if (_NuevoRegistro === true) { CrearHeaderSolicitud();} else {  GuardarHeaderSolicitud();}
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
         }
@@ -594,7 +601,8 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         $("#gridResultado").data("kendoGrid").dataSource.read();
         $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
         $("#gridEspecimen").data("kendoGrid").dataSource.read();
-        $("#FechaCreacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Date.now()), 'dd/MM/yyyy'));
+        $("#FechaCreacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+        $("#FechaCreacion").data("kendoDatePicker").value(Fhoy());
     }
 
     
@@ -845,7 +853,7 @@ let getSolicitud = function () {
                 $("#IdCorte").data("kendoTextBox").value(respuesta.IdCorte);
                 $("#IdBulto").data("kendoTextBox").value(respuesta.IdBulto);
                 KdoButtonEnable($("#btnActualizarEstado"), true);
-
+                $("#ComentariosLab").data("kendoTextArea").value(respuesta.Comentarios);
                 kendo.ui.progress($("#vistaParcial"), false);
               //  UrlApiArteAdj = UrlApiArteAdj + "/GetVistaImagenes/" + respuesta.IdArte;
                // getAdjun(UrlApiArteAdj);
@@ -899,7 +907,9 @@ let CrearHeaderSolicitud = function () {
             IdBulto: $("#IdBulto").data("kendoTextBox").value(),
             Lectura: $("#SNLectura").is(':checked'),
             IdUsuario: getUser(),
-            OrigenPieza:false
+            OrigenPieza: false,
+            IdPiezaPrueba: 0,
+            Comentario:null
 
 
         }),

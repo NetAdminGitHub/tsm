@@ -175,6 +175,7 @@
                 height: 400,
                 placeholder: "Selección de Programas",
                 valuePrimitive: true,
+                clearButton:false,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
@@ -202,6 +203,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
+                clearButton:false,
                 placeholder: "Selección de Ordenes de Trabajo",
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -320,6 +322,7 @@
                 autoBind: false,
                 minLength: 3,
                 height: 400,
+                clearButton:false,
                 placeholder: "Selección de FM",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
