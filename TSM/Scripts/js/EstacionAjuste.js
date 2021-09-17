@@ -865,7 +865,7 @@ var fn_GuardarEstacionFormula_Ajuste = function (xIdBrazo, xCodigoColor) {
 };
 //Metodo que ejecuta para registar una formula historica seleccionada  desde el 
 //corresponde a Tintas
-var fn_GuardarFormulaEst_Ajuste = function (xIdBrazo, xCodigoColor) {
+var fn_GuardarFormulaEst_Ajuste = function (xIdBrazo, xCodigoColor, _MasaEntregada) {
     kendo.ui.progress($(".k-window-content"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
@@ -876,7 +876,8 @@ var fn_GuardarFormulaEst_Ajuste = function (xIdBrazo, xCodigoColor) {
             IdFormula: 0,
             IdSeteo: maq[0].IdSeteo,
             IdEstacion: xIdBrazo,
-            CodigoColor: xCodigoColor
+            CodigoColor: xCodigoColor,
+            MasaEntregada: _MasaEntregada
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -1381,14 +1382,16 @@ let LimpiaMarcaCelda_Ajuste = function () {
                 KdoHideCampoPopup(e.container, "Masatotal");
                 var MasaTot = e.model.Masatotal;
                 $('[name="PorcentajeInicial"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) === fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
-                $('[name="MasaInicial"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) === fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
+                $('[name="MasaInicial"]').data("kendoTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) === fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
                 $('[name="PorcentajeAgregado"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) !== fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
-                $('[name="MasaAgregada"]').data("kendoNumericTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) !== fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
+                $('[name="MasaAgregada"]').data("kendoTextBox").enable(fn_getMasaEntregada_Ajuste($("#gridFormulasAjuste").data("kendoGrid")) !== fn_getMasaTotal_Ajuste($("#gridFormulasAjuste").data("kendoGrid")));
                 $('[name="MasaFinal"]').data("kendoNumericTextBox").enable(false);
                 $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").enable(false);
                 $('[name="Masatotal"]').data("kendoNumericTextBox").enable(false);
 
                 $('[name="MasaInicial"]').on("change", function (e) {
+                    $('[name="MasaInicial"]').trigger("changeCalcular", this);
+
                     let xMasaInicial = this.value;
                     $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(xMasaInicial));
                     $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
@@ -1401,6 +1404,8 @@ let LimpiaMarcaCelda_Ajuste = function () {
                 });
 
                 $('[name="MasaAgregada"]').on("change", function (e) {
+                    $('[name="MasaAgregada"]').trigger("changeCalcular", this);
+
                     let xMasaInicial = $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
                     let xMasaAgregada = this.value;
 
@@ -1452,9 +1457,9 @@ let LimpiaMarcaCelda_Ajuste = function () {
                     }
                 },
                 { field: "Nombre", title: "Nombre" },
-                { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}',sum ): 0 #" },
+                { field: "MasaInicial", title: "Masa Inicial", editor: Grid_ColNumericCalc, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Inicial: #: data.MasaInicial ? kendo.format('{0:n2}',sum ): 0 #" },
                 { field: "PorcentajeInicial", title: "Porcentaje Inicial", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeInicial ? kendo.format('{0:n2}',sum)*100: 0 # %" },
-                { field: "MasaAgregada", title: "Masa Agregada", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Agregada: #: data.MasaAgregada ? kendo.format('{0:n2}',sum) : 0 #" },
+                { field: "MasaAgregada", title: "Masa Agregada", editor: Grid_ColNumericCalc, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Agregada: #: data.MasaAgregada ? kendo.format('{0:n2}',sum) : 0 #" },
                 { field: "PorcentajeAgregado", title: "% Agregado", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeAgregado ? kendo.format('{0:n2}',sum)*100: 0 # %" },
                 { field: "MasaFinal", title: "Masa Final", editor: Grid_ColNumeric, values: ["required", "0.00", "9999999999999999.99", "n2", 2], format: "{0:n2}", footerTemplate: "Final: #: data.MasaFinal ? kendo.format('{0:n2}',sum ): 0 #" },
                 { field: "PorcentajeFinal", title: "% Final", editor: Grid_ColNumeric, values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}", footerTemplate: "#: data.PorcentajeFinal ? kendo.format('{0:n2}', sum)*100: 0 # %" },

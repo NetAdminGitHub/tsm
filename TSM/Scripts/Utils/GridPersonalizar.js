@@ -327,6 +327,41 @@ var Grid_ColNumeric = function (container, options) {
         });
 };
 
+//FORMATO NUMERICO CON DECIMALES.
+var Grid_ColNumericCalc = function (container, options) {
+    const onChance_ColNumericCalc = new Event("onChance_ColNumericCalc");
+
+    $('<input ' + options.values[0] + ' data-bind="value:' + options.field + '" name="' + options.field + '" />')
+        .appendTo(container)
+        .on("keypress", function (event) {
+            var regex = new RegExp("[.|\-|+|0-9]");
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }
+        })
+        .on("changeCalcular", function (e, object) {
+            let text = object.value;
+            let partes = [];
+
+            if (isNaN(text)) {
+                if (text.includes("+")) {
+                    partes = text.split("+");
+                    object.value = (parseFloat(partes[0]) + parseFloat(partes[1])).toFixed(2);
+                } else if (text.includes("-")) {
+                    partes = text.split("-");
+                    object.value = (parseFloat(partes[0]) - parseFloat(partes[1])).toFixed(2);
+                }
+            }
+
+            if (isNaN(object.value)) {
+                object.value = 0;
+            }
+        })
+        .kendoTextBox();
+};
+
 // FORMATO NUMERICO SIN DECIMALES.
 var Grid_ColInt64NumSinDecimal = function (container, options) {
     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')

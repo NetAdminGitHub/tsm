@@ -159,8 +159,15 @@ let fn_gCHForBusqueda = function (divCcf) {
         Grid_SetSelectRow($("#gCHFor"), selectedRowsServ);
         let grid = this;
         grid.tbody.find("tr").dblclick(function (e) {
-            $("#" + divCcf + "").trigger("ObtenerFormula", [grid.dataItem(this).CodigoColor]);
-            $("#" + divCcf + "").data("kendoDialog").close();
+            let fila = grid.dataItem(this);
+            kendo.prompt("Masa Entregada:", 500).then(function (data) {
+                if (!isNaN(data)) {
+                    $("#" + divCcf + "").trigger("ObtenerFormula", [fila.CodigoColor, parseFloat(data)]);
+                    $("#" + divCcf + "").data("kendoDialog").close();
+                } else {
+                    ErrorMsg("Debe ingresar un número válido.");
+                }
+            });
         });
     });
 

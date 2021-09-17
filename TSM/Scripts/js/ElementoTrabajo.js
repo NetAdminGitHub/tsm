@@ -2579,8 +2579,8 @@ var fn_RTActivaDropTarget = function () {
 //#region Formulas historicas Metodos Obtener formula, seteo del valor de busqueda
 
 //debe configuarse por etapas
-$("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor) {
-    fn_GuardaCodigoColor(CodigoColor);
+$("#FormulaHist").on("ObtenerFormula", function (event, CodigoColor, _MasaEntregada) {
+    fn_GuardaCodigoColor(CodigoColor, _MasaEntregada);
 });
 
 $("#FormulaHist").on("SetValorBusqueda", function (event) {
@@ -2604,7 +2604,7 @@ $("#FormulaHist").on("SetValorBusqueda", function (event) {
     }
 });
 
-var fn_GuardaCodigoColor = function (xCodColor) {
+var fn_GuardaCodigoColor = function (xCodColor, _MasaEntregada) {
     //Los metodos se definen en cada etapa correspondiente.
     switch (idEtapaProceso) {
         case "6":
@@ -2614,10 +2614,10 @@ var fn_GuardaCodigoColor = function (xCodColor) {
             fn_GuardarEstacionFormulaDis(idBra, xCodColor);
             break;
         case "9":
-            fn_GuardarFormulaEst(xidEstacion, xCodColor);
+            fn_GuardarFormulaEst(xidEstacion, xCodColor, _MasaEntregada);
             break;
         case "12":
-            fn_GuardarFormulaEst_Ajuste(xidEstacion, xCodColor);
+            fn_GuardarFormulaEst_Ajuste(xidEstacion, xCodColor, _MasaEntregada);
             break;
     }
   
