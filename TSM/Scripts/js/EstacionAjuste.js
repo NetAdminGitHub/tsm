@@ -1406,7 +1406,7 @@ let LimpiaMarcaCelda_Ajuste = function () {
                 $('[name="MasaAgregada"]').on("change", function (e) {
                     $('[name="MasaAgregada"]').trigger("changeCalcular", this);
 
-                    let xMasaInicial = $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
+                    let xMasaInicial = $('[name="MasaInicial"]').data("kendoTextBox").value();
                     let xMasaAgregada = this.value;
 
                     $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(xMasaInicial) + parseFloat(xMasaAgregada));
@@ -1419,10 +1419,10 @@ let LimpiaMarcaCelda_Ajuste = function () {
                     $('[name="PorcentajeFinal"]').data("kendoNumericTextBox").trigger("change");
                     $('[name="MasaFinal"]').data("kendoNumericTextBox").value(parseFloat(MasaTot) * (parseFloat(xPorcentajeAgregado) + parseFloat(xPorcenMasaFinal)));
                     $('[name="MasaFinal"]').data("kendoNumericTextBox").trigger("change");
-                    let xMasaAgre = $('[name="MasaFinal"]').data("kendoNumericTextBox").value() - $('[name="MasaInicial"]').data("kendoNumericTextBox").value();
+                    let xMasaAgre = $('[name="MasaFinal"]').data("kendoNumericTextBox").value() - $('[name="MasaInicial"]').data("kendoTextBox").value();
 
-                    $('[name="MasaAgregada"]').data("kendoNumericTextBox").value(xMasaAgre);
-                    $('[name="MasaAgregada"]').data("kendoNumericTextBox").trigger("change");
+                    $('[name="MasaAgregada"]').data("kendoTextBox").value(xMasaAgre);
+                    $('[name="MasaAgregada"]').data("kendoTextBox").trigger("change");
                 });
 
                 if (!e.model.isNew()) {
