@@ -46,8 +46,9 @@ $(document).ready(function () {
                     TamanoParticula: { type: "string" },
                     TipoUso: { type: "string" },
                     Marca: { type: "string" },
-                    PorcentajeMaxCarga: { type: "number" }
-
+                    PorcentajeMaxCarga: { type: "number" },
+                    Costo: { type: "number"},
+                    CostoPromedio: { type: "number" }
                 }
             }
         }
@@ -71,8 +72,10 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdArticulo");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Alias");
+            KdoHideCampoPopup(e.container, "Costo");
+            KdoHideCampoPopup(e.container, "CostoPromedio");
             KdoHideCampoPopup(e.container, "Alto");
-            KdoHideCampoPopup(e.container, "Ancho");
+            KdoHideCampoPopup(e.container, "Ancho");            
             KdoHideCampoPopup(e.container, "IdUnidadMedida");
             KdoHideCampoPopup(e.container, "NombreUnidad");
             KdoHideCampoPopup(e.container, "Marca");
@@ -121,7 +124,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2],
+                field: "Costo", title: "Costo", menu: false  ,
                 filterable: {
                     cell: {
                         enabled: false
@@ -129,7 +132,23 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2],
+                field: "CostoPromedio", title: "Costo Promedio", menu: false, 
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Alto", title: "Alto", editor: Grid_ColNumeric,
+                filterable: {
+                    cell: {
+                        enabled: false
+                    }
+                }
+            },
+            {
+                field: "Ancho", title: "Ancho", editor: Grid_ColNumeric,
                 filterable: {
                     cell: {
                         enabled: false
@@ -241,10 +260,14 @@ $(document).ready(function () {
         ]
     });
 
+    
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 0, true, "row");
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
+    //Ocultando los campos Costo y Costo Promedio
+    Permisos.SNConfidencial === true ? $("#grid").data("kendoGrid").showColumn("Costo") : $("#grid").data("kendoGrid").hideColumn("Costo");
+    Permisos.SNConfidencial === true ? $("#grid").data("kendoGrid").showColumn("CostoPromedio") : $("#grid").data("kendoGrid").hideColumn("CostoPromedio");
 
     var selectedRows = [];
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
