@@ -8,20 +8,20 @@ let UrlSolicitudProd = TSM_Web_APi + "SolicitudProduccionesInstrucciones"; // fi
 let UrlSolicitudProdTolerancia = TSM_Web_APi + "SolicitudProduccionesToleranciaMedida"; // ficha de producción
 let UrlSolicitudProdHeader = TSM_Web_APi + "SolicitudProducciones";
 let UrlSolicitudDimen = TSM_Web_APi + "SolicitudProduccionesDimensiones";
-var xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
+let xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 let UrlApiAAdj = TSM_Web_APi + "ArteAdjuntos";
 let UrlApiArteAdj = TSM_Web_APi + "ArteAdjuntos";
 let UrlApiCT = TSM_Web_APi + "CategoriaTallas";
 let UrlApiUM = TSM_Web_APi + "UnidadesMedidas";
 let idcliente = "";
-var reqid;
-var idSimulacion;
-var idCotizacion;
-var EstadoFichaProd;
+let reqid;
+let idSimulacion;
+let idCotizacion;
+let EstadoFichaProd;
 let xNoDocumento;
-var imgCatSrc;
-var imgPlaceSrc;
-var imgvalue;
+let imgCatSrc;
+let imgPlaceSrc;
+let imgvalue;
 
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstadoFP"), "gear");
