@@ -57,42 +57,65 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-3 col-md-6">
-                        <label for="txtNoDocumentoOT" id="lblNoDocumentoOT"><strong>No Orden de Trabajo:</strong></label>
-                        <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" , disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-3 col-md-6">
-                        <label for="txtNombreDiseno" id="lblNombreDiseno"><strong>Nombre del Dise&ntilde;o:</strong></label>
-                        <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" , disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-3 col-md-6">
-                        <label for="txtNombreTalla" id="lblNombreDiseno"><strong>Talla:</strong></label>
-                        <input id="txtNombreTalla" name="txtNombreTalla" class="k-textbox form-control" , disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-3 col-md-6">
-                        <label for="txtNoCatalogoDiseno" id="lblNoCatalogoDiseno"><strong>No Art. del Diseño:</strong></label>
-                        <input id="txtNoCatalogoDiseno" name="txtNoCatalogoDiseno" class="k-textbox form-control" , disabled="disabled" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-3 col-md-6">
-                        <label for="TxtNoRegPrenda" id="lblTxtNoRegPrenda"><strong>No Reg. Prenda:</strong></label>
-                        <input id="TxtNoRegPrenda" name="TxtNoRegPrenda" class="k-textbox form-control" , disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-6 col-md-3">
-                        <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
-                        <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="k-textbox form-control" , disabled="disabled"></textarea>
-                    </div>
-                    <div class="form-group  col-lg-2 col-md-2 align-self-center">
-                        <div class="input-group">
-                            <div style="width: 100%;">
-                                <button type="button" id="btnAgenda" class="form-control"></button>
-                                &nbsp;
-                                <button type="button" id="btnHistorial" class="form-control"></button>
+                    <div class="col-lg-6">
+                        <div class="form-row">
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="txtNoDocumentoOT" id="lblNoDocumentoOT"><strong>No Orden de Trabajo:</strong></label>
+                                <input id="txtNoDocumentoOT" name="NoDocumentoOT" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="txtNoCatalogoDiseno" id="lblNoCatalogoDiseno"><strong>No Art. del Diseño:</strong></label>
+                                <input id="txtNoCatalogoDiseno" name="txtNoCatalogoDiseno" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                           
+
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="txtMotivoDesarrollo" id="lbltxtMotivoDesarrollo"><strong>Motivo de Desarollo:</strong></label>
+                                <input id="txtMotivoDesarrollo" name="txtMotivoDesarrollo" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                            <div class="form-group  col-lg-2 col-md-2 align-self-end">
+                                <div class="input-group">
+                                    <div style="width: 100%;">
+                                        <button type="button" id="btnAgenda" class="form-control"></button>
+                                        &nbsp;
+                                        <button type="button" id="btnHistorial" class="form-control"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="TxtNoRegPrenda" id="lblTxtNoRegPrenda"><strong>No Reg. Prenda:</strong></label>
+                                <input id="TxtNoRegPrenda" name="TxtNoRegPrenda" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="txtNombreTalla" id="lblNombreDiseno"><strong>Tamaño del arte:</strong></label>
+                                <input id="txtNombreTalla" name="txtNombreTalla" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-3">
+                                <label for="txtNombreDiseno" id="lblNombreDiseno"><strong>Nombre del Dise&ntilde;o:</strong></label>
+                                <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                        </div>
+
+                    </div>  
+                    <div class="col-lg-6">
+                        <div class="form-row">
+                            <div class="form-group col-lg-6 col-md-6">
+                                <label for="TxtInstruccionesEspeciales"><strong>Instrucciones Especiales:</strong></label>
+                                <textarea id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="form-control" readonly="readonly" rows="5"></textarea>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6">
+                                <label for="txtComentarioCambio"><strong>Detalle de Cambios:</strong></label>
+                                <textarea id="txtComentarioCambio" name="txtComentarioCambio" class="form-control" readonly="readonly" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                
                 <ul id="BarPanelInfo">
                     <li>
                         <span class="TS-icon-INFO1" style="font-size: 1.7em;">&nbsp</span>
@@ -208,10 +231,10 @@
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6">
                                             <div class="form-row">
-                                                <div class="form-group col-lg-10 col-md-10">
+                                                @*<div class="form-group col-lg-10 col-md-10">
                                                     <label for="TxtInstruccionesEspeciales">Instrucciones Especiales:</label>
                                                     <input id="TxtInstruccionesEspeciales" name="TxtInstruccionesEspeciales" class="k-textbox form-control" , readonly="readonly" />
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>

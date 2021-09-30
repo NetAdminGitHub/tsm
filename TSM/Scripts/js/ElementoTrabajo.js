@@ -63,7 +63,8 @@ var tabStripColor;
 var fn_close_Modal_ColorTec; //funcion para ejecutar despues del cierre
 var dEpartamentoUsuario; //almacena los departamentos a los que pertene el usuario
 var dtoDiseno=false;
-var dtoTintas=false;
+var dtoTintas = false;
+var dtoReviTec = false;
 var dtoRevelado = false;
 var DienoAfectaSecuencia = false;
 var estadoPermiteEdicion = false;
@@ -739,6 +740,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#txtNoCatalogoDiseno").val(datos.NoCatalogoDiseno);
     $("#txtNombreUbicacion").val(datos.NombreUbicacion);
     $("#txtComentarioCambio").val(datos.ComentarioCambio);
+    $("#txtMotivoDesarrollo").val(datos.NombreMotivoDesarrollo);
     $("#swchSolTelaSusti").data("kendoSwitch").check(datos.SolicitaTelaSustituta);
     $("#swchSolTelaSusti").data("kendoSwitch").enable(false);
     $("#swchSolDesOEKO").data("kendoSwitch").check(datos.StandarOEKOTEX);
@@ -2869,6 +2871,9 @@ var fn_GetDeptoRoles = function () {
                     //if (value.Placement === true) filtro.push(value);
                     //if (value.Catalogo === true) filtro2.push(value);
                     switch (value.IdDepartamento) {
+                        case 2:
+                            dtoReviTec = true;
+                            break;
                         case 3:
                             dtoDiseno = true;
                             break;
