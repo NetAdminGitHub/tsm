@@ -1,4 +1,5 @@
-﻿var Permisos;
+﻿"use strict";
+var Permisos;
 let xIdArte = 0;
 let xIdSeteo = 0;
 let UrlApiCAtInstrucciones = TSM_Web_APi + "CatInstrucciones";
@@ -7,21 +8,21 @@ let UrlSolicitudProd = TSM_Web_APi + "SolicitudProduccionesInstrucciones"; // fi
 let UrlSolicitudProdTolerancia = TSM_Web_APi + "SolicitudProduccionesToleranciaMedida"; // ficha de producción
 let UrlSolicitudProdHeader = TSM_Web_APi + "SolicitudProducciones";
 let UrlSolicitudDimen = TSM_Web_APi + "SolicitudProduccionesDimensiones";
-var xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
+let xFecha = kendo.toString(kendo.parseDate(new Date()), 's');
 let UrlApiAAdj = TSM_Web_APi + "ArteAdjuntos";
 let UrlApiArteAdj = TSM_Web_APi + "ArteAdjuntos";
 let UrlApiCT = TSM_Web_APi + "CategoriaTallas";
 let UrlApiUM = TSM_Web_APi + "UnidadesMedidas";
 let idcliente = "";
-var reqid;
-var idSimulacion;
-var idCotizacion;
-var EstadoFichaProd;
+let reqid;
+let idSimulacion;
+let idCotizacion;
+let EstadoFichaProd;
 let xNoDocumento;
-var imgCatSrc;
-var imgPlaceSrc;
-var imgvalue;
-
+let imgCatSrc;
+let imgPlaceSrc;
+let imgvalue;
+let maq;
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstadoFP"), "gear");
     xIdOt = xIdOt === undefined ? 0 : xIdOt;
@@ -717,6 +718,7 @@ let fn_GetOTRequerimiento = function () {
             fn_ObtenerFichaTamanos();
             fn_ObtenerDimensiones(reqid);
             fn_TallasProducir();
+            fn_ObtieneDetalleFormulaciones(xIdOt);
             let parametros = `${xIdOt},${idSimulacion},${idCotizacion}`;
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesProd"));
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesCalidad"));
@@ -865,14 +867,18 @@ let fn_ObtieneConfiguracionBrazos = function () {
                    
                 }
             }
-        }
+        },
+        aggregate: [//Agrego campo peso para totalizarlo
+            { field: "Peso", aggregate: "sum" }
+        ]
+
     });
-    //CONFIGURACION DEL gCHFor,CAMPOS
+    //CONFIGURACION DEL gConfBrazos,CAMPOS
     $("#gConfBrazos").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdFormula", title: "No Formula", hidden: true },
-            { field: "IdEstacion", title: "Estación" },
+            { field: "IdEstacion", title: "Estación", footerTemplate: "Totales"},
             { field: "IdTipoFormulacion", title: "Formulación" },
             { field: "lblEstacion", title: "Descripción" },
             { field: "NomTipoTinta", title: "Tipo tinta" },
@@ -888,7 +894,7 @@ let fn_ObtieneConfiguracionBrazos = function () {
             { field: "Area", title: "Area", format: "{0:n2}" },
             { field: "IdUnidadArea", title: "Id Area", hidden: true },
             { field: "DesArea", title: "Unidad Area" },
-            { field: "Peso", title: "Peso", format: "{0:n2}" },
+            { field: "Peso", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "999999999999.9999", "n4", 4], format: "{0:n4}", footerTemplate: "#: data.Peso ? kendo.format('{0:n4}', sum) : 0 #" },
             { field: "IdUnidadPeso", title: "Id Uni Peso", hidden: true },
             { field: "DesPeso", title: "Unidad Peso" }
             
@@ -898,6 +904,64 @@ let fn_ObtieneConfiguracionBrazos = function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
     SetGrid($("#gConfBrazos").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
     Set_Grid_DataSource($("#gConfBrazos").data("kendoGrid"), dsetMar);
+};
+
+//Funcion para construir para obtener detalle de formulas
+let fn_ObtieneDetalleFormulaciones = function () {
+    var dsetMar = new kendo.data.DataSource({
+
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + "FichaProduccion/GetFichaProduccionFormulaciones/" + xIdOt; },
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        group: {
+            field: "Estacion"
+        },
+        schema: {
+            model: {
+                id: "OT",
+                fields: {
+                    OT: { type: "string" },
+                    Nombre: { type: "string" },
+                    Estacion: { type: "number" },
+                    Quimica: { type: "string" },
+                    Letra: { type: "string" },
+                    CodArticulo: { type: "string" },
+                    Articulo: { type: "string" },
+                    Porcentaje: { type: "number" },
+                    Estado: { type: "string" },
+                    MasaEntregada: { type: "number" }
+                }
+            }
+        }
+    });
+    //CONFIGURACION DEL gDetalleFormulaciones,CAMPOS
+    $("#gDetalleFormulaciones").kendoGrid({
+        //DEFINICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "OT", title: "OT", hidden: true },
+            { field: "Estacion", title: "Estación", hidden: true },
+            { field: "Nombre", title: "Nombre" },
+            { field: "Quimica", title: "Química" },
+            { field: "Letra", title: "Letra" },
+            { field: "CodArticulo", title: "Cod. Artículo" },
+            { field: "Articulo", title: "Artículo" },
+            { field: "Porcentaje", title: "Porcentaje", values: ["required", "0", "1", "P2", 4, "0.01"], format: "{0:P2}"},
+            { field: "Estado", title: "Estado", hidden: true},
+            { field: "MasaEntregada", title: "Masa Entregada", hidden: true }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
+    SetGrid($("#gDetalleFormulaciones").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
+    Set_Grid_DataSource($("#gDetalleFormulaciones").data("kendoGrid"), dsetMar);
 };
 
 let fn_ObtieneConfFoil = function () {

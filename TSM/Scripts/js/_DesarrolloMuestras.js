@@ -5,6 +5,7 @@ var fn_DMueCargarConfiguracion = function () {
     KdoButton($("#btnAjuste_Mues"), "warning", "Ajuste tinta/marco");
     KdoButton($("#btnConsultarPesos"), "search", "Consultar");
     KdoButton($("#btnCambiarEstadoEtapa"), "gear", "Cambiar Estado Muestra");
+    KdoButton($("#btnRestablecerSecuencia"), "undo", "Deshacer");
 
     $("#MbtConsulta").kendoDialog({
         height: "70%",
@@ -46,9 +47,13 @@ var fn_DMueCargarConfiguracion = function () {
 
     });
 
+    $("#btnRestablecerSecuencia").click(function (e) {
+        fn_RestablecerSecuenciaAnt(idOrdenTrabajo, maq[0].IdSeteo);
+    });
+
     $("#maquinaDesarrolloMues").maquinaSerigrafia({
         maquina: {
-            data: maq,
+            /*data: maq,*/
             formaMaquina: maq[0].NomFiguraMaquina,
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
@@ -104,6 +109,7 @@ var fn_DMueCargarConfiguracion = function () {
 var fn_DMCargarEtapa = function () {
     vhb = !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true; // verifica estado si esta activo
     KdoButtonEnable($("#btnAjuste_Mues"), vhb);
+    KdoButtonEnable($("#btnRestablecerSecuencia"), vhb);
     $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
 
 };
@@ -221,3 +227,71 @@ var fn_ConsultaPesos = function (gd) {
 var fn_cerrarModal = function () {
     $("#vSoliIngresoAjuste").data("kendoDialog").close();
 }
+
+
+let fn_RestablecerSecuenciaAnt = (idOt, idseteo) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinasEstaciones/Maquina/RestablecerSecuenciaAnt",
+        type: "Post",
+        data: JSON.stringify({
+            IdOrdenTrabajo: idOt,
+            IdSeteo: idseteo
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+
+
+            let limpiar = [{
+                IdSeteo: maq[0].IdSeteo,
+                IDOrdenTrabajo: maq[0].IDOrdenTrabajo,
+                IdEtapaProceso: maq[0].IdEtapaProceso,
+                Item: maq[0].Item,
+                IdMaquina: maq[0].IdMaquina,
+                NomIdMaquina: maq[0].NomIdMaquina,
+                IdEstacion: null,
+                IdTipoFormulacion: null,
+                IdRequerimientoColor: null,
+                Color: null,
+                IdBase: null,
+                NomIdBase: null,
+                IdRequerimientoTecnica: null,
+                NomIdTecnica: null,
+                IdAccesorio: null,
+                NomIdAccesorio: null,
+                ToolTips: null,
+                IdSistemaPigmento: null,
+                TemperaturaHorno: maq[0].TemperaturaHorno,
+                ColorHex: null,
+                Letra: null,
+                IdTecnica: null,
+                Icono: null,
+                TipoBrazo: null,
+                IdFormaMaquina: maq[0].IdFormaMaquina,
+                CantidadEstaciones: maq[0].CantidadEstaciones,
+                NomFiguraMaquina: maq[0].NomFiguraMaquina,
+                IdTiposMarco: null
+            }];
+    
+            $("#maquinaDesarrolloMues").children().remove()
+
+            maq = limpiar;
+            $("#maquinaDesarrolloMues").data("maquinaSerigrafia").init()
+            maq = fn_GetMaquinas();
+            $("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquinaVue.initialize(maq[0].CantidadEstaciones, maq[0].NomFiguraMaquina)
+            $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+            fn_GetFormasMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+            $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.setSelected(maq[0].IdFormaMaquina);
+            fn_Accesorios($("#maquinaDesarrolloMues").data("maquinaSerigrafia"));
+       
+            kendo.ui.progress($(document.body), false);
+            RequestEndMsg(data, "Post");
+  
+        },
+        error: function (data) {
+            kendo.ui.progress($(document.body), false);
+            ErrorMsg(data);
+        }
+    });
+
+};
