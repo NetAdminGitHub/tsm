@@ -22,7 +22,7 @@ let xNoDocumento;
 let imgCatSrc;
 let imgPlaceSrc;
 let imgvalue;
-
+let maq;
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstadoFP"), "gear");
     xIdOt = xIdOt === undefined ? 0 : xIdOt;
