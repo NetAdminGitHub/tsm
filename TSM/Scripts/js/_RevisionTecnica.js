@@ -10,6 +10,17 @@ var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
     KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
+    fn_GetAutCambioEstacionPermitida();
+    $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
+
+    KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
 
     $("#maquinaRevTec").maquinaSerigrafia({
         maquina: {
@@ -70,6 +81,12 @@ var fn_RTCargarConfiguracion = function () {
     $("#btnAddColorRev").click(function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeRevTec(); });
     });
+
+    fn_ObtenerCntMaxEstaciones();
+
+    $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").bind("change", function (e) {
+        fn_actualizarCantidadPermitida();
+    });
 };
 
 
@@ -82,6 +99,7 @@ var fn_load_maquina_ColorTec_Rev = function () {
     $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
     fn_GetColores($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
     fn_Tecnicas($("#maquinaRevTec").data("maquinaSerigrafia"), maq[0].IdSeteo);
+   
 };
 
 
@@ -89,6 +107,8 @@ var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
     $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorRev"), vhb);
+    fn_ObtenerCntMaxEstaciones();
+    fn_GetAutCambioEstacionPermitida();
 };
 
 var elementoSeleccionado = function (e) {
@@ -98,34 +118,6 @@ var elementoSeleccionado = function (e) {
         }
     } 
 };
-
-///*Funciones para Maquina de Vue*/
-//var accesoriosSecundarios = document.getElementById('accesoriosSecundariosEl');
-
-//accesoriosSecundarios.addEventListener('nuevo-accesorio', (e) => {
-//    accesoriosSecundarios.vueComponent.agregarAccesorio(e.detail[0]);
-//});
-
-//accesoriosSecundarios.addEventListener('detalle-accesorio', (e) => {
-//    console.log('informacion del accesorio', e.detail[0]);
-//});
-
-
-
-//var accesoriosSecundarios = document.getElementById('accesoriosSecundariosEl');
-
-//accesoriosSecundarios.addEventListener('nuevo-accesorio', (e) => {
-//    accesoriosSecundarios.vueComponent.agregarAccesorio(e.detail[0]);
-//})
-
-//accesoriosSecundarios.addEventListener('detalle-accesorio', (e) => {
-//    console.log('informacion del accesorio', e.detail[0]);
-//})
-
-
-
-
-
 
 //Agregar a Lista de ejecucion funcion configurar grid
 fun_List.push(fn_RTCargarConfiguracion);
@@ -144,4 +136,76 @@ fun_ListDatos.push(EtapaPush);
 
 fPermisos = function (datos) {
     Permisos = datos;
+};
+
+let fn_ObtenerCntMaxEstaciones = () => {
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajosDetalles/GetRequerimientoByOT/" + `${idOrdenTrabajo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos[0].CantidadEstacionesPermitidas);
+        }
+    });
+};
+
+
+let fn_actualizarCantidadPermitida = function () {
+    kendo.ui.progress($(document.body), true);
+    if (kdoNumericGetValue($("#TxtCntEstacionesPermitidas")) > 0) {
+        kendo.ui.progress($(document.body), true);
+        //var item = e.item;
+        $.ajax({
+            url: TSM_Web_APi + "/RequerimientoDesarrollos/UpdCantidadEstacionesPermitidas",//
+            type: "post",
+            dataType: "json",
+            data: JSON.stringify({
+                IdOrdenTrabajo: idOrdenTrabajo,
+                IdEtapaProceso: idEtapaProceso,
+                Item: $("#txtItem").val(),
+                CantidadEstacionesPermitidas: kdoNumericGetValue($("#TxtCntEstacionesPermitidas"))
+
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                RequestEndMsg(data, "Post");
+                kendo.ui.progress($(document.body), false);
+            },
+            error: function (data) {
+                kendo.ui.progress($(document.body), false);
+                ErrorMsg(data);
+                fn_ObtenerCntMaxEstaciones();
+                $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
+            }
+        });
+    } else {
+        $("#kendoNotificaciones").data("kendoNotification").show("CANTIDAD DE ESTACIONES DEBE SER MAYOR A CERO", "error");
+        fn_ObtenerCntMaxEstaciones();
+        kendo.ui.progress($(document.body), false);
+        $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
+
+    }
+};
+
+
+let fn_GetAutCambioEstacionPermitida = () => {
+    $.ajax({
+        url: TSM_Web_APi + "DepartamentosRoles/GetByIdUsuarioIdDepartamentoIdRol/" + `${getUser()}/${2}/${36}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            if (datos !== null) {
+                KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), datos.Editar === true && datos.Confidencial === true && EtpAsignado===true ? true : false);
+                $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(true);
+                KdoButtonEnable($("#btnAddColorRev"), false);
+                vhb = false;
+                $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
+            } else {
+                KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
+                $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(false);
+                KdoButtonEnable($("#btnAddColorRev"), true);
+                vhb = true;
+            }
+        }
+    });
 };
