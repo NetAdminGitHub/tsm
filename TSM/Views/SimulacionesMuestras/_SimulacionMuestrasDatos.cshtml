@@ -77,6 +77,11 @@
             <input id="chkUsarTermo" type="checkbox" name="chkUsarTermo" class="k-checkbox" disabled />
             <label class="k-checkbox-label" for="chkUsarTermo">Utilizar Termofijado</label>
         </div>
+
+        <div class="form-group col-lg-3 align-self-end">
+            <input id="chkApliCostoTransp" type="checkbox" name="chkApliCostoTransp" class="k-checkbox" disabled />
+            <label class="k-checkbox-label" for="chkApliCostoTranspe">Aplica Costo de Transporte</label>
+        </div>
     </div>
 </div>
 <br />
@@ -133,6 +138,12 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    <label for="txtCostoTransporte">Costo Trasporte:</label>
+                    <input id="txtCostoTransporte" name="txtCostoTransporte" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
                     <label for="TxtCostoTotal">Costo Total:</label>
                     <input id="TxtCostoTotal" name="TxtCostoTotal" class="form-control" />
                 </div>
@@ -142,61 +153,67 @@
 
     @*Datos de Corridas por Pieza*@
     <div class="col-md-6">
-         <div class="border p-md-2 p-lg-2">
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label class="font-weight-bold">Datos de Corridas por Pieza</label>
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoMPUnitario">Costo de Materia Prima:</label>
-                     <input id="TxtCostoMPUnitario" name="TxtCostoMPUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoMODUnitario">Costo de Mano de Obra Directa:</label>
-                     <input id="TxtCostoMODUnitario" name="TxtCostoMODUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoPrimoUnitario">Costo Primo:</label>
-                     <input id="TxtCostoPrimoUnitario" name="TxtCostoPrimoUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoFabrilUnitario">Costo Fabril:</label>
-                     <input id="TxtCostoFabrilUnitario" name="TxtCostoFabrilUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoProduccionUnitario">Costo Producción:</label>
-                     <input id="TxtCostoProduccionUnitario" name="TxtCostoProduccionUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoOperacionUnitario">Costo Operación:</label>
-                     <input id="TxtCostoOperacionUnitario" name="TxtCostoOperacionUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="txtCostoTermofijadoUnitario">Costo Unitario Termofijado:</label>
-                     <input id="txtCostoTermofijadoUnitario" name="txtCostoTermofijadoUnitario" class="form-control" />
-                 </div>
-             </div>
-             <div class="form-row">
-                 <div class="form-group col">
-                     <label for="TxtCostoUnitario">Costo por pieza:</label>
-                     <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
-                 </div>
-             </div>
-         </div>
+        <div class="border p-md-2 p-lg-2">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label class="font-weight-bold">Datos de Corridas por Pieza</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoMPUnitario">Costo de Materia Prima:</label>
+                    <input id="TxtCostoMPUnitario" name="TxtCostoMPUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoMODUnitario">Costo de Mano de Obra Directa:</label>
+                    <input id="TxtCostoMODUnitario" name="TxtCostoMODUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoPrimoUnitario">Costo Primo:</label>
+                    <input id="TxtCostoPrimoUnitario" name="TxtCostoPrimoUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoFabrilUnitario">Costo Fabril:</label>
+                    <input id="TxtCostoFabrilUnitario" name="TxtCostoFabrilUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoProduccionUnitario">Costo Producción:</label>
+                    <input id="TxtCostoProduccionUnitario" name="TxtCostoProduccionUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoOperacionUnitario">Costo Operación:</label>
+                    <input id="TxtCostoOperacionUnitario" name="TxtCostoOperacionUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="txtCostoTermofijadoUnitario">Costo Unitario Termofijado:</label>
+                    <input id="txtCostoTermofijadoUnitario" name="txtCostoTermofijadoUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="txtCostoTransporteUnitario">Costo Unitario Transporte:</label>
+                    <input id="txtCostoTransporteUnitario" name="txtCostoTransporteUnitario" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TxtCostoUnitario">Costo por pieza:</label>
+                    <input id="TxtCostoUnitario" name="TxtCostoUnitario" class="form-control" />
+                </div>
+            </div>
+        </div>
       
     </div>
 </div>
