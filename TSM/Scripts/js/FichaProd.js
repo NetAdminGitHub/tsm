@@ -23,6 +23,7 @@ let imgCatSrc;
 let imgPlaceSrc;
 let imgvalue;
 let maq;
+let url;
 $(document).ready(function () {
     KdoButton($("#btnCambiarEstadoFP"), "gear");
     xIdOt = xIdOt === undefined ? 0 : xIdOt;
