@@ -6,7 +6,7 @@
     <script type="text/javascript">
         var UrlSol = "@string.Format("{0}Solicitudes", TSM.Utils.Config.TSM_WebApi)";
     </script>
-    <script src="~/Scripts/js/SolicitudesClientes.js"></script>
+    <script src="~/Scripts/js/SolicitudesClientes.js?@ViewBag.IdVersion"></script>
 }
 <div class="form-row">
     <div class="col-lg-12">
@@ -18,19 +18,5 @@
         </div>
     </div>
 </div>
-<!-- Modal HTML -->
-@*<div id="CSolicitudes" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="CSolicitudesModalLabel"></h3>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="grid"></div>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 

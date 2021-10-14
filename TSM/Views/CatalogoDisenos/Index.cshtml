@@ -4,7 +4,7 @@
     ViewBag.Ruta = (new TSM.FrwkSeguridadSrv.SeguridadClient("BasicHttpBinding_ISeguridad")).Encriptar(Server.MapPath("~/Adjuntos"), TSM.Utils.Config.App);
 }
 @section Scripts {
-    <script src="~/Scripts/js/CatalogoDisenos.js"></script>
+    <script src="~/Scripts/js/CatalogoDisenos.js?@ViewBag.IdVersion"></script>
     <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
     <script type="text/javascript">
         var RutaFisicaAdj = "@ViewBag.Ruta";
