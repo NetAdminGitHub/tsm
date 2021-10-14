@@ -39,7 +39,7 @@ $(document).ready(function () {
         animation: { open: { effects: "fadeIn" } }
     });
 
-    fn_CargarVistaParcial("_SimulacionMuestrasDatos.Js", "SimulacionMuestrasDatos");
+    fn_CargarVistaParcial("_SimulacionMuestrasDatos.js", "SimulacionMuestrasDatos");
 
     $("#CmbTallasRecalcular").data("kendoMultiSelect").value("");
     $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
@@ -639,6 +639,7 @@ var fn_CargarVistaParcial = function (ViewParcialJs, ViewPartial) {
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
+    ViewParcialJs = ViewParcialJs.replace(".js", ".js?" + _version);
     if (listJs.filter(listJs => listJs.toString().endsWith(ViewParcialJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
