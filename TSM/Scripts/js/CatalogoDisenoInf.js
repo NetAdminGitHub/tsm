@@ -457,7 +457,13 @@ let fn_gridOT = function () {
                         if (dataItem.SNExisteFichaProd === true) {
                             $("#kendoNotificaciones").data("kendoNotification").show("FICHA DE PRODUCCION GENERADA", "error");
                         } else {
-                            fn_GenerarFichaProduccion("GenFichaProd", dataItem.IdOrdenTrabajo, dataItem.IdSimulacion, dataItem.IdCotizacion, function () { return fn_CerrarModal(); });
+                            if (dataItem.EstadoCotizacion === 'CANCELADA') {
+                                $("#kendoNotificaciones").data("kendoNotification").show("COTIZACIÓN CANCELADA NO SE PUEDE GENERAR FICHA DE PRODUCCIÓN", "error");
+
+                            } else {
+                                fn_GenerarFichaProduccion("GenFichaProd", dataItem.IdOrdenTrabajo, dataItem.IdSimulacion, dataItem.IdCotizacion, function () { return fn_CerrarModal(); });
+                            }
+                           
                         }
                     
                     }

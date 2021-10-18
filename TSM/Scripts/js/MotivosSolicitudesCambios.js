@@ -51,7 +51,8 @@ $(document).ready(function () {
                         }
                     },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    NombreEstado: { type: "string"}
                    
                 }
             }
@@ -64,12 +65,15 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdMotivoSolicitudCambio");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "NombreEstado");
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdMotivoSolicitudCambio", title: "Código motivo", hidden: true },
-            { field: "Nombre", title: "Nombre motivo " },  
+            { field: "Nombre", title: "Nombre motivo " },
+            { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlEstados, "MotivosSolicitudesCambios", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "NombreEstado", title: "Estado", },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
