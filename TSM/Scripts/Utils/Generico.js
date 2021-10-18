@@ -1221,10 +1221,11 @@ var fn_CargarVistaModalFormulacion = function (data, divCcf) {
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("ConsultaHistoricaFormulas.js")).length === 0) {
+    let fileJs = "ConsultaHistoricaFormulas.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/ConsultaHistoricaFormulas.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalFH(true, data, divCcf);
         };
@@ -1402,10 +1403,12 @@ var fn_CargarVistaCatalogoDisenoInf = function (data, divCDInf, idCatalogoDiseno
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("CatalogoDisenoInf.js")).length === 0) {
+
+    let fileJs = "CatalogoDisenoInf.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/CatalogoDisenoInf.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalCDInf(true, data, divCDInf, idCatalogoDiseno, idArte, fnClose);
         };
@@ -1499,10 +1502,12 @@ var fn_CargarVistaModalAutorizacion = function (data, divAutRet, retIdot, retIdE
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("AutorizarRetenciones.js")).length === 0) {
+    let fileJs = "AutorizarRetenciones.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/AutorizarRetenciones.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalAutRet(true, data, divAutRet, retIdot, retIdEtapa, retItem);
         };
@@ -1637,10 +1642,11 @@ var fn_CargarVistaModalSolictudIngresoCambio = function (data, divSolIngCambio, 
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitarIngresoCambios.js")).length === 0) {
+    let fileJs = "SolicitarIngresoCambios.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/SolicitarIngresoCambios.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalSolictudIngresoCambio(true, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
         };
@@ -1747,10 +1753,11 @@ var fn_CargarVistaModalOrdenesTrabajosAgenda = function (data, divAgen, Idot, Id
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("RegistroOrdenesTrabajosAgendas.js")).length === 0) {
+    let fileJs = "RegistroOrdenesTrabajosAgendas.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/RegistroOrdenesTrabajosAgendas.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalOrdenesTrabajosAgenda(true, data, divAgen, Idot, IdEtapa, Item,fnclose);
         };
@@ -1848,10 +1855,11 @@ var fn_CargarVistaModalOrdenesTrabajosVersionesSeteos = function (data, divVerSe
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("_HistoricoSeteos.js")).length === 0) {
+    let fileJs = "_HistoricoSeteos.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/_HistoricoSeteos.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalOrdenesTrabajosVersionesSeteos(true, data, divVerSeteos, Idot, fnclose);
         };
@@ -1982,10 +1990,11 @@ var fn_CargarVistaModalSolicitudReactivacionOT = function (data, divSolIngCambio
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitudReactivacionOrdenTrabajo.js")).length === 0) {
+    let fileJs = "SolicitudReactivacionOrdenTrabajo.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/SolicitudReactivacionOrdenTrabajo.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalSolicitudReactivacionOT(true, data, divSolIngCambio, sicIdot, sicIdEtapa, sicItem, SicidTipoOrdenTrabajo, fnclose);
         };
@@ -2096,10 +2105,12 @@ var fn_CargarVistaModalSolictudIngresoAjuste = function (data, divSolIngAjuste, 
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("SolicitarIngresoAjustes.js")).length === 0) {
+    let fileJs = "SolicitarIngresoAjustes.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/SolicitarIngresoAjustes.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalSolictudIngresoAjuste(true, data, divSolIngAjuste, siaIdot, siaIdEtapa, siaItem, siaIdSeteo, SiaIdTipoOT, fnclose);
         };
@@ -2203,10 +2214,12 @@ var fn_CargarVistaModalNuevoAjusteFormulas = function (data, divSolIngAjuste, Id
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("TintasFormulacionesNuevoAjuste.js")).length === 0) {
+    let fileJs = "TintasFormulacionesNuevoAjuste.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/TintasFormulacionesNuevoAjuste.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalNuevoAjusteFormulas(true, data, divSolIngAjuste, IdSeteo, IdEstacion,  fnclose);
         };
