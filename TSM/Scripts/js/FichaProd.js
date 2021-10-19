@@ -1280,11 +1280,14 @@ let fn_ObtenerFichaTamanos = function (req) {
                     Abreviatura: {
                         type: "string"
                     },
-                    Alto: {
+                    Alto:
+                    {
                         type: "number",
-                        validation: {
+                        validation:
+                        {
                             required: true,
-                            maxlength: function (input) {
+                            maxlength: function (input)
+                            {
                                 if (input.is("[name='Tallas']")) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200.");
                                     return input.val().length <= 200;
@@ -1329,7 +1332,21 @@ let fn_ObtenerFichaTamanos = function (req) {
                     },
                     IdDimension: {
                         type: "number", defaultValue: function (e) { return null; }
-                    }
+                    },
+                    AltoEstamp: {
+                        type: "number"
+                    },
+                    AnchoEstamp: {
+                        type: "number"
+                    },
+                    IdCatalogoDiseno: {
+                        type: "number", defaultValue: function (e) { return null; }
+
+                    },
+                    IdDimensionCatalogoDisenos: {
+                        type: "number", defaultValue: function (e) { return null; }
+
+                    },
                 }
             }
         },
@@ -1366,6 +1383,8 @@ let fn_ObtenerFichaTamanos = function (req) {
             { field: "Tallas", title: "Rango de Tallas" },
             { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "AltoEstamp", title: "Alto Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "AnchoEstamp", title: "Ancho Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "IdUnidad", title: "Unidad",  editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"]},
             { field: "Abreviatura", title: "Unidad de Medida" },
             { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "#", 0], format: "{0:n0}", footerTemplate: "Total: #: data.CantidadPiezas ? kendo.format('{0:n0}',sum ): 0 #"}
@@ -1406,8 +1425,6 @@ let getInstrucciones = function (Url, objeto) {
     });
 };
 
-
-
 let getTolerancia = function (Url, objeto) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
@@ -1430,7 +1447,6 @@ let getTolerancia = function (Url, objeto) {
         }
     });
 };
-
 
 let ActualizaComentariosFicha = function () {
     kendo.ui.progress($(document.body), true);
@@ -1480,7 +1496,6 @@ let ActualizaComentariosFicha = function () {
     }
 };
 
-
 let GuardarArtAdj = function (UrlAA, nombreFichero) {
     kendo.ui.progress($("#vistaParcial"), true);
     var XFecha = Fhoy();
@@ -1515,7 +1530,6 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
     });
 };
 /*  */
-
 
 let getAdjun = function (UrlAA) {
     //LLena Splitter de imagenes
