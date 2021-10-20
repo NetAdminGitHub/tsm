@@ -1347,6 +1347,7 @@ let fn_ObtenerFichaTamanos = function (req) {
                         type: "number", defaultValue: function (e) { return null; }
 
                     },
+                    Nombre1: {type:"string"}
                 }
             }
         },
@@ -1365,6 +1366,7 @@ let fn_ObtenerFichaTamanos = function (req) {
             KdoHideCampoPopup(e.container, "IdCotizacion");
             KdoHideCampoPopup(e.container, "Abreviatura");
             KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "Nombre1");
             //KdoHideCampoPopup(e.container, "IdUnidad");
             if (!e.model.isNew()) {
                 KdoHideCampoPopup(e.container, "IdCategoriaTalla");
@@ -1381,12 +1383,13 @@ let fn_ObtenerFichaTamanos = function (req) {
             { field: "IdCategoriaTalla", title: "Cod. Talla", editor: Grid_Combox, values:["IdCategoriaTalla", "Nombre", UrlApiCT, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Nombre", title: "Tamaño" },
             { field: "Tallas", title: "Rango de Tallas" },
-            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "AltoEstamp", title: "Alto Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "AnchoEstamp", title: "Ancho Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "IdUnidad", title: "Unidad",  editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"]},
-            { field: "Abreviatura", title: "Unidad de Medida" },
+            { field: "AltoEstamp", title: "Alto Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"], hidden: true},
+            { field: "Abreviatura", title: "Unidad de Medida", hidden: true },
+            { field: "Nombre1", title: "Unidad Medidad" },
             { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "#", 0], format: "{0:n0}", footerTemplate: "Total: #: data.CantidadPiezas ? kendo.format('{0:n0}',sum ): 0 #"}
         ]
     });
