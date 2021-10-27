@@ -286,6 +286,7 @@ let fn_DibujarKanban = function (ds) {
             let StyleEstadoOT = elemento.ColorEstadoOT === null ? "" : 'style=\"background-color:' + elemento.ColorEstadoOT + ';\"';
             let IdUsuarioKB = (elemento.IdUsuarioAsignado === undefined || elemento.IdUsuarioAsignado === null) ? '' : elemento.IdUsuarioAsignado;
             let CodigoDisenoAX = (elemento.CodigoDisenoAX === undefined || elemento.CodigoDisenoAX === null) ? '' : elemento.CodigoDisenoAX;
+            let CodigoOTOrigen = elemento.NoOtOrigen === null ? '' : elemento.NoOtOrigen;
             MainKanba.append('<div class="kanban-item" style="" draggable="false" id="' + elemento.IdRow + '" >' +
                 //'<div class= "form-group col-lg-2">' +
                 '<div class="card border-success mb-3" style="max-width: 18rem;">' +
@@ -307,8 +308,8 @@ let fn_DibujarKanban = function (ds) {
                 '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.NoPrograma + '</h1>' +
                 '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + NoRegPrenda + '</h1>' +
                 '<h1 class="TSM-card-subtitle" style="white-space:normal;font-weight: bold;">' + elemento.NombreEtapa + '</h1>' +
-                '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/><span style="white-space:normal;font-weight: bold;">' + elemento.NombreTipoOrden + '</span><br/> Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
-                'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas +'</p>' +
+                '<p class="card-text" style="white-space:normal;">Usuario:' + IdUsuarioKB + '<br/><span style="white-space:normal;font-weight: bold;">' + (elemento.NombreTipoOrden === null ? "" : elemento.NombreTipoOrden) + '</span><br/> Programa: ' + elemento.NombrePrograma + "<br/>Prenda: " + elemento.Prenda + "<br/>" +
+                'Color Tela: ' + elemento.ColorTela + (CodigoDisenoAX !== "" ? "<br/>" + 'Diseño AX: ' + CodigoDisenoAX : "") + "<br/>Tallas: " + elemento.Tallas + (CodigoOTOrigen === "" ? "</p>" : "<br/><b>OT Origen: " + CodigoOTOrigen + "</b> </p>") +
                 '</div>' +
                 '<div class="TSM-card-footer bg-transparent border-success" style="white-space:normal;font-weight: bold;">Fecha OT: ' + kendo.toString(kendo.parseDate(elemento.FechaOrdenTrabajo), "dd/MM/yyyy HH:mm:ss") + '</div>' +
                 '</div>' +
