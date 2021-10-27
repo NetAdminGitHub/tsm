@@ -179,7 +179,7 @@ $(document).ready(function () {
             { field: "IdRol", title: "Rol", hidden: true, editor: Grid_Combox, values: ["IdRol", "Nombre", TSM_Web_APi + "Roles", "", "Seleccione...", "required", "", "Requerido"] },
             { field: "Nombre", title: "Nombre del Rol" },
             { field: "FechaMod", title: "Fecha Mod.", hidden: true },
-            { field: "EncargadoArea", title: "Puede Agregar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EncargadoArea"); } },
+            { field: "EncargadoArea", title: "Encargado Area?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EncargadoArea"); } },
             { field: "Agregar", title: "Puede Agregar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Agregar"); } },
             { field: "Editar", title: "Puede Editar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Editar"); } },
             { field: "Borrar", title: "Puede Borrar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Borrar"); } },

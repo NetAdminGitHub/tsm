@@ -10,7 +10,8 @@ var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
     KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
-    fn_GetAutCambioEstacionPermitida();
+    KdoButton($("#btnUpdCantidaEsta"), "wrench", "Actualizar Estaciones Permitidas");
+/*    fn_GetAutCambioEstacionPermitida();*/
     $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -20,7 +21,7 @@ var fn_RTCargarConfiguracion = function () {
         value: 0
     });
 
-    KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
+    //KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
 
     $("#maquinaRevTec").maquinaSerigrafia({
         maquina: {
@@ -35,7 +36,7 @@ var fn_RTCargarConfiguracion = function () {
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
                     var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy);
+                    fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones(); });
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
@@ -48,11 +49,11 @@ var fn_RTCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaRevTec"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                        fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaRevTec"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaRevTec"), function () { return fn_ObtCntMaxEstaciones();});
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaRevTec"),1); 
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaRevTec"), 1, function () { return fn_ObtCntMaxEstaciones(); });
 
 
                 }
@@ -82,11 +83,15 @@ var fn_RTCargarConfiguracion = function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeRevTec(); });
     });
 
-    fn_ObtenerCntMaxEstaciones();
+    $("#btnUpdCantidaEsta").click(function (e) {
+  
+        fn_ActualizarEstacionesPermitidas("vAutCntEstaciones", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), function () { return fn_ObtCntMaxEstaciones(); });
 
-    $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").bind("change", function (e) {
-        fn_actualizarCantidadPermitida();
     });
+     
+    fn_ObtCntMaxEstaciones();
+
+
 };
 
 
@@ -107,8 +112,7 @@ var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
     $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorRev"), vhb);
-    fn_ObtenerCntMaxEstaciones();
-    fn_GetAutCambioEstacionPermitida();
+    fn_ObtCntMaxEstaciones();
 };
 
 var elementoSeleccionado = function (e) {
@@ -138,74 +142,36 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 
-let fn_ObtenerCntMaxEstaciones = () => {
+let fn_ObtCntMaxEstaciones = () => {
     $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajosDetalles/GetRequerimientoByOT/" + `${idOrdenTrabajo}`,
+        url: TSM_Web_APi + "OrdenesTrabajos/GetMaxEstacionesPermitida/" + `${idOrdenTrabajo}`,
         dataType: 'json',
         type: 'GET',
         success: function (datos) {
-            kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos[0].CantidadEstacionesPermitidas);
-        }
-    });
-};
+            let AlertEst = $("#AlertaEstacion");
+            AlertEst.children().remove();
 
-
-let fn_actualizarCantidadPermitida = function () {
-    kendo.ui.progress($(document.body), true);
-    if (kdoNumericGetValue($("#TxtCntEstacionesPermitidas")) > 0) {
-        kendo.ui.progress($(document.body), true);
-        //var item = e.item;
-        $.ajax({
-            url: TSM_Web_APi + "/RequerimientoDesarrollos/UpdCantidadEstacionesPermitidas",//
-            type: "post",
-            dataType: "json",
-            data: JSON.stringify({
-                IdOrdenTrabajo: idOrdenTrabajo,
-                IdEtapaProceso: idEtapaProceso,
-                Item: $("#txtItem").val(),
-                CantidadEstacionesPermitidas: kdoNumericGetValue($("#TxtCntEstacionesPermitidas"))
-
-            }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                RequestEndMsg(data, "Post");
-                kendo.ui.progress($(document.body), false);
-            },
-            error: function (data) {
-                kendo.ui.progress($(document.body), false);
-                ErrorMsg(data);
-                fn_ObtenerCntMaxEstaciones();
-                $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
-            }
-        });
-    } else {
-        $("#kendoNotificaciones").data("kendoNotification").show("CANTIDAD DE ESTACIONES DEBE SER MAYOR A CERO", "error");
-        fn_ObtenerCntMaxEstaciones();
-        kendo.ui.progress($(document.body), false);
-        $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
-
-    }
-};
-
-
-let fn_GetAutCambioEstacionPermitida = () => {
-    $.ajax({
-        url: TSM_Web_APi + "DepartamentosRoles/GetByIdUsuarioIdDepartamentoIdRol/" + `${getUser()}/${2}/${36}`,
-        dataType: 'json',
-        type: 'GET',
-        success: function (datos) {
-            if (datos !== null) {
-                KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), datos.Editar === true && datos.Confidencial === true && EtpAsignado===true ? true : false);
-                $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(true);
-                KdoButtonEnable($("#btnAddColorRev"), false);
-                vhb = false;
-                $("#TxtCntEstacionesPermitidas").data("kendoNumericTextBox").focus();
+            if (datos === null) {
+                AlertEst.children().remove();
             } else {
-                KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
-                $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(false);
-                KdoButtonEnable($("#btnAddColorRev"), true);
-                vhb = true;
-            }
+                kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+                
+                if (datos.CantidadNoPemitida === true) {
+                    AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
+                        '<strong>Warning!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
+                        '</div>');
+                   
+                } else {
+                    AlertEst.alert()
+                }
+             
+            };
+            
+
+
+
         }
     });
 };
+
+
