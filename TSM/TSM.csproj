@@ -503,6 +503,7 @@
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\DefectosEncontrados.js" />
     <Content Include="Scripts\js\Departamentos.js" />
+    <Content Include="Scripts\js\DimensionesRequerimiento.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
     <Content Include="Scripts\js\EstacionAjuste.js" />
@@ -967,6 +968,7 @@
     <Content Include="Web.UAT.config">
     </Content>
     <Content Include="Views\Shared\_AutorizarEstacionesPermitidas.cshtml" />
+    <Content Include="Views\Shared\_DimensionesRequerimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
