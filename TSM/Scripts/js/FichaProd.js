@@ -718,7 +718,6 @@ let fn_GetOTRequerimiento = function () {
             fn_ObtieneConfiguracionBrazos();
             fn_ObtenerFichaTamanos();
             fn_ObtenerDimensiones(reqid);
-            fn_TallasProducir();
             fn_ObtieneDetalleFormulaciones(xIdOt);
             let parametros = `${xIdOt},${idSimulacion},${idCotizacion}`;
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesProd"));
