@@ -445,7 +445,6 @@ let fn_crearServClie = function (e) {
             KdoButtonEnable($("#btnProClieCont"), true);
             kendo.ui.progress($(".k-window-content"), false);
 
-            //TextBoxEnable($('[name="NombreDiseno"]'), true);
             TextBoxEnable($('[name="NombrePro"]'), true);
             TextBoxEnable($('[name="NombreUbicacion"]'), true);
             KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), true);
@@ -577,10 +576,7 @@ let fn_gridSolDet = function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdPrograma").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                                 }
-                                //if (input.is("[name='NombreDiseno']") && input.val().length > 200) {
-                                //    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
-                                //    return false;
-                                //}
+                          
                                 if (input.is("[name='ColorTela']") && input.val().length > 200) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
@@ -591,7 +587,6 @@ let fn_gridSolDet = function () {
                                 }
                                 if (input.is("[name='IdUbicacion']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    //return $("#IdUbicacion").data("kendoComboBox").selectedIndex >= 0;
                                     return $("#IdUbicacion").data("kendoMultiSelect").value().length > 0;
                                 }
                                 if (input.is("[name='IdRegistroSolicitudPrenda']")) {
@@ -668,7 +663,8 @@ let fn_gridSolDet = function () {
             KdoHideCampoPopup(e.container, "IdCatalogoDiseno");
             TextBoxEnable($('[name="NoCatalogo"]'), false);
             TextBoxEnable($('[name="NombreDiseno"]'), false);
- 
+            KdoHideCampoPopup(e.container, "CantidadSTrikeOff");
+            KdoHideCampoPopup(e.container, "CantidadYardaPieza");
             if (!e.model.isNew()) {
                 $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").setDataSource(Fn_PrendasReg(e.model.IdPrograma));
                 KdoMultiColumnCmbSetValue($('[name="IdRegistroSolicitudPrenda"]'), e.model.IdRegistroSolicitudPrenda);
@@ -747,10 +743,10 @@ let fn_gridSolDet = function () {
             { field: "IdCategoriaTalla", title: "Tamaño a desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", UrlCata, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreTamano", title: "Tamaño a desarrollar" },
             { field: "ColorTela", title: "Color tela" },
-            { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
-            { field: "CantidadYardaPieza", title: "No Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
+            { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] ,hidden:true},
+            { field: "CantidadYardaPieza", title: "No Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true},
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
-            { field: "NombreUN", title: "Unidad de medida" },
+            { field: "NombreUN", title: "Unidad de medida", hidden: true },
             {
              field: "RegistroPrenda", title: "Crear registro de Prenda", hidden: true, menu: false, editor: fn_BotonAgregar
             },
@@ -973,11 +969,9 @@ let fn_GuadarCliente = function (e) {
         }
         xpnIdMarca = KdoCmbGetValue($("#CmbMarcas"));
 
-        //TextBoxEnable($('[name="NombreDiseno"]'), false);
         TextBoxEnable($('[name="NombrePro"]'), false);
         TextBoxEnable($('[name="NombreUbicacion"]'), false);
         KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), false);
-        //KdoComboBoxEnable($('[name="IdUbicacion"]'), false);
         KdoMultiSelectEnable($('[name="IdUbicacion"]'), false);
         TextBoxEnable($('[name="ColorTela"]'), false);
         KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), false);
@@ -1240,17 +1234,7 @@ var fn_Agregar = function () {
 };
 
 var fn_AgregarFM = function () {
-    //if ( $('[name="NombreDiseno"]').val() !== "") {
-    //    //KdoCmbSetValue($("#TxtPrenda"), "");
-    //    //$("#TxtDescrip").val($('[name="NombreDiseno"]').val());
-    //    //$("#ModalFM").data("kendoDialog").open();
-    //    //KdoCmbFocus($("#TxtPrenda"));
-        fn_ConsultarCatalogoDiseno("ConsultaCataloDis", KdoCmbGetValue($("#CmbCliCont")));
-    //} else {
-
-    //    $("#kendoNotificaciones").data("kendoNotification").show("Digite el nombre del diseño y el programa", "error");
-    //}
-
+        fn_ConsultarCatalogoDiseno("ConsultaCataloDis", KdoCmbGetValue($("#CmbCliCont"))); 
 };
 
 
