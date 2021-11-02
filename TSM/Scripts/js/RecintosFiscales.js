@@ -1,25 +1,25 @@
 ﻿var Permisos;
-let UrlPl = TSM_Web_APi + "Plantas";
+let UrlRF = TSM_Web_APi + "RecintosFiscales";
 
 $(document).ready(function () {
     let dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: UrlPl,
+                url: UrlRF,
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return UrlPl + "/" + datos.IdPlanta; },
+                url: function (datos) { return UrlRF + "/" + datos.IdRecintoFiscal; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return UrlPl + "/" + datos.IdPlanta; },
+                url: function (datos) { return UrlRF + "/" + datos.IdRecintoFiscal; },
                 type: "DELETE"
             },
             create: {
-                url: UrlPl,
+                url: UrlRF,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
@@ -35,9 +35,9 @@ $(document).ready(function () {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdPlanta",
+                id: "IdRecintoFiscal",
                 fields: {
-                    IdPlanta: { type: "number" },                    
+                    IdRecintoFiscal: { type: "number" },                    
                     Nombre: {
                         type: "string",
                         validation: {
@@ -51,11 +51,20 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 200");
                                     return false;
                                 }
+                                if (input.is("[name='Direccion']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='Direccion']") && input.val().length > 500) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 500");
+                                    return false;
+                                }
                               
                                 return true;
                             }
                         }                        
                     },
+                    Direccion: {type: "string"},
                 IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -66,16 +75,16 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdPlanta");
+            KdoHideCampoPopup(e.container, "IdRecintoFiscal");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdPlanta", title: "Planta", hidden: true },
+            { field: "IdRecintoFiscal", title: "Recinto Fiscal", hidden: true },
             { field: "Nombre", title: "Nombre" },
-           
+            { field: "Direccion", title: "Dirección" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
