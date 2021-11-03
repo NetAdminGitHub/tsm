@@ -258,6 +258,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
@@ -514,6 +515,7 @@
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
+    <Content Include="Scripts\js\BodegasClientes.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
     <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
@@ -972,6 +974,7 @@
     </Content>
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
+    <Content Include="Views\BodegasClientes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
