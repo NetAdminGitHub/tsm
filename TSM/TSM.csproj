@@ -231,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthFilters\AuthAttribute.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
@@ -316,8 +318,10 @@
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
+    <Compile Include="Controllers\PlantasController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
+    <Compile Include="Controllers\RecintosFiscalesController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -511,6 +515,9 @@
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
+    <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\RecintosFiscales.js" />
+    <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
     <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
     <Content Include="Scripts\js\OrigenesPruebasLaboratorio.js" />
@@ -767,8 +774,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config"></Content>
-    <Content Include="Web.Release.config"></Content>
+    <Content Include="Web.Debug.config">
+    </Content>
+    <Content Include="Web.Release.config">
+    </Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
     <Content Include="Views\AnalisisDisenos\Index.cshtml" />
@@ -957,9 +966,15 @@
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosSolicitudesAjustes\Index.cshtml" />
-    <Content Include="Web.IST.config"></Content>
-    <Content Include="Web.PRD.config"></Content>
-    <Content Include="Web.UAT.config"></Content>
+    <Content Include="Web.IST.config">
+    </Content>
+    <Content Include="Web.PRD.config">
+    </Content>
+    <Content Include="Web.UAT.config">
+    </Content>
+    <Content Include="Views\Plantas\Index.cshtml" />
+    <Content Include="Views\RecintosFiscales\Index.cshtml" />
+    <Content Include="Views\BodegasClientes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
