@@ -63,6 +63,11 @@ namespace TSM.Controllers
 
             return PartialView("_SolicitarIngresoAjustes");
         }
+        public ActionResult AutorizarEstacionesPermitidas()
+        {
+
+            return PartialView("_AutorizarEstacionesPermitidas");
+        }
         [HttpPost]
         public ActionResult VistaParcial(string id)
         {

@@ -7,11 +7,13 @@ var fn_InicializarCargarFichaProd = function (gFpIdot) {
     TextBoxEnable($("#TxtGFP_Talla"), false);
     KdoMultiSelectDatos($("#CmbNoDocFichaProd"), "[]", "NoDocumento", "IdOrdenTrabajo", "Seleccione ...", 100, true);
     fn_GetOT(gFpIdot);
+    KdoMultiSelectEnable($("#CmbNoDocFichaProd"), false);
 };
 
 var fn_CrearFichaProd = function (gFpIdot) {
     fn_GetOT(gFpIdot);
     $("#CmbNoDocFichaProd").data("kendoMultiSelect").value("");
+    KdoMultiSelectEnable($("#CmbNoDocFichaProd"), false);
 
 };
 
@@ -37,11 +39,11 @@ let fn_GetOT = function (idOT) {
                 datos = fn_NoDocumento_FichaProd(xIdCatDisgfp);
                 $("#CmbNoDocFichaProd").data("kendoMultiSelect").setDataSource(datos);
                 datos.read().then(function () {
-                    var view = datos.view();
-                    $.each(view, function (index, elemento) {
-                        lista = lista + elemento.IdOrdenTrabajo + ",";
-                    });
-                    $("#CmbNoDocFichaProd").data("kendoMultiSelect").value(lista.split(","));
+                    //var view = datos.view();
+                    //$.each(view, function (index, elemento) {
+                    //    lista = lista + elemento.IdOrdenTrabajo + ",";
+                    //});
+                    $("#CmbNoDocFichaProd").data("kendoMultiSelect").value(idOT);
                 });
             } else {
                 $("#TxtGFP_CodigoFM").val("");

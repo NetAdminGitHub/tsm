@@ -1206,7 +1206,7 @@ var fn_Duplicar = function (EstacionO, EstacionD) {
 ///<summary> Método Copiar/Pegar para máquina de Vue </summary>
 ///<param name="varObjeto"> variable que contiene ref al objeto máquina </param>
 ///<param name="dataCopia"> contiene arreglo con datos de estación a copiar  </param>
-var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
+var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
@@ -1222,6 +1222,12 @@ var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
             kendo.ui.progress($(document.body), false);
             varObjeto.vueComponent.agregarConfiguracion(dataCopia.numeroBrazo, dataCopia.tipo, dataCopia.data[0]); // actualiza máquina en vista.
             RequestEndMsg(data, "Post");
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
         },
         error: function (data) {
             ErrorMsg(data);
@@ -2198,7 +2204,7 @@ var fn_gridEstacionIntercambio= function (gd) {
  * @param {JSON} data data retornada por el evento de eliminación
  * @param {Number} xMaquina numero de estacion del brazo o estacion
  */
-var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
+var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina, fn_succes) {
     kendo.ui.progress($(document.body), true);
     let xIdestacion = data.detail[0].number;
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
@@ -2210,6 +2216,12 @@ var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
             RequestEndMsg(resultado, "Delete");
             maq = fn_GetMaquinas();
             xMaquina.data("maquinaSerigrafia").eliminarEstacion(data.detail[0]);
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
+           
         },
         error: function (resultado) {
             ErrorMsg(resultado);
@@ -2776,7 +2788,7 @@ var fn_GetSeteoMaquinasAlertasValidacion = function (IdSeteo) {
 };
 
 
-var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina,reducirEtacion) {
+var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina, reducirEtacion, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/UpdSeteoMaquinas_Forma/" + maq[0].IdSeteo,
@@ -2793,6 +2805,12 @@ var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraM
                 maq = fn_GetMaquinas();
             } else {
                 fn_ReduccionEstacionesMaq(maq[0].IdSeteo, cantidadEstaciones);
+            }
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
             }
         },
         error: function (data) {

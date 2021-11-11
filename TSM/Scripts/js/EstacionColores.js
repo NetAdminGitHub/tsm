@@ -763,6 +763,7 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
             RequestEndMsg(data, xType);
             maq = fn_GetMaquinas();
             $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
+            fn_ObtCntMaxEstaciones();
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionColor"), false);
