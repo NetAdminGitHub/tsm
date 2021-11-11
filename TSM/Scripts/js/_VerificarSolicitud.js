@@ -99,6 +99,8 @@ var fn_VSCargarJSEtapa = function () {
             value: 0
     });
 
+    KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);
+
     $("#TxtStrikeOffAdicional").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -147,6 +149,7 @@ var fn_VSCargarJSEtapa = function () {
         min: 1
     });
 
+  
     // se utiliza pra validar formularios
     let ValidRD = $("#ReqDes").kendoValidator(
         {
@@ -1463,7 +1466,7 @@ var fn_VSCargar = function () {
         TextBoxEnable($("#TxtEjecutivoCuenta"), false);
         KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), false);
         KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), false);
-        KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);
+/*        KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);*/
         KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
         KdoComboBoxEnable($("#IdUbicacion"), false);
         $("#UbicacionVer").attr("disabled", true);
@@ -2108,7 +2111,7 @@ let HabilitaFormObje = function (ToF) {
     KdoNumerictextboxEnable($("#CntPiezas"), ToF);
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
     KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), ToF);
-    KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), ToF);
+   /* KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), ToF);*/
     //KdoNumerictextboxEnable($("#CantidadTallas"), ToF);
     KdoNumerictextboxEnable($("#Combo"), ToF);
     KdoNumerictextboxEnable($("#CantidadColores"), ToF);

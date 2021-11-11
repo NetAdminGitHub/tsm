@@ -2320,10 +2320,11 @@ var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFp
     $.each(a, function (index, elemento) {
         listJs.push(elemento.src.toString());
     });
-    if (listJs.filter(listJs => listJs.toString().endsWith("GenerarFichaProduccion.js")).length === 0) {
+    let fileJs = "GenerarFichaProduccion.js?" + _version;
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "/Scripts/js/GenerarFichaProduccion.js";
+        script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
             fn_ShowModalGenFichaProd(true, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
         };
@@ -2379,6 +2380,217 @@ var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpI
     });
 
     $("#" + divGenFP + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
+
+//#region Actualizar cantidades estaciones permitidas
+/**
+ * 
+ * @param {HtmlElementId} divCntEstaPermi Id del div que contendra la actaulizacion de estaciones permiidas
+ * @param {number} cepIdot id orden de trabajo
+ * @param {number} cepIdEtapa etapa del proceso
+ * @param {number} cepItem item de la etapa
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ActualizarEstacionesPermitidas = function (divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divCntEstaPermi + "").children().length === 0) {
+        $.ajax({
+            url: "/OrdenesTrabajo/AutorizarEstacionesPermitidas",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalActualizarEstacionesPermitidas(resultado, divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalActualizarEstacionesPermitidas("", divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divCntEstaPermi Id del div que contendra la actaulizacion de estaciones permiidas
+ * @param {number} cepIdot id orden de trabajo 
+ * @param {number} cepIdEtapa etapa del proceso
+ * @param {number} cepItem item de la etapa
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalActualizarEstacionesPermitidas = function (data, divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    let fileJs = "AutorizarEstacionesPermitidas.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/" + fileJs;
+        script.onload = function () {
+            fn_ShowModalActualizarEstacionesPermitidas(true, data, divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalActualizarEstacionesPermitidas(false, data, divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divCntEstaPermi  Id del div que contendra la actaulizacion de estaciones permiidas
+ * @param {number} cepIdot id orden de trabajo
+ * @param {number} cepIdEtapa etapa del proceso
+ * @param {number} cepItem item de la etapa
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+
+ */
+var fn_ShowModalActualizarEstacionesPermitidas = function (cargarJs, data, divCntEstaPermi, cepIdot, cepIdEtapa, cepItem, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarCntActualizarEstacionesPermitidas(divCntEstaPermi,cepIdot, cepIdEtapa, cepItem);
+        } else {
+            fn_ActualizarCntEstacionesPermitidas(divCntEstaPermi,cepIdot, cepIdEtapa, cepItem);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divCntEstaPermi + "").kendoDialog({
+        height: "45%",
+        width: "30%",
+        title: "Actualizar Estaciones Permitidas",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "10%",
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divCntEstaPermi + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
+//#region Actualizar Dimensiones
+/**
+ * 
+ * @param {HtmlElementId} divDimen Id del div que contendra la actualizacion de dimensiones
+ * @param {number} dmIdreq id orden requerimiento
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_ActualizarDimensiones = function (divDimen, dmIdreq, fnclose) {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divDimen + "").children().length === 0) {
+        $.ajax({
+            url: "/RequerimientoDesarrollos/DimensionesRequerimiento",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_CargarVistaModalDimensiones(resultado, divDimen, dmIdreq,fnclose);
+
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_CargarVistaModalDimensiones("", divDimen, dmIdreq, fnclose);
+
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html del registro de cambio
+ * @param {HtmlElementId} divDimen Id del div que contendra la actualizacion de dimensiones
+ * @param {number} dmIdreq id orden de trabajo
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_CargarVistaModalDimensiones = function (data, divDimen, dmIdreq, fnclose) {
+
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    let fileJs = "DimensionesRequerimiento.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/" + fileJs;
+        script.onload = function () {
+            fn_ShowModalDimensiones(true, data, divDimen, dmIdreq, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_ShowModalDimensiones(false, data, divDimen, dmIdreq, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del registro de cambio
+ * @param {HtmlElementId} divDimen  Id del div que contendra la actualizacion de dimensiones
+ * @param {number} dmIdreq id orden de requerimiento
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+
+ */
+var fn_ShowModalDimensiones = function (cargarJs, data, divDimen, dmIdreq, fnclose) {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_InicializarDimensiones(divDimen, dmIdreq);
+        } else {
+            fn_ActualizarDimensionesRequerimiento(divDimen, dmIdreq);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divDimen + "").kendoDialog({
+        height: "45%",
+        width: "50%",
+        title: "Actualizar Dimensiones",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        //maxHeight: 800,
+        minWidth: "10%",
+        show: onShow,
+        close: fn_CloseSIC
+    });
+
+    $("#" + divDimen + "").data("kendoDialog").open().toFront();
 
 };
 //#endregion

@@ -4,6 +4,7 @@ var vIdIdDisenoMuestra;
 var fn_DMCargarConfiguracion = function () {
   
     KdoButton($("#btnAddColorDis"), "plus-circle", "Agregar color o técnica");
+    KdoButton($("#btnUpdDimen"), "edit", "Actualizar Dimensiones");
 
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
@@ -217,6 +218,10 @@ var fn_DMCargarConfiguracion = function () {
     $("#btnAddColorDis").click(function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis();});
     });
+
+    $("#btnUpdDimen").click(function () {
+        fn_ActualizarDimensiones("vDimenReq", $("#txtIdRequerimiento").val(), function () { return fn_GetDisenoMuestra(); });
+    });
 };
 
 
@@ -255,6 +260,7 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
     $("#maquinaDiseno").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorDis"), vhb);
+    KdoButtonEnable($("#btnUpdDimen"), vhb);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
