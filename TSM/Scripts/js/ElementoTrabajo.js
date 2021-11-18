@@ -71,7 +71,7 @@ var estadoPermiteEdicion = false;
 var alertDiseno = false;
 var alertTintas = false;
 var alertRevelado = false;
-
+var PermiteAddEstacion = true;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -212,21 +212,14 @@ $(document).ready(function () {
     });
 
 
-    //$("#NumBrazoA").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max:22
-    //});
-
-    //$("#NumBrazoB").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max: 22
-    //});
+    $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
 
     $("#NumOrigenA").kendoNumericTextBox({
         format: "#",
@@ -243,9 +236,6 @@ $(document).ready(function () {
         value: 0,
         max: 22
     });
-
-    //Iniciar Grid de intercambio
-    //fn_gridEstacionIntercambio($("#gridInter"));
 
 
     //#region Grid soliciud
@@ -402,12 +392,6 @@ $(document).ready(function () {
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     $("#gridRegistroCambiosDetalle").kendoGrid({
-        //dataBound: function () {
-        //    for (var i = 0; i < this.columns.length; i++) {
-        //        this.autoFitColumn(i);
-        //        this.columnResizeHandleWidth;
-        //    }
-        //},
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IDOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdSolicitudCambio");
@@ -2956,3 +2940,34 @@ var fn_GetAlertaEstatus = function (IdSeteo) {
 $("#body").on("cerrar_Modal_Color", function (event, param1, param2) {
     alert(param1 + "\n" + param2);
 });
+
+let fn_ObtCntMaxEstaciones = (al) => {
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajos/GetMaxEstacionesPermitida/" + `${idOrdenTrabajo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            let AlertEst = al;
+            AlertEst.children().remove();
+
+            if (datos === null) {
+                AlertEst.children().remove();
+                PermiteAddEstacion = true;
+            } else {
+                kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+
+                if (datos.CantidadNoPemitida === true) {
+                    AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
+                        '<strong>Advertencia!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
+                        '</div>');
+                    PermiteAddEstacion = false;
+
+                } else {
+                    AlertEst.alert();
+                    PermiteAddEstacion = true;
+                }
+
+            };
+        }
+    });
+};
