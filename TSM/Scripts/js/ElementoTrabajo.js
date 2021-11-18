@@ -654,7 +654,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         method: 'GET',
         success: function (datos) {
             if (datos !== null) {
-                fn_CompletarInfEtapa(datos, RecargarScriptVista);
+                fn_CompletarInfEtapa(datos, RecargarScriptVista);   
 
             } else {
                 kendo.ui.progress($(document.body), true);
@@ -737,6 +737,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#UbicacionHorInf").val(datos.UbicacionHorizontal);
     $("#UbicacionVerInf").val(datos.UbicacionVertical);
     $("#TxtDirectorioArchivosInfo").val(datos.DirectorioArchivos);
+    $("#TxtOtOrigen").val(datos.NoOrdenTrabajoOrigen);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
