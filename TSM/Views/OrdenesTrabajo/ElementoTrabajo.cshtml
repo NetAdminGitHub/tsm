@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|21102801";
+    ViewBag.IdVersion = "TSM0101088|21111601";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -17,7 +17,7 @@
     <script src="~/Scripts/VueComp/inquisalva-components.min.js"></script>
     <script src="~/Scripts/VueComp/maquinaSerigrafia.js"></script>
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js?@ViewBag.IdVersion"></script>
-    <script src="~/Scripts/js/_MaqSR22.js"></script>
+    <script src="~/Scripts/js/_MaqSR22.js"></script>m
     <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
     @*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
 }
@@ -94,9 +94,13 @@
                                 <input id="txtNombreTalla" name="txtNombreTalla" class="k-textbox form-control" readonly="readonly" />
                             </div>
 
-                            <div class="form-group col-lg-6 col-md-3">
+                            <div class="form-group col-lg-3 col-md-3">
                                 <label for="txtNombreDiseno" id="lblNombreDiseno"><strong>Nombre del Dise&ntilde;o:</strong></label>
                                 <input id="txtNombreDiseno" name="NombreDiseno" class="k-textbox form-control" readonly="readonly" />
+                            </div>
+                            <div class="form-group col-lg-3 col-md-3">
+                                <label for="TxtCntEstacionesPermitidas"> <strong>Estaciones Permitidas</strong></label>
+                                <input id="TxtCntEstacionesPermitidas" name="TxtCntEstacionesPermitidas" type="text" class="form-control" disabled="disabled" />
                             </div>
                         </div>
 

@@ -11,17 +11,6 @@ var fn_RTCargarConfiguracion = function () {
     TiEst = fn_GetTipoEstaciones();
     KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
     KdoButton($("#btnUpdCantidaEsta"), "wrench", "Actualizar Estaciones Permitidas");
-/*    fn_GetAutCambioEstacionPermitida();*/
-    $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
-
-    //KdoNumerictextboxEnable($("#TxtCntEstacionesPermitidas"), false);
 
     $("#maquinaRevTec").maquinaSerigrafia({
         maquina: {
@@ -30,17 +19,26 @@ var fn_RTCargarConfiguracion = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
-                    AgregaEstacion(e);
+                    if (PermiteAddEstacion === true) {
+                        AgregaEstacion(e);
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                  
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
-                    var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones(); });
+                    if (PermiteAddEstacion === true) {
+                        var dataCopy = e.detail[0];
+                        fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacion")); });
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                    
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    //$("#maquinaRevTec").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
                     fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaRevTec"));
                 },
                 desplazamientoEstacion: function (e) {
@@ -49,11 +47,11 @@ var fn_RTCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaRevTec"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaRevTec"), function () { return fn_ObtCntMaxEstaciones();});
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaRevTec"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacion"));});
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaRevTec").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaRevTec"), 1, function () { return fn_ObtCntMaxEstaciones(); });
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaRevTec"), 1, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacion")); });
 
 
                 }
@@ -85,11 +83,11 @@ var fn_RTCargarConfiguracion = function () {
 
     $("#btnUpdCantidaEsta").click(function (e) {
   
-        fn_ActualizarEstacionesPermitidas("vAutCntEstaciones", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), function () { return fn_ObtCntMaxEstaciones(); });
+        fn_ActualizarEstacionesPermitidas("vAutCntEstaciones", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacion")); });
 
     });
      
-    fn_ObtCntMaxEstaciones();
+    fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
 
 
 };
@@ -112,7 +110,7 @@ var fn_RTMostrarGrid = function () {
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false ? false : true;
     $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorRev"), vhb);
-    fn_ObtCntMaxEstaciones();
+    fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
 };
 
 var elementoSeleccionado = function (e) {
@@ -142,36 +140,6 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 
-let fn_ObtCntMaxEstaciones = () => {
-    $.ajax({
-        url: TSM_Web_APi + "OrdenesTrabajos/GetMaxEstacionesPermitida/" + `${idOrdenTrabajo}`,
-        dataType: 'json',
-        type: 'GET',
-        success: function (datos) {
-            let AlertEst = $("#AlertaEstacion");
-            AlertEst.children().remove();
 
-            if (datos === null) {
-                AlertEst.children().remove();
-            } else {
-                kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
-                
-                if (datos.CantidadNoPemitida === true) {
-                    AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
-                        '<strong>Warning!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
-                        '</div>');
-                   
-                } else {
-                    AlertEst.alert()
-                }
-             
-            };
-            
-
-
-
-        }
-    });
-};
 
 
