@@ -110,14 +110,14 @@ let fn_UpdCantidadPermitidas = (divCntEstaPermi,cepIdot, cepIdEtapa, cepItem) =>
 
 let fn_GetAutCambioEstacionPermitida = () => {
     $.ajax({
-        url: TSM_Web_APi + "DepartamentosRoles/GetByIdUsuarioIdDepartamentoIdRol/" + `${getUser()}/${2}/${36}`,
+        url: TSM_Web_APi + "DepartamentosRoles/GetByIdUsuarioIdDepartamentoIdRol/" + `${getUser()}/${2}`,
         dataType: 'json',
         type: 'GET',
         success: function (datos) {
             if (datos !== null) {
-                KdoNumerictextboxEnable($("#TxtCntPermitidas"), datos.Editar === true && datos.Confidencial === true && EtpAsignado === true ? true : false);
-                KdoButtonEnable($("#btnActualizarCntPermi"), datos.Editar === true && datos.Confidencial === true && EtpAsignado === true ? true : false);
-                TextBoxEnable($("#TxtComentariosAutorizarPermitida"), datos.Editar === true && datos.Confidencial === true && EtpAsignado === true ? true : false);
+                KdoNumerictextboxEnable($("#TxtCntPermitidas"),  EtpAsignado === true ? true : false);
+                KdoButtonEnable($("#btnActualizarCntPermi"), EtpAsignado === true ? true : false);
+                TextBoxEnable($("#TxtComentariosAutorizarPermitida"), EtpAsignado === true ? true : false);
                 $("#TxtCntPermitidas").data("kendoNumericTextBox").focus();
             } else {
                 KdoNumerictextboxEnable($("#TxtCntPermitidas"), false);
