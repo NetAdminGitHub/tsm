@@ -522,6 +522,7 @@ var GuardarEstacionDesaMues = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             fn_GuardarEstaMarcoMues(xIdBrazo);
+            fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionMuestra"), false);

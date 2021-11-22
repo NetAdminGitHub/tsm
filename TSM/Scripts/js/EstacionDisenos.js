@@ -775,6 +775,7 @@ var fn_GuardarEstacionDisArea = function (xIdBrazo) {
         success: function (data) {
             KdoButtonEnable($("#btnccc_Dis"), true);
             fn_GuardarEstaMarcoDis(xIdBrazo);
+            fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionDisenos"), false);

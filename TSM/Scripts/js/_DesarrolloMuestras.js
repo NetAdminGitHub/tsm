@@ -88,7 +88,7 @@ var fn_DMueCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDesarrolloMues"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo,e, $("#maquinaDesarrolloMues"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaDesarrolloMues"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDesarrollo")); });
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaDesarrolloMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;

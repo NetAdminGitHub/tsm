@@ -522,6 +522,7 @@ var GuardarEstacionDesaVerifMues = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             GuardarEstaMarcoVerifMues(xIdBrazo);
+            fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionVerifMuestra"), false);

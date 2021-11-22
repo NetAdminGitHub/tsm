@@ -164,6 +164,7 @@ var fn_GuardarEstacionAcceMues = function (xIdBrazo) {
                 RequestEndMsg(data, xType);
                 maq = fn_GetMaquinas();
                 $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
             }
         },
         error: function (data) {

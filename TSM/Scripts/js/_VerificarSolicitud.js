@@ -1453,12 +1453,13 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
-  
+    fn_ObtCntMaxEstaciones();
 }; // FIN DOCUMENT READY
 
 var fn_VSCargar = function () {
     let RdVUrl = TSM_Web_APi + "RequerimientoDesarrollos/" + $("#txtId").val();
     getRD(RdVUrl);
+    fn_ObtCntMaxEstaciones();
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false;
     if (vhb) {
     
