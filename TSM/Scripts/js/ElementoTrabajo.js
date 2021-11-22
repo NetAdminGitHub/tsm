@@ -2948,26 +2948,33 @@ let fn_ObtCntMaxEstaciones = (al) => {
         type: 'GET',
         success: function (datos) {
             let AlertEst = al;
-            AlertEst.children().remove();
-
-            if (datos === null) {
-                AlertEst.children().remove();
-                PermiteAddEstacion = true;
-            } else {
+            if (al === undefined) {
                 kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
 
-                if (datos.CantidadNoPemitida === true) {
-                    AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
-                        '<strong>Advertencia!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
-                        '</div>');
-                    PermiteAddEstacion = false;
+            } else {
+                AlertEst.children().remove();
 
-                } else {
-                    AlertEst.alert();
+                if (datos === null) {
+                    AlertEst.children().remove();
                     PermiteAddEstacion = true;
-                }
+                } else {
+                    kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
 
-            };
+                    if (datos.CantidadNoPemitida === true) {
+                        if (datos.MostrarAdvertencia === true) {
+                            AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
+                                '<strong>Advertencia!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
+                                '</div>');
+                        }
+                        PermiteAddEstacion = false;
+
+                    } else {
+                        AlertEst.alert();
+                        PermiteAddEstacion = true;
+                    }
+
+                };
+            }
         }
     });
 };

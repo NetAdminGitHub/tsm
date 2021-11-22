@@ -798,6 +798,7 @@ var fn_GuardarEstacion = function (xIdBrazo) {
         success: function (data) {
             KdoButtonEnable($("#btnccc"), true);
             fn_GuardarEstaMarco(xIdBrazo);
+            fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionColor"), false);
