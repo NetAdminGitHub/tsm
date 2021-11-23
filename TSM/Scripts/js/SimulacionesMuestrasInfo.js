@@ -1014,7 +1014,7 @@ let fn_SetCamposValores = function (elemento) {
             );
         }
 
-        CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
+        CrearGrafico($("#chart"), "Distribución de costos " + elemento.NombreDiseno, dataChart, "category", TipoGrafico.pie, true);
         ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= kendo.toString(value,'n2')# - #= kendo.toString(percentage * 100.0, 'n2')#%");
         ConfigLeyendaGrafico($("#chart"), PosicionLeyenda.right, true, AlinearLeyenda.center);
         ConfigTituloGrafico($("#chart"), PosicionTitulo.bottom, true, AlinearLeyenda.center);
