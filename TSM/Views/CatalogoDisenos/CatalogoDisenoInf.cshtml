@@ -5,7 +5,7 @@
 </style>
 
 <div class="form-row">
-    <div class="form-group col-lg-5 ">
+    <div class="form-group col-lg-4 ">
         <div class="border p-md-1 p-lg-1 rounded">
             <fieldset disabled>
                 <div class="form-row">
@@ -64,7 +64,7 @@
 
         </div>
     </div>
-    <div class="form-control col-lg-7">
+    <div class="form-control col-lg-8">
 
         <div id="tab_inf">
             <ul>
@@ -141,6 +141,12 @@
                         <input id="TxtTallaDesarrollada" name="TxtTallaDesarrollada" class="k-textbox form-control" />
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="TxtTallaSeleccionadas">Talla Seleccionadas:</label>
+                        <input id="TxtTallaSeleccionadas" name="TxtTallaSeleccionadas" class="k-textbox form-control" />
+                    </div>
+                </div>
             </div>
             <br />
             <div class="border p-md-1 p-lg-1">
@@ -155,7 +161,7 @@
                         <input id="CmbTiposMuestras" name="CmbTiposMuestras" required validationMessage="Requerido" type="text" class="form-control" />
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row" hidden="hidden">
                     <div class="form-group col-md-6 col-lg-8">
                         <label for="CmbTallas">Seleccion de talla a desarrollar</label>
                         <input id="CmbTallas" name="CmbTallas" required validationMessage="Requerido" type="text" class="form-control" />
