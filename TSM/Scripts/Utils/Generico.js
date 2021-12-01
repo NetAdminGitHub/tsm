@@ -2283,7 +2283,7 @@ var fn_ShowModalNuevoAjusteFormulas = function (cargarJs, data, divSolIngAjuste,
  * @param {number} gFpIdCotizacion id cotizacion
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT) {
     kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divGenFP + "").children().length === 0) {
         $.ajax({
@@ -2293,13 +2293,13 @@ var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gF
             datatype: "html",
             success: function (resultado) {
                 kendo.ui.progress($(document.activeElement), false);
-                fn_CargarVistaModalGenerarFichaProd(resultado, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+                fn_CargarVistaModalGenerarFichaProd(resultado, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT);
 
             }
         });
     } else {
         kendo.ui.progress($(document.activeElement), false);
-        fn_CargarVistaModalGenerarFichaProd("", divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+        fn_CargarVistaModalGenerarFichaProd("", divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT);
 
     }
 };
@@ -2313,7 +2313,7 @@ var fn_GenerarFichaProduccion = function (divGenFP, gFpIdot, gFpIdSimulacion, gF
  * @param {number} gFpIdCotizacion id cotizacion
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT) {
 
     let a = document.getElementsByTagName("script");
     let listJs = [];
@@ -2326,12 +2326,12 @@ var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFp
         script.type = "text/javascript";
         script.src = "/Scripts/js/" + fileJs;
         script.onload = function () {
-            fn_ShowModalGenFichaProd(true, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+            fn_ShowModalGenFichaProd(true, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     } else {
 
-        fn_ShowModalGenFichaProd(false, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose);
+        fn_ShowModalGenFichaProd(false, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT);
     }
 };
 /**
@@ -2344,12 +2344,12 @@ var fn_CargarVistaModalGenerarFichaProd = function (data, divGenFP, gFpIdot, gFp
  * @param {number} gFpIdCotizacion id cotizacion
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
-var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose) {
+var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpIdSimulacion, gFpIdCotizacion, fnclose, listDimensionesOT, listaTallasNoOT) {
     let onShow = function () {
         if (cargarJs === true) {
-            fn_InicializarCargarFichaProd(gFpIdot);
+            fn_InicializarCargarFichaProd(gFpIdot, listaTallasNoOT);
         } else {
-            fn_CrearFichaProd(gFpIdot);
+            fn_CrearFichaProd(gFpIdot, listaTallasNoOT);
         }
     };
 
@@ -2372,7 +2372,7 @@ var fn_ShowModalGenFichaProd = function (cargarJs, data, divGenFP, gFpIdot, gFpI
         //maxHeight: 800,
         minWidth: "20%",
         actions: [
-            { text: '<span class="k-icon k-i-check"></span>&nbspGenerar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion); } },
+            { text: '<span class="k-icon k-i-check"></span>&nbspGenerar', primary: true, action: function () { return fn_FichaProGenerar(gFpIdot, gFpIdSimulacion, gFpIdCotizacion, listDimensionesOT); } },
             { text: '<span class="k-icon k-i-cancel"></span>&nbspCancelar' }
         ],
         show: onShow,
