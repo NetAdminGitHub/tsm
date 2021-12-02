@@ -91,7 +91,9 @@ let fn_GenerarSolicitudProducciones = function (gFpIdot, gFpIdSimulacion, gFpIdC
 
             kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(data, "Post");
-
+            $("#gridDimensionCat").data("kendoGrid").dataSource.read()
+            listaDimenOT = [];
+            listaTallasNoOT = [];
         },
         error: function (data) {
             kendo.ui.progress($(".k-dialog"), false);
