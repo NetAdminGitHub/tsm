@@ -717,7 +717,7 @@ let fn_gridOT = function (xidCatalogo) {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                       /* if (dataItem.Estado === "TERMINADO") {*/
+              
                             dataItem.set("Seleccion", !dataItem.Seleccion);
                             LimpiaMarcaCelda();
                             /* fn_SeleccionarFilas();*/
@@ -737,9 +737,7 @@ let fn_gridOT = function (xidCatalogo) {
                                 }
                             }
 
-                        //} else {
-                        //    $("#kendoNotificaciones").data("kendoNotification").show("LA OT NO ESTA FINALIZADA, NO SE PUEDE SELECCIONAR", "error");
-                        //}
+               
                       
                     }
                 },
