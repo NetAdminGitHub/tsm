@@ -694,21 +694,21 @@ let fn_gridOT = function (xidCatalogo) {
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "Seleccion", title: "Seleccion", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Seleccion"); } },
-            { field: "NoDocumento", title: "NoDocumento" },
-            { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "IdOrdenTrabajo", title: "IdOrdenTrabajo", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "IdDimensionCatalogoDisenos", title: "Codigó Dimensión", editor: Grid_ColInt64NumSinDecimal, hidden: true },
-            { field: "IdCategoriaTalla", title: "Tallas a Desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", TSM_Web_APi + "CategoriaTallas", "", "Seleccione...", "required", "", "Requerido"], hidden: true },
-            { field: "Nombre", title: "Tallas a Desarrollar" },
-            { field: "Tallas", title: "Rango de Tallas" }, //aggregates: ["count"], footerTemplate: "Cantidad de Tallas: #: data.Tallas ? data.Tallas.count: 0 #" 
-            { field: "C3", title: "Dimensión Relativa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "C3"); } },
-            { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...", "required", "", "Requerido"], hidden: true },
-            { field: "Abreviatura", title: "Unidad de Medida" },
-            { field: "DimensionesRelativas", title: "Medidas Relativas" },
-            { field: "DesarrollarTalla", title: "¿Talla a desarrollar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DesarrollarTalla"); } },
+            { field: "Seleccion", title: "&nbsp;", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Seleccion"); }, menu: false, filterable: false },
+            { field: "NoDocumento", title: "No Documento", menu: false, filterable: false },
+            { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdOrdenTrabajo", title: "IdOrdenTrabajo", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdDimensionCatalogoDisenos", title: "Codigó Dimensión", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdCategoriaTalla", title: "Tallas a Desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", TSM_Web_APi + "CategoriaTallas", "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
+            { field: "Nombre", title: "Tallas a Desarrollar",menu: false, filterable: false  },
+            { field: "Tallas", title: "Rango de Tallas", menu: false, filterable: false }, //aggregates: ["count"], footerTemplate: "Cantidad de Tallas: #: data.Tallas ? data.Tallas.count: 0 #"
+            { field: "C3", title: "Dimensión Relativa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "C3"); }, menu: false, filterable: false },
+            { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2], menu: false, filterable: false },
+            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2], menu: false, filterable: false  },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
+            { field: "Abreviatura", title: "Unidad", menu: false, filterable: false },
+            { field: "DimensionesRelativas", title: "Medidas Relativas", menu: false, filterable: false },
+            { field: "DesarrollarTalla", title: "Talla a desarrollar", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DesarrollarTalla"); }, menu: false, filterable: false },
              {
                 command: {
                     name: "Seleccionar",
@@ -717,7 +717,7 @@ let fn_gridOT = function (xidCatalogo) {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        if (dataItem.Estado === "TERMINADO") {
+                       /* if (dataItem.Estado === "TERMINADO") {*/
                             dataItem.set("Seleccion", !dataItem.Seleccion);
                             LimpiaMarcaCelda();
                             /* fn_SeleccionarFilas();*/
@@ -737,9 +737,9 @@ let fn_gridOT = function (xidCatalogo) {
                                 }
                             }
 
-                        } else {
-                            $("#kendoNotificaciones").data("kendoNotification").show("LA OT NO ESTA FINALIZADA, NO SE PUEDE SELECCIONAR", "error");
-                        }
+                        //} else {
+                        //    $("#kendoNotificaciones").data("kendoNotification").show("LA OT NO ESTA FINALIZADA, NO SE PUEDE SELECCIONAR", "error");
+                        //}
                       
                     }
                 },
@@ -752,7 +752,7 @@ let fn_gridOT = function (xidCatalogo) {
 
     });
 
-    SetGrid($("#gridDimensionCat").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 450);
+    SetGrid($("#gridDimensionCat").data("kendoGrid"), ModoEdicion.EnPopup, true, true, false, false, true, 450);
     SetGrid_CRUD_ToolbarTop($("#gridDimensionCat").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridDimensionCat").data("kendoGrid"), Permisos.SNEditar,false);
     Set_Grid_DataSource($("#gridDimensionCat").data("kendoGrid"), DmCat);
@@ -1031,7 +1031,7 @@ let fn_GetRequerimientoInfo = function () {
 let fn_CerrarModal = function () {
     $("#gridCotizacionDetalle").data("kendoGrid").dataSource.read();
     $("#gConOT").data("kendoGrid").dataSource.read();
-    $("#gridDimensionCat").data("kendoGrid").dataSource.read();
+   /* $("#gridDimensionCat").data("kendoGrid").dataSource.read();*/
 };
 
 let LimpiaMarcaCelda = function () {
