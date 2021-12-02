@@ -228,10 +228,7 @@ var fn_DMCargarConfiguracion = function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis();});
     });
 
-    $("#btnUpdDimen").click(function () {
-        fn_ActualizarDimensiones("vDimenReq", $("#txtIdRequerimiento").val(), function () { return fn_GetDisenoMuestra(); });
-    });
-
+  
     fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
 };
 
