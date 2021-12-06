@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|21112001";
+    ViewBag.IdVersion = "TSM0101088|21120601";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <div class="form-row">
                             <div class="form-group col-lg-3 col-md-3">
                                 <label for="txtNoDocumentoOT" id="lblNoDocumentoOT"><strong>No Orden de Trabajo:</strong></label>
@@ -79,6 +79,8 @@
                                         <button type="button" id="btnAgenda" class="form-control"></button>
                                         &nbsp;
                                         <button type="button" id="btnHistorial" class="form-control"></button>
+                                        &nbsp;
+                                        <button type="button" id="btnImpReportStrikeOff" class="form-control"></button>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +107,7 @@
                         </div>
 
                     </div>  
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         <div class="form-row">
                             <div class="form-group col-lg-6 col-md-6">
                                 <label for="TxtInstruccionesEspeciales"><strong>Instrucciones Especiales:</strong></label>
@@ -465,14 +467,6 @@
                     </div>
                 </form>
             </div>
-            @*<div id="TP_2">
-                    <div class="form-row">
-                        <div class="form-group col-lg-12">
-                            <div id="gridInter" class="form-control"></div>
-                        </div>
-                    </div>
-
-                </div>*@
         </div>
     </div>
 </div>
