@@ -58,11 +58,11 @@ $(document).ready(function () {
                             }
                         }
                     },
-                    EsPapel: {type: "bool"},
-                    EsImpresion: { type: "bool" },
-                    EsSublimacion: { type: "bool" },
-                    EsPlantilla: { type: "bool" },
-                    EsEstampado: { type: "bool" },
+                    EsPapel: { type: "boolean"},
+                    EsImpresion: { type: "boolean" },
+                    EsSublimacion: { type: "boolean" },
+                    EsPlantilla: { type: "boolean" },
+                    EsEstampado: { type: "boolean" },
                     IdServicio: {
                         type: "string",
                         defaultValue: function (e) { return $("#CmbServicio").val(); }
@@ -79,7 +79,15 @@ $(document).ready(function () {
                     Icono: {
                         type: "string"
                     },
-
+                    AplicaCapilar: {
+                        type: "boolean"
+                    },
+                    AplicaSeda: {
+                        type: "boolean"
+                    },
+                    PermiteArrastrar: {
+                        type: "boolean"
+                    }
                 }
             }
         }
@@ -164,11 +172,13 @@ $(document).ready(function () {
                 template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
                     "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
                 field: "IconoView",
-                title: "&nbsp;"
+                title: "Ícono"
             },
             { field: "IdUsuarioMod", title: "Usuario", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" }
-           
+            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" },
+            { field: "AplicaCapilar", title: "Aplica Capilar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaCapilar"); } },
+            { field: "AplicaSeda", title: "Aplica Seda?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaSeda"); } },
+            { field: "PermiteArrastrar", title: "Permite Arrastrar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "PermiteArrastrar"); } }           
         ]
     });
 

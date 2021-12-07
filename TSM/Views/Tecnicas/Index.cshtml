@@ -1,13 +1,13 @@
 ﻿@{
     ViewBag.Title = "Definición de Técnicas";
-    ViewBag.IdVersion = "TSM0101016|v19010701";
+    ViewBag.IdVersion = "TSM0101016|v2112061";
 }
 @section Scripts {
     <script type="text/javascript">
         var crudServiceBaseUrl = "@string.Format("{0}Tecnicas", TSM.Utils.Config.TSM_WebApi)";
         var VistaServiciosUlr = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
     </script>
-    <script src="~/Scripts/js/Tecnicas.js"></script>
+    <script src="~/Scripts/js/Tecnicas.js?@ViewBag.IdVersion"></script>
 }
     <div class="form-row">
         <div class="col-lg-12">
