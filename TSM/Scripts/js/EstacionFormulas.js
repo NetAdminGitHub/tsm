@@ -212,6 +212,7 @@ var fn_VistaEstacionFormulas = function () {
     $("#tsFormulas").data("kendoTabStrip").select(0);
     TextBoxEnable($("#TxtOpcSelecFormulas"), false);
     TextBoxEnable($("#TxtNombreQuiForm"), false);
+    TextBoxEnable($("#TxtNombreTipoTinta"), false);
     TextBoxReadOnly($("#TxtFormulaSugTint"), false);
     TextBoxReadOnly($("#txtArticuloSugerido_Tint"), false);
     $("#TxtOpcSelecFormulas").val($("#TxtOpcSelecFormulas").data("name"));
@@ -663,6 +664,7 @@ var fn_GetDatosMarcoFormulacion = function (xIdSeteo, xIdestacion) {
                 });
 
                 $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
+                $("#TxtNombreTipoTinta").val(setFor.NomIdTipoTinta);
 
             }
             else {
