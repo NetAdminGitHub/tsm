@@ -59,11 +59,21 @@ var fn_CargarEtapaAjuste = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
+                    //validar arrastre
+                    if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                        $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                        return;
+                    }
                     AgregaEstacion(e);
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
+                    //validar arrastre
+                    if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                        $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                        return;
+                    }
                     var dataCopy = e.detail[0];
                     fn_DuplicarBrazoMaquina($("#maquinaAjusteMues").data("maquinaSerigrafia").maquina, dataCopy);
                 },
@@ -550,7 +560,8 @@ var fn_MostrarEtapa = function () {
     KdoButtonEnable($("#btnGuardarDiseñoMuesAjuste"), Acceso_Diseno);
     DienoAfectaSecuencia === true ? KdoButtonEnable($("#btnAddColorDisAjuste"), Acceso_Diseno) : KdoButtonEnable($("#btnAddColorDisAjuste"), false);
 
-
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
 };
 
 var elementoSeleccionado = function (e) {

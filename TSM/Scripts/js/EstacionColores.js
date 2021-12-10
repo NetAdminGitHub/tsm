@@ -430,15 +430,7 @@ var fn_VistaEstacionColor = function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    //setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra); //obtener informacion de la entidad SeteoMarcos Formulaciones por seteo y estación
-    //estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
-    //EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
-    //EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "CREADA");
-    //if (EstacionBra === null) {
-    //    fn_SeccionMarcosFormulacion(null);
-    //    fn_SeccionEstacionMarcos(null);
-    //    fn_SeccionTitasFormulas(null);
-    //}
+    
 
 };
 
@@ -870,10 +862,11 @@ var fn_DelFormulaHis = function () {
 
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
-
-    KdoComboBoxEnable($("#CmbSedas_color"), vhb !== false ? habilitarMarco : false);
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    KdoComboBoxEnable($("#CmbSedas_color"), vhb !== false ? AplicaSeda : false);
     KdoComboBoxEnable($("#CmbTipoEmulsion_color"), vhb !== false ? habilitarMarco : false);
-    KdoNumerictextboxEnable($("#NumCapilar"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza"), vhb !== false ? habilitarMarco : false);
 

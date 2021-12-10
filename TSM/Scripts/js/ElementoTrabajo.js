@@ -72,6 +72,7 @@ var alertDiseno = false;
 var alertTintas = false;
 var alertRevelado = false;
 var PermiteAddEstacion = true;
+let tecnicasFlags = "";
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -2978,3 +2979,14 @@ let fn_ObtCntMaxEstaciones = (al) => {
         }
     });
 };
+
+let fn_SeteoTecnicasCondiciones = (idSeteo) => {
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaTecnicas/GetFlags/" + `${idSeteo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            tecnicasFlags = datos;
+        }
+    });
+}

@@ -849,10 +849,11 @@ var fn_DelFormulaHisDis = function () {
 
 let fn_DeshabilitarCamposMarco_Dis = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
-
-    KdoComboBoxEnable($("#CmbSedas_Dis"), vhb !== false ? habilitarMarco : false);
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Dis").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Dis").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    KdoComboBoxEnable($("#CmbSedas_Dis"), vhb !== false ? AplicaSeda : false);
     KdoComboBoxEnable($("#CmbTipoEmulsion_Dis"), vhb !== false ? habilitarMarco : false);
-    KdoNumerictextboxEnable($("#NumCapilar_Dis"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Dis"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas_Dis"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_Dis"), vhb !== false ? habilitarMarco : false);
 

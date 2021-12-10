@@ -910,10 +910,12 @@ var fn_GuardarFormulaEst_Ajuste = function (xIdBrazo, xCodigoColor, _MasaEntrega
 
 let fn_DeshabilitarCamposMarco_Ajuste = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Ajuste").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Ajuste").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_Ajuste"), Acceso_Diseno !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbSedas_Ajuste"), Acceso_Diseno !== false ? AplicaSeda : false);
     KdoComboBoxEnable($("#CmbTipoEmulsion_Ajuste"), Acceso_Diseno !== false ? habilitarMarco : false);
-    KdoNumerictextboxEnable($("#NumCapilar_Ajuste"), Acceso_Diseno !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Ajuste"), Acceso_Diseno !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas_Ajuste"), Acceso_Diseno !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_Ajuste"), Acceso_Diseno !== false ? habilitarMarco : false);
 
