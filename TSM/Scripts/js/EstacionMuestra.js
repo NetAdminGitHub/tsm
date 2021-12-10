@@ -654,10 +654,12 @@ let LimpiaMarcaCelda_Mues = function () {
 
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Mues").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Mues").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? AplicaSeda : false);
  /*   KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);*/
-    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas_Mues"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), vhb !== false ? habilitarMarco : false);
 

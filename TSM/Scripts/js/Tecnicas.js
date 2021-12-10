@@ -168,17 +168,17 @@ $(document).ready(function () {
             { field: "EsSublimacion", title: "Técnica proceso sublimación?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsSublimacion"); } },
             { field: "EsPlantilla", title: "Técnica para plantilla?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsPlantilla"); }  },
             { field: "EsEstampado", title: "Técnica para estampado?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "EsEstampado"); } },
+            { field: "IdUsuarioMod", title: "Usuario", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" },
+            { field: "AplicaCapilar", title: "Aplica Capilar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaCapilar"); } },
+            { field: "AplicaSeda", title: "Aplica Seda?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaSeda"); } },
+            { field: "PermiteArrastrar", title: "Permite Arrastrar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "PermiteArrastrar"); } },
             {
                 template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
                     "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
                 field: "IconoView",
                 title: "Ícono"
-            },
-            { field: "IdUsuarioMod", title: "Usuario", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", hidden: true, format: "{0:dd/MM/yyyy HH:mm:ss}" },
-            { field: "AplicaCapilar", title: "Aplica Capilar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaCapilar"); } },
-            { field: "AplicaSeda", title: "Aplica Seda?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "AplicaSeda"); } },
-            { field: "PermiteArrastrar", title: "Permite Arrastrar?", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "PermiteArrastrar"); } }           
+            }
         ]
     });
 

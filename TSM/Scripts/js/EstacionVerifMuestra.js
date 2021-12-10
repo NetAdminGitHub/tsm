@@ -653,10 +653,12 @@ let LimpiaMarcaCelda_VerifMues = function () {
 
 let fn_DeshabilitarCamposMarco_VM = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_VerifMues").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_VerifMues").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_VerifMues"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbSedas_VerifMues"), vhb !== false ? AplicaSeda : false);
     KdoComboBoxEnable($("#CmbTipoEmulsion_VerifMues"), vhb !== false ? habilitarMarco : false);
-    KdoNumerictextboxEnable($("#NumCapilar_VerifMues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_VerifMues"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas_VerifMues"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_VerifMues"), vhb !== false ? habilitarMarco : false);
 

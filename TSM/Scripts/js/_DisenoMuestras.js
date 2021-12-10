@@ -163,6 +163,11 @@ var fn_DMCargarConfiguracion = function () {
             eventos: {
                 nuevaEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
                         AgregaEstacion(e);
                         maq = fn_GetMaquinas();
                         $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
@@ -175,6 +180,11 @@ var fn_DMCargarConfiguracion = function () {
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
                         var dataCopy = e.detail[0];
                         fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
                     } else {
@@ -270,6 +280,8 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnAddColorDis"), vhb);
     KdoButtonEnable($("#btnUpdDimen"), vhb);
     fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
