@@ -71,15 +71,25 @@ var fn_VerifMuesCC = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
-                    AgregaEstacion(e);
-                    maq = fn_GetMaquinas();
-                    $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    if (PermiteAddEstacion === true) {
+                        AgregaEstacion(e);
+                        maq = fn_GetMaquinas();
+                        $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                    
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
-                    var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy);
+                    if (PermiteAddEstacion === true) {
+                        var dataCopy = e.detail[0];
+                        fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                   
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
@@ -92,11 +102,11 @@ var fn_VerifMuesCC = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaValidacionMues"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                        fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaValidacionMues"), 1);
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaValidacionMues"), 1, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
 
 
                 }
@@ -122,7 +132,7 @@ var fn_VerifMuesCC = function () {
 
     });
 
-
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
 };
 
 var fn_VerifMueCEtapa = function () {
@@ -130,6 +140,7 @@ var fn_VerifMueCEtapa = function () {
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
     KdoButtonEnable($("#btnAjuste_Valid"), vhb);
     $("#maquinaValidacionMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
 };
 
 var elementoSeleccionado_ValidMues = function (e) {

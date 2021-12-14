@@ -1,4 +1,5 @@
 ﻿let xpnIdContactoCliente;
+let xpnIdMarca;
 let xpnIdEjecutivo;
 let xpnIdcliente;
 let xpnNombreClie;
@@ -23,6 +24,7 @@ $(document).ready(function () {
     $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#Fecha"), false);
+    KdoComboBoxbyData($("#CmbMarcas"), "[]", "Nombre", "IdMarca", "Seleccione...");
     //#endregion 
     //#region Inicializar botones de mando
     KdoButton($("#btnAClieCont"), "save", "Inciar Solicitud");
@@ -138,11 +140,12 @@ $(document).ready(function () {
                 $("#CmbEjecSol").data("kendoComboBox").setDataSource(dsEjec);
                 KdoCmbSetValue($("#CmbEjecSol"), xpnIdEjecutivo);
                 KdoComboBoxEnable($("#CmbEjecSol"), false);
-
+                $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(xpnIdContactoCliente));
 
             } else
                 if (dsEjec !== null && dsEjec.length > 1) {
                     $("#CmbEjecSol").data("kendoComboBox").setDataSource(dsEjec);
+                    $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(xpnIdContactoCliente));
                     $("#CmbEjecSol").on("change", function () {
                         xpnIdEjecutivo = KdoCmbGetValue($("#CmbEjecSol"));
                     });
@@ -155,12 +158,16 @@ $(document).ready(function () {
         else
             if (dsclien !== null && dsclien.length > 1) {
                 $("#CmbCliCont").data("kendoComboBox").setDataSource(dsclien);
+                $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(xpnIdContactoCliente));
+                $("#CmbMarcas").data("kendoComboBox").dataSource.read()
+
                 $("#CmbCliCont").on("change", function () {
                     xpnIdcliente = KdoCmbGetValue($("#CmbCliCont"));
                     KdoCmbSetValue($("#CmbEjecSol"), "");
                     let dsEC = fn_GetECRelacion(xpnIdcliente);
                     $("#CmbEjecSol").data("kendoComboBox").setDataSource(dsEC);
                     $("#CmbEjecSol").data("kendoComboBox").dataSource.read();
+                    KdoCmbSetValue($("#CmbMarcas"), "");
                     if (dsEC !== null && dsEC.length === 1) {
                         KdoCmbSetValue($("#CmbEjecSol"), dsEC[0].IdEjecutivoCuenta.toString());
     
@@ -194,10 +201,19 @@ $(document).ready(function () {
                 $("#CmbContactoSol").data("kendoComboBox").setDataSource(dsContac);
                 KdoCmbSetValue($("#CmbContactoSol"), xpnIdContactoCliente);
                 KdoComboBoxEnable($("#CmbContactoSol"), false);
+                $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(xpnIdContactoCliente));
+                $("#CmbMarcas").data("kendoComboBox").dataSource.read();
 
             } else
                 if (dsContac !== null && dsContac.length > 1) {
                     $("#CmbContactoSol").data("kendoComboBox").setDataSource(dsContac);
+                     $("#CmbContactoSol").on("change", function () {
+                         let dsMarca = fn_GetMarcaContacto(KdoCmbGetValue($("#CmbContactoSol")));
+                            KdoCmbSetValue($("#CmbMarcas"), "");
+                            $("#CmbMarcas").data("kendoComboBox").setDataSource(dsMarca);
+                            $("#CmbMarcas").data("kendoComboBox").dataSource.read();
+
+                     });
                 }
         }
         else
@@ -206,13 +222,24 @@ $(document).ready(function () {
                 $("#CmbCliCont").on("change", function () {
                     xpnIdcliente = KdoCmbGetValue($("#CmbCliCont"));
                     KdoCmbSetValue($("#CmbContactoSol"), "");
+                    KdoCmbSetValue($("#CmbMarcas"), "");
                     let dsCC = fn_GetCCRelacion(xpnIdcliente);
                     $("#CmbContactoSol").data("kendoComboBox").setDataSource(dsCC);
                     $("#CmbContactoSol").data("kendoComboBox").dataSource.read();
                     if (dsCC !== null && dsCC.length === 1) {
                         KdoCmbSetValue($("#CmbContactoSol"), dsCC[0].IdContactoCliente.toString());
-                    }
+                        $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(dsCC[0].IdContactoCliente.toString()));
+
+                    } 
                     
+                });
+
+                $("#CmbContactoSol").on("change", function () {
+                    let dsMarca = fn_GetMarcaContacto(KdoCmbGetValue($("#CmbContactoSol")));
+                    KdoCmbSetValue($("#CmbMarcas"), "");
+                    $("#CmbMarcas").data("kendoComboBox").setDataSource(dsMarca);
+                    $("#CmbMarcas").data("kendoComboBox").dataSource.read();
+
                 });
             }
             else {
@@ -239,6 +266,7 @@ $(document).ready(function () {
             } else {
                 xpnIdContactoCliente = KdoCmbGetValue($("#CmbContactoSol"));
             }
+            xpnIdMarca = KdoCmbGetValue($("#CmbMarcas"));
             fn_crearServClie();
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar los campos requeridos", "error");
@@ -328,6 +356,26 @@ let fn_GetECRelacion = function (idcliente) {
 
     return result;
 };
+
+let fn_GetMarcaContacto = function (idcontacto) {
+    // obtener la relacion de los clientes con las ejecutivas
+    kendo.ui.progress($(document.body), true);
+    let result = null;
+    $.ajax({
+        url: TSM_Web_APi + "/ClientesMarcas/GetClientesMarcabyIdContactoCliente/" + `${idcontacto}`,
+        async: false,
+        type: 'GET',
+        success: function (datos) {
+            result = datos;
+        },
+        complete: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    return result;
+};
+
 let fn_GetCCRelacion = function (idcliente) {
     kendo.ui.progress($(document.body), true);
     let result = null;
@@ -384,7 +432,7 @@ let fn_crearServClie = function (e) {
             IdModulo: 2,
             IdEjecutivoCuenta: xpnIdEjecutivo,
             IdUsuario: esContacto === 1 ? xpnIdContactoCliente : xpnIdEjecutivo,
-            IdMarca: null
+            IdMarca: xpnIdMarca
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -397,7 +445,6 @@ let fn_crearServClie = function (e) {
             KdoButtonEnable($("#btnProClieCont"), true);
             kendo.ui.progress($(".k-window-content"), false);
 
-            //TextBoxEnable($('[name="NombreDiseno"]'), true);
             TextBoxEnable($('[name="NombrePro"]'), true);
             TextBoxEnable($('[name="NombreUbicacion"]'), true);
             KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), true);
@@ -434,6 +481,8 @@ let fn_GetSolCli = function (idsolicitud) {
                 esContacto === 1 ? $("#CmbEjecSol").data("kendoComboBox").setDataSource(fn_GetECRelacion(respuesta.IdCliente)) : $("#CmbContactoSol").data("kendoComboBox").setDataSource(fn_GetCCRelacion(respuesta.IdCliente));
                 esContacto === 1 ? KdoCmbSetValue($("#CmbEjecSol"), respuesta.IdEjecutivoCuenta): KdoCmbSetValue($("#CmbContactoSol"), respuesta.IdContactoCliente);
                 $("#Fecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(respuesta.FechaSolicitud), 's'));
+                $("#CmbMarcas").data("kendoComboBox").setDataSource(fn_GetMarcaContacto(respuesta.IdContactoCliente))
+                KdoCmbSetValue($("#CmbMarcas"), respuesta.IdMarca);
                 KdoButtonEnable($("#btnDelClieCont"), true);
                 KdoButtonEnable($("#btnFinClieCont"), true);
             } else {
@@ -527,10 +576,7 @@ let fn_gridSolDet = function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdPrograma").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                                 }
-                                //if (input.is("[name='NombreDiseno']") && input.val().length > 200) {
-                                //    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
-                                //    return false;
-                                //}
+                          
                                 if (input.is("[name='ColorTela']") && input.val().length > 200) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
@@ -541,7 +587,6 @@ let fn_gridSolDet = function () {
                                 }
                                 if (input.is("[name='IdUbicacion']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    //return $("#IdUbicacion").data("kendoComboBox").selectedIndex >= 0;
                                     return $("#IdUbicacion").data("kendoMultiSelect").value().length > 0;
                                 }
                                 if (input.is("[name='IdRegistroSolicitudPrenda']")) {
@@ -618,7 +663,8 @@ let fn_gridSolDet = function () {
             KdoHideCampoPopup(e.container, "IdCatalogoDiseno");
             TextBoxEnable($('[name="NoCatalogo"]'), false);
             TextBoxEnable($('[name="NombreDiseno"]'), false);
- 
+            KdoHideCampoPopup(e.container, "CantidadSTrikeOff");
+            KdoHideCampoPopup(e.container, "CantidadYardaPieza");
             if (!e.model.isNew()) {
                 $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").setDataSource(Fn_PrendasReg(e.model.IdPrograma));
                 KdoMultiColumnCmbSetValue($('[name="IdRegistroSolicitudPrenda"]'), e.model.IdRegistroSolicitudPrenda);
@@ -697,10 +743,10 @@ let fn_gridSolDet = function () {
             { field: "IdCategoriaTalla", title: "Tamaño a desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", UrlCata, "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreTamano", title: "Tamaño a desarrollar" },
             { field: "ColorTela", title: "Color tela" },
-            { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
-            { field: "CantidadYardaPieza", title: "No Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] },
+            { field: "CantidadSTrikeOff", title: "STrike Off", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0] ,hidden:true},
+            { field: "CantidadYardaPieza", title: "No Piezas / Yardas", editor: Grid_ColNumeric, values: ["required", "0", "999999999", "#", 0], hidden: true},
             { field: "IdUnidadYdPzs", title: "Unidad de medida", editor: Grid_Combox, values: ["IdUnidad", "Nombre", UrlUm, "", "Seleccione....", "", "", ""], hidden: true },
-            { field: "NombreUN", title: "Unidad de medida" },
+            { field: "NombreUN", title: "Unidad de medida", hidden: true },
             {
              field: "RegistroPrenda", title: "Crear registro de Prenda", hidden: true, menu: false, editor: fn_BotonAgregar
             },
@@ -732,12 +778,15 @@ let fn_gridSolDet = function () {
             KdoComboBoxEnable($("#CmbCliCont"), true);
             esContacto === 1 ? KdoComboBoxEnable($("#CmbEjecSol"), true) : KdoComboBoxEnable($("#CmbContactoSol"), true);
             Kendo_CmbFocus($("#CmbCliCont"));
+            KdoComboBoxEnable($("#CmbMarcas"), true);
             KdoButtonEnable($("#btnFinClieCont"), false);
         } else {
             KdoComboBoxEnable($("#CmbCliCont"), false);
             KdoComboBoxEnable($("#CmbContactoSol"), false);
             KdoComboBoxEnable($("#CmbEjecSol"), false);
+            KdoComboBoxEnable($("#CmbMarcas"), false);
             KdoButtonEnable($("#btnFinClieCont"), true);
+   
         }
     });
     $("#gridDet").data("kendoGrid").bind("change", function (e) {
@@ -918,11 +967,11 @@ let fn_GuadarCliente = function (e) {
         } else {
             xpnIdContactoCliente = KdoCmbGetValue($("#CmbContactoSol"));
         }
-        //TextBoxEnable($('[name="NombreDiseno"]'), false);
+        xpnIdMarca = KdoCmbGetValue($("#CmbMarcas"));
+
         TextBoxEnable($('[name="NombrePro"]'), false);
         TextBoxEnable($('[name="NombreUbicacion"]'), false);
         KdoComboBoxEnable($('[name="IdCategoriaTalla"]'), false);
-        //KdoComboBoxEnable($('[name="IdUbicacion"]'), false);
         KdoMultiSelectEnable($('[name="IdUbicacion"]'), false);
         TextBoxEnable($('[name="ColorTela"]'), false);
         KdoNumerictextboxEnable($('[name="CantidadSTrikeOff"]'), false);
@@ -1185,17 +1234,7 @@ var fn_Agregar = function () {
 };
 
 var fn_AgregarFM = function () {
-    //if ( $('[name="NombreDiseno"]').val() !== "") {
-    //    //KdoCmbSetValue($("#TxtPrenda"), "");
-    //    //$("#TxtDescrip").val($('[name="NombreDiseno"]').val());
-    //    //$("#ModalFM").data("kendoDialog").open();
-    //    //KdoCmbFocus($("#TxtPrenda"));
-        fn_ConsultarCatalogoDiseno("ConsultaCataloDis", KdoCmbGetValue($("#CmbCliCont")));
-    //} else {
-
-    //    $("#kendoNotificaciones").data("kendoNotification").show("Digite el nombre del diseño y el programa", "error");
-    //}
-
+        fn_ConsultarCatalogoDiseno("ConsultaCataloDis", KdoCmbGetValue($("#CmbCliCont"))); 
 };
 
 

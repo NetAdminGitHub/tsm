@@ -2,6 +2,9 @@
     <div class="form-group col-lg-12">
         <form id="FrmDM" enctype="multipart/form-data" autocomplete="off">
             <div class="form-row">
+                <div id="AlertaEstacionDis"></div>
+            </div>
+            <div class="form-row">
                 <input id="TxtIdDisenoMuestra" name="TxtIdDisenoMuestra" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
                 <input id="TxtIdRequerimiento" name="TxtIdRequerimiento" class="k-textbox form-control" , disabled="disabled" value="0" hidden="hidden" />
                 <div class="form-group col-lg-3">
@@ -67,6 +70,7 @@
                         <div style="width: 100%;">
                             <button type="button" id="btnGuardarDiseñoMues" name="btnGuardarDiseñoMues"></button>
                             <button type="button" id="btnAddColorDis" name="btnAddColorDis"></button>
+                            <button type="button" id="btnUpdDimen" name="btnUpdDimen" hidden="hidden"></button>
                         </div>
                     </div>
                 </div>
@@ -80,3 +84,5 @@
 </div>
 <div id="MEstacionDisenos" data-url='@Url.Action("EstacionDisenos","Estaciones")'></div>
 <div id="MEstacionAccesoriosDis" data-url='@Url.Action("EstacionAccesoriosDis","Estaciones")'></div>
+
+<div id="vDimenReq"></div>

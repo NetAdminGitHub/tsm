@@ -4,6 +4,7 @@ var vIdIdDisenoMuestra;
 var fn_DMCargarConfiguracion = function () {
   
     KdoButton($("#btnAddColorDis"), "plus-circle", "Agregar color o técnica");
+    KdoButton($("#btnUpdDimen"), "edit", "Actualizar Dimensiones");
 
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
@@ -161,19 +162,28 @@ var fn_DMCargarConfiguracion = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
-                    AgregaEstacion(e);
-                    maq = fn_GetMaquinas();
-                    $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    if (PermiteAddEstacion === true) {
+                        AgregaEstacion(e);
+                        maq = fn_GetMaquinas();
+                        $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+        
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
-                    var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy);
+                    if (PermiteAddEstacion === true) {
+                        var dataCopy = e.detail[0];
+                        fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                   
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    //$("#maquinaDiseno").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
                     fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaDiseno"));
                 },
                 desplazamientoEstacion: function (e) {
@@ -182,11 +192,11 @@ var fn_DMCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDiseno"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo,e,$("#maquinaDiseno"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaDiseno"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDiseno"), 1);
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDiseno"), 1, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
 
 
                 }
@@ -217,6 +227,9 @@ var fn_DMCargarConfiguracion = function () {
     $("#btnAddColorDis").click(function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis();});
     });
+
+  
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
 };
 
 
@@ -255,6 +268,8 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
     $("#maquinaDiseno").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorDis"), vhb);
+    KdoButtonEnable($("#btnUpdDimen"), vhb);
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid

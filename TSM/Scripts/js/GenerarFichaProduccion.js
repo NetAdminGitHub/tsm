@@ -1,22 +1,22 @@
 ﻿let xIdCatDisgfp;
 
-var fn_InicializarCargarFichaProd = function (gFpIdot) {
+var fn_InicializarCargarFichaProd = function (gFpIdot, listaTallasNoOT) {
     TextBoxEnable($("#TxtGFP_CodigoFM"), false);
     TextBoxEnable($("#TxtGFP_OrdenTrabajo"), false);
     TextBoxEnable($("#TxtGFP_NombreDiseno"), false);
     TextBoxEnable($("#TxtGFP_Talla"), false);
-    KdoMultiSelectDatos($("#CmbNoDocFichaProd"), "[]", "NoDocumento", "IdOrdenTrabajo", "Seleccione ...", 100, true);
+    TextBoxEnable($("#TxtTallasSelecionadas"), false);
+    $("#TxtTallasSelecionadas").val(listaTallasNoOT);
     fn_GetOT(gFpIdot);
 };
 
-var fn_CrearFichaProd = function (gFpIdot) {
+var fn_CrearFichaProd = function (gFpIdot, listaTallasNoOT) {
+    $("#TxtTallasSelecionadas").val(listaTallasNoOT);
     fn_GetOT(gFpIdot);
-    $("#CmbNoDocFichaProd").data("kendoMultiSelect").value("");
-
 };
 
-let fn_FichaProGenerar = function (gFpIdot, gFpIdSimulacion, gFpIdCotizacion) {
-    fn_GenerarSolicitudProducciones(gFpIdot, gFpIdSimulacion, gFpIdCotizacion);
+let fn_FichaProGenerar = function (gFpIdot, gFpIdSimulacion, gFpIdCotizacion, listDimensionesOT) {
+    fn_GenerarSolicitudProducciones(gFpIdot, gFpIdSimulacion, gFpIdCotizacion, listDimensionesOT);
 };
 
 let fn_GetOT = function (idOT) {
@@ -33,25 +33,13 @@ let fn_GetOT = function (idOT) {
                 $("#TxtGFP_OrdenTrabajo").val(respuesta.NoDocumento);
                 $("#TxtGFP_NombreDiseno").val(respuesta.NombreDiseno);
                 $("#TxtGFP_Talla").val(respuesta.TallaDesarrollar);
-                xIdCatDisgfp = respuesta.IdCatalogoDiseno;
-                datos = fn_NoDocumento_FichaProd(xIdCatDisgfp);
-                $("#CmbNoDocFichaProd").data("kendoMultiSelect").setDataSource(datos);
-                datos.read().then(function () {
-                    var view = datos.view();
-                    $.each(view, function (index, elemento) {
-                        lista = lista + elemento.IdOrdenTrabajo + ",";
-                    });
-                    $("#CmbNoDocFichaProd").data("kendoMultiSelect").value(lista.split(","));
-                });
+                
             } else {
                 $("#TxtGFP_CodigoFM").val("");
                 $("#TxtGFP_OrdenTrabajo").val("");
                 $("#TxtGFP_NombreDiseno").val("");
                 $("#TxtGFP_Talla").val("");
-                xIdCatDisgfp = 0;
-                datos = fn_NoDocumento_FichaProd(xIdCatDisgfp);
-                $("#CmbNoDocFichaProd").data("kendoMultiSelect").setDataSource(datos);
-                $("#CmbNoDocFichaProd").data("kendoMultiSelect").value("");
+                
 
             }
             kendo.ui.progress($(".k-dialog"), false);
@@ -85,7 +73,7 @@ let fn_NoDocumento_FichaProd = function (idcd) {
 };
 
 
-let fn_GenerarSolicitudProducciones = function (gFpIdot, gFpIdSimulacion, gFpIdCotizacion) {
+let fn_GenerarSolicitudProducciones = function (gFpIdot, gFpIdSimulacion, gFpIdCotizacion, listDimensionesOT) {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
         url: TSM_Web_APi + "SolicitudProducciones/Procesar",
@@ -95,14 +83,17 @@ let fn_GenerarSolicitudProducciones = function (gFpIdot, gFpIdSimulacion, gFpIdC
             IdOrdenTrabajo: gFpIdot,
             IdSimulacion: gFpIdSimulacion,
             IdCotizacion: gFpIdCotizacion,
-            StrOrdenesProd: $("#CmbNoDocFichaProd").data("kendoMultiSelect").value().toString()
+            StrOrdenesProd: null,
+            StrDimensiones: listDimensionesOT
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
 
             kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(data, "Post");
-
+            $("#gridDimensionCat").data("kendoGrid").dataSource.read()
+            listaDimenOT = [];
+            listaTallasNoOT = [];
         },
         error: function (data) {
             kendo.ui.progress($(".k-dialog"), false);

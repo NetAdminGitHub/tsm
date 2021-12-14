@@ -718,7 +718,6 @@ let fn_GetOTRequerimiento = function () {
             fn_ObtieneConfiguracionBrazos();
             fn_ObtenerFichaTamanos();
             fn_ObtenerDimensiones(reqid);
-            fn_TallasProducir();
             fn_ObtieneDetalleFormulaciones(xIdOt);
             let parametros = `${xIdOt},${idSimulacion},${idCotizacion}`;
             getInstrucciones(UrlSolicitudProd + `/${parametros}`, $("#instruccionesProd"));
@@ -750,7 +749,6 @@ let fn_GetOTRequerimiento = function () {
 
                 Grid_HabilitaToolbar($("#gDimensiones"), false, false, false);
                 Grid_HabilitaToolbar($("#gSolicitudProdDimension"), false, false, false);
-                Grid_HabilitaToolbar($("#gTallasProducir"), false, false, false);
                 KdoComboBoxEnable($("#plNombreCPT"), false);
 
                 KdoComboBoxEnable($("#plNombrePrenda"),false);
@@ -1240,9 +1238,7 @@ let fn_ObtenerFichaTamanos = function (req) {
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type === "update") {
-                $("#gTallasProducir").data("kendoGrid").dataSource.read();
-            }
+         
         },
         // VALIDAR ERROR
         error: Grid_error,
@@ -1280,11 +1276,14 @@ let fn_ObtenerFichaTamanos = function (req) {
                     Abreviatura: {
                         type: "string"
                     },
-                    Alto: {
+                    Alto:
+                    {
                         type: "number",
-                        validation: {
+                        validation:
+                        {
                             required: true,
-                            maxlength: function (input) {
+                            maxlength: function (input)
+                            {
                                 if (input.is("[name='Tallas']")) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200.");
                                     return input.val().length <= 200;
@@ -1329,7 +1328,22 @@ let fn_ObtenerFichaTamanos = function (req) {
                     },
                     IdDimension: {
                         type: "number", defaultValue: function (e) { return null; }
-                    }
+                    },
+                    AltoEstamp: {
+                        type: "number"
+                    },
+                    AnchoEstamp: {
+                        type: "number"
+                    },
+                    IdCatalogoDiseno: {
+                        type: "number", defaultValue: function (e) { return null; }
+
+                    },
+                    IdDimensionCatalogoDisenos: {
+                        type: "number", defaultValue: function (e) { return null; }
+
+                    },
+                    Nombre1: {type:"string"}
                 }
             }
         },
@@ -1348,6 +1362,7 @@ let fn_ObtenerFichaTamanos = function (req) {
             KdoHideCampoPopup(e.container, "IdCotizacion");
             KdoHideCampoPopup(e.container, "Abreviatura");
             KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "Nombre1");
             //KdoHideCampoPopup(e.container, "IdUnidad");
             if (!e.model.isNew()) {
                 KdoHideCampoPopup(e.container, "IdCategoriaTalla");
@@ -1364,10 +1379,13 @@ let fn_ObtenerFichaTamanos = function (req) {
             { field: "IdCategoriaTalla", title: "Cod. Talla", editor: Grid_Combox, values:["IdCategoriaTalla", "Nombre", UrlApiCT, "", "Seleccione...", "required", "", "Requerido"], hidden: true },
             { field: "Nombre", title: "Tamaño" },
             { field: "Tallas", title: "Rango de Tallas" },
-            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
             { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
-            { field: "IdUnidad", title: "Unidad",  editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"]},
-            { field: "Abreviatura", title: "Unidad de Medida" },
+            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "AnchoEstamp", title: "Ancho Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "AltoEstamp", title: "Alto Estampado", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2] },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlApiUM, "", "Seleccione...", "required", "", "Requerido"], hidden: true},
+            { field: "Abreviatura", title: "Unidad de Medida", hidden: true },
+            { field: "Nombre1", title: "Unidad Medidad" },
             { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "#", 0], format: "{0:n0}", footerTemplate: "Total: #: data.CantidadPiezas ? kendo.format('{0:n0}',sum ): 0 #"}
         ]
     });
@@ -1406,8 +1424,6 @@ let getInstrucciones = function (Url, objeto) {
     });
 };
 
-
-
 let getTolerancia = function (Url, objeto) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
@@ -1430,7 +1446,6 @@ let getTolerancia = function (Url, objeto) {
         }
     });
 };
-
 
 let ActualizaComentariosFicha = function () {
     kendo.ui.progress($(document.body), true);
@@ -1480,7 +1495,6 @@ let ActualizaComentariosFicha = function () {
     }
 };
 
-
 let GuardarArtAdj = function (UrlAA, nombreFichero) {
     kendo.ui.progress($("#vistaParcial"), true);
     var XFecha = Fhoy();
@@ -1515,7 +1529,6 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
     });
 };
 /*  */
-
 
 let getAdjun = function (UrlAA) {
     //LLena Splitter de imagenes
@@ -1607,162 +1620,6 @@ fPermisos = function (datos) {
     Permisos = datos;
 };
 
-//* TALLAS A PRODUCIR
-
-let fn_TallasProducir = function (req) {
-    var dsDimTamaño = new kendo.data.DataSource({
-
-        transport: {
-            read: {
-
-                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/GetTallasOT/" + `${xIdOt}/${idSimulacion}/${idCotizacion}`; },
-                contentType: "application/json; charset=utf-8"
-
-            },
-            update: {
-                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/" + datos.IdOrdenTrabajo.toString() + "/" + datos.IdSimulacion.toString() + "/" + datos.IdCotizacion.toString() + "/" + datos.IdOrdenTrabajoProduccion.toString(); },
-                type: "PUT",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (datos) {
-                    datos.success(result);
-                }
-            },
-            destroy: {
-                url: function (datos) { return TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos/" + datos.IdOrdenTrabajo.toString() + "/" + datos.IdSimulacion.toString() + "/" + datos.IdCotizacion.toString() + "/" + datos.IdOrdenTrabajoProduccion.toString(); },
-                dataType: "json",
-                type: "DELETE"
-            },
-            create: {
-                url: TSM_Web_APi + "SolicitudProduccionesOrdenesTrabajos",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json; charset=utf-8"
-            },
-            parameterMap: function (data, type) {
-                if (type !== "read") {
-                    return kendo.stringify(data);
-                }
-            }
-        },
-        //FINALIZACIÓN DE UNA PETICIÓN
-        requestEnd: function (e) {
-            Grid_requestEnd(e);
-            if (e.type === "update") {
-                $("#gSolicitudProdDimension").data("kendoGrid").dataSource.read();
-            }
-           
-        },
-        // VALIDAR ERROR
-        error: Grid_error,
-        schema: {
-            model: {
-                id: "IdOrdenTrabajoProduccion",
-                fields: {
-                    IdOrdenTrabajo: {
-                        type: "number",
-                        defaultValue: function () {
-                            return xIdOt;
-                        }
-                    },
-                    IdSimulacion: {
-                        type: "number",
-                        defaultValue: function () {
-                            return idSimulacion;
-                        }
-                    },
-                    IdCotizacion: {
-                        type: "number",
-                        defaultValue: function () {
-                            return idCotizacion;
-                        }
-                    },
-                    IdOrdenTrabajoProduccion: {
-                        type: "string",
-                        validation: {
-                            required: true,
-                            maxlength: function (input) {
-                                if (input.is("[name='IdOrdenTrabajoProduccion']")) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdOrdenTrabajoProduccion").data("kendoMultiColumnComboBox").selectedIndex >= 0;
-                                }
-                                return true;
-                            }
-                        }
-                    },
-                    IdCategoriaTalla: {
-                        type: "number"
-                    },
-                    IdDimension: {
-                        type: "number"
-                    },
-                    Tamano: {
-                        type: "string"
-                    },
-                    NoDocumentoPro: {
-                        type: "string"
-                    }
-                }
-            }
-        },
-        aggregate: [
-            { field: "CantidadPiezas", aggregate: "sum" }
-        ]
-    });
-    //CONFIGURACION DEL gCHFor,CAMPOS
-    var selectOTTamano = [];
-    $("#gTallasProducir").kendoGrid({
-
-        edit: function (e) {
-            // Ocultar
-            KdoHideCampoPopup(e.container, "IdOrdenTrabajo");
-            KdoHideCampoPopup(e.container, "IdSimulacion");
-            KdoHideCampoPopup(e.container, "IdCotizacion");
-            KdoHideCampoPopup(e.container, "IdRequerimiento");
-            KdoHideCampoPopup(e.container, "IdCategoriaTalla");
-            KdoHideCampoPopup(e.container, "IdDimension");
-            KdoHideCampoPopup(e.container, "Tamano");
-          
-            KdoHideCampoPopup(e.container, "NoDocumentoPro");
-            if (!e.model.isNew()) {
-                KdoHideCampoPopup(e.container, "IdOrdenTrabajoProduccion");
-            } else {
-                 KdoHideCampoPopup(e.container, "Tallas");
-            }
-     
-        },
-
-        //DEFICNICIÓN DE LOS CAMPOS
-        columns: [
-
-            { field: "IdOrdenTrabajo", title: "cod. Orden trabajo", hidden: true },
-            { field: "IdSimulacion", title: "Cod. Simulación", hidden: true },
-            { field: "IdCotizacion", title: "cod. Cotización", hidden: true },
-            {
-                field: "IdOrdenTrabajoProduccion", title: "Orden de Trabajo", hidden: true,
-                editor: function (container, options) {
-                    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" id ="' + options.field + '" />').appendTo(container).ControlSelecionSolicitudProdOT(xIdOt);
-                }
-            },
-            { field: "IdRequerimiento", title: "cod. Id Requerimiento", hidden: true },
-            { field: "IdCategoriaTalla", title: "cod. Categoria Talla", hidden: true },
-            { field: "IdDimension", title: "cod. Dimension", hidden: true },
-            { field: "NoDocumentoPro", title: "No Orden Trabajo" },
-            { field: "Tamano", title: "Tamaño" },
-            { field: "Tallas", title: "Rango de Tallas" }
-        ]
-    });
-
-    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gTallasProducir").data("kendoGrid"), ModoEdicion.EnPopup, false, false, true, false, redimensionable.Si, 0);
-    Set_Grid_DataSource($("#gTallasProducir").data("kendoGrid"), dsDimTamaño, 20);
-    SetGrid_CRUD_ToolbarTop($("#gTallasProducir").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gTallasProducir").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
 
 
 
-    $("#gTallasProducir").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gTallasProducir"), selectOTTamano);
-    });
-
-};

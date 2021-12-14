@@ -577,6 +577,7 @@ $(document).ready(function () {
         kdoNumericSetValue($("#txtVeloMaquinaRecalcular"), kdoNumericGetValue($("#txtVelocidadMaquina")));
         kdoNumericSetValue($("#txtPorcVariacionRecalcular"), kdoNumericGetValue($("#txtPorcVariacion")) === null ? 0 : kdoNumericGetValue($("#txtPorcVariacion")));
         kdoChkSetValue($("#chkUsarTermofijadoRecalcular"), KdoChkGetValue($("#chkUsarTermo")));
+        kdoChkSetValue($("#chkApliCostoTranspRecalcular"), KdoChkGetValue($("#chkApliCostoTransp")));
         $("#MbtnSimuRecalcular").data("kendoDialog").open();
     });
 
@@ -875,11 +876,25 @@ let fn_SetCampos = function () {
         value: 0
     });
 
+    $("#txtCostoTransporte").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#txtCostoTransporteUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
+
 };
 
 let fn_DHCamposSim = function () {
     $("#TxtFecha").data("kendoDatePicker").enable(false);
     KdoCheckBoxEnable($("#chkUsarTermo"), false);
+    KdoCheckBoxEnable($("#chkApliCostoTransp"), false);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").enable(false);
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").enable(false);
     $("#TxtPrecioCliente").data("kendoNumericTextBox").enable(false);
@@ -903,6 +918,8 @@ let fn_DHCamposSim = function () {
     $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").enable(false);
     $("#txtCostoTermofijado").data("kendoNumericTextBox").enable(false);
     $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").enable(false);
+    $("#txtCostoTransporte").data("kendoNumericTextBox").enable(false);
+    $("#txtCostoTransporteUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtCostoUnitario").data("kendoNumericTextBox").enable(false);
     $("#TxtCantidadTecnicas").data("kendoNumericTextBox").enable(false);
     $("#TxtMontajes").data("kendoNumericTextBox").enable(false);
@@ -925,12 +942,14 @@ let fn_SetCamposValores = function (elemento) {
         $("#TxtCostoOperacion").data("kendoNumericTextBox").value(elemento.CostoOperacion);
         $("#TxtCostoTotal").data("kendoNumericTextBox").value(elemento.CostoTotal);
         $("#chkUsarTermo").prop("checked", elemento.UsarTermofijado);
+        $("#chkApliCostoTransp").prop("checked", elemento.AplicarCostoTransporte);
         $("#TxtNoDocumento").val(elemento.NoDocumento);
         $("#TxtEstado").val(elemento.Estado);
         $("#TxtCliente").val(elemento.NombreCliente);
         $("#TxtCostoMP").data("kendoNumericTextBox").value(elemento.CostoMP);
         $("#TxtCostoPrimo").data("kendoNumericTextBox").value(elemento.CostoPrimo);
         $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
+        $("#txtCostoTransporte").data("kendoNumericTextBox").value(elemento.CostoTransporte);
         $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMP / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMOD / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoPrimo / elemento.CantidadPiezas * 10000) / 10000);
@@ -938,6 +957,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoProduccion / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoOperacion / elemento.CantidadPiezas * 10000) / 10000);
         $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTermofijado / elemento.CantidadPiezas * 10000) / 10000);
+        $("#txtCostoTransporteUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTransporte / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoUnitario").data("kendoNumericTextBox").value(elemento.CostoUnitario);
         $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
         $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
@@ -984,10 +1004,17 @@ let fn_SetCamposValores = function (elemento) {
                     category: "Costo Termofijado",
                     value: elemento.CostoTermofijado,
                     color: "#178AB8"
-                });
+                },
+                {
+                    category: "Costo Transporte",
+                    value: elemento.CostoTransporte,
+                    color: "#178AA8"
+                }
+
+            );
         }
 
-        CrearGrafico($("#chart"), "Distribución de costos " + elemento.Nombre2, dataChart, "category", TipoGrafico.pie, true);
+        CrearGrafico($("#chart"), "Distribución de costos " + elemento.NombreDiseno, dataChart, "category", TipoGrafico.pie, true);
         ConfigSeriesxDefectoGrafico($("#chart"), true, PosicionLabel.outsideEnd, "#= category #: \n $#= kendo.toString(value,'n2')# - #= kendo.toString(percentage * 100.0, 'n2')#%");
         ConfigLeyendaGrafico($("#chart"), PosicionLeyenda.right, true, AlinearLeyenda.center);
         ConfigTituloGrafico($("#chart"), PosicionTitulo.bottom, true, AlinearLeyenda.center);
@@ -1017,7 +1044,7 @@ var fn_GetSimubyIdSimu = function () {
 let fn_RecalSimulacionVistaInf = function () {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString() + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0"),
+        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString() + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTranspRecalcular").is(':checked') ? "1" : "0"),
         type: "Post",
         dataType: "json",
         data: JSON.stringify({

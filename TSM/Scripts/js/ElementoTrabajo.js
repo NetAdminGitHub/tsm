@@ -71,7 +71,7 @@ var estadoPermiteEdicion = false;
 var alertDiseno = false;
 var alertTintas = false;
 var alertRevelado = false;
-
+var PermiteAddEstacion = true;
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -212,21 +212,14 @@ $(document).ready(function () {
     });
 
 
-    //$("#NumBrazoA").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max:22
-    //});
-
-    //$("#NumBrazoB").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max: 22
-    //});
+    $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
 
     $("#NumOrigenA").kendoNumericTextBox({
         format: "#",
@@ -243,9 +236,6 @@ $(document).ready(function () {
         value: 0,
         max: 22
     });
-
-    //Iniciar Grid de intercambio
-    //fn_gridEstacionIntercambio($("#gridInter"));
 
 
     //#region Grid soliciud
@@ -402,12 +392,6 @@ $(document).ready(function () {
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     $("#gridRegistroCambiosDetalle").kendoGrid({
-        //dataBound: function () {
-        //    for (var i = 0; i < this.columns.length; i++) {
-        //        this.autoFitColumn(i);
-        //        this.columnResizeHandleWidth;
-        //    }
-        //},
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IDOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdSolicitudCambio");
@@ -670,7 +654,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         method: 'GET',
         success: function (datos) {
             if (datos !== null) {
-                fn_CompletarInfEtapa(datos, RecargarScriptVista);
+                fn_CompletarInfEtapa(datos, RecargarScriptVista);   
 
             } else {
                 kendo.ui.progress($(document.body), true);
@@ -753,6 +737,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#UbicacionHorInf").val(datos.UbicacionHorizontal);
     $("#UbicacionVerInf").val(datos.UbicacionVertical);
     $("#TxtDirectorioArchivosInfo").val(datos.DirectorioArchivos);
+    $("#TxtOtOrigen").val(datos.NoOrdenTrabajoOrigen);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
@@ -1205,7 +1190,7 @@ var fn_Duplicar = function (EstacionO, EstacionD) {
 ///<summary> Método Copiar/Pegar para máquina de Vue </summary>
 ///<param name="varObjeto"> variable que contiene ref al objeto máquina </param>
 ///<param name="dataCopia"> contiene arreglo con datos de estación a copiar  </param>
-var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
+var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
@@ -1221,6 +1206,12 @@ var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
             kendo.ui.progress($(document.body), false);
             varObjeto.vueComponent.agregarConfiguracion(dataCopia.numeroBrazo, dataCopia.tipo, dataCopia.data[0]); // actualiza máquina en vista.
             RequestEndMsg(data, "Post");
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
         },
         error: function (data) {
             ErrorMsg(data);
@@ -2197,7 +2188,7 @@ var fn_gridEstacionIntercambio= function (gd) {
  * @param {JSON} data data retornada por el evento de eliminación
  * @param {Number} xMaquina numero de estacion del brazo o estacion
  */
-var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
+var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina, fn_succes) {
     kendo.ui.progress($(document.body), true);
     let xIdestacion = data.detail[0].number;
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
@@ -2209,6 +2200,12 @@ var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
             RequestEndMsg(resultado, "Delete");
             maq = fn_GetMaquinas();
             xMaquina.data("maquinaSerigrafia").eliminarEstacion(data.detail[0]);
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
+           
         },
         error: function (resultado) {
             ErrorMsg(resultado);
@@ -2775,7 +2772,7 @@ var fn_GetSeteoMaquinasAlertasValidacion = function (IdSeteo) {
 };
 
 
-var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina,reducirEtacion) {
+var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina, reducirEtacion, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/UpdSeteoMaquinas_Forma/" + maq[0].IdSeteo,
@@ -2792,6 +2789,12 @@ var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraM
                 maq = fn_GetMaquinas();
             } else {
                 fn_ReduccionEstacionesMaq(maq[0].IdSeteo, cantidadEstaciones);
+            }
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
             }
         },
         error: function (data) {
@@ -2937,3 +2940,41 @@ var fn_GetAlertaEstatus = function (IdSeteo) {
 $("#body").on("cerrar_Modal_Color", function (event, param1, param2) {
     alert(param1 + "\n" + param2);
 });
+
+let fn_ObtCntMaxEstaciones = (al) => {
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajos/GetMaxEstacionesPermitida/" + `${idOrdenTrabajo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            let AlertEst = al;
+            if (al === undefined) {
+                kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+
+            } else {
+                AlertEst.children().remove();
+
+                if (datos === null) {
+                    AlertEst.children().remove();
+                    PermiteAddEstacion = true;
+                } else {
+                    kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+
+                    if (datos.CantidadNoPemitida === true) {
+                        if (datos.MostrarAdvertencia === true) {
+                            AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
+                                '<strong>Advertencia!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
+                                '</div>');
+                        }
+                        PermiteAddEstacion = false;
+
+                    } else {
+                        AlertEst.alert();
+                        PermiteAddEstacion = true;
+                    }
+
+                };
+            }
+        }
+    });
+};

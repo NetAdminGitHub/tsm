@@ -223,7 +223,8 @@ $(document).ready(function () {
                     },
                     FechaMod: {
                         type: "date"
-                    }
+                    },
+                    CantidadEstacionesPermitidas: { type:"number"}
                 }
             }
         }
@@ -255,6 +256,7 @@ $(document).ready(function () {
             { field: "NoCuenta", title: "NoCuenta", hidden: true },
             { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "ClientesMarcas", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
             { field: "Nombre1", title: "Estado" },
+            { field: "CantidadEstacionesPermitidas", title: "Estaciones Permitidas", editor: Grid_ColIntNumSinDecimal},
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]

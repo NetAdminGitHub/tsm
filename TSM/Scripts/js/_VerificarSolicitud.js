@@ -90,6 +90,17 @@ var fn_VSCargarJSEtapa = function () {
         value: 0
     });
 
+    $("#TxtEstacionesPermitidas").kendoNumericTextBox({
+            min: 0,
+            max: 999999999,
+            format: "#",
+            restrictDecimals: true,
+            decimals: 0,
+            value: 0
+    });
+
+    KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);
+
     $("#TxtStrikeOffAdicional").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -138,6 +149,7 @@ var fn_VSCargarJSEtapa = function () {
         min: 1
     });
 
+  
     // se utiliza pra validar formularios
     let ValidRD = $("#ReqDes").kendoValidator(
         {
@@ -1441,12 +1453,13 @@ var fn_VSCargarJSEtapa = function () {
 
     });
 
-  
+    fn_ObtCntMaxEstaciones();
 }; // FIN DOCUMENT READY
 
 var fn_VSCargar = function () {
     let RdVUrl = TSM_Web_APi + "RequerimientoDesarrollos/" + $("#txtId").val();
     getRD(RdVUrl);
+    fn_ObtCntMaxEstaciones();
     vhb = $("#txtEstado").val() !== "ACTIVO" || EtpSeguidor === true || EtpAsignado === false;
     if (vhb) {
     
@@ -1454,6 +1467,7 @@ var fn_VSCargar = function () {
         TextBoxEnable($("#TxtEjecutivoCuenta"), false);
         KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), false);
         KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), false);
+/*        KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);*/
         KdoComboBoxEnable($("#CmbMotivoDesarrollo"), false);
         KdoComboBoxEnable($("#IdUbicacion"), false);
         $("#UbicacionVer").attr("disabled", true);
@@ -1535,6 +1549,7 @@ let getRD = function (UrlRD) {
                 $("#UbicacionVer").val(elemento.UbicacionVertical);
                 $("#CntPiezas").data("kendoNumericTextBox").value(elemento.CantidadPiezas);
                 $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value(elemento.CantidadStrikeOff);
+                $("#TxtEstacionesPermitidas").data("kendoNumericTextBox").value(elemento.CantidadEstacionesPermitidas);
                 $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value(elemento.StrikeOffAdicional);
                 $("#CantidadColores").data("kendoNumericTextBox").value(elemento.CantidadColores);
                 $("#CantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
@@ -1862,6 +1877,7 @@ let GuardarRequerimiento = function (UrlRD) {
             IdUnidadMedidaCantidad: $("#CmbIdUnidadMedidaCantidad").data("kendoComboBox").value(),
             IdPerfilCriterio: $("#CmbCriterioCritico").data("kendoComboBox").value(),
             NoContrato: $("#TxtNoContrato").val(),
+            CantidadEstacionesPermitidas: $("#TxtEstacionesPermitidas").val(),
             IdBase: null,
             IdCategoriaConfeccion: $("#IdCategoriaConfeccion").data("kendoComboBox").value(),
             IdConstruccionTela: $("#IdConstruccionTela").data("kendoComboBox").value(),
@@ -2001,6 +2017,7 @@ let LimpiarReq = function () {
     $("#UbicacionVer").val("");
     $("#CntPiezas").data("kendoNumericTextBox").value("0");
     $("#TxtCantidadSTrikeOff").data("kendoNumericTextBox").value("0");
+    $("#TxtEstacionesPermitidas").data("kendoNumericTextBox").value("0");
     $("#TxtStrikeOffAdicional").data("kendoNumericTextBox").value("0");
     $("#CantidadColores").data("kendoNumericTextBox").value("0");
     $("#CantidadTallas").data("kendoNumericTextBox").value("0");
@@ -2095,6 +2112,7 @@ let HabilitaFormObje = function (ToF) {
     KdoNumerictextboxEnable($("#CntPiezas"), ToF);
     KdoNumerictextboxEnable($("#TxtCantidadSTrikeOff"), ToF);
     KdoNumerictextboxEnable($("#TxtStrikeOffAdicional"), ToF);
+   /* KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), ToF);*/
     //KdoNumerictextboxEnable($("#CantidadTallas"), ToF);
     KdoNumerictextboxEnable($("#Combo"), ToF);
     KdoNumerictextboxEnable($("#CantidadColores"), ToF);

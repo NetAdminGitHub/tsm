@@ -483,6 +483,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\AutorizarEstacionesPermitidas.js" />
     <Content Include="Scripts\js\Articulos.js" />
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
@@ -502,6 +503,7 @@
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
     <Content Include="Scripts\js\DefectosEncontrados.js" />
     <Content Include="Scripts\js\Departamentos.js" />
+    <Content Include="Scripts\js\DimensionesRequerimiento.js" />
     <Content Include="Scripts\js\EstacionAccesoriosMuest.js" />
     <Content Include="Scripts\js\EstacionAccesoriosVerifMuest.js" />
     <Content Include="Scripts\js\EstacionAjuste.js" />
@@ -767,8 +769,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config"></Content>
-    <Content Include="Web.Release.config"></Content>
+    <Content Include="Web.Debug.config">
+    </Content>
+    <Content Include="Web.Release.config">
+    </Content>
     <Content Include="Views\RequerimientoDesarrollos\Index.cshtml" />
     <Content Include="Views\RequerimientoDesarrollos\_ArteAdjuntos.cshtml" />
     <Content Include="Views\AnalisisDisenos\Index.cshtml" />
@@ -957,9 +961,14 @@
     <Content Include="Views\OrigenesPruebasLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosLaboratorio\Index.cshtml" />
     <Content Include="Views\MotivosSolicitudesAjustes\Index.cshtml" />
-    <Content Include="Web.IST.config"></Content>
-    <Content Include="Web.PRD.config"></Content>
-    <Content Include="Web.UAT.config"></Content>
+    <Content Include="Web.IST.config">
+    </Content>
+    <Content Include="Web.PRD.config">
+    </Content>
+    <Content Include="Web.UAT.config">
+    </Content>
+    <Content Include="Views\Shared\_AutorizarEstacionesPermitidas.cshtml" />
+    <Content Include="Views\Shared\_DimensionesRequerimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
