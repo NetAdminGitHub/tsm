@@ -212,6 +212,18 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
                     },
                     Comentario: {
                         type: "string"
+                    },
+                    IdQuimica: {
+                        type: "number"
+                    },
+                    NombreQuimica: {
+                        type: "string"
+                    },
+                    IdTipoTinta: {
+                        type: "number"
+                    },
+                    NombreTipoTinta: {
+                        type: "string"
                     }
                 }
             }
@@ -260,6 +272,11 @@ var fn_ConsultaEstacionesCambioEstado = function (gd) {
             { field: "IdTipoEmulsion", title: "Cod. emulsion", hidden: true },
             { field: "NombreEmulsion", title: "Emulsión", minResizableWidth: 120 },
             { field: "Capilar", title: "Capilar" },
+            { field: "IdQuimica", title: "Cod. Quimica",hidden:true},
+            { field: "NombreQuimica", title: "Química" },
+            { field: "IdTipoTinta", title: "Cod. Tipo Tinta", hidden: true},
+            { field: "NombreTipoTinta", title: "Tipo Tinta" },
+
             {
                 field: "Finalizar", title: "&nbsp;",
                 command: {
