@@ -79,7 +79,10 @@ var fn_VistaEstacion_AjusteDocuReady = function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_Ajuste"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_Ajuste"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    //Kendo_CmbFiltrarGrid($("#CmbQuimica_Ajuste"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    KdoComboBoxbyData($("#CmbQuimica_Ajuste"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_Ajuste").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
+
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Ajuste"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_Ajuste").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
 
@@ -297,7 +300,7 @@ var fn_VistaEstacion_AjusteDocuReady = function () {
 
     $("#CmbQuimica_Ajuste").data("kendoComboBox").bind("select", function (e) {
         KdoComboBoxEnable($("#CmbTipoTinta_Ajuste"), vhb);
-        let idQ = e.dataItem.IdQuimica;
+        let idQ = e.dataItem.IdQuimicaFormula;
         KdoCmbSetValue($("#CmbTipoTinta_Ajuste"), "");
         $("#CmbTipoTinta_Ajuste").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
     });
@@ -546,6 +549,7 @@ var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
         $("#CmbIdTipoEstacion_Ajuste").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco_Ajuste($("#CmbIdTipoEstacion_Ajuste").data("kendoComboBox").dataItem() ? 1 : $("#CmbIdTipoEstacion_Ajuste").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_Ajuste").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         KdoCmbSetValue($("#CmbQuimica_Ajuste"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_Ajuste").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));

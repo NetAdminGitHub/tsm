@@ -30,6 +30,7 @@ var fn_VerifMuesCC = function () {
     // colocar grid para arrastre
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
+    xIdQuimicaCliente = maq[0].IdQuimica;
     //FINALIZAR OT
     let ValidFrmFinVerifMue = $("#FrmFinVerifMue").kendoValidator({
         rules: {
@@ -153,6 +154,7 @@ var fn_VerifMueCEtapa = function () {
     fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
     //obtener tecnicas flags
     fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 var elementoSeleccionado_ValidMues = function (e) {

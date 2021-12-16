@@ -4,6 +4,7 @@ var vIdIdDisenoMuestraAjuste;
 var fn_CargarEtapaAjuste = function () {
     //obener el registro de la maquina
     maq = fn_GetMaquinas();
+    xIdQuimicaCliente = maq[0].IdQuimica;
     // obtener los tipos de estaciones
     TiEst = fn_GetTipoEstaciones();
 
@@ -562,6 +563,7 @@ var fn_MostrarEtapa = function () {
 
     //obtener tecnicas flags
     fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 var elementoSeleccionado = function (e) {

@@ -75,7 +75,11 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_Dis"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");    
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_Dis"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    //Kendo_CmbFiltrarGrid($("#CmbQuimica_Dis"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+
+    KdoComboBoxbyData($("#CmbQuimica_Dis"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_Dis").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
+
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Dis"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_Dis").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
 
@@ -301,7 +305,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     $("#CmbQuimica_Dis").data("kendoComboBox").bind("select", function (e) {
         KdoComboBoxEnable($("#CmbTipoTinta_Dis"), vhb);
-        let idQ = e.dataItem.IdQuimica;
+        let idQ = e.dataItem.IdQuimicaFormula;
         KdoCmbSetValue($("#CmbTipoTinta_Dis"), "");
         $("#CmbTipoTinta_Dis").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
     });
@@ -477,6 +481,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
         $("#CmbIdTipoEstacion_Dis").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco_Dis($("#CmbIdTipoEstacion_Dis").data("kendoComboBox").dataItem() ? 1 : $("#CmbIdTipoEstacion_Dis").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_Dis").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         KdoCmbSetValue($("#CmbQuimica_Dis"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_Dis").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
@@ -499,6 +504,7 @@ var fn_fn_SeccionMarcosFormulacion_Dis = function (datos) {
         $("#TxtFormulaSug_Dis").val("");
         KdoButtonEnable($("#btnccc_Dis"), false);
         KdoButtonEnable($("#btnDelFT_Dis"), false);
+        $("#CmbQuimica_Dis").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
 
         switch (Te) {
             case "COLOR":

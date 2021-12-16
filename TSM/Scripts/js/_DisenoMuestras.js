@@ -41,7 +41,7 @@ var fn_DMCargarConfiguracion = function () {
 
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-   
+    xIdQuimicaCliente = maq[0].IdQuimica;
     //***************************
 
     KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
@@ -282,6 +282,7 @@ var fn_DMCargarEtapa = function () {
     fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
     //obtener tecnicas flags
     fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid

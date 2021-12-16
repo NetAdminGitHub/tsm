@@ -9,6 +9,8 @@ let gAlto = 300;
 var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
+    xIdQuimicaCliente = maq[0].IdQuimica;
+
     KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
     KdoButton($("#btnUpdCantidaEsta"), "wrench", "Actualizar Estaciones Permitidas");
 
@@ -123,6 +125,7 @@ var fn_RTMostrarGrid = function () {
     fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
     //obtener tecnicas flags
     fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 var elementoSeleccionado = function (e) {
