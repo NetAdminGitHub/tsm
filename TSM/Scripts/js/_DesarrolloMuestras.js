@@ -21,7 +21,8 @@ var fn_DMueCargarConfiguracion = function () {
 
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-   
+    xIdQuimicaCliente = maq[0].IdQuimica;
+
     $("#btnConsultarPesos").click(function () {
         $("#MbtConsulta").data("kendoDialog").open();
         $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
@@ -133,6 +134,7 @@ var fn_DMCargarEtapa = function () {
     fn_ObtCntMaxEstaciones($("#AlertaEstacionDesarrollo"));
     //obtener tecnicas flags
     fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 
 };
 

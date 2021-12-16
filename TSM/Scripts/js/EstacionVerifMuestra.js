@@ -48,7 +48,10 @@ var fn_VEVerifMuestraDocuReady = function () {
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_VerifMues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
     KdoComboBoxEnable($("#CmbIdTipoEstacion_VerifMues"), false);
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_VerifMues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    //Kendo_CmbFiltrarGrid($("#CmbQuimica_VerifMues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    KdoComboBoxbyData($("#CmbQuimica_VerifMues"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
+
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_VerifMues"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_VerifMues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
 
@@ -266,6 +269,7 @@ var fn_SeccionMarcosFormulacion_VerifMues = function (datos) {
         $("#CmbIdTipoEstacion_VerifMues").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco_VM($("#CmbIdTipoEstacion_VerifMues").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
         KdoCmbSetValue($("#CmbQuimica_VerifMues"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_VerifMues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
@@ -278,6 +282,7 @@ var fn_SeccionMarcosFormulacion_VerifMues = function (datos) {
     } else {
         $("#TxtFormulaSug_VerifMues").val("");
         KdoCmbSetValue($("#CmbTipoTinta_VerifMues"), "");
+        $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
         $("#CmbSistemaPigmentos_VerifMues").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(0));
         KdoCmbSetValue($("#CmbSistemaPigmentos_VerifMues"), "");
         xCmbBasePigmentos_VerifMues = null;

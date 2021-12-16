@@ -73,6 +73,7 @@ var alertTintas = false;
 var alertRevelado = false;
 var PermiteAddEstacion = true;
 let tecnicasFlags = "";
+let xIdQuimicaCliente=0
 fPermisos = function (datos) {
     Permisos = datos;
 };
@@ -769,6 +770,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     if (maq.length !== 0) {
         //obtener el tipo de alerta activa o no
         fn_GetAlertaEstatus(maq[0].IdSeteo);
+        xIdQuimicaCliente = maq[0].IdQuimica;
     }
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
@@ -2990,3 +2992,29 @@ let fn_SeteoTecnicasCondiciones = (idSeteo) => {
         }
     });
 }
+
+/**
+ * Quimicas formulaciones llenar combobox 
+ * @param {any} vide codigo o id quimica
+ * @returns {data} datos
+ */
+var Fn_GetQuimicaFormula = function (vide) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "QuimicasFormulaciones/GetQuimicasFormulacionByidQuimica/" + (vide !== null ? vide.toString() : 0),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};

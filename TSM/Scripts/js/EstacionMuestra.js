@@ -47,7 +47,11 @@
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_Mues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
     KdoComboBoxEnable($("#CmbIdTipoEstacion_Mues"), false);
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_Mues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    //Kendo_CmbFiltrarGrid($("#CmbQuimica_Mues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+
+    KdoComboBoxbyData($("#CmbQuimica_Mues"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
+
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Mues"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
 
@@ -266,6 +270,7 @@ var fn_SeccionMarcosFormulacion_Mues = function (datos) {
         $("#CmbIdTipoEstacion_Mues").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco($("#CmbIdTipoEstacion_Mues").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         KdoCmbSetValue($("#CmbQuimica_Mues"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
@@ -278,6 +283,7 @@ var fn_SeccionMarcosFormulacion_Mues = function (datos) {
     } else {
         $("#TxtFormulaSug_Mues").val("");
         KdoCmbSetValue($("#CmbTipoTinta_Mues"), "");
+        $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         $("#CmbSistemaPigmentos_Mues").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(0));
         KdoCmbSetValue($("#CmbSistemaPigmentos_Mues"), "");
         xCmbBasePigmentos_Mues = null;
