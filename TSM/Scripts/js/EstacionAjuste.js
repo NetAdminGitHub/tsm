@@ -201,6 +201,12 @@ var fn_VistaEstacion_AjusteDocuReady = function () {
                     return $("#NumPixeles_Ajuste").data("kendoNumericTextBox").value() > 0;
                 }
                 return true;
+            },
+            vncapilar: function (input) {
+                if (input.is("[id='NumCapilar_Ajuste']") && Te === "TECNICA"  ) {
+                    return $("#NumCapilar_Ajuste").data("kendoNumericTextBox").value() !== 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -300,9 +306,14 @@ var fn_VistaEstacion_AjusteDocuReady = function () {
 
     $("#CmbQuimica_Ajuste").data("kendoComboBox").bind("select", function (e) {
         KdoComboBoxEnable($("#CmbTipoTinta_Ajuste"), vhb);
-        let idQ = e.dataItem.IdQuimicaFormula;
-        KdoCmbSetValue($("#CmbTipoTinta_Ajuste"), "");
-        $("#CmbTipoTinta_Ajuste").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
+        if (Arrastre_Nuevo === 0) {
+            let idQ = e.dataItem.IdQuimicaFormula;
+            KdoCmbSetValue($("#CmbTipoTinta_Ajuste"), "");
+            $("#CmbTipoTinta_Ajuste").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
+        } else {
+            Arrastre_Nuevo = 0;
+        }
+      
     });
 
     fn_GridEstacionesDiseno_Ajuste($("#gridEstacionMq_Ajuste"));
@@ -483,6 +494,7 @@ var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
     setFor = datos;
     if (setFor !== null) {
         $("#NumResolucionDPI_Ajuste").data("kendoNumericTextBox").focus();
+        Arrastre_Nuevo = 0;
         switch (setFor.IdTipoFormulacion) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
@@ -574,6 +586,19 @@ var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
         $("#TxtFormulaSug_Ajuste").val("");
         $("#txtArticuloSugeridoTint_Ajuste").val("");
         $("#txtArticuloSugerido_Tint").val("");
+
+        if ($("#CmbTipoTinta_Ajuste").data("kendoComboBox").dataSource.data().length === 0) {
+            Arrastre_Nuevo = 0;
+        } else {
+            Arrastre_Nuevo = 1;
+        }
+
+      
+        $("#CmbQuimica_Ajuste").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
+        $("#CmbQuimica_Ajuste").data("kendoComboBox").search($("#CmbQuimica_Ajuste").data("kendoComboBox").value());
+        $("#CmbQuimica_Ajuste").data("kendoComboBox").trigger("change");
+        $("#CmbQuimica_Ajuste").data("kendoComboBox").close();
+
         switch (Te) {
             case "COLOR":
                 KdoComboBoxEnable($("#CmbTecnica_Ajuste"), vhb);
@@ -598,7 +623,8 @@ var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
                 KdoComboBoxEnable($("#CmbSistemaPigmento_Ajuste"), false);
                 break;
         }
-    
+
+        Kendo_CmbFocus($("#CmbQuimica_Ajuste"));
     }
 
 };

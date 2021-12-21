@@ -73,7 +73,9 @@ var alertTintas = false;
 var alertRevelado = false;
 var PermiteAddEstacion = true;
 let tecnicasFlags = "";
-let xIdQuimicaCliente=0
+let xIdQuimicaCliente = 0;
+let Arrastre_Nuevo = 0;
+
 fPermisos = function (datos) {
     Permisos = datos;
 };

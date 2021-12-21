@@ -127,6 +127,12 @@ var fn_VEVerifMuestraDocuReady = function () {
                     return input.val().length <= 200;
                 }
                 return true;
+            },
+            vncapilar: function (input) {
+                if (input.is("[id='NumCapilar_VerifMues']") && Te === "TECNICA" ) {
+                    return $("#NumCapilar_VerifMues").data("kendoNumericTextBox").value() !== 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -138,7 +144,8 @@ var fn_VEVerifMuestraDocuReady = function () {
             vTemul: "Requerido",
             vidUa: "Requerido",
             vletra: "Longitud máxima del campo es 20",
-            vsuge: "Longitud máxima del campo es 200"
+            vsuge: "Longitud máxima del campo es 200",
+            vncapilar: "Requerido"
         }
     }).data("kendoValidator");
 
