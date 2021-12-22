@@ -92,6 +92,12 @@ var fn_TintasFCargarConfiguracion = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
+                    //validar arrastre
+                    if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                        $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                        return;
+                    }
+
                     AgregaEstacion(e);
                     maq = fn_GetMaquinas();
                     $("#maquinaTintasRev").data("maquinaSerigrafia").cargarDataMaquina(maq);
@@ -134,6 +140,8 @@ var fn_TintasFCargarEtapa = function () {
     vhb === true ? $("#gridCamEstadoMarco").data("kendoGrid").showColumn("Finalizar") : $("#gridCamEstadoMarco").data("kendoGrid").hideColumn("Finalizar");
     KdoCmbSetValue($("#cmbTipoMarco"), maq[0].IdTiposMarco);
     fn_GetNoFinalizadas(maq[0].IdSeteo);
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
 };
 
 var fn_ConsultaEstacionesCambioEstado = function (gd) {

@@ -47,7 +47,11 @@
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_Mues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
     KdoComboBoxEnable($("#CmbIdTipoEstacion_Mues"), false);
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_Mues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    //Kendo_CmbFiltrarGrid($("#CmbQuimica_Mues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+
+    KdoComboBoxbyData($("#CmbQuimica_Mues"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
+
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_Mues"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
 
@@ -123,6 +127,12 @@
                     return input.val().length <= 200;
                 }
                 return true;
+            },
+            vncapilar: function (input) {
+                if (input.is("[id='NumCapilar_Mues']") && Te === "TECNICA" ) {
+                    return $("#NumCapilar_Mues").data("kendoNumericTextBox").value() !== 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -134,7 +144,8 @@
             vTemul: "Requerido",
             vidUa: "Requerido",
             vletra: "Longitud máxima del campo es 20",
-            vsuge: "Longitud máxima del campo es 200"
+            vsuge: "Longitud máxima del campo es 200",
+            vncapilar: "Requerido"
         }
     }).data("kendoValidator");
 
@@ -266,6 +277,7 @@ var fn_SeccionMarcosFormulacion_Mues = function (datos) {
         $("#CmbIdTipoEstacion_Mues").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco($("#CmbIdTipoEstacion_Mues").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         KdoCmbSetValue($("#CmbQuimica_Mues"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
 
         $("#CmbTipoTinta_Mues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
@@ -278,6 +290,7 @@ var fn_SeccionMarcosFormulacion_Mues = function (datos) {
     } else {
         $("#TxtFormulaSug_Mues").val("");
         KdoCmbSetValue($("#CmbTipoTinta_Mues"), "");
+        $("#CmbQuimica_Mues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         $("#CmbSistemaPigmentos_Mues").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(0));
         KdoCmbSetValue($("#CmbSistemaPigmentos_Mues"), "");
         xCmbBasePigmentos_Mues = null;
@@ -654,10 +667,12 @@ let LimpiaMarcaCelda_Mues = function () {
 
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Mues").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec_Mues").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
 
-    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoComboBoxEnable($("#CmbSedas_Mues"), vhb !== false ? AplicaSeda : false);
  /*   KdoComboBoxEnable($("#CmbTipoEmulsion_Mues"), vhb !== false ? habilitarMarco : false);*/
-    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar_Mues"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas_Mues"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza_Mues"), vhb !== false ? habilitarMarco : false);
 
