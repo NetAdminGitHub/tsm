@@ -377,6 +377,7 @@ var fn_VistaEstacion_Ajuste = function () {
     TextBoxEnable($("#TxtOpcSelecFormulas_Ajuste"), false);
 
     TextBoxEnable($("#TxtNombreQuiForm_Ajuste"), false);
+    TextBoxEnable($("#TxtNombreTipoTinta_Ajuste"), false);
     TextBoxReadOnly($("#TxtFormulaSugTint_Ajuste"), false);
     TextBoxEnable($("#NumMasaEntre_Ajuste"), false);
     TextBoxReadOnly($("#ArticuloSugerido_Ajuste"), false);
@@ -556,6 +557,7 @@ var fn_SeccionMarcosFormulacion_Ajuste = function (datos) {
         $("#TxtFormulaSugTint_Ajuste").val(setFor.SugerenciaFormula);
         $("#TxtNombreQuiForm").val(setFor.NomIdQuimica);
         $("#TxtNombreQuiForm_Ajuste").val(setFor.NomIdQuimica);
+        $("#TxtNombreTipoTinta_Ajuste").val(setFor.NomIdTipoTinta);
 
         KdoCmbSetValue($("#CmbIdTipoEstacion_Ajuste"), setFor.IdTipoEstacion === undefined ? "" : setFor.IdTipoEstacion);
         $("#CmbIdTipoEstacion_Ajuste").data("kendoComboBox").trigger("change");

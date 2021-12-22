@@ -186,6 +186,7 @@ $(document).ready(function () {
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
     KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
     KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
+    KdoButton($("#btnImpReportStrikeOff"), "file-data", "Imprimir reporte Strike-Off");
 
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
@@ -538,7 +539,7 @@ $(document).ready(function () {
                 $("[name='IdAlerta']").data("kendoComboBox").trigger("change");
                 $("[name='Estado']").data("kendoComboBox").value('ACTIVA');
                 $("[name='Estado']").data("kendoComboBox").trigger("change");
-                //$("[name='Estado']").trigger();
+    
        
             } else {
                 KdoHideCampoPopup(e.container, "Estado");
@@ -684,10 +685,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
     xNoPermiteActualizar = datos.NoPermiteActualizar;
-    //if (datos.Asignado === false && datos.Seguidor === false) {
-    //    $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
 
-    //}
     //calcular retenciones si existen
     fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1, false);
     //obtenere los departametos a los que pertenece un usuario
@@ -1058,6 +1056,42 @@ $("#btnDesplazarEstacion").click(function () {
     }
 });
 
+$("#btnImpReportStrikeOff").click(function (e) {
+    let paramficha = `${idOrdenTrabajo}`;
+
+    e.preventDefault();
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/Reportes/ReporteFichaStrikeOff/",
+        dataType: 'json',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFichaStrikeOff",
+                controlador: "OrdenesTrabajos",
+                accion: "GetFichaStrikeOff",
+                id: paramficha
+
+            }
+        ),
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
+
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return true;
+});
+
+
 $("#btnDuplicarEstacion").click(function () {
     if (ValidarDuplicarEst.validate()) {
         fn_Duplicar(kdoNumericGetValue($("#NumOrigenA")), kdoNumericGetValue($("#NumDestinoB")));
@@ -1069,6 +1103,8 @@ $("#btnDuplicarEstacion").click(function () {
 $("#btnRegAjuste").click(function () {
     fn_AlertasBatch();
 });
+
+
 
 var fn_OpenModalDesplazamiento = function (EstacionIni, xMaquina,xCantidadEstaciones) {
     maquinaVueEl = xMaquina;
@@ -2704,8 +2740,6 @@ var fn_AlertasBatch = function () {
         dataType: "json",
         data: JSON.stringify({
             IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
-            //IdEtapaNuevo: 9,
-            //IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
             IdSolicitudCambio: 4,
             NombreTipoCambio:"AJUSTE DE MARCO / TINTAS",
             ItemSolicitud: 0,
