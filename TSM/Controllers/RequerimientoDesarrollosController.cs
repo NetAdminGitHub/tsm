@@ -26,10 +26,30 @@ namespace TSM.Controllers
         [HttpPost]
         public ActionResult SubirArchivo(string id, IEnumerable<HttpPostedFileBase> Adjunto)
         {
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, "ExtensionesArchivosModulos", "GetbyModuloVista", 1));
+            List<Dictionary<string, object>> exten = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
+            Dictionary<string, object> respuesta = new Dictionary<string, object>();
+
             if (Adjunto != null)
             {
                 foreach (var file in Adjunto)
                 {
+                    var sql = (from e in exten
+                               where e["Extension"].ToString().ToUpper() == Path.GetExtension(file.FileName).ToUpper()
+                               select new
+                               {
+                                   Extension = e["Extension"]
+
+                               }).Take(1);
+
+
+                    if (sql.ToList().Count == 0)
+                    {
+                        respuesta.Add("Resultado", false);
+                        respuesta.Add("Msj", "Extensión de archivo no permitida: " + Path.GetExtension(file.FileName).ToString());
+                        return Json(respuesta);
+                    }
+
                     var fileName = Path.GetFileName(file.FileName);
                     var rutaFisica = Server.MapPath("~/Adjuntos");
                     var physicalPath = Path.Combine(rutaFisica, id);
@@ -43,8 +63,56 @@ namespace TSM.Controllers
                 }
             }
 
-            return Content("");
+            respuesta.Add("Resultado", true);
+            respuesta.Add("Msj", "");
+            return Json(respuesta);
         }
+
+        [HttpPost]
+        public ActionResult SubirArchivoSublimacion(string id, IEnumerable<HttpPostedFileBase> Adjunto)
+        {
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, "ExtensionesArchivosModulos", "GetbyModuloVista", 4));
+            List<Dictionary<string, object>> exten = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
+            Dictionary<string, object> respuesta = new Dictionary<string, object>();
+
+            if (Adjunto != null)
+            {
+                foreach (var file in Adjunto)
+                {
+                    var sql = (from e in exten
+                               where e["Extension"].ToString().ToUpper() == Path.GetExtension(file.FileName).ToUpper()
+                               select new
+                               {
+                                   Extension = e["Extension"]
+
+                               }).Take(1);
+
+
+                    if (sql.ToList().Count == 0)
+                    {
+                        respuesta.Add("Resultado", false);
+                        respuesta.Add("Msj", "Extensión de archivo no permitida: " + Path.GetExtension(file.FileName).ToString());
+                        return Json(respuesta);
+                    }
+
+                    var fileName = Path.GetFileName(file.FileName);
+                    var rutaFisica = Server.MapPath("~/Adjuntos");
+                    var physicalPath = Path.Combine(rutaFisica, id);
+
+                    if (!Directory.Exists(physicalPath))
+                        Directory.CreateDirectory(physicalPath);
+
+                    physicalPath = Path.Combine(physicalPath, fileName);
+
+                    file.SaveAs(physicalPath);
+                }
+            }
+
+            respuesta.Add("Resultado", true);
+            respuesta.Add("Msj", "");
+            return Json(respuesta);
+        }
+
         [HttpPost]
         [Route("RequerimientoDesarrollos/SubirAdjuntoCatalogo")]
         public ActionResult SubirAdjuntoCatalogo(List<Dictionary<string, object>> value)
@@ -146,10 +214,31 @@ namespace TSM.Controllers
         [Route("RequerimientoDesarrollos/SubirArchivoAdjunto/{id}/{nombre}")]
         public ActionResult SubirArchivoAdjunto(string id, string nombre, IEnumerable<HttpPostedFileBase> Adjunto)
         {
+
+
+            string data = Utils.Config.GetData(string.Format("{0}/{1}/{2}/{3}", Utils.Config.TSM_WebApi, "ExtensionesArchivosModulos", "GetbyModuloVista", 2));
+            List<Dictionary<string, object>> exten = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
+            Dictionary<string, object> respuesta = new Dictionary<string, object>();
+
             if (Adjunto != null)
             {
                 foreach (var file in Adjunto)
                 {
+                    var sql = (from e in exten
+                               where e["Extension"].ToString().ToUpper() == Path.GetExtension(file.FileName).ToUpper()
+                               select new
+                               {
+                                   Extension = e["Extension"]
+
+                               }).Take(1);
+
+
+                    if (sql.ToList().Count == 0){
+                        respuesta.Add("Resultado", false);
+                        respuesta.Add("Msj", "Extensión de archivo no permitida: " + Path.GetExtension(file.FileName).ToString());
+                        return Json(respuesta);
+                    }
+
                     var fileName = Path.GetFileName(file.FileName);
                     var rutaFisica = Server.MapPath("~/Adjuntos");
                     var physicalPath = Path.Combine(rutaFisica, id);
@@ -175,8 +264,9 @@ namespace TSM.Controllers
 
                 }
             }
-
-            return Content("");
+            respuesta.Add("Resultado", true);
+            respuesta.Add("Msj", "");
+            return Json(respuesta);
         }
 
 

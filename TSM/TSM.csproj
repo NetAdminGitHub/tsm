@@ -275,6 +275,7 @@
     <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
+    <Compile Include="Controllers\ExtensionesArchivosModulosController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
@@ -969,6 +970,7 @@
     </Content>
     <Content Include="Views\Shared\_AutorizarEstacionesPermitidas.cshtml" />
     <Content Include="Views\Shared\_DimensionesRequerimiento.cshtml" />
+    <Content Include="Views\ExtensionesArchivosModulos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
