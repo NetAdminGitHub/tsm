@@ -36,14 +36,14 @@ let vIdS = 0;
 let vIdCli = 0;
 let VarIDReq = 0;
 let vIdReqTecnica = 0;
-
 fPermisos = function (datos) {
     Permisos = datos;
 };
 var fn_VSCargarJSEtapa = function () {
     KdoButton($("#btnCopyCDis"), "copy", "Catalogo de Diseños");
     KdoButton($("#btnAcepCopy"), "check", "Aceptar");
-  
+
+
     $("#modalCopyFMOT").kendoDialog({
         height: "auto",
         width: "20%",
@@ -1124,21 +1124,26 @@ var fn_VSCargarJSEtapa = function () {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            if (e.files[0].name.replace(e.files[0].extension, "") !== "") {
-                e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + $("#NoDocumento").val() + "/" + e.files[0].name.replace(e.files[0].extension, "");
-            } else {
-                $("#kendoNotificaciones").data("kendoNotification").show("Nombre del archivo no es valido", "error");
-                return false;
-            }
-       
+
+                if (e.files[0].name.replace(e.files[0].extension, "") !== "") {
+                    e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoAdjunto/" + $("#NoDocumento").val() + "/" + e.files[0].name.replace(e.files[0].extension, "");
+                } else {
+                    $("#kendoNotificaciones").data("kendoNotification").show("Nombre del archivo no es valido", "error");
+                    return false;
+                }
         },
         showFileList: false,
-
         success: function (e) {
-            if (e.operation === "upload") {
-                fn_GuardarArchivoAdjunto(UrlApiAAdj, e.files[0].name);
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    fn_GuardarArchivoAdjunto(UrlApiAAdj, e.files[0].name);
+                }
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
             }
+           
         }
+       
 
     });
     function onSelect(e) {

@@ -38,6 +38,7 @@ let VarIDReq = 0;
 
 $(document).ready(function () {
     // carga carrousel de imagenes 
+
     var DivCarousel = $("#Div_Carousel");
     DivCarousel.append(Fn_Carouselcontent());
     $("#idcloseMod").click(function () {
@@ -354,27 +355,6 @@ $(document).ready(function () {
     //#endregion
 
 
-
-     // carga vista para el cambio de estado
-    //var fn_CambioEstadoBtnClose = function () {
-    //    fn_RequerimientoCambios();
-    //    fn_getRD();
-
-    //};
-     //1. configurar vista.
-    //Fn_VistaCambioEstado($("#vCambioEstado"), fn_CambioEstadoBtnClose);
-     //2. boton cambio de estado.
-    //$("#btnCambiarEstado").click(function () {
-
-    //    var lstId = {
-    //        IdRequerimiento: SublimacionIdReque
-    //    };
-    //    Fn_VistaCambioEstadoVisualizar("RequerimientoDesarrollos", $("#Estado").val(), TSM_Web_APi + "RequerimientoDesarrollos/RequerimientoDesarrollos_CambiarEstadoSublimacion", "", lstId);
-    //});
-    //$("#btnCambiarEstado").click(function (event) {
-    //    event.preventDefault();
-    //    fn_CambiarEstadoSublimacion();
-    //});
     $("#btnIrOrdeTrabajoSublimacion").click(function () {
         window.location.href = "/SublimacionOrdenesTrabajos";
     });
@@ -392,19 +372,23 @@ $(document).ready(function () {
     //Control para subir los adjutos
     $("#Adjunto").kendoUpload({
         async: {                                                                    
-            saveUrl: "/RequerimientoDesarrollos/SubirArchivo",
+            saveUrl: "/RequerimientoDesarrollos/SubirArchivoSublimacion",
             autoUpload: true
         },
         localization: {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
         upload: function (e) {
-            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val();
+            e.sender.options.async.saveUrl = "/RequerimientoDesarrollos/SubirArchivoSublimacion/" + $("#NoDocumento").val();
         },
         showFileList: false,
         success: function (e) {
-            if (e.operation === "upload") {
-                GuardarArtAdj(UrlApiAAdj, e.files[0].name);
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    GuardarArtAdj(UrlApiAAdj, e.files[0].name);
+                }
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
             }
         }
 
