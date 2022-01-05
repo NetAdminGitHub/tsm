@@ -21,7 +21,8 @@ var fn_DMueCargarConfiguracion = function () {
 
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-   
+    xIdQuimicaCliente = maq[0].IdQuimica;
+
     $("#btnConsultarPesos").click(function () {
         $("#MbtConsulta").data("kendoDialog").open();
         $("#gridEstacionPeso").data("kendoGrid").dataSource.read();
@@ -59,6 +60,11 @@ var fn_DMueCargarConfiguracion = function () {
             eventos: {
                 nuevaEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
                         AgregaEstacion(e);
                         maq = fn_GetMaquinas();
                         $("#maquinaDesarrolloMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
@@ -71,6 +77,11 @@ var fn_DMueCargarConfiguracion = function () {
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
                         var dataCopy = e.detail[0];
                         fn_DuplicarBrazoMaquina($("#maquinaDesarrolloMues").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDesarrollo")); });
                     } else {
@@ -121,6 +132,9 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnRestablecerSecuencia"), vhb);
     $("#maquinaDesarrolloMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     fn_ObtCntMaxEstaciones($("#AlertaEstacionDesarrollo"));
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 
 };
 

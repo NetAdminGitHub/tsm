@@ -1514,6 +1514,9 @@ var fn_VSCargar = function () {
         $("#swchPoseeDocumentacionAduanal").data("kendoSwitch").enable(false);
         $("#swchCobrarDiseno").data("kendoSwitch").enable(false);
     }
+
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
 };
 
 var EtapaPush = {};

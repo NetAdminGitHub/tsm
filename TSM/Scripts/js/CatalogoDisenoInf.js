@@ -96,12 +96,6 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                         return $("#chkDisenoFullColor").is(':checked') ? true : $("#CmbTallas").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
-                },
-                Msg3: function (input) {
-                    if (input.is("[name='TxtMotivoCambio']")) {
-                        return input.val().length > 0 && input.val().length <= 2000;
-                    }
-                    return true;
                 }
             },
             messages: {

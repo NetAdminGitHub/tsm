@@ -38,7 +38,10 @@ var fn_VistaEstacionColorDocuReady = function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");    
 
-    Kendo_CmbFiltrarGrid($("#CmbQuimica_color"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
+    /*  Kendo_CmbFiltrarGrid($("#CmbQuimica_color"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");*/
+
+    KdoComboBoxbyData($("#CmbQuimica_color"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
+    $("#CmbQuimica_color").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
         
     Kendo_CmbFiltrarGrid($("#CmbTipoTinta_color"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
     $("#CmbTipoTinta_color").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
@@ -110,6 +113,12 @@ var fn_VistaEstacionColorDocuReady = function () {
                     return $("#CmbBasePigmento_color").data("kendoComboBox").text() === "" ? true : $("#CmbBasePigmento_color").data("kendoComboBox").selectedIndex >= 0;
                 }
                 return true;
+            },
+            vncapilar: function (input) {
+                if (input.is("[id='NumCapilar']") && Te === "TECNICA" ) {
+                    return $("#NumCapilar").data("kendoNumericTextBox").value()   !== 0;
+                }
+                return true;
             }
         },
         messages: {
@@ -120,7 +129,8 @@ var fn_VistaEstacionColorDocuReady = function () {
             vTemul: "Requerido",
             vsuge: "Longitud máxima del campo es 200",
             vtecapli: "Requerido",
-            vbmez: "Requerido"
+            vbmez: "Requerido",
+            vncapilar: "Requerido"
         }
     }).data("kendoValidator");
 
@@ -210,9 +220,13 @@ var fn_VistaEstacionColorDocuReady = function () {
 
     $("#CmbQuimica_color").data("kendoComboBox").bind("select", function (e) {
         KdoComboBoxEnable($("#CmbTipoTinta_color"), true);
-        let idQ = e.dataItem.IdQuimica;
-        KdoCmbSetValue($("#CmbTipoTinta_color"), "");
-        $("#CmbTipoTinta_color").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
+        if (Arrastre_Nuevo === 0) {
+            let idQ = e.dataItem.IdQuimicaFormula;
+            KdoCmbSetValue($("#CmbTipoTinta_color"), "");
+            $("#CmbTipoTinta_color").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(idQ));
+        } else {
+            Arrastre_Nuevo = 0;
+        }
     });
 
     fn_GridEstacionesColor($("#gridEstacionMq_C"));
@@ -430,15 +444,7 @@ var fn_VistaEstacionColor = function () {
             kendo.ui.progress($(document.body), false);
         }
     });
-    //setFor = fn_GetMarcoFormulacion(maq[0].IdSeteo, idBra); //obtener informacion de la entidad SeteoMarcos Formulaciones por seteo y estación
-    //estaMarco = fn_EstacionesMarcos(maq[0].IdSeteo, idBra);
-    //EstacionBra = fn_Estaciones(maq[0].IdSeteo, idBra);
-    //EstaTintasFormula = fn_EstacionesTintasFormulaDet(maq[0].IdSeteo, idBra, "CREADA");
-    //if (EstacionBra === null) {
-    //    fn_SeccionMarcosFormulacion(null);
-    //    fn_SeccionEstacionMarcos(null);
-    //    fn_SeccionTitasFormulas(null);
-    //}
+    
 
 };
 
@@ -486,6 +492,7 @@ var fn_GetMarcoFormulacion_EC = function (xIdSeteo, xIdestacion) {
 var fn_SeccionMarcosFormulacion = function (datos) {
     setFor = datos;
     if (setFor !== null) {
+        Arrastre_Nuevo = 0;
         switch (setFor.IdTipoFormulacion) {
             case "COLOR":
                 //guardo en Memoria la llave del tipo de selección
@@ -532,7 +539,9 @@ var fn_SeccionMarcosFormulacion = function (datos) {
         $("#CmbIdTipoEstacion").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco($("#CmbIdTipoEstacion").data("kendoComboBox").dataItem().UtilizaMarco);
 
+        $("#CmbQuimica_color").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
         KdoCmbSetValue($("#CmbQuimica_color"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
+        $("#CmbQuimica_color").data("kendoComboBox").trigger("change");
 
         $("#CmbTipoTinta_color").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
         $("#CmbBasePigmento_color").data("kendoComboBox").setDataSource(Fn_GetSistemaBases(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
@@ -548,11 +557,26 @@ var fn_SeccionMarcosFormulacion = function (datos) {
 
         //$("#FrmGenEColor").data("kendoValidator").validate();
         Kendo_CmbFocus($("#CmbQuimica_color"));
+
     }
     else {
         $("#TxtFormulaSug").val("");
         KdoButtonEnable($("#btnccc"), false);
         KdoButtonEnable($("#btnDelFT"), false);
+     
+        if ($("#CmbTipoTinta_color").data("kendoComboBox").dataSource.data().length === 0) {
+            Arrastre_Nuevo = 0;
+        } else {
+            Arrastre_Nuevo = 1;
+        }
+
+        $("#CmbQuimica_color").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
+        $("#CmbQuimica_color").data("kendoComboBox").search($("#CmbQuimica_color").data("kendoComboBox").value());
+        $("#CmbQuimica_color").data("kendoComboBox").trigger("change");
+        $("#CmbQuimica_color").data("kendoComboBox").close();
+
+     
+
         switch (Te) {
             case "COLOR":
                 KdoComboBoxEnable($("#CmbTecnica_color"), vhb);
@@ -577,6 +601,11 @@ var fn_SeccionMarcosFormulacion = function (datos) {
                 KdoComboBoxEnable($("#CmbSistemaPigmento_Color"), false);
                 break;
         }
+
+     
+        Kendo_CmbFocus($("#CmbQuimica_color"));
+   
+    
     }
 
 };
@@ -870,10 +899,11 @@ var fn_DelFormulaHis = function () {
 
 let fn_DeshabilitarCamposMarco = function (utilizaMarco) {
     let habilitarMarco = utilizaMarco;
-
-    KdoComboBoxEnable($("#CmbSedas_color"), vhb !== false ? habilitarMarco : false);
+    let AplicaSeda = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec").data().IdRequerimientoTecnica && q.AplicaSeda === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    let AplicaCapilar = Te === "TECNICA" ? !(tecnicasFlags.find(q => q.IdRequerimientoTecnica === $("#TxtOpcSelec").data().IdRequerimientoTecnica && q.AplicaCapilar === true) === undefined) && habilitarMarco === true : habilitarMarco;
+    KdoComboBoxEnable($("#CmbSedas_color"), vhb !== false ? AplicaSeda : false);
     KdoComboBoxEnable($("#CmbTipoEmulsion_color"), vhb !== false ? habilitarMarco : false);
-    KdoNumerictextboxEnable($("#NumCapilar"), vhb !== false ? habilitarMarco : false);
+    KdoNumerictextboxEnable($("#NumCapilar"), vhb !== false ? AplicaCapilar : false);
     KdoNumerictextboxEnable($("#NumPasadas"), vhb !== false ? habilitarMarco : false);
     KdoNumerictextboxEnable($("#EscurridorDureza"), vhb !== false ? habilitarMarco : false);
 
