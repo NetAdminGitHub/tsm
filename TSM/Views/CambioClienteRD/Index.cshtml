@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Cambio de cliente requerimiento";
+    ViewBag.IdVersion = "TSM0101101|v22010301";
+}
+
+@section Scripts {
+    <script src="~/Scripts/js/CambioClienteRD.js?@ViewBag.IdVersion"></script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-2"></div>
+                    <div class="form-group col-lg-8">
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label for="cmbRequerimiento">Requerimiento Desarrollo:</label>
+                                <input id="cmbRequerimiento" name="cmbRequerimiento" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6"></div>
+                            <div class="form-group col-lg-12">
+                                <label for="txtNombreCliente">Cliente </label>
+                                <input id="txtNombreCliente" name="txtNombreCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="txtNombrePrograma">Programa </label>
+                                <input id="txtNombrePrograma" name="txtNombrePrograma" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            </div>
+                           
+                            <div class="form-group col-lg-6">
+                                <label for="cmbcliente">Cliente nuevo:</label>
+                                <input id="cmbcliente" name="cmbcliente" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbPrograma">Programa nuevo:</label>
+                                <input id="cmbPrograma" name="cmbPrograma" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6 align-self-end">
+                                <div class="input-group">
+                                    <div style="width: 100%;">
+                                        <button type="button" id="btnConfirmar" name="btnConfirmar">Confirmar cambio</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2"></div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
