@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Requerimiento de Desarrollo";
-    ViewBag.IdVersion = "TSM0101029|v19011801";
+    ViewBag.IdVersion = "TSM0101029|v21122801";
 }
 
 
@@ -35,9 +35,9 @@
         var UrlApiBase = "@string.Format("{0}Bases", TSM.Utils.Config.TSM_WebApi)";
 
     </script>
-    <script src="~/Scripts/js/RequerimientoDesarrollos.js"></script>
-    <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js"></script>
-    <script src="~/Scripts/js/RequerimientoDesarrollosEstados.js"></script>
+    <script src="~/Scripts/js/RequerimientoDesarrollos.js?@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js?@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/RequerimientoDesarrollosEstados.js?@ViewBag.IdVersion"></script>
 
 }
 

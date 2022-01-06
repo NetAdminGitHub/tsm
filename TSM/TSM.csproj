@@ -277,6 +277,7 @@
     <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
+    <Compile Include="Controllers\ExtensionesArchivosModulosController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
@@ -516,6 +517,7 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
+    <Content Include="Scripts\js\ExtensionesArchivosModulos.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
     <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
@@ -973,6 +975,7 @@
     </Content>
     <Content Include="Views\Shared\_AutorizarEstacionesPermitidas.cshtml" />
     <Content Include="Views\Shared\_DimensionesRequerimiento.cshtml" />
+    <Content Include="Views\ExtensionesArchivosModulos\Index.cshtml" />
     <Content Include="Views\CambioClienteOT\Index.cshtml" />
     <Content Include="Views\CambioClienteRD\Index.cshtml" />
   </ItemGroup>
