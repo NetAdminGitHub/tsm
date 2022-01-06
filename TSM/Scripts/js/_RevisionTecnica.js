@@ -9,6 +9,8 @@ let gAlto = 300;
 var fn_RTCargarConfiguracion = function () {
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
+    xIdQuimicaCliente = maq[0].IdQuimica;
+
     KdoButton($("#btnAddColorRev"), "plus-circle", "Agregar color o técnica");
     KdoButton($("#btnUpdCantidaEsta"), "wrench", "Actualizar Estaciones Permitidas");
 
@@ -20,7 +22,12 @@ var fn_RTCargarConfiguracion = function () {
             eventos: {
                 nuevaEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
-                        AgregaEstacion(e);
+                         //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
+                         AgregaEstacion(e);
                     } else {
                         $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
                     }
@@ -30,6 +37,11 @@ var fn_RTCargarConfiguracion = function () {
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
                     if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
                         var dataCopy = e.detail[0];
                         fn_DuplicarBrazoMaquina($("#maquinaRevTec").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacion")); });
                     } else {
@@ -111,6 +123,9 @@ var fn_RTMostrarGrid = function () {
     $("#maquinaRevTec").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorRev"), vhb);
     fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 var elementoSeleccionado = function (e) {
