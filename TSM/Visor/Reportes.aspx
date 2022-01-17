@@ -4,6 +4,7 @@
 
 <%@ Import Namespace="CrystalDecisions.CrystalReports.Engine" %>
 <%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="TSM.Utils" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
 <!DOCTYPE html>
@@ -67,7 +68,7 @@
 
 
             reporte = new ReportDocument();
-            reporte.Load("\\\\inqui2003.local\\ReportesTSM_IST\\" + ViewState["rpt"].ToString() + ".rpt");
+            reporte.Load(Config.DirectorioReportes + ViewState["rpt"].ToString() + ".rpt");
             reporte.SetDataSource(ds.Tables[0]);
 
             if (ds.Tables.Count > 1)
