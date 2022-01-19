@@ -45,6 +45,14 @@ namespace TSM.Utils
             }
         }
 
+        public static string DirectorioReportes
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DirectorioReportes"];
+            }
+        }
+
         public static string GetData(string url)
         {
             using (var httpClient = new HttpClient())
