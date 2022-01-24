@@ -4,6 +4,7 @@
 
 <%@ Import Namespace="CrystalDecisions.CrystalReports.Engine" %>
 <%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="TSM.Utils" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
 <!DOCTYPE html>
@@ -20,6 +21,8 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
             if (Request.QueryString["ds"] != null)
             {
                 Datos = Request.QueryString["ds"].ToString();
@@ -41,23 +44,23 @@
             {
                 // Si solo trae un dataTable y falla para al catch
                 ds = new DataSet("reportData");
-             ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString()));
-               
+                ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(ViewState["ds"].ToString()));
+
             }
             catch
             {
                 ds = JsonConvert.DeserializeObject<DataSet>(ViewState["ds"].ToString());
-                 // si reporte Ficha Producción
+                // si reporte Ficha Producción
                 if(ViewState["rpt"].ToString() == "crptFichaProduccion")
                 {
-                   
+
                     Dictionary<string,object> param = JsonConvert.DeserializeObject<Dictionary<string,object>>(ViewState["params"].ToString());
                     DataColumn cat = new DataColumn("ImgCatalogo", typeof(byte[]));
                     cat.DefaultValue = Convert.FromBase64String(param["imgCat"].ToString());
-                     DataColumn pla = new DataColumn("Imgplacement", typeof(byte[]));
+                    DataColumn pla = new DataColumn("Imgplacement", typeof(byte[]));
                     pla.DefaultValue = Convert.FromBase64String(param["imgPla"].ToString());
                     ds.Tables[0].Columns.Add(cat);
-                    ds.Tables[0].Columns.Add(pla); 
+                    ds.Tables[0].Columns.Add(pla);
 
                 }
 
@@ -65,7 +68,7 @@
 
 
             reporte = new ReportDocument();
-            reporte.Load("\\\\inqui2003.local\\ReportesTSM_IST\\" + ViewState["rpt"].ToString() + ".rpt");
+            reporte.Load(Config.DirectorioReportes + ViewState["rpt"].ToString() + ".rpt");
             reporte.SetDataSource(ds.Tables[0]);
 
             if (ds.Tables.Count > 1)
@@ -86,11 +89,12 @@
             string Titulo = AddSpacesToSentence(ViewState["rpt"].ToString().Replace("crpt", ""));
             reporte.SummaryInfo.ReportTitle = Titulo;
             this.Title = Titulo;
+            string fecha = string.Format("{0:yyyyMMdd_HHmm}", DateTime.Now);
 
 
-            CrystalReportViewer1.ReportSource = reporte;
 
-
+            //exporta pdf a carpeta de descargas 
+            reporte.ExportToHttpResponse(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat,Response,true,Titulo+"_"+fecha);
         }
 
         private string AddSpacesToSentence(string text, bool preserveAcronyms = true)

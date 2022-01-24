@@ -5,7 +5,7 @@
 </style>
 
 <div class="form-row">
-    <div class="form-group col-lg-7 ">
+    <div class="form-group col-lg-4 ">
         <div class="border p-md-1 p-lg-1 rounded">
             <fieldset disabled>
                 <div class="form-row">
@@ -64,12 +64,15 @@
 
         </div>
     </div>
-    <div class="form-control col-lg-5">
+    <div class="form-control col-lg-8">
 
         <div id="tab_inf">
             <ul>
                 <li class="k-state-active">
                     Diseño
+                </li>
+                <li>
+                    Dimensiones del FM
                 </li>
                 <li>
                     Generar Ficha de Producción
@@ -85,6 +88,13 @@
                                 @*Espacio para las imagenes*@
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab_inf_3">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <div id="gridDimensionCat" class="form-control"></div>
                     </div>
                 </div>
             </div>
@@ -131,6 +141,12 @@
                         <input id="TxtTallaDesarrollada" name="TxtTallaDesarrollada" class="k-textbox form-control" />
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="TxtTallaSeleccionadas">Talla Seleccionadas:</label>
+                        <input id="TxtTallaSeleccionadas" name="TxtTallaSeleccionadas" class="k-textbox form-control" />
+                    </div>
+                </div>
             </div>
             <br />
             <div class="border p-md-1 p-lg-1">
@@ -145,7 +161,7 @@
                         <input id="CmbTiposMuestras" name="CmbTiposMuestras" required validationMessage="Requerido" type="text" class="form-control" />
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row" hidden="hidden">
                     <div class="form-group col-md-6 col-lg-8">
                         <label for="CmbTallas">Seleccion de talla a desarrollar</label>
                         <input id="CmbTallas" name="CmbTallas" required validationMessage="Requerido" type="text" class="form-control" />
@@ -155,10 +171,10 @@
                         <label for="swchkCambiaTalla">Cambiar talla:</label>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row" style="display:none;">
                     <div class="form-group col-lg-12">
-                        <label for="TxtMotivoCambio">Detalle de Cambios:</label>
-                        <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%;" />
+                        <label for="TxtMotivoCambio" style="display:none;">Detalle de Cambios:</label>
+                        <textarea id="TxtMotivoCambio" name="TxtMotivoCambio" type="text" class="form-control" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 100%; visibility: hidden;" />
                     </div>
                 </div>
             </div>

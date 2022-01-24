@@ -184,6 +184,6 @@ var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolde
         placeholder: givenOrDefault(opcPlaceHolder, "Seleccione un valor ...."),
         height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
         cascadeFrom: givenOrDefault(parentCascade, ""),
-        dataSource: datos
+        dataSource: function () { return datos; } 
     });
 };

@@ -2,6 +2,8 @@
 
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
+<%@ Import Namespace="TSM.Utils" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -23,7 +25,7 @@
 
                     ReportDataSource ds = new ReportDataSource("ds", ds1.Tables[0]);
 
-                    ReportViewer1.LocalReport.ReportPath = "\\\\inqui2003.local\\ReportesTSM_IST\\" + Session["rpt"].ToString() + ".rdlc";
+                    ReportViewer1.LocalReport.ReportPath = Config.DirectorioReportes + Session["rpt"].ToString() + ".rdlc";
                     ReportViewer1.LocalReport.DataSources.Add(ds);
                     ReportViewer1.LocalReport.DisplayName = Session["rpt"].ToString().Replace("rpt", "");
                     ReportViewer1.LocalReport.Refresh();

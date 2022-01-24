@@ -4,6 +4,7 @@ var vIdIdDisenoMuestra;
 var fn_DMCargarConfiguracion = function () {
   
     KdoButton($("#btnAddColorDis"), "plus-circle", "Agregar color o técnica");
+    KdoButton($("#btnUpdDimen"), "edit", "Actualizar Dimensiones");
 
     $("#NumAltoDiseno").kendoNumericTextBox({
         min: 0.00,
@@ -40,7 +41,7 @@ var fn_DMCargarConfiguracion = function () {
 
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
-   
+    xIdQuimicaCliente = maq[0].IdQuimica;
     //***************************
 
     KdoComboBoxbyData($("#CmbIdUnidad"), "[]", "Abreviatura", "IdUnidad", "Seleccione unidad de area ....");
@@ -161,19 +162,38 @@ var fn_DMCargarConfiguracion = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
-                    AgregaEstacion(e);
-                    maq = fn_GetMaquinas();
-                    $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
+                        AgregaEstacion(e);
+                        maq = fn_GetMaquinas();
+                        $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+        
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
-                    var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy);
+                    if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
+                        var dataCopy = e.detail[0];
+                        fn_DuplicarBrazoMaquina($("#maquinaDiseno").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                   
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
-                    //$("#maquinaDiseno").data("maquinaSerigrafia").maquinaVue.aplicarTraspaso(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio);
                     fn_TrasladarEstacion(informacionTraslado.brazoDestino, informacionTraslado.tipo, informacionTraslado.data, informacionTraslado.brazoInicio, $("#maquinaDiseno"));
                 },
                 desplazamientoEstacion: function (e) {
@@ -182,11 +202,11 @@ var fn_DMCargarConfiguracion = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaDiseno"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                    fn_EliminarEstacion(maq[0].IdSeteo,e,$("#maquinaDiseno"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaDiseno"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaDiseno").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDiseno"), 1);
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaDiseno"), 1, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionDis")); });
 
 
                 }
@@ -217,6 +237,9 @@ var fn_DMCargarConfiguracion = function () {
     $("#btnAddColorDis").click(function () {
         fn_OpenModaAddColoresTecnicas(function () { return fn_closeDis();});
     });
+
+  
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
 };
 
 
@@ -255,6 +278,11 @@ var fn_DMCargarEtapa = function () {
     KdoButtonEnable($("#btnGuardarDiseñoMues"), vhb);
     $("#maquinaDiseno").data("maquinaSerigrafia").activarSoloLectura(!vhb);
     KdoButtonEnable($("#btnAddColorDis"), vhb);
+    KdoButtonEnable($("#btnUpdDimen"), vhb);
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 //Agregar a Lista de ejecucion funcion configurar grid
