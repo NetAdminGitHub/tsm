@@ -5,6 +5,9 @@ var ValidarFormularioOT = "";
 var srcDef = "/Images/NoImagen.png";
 var xid = 0;
 var xidArt = 0;
+let StrIdCatalogoDim = 0;
+let listaDimenOT = [];
+let listaTallasNoOT = [];
 var fn_verCotizacion = function (IdCotizacion, Estado) {
     window.open("/CotizacionesMuestras/CotizacionesMuestrasDatos/" + IdCotizacion.toString() + "/" + Estado.toString());
 };
@@ -20,10 +23,12 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
     TextBoxEnable($("#TxtUbicacion"), false);
     TextBoxEnable($("#TxtColorTela"), false);
     TextBoxEnable($("#TxtTallaDesarrollada"), false);
+    TextBoxEnable($("#TxtTallaSeleccionadas"), false);
     $("#TxtPren").val("");
     $("#TxtUbicacion").val("");
     $("#TxtColorTela").val("");
     $("#TxtTallaDesarrollada").val("");
+    $("#TxtTallaSeleccionadas").val("");
     Kendo_CmbFiltrarGrid($("#CmbMotivoDesarrollo"), TSM_Web_APi + "MotivosDesarrollos/GetByIdServicio/" + xIdServ, "Nombre", "IdMotivoDesarrollo", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#CmbTiposMuestras"), TSM_Web_APi + "CatalogoDisenos/GetTipoMuestras", "Nombre", "IdTipoMuestra", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#CmbTallas"), TSM_Web_APi + "CategoriaTallas/GetCategoriaTallaFiltro/1", "Nombre", "IdCategoriaTalla", "Seleccione...");
@@ -48,7 +53,7 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
         }
     });
 
-    fn_gridOT();
+    fn_gridOT(xidCatalogo);
     //fn_Dimensiones_OT();
     $("#tab_inf").kendoTabStrip({
         tabPosition: "top",
@@ -91,12 +96,6 @@ var fn_InfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                         return $("#chkDisenoFullColor").is(':checked') ? true : $("#CmbTallas").data("kendoComboBox").selectedIndex >= 0;
                     }
                     return true;
-                },
-                Msg3: function (input) {
-                    if (input.is("[name='TxtMotivoCambio']")) {
-                        return input.val().length > 0 && input.val().length <= 2000;
-                    }
-                    return true;
                 }
             },
             messages: {
@@ -135,6 +134,7 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo, xidArte) {
                 $("#InfFecha").val(kendo.toString(kendo.parseDate(dato[0].Fecha), 'dd/MM/yyyy'));
                 $("#" + divCDInf + "").data("kendoDialog").title("Diseño: " + dato[0].NoReferencia + " " + dato[0].NombreDiseno  );
                 $("#gConOT").data("kendoGrid").dataSource.read().then(function () { fn_GetAdjuntos(); });
+                $("#gridDimensionCat").data("kendoGrid").dataSource.read();
             } else {
                 $("#InfCliente").val("");
                 $("#InfFecha").val("");
@@ -151,7 +151,7 @@ var fn_CargarInfDetalle = function (divCDInf, xidCatalogo, xidArte) {
 
 };
 
-let fn_gridOT = function () {
+let fn_gridOT = function (xidCatalogo) {
     var dsOT = new kendo.data.DataSource({
         transport: {
             read: function (datos) {
@@ -313,20 +313,28 @@ let fn_gridOT = function () {
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        KdoCmbSetValue($("#CmbTiposMuestras"), "");
-                        $("#TxtMotivoCambio").val("");
-                        xidRq = dataItem.IdRequerimiento;
-                        xIdServ = dataItem.IdServicio;
-                        $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
-                        fn_GetRequerimientoInfo();
-                        KdoComboBoxEnable($("#CmbTallas"), false);
-                        $('#swchkCambiaTalla').prop('checked', 0);
-                        KdoCmbSetValue($("#CmbTallas"), "");
-                        let dialog = $("#ModalGeneraOT").data("kendoDialog");
-                        dialog.open();
-                        dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
-                        KdoCmbFocus($("#CmbMotivoDesarrollo"));
+                        if (listaDimenOT.length !== 0) {
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            KdoCmbSetValue($("#CmbTiposMuestras"), "");
+                            $("#TxtMotivoCambio").val("");
+                            xidRq = dataItem.IdRequerimiento;
+                            xIdServ = dataItem.IdServicio;
+                            $("#CmbMotivoDesarrollo").data("kendoComboBox").setDataSource(fn_GetMotivoDesarrollo());
+                            fn_GetRequerimientoInfo();
+                            KdoComboBoxEnable($("#CmbTallas"), false);
+                            $('#swchkCambiaTalla').prop('checked', 0);
+                            KdoCmbSetValue($("#CmbTallas"), "");
+                            let dialog = $("#ModalGeneraOT").data("kendoDialog");
+                            dialog.open();
+                            dialog.title("Generar Orden de Trabajo desde: " + dataItem.NoOT);
+                            KdoCmbFocus($("#CmbMotivoDesarrollo"));
+                      /*      $("#gridDimensionCat").data("kendoGrid").dataSource.read();*/
+                            $("#TxtTallaSeleccionadas").val(listaTallasNoOT);
+                        } else {
+
+                            $("#kendoNotificaciones").data("kendoNotification").show("DEBE SELECCIONAR UNA TALLA", "error");
+                        }
+                       
 
                     }
                 },
@@ -453,19 +461,26 @@ let fn_gridOT = function () {
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        if (dataItem.SNExisteFichaProd === true) {
-                            $("#kendoNotificaciones").data("kendoNotification").show("FICHA DE PRODUCCION GENERADA", "error");
-                        } else {
-                            if (dataItem.EstadoCotizacion === 'CANCELADA') {
-                                $("#kendoNotificaciones").data("kendoNotification").show("COTIZACIÓN CANCELADA NO SE PUEDE GENERAR FICHA DE PRODUCCIÓN", "error");
 
+                        if (listaDimenOT.length !== 0) {
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            if (dataItem.SNExisteFichaProd === true) {
+                                $("#kendoNotificaciones").data("kendoNotification").show("FICHA DE PRODUCCION GENERADA", "error");
                             } else {
-                                fn_GenerarFichaProduccion("GenFichaProd", dataItem.IdOrdenTrabajo, dataItem.IdSimulacion, dataItem.IdCotizacion, function () { return fn_CerrarModal(); });
+                                if (dataItem.EstadoCotizacion === 'CANCELADA') {
+                                    $("#kendoNotificaciones").data("kendoNotification").show("COTIZACIÓN CANCELADA NO SE PUEDE GENERAR FICHA DE PRODUCCIÓN", "error");
+
+                                } else {
+                                    fn_GenerarFichaProduccion("GenFichaProd", dataItem.IdOrdenTrabajo, dataItem.IdSimulacion, dataItem.IdCotizacion, function () { return fn_CerrarModal(); },listaDimenOT.toString(),listaTallasNoOT.toString());
+                                }
+
                             }
-                           
+
+                        } else {
+                            $("#kendoNotificaciones").data("kendoNotification").show("DEBE SELECCIONAR UNA TALLA", "error");
+
                         }
-                    
+                        
                     }
                 },
                 width: "70px",
@@ -494,6 +509,253 @@ let fn_gridOT = function () {
     });
 
     //#endregion FIN PROGRAMACIÓN DEL GRID SIMULACIÓN
+
+    //#region CRUD Programación GRID Dimensiones
+    let DmCat = new kendo.data.DataSource({
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    type: "GET",
+                    dataType: 'json',
+                    url: TSM_Web_APi + "DimensionesCatalogoDisenos/GetbyIdCatalogoDiseno/" + xid,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    },
+                    error: function (result) {
+                        options.error(result);
+                    }
+                });
+            },
+            update: function (datos) {
+                kendo.ui.progress($("#gridDimensionCat"), true);
+                $.ajax({
+                    type: "put",
+                    dataType: 'json',
+                    data: kendo.stringify(datos.data),
+                    url: TSM_Web_APi + "DimensionesCatalogoDisenos/" + datos.data.IdCatalogoDiseno.toString() + "/" + datos.data.IdDimensionCatalogoDisenos.toString(),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        kendo.ui.progress($("#gridDimensionCat"), false);
+                        datos.success(result);
+                    },
+                    error: function () {
+                        kendo.ui.progress($("#gridDimensionCat"), false);
+                    }
+                });
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdDimensionCatalogoDisenos",
+                fields: {
+                
+                    IdCatalogoDiseno: {
+                        type: "number", defaultValue: function () {
+                            return xidCatalogo;
+                        }
+                    },
+                    IdDimensionCatalogoDisenos: {
+                        type: "number"
+                    },
+                    IdCategoriaTalla: {
+                        type: "string"
+                    },
+                    Nombre: {
+                        type: "string"
+                    },
+                    IdUnidad: {
+                        type: "string", defaultValue: 5
+                    },
+                    Abreviatura: {
+                        type: "string"
+                    },
+                    Alto: {
+                        type: "number"
+                    },
+                    Ancho: {
+                        type: "number"
+                    },
+                    Tallas: {
+                        type: "string",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='Tallas']")) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200.");
+                                    return input.val().length <= 200;
+                                }
+                                if (input.is("[name='Alto']")) {
+                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                    return $('[name="C3"]').is(':checked') === true ? $("[name='Alto']").data("kendoNumericTextBox").value() >= 0 : $("[name='Alto']").data("kendoNumericTextBox").value() > 0;
+                                }
+                                if (input.is("[name='Ancho']")) {
+                                    input.attr("data-maxlength-msg", "Debe ser mayor a Cero.");
+                                    return $('[name="C3"]').is(':checked') === true ? $("[name='Ancho']").data("kendoNumericTextBox").value() >= 0 : $("[name='Ancho']").data("kendoNumericTextBox").value() > 0;
+                                }
+                                if (input.is("[name='IdCategoriaTalla']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdCategoriaTalla").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                if (input.is("[name='IdUnidad']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdUnidad").data("kendoComboBox").selectedIndex >= 0;
+                                }
+                                if (input.is("[name='DimensionesRelativas']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $('[name="C3"]').is(':checked') === true ? input.val().length > 0 && input.val().length <= 2000 : input.val().length <= 2000;
+                                }
+
+                                return true;
+                            }
+                        }
+                    },
+                    C3: {
+                        type: "bool"
+                    },
+                    DimensionesRelativas: { type: "string" },
+                    DesarrollarTalla: {
+                        type: "bool", defaultValue: function (e) { return false; }
+                    },
+                    Seleccion: { type: "bool" },
+                    IdOrdenTrabajo: { type: "number" },
+                    NoDocumento: { type: "string" },
+                    Estado: {type:"string"}
+
+                }
+            }
+        }
+    });
+
+    $("#gridDimensionCat").kendoGrid({
+        autoBind: false,
+        edit: function (e) {
+            // Ocultar
+
+            KdoHideCampoPopup(e.container, "IdDimensionCatalogoDisenos");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "IdCatalogoDiseno");
+            KdoHideCampoPopup(e.container, "Abreviatura");
+            KdoHideCampoPopup(e.container, "Seleccion");
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajo");
+            KdoHideCampoPopup(e.container, "NoDocumento");
+
+            if (e.model.isNew()) {
+                KdoHideCampoPopup(e.container, "DimensionesRelativas");
+            } else {
+                if (e.model.Estado === "TERMINADO") {
+
+                    if (e.model.C3) {
+                        KdoShowCampoPopup(e.container, "DimensionesRelativas");
+                    } else {
+                        KdoHideCampoPopup(e.container, "DimensionesRelativas");
+                    }
+                } else {
+                    KdoComboBoxEnable($("#IdCategoriaTalla"), false);
+                    TextBoxEnable($("#Tallas"), false);
+                    KdoCheckBoxEnable($("[name='C3']"), false);
+                    KdoCheckBoxEnable($("[name='DesarrollarTalla']"), false);
+                    KdoNumerictextboxEnable($('[name="Ancho"]'), false);
+                    KdoNumerictextboxEnable($('[name="Alto"]'), false);
+                    KdoComboBoxEnable($("#IdUnidad"), false);
+                    TextBoxEnable($("#DimensionesRelativas"), false);
+                }
+            }
+            $('[name="C3"]').click(function () {
+                if (this.checked) {
+                    KdoShowCampoPopup(e.container, "DimensionesRelativas");
+                } else {
+                    $('[name="DimensionesRelativas"]').val("");
+                    $('[name="DimensionesRelativas"]').trigger("change");
+                    KdoHideCampoPopup(e.container, "DimensionesRelativas");
+                }
+            });
+
+            Grid_Focus(e, "IdCategoriaTalla");
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "Seleccion", title: "&nbsp;", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "Seleccion"); }, menu: false, filterable: false },
+            { field: "NoDocumento", title: "No Documento", menu: false, filterable: false },
+            { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdOrdenTrabajo", title: "IdOrdenTrabajo", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdDimensionCatalogoDisenos", title: "Codigó Dimensión", editor: Grid_ColInt64NumSinDecimal, hidden: true, menu: false, filterable: false },
+            { field: "IdCategoriaTalla", title: "Tallas a Desarrollar", editor: Grid_Combox, values: ["IdCategoriaTalla", "Nombre", TSM_Web_APi + "CategoriaTallas", "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
+            { field: "Nombre", title: "Tallas a Desarrollar",menu: false, filterable: false  },
+            { field: "Tallas", title: "Rango de Tallas", menu: false, filterable: false }, //aggregates: ["count"], footerTemplate: "Cantidad de Tallas: #: data.Tallas ? data.Tallas.count: 0 #"
+            { field: "C3", title: "Dimensión Relativa", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "C3"); }, menu: false, filterable: false },
+            { field: "Ancho", title: "Ancho", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2], menu: false, filterable: false },
+            { field: "Alto", title: "Alto", editor: Grid_ColNumeric, values: ["", "0", "9999999999", "n2", 2], menu: false, filterable: false  },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
+            { field: "Abreviatura", title: "Unidad", menu: false, filterable: false },
+            { field: "DimensionesRelativas", title: "Medidas Relativas", menu: false, filterable: false },
+            { field: "DesarrollarTalla", title: "Talla a desarrollar", editor: Grid_ColCheckbox, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "DesarrollarTalla"); }, menu: false, filterable: false },
+             {
+                command: {
+                    name: "Seleccionar",
+                    iconClass: "k-icon k-i-success",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+              
+                            dataItem.set("Seleccion", !dataItem.Seleccion);
+                            LimpiaMarcaCelda();
+                            /* fn_SeleccionarFilas();*/
+                            if (dataItem.Seleccion) {
+                                listaDimenOT.push(dataItem.IdDimensionCatalogoDisenos);
+                                listaTallasNoOT.push(dataItem.NoDocumento + ": " + dataItem.Nombre)
+
+                            } else {
+
+                                for (var i = 0; i < listaDimenOT.length; i++) {
+
+                                    if (listaDimenOT[i] === dataItem.IdDimensionCatalogoDisenos) {
+                                        listaDimenOT.splice(i, 1);
+                                        listaTallasNoOT.splice(i, 1);
+                                    }
+
+                                }
+                            }
+
+               
+                      
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
+        ]
+
+    });
+
+    SetGrid($("#gridDimensionCat").data("kendoGrid"), ModoEdicion.EnPopup, true, true, false, false, true, 450);
+    SetGrid_CRUD_ToolbarTop($("#gridDimensionCat").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridDimensionCat").data("kendoGrid"), Permisos.SNEditar,false);
+    Set_Grid_DataSource($("#gridDimensionCat").data("kendoGrid"), DmCat);
+
+    var selectedRowsDimen = [];
+    $("#gridDimensionCat").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridDimensionCat"), selectedRowsDimen);
+       
+    });
+
+    //#endregion Fin CRUD Programación GRID Dimensiones
 };
 var Grid_ColTemplateCheckBox = function (data, columna) {
     return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
@@ -594,7 +856,8 @@ let fn_GenerarOT = function () {
                 IdTipoMuestra: KdoCmbGetValue($("#CmbTiposMuestras")).toString(),
                 Comentario: $("#TxtMotivoCambio").val(),
                 snCambiaTalla: $("#swchkCambiaTalla").is(':checked') ? 1 : 0,
-                IdCategoriaTalla: KdoCmbGetValue($("#CmbTallas"))
+                IdCategoriaTalla: KdoCmbGetValue($("#CmbTallas")),
+                strDimensiones: listaDimenOT.toString()
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
@@ -603,6 +866,8 @@ let fn_GenerarOT = function () {
                 $("#ModalGeneraOT").data("kendoDialog").close();
                 fn_GetOTDetalleReq(datos[0], IdArte, xNDocReqAnterior);
                 $("#gConOT").data("kendoGrid").dataSource.read();
+                $("#gridDimensionCat").data("kendoGrid").dataSource.read();
+                listaDimenOT = [];
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -758,4 +1023,27 @@ let fn_GetRequerimientoInfo = function () {
 let fn_CerrarModal = function () {
     $("#gridCotizacionDetalle").data("kendoGrid").dataSource.read();
     $("#gConOT").data("kendoGrid").dataSource.read();
+   /* $("#gridDimensionCat").data("kendoGrid").dataSource.read();*/
 };
+
+let LimpiaMarcaCelda = function () {
+    $(".k-dirty-cell", $("#gridDimensionCat")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gridDimensionCat")).remove();
+};
+
+let fn_SeleccionarFilas = function () {
+    var grid = $("#gridDimensionCat").data("kendoGrid");
+    // Get selected rows
+    var sel = grid.select();
+    // Get data item for each
+  /*  var items = [];*/
+    $.each(sel, function (idx, row) {
+        var item = grid.dataItem(row);
+        if (item.Seleccion === true) {
+            listaDimenOT.push(item);
+        } else {
+            listaDimenOT.splice(item);
+        }
+    
+    });
+}

@@ -4,13 +4,18 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-row">
-                    <div class="form-group col-lg-4 align-self-end">
+                   
+                    <div class="form-group col-lg-1 align-self-end">
                         <div class="input-group-prepend">
                             <div style="width: 100%;">
+                                <button type="button" id="btnUpdCantidaEsta" name="btnUpdCantidaEsta"></button>
                                 <button type="button" id="btnAddColorRev" name="btnAddColorRev"></button>
+
                             </div>
                         </div>
                     </div>
+
+                    <div id="AlertaEstacion"></div>
                 </div>
                 <div class="form-row">
                     <div id="maquinaRevTec"></div>
@@ -19,5 +24,6 @@
         </div>
     </div>
 </div>
+<div id="vAutCntEstaciones"></div>
 <div id="MEstacionColor" data-url='@Url.Action("EstacionColores","Estaciones")'></div>
 <div id="MEstacionAccesorios" data-url='@Url.Action("EstacionAccesorios","Estaciones")'></div>

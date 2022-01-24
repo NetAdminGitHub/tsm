@@ -143,10 +143,17 @@ $(document).ready(function () {
     var selectedRows = [];
     $("#GkClientes").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#GkClientes"), selectedRows);
+        if ($("#GkClientes").data("kendoGrid").dataSource.total() === 0) {
+            Grid_HabilitaToolbar($("#GkFactorClientes"), false, false, false);
+        } else {
+            Grid_HabilitaToolbar($("#GkFactorClientes"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+        }
     });
 
     $("#GkClientes").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#GkClientes"), selectedRows);
+        $("#GkFactorClientes").data("kendoGrid").dataSource.data([]);
+        $("#GkFactorClientes").data("kendoGrid").dataSource.read();
     });
 
     $(window).on("resize", function () {
@@ -410,7 +417,151 @@ $(document).ready(function () {
     $("#gAcuerdos").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#GkClientes"), selectedRows);
     });
+
+
+
+    //#region Creacion Factores clientes ...
+    var dsFactoresClie = new kendo.data.DataSource({
+        dataType: "json",
+
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function (datos) { return TSM_Web_APi + "FactoresCostosClientes/GetByidCliente/" + Fn_getIdClie($("#GkClientes").data("kendoGrid")); },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "FactoresCostosClientes/" + datos.IdFactorCosto + "/" + datos.IdCliente; },
+                dataType: "json",
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "FactoresCostosClientes/" + datos.IdFactorCosto + "/" + datos.IdCliente; },
+                dataType: "json",
+                type: "DELETE"
+            },
+            create: {
+                url: TSM_Web_APi + "FactoresCostosClientes/",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+
+            }
+        },
+
+        //FINALIZACIÓN DE UNA PETICIÓN
+        requestEnd: Grid_requestEnd,
+        // VALIDAR ERROR
+        error: Grid_error,
+        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
+        schema: {
+            model: {
+                id: "IdFactorCosto",
+                fields: {
+                    IdFactorCosto: {
+                        type: "string",
+                        validation: {
+                            required: true
+                        }
+                    },
+                    IdCliente: {
+                        type: "numeric",
+                        defaultValue: function () { return Fn_getIdClie($("#GkClientes").data("kendoGrid")); }
+                    },
+                    Nombre: {
+                        type: "string",
+                        validation: {
+                            maxlength: function (input) {
+                               
+                                if (input.is("[name='IdFactorCosto']") && input.val().length > 20) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 20");
+                                    return false;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                    Costo: {
+                        type: "number",
+                        validation: {
+                            required: true
+                        }, defaultValue: 0.0000
+                    },
+                    IdUnidadCosto: {
+                        type: "string"
+                    },
+                    NombreUnidad: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#GkFactorClientes").kendoGrid({
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "NombreUnidad");
+            KdoHideCampoPopup(e.container, "IdUnidadCosto");
+
+
+            if (!e.model.isNew()) {
+                KdoComboBoxEnable($('[name="IdFactorCosto"]'), false)
+                Grid_Focus(e, "Costo");
+            }
+            else {
+                KdoComboBoxEnable($('[name="IdFactorCosto"]'), true)
+                Grid_Focus(e, "IdFactorCosto");
+            }
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdFactorCosto", title: "Factor Costo", editor: Grid_Combox, values: ["IdFactorCosto", "Nombre", TSM_Web_APi + "FactoresCostos", "", "Seleccione...", "required", "", "Requerido"] },
+            { field: "Nombre", title: "Nombre" },
+            { field: "Costo", title: "Costo", editor: Grid_ColNumeric, values: ["required", "0.0001", "9999999.9999", "n4", 4], format: '{0:c4}' },
+            { field: "IdUnidadCosto", title: "Unidad Costo",  hidden: true },
+            { field: "NombreUnidad", title: "Unidad Costo" }
+        ]
+
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#GkFactorClientes").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#GkFactorClientes").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#GkFactorClientes").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);;
+    Set_Grid_DataSource($("#GkFactorClientes").data("kendoGrid"), dsFactoresClie);
+    Grid_HabilitaToolbar($("#GkFactorClientes"), false, false, false);
+
+    var selectedFactRows = [];
+    $("#GkFactorClientes").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#GkFactorClientes"), selectedFactRows);
+
+    });
+
+    $("#GkFactorClientes").data("kendoGrid").bind("change", function (e) { //foco en la fila
+        Grid_SelectRow($("#GkFactorClientes"), selectedFactRows);
+
+    });
+    //#endregion  fin creacion Factores clientes
+
+
 });
+
+
+let Fn_getIdClie = (g) => {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdCliente;
+};
 
 fPermisos = function (datos) {
     Permisos = datos;

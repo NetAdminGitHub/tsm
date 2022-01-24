@@ -18,7 +18,11 @@ namespace TSM.Controllers
         {
             return View();
         }
+        public ActionResult DimensionesRequerimiento()
+        {
 
+            return PartialView("_DimensionesRequerimiento");
+        }
         [HttpPost]
         public ActionResult SubirArchivo(string id, IEnumerable<HttpPostedFileBase> Adjunto)
         {

@@ -299,7 +299,9 @@ $(document).ready(function () {
                     CostoPapelImp: { type: "number" },
                     CostoTinta: { type: "number" },
                     CostoLimpieza: { type: "number" },
-                    FactorDistribucion: {type:"number"}
+                    FactorDistribucion: { type: "number" },
+                    AplicarCostoTransporte: { type: "boolean"},
+                    CostoTransporte: { type: "number"}
                 }
             }
         }
@@ -842,6 +844,10 @@ $(document).ready(function () {
                 $('#chkUsarTermofijado').prop('hidden', false);
                 $('#chkUsarTermofijado').prop('disabled', false);
 
+                $('[for="chkApliCostoTransp"]').prop('hidden', false);
+                $('#chkApliCostoTransp').prop('hidden', false);
+                $('#chkApliCostoTransp').prop('disabled', false);
+
                 $('[for="CmbInsuImp"]').prop('hidden', true);
                 KdoCmbHide($("#CmbInsuImp"));
                 $('[for="CmbInsuTrans"]').prop('hidden', true);
@@ -886,6 +892,11 @@ $(document).ready(function () {
                 $('#chkUsarTermofijado').prop('hidden', true);
                 $('#chkUsarTermofijado').prop('disabled', true);
 
+                $('[for="chkApliCostoTransp"]').prop('hidden', true);
+                $('#chkApliCostoTransp').prop('hidden', true);
+                $('#chkApliCostoTransp').prop('disabled', true);
+
+
                 KdoCmbShow($("#CmbInsuImp"));
                 kdoNumericGetValue($("#NumYardaImpHora")) === null ? KdoComboBoxEnable($("#CmbInsuImp"), false) : KdoComboBoxEnable($("#CmbInsuImp"), true);
 
@@ -928,6 +939,11 @@ $(document).ready(function () {
                 $('#chkUsarTermofijado').prop('hidden', true);
                 $('#chkUsarTermofijado').prop('disabled', false);
 
+
+                $('[for="chkApliCostoTransp"]').prop('hidden', true);
+                $('#chkApliCostoTransp').prop('hidden', true);
+                $('#chkApliCostoTransp').prop('disabled', false);
+
                 $('[for="CmbInsuImp"]').prop('hidden', true);
                 KdoCmbHide($("#CmbInsuImp"));
                 $('[for="CmbInsuTrans"]').prop('hidden', true);
@@ -967,6 +983,7 @@ $(document).ready(function () {
         $("#txtCombos").data("kendoNumericTextBox").value(0);
         $("#txtVeloMaquina").data("kendoNumericTextBox").value(0);
         $("#chkUsarTermofijado").prop("checked", false);
+        $("#chkApliCostoTransp").prop("checked", false);
     });
 
     $('#NuevaSimulacion').on('shown.bs.modal', function (e) {
@@ -1131,7 +1148,7 @@ let fn_NuevaSimulacion = function () {
     kendo.ui.progress($("#splitter"), true);
     if (VIdSer !== 2) {
         $.ajax({
-            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0"),
+            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTransp").is(':checked') ? "1" : "0"),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ IdAnalisisDiseno: null }),
@@ -1210,6 +1227,7 @@ let getRDS = function () {
                 $("#txtCombos").data("kendoNumericTextBox").value(elemento.Combo);
                 $("#txtVeloMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
                 $('#chkUsarTermofijado').prop('checked', false);
+                $('#chkApliCostoTransp').prop('checked', false);
             });
 
             kendo.ui.progress($("#NuevaSimulacion"), false);
@@ -1479,7 +1497,18 @@ let fn_SeteoCampos = function () {
         decimals: 2,
         value: 0
     });
-
+    $("#txtCostoTransporte").kendoNumericTextBox({
+        format: "c",
+        restrictDecimals: false,
+        decimals: 2,
+        value: 0
+    });
+    $("#txtCostoTransporteUnitario").kendoNumericTextBox({
+        format: "c4",
+        restrictDecimals: false,
+        decimals: 4,
+        value: 0
+    });
     $("#TxtCostoUnitario").kendoNumericTextBox({
         format: "c4",
         restrictDecimals: false,
@@ -1668,12 +1697,14 @@ function getSimulacionGrid(g) {
     $("#TxtCostoOperacion").data("kendoNumericTextBox").value(elemento.CostoOperacion);
     $("#TxtCostoTotal").data("kendoNumericTextBox").value(elemento.CostoTotal);
     $("#chkUsarTermo").prop("checked", elemento.UsarTermofijado);
+    $("#chkAplicarCostoTransporte").prop("checked", elemento.AplicarCostoTransporte);
     $("#TxtNoDocumento").val(elemento.NoDocumento2);
     $("#TxtEstado").val(elemento.Estado);
     if (VIdSer !== 2) {
         $("#TxtCostoMP").data("kendoNumericTextBox").value(elemento.CostoMP);
         $("#TxtCostoPrimo").data("kendoNumericTextBox").value(elemento.CostoPrimo);
         $("#txtCostoTermofijado").data("kendoNumericTextBox").value(elemento.CostoTermofijado);
+        $("#txtCostoTransporte").data("kendoNumericTextBox").value(elemento.CostoTransporte);
         $("#TxtCostoMPUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMP / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoMODUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoMOD / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoPrimoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoPrimo / elemento.CantidadPiezas * 10000) / 10000);
@@ -1681,6 +1712,7 @@ function getSimulacionGrid(g) {
         $("#TxtCostoProduccionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoProduccion / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoOperacion / elemento.CantidadPiezas * 10000) / 10000);
         $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTermofijado / elemento.CantidadPiezas * 10000) / 10000);
+        $("#txtCostoTransporteUnitario").data("kendoNumericTextBox").value(Math.round(elemento.CostoTransporte / elemento.CantidadPiezas * 10000) / 10000);
         $("#TxtCostoUnitario").data("kendoNumericTextBox").value(elemento.CostoUnitario);
         $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value(elemento.PorcUtilidadConsiderada);
         $("#TxtUtilidadDolares").data("kendoNumericTextBox").value(elemento.UtilidadDolares);
@@ -1771,7 +1803,14 @@ function getSimulacionGrid(g) {
                 category: "Costo Termofijado",
                 value: elemento.CostoTermofijado,
                 color: "#178AB8"
-            });
+            },
+            {
+                category: "Costo Transporte",
+                value: elemento.CostoTransporte,
+                color: "#178AA8"
+            }
+
+        );
     }
 
     if (VIdSer === 2) {
@@ -1810,6 +1849,7 @@ function getSimulacionGrid(g) {
 function DesHabilitarCamposSim() {
     $("#TxtFecha").data("kendoDatePicker").enable(false);
     KdoCheckBoxEnable($("#chkUsarTermo"), false);
+    KdoCheckBoxEnable($("#chkAplicarCostoTransporte"), false);
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").enable(false);
     $("#TxtUtilidadDolares").data("kendoNumericTextBox").enable(false);
     $("#TxtPrecioCliente").data("kendoNumericTextBox").enable(false);
@@ -1833,6 +1873,9 @@ function DesHabilitarCamposSim() {
         $("#TxtCostoOperacionUnitario").data("kendoNumericTextBox").enable(false);
         $("#txtCostoTermofijado").data("kendoNumericTextBox").enable(false);
         $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").enable(false);
+        $("#txtCostoTransporte").data("kendoNumericTextBox").enable(false);
+        $("#txtCostoTransporteUnitario").data("kendoNumericTextBox").enable(false);
+
         $("#TxtCostoUnitario").data("kendoNumericTextBox").enable(false);
         $("#TxtCantidadTecnicas").data("kendoNumericTextBox").enable(false);
         $("#TxtMontajes").data("kendoNumericTextBox").enable(false);
@@ -1879,6 +1922,7 @@ function DesHabilitarCamposSim() {
 
 let fn_LimpiarCamposSim = function () {
     $("#chkUsarTermo").prop("checked", false);
+    $("#chkAplicarCostoTransporte").prop("checked", false);
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     $("#TxtCantidadPiezas").data("kendoNumericTextBox").value("0");
     $("#TxtPorcUtilidadConsiderada").data("kendoNumericTextBox").value("0");
@@ -1897,6 +1941,8 @@ let fn_LimpiarCamposSim = function () {
         $("#TxtCostoPrimo").data("kendoNumericTextBox").value("0");
         $("#txtCostoTermofijado").data("kendoNumericTextBox").value("0");
         $("#txtCostoTermofijadoUnitario").data("kendoNumericTextBox").value("0");
+        $("#txtCostoTransporte").data("kendoNumericTextBox").value("0");
+        $("#txtCostoTransporteUnitario").data("kendoNumericTextBox").value("0");
         $("#TxtCostoUnitario").data("kendoNumericTextBox").value("0");
         $("#TxtCantidadTecnicas").data("kendoNumericTextBox").value("0");
         $("#TxtMontajes").data("kendoNumericTextBox").value("0");

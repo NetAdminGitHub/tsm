@@ -30,6 +30,7 @@ var fn_VerifMuesCC = function () {
     // colocar grid para arrastre
     maq = fn_GetMaquinas();
     TiEst = fn_GetTipoEstaciones();
+    xIdQuimicaCliente = maq[0].IdQuimica;
     //FINALIZAR OT
     let ValidFrmFinVerifMue = $("#FrmFinVerifMue").kendoValidator({
         rules: {
@@ -71,15 +72,35 @@ var fn_VerifMuesCC = function () {
             cantidadBrazos: maq[0].CantidadEstaciones,
             eventos: {
                 nuevaEstacion: function (e) {
-                    AgregaEstacion(e);
-                    maq = fn_GetMaquinas();
-                    $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
+                        AgregaEstacion(e);
+                        maq = fn_GetMaquinas();
+                        $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                    
                 },
                 abrirEstacion: fn_VerDetalleBrazoMaquina,
                 editarEstacion: fn_VerDetalleBrazoMaquina,
                 pegarEstacion: function (e) {
-                    var dataCopy = e.detail[0];
-                    fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy);
+                    if (PermiteAddEstacion === true) {
+                        //validar arrastre
+                        if (e.detail[0].tipo === "TECNICA" && tecnicasFlags.find(q => q.IdTecnica === e.detail[0].data.IdTecnica && q.PermiteArrastrar === false)) {
+                            $("#kendoNotificaciones").data("kendoNotification").show("LA TECNICA ESTA CONFIGURADA COMO NO PERMITIDA PARA ARRASTRE ", "warning");
+                            return;
+                        }
+                        var dataCopy = e.detail[0];
+                        fn_DuplicarBrazoMaquina($("#maquinaValidacionMues").data("maquinaSerigrafia").maquina, dataCopy, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
+                    } else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("NO SE PUEDE AGREGAR ESTACIÓN PORQUE SUPERA AL MÁXIMO PERMITIDO, CANTIDAD : " + $("#TxtCntEstacionesPermitidas").val(), "error");
+                    }
+                   
                 },
                 trasladarEstacion: function (e) {
                     var informacionTraslado = e.detail[0];
@@ -92,11 +113,11 @@ var fn_VerifMuesCC = function () {
                     fn_OpenModalDesplazamiento(elementoADesplazar.number, $("#maquinaValidacionMues"), sType.CantidadEstaciones);
                 },
                 eliminarEstacion: function (e) {
-                        fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"));
+                    fn_EliminarEstacion(maq[0].IdSeteo, e, $("#maquinaValidacionMues"), function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
                 },
                 reduccionMaquina: function (e) {
                     var selType = $("#maquinaValidacionMues").data("maquinaSerigrafia").tipoMaquinaVue.selectedType;
-                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaValidacionMues"), 1);
+                    fn_UpdFormaRevTec(selType.CantidadEstaciones, selType.IdFormaMaquina, selType.NomFiguraMaquina, $("#maquinaValidacionMues"), 1, function () { return fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues")); });
 
 
                 }
@@ -122,7 +143,7 @@ var fn_VerifMuesCC = function () {
 
     });
 
-
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
 };
 
 var fn_VerifMueCEtapa = function () {
@@ -130,6 +151,10 @@ var fn_VerifMueCEtapa = function () {
     KdoButtonEnable($("#btnFinOTVerifMue"), vhb);
     KdoButtonEnable($("#btnAjuste_Valid"), vhb);
     $("#maquinaValidacionMues").data("maquinaSerigrafia").activarSoloLectura(!vhb);
+    fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
+    //obtener tecnicas flags
+    fn_SeteoTecnicasCondiciones(maq.length !== 0 ? maq[0].IdSeteo : 0);
+    xIdQuimicaCliente = maq[0].IdQuimica;
 };
 
 var elementoSeleccionado_ValidMues = function (e) {

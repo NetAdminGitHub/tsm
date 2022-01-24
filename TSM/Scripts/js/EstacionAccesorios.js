@@ -59,6 +59,8 @@ var fn_GuardarEstacionAcce = function (xIdBrazo) {
             RequestEndMsg(data, xType);
             maq = fn_GetMaquinas();
             $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
+            fn_ObtCntMaxEstaciones();
+            fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
         },
         error: function (data) {
             kendo.ui.progress($("#MEstacionAccesorios"), false);

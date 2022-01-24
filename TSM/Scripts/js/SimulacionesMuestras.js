@@ -397,6 +397,7 @@ $(document).ready(function () {
                     FechaFinalMuestra: { type: "date"},
                     CantidadCombos: { type: "number" },
                     UsarTermofijado: { type: "boolean" },
+                    AplicarCostoTransporte: { type: "boolean" },
                     Montajes: { type: "number" },
                     PersonalExtra: { type: "number" },
                     CantidadPiezas: { type: "number" },
@@ -579,11 +580,12 @@ $(document).ready(function () {
                     }
                 }
             },
-            { field: "CantidadCombos", title: "Cantidad de piezas", hidden: true },
-            { field: "UsarTermofijado", title: "Cantidad de piezas", hidden: true },
-            { field: "Montajes", title: "Cantidad de piezas", hidden: true },
-            { field: "PersonalExtra", title: "Cantidad de piezas", hidden: true },
-            { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true }
+            { field: "CantidadCombos", title: "CantidadCombos", hidden: true },
+            { field: "UsarTermofijado", title: "Usar termofijado", hidden: true },
+            { field: "AplicarCostoTransporte", title: "Aplica costo transporte", hidden: true },
+            { field: "Montajes", title: "Montajes", hidden: true },
+            { field: "PersonalExtra", title: "PersonalExtra", hidden: true },
+            { field: "CantidadPiezas", title: "CantidadPiezas", hidden: true }
         ]
     });
 
@@ -720,7 +722,7 @@ $(document).ready(function () {
     });
 
     $("#btnAceptarSimu").click(function () {
-        if (ValidNuevoSim.validate()) { fn_GenNuevaSim(data.IdOrdenTrabajo, kdoNumericGetValue($("#TxtNuevaCantidadPiezas")), kdoNumericGetValue($("#TxtNoMontaje")), kdoNumericGetValue($("#txtPersonalExtra")), kdoNumericGetValue($("#txtCombos")), kdoNumericGetValue($("#txtVeloMaquina")), $("#chkUsarTermofijado").is(':checked') ? "1" : "0");} 
+        if (ValidNuevoSim.validate()) { fn_GenNuevaSim(data.IdOrdenTrabajo, kdoNumericGetValue($("#TxtNuevaCantidadPiezas")), kdoNumericGetValue($("#TxtNoMontaje")), kdoNumericGetValue($("#txtPersonalExtra")), kdoNumericGetValue($("#txtCombos")), kdoNumericGetValue($("#txtVeloMaquina")), $("#chkUsarTermofijado").is(':checked') ? "1" : "0", $("#chkApliCostoTransp").is(':checked') ? "1" : "0");}
     });
 
     $("#btnRecalcular").click(function (event) {
@@ -733,6 +735,7 @@ $(document).ready(function () {
         kdoNumericSetValue($("#txtVeloMaquinaRecalcular"), fn_getProductividadHora(g));
         kdoNumericSetValue($("#txtPorcVariacionRecalcular"), fn_getPorcVariacion(g) === null ? 0 : fn_getPorcVariacion(g));
         kdoChkSetValue($("#chkUsarTermofijadoRecalcular"), fn_getUsarTermofijado(g));
+        kdoChkSetValue($("#chkApliCostoTranspRecalcular"), fn_getAplicaCostoTransp(g));
         $("#MbtnSimuRecalcular").data("kendoDialog").open();
     });
 
@@ -822,7 +825,7 @@ let fn_SNCambiarEstados = function (valor) {
 let fn_RecalSimulacion = function () {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + fn_getIdOrdenTrabajo($("#gridSimulacion").data("kendoGrid")) + "/" + fn_getIdSimulacion($("#gridSimulacion").data("kendoGrid")) + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0"),
+        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + fn_getIdOrdenTrabajo($("#gridSimulacion").data("kendoGrid")) + "/" + fn_getIdSimulacion($("#gridSimulacion").data("kendoGrid")) + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTranspRecalcular").is(':checked') ? "1" : "0"),
         type: "Post",
         dataType: "json",
         data: JSON.stringify({
@@ -843,10 +846,10 @@ let fn_RecalSimulacion = function () {
     });
 };
 
-let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExtra, vcombos, vvelocidadMaquina, vusarTermofijado) {
+let fn_GenNuevaSim = function (vIdOrdenTrabajo, vpiezas, vmontajes, vpersonalExtra, vcombos, vvelocidadMaquina, vusarTermofijado,vAplicaCostoTransp) {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/GenerarSimulacionOT/" + vIdOrdenTrabajo.toString() + "/" + vpiezas.toString() + "/" + vmontajes.toString() + "/" + vpersonalExtra.toString() + "/" + vcombos.toString() + "/" + vvelocidadMaquina.toString() + "/" + vusarTermofijado.toString(),
+        url: TSM_Web_APi + "SimulacionesMuestras/GenerarSimulacionOT/" + vIdOrdenTrabajo.toString() + "/" + vpiezas.toString() + "/" + vmontajes.toString() + "/" + vpersonalExtra.toString() + "/" + vcombos.toString() + "/" + vvelocidadMaquina.toString() + "/" + vusarTermofijado.toString() + "/" + vAplicaCostoTransp,
         type: "Post",
         dataType: "json",
         data: JSON.stringify({
@@ -994,6 +997,10 @@ let fn_getCantidadCombos = function (g) {
 let fn_getUsarTermofijado = function (g) {
     let SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.UsarTermofijado;
+};
+let fn_getAplicaCostoTransp = function (g) {
+    let SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.AplicarCostoTransporte;
 };
 let fn_getMontajes = function (g) {
     let SelItem = g.dataItem(g.select());

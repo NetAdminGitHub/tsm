@@ -71,6 +71,10 @@ var estadoPermiteEdicion = false;
 var alertDiseno = false;
 var alertTintas = false;
 var alertRevelado = false;
+var PermiteAddEstacion = true;
+let tecnicasFlags = "";
+let xIdQuimicaCliente = 0;
+let Arrastre_Nuevo = 0;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -182,6 +186,7 @@ $(document).ready(function () {
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
     KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
     KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
+    KdoButton($("#btnImpReportStrikeOff"), "file-data", "Imprimir reporte Strike-Off");
 
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), false);
     KdoButtonEnable($("#btnRegistroCambio"), false);
@@ -212,21 +217,14 @@ $(document).ready(function () {
     });
 
 
-    //$("#NumBrazoA").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max:22
-    //});
-
-    //$("#NumBrazoB").kendoNumericTextBox({
-    //    format: "#",
-    //    restrictDecimals: true,
-    //    decimals: 0,
-    //    value: 0,
-    //    max: 22
-    //});
+    $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
+    });
 
     $("#NumOrigenA").kendoNumericTextBox({
         format: "#",
@@ -243,9 +241,6 @@ $(document).ready(function () {
         value: 0,
         max: 22
     });
-
-    //Iniciar Grid de intercambio
-    //fn_gridEstacionIntercambio($("#gridInter"));
 
 
     //#region Grid soliciud
@@ -402,12 +397,6 @@ $(document).ready(function () {
     });
     //CONFIGURACION DEL gCHFor,CAMPOS
     $("#gridRegistroCambiosDetalle").kendoGrid({
-        //dataBound: function () {
-        //    for (var i = 0; i < this.columns.length; i++) {
-        //        this.autoFitColumn(i);
-        //        this.columnResizeHandleWidth;
-        //    }
-        //},
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IDOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdSolicitudCambio");
@@ -550,7 +539,7 @@ $(document).ready(function () {
                 $("[name='IdAlerta']").data("kendoComboBox").trigger("change");
                 $("[name='Estado']").data("kendoComboBox").value('ACTIVA');
                 $("[name='Estado']").data("kendoComboBox").trigger("change");
-                //$("[name='Estado']").trigger();
+    
        
             } else {
                 KdoHideCampoPopup(e.container, "Estado");
@@ -670,7 +659,7 @@ var CargarInfoEtapa = function (RecargarScriptVista = true) {
         method: 'GET',
         success: function (datos) {
             if (datos !== null) {
-                fn_CompletarInfEtapa(datos, RecargarScriptVista);
+                fn_CompletarInfEtapa(datos, RecargarScriptVista);   
 
             } else {
                 kendo.ui.progress($(document.body), true);
@@ -696,10 +685,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     EtpAsignado = datos.Asignado;
     EtpSeguidor = datos.Seguidor;
     xNoPermiteActualizar = datos.NoPermiteActualizar;
-    //if (datos.Asignado === false && datos.Seguidor === false) {
-    //    $("#btnCambiarAsignado").click(); // genera el evento click para abrir modal.
 
-    //}
     //calcular retenciones si existen
     fn_CalcularRetencion(datos.IdOrdenTrabajo, 2, 1, false);
     //obtenere los departametos a los que pertenece un usuario
@@ -753,6 +739,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     $("#UbicacionHorInf").val(datos.UbicacionHorizontal);
     $("#UbicacionVerInf").val(datos.UbicacionVertical);
     $("#TxtDirectorioArchivosInfo").val(datos.DirectorioArchivos);
+    $("#TxtOtOrigen").val(datos.NoOrdenTrabajoOrigen);
     xVistaFormulario = datos.VistaFormulario;
     idTipoOrdenTrabajo = datos.IdTipoOrdenTrabajo;
     xIdQuimica = datos.IdQuimica;
@@ -783,6 +770,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     if (maq.length !== 0) {
         //obtener el tipo de alerta activa o no
         fn_GetAlertaEstatus(maq[0].IdSeteo);
+        xIdQuimicaCliente = maq[0].IdQuimica;
     }
     if (RecargarScriptVista === true) {
         $.each(fun_List, function (index, elemento) {
@@ -1068,6 +1056,42 @@ $("#btnDesplazarEstacion").click(function () {
     }
 });
 
+$("#btnImpReportStrikeOff").click(function (e) {
+    let paramficha = `${idOrdenTrabajo}`;
+
+    e.preventDefault();
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/Reportes/ReporteFichaStrikeOff/",
+        dataType: 'json',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFichaStrikeOff",
+                controlador: "OrdenesTrabajos",
+                accion: "GetFichaStrikeOff",
+                id: paramficha
+
+            }
+        ),
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
+
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+    return true;
+});
+
+
 $("#btnDuplicarEstacion").click(function () {
     if (ValidarDuplicarEst.validate()) {
         fn_Duplicar(kdoNumericGetValue($("#NumOrigenA")), kdoNumericGetValue($("#NumDestinoB")));
@@ -1079,6 +1103,8 @@ $("#btnDuplicarEstacion").click(function () {
 $("#btnRegAjuste").click(function () {
     fn_AlertasBatch();
 });
+
+
 
 var fn_OpenModalDesplazamiento = function (EstacionIni, xMaquina,xCantidadEstaciones) {
     maquinaVueEl = xMaquina;
@@ -1205,7 +1231,7 @@ var fn_Duplicar = function (EstacionO, EstacionD) {
 ///<summary> Método Copiar/Pegar para máquina de Vue </summary>
 ///<param name="varObjeto"> variable que contiene ref al objeto máquina </param>
 ///<param name="dataCopia"> contiene arreglo con datos de estación a copiar  </param>
-var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
+var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "/SeteoMaquinasEstaciones/CopiarEstacionMarco",
@@ -1221,6 +1247,12 @@ var fn_DuplicarBrazoMaquina = function (varObjeto, dataCopia) {
             kendo.ui.progress($(document.body), false);
             varObjeto.vueComponent.agregarConfiguracion(dataCopia.numeroBrazo, dataCopia.tipo, dataCopia.data[0]); // actualiza máquina en vista.
             RequestEndMsg(data, "Post");
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
         },
         error: function (data) {
             ErrorMsg(data);
@@ -2197,7 +2229,7 @@ var fn_gridEstacionIntercambio= function (gd) {
  * @param {JSON} data data retornada por el evento de eliminación
  * @param {Number} xMaquina numero de estacion del brazo o estacion
  */
-var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
+var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina, fn_succes) {
     kendo.ui.progress($(document.body), true);
     let xIdestacion = data.detail[0].number;
     let Urldel = xIdestacion !== undefined ? TSM_Web_APi + "SeteoMaquinasEstaciones/" + xIdSeteo + "/" + xIdestacion : TSM_Web_APi + "SeteoMaquinasEstaciones/Deltodas/" + xIdSeteo;
@@ -2209,6 +2241,12 @@ var fn_EliminarEstacion = function (xIdSeteo, data, xMaquina) {
             RequestEndMsg(resultado, "Delete");
             maq = fn_GetMaquinas();
             xMaquina.data("maquinaSerigrafia").eliminarEstacion(data.detail[0]);
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
+            }
+           
         },
         error: function (resultado) {
             ErrorMsg(resultado);
@@ -2702,8 +2740,6 @@ var fn_AlertasBatch = function () {
         dataType: "json",
         data: JSON.stringify({
             IdOrdenTrabajo: $("#txtIdOrdenTrabajo").val(),
-            //IdEtapaNuevo: 9,
-            //IdUsuarioAsignado: KdoCmbGetValue($("#cmbUsuarioEtpImp")),
             IdSolicitudCambio: 4,
             NombreTipoCambio:"AJUSTE DE MARCO / TINTAS",
             ItemSolicitud: 0,
@@ -2775,7 +2811,7 @@ var fn_GetSeteoMaquinasAlertasValidacion = function (IdSeteo) {
 };
 
 
-var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina,reducirEtacion) {
+var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraMaquina, maquina, reducirEtacion, fn_succes) {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/UpdSeteoMaquinas_Forma/" + maq[0].IdSeteo,
@@ -2792,6 +2828,12 @@ var fn_UpdFormaRevTec = function (cantidadEstaciones, idFormaMaquina, nomFiguraM
                 maq = fn_GetMaquinas();
             } else {
                 fn_ReduccionEstacionesMaq(maq[0].IdSeteo, cantidadEstaciones);
+            }
+
+            if (fn_succes === undefined) {
+                return true;
+            } else {
+                return fn_succes();
             }
         },
         error: function (data) {
@@ -2937,3 +2979,78 @@ var fn_GetAlertaEstatus = function (IdSeteo) {
 $("#body").on("cerrar_Modal_Color", function (event, param1, param2) {
     alert(param1 + "\n" + param2);
 });
+
+let fn_ObtCntMaxEstaciones = (al) => {
+    $.ajax({
+        url: TSM_Web_APi + "OrdenesTrabajos/GetMaxEstacionesPermitida/" + `${idOrdenTrabajo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            let AlertEst = al;
+            if (al === undefined) {
+                kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+
+            } else {
+                AlertEst.children().remove();
+
+                if (datos === null) {
+                    AlertEst.children().remove();
+                    PermiteAddEstacion = true;
+                } else {
+                    kdoNumericSetValue($("#TxtCntEstacionesPermitidas"), datos.EstacionesPermitidas);
+
+                    if (datos.CantidadNoPemitida === true) {
+                        if (datos.MostrarAdvertencia === true) {
+                            AlertEst.append('<div class="alert alert-warning alert-dismissible" id="AlertPermitidas">' +
+                                '<strong>Advertencia!</strong> SETEO DE MAQUINA SUPERA AL MAXIMO DE ESTACIONES PERMITIDO' +
+                                '</div>');
+                        }
+                        PermiteAddEstacion = false;
+
+                    } else {
+                        AlertEst.alert();
+                        PermiteAddEstacion = true;
+                    }
+
+                };
+            }
+        }
+    });
+};
+
+let fn_SeteoTecnicasCondiciones = (idSeteo) => {
+    $.ajax({
+        url: TSM_Web_APi + "SeteoMaquinaTecnicas/GetFlags/" + `${idSeteo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            tecnicasFlags = datos;
+        }
+    });
+}
+
+/**
+ * Quimicas formulaciones llenar combobox 
+ * @param {any} vide codigo o id quimica
+ * @returns {data} datos
+ */
+var Fn_GetQuimicaFormula = function (vide) {
+    //preparar crear datasource para obtner la tecnica filtrado por base
+    return new kendo.data.DataSource({
+        sort: { field: "Nombre", dir: "asc" },
+        dataType: 'json',
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    async: false,
+                    url: TSM_Web_APi + "QuimicasFormulaciones/GetQuimicasFormulacionByidQuimica/" + (vide !== null ? vide.toString() : 0),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
+            }
+        }
+    });
+};
