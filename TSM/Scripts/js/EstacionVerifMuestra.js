@@ -1,4 +1,5 @@
-﻿
+﻿"use strict";
+
 var fn_VEVerifMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_VerifMues"), "check", "Agregar");
 
@@ -48,7 +49,6 @@ var fn_VEVerifMuestraDocuReady = function () {
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_VerifMues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
     KdoComboBoxEnable($("#CmbIdTipoEstacion_VerifMues"), false);
 
-    //Kendo_CmbFiltrarGrid($("#CmbQuimica_VerifMues"), TSM_Web_APi + "Quimicas", "Nombre", "IdQuimica", "Seleccione ...");
     KdoComboBoxbyData($("#CmbQuimica_VerifMues"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
     $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
 
@@ -395,13 +395,12 @@ var fn_GuardarEstacionVerifMues = function () {
 };
 
 var GuardarEstaMarcoVerifMues = function (xIdBrazo) {
-
-    kendo.ui.progress($("#MEstacionVerifMuestra"), true);
     let xIdTipoFormulacion;
     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
     xIdTipoFormulacion = Te;
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
 
     if (estaMarco === null) {
         xType = "Post";
@@ -457,7 +456,7 @@ var GuardarEstaMarcoVerifMues = function (xIdBrazo) {
             }
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionVerifMuestra"), false);
+            kendo.ui.progress($("#MEstacionVerifMuestra").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -465,9 +464,9 @@ var GuardarEstaMarcoVerifMues = function (xIdBrazo) {
 };
 
 var fn_GuardarMarcoFormuVerifMues = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
-    kendo.ui.progress($("#MEstacionVerifMuestra"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
 
     if (setFor === null) {
         xType = "Post";
@@ -500,9 +499,10 @@ var fn_GuardarMarcoFormuVerifMues = function (xIdBrazo, xidRequerimientoColor, x
             maq = fn_GetMaquinas();
             $("#maquinaValidacionMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
             RequestEndMsg(data, xType);
+            kendo.ui.progress($("#MEstacionVerifMuestra").data("kendoWindow").element, false);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionVerifMuestra"), false);
+            kendo.ui.progress($("#MEstacionVerifMuestra").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -510,9 +510,9 @@ var fn_GuardarMarcoFormuVerifMues = function (xIdBrazo, xidRequerimientoColor, x
 };
 
 var GuardarEstacionDesaVerifMues = function (xIdBrazo) {
-    kendo.ui.progress($("#MEstacionVerifMuestra"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    kendo.ui.progress($("#MEstacionVerifMuestra").data("kendoWindow").element, true);
+    let xType;
+    let xUrl;
 
     if (EstacionBra === null) {
         xType = "Post";
@@ -521,7 +521,6 @@ var GuardarEstacionDesaVerifMues = function (xIdBrazo) {
         xType = "Put";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstaciones/" + maq[0].IdSeteo + "/" + xIdBrazo;
     }
-
     $.ajax({
         url: xUrl,
         type: xType,
@@ -534,10 +533,11 @@ var GuardarEstacionDesaVerifMues = function (xIdBrazo) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             GuardarEstaMarcoVerifMues(xIdBrazo);
+            //obtener la cantidad maxima de estaciones
             fn_ObtCntMaxEstaciones($("#AlertaEstacionValidMues"));
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionVerifMuestra"), false);
+            kendo.ui.progress($("#MEstacionVerifMuestra").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });

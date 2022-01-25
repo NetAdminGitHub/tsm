@@ -1,4 +1,5 @@
-﻿var xResolucion = 0;
+﻿"use strict";
+var xResolucion = 0;
 var xLineaje = 0;
 
 var fn_VistaEstacion_AjusteDocuReady = function () {
@@ -715,8 +716,9 @@ var fn_GuardarMarcoFormu_Ajuste = function (xIdBrazo) {
     let xIdTipoFormulacion;
     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
     xIdTipoFormulacion = Te;
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
 
     if (estaMarco === null) {
         xType = "Post";
@@ -774,7 +776,7 @@ var fn_GuardarMarcoFormu_Ajuste = function (xIdBrazo) {
          
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionAjuste"), false);
+            kendo.ui.progress($("#MEstacionAjuste").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -782,10 +784,10 @@ var fn_GuardarMarcoFormu_Ajuste = function (xIdBrazo) {
 };
 
 var fn_GuardarMarcoFormuEstacion_Ajuste = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
-    kendo.ui.progress($("#MEstacionAjuste"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
-
+ 
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
     if (setFor === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMarcosFormulaciones/";
@@ -820,19 +822,19 @@ var fn_GuardarMarcoFormuEstacion_Ajuste = function (xIdBrazo, xidRequerimientoCo
             }
             $("#maquinaAjusteMues").data("maquinaSerigrafia").cargarDataMaquina(maq);
             RequestEndMsg(data, xType);
+            kendo.ui.progress($("#MEstacionAjuste").data("kendoWindow").element, false);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionAjuste"), false);
+            kendo.ui.progress($("#MEstacionAjuste").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
 };
 
 var fn_GuardarEstacion_AjusteArea = function (xIdBrazo) {
-    kendo.ui.progress($("#MEstacionAjuste"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
-
+    kendo.ui.progress($("#MEstacionAjuste").data("kendoWindow").element, true);
+    let xType;
+    let xUrl;
     if (EstacionBra === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstaciones/";
@@ -855,7 +857,7 @@ var fn_GuardarEstacion_AjusteArea = function (xIdBrazo) {
             fn_GuardarMarcoFormu_Ajuste(xIdBrazo);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionAjuste"), false);
+            kendo.ui.progress($("#MEstacionAjuste").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -868,6 +870,7 @@ var fn_GuardarEstacion_AjusteArea = function (xIdBrazo) {
 var fn_GuardarEstacionFormula_Ajuste = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionAjuste"), true);
     let xType = "Post";
+    let xUrl;
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
         url: xUrl,
@@ -898,6 +901,7 @@ var fn_GuardarEstacionFormula_Ajuste = function (xIdBrazo, xCodigoColor) {
 //Metodo que ejecuta para registar una formula historica seleccionada  desde el 
 //corresponde a Tintas
 var fn_GuardarFormulaEst_Ajuste = function (xIdBrazo, xCodigoColor, _MasaEntregada) {
+    let xUrl;
     kendo.ui.progress($(".k-window-content"), true);
     let xType = "Post";
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
