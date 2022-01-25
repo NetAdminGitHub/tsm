@@ -3,11 +3,11 @@ let xidCliente = 0;
 $(document).ready(function () {
 
     $("#cmbRequerimiento").ControlSeleccionRDs();
-    $("#cmbPrograma").SelecionProgbyCliente();
+    fn_comboBoxCambioRD($("#cmbPrograma"), TSM_Web_APi + "Programas/GetByCliente/0", "Nombre", "IdPrograma", "Seleccione ...", "", "", "", "fn_CreaPrograma");
     Kendo_CmbFiltrarGrid($("#cmbcliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un cliente...");
  
     KdoComboBoxEnable($("#cmbcliente"), false);
-    KdoMultiColumnCmbEnable($("#cmbPrograma"), false);
+    KdoComboBoxEnable($("#cmbPrograma"), false);
 
     $("#cmbRequerimiento").data("kendoMultiColumnComboBox").focus();
     KdoButton($("#btnConfirmar"), "gear", "Confirmar cambio");
@@ -19,17 +19,17 @@ $(document).ready(function () {
             $("#txtNombreCliente").val("");
             $("#txtNombrePrograma").val("");
             KdoComboBoxEnable($("#cmbcliente"), false);
-            KdoMultiColumnCmbEnable($("#cmbPrograma"), false);
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").setDataSource(fn_GetProgramabyCliente(0));
-            KdoMultiColumnCmbSetValue($("#cmbPrograma"), "");
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").text("");
+            KdoComboBoxEnable($("#cmbPrograma"), false);
+            $("#cmbPrograma").data("kendoComboBox").setDataSource(fn_GetProgramabyCliente(0));
+            KdoCmbSetValue($("#cmbPrograma"), "");
+            $("#cmbPrograma").data("kendoComboBox").text("");
             KdoCmbSetValue($("#cmbcliente"), "");
             KdoButtonEnable($("#btnConfirmar"), false);
 
         } else {
             fn_GetRDinformacion(value);
             KdoComboBoxEnable($("#cmbcliente"), true);
-            KdoMultiColumnCmbEnable($("#cmbPrograma"), true);
+            KdoComboBoxEnable($("#cmbPrograma"), true);
             $("#cmbcliente").data("kendoComboBox").focus();
             KdoButtonEnable($("#btnConfirmar"), true);
         }
@@ -37,13 +37,11 @@ $(document).ready(function () {
     $("#cmbcliente").data("kendoComboBox").bind("change", function (e) {
         let value = this.value();
         if (value === "") {
-            $("#txtNombreCliente").val("");
-            $("#txtNombrePrograma").val("");
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").setDataSource(fn_GetProgramabyCliente(0));
-            KdoMultiColumnCmbSetValue($("#cmbPrograma"), "");
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").text("");
+            $("#cmbPrograma").data("kendoComboBox").setDataSource(fn_GetProgramabyCliente(0));
+            KdoCmbSetValue($("#cmbPrograma"), "");
+            $("#cmbPrograma").data("kendoComboBox").text("");
         } else {
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").setDataSource(fn_GetProgramabyCliente(value));
+            $("#cmbPrograma").data("kendoComboBox").setDataSource(fn_GetProgramabyCliente(value));
         }
     });
 
@@ -55,7 +53,7 @@ $(document).ready(function () {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un cliente ", "error");
             return;
         }
-        if (KdoMultiColumnCmbGetValue($("#cmbPrograma")) === null) {
+        if (KdoCmbGetValue($("#cmbPrograma")) === null) {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un programa", "error");
             return;
         }
@@ -111,22 +109,38 @@ $.fn.extend({
 });
 
 let fn_GetProgramabyCliente = (vidclie) => {
-    //preparar crear datasource para obtner la tecnica filtrado por base
+    var model;
+    $.ajax({
+        url: TSM_Web_APi + "Programas/GetByCliente/" + (vidclie !== null ? vidclie.toString() : 0),
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            model = generateModel(result, "IdPrograma");
+        }
+    });
     return new kendo.data.DataSource({
-        sort: { field: "Nombre", dir: "asc" },
-        dataType: 'json',
+        batch: true,
         transport: {
-            read: function (datos) {
-                $.ajax({
-                    dataType: 'json',
-                    async: false,
-                    url: TSM_Web_APi + "Programas/GetByCliente/" + (vidclie !== null ? vidclie.toString() : 0),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        datos.success(result);
-                    }
-                });
+            read: {
+                url: TSM_Web_APi + "Programas/GetByCliente/" + (vidclie !== null ? vidclie.toString() : 0),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            create: {
+                url: TSM_Web_APi + "Programas",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data.models[0]);
+                }
             }
+        },
+        schema: {
+            total: "count",
+            model: model
         }
     });
 };
@@ -141,7 +155,7 @@ let fn_cambiarClienteOrdenTrabajoRD = () => {
         data: JSON.stringify({
             idRequerimiento: KdoMultiColumnCmbGetValue($("#cmbRequerimiento")),
             idClienteNuevo: KdoCmbGetValue($("#cmbcliente")),
-            idPrograma: KdoMultiColumnCmbGetValue($("#cmbPrograma"))
+            idPrograma: KdoCmbGetValue($("#cmbPrograma"))
         }),
         success: function (datos) {
             RequestEndMsg(datos, "Post");
@@ -149,12 +163,12 @@ let fn_cambiarClienteOrdenTrabajoRD = () => {
             $("#txtNombrePrograma").val("");
 
             KdoComboBoxEnable($("#cmbcliente"), false);
-            KdoMultiColumnCmbEnable($("#cmbPrograma"), false);
+            KdoComboBoxEnable($("#cmbPrograma"), false);
 
 
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").setDataSource(fn_GetProgramabyCliente(0));
-            KdoMultiColumnCmbSetValue($("#cmbPrograma"), "");
-            $("#cmbPrograma").data("kendoMultiColumnComboBox").text("");
+            $("#cmbPrograma").data("kendoComboBox").setDataSource(fn_GetProgramabyCliente(0));
+            KdoCmbSetValue($("#cmbPrograma"), "");
+            $("#cmbPrograma").data("kendoComboBox").text("");
             KdoCmbSetValue($("#cmbcliente"), "");
 
             KdoButtonEnable($("#btnConfirmar"), false);
@@ -175,3 +189,81 @@ let fn_cambiarClienteOrdenTrabajoRD = () => {
 fPermisos = function (datos) {
     Permisos = datos;
 };
+
+
+var fn_CreaPrograma = function (widgetId, value) {
+    var widget = $("#" + widgetId).getKendoComboBox();;
+    var dsProN = widget.dataSource;
+
+    //ConfirmacionMsg("¿Esta seguro de crear el nuevo registro?", function () {
+    dsProN.add({
+        IdPrograma: 0,
+        Nombre: value,
+        Fecha: Fhoy(),
+        IdCliente: Number(KdoCmbGetValue($("#cmbcliente"))),
+        IdTemporada: 1, // como no se pide se coloca por defecto codigo 1 "NO DEFINIDA"
+        NoDocumento: "",
+        Nombre1: ""
+    });
+
+    dsProN.one("sync", function () {
+        widget.select(dsProN.view().length - 1);
+        $("#kendoNotificaciones").data("kendoNotification").show("Programa creado satisfactoriamente!!", "success");
+    });
+
+    dsProN.sync();
+    //});
+};
+
+//#region pruebas
+var fn_comboBoxCambioRD = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear) {
+    $.ajax({
+        url: webApi,
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            var model = generateModel(result, valueField);
+            var dataSource = new kendo.data.DataSource({
+                batch: true,
+                transport: {
+                    read: {
+                        url: webApi,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    create: {
+                        url: TSM_Web_APi + "Programas",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    parameterMap: function (data, type) {
+                        if (type !== "read") {
+                            return kendo.stringify(data.models[0]);
+                        }
+                    }
+                },
+                schema: {
+                    total: "count",
+                    model: model
+                }
+            });
+            e.kendoComboBox({
+                dataTextField: textField,
+                dataValueField: valueField,
+                autoWidth: true,
+                filter: "contains",
+                autoBind: false,
+                clearButton: givenOrDefault(clearButton, true),
+                placeholder: givenOrDefault(opcPlaceHolder, "Seleccione un valor ...."),
+                height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
+                cascadeFrom: givenOrDefault(parentCascade, ""),
+                dataSource: dataSource,
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+            });
+
+        }
+    });
+};
+
+//#endregion 
