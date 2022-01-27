@@ -28,12 +28,12 @@ let xCmbTecnica_Mues;
 let xCmbBaseMezcla_Mues;
 let xCmbBasePigmentos_Mues;
 let xCmbBasePigmentos_VerifMues
-var SetFor;
-var EstaMarco;
+/*var SetFor;*/
+/*var EstaMarco;*/
 var EstacionBra;
 var Te;
 var idBra;
-var EstaTintasFormula;
+/*var EstaTintasFormula;*/
 var EstacionBraAcce;
 var idBraAcce;
 var xidEstacion;
@@ -75,6 +75,11 @@ var PermiteAddEstacion = true;
 let tecnicasFlags = "";
 let xIdQuimicaCliente = 0;
 let Arrastre_Nuevo = 0;
+let setFor = null;
+let estaMarco = null;
+let EstaTintasFormula = null;
+let xCmbTecnica_VerifMues;
+let xCmbBaseMezcla_VerifMues;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -1484,7 +1489,7 @@ $("#btnAsignarUsuario").click(function (e) {
  * @returns {data}
  **/
 var fn_GetMaquinas = function () {
-    kendo.ui.progress($(document.body), true);
+ /*   kendo.ui.progress($(document.body), true);*/
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
@@ -1492,10 +1497,10 @@ var fn_GetMaquinas = function () {
         type: 'GET',
         success: function (datos) {
             result = datos;
-        },
-        complete: function () {
-            kendo.ui.progress($(document.body), false);
         }
+        //complete: function () {
+        //    kendo.ui.progress($(document.body), false);
+        //}
     });
 
     return result;
