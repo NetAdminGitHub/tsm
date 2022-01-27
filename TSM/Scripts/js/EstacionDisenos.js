@@ -1,4 +1,5 @@
-﻿var xResolucion = 0;
+﻿"use strict";
+var xResolucion = 0;
 var xLineaje = 0;
 
 var fn_VistaEstacionDisenoDocuReady = function () {
@@ -664,13 +665,12 @@ var fn_GuardarEstacionDiseno = function () {
 
 var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
 
-    kendo.ui.progress($("#MEstacionDisenos"), true);
     let xIdTipoFormulacion;
     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
     xIdTipoFormulacion = Te;
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
-
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
     if (estaMarco === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstacionesMarcos/";
@@ -726,7 +726,7 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
             xLineaje = kdoNumericGetValue($("#NumLineajeLPI_Dis"));
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionDisenos").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -734,10 +734,10 @@ var fn_GuardarEstaMarcoDis = function (xIdBrazo) {
 };
 
 var fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase) {
-    kendo.ui.progress($("#MEstacionDisenos"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
 
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
     if (setFor === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMarcosFormulaciones/";
@@ -773,19 +773,19 @@ var fn_GuardarMarcoFormuDis = function (xIdBrazo, xidRequerimientoColor, xidRequ
             }
             $("#maquinaDiseno").data("maquinaSerigrafia").cargarDataMaquina(maq); 
             RequestEndMsg(data, xType);
+            kendo.ui.progress($("#MEstacionDisenos").data("kendoWindow").element, false);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionDisenos").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
 };
 
 var fn_GuardarEstacionDisArea = function (xIdBrazo) {
-    kendo.ui.progress($("#MEstacionDisenos"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
-
+    kendo.ui.progress($("#MEstacionDisenos").data("kendoWindow").element, true);
+    let xType;
+    let xUrl;
     if (EstacionBra === null) {
         xType = "Post";
         xUrl = TSM_Web_APi + "SeteoMaquinasEstaciones/";
@@ -810,7 +810,7 @@ var fn_GuardarEstacionDisArea = function (xIdBrazo) {
             fn_ObtCntMaxEstaciones($("#AlertaEstacionDis"));
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionDisenos"), false);
+            kendo.ui.progress($("#MEstacionDisenos").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -820,6 +820,7 @@ var fn_GuardarEstacionDisArea = function (xIdBrazo) {
 var fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xType = "Post";
+    let xUrl;
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
         url: xUrl,
@@ -855,6 +856,7 @@ var fn_GuardarEstacionFormulaDis = function (xIdBrazo, xCodigoColor) {
 var fn_DelFormulaHisDis = function () {
     kendo.ui.progress($("#MEstacionDisenos"), true);
     let xType = "Delete";
+    let xUrl;
     xUrl = TSM_Web_APi + "TintasFormulaciones/" + $("#TxtIdform_Dis").val();
     $.ajax({
         url: xUrl,
