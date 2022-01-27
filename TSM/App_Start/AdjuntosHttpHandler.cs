@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,17 +30,40 @@ namespace TSM.App_Start
             string Dominio = Utils.ContextHelper.GetHttpContext();
             string sinImagen = "/Images/NoDisponible.png";
             string tkn ="" ;
+            string user = "";
             // context.Response.Redirect("/Adjuntos/Index");
             //obtiene token de la solicitud
             if (System.Web.HttpContext.Current.Request.Cookies.AllKeys.Contains("t"))
                 tkn = System.Web.HttpContext.Current.Request.Cookies["t"].Value;
-            
+
+            if (System.Web.HttpContext.Current.Request.Cookies.AllKeys.Contains("user"))
+                user = System.Web.HttpContext.Current.Request.Cookies["user"].Value;
+           
+
+
             switch (context.Request.HttpMethod)
             {
                 case "GET":
                     String strRequestedFile = context.Server.MapPath(context.Request.FilePath);
                     if (context.Request.UrlReferrer != null || !String.IsNullOrEmpty(tkn) )
                     {
+                        //valida el token y crea uno nuevo 
+                        Dictionary<string, object> trama = new Dictionary<string, object>{
+                        { "Usuario", user },
+                        { "t", tkn },
+                        { "TipoSolicitud", "RENOVARTOKEN" }
+                    };
+
+                        tkn = Controllers.TokenController.GenerarToken(JsonConvert.SerializeObject(trama));
+
+                        //si el token esta vacío (indicando que esta vencido o que nose pudo renovar) manda al login
+                        if (String.IsNullOrEmpty(tkn))
+                        {
+                            context.Response.Redirect("/Login");
+                        }
+
+
+
                         String strUrlRef = context.Request.Url.ToString();
                      if (strUrlRef.StartsWith(Dominio))
                         {
