@@ -277,6 +277,7 @@
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\ExtensionesArchivosModulosController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
@@ -979,6 +980,7 @@
     <Content Include="Views\ExtensionesArchivosModulos\Index.cshtml" />
     <Content Include="Views\CambioClienteOT\Index.cshtml" />
     <Content Include="Views\CambioClienteRD\Index.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
