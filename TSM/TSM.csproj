@@ -980,6 +980,7 @@
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
     <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <None Include="Web.UAT2.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
