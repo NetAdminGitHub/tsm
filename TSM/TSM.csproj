@@ -251,6 +251,7 @@
     </Compile>
     <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
+    <Compile Include="Controllers\AduanasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\ArticulosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
@@ -488,6 +489,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\Aduanas.js" />
     <Content Include="Scripts\js\AutorizarEstacionesPermitidas.js" />
     <Content Include="Scripts\js\Articulos.js" />
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
@@ -980,6 +982,7 @@
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
     <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <Content Include="Views\Aduanas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
