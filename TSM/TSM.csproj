@@ -982,6 +982,8 @@
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
     <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <Content Include="Web.UAT2.config">
+    </Content>
     <Content Include="Views\Aduanas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1073,6 +1075,17 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
