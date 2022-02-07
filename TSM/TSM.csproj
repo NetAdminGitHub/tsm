@@ -320,6 +320,7 @@
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
+    <Compile Include="Controllers\PaisesController.cs" />
     <Compile Include="Controllers\PlantasController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
@@ -521,6 +522,7 @@
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
     <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
@@ -985,6 +987,7 @@
     <Content Include="Web.UAT2.config">
     </Content>
     <Content Include="Views\Aduanas\Index.cshtml" />
+    <Content Include="Views\Paises\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
