@@ -303,6 +303,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
+    <Compile Include="Controllers\IncisosArancelariosController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
@@ -522,6 +523,7 @@
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\IncisosArancelarios.js" />
     <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
     <Content Include="Scripts\js\Plantas.js" />
@@ -988,6 +990,7 @@
     </Content>
     <Content Include="Views\Aduanas\Index.cshtml" />
     <Content Include="Views\Paises\Index.cshtml" />
+    <Content Include="Views\IncisosArancelarios\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
