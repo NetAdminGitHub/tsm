@@ -189,7 +189,6 @@ $(document).ready(function () {
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
-    KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
     KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
     KdoButton($("#btnImpReportStrikeOff"), "file-data", "Imprimir reporte Strike-Off");
 
@@ -759,8 +758,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     KdoButtonEnable($("#btnCambiorEstadoOT"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
-    KdoButtonEnable($("#btnAgenda"), true);
-
+    
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
     xvNodocReq = datos.NodocReq;
@@ -795,7 +793,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     if (datos.IdEtapaProceso !== 5) {
         XSeteo = maq[0].IdSeteo;
     }
-   
+
+    fn_InicializarAgenda(datos.IdOrdenTrabajo, datos.IdEtapaProceso, datos.Item);
 };
 
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
@@ -1044,10 +1043,6 @@ $("#btnSolicitarRegistroCambio").click(function (e) {
     fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
 });
 
-//llamar a la vista registro de comentarios en la agenda
-$("#btnAgenda").click(function (e) {
-    fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val());
-});
 // llmar a la vista historial de seteos.
 $("#btnHistorial").click(function (e) {
     fn_OrdenesTrabajosVersionesSeteos("historialSeteos", idOrdenTrabajo);

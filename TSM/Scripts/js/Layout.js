@@ -19,7 +19,7 @@ $(document).ready(function () {
     });
 
     //seguridad obtner los permisos 
-    if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false && location.pathname.startsWith("/Reportes") === false) {
+    if (location.pathname !== "/" && location.pathname.startsWith("/Home") === false && location.pathname.startsWith("/Reportes") === false && location.pathname.startsWith("/Error") === false) {
         var ParamPath = location.pathname.toString();//location.pathname.toUpperCase().endsWith("/INDEX")? location.pathname : location.pathname.toString() +'/' + 'Index'
         var permisos = fn_getOpcionesMenuPermisos(getUser(), ParamPath);
         if (permisos.length === 0) {
@@ -29,6 +29,16 @@ $(document).ready(function () {
             fPermisos(permisos[0]);
             MostrarMapaSitio(permisos[0].IdMenu);
         }
+    }
+    else {
+        $.ajax({
+            url: UrlMRSeguridad + "/GetMenusRolesSeguridad",
+            dataType: 'json',
+            type: 'POST',
+            data: JSON.stringify({ IdUsuario: '', Url: '' }),
+            contentType: "application/json; charset=utf-8",
+            async: false
+        });
     }
 
     document.addEventListener("click", function () {
@@ -69,10 +79,14 @@ $(document).ready(function () {
     // here "this" points to the XMLHttpRequest Object.
     var newSend = function (vData) {
         this.setRequestHeader("t", Cookies.get("t"));
-        this.realSend(vData);
+        try {
+            this.realSend(vData);
+        } catch (e) {
+            ErrorMsg("No se ha podido conectar al servidor remoto: " + e.message);
+        }
+        
     };
     XMLHttpRequest.prototype.send = newSend;
-
 })(XMLHttpRequest.prototype.send);
 
 var renovar = function () {
@@ -130,7 +144,7 @@ var vtoken = function () {
 };
 
 var fn_getOpcionesMenuPermisos = function (xIdUsuario, xUrl) {
-    var datos;
+    var datos = '[]';
     $.ajax({
         url: UrlMRSeguridad + "/GetMenusRolesSeguridad",
         dataType: 'json',
@@ -140,9 +154,6 @@ var fn_getOpcionesMenuPermisos = function (xIdUsuario, xUrl) {
         async: false,
         success: function (respuesta) {
             datos = respuesta;
-        },
-        error: function (respuesta) {
-            datos = '[]';
         }
     });
 
@@ -161,9 +172,6 @@ var fn_getNotificaciones = function () {
             if (respuesta !== null) {
                 fn_CrearNotificaciones(respuesta);
             }
-        },
-        error: function (e) {
-            ErrorMsg(e);
         }
     });
 };
