@@ -1,4 +1,4 @@
-﻿
+﻿"use strict";
 var fn_VistaEstacionColorDocuReady = function () {
     KdoButton($("#btnccc"), "search", "Buscar en formula historicas..");
     KdoButtonEnable($("#btnccc"), false);
@@ -686,12 +686,12 @@ var fn_GuardarEstacionColor = function () {
 
 var fn_GuardarEstaMarco = function (xIdBrazo) {
 
-    kendo.ui.progress($("#MEstacionColor"), true);
     let xIdTipoFormulacion;
     //Te contiene una tipologia de la estacion que se usa en este codigo "COLOR", "TECNICA" ,"BASE", "ACCESORIO"
     xIdTipoFormulacion = Te;
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xType;
+    let  xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
 
     if (estaMarco === null) {
         xType = "Post";
@@ -742,7 +742,7 @@ var fn_GuardarEstaMarco = function (xIdBrazo) {
             fn_GuardarMarcoFormu(xIdBrazo, Te === "COLOR" ? $("#TxtOpcSelec").data("IdRequerimientoColor") : null, vIdtec, vIdBase);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionColor"), false);
+            kendo.ui.progress($("#MEstacionColor").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -750,9 +750,9 @@ var fn_GuardarEstaMarco = function (xIdBrazo) {
 };
 
 var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequerimientoTecnica, xidBase ) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    var xType;
-    var xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xType;
+    let xFecha = kendo.toString(kendo.parseDate($("#TxtFecha").val()), 's');
+    let xUrl;
 
     if (setFor===null) {
         xType = "Post";
@@ -793,9 +793,10 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
             maq = fn_GetMaquinas();
             $("#maquinaRevTec").data("maquinaSerigrafia").cargarDataMaquina(maq);
             fn_ObtCntMaxEstaciones();
+            kendo.ui.progress($("#MEstacionColor").data("kendoWindow").element, false);
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionColor"), false);
+            kendo.ui.progress($("#MEstacionColor").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -803,8 +804,9 @@ var fn_GuardarMarcoFormu = function (xIdBrazo, xidRequerimientoColor, xidRequeri
 };
 
 var fn_GuardarEstacion = function (xIdBrazo) {
-    kendo.ui.progress($("#MEstacionColor"), true);
-    var xType;
+    kendo.ui.progress($("#MEstacionColor").data("kendoWindow").element, true);
+    let xType;
+    let xUrl;
    
     if (EstacionBra === null) {
         xType = "Post";
@@ -830,7 +832,7 @@ var fn_GuardarEstacion = function (xIdBrazo) {
             fn_ObtCntMaxEstaciones($("#AlertaEstacion"));
         },
         error: function (data) {
-            kendo.ui.progress($("#MEstacionColor"), false);
+            kendo.ui.progress($("#MEstacionColor").data("kendoWindow").element, false);
             ErrorMsg(data);
         }
     });
@@ -840,6 +842,7 @@ var fn_GuardarEstacion = function (xIdBrazo) {
 var fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
     kendo.ui.progress($("#MEstacionColor"), true);
     let xType = "Post";
+    let xUrl;
     xUrl = TSM_Web_APi + "TintasFormulaciones/InsTintasFormulacion_His";
     $.ajax({
         url: xUrl,
@@ -874,6 +877,7 @@ var fn_GuardarEstacionFormula = function (xIdBrazo, xCodigoColor) {
 var fn_DelFormulaHis = function () {
     kendo.ui.progress($("#MEstacionColor"), true);
     let xType = "Delete";
+    let xUrl;
     xUrl = TSM_Web_APi + "TintasFormulaciones/" + $("#TxtIdform").val();
     $.ajax({
         url: xUrl,

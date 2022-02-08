@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ordenes de Trabajo";
-    ViewBag.IdVersion = "TSM0101088|21121401";
+    ViewBag.IdVersion = "TSM0101088|22012501";
 }
 
 <h2 id="lblNomIdEtapaProceso"></h2>
@@ -17,6 +17,7 @@
     <script src="~/Scripts/VueComp/inquisalva-components.min.js"></script>
     <script src="~/Scripts/VueComp/maquinaSerigrafia.js"></script>
     <script type="text/javascript" src="~/Scripts/js/ElementoTrabajo.js?@ViewBag.IdVersion"></script>
+    <script type="text/javascript" src="~/Scripts/js/RegistroOrdenesTrabajosAgendas.js?@ViewBag.IdVersion"></script>
     <script src="~/Scripts/js/_MaqSR22.js"></script>
     <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
     @*js donde se programa la funcionalidad para la imagen del diseño mostrada lado derecho de la pantalla*@
@@ -67,7 +68,7 @@
                                 <label for="txtNoCatalogoDiseno" id="lblNoCatalogoDiseno"><strong>No Art. del Diseño:</strong></label>
                                 <input id="txtNoCatalogoDiseno" name="txtNoCatalogoDiseno" class="k-textbox form-control" readonly="readonly" />
                             </div>
-                           
+
 
                             <div class="form-group col-lg-3 col-md-3">
                                 <label for="txtMotivoDesarrollo" id="lbltxtMotivoDesarrollo"><strong>Motivo de Desarollo:</strong></label>
@@ -76,8 +77,6 @@
                             <div class="form-group  col-lg-2 col-md-2 align-self-end">
                                 <div class="input-group">
                                     <div style="width: 100%;">
-                                        <button type="button" id="btnAgenda" class="form-control"></button>
-                                        &nbsp;
                                         <button type="button" id="btnHistorial" class="form-control"></button>
                                         &nbsp;
                                         <button type="button" id="btnImpReportStrikeOff" class="form-control"></button>
@@ -106,7 +105,7 @@
                             </div>
                         </div>
 
-                    </div>  
+                    </div>
                     <div class="col-lg-5">
                         <div class="form-row">
                             <div class="form-group col-lg-6 col-md-6">
@@ -120,14 +119,14 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <ul id="BarPanelInfo">
                     <li>
                         <span class="TS-icon-INFO1" style="font-size: 1.7em;">&nbsp</span>
                         Información Orden de Trabajo
                         <div class="form-row">
-                            <div class="form-group col-lg-12">
+                            <div class="form col-lg-12">
                                 <div class="form-row">
                                     <div class="col-lg-2">
                                         <input id="IdServicio" disabled="disabled" hidden="hidden" />
@@ -237,8 +236,8 @@
                                         </div>
                                         <div class="form-group col-lg-3 col-md-3">
                                             <div class="form-row">
-                                                    <label for="TxtOtOrigen">OT Origen:</label>
-                                                    <input id="TxtOtOrigen" name="TxtOtOrigen" class="k-textbox form-control" , readonly="readonly" />
+                                                <label for="TxtOtOrigen">OT Origen:</label>
+                                                <input id="TxtOtOrigen" name="TxtOtOrigen" class="k-textbox form-control" , readonly="readonly" />
                                             </div>
                                         </div>
                                     </div>
@@ -273,6 +272,11 @@
                                 </div>
                             </div>
                         </div>
+                    </li>
+                    <li>
+                        <span class="k-icon k-i-track-changes" style="font-size: 1.7em;">&nbsp</span>
+                        Comentarios por Departamentos (<span id="txtTotalComentarios">0</span>)
+                        @Html.Partial("_RegistroOrdenesTrabajosAgendas")
                     </li>
                 </ul>
                 <br />
