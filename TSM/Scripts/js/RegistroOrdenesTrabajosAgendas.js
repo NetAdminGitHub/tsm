@@ -38,8 +38,8 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
                         Comentario: datos.data.models[0].Comentario,
                         IdUsuario: getUser(),
                         IdEtapaProcesoOrigen: vIdEtapaOrigen,
-                        IdEtapaProcesoDestino: datos.data.models[0].IdEtapaProcesoDestino,
-                        ItemEtapaOrigen: vItemOrigen
+                        ItemEtapaOrigen: vItemOrigen,
+                        IdDepartamento: datos.data.models[0].IdDepartamento
                     }),
                     url: Url_upd,
                     contentType: "application/json; charset=utf-8",
@@ -67,8 +67,8 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
                             Comentario: datos.data.models[0].Comentario,
                             IdUsuario: getUser(),
                             IdEtapaProcesoOrigen: vIdEtapaOrigen,
-                            IdEtapaProcesoDestino: datos.data.models[0].IdEtapaProcesoDestino,
-                            ItemEtapaOrigen: vItemOrigen
+                            ItemEtapaOrigen: vItemOrigen,
+                            IdDepartamento: datos.data.models[0].IdDepartamento
                         }),
                         url: TSM_Web_APi + "OrdenesTrabajosAgendas/Eliminar",
                         contentType: "application/json; charset=utf-8",
@@ -97,8 +97,8 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
                         Comentario: datos.data.models[0].Comentario,
                         IdUsuario: datos.data.models[0].IdUsuario,
                         IdEtapaProcesoOrigen: datos.data.models[0].IdEtapaProcesoOrigen,
-                        IdEtapaProcesoDestino: datos.data.models[0].IdEtapaProcesoDestino,
-                        ItemEtapaOrigen: datos.data.models[0].ItemEtapaOrigen
+                        ItemEtapaOrigen: datos.data.models[0].ItemEtapaOrigen,
+                        IdDepartamento: datos.data.models[0].IdDepartamento
                     }),
                     url: TSM_Web_APi + "OrdenesTrabajosAgendas/Insertar",
                     contentType: "application/json; charset=utf-8",
@@ -140,9 +140,9 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
                         validation: {
                             required: true,
                             maxlength: function (input) {
-                                if (input.is("[name='IdEtapaProcesoDestino']")) {
+                                if (input.is("[name='IdDepartamento']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdEtapaProcesoDestino").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdDepartamento").data("kendoComboBox").selectedIndex >= 0;
                                 }
                                 if (input.is("[name='Comentario']") ) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
@@ -156,12 +156,12 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
                     UsuarioNombre: { type: "string" },
                     IdEtapaProcesoOrigen: { type: "number", defaultValue: function () { return vIdEtapaOrigen; } },
                     EtapaNombreOrigen: { type: "string" },
-                    IdEtapaProcesoDestino: { type: "string" },
                     EtapaNombreDestino: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    ItemEtapaOrigen: { type: "number", defaultValue: function () { return vItemOrigen; } }
-
+                    ItemEtapaOrigen: { type: "number", defaultValue: function () { return vItemOrigen; } },
+                    IdDepartamento: { type: "string" },
+                    NomDepto: { type: "string" }
                 }
             }
         }
@@ -176,33 +176,36 @@ var fn_InicializarAgenda = function (vIdOt,vIdEtapa,vItem) {
             KdoHideCampoPopup(e.container, "IdUsuario");
             KdoHideCampoPopup(e.container, "IdEtapaProcesoOrigen");
             KdoHideCampoPopup(e.container, "EtapaNombreOrigen");
-            KdoHideCampoPopup(e.container, "EtapaNombreDestino");
+            KdoHideCampoPopup(e.container, "NomDepto");
             KdoHideCampoPopup(e.container, "UsuarioNombre");
             KdoHideCampoPopup(e.container, "ItemEtapaOrigen");
-            Grid_Focus(e, "IdEtapaProcesoDestino");
+            Grid_Focus(e, "IdDepartamento");
  
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdOrdenTrabajo", title: "Orden de Trabajo", hidden: true, menu: false },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.fff}", width: 200 },
-            { field: "IdEtapaProcesoDestino", title: "Etapa", values: ["IdEtapaProceso", "Nombre", TSM_Web_APi + "EtapasProcesos/GetEtapasProcesosActivas/2", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
-            { field: "EtapaNombreDestino", title: "Departamento", width: 200 },
+            { field: "IdDepartamento", title: "Departamento", values: ["IdDepartamento", "Nombre", TSM_Web_APi + "Departamentos", "", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "NomDepto", title: "Departamento", width: 200 },
             { field: "Comentario", title: "Comentario",  editor: Grid_ColTextArea, values: ["6"] },
             { field: "IdEtapaProcesoOrigen", title: "Etapa Proceso Origen", hidden: true },
             { field: "ItemEtapaOrigen", title: "Item Etapa", width: 200, hidden: true },
             { field: "EtapaNombreOrigen", title: "Etapa Nombre Origen", hidden: true },
-            { field: "IdUsuario", title: "Usuario", width: 100 },
+            { field: "IdUsuario", title: "Usuario", width: 100, hidden: true },
             { field: "IdUsuarioMod", title: "IdUsuarioMod", width: 200, hidden: true },
-            { field: "UsuarioNombre", title: "Usuario Nombre", hidden: true},
+            { field: "UsuarioNombre", title: "Nombre de Usuario"},
             { field: "FechaMod", title: "Fecha", format: "{0: dd/MM/yyyy HH:mm:ss.fff}", width: 160, hidden: true }
-        ]
+        ],
+        dataBound: function (e) {
+            $("#txtTotalComentarios").text(e.sender.dataSource.total());
+        }
     });
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL gCHFor
-    SetGrid($("#gridAgenda").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 450);
+    SetGrid($("#gridAgenda").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 0);
     SetGrid_CRUD_ToolbarTop($("#gridAgenda").data("kendoGrid"), Permisos.SNAgregar && xEstadoOT !== 'CANCELADA' && xEstadoOT !== 'TERMINADO');
     SetGrid_CRUD_Command($("#gridAgenda").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#gridAgenda").data("kendoGrid"), dsetOTEstados, 20);
+    Set_Grid_DataSource($("#gridAgenda").data("kendoGrid"), dsetOTEstados, 10);
 
     var selrow1 = [];
     $("#gridAgenda").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila

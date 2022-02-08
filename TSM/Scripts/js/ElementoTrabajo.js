@@ -28,12 +28,12 @@ let xCmbTecnica_Mues;
 let xCmbBaseMezcla_Mues;
 let xCmbBasePigmentos_Mues;
 let xCmbBasePigmentos_VerifMues
-var SetFor;
-var EstaMarco;
+/*var SetFor;*/
+/*var EstaMarco;*/
 var EstacionBra;
 var Te;
 var idBra;
-var EstaTintasFormula;
+/*var EstaTintasFormula;*/
 var EstacionBraAcce;
 var idBraAcce;
 var xidEstacion;
@@ -75,6 +75,11 @@ var PermiteAddEstacion = true;
 let tecnicasFlags = "";
 let xIdQuimicaCliente = 0;
 let Arrastre_Nuevo = 0;
+let setFor = null;
+let estaMarco = null;
+let EstaTintasFormula = null;
+let xCmbTecnica_VerifMues;
+let xCmbBaseMezcla_VerifMues;
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -184,7 +189,6 @@ $(document).ready(function () {
     KdoButton($("#btnIrGOT"), "hyperlink-open-sm");
     KdoButton($("#btnSolicitarRegistroCambio"), "track-changes");
     KdoButton($("#btnRegistroCambio"), "track-changes-accept");
-    KdoButton($("#btnAgenda"), "track-changes", "Comentarios por departamento");
     KdoButton($("#btnHistorial"), "track-changes-accept-all", "Versiones de Seteos");
     KdoButton($("#btnImpReportStrikeOff"), "file-data", "Imprimir reporte Strike-Off");
 
@@ -754,8 +758,7 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     KdoButtonEnable($("#btnCambiorEstadoOT"), !estadoPermiteEdicion || EtpSeguidor === true || EtpAsignado === false ? false : true);
     KdoButtonEnable($("#btnSolicitarRegistroCambio"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' || datos.EstadoOT === 'CANCELADA' ? false : true);
     KdoButtonEnable($("#btnAutorizarRetenciones"), EtpSeguidor === true || datos.EstadoOT === 'TERMINADO' ? false : true);
-    KdoButtonEnable($("#btnAgenda"), true);
-
+    
     KdoButtonEnable($("#btnRegistroCambio"),true);
     
     xvNodocReq = datos.NodocReq;
@@ -790,7 +793,8 @@ var fn_CompletarInfEtapa = function (datos, RecargarScriptVista) {
     if (datos.IdEtapaProceso !== 5) {
         XSeteo = maq[0].IdSeteo;
     }
-   
+
+    fn_InicializarAgenda(datos.IdOrdenTrabajo, datos.IdEtapaProceso, datos.Item);
 };
 
 var fn_getImagen = function (xUrl,xNodocumentoReq) {
@@ -1039,10 +1043,6 @@ $("#btnSolicitarRegistroCambio").click(function (e) {
     fn_SolicitarIngresoCambio("SoliIngresoCambio", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val(), idTipoOrdenTrabajo.toString());
 });
 
-//llamar a la vista registro de comentarios en la agenda
-$("#btnAgenda").click(function (e) {
-    fn_OrdenesTrabajosAgendas("Agenda_OT", idOrdenTrabajo, idEtapaProceso, $("#txtItem").val());
-});
 // llmar a la vista historial de seteos.
 $("#btnHistorial").click(function (e) {
     fn_OrdenesTrabajosVersionesSeteos("historialSeteos", idOrdenTrabajo);
@@ -1489,7 +1489,7 @@ $("#btnAsignarUsuario").click(function (e) {
  * @returns {data}
  **/
 var fn_GetMaquinas = function () {
-    kendo.ui.progress($(document.body), true);
+ /*   kendo.ui.progress($(document.body), true);*/
     let result = null;
     $.ajax({
         url: TSM_Web_APi + "SeteoMaquinas/GetSeteoMaquina/" + $("#txtIdOrdenTrabajo").val() + "/" + $("#txtIdEtapaProceso").val() + "/" + $("#txtItem").val(),
@@ -1497,10 +1497,10 @@ var fn_GetMaquinas = function () {
         type: 'GET',
         success: function (datos) {
             result = datos;
-        },
-        complete: function () {
-            kendo.ui.progress($(document.body), false);
         }
+        //complete: function () {
+        //    kendo.ui.progress($(document.body), false);
+        //}
     });
 
     return result;

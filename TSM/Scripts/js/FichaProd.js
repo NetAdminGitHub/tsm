@@ -321,9 +321,15 @@ $(document).ready(function () {
         },
         showFileList: false,
         success: function (e) {
-            if (e.operation === "upload") {
-                GuardarArtAdj(UrlApiAAdj, e.files[0].name);
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    GuardarArtAdj(UrlApiAAdj, e.files[0].name);
+                }
+
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
             }
+
         }
 
     }); 
@@ -398,7 +404,7 @@ $(document).ready(function () {
         },
         requestEnd: function (e) {
             Grid_requestEnd(e);
-            if (e.type === "destroy" || e.type === "update") { getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + xIdArte.toString()); }
+            if (e.type === "destroy" || e.type === "update") { fn_getAdjunto(); }
 
         },
         error: Grid_error,
@@ -792,13 +798,16 @@ let fn_getAdjunto = function () {
             Fn_LeerImagenesMejorado($("#Mycarouselwp"), "/Adjuntos/" + xNoDocumento + "", filtro);
              
             var imgCatologo = document.querySelector('#Mycarouselwp0');
-            imgCatologo.addEventListener('load', function (event) {
-                var base64image = getDataUrl(event.currentTarget);
-                imgPlaceSrc = $('#Mycarouselwp0').attr('src');
-                imgCatSrc = $('#Mycarousel0').attr('src');
-                imgvalue = fn_GetImgBase64();
+            if (imgCatologo !== null) {
+                imgCatologo.addEventListener('load', function (event) {
+                    var base64image = getDataUrl(event.currentTarget);
+                    imgPlaceSrc = $('#Mycarouselwp0').attr('src');
+                    imgCatSrc = $('#Mycarousel0').attr('src');
+                    imgvalue = fn_GetImgBase64();
 
-            });
+                });
+            }
+            
             kendo.ui.progress($(document.body), false);
         },
         error: function () {
@@ -1517,7 +1526,7 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             $("#GridAdjuntos").data("kendoGrid").dataSource.read();
-            getAdjun(UrlApiArteAdj + "/GetVistaImagenes/" + xIdArte.toString());
+            fn_getAdjunto();
             kendo.ui.progress($("#vistaParcial"), false);
             RequestEndMsg(data, XType);
 
@@ -1530,23 +1539,6 @@ let GuardarArtAdj = function (UrlAA, nombreFichero) {
 };
 /*  */
 
-let getAdjun = function (UrlAA) {
-    //LLena Splitter de imagenes
-    kendo.ui.progress($("#vistaParcial"), true);
-    $.ajax({
-        url: UrlAA,
-        dataType: 'json',
-        type: 'GET',
-        success: function (respuesta) {
-            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + $("#NoDocumento").val() + "", respuesta);
-
-            kendo.ui.progress($("#vistaParcial"), false);
-        },
-        error: function () {
-            kendo.ui.progress($("#vistaParcial"), false);
-        }
-    });
-};
 
 let EliminarArtAdjFicha = function (UrlAA, Fn) {
     kendo.ui.progress($("#myModalAdjunto"), true);
