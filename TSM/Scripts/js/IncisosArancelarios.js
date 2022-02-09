@@ -60,19 +60,13 @@ $(document).ready(function () {
                                 if (input.is("[name='Descripcion']") && input.val().length > 200) {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 200");
                                     return false;
-                                }
+                                }                       
                            
-                                if (input.is("[name='DescripcionComercial']") && input.val().length > 500) {
-                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 500");
-                                    return false;
-                                }
-
                                 return true;
                             }
                         }
                     },
-                    Descripcion: { type: "string" },
-                    DescripcionComercial: { type: "string" },
+                    Descripcion: { type: "string" },                    
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -93,8 +87,7 @@ $(document).ready(function () {
         columns: [
             { field: "IdIncisoArancelario", title: "Código", hidden: true },
             { field: "IncisoArancelario", title: "Inciso Arancelario", sortable: { initialDirection: "asc" } },
-            { field: "Descripcion", title: "Descripción--", editor: Grid_ColTextArea, values: ["6"]},
-            { field: "DescripcionComercial", title: "Descripcion Comercial", editor: Grid_ColTextArea, values: ["6"]},
+            { field: "Descripcion", title: "Descripción", editor: Grid_ColTextArea, values: ["4"]},            
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
