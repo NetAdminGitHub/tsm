@@ -261,6 +261,7 @@
     <Compile Include="Controllers\BoardsController.cs" />
     <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
@@ -302,12 +303,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
+    <Compile Include="Controllers\IngresoMercanciasController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
+    <Compile Include="Controllers\ModalesIngresoMercanciaController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
@@ -486,6 +489,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\IngresoMercancias.js" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
     <Content Include="Scripts\js\AutorizarEstacionesPermitidas.js" />
@@ -494,6 +498,9 @@
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
     <Content Include="Scripts\js\CategoriasMotivosLaboratorio.js" />
+    <Content Include="Scripts\js\ControlBulto.js" />
+    <Content Include="Scripts\js\ControlIngresos.js" />
+    <Content Include="Scripts\js\CrearListaEmpaque.js" />
     <Content Include="Scripts\js\CriteriosCriticosCalidad.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
@@ -519,6 +526,8 @@
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\IngresoBulto.js" />
+    <Content Include="Scripts\js\IngresoBultoSerie.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
     <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
@@ -750,6 +759,7 @@
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\Modales.js" />
     <Content Include="Scripts\Utils\powerbi.js" />
     <Content Include="Scripts\Utils\powerbi.min.js" />
     <Content Include="Scripts\Utils\sortable.min.js" />
@@ -980,12 +990,19 @@
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
     <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <Content Include="Views\ControlIngresos\Index.cshtml" />
+    <Content Include="Views\Shared\_ControlBulto.cshtml" />
+    <Content Include="Views\Shared\_IngresoBulto.cshtml" />
+    <Content Include="Views\Shared\_IngresoBultoSerie.cshtml" />
+    <Content Include="Views\Shared\_CrearListaEmpaque.cshtml" />
+    <Content Include="Views\IngresoMercancias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CrystalReferences\" />
     <Folder Include="Data\" />
     <Folder Include="Views\Imagen\" />
+    <Folder Include="Views\ModalesIngresoMercancia\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />

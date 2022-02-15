@@ -1,0 +1,87 @@
+﻿<style>
+    .tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+<div class="form-row">
+    <div class="col-lg-4">
+        <form id="FrmGhojaBandeo" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-row">
+                <div class="col-lg-12 form-group">
+                    <label for="xcmbCliente">Cliente:</label>
+                    <input id="xcmbCliente" name="xcmbCliente" class="form-control" />
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label for="txtCorte_Rollo" id="lbltxtCorte_Rollo">Corte:</label>
+                    <input id="txtCorte_Rollo" name="txtCorte_Rollo" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label for="txtEstilo">Estilo:</label>
+                    <input id="txtEstilo" name="txtEstilo" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="col-lg-12 form-group">
+                    <div class="form-row">
+                        <div class="form-group col-lg-6" style="text-align:start;">
+                            <input type="checkbox" id="chkRollo" name="chkRollo" class="k-checkbox">
+                            <label class="k-checkbox-label" for="chkRollo" id="lblchkRollo">Rollo</label>
+                        </div>
+                        <div class="form-group col-lg-6" style="text-align:end;">
+                            <input type="checkbox" id="chkEnlazarTsm" name="chkEnlazarTsm" class="k-checkbox">
+                            <label class="k-checkbox-label" for="chkEnlazarTsm" id="lblchkEnlazarTsm">Enlazar TSM</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label for="Mtlfm">FM:</label>
+                    <input id="Mtlfm" name="Mtlfm" class="form-control" />
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label for="txtColor">Color:</label>
+                    <input id="txtColor" name="txtColor" type="text" class="k-textbox form-control" />
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label for="xcmbPlanta">Planta:</label>
+                    <input id="xcmbPlanta" name="xcmbPlanta" type="text" class="form-control" />
+                </div>
+                <div class="col-lg-12 form-group" style="text-align: center; align-self: end;">
+                    <button type="button" id="btnGuardarRegistro">Guardar Registro</button>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label for="gridIngreso" id="lblgridIngreso" class="tsm-label-center"><strong>Detalle de Datos Ingresos</strong></label>
+                    <div id="gridResumenIngreso"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-8">
+        <div class="form-row">
+            <div class="col-lg-6 form-group" style="text-align: left; align-self: end;">
+                <button type="button" id="btnCrearBulto">Crear Bulto / Rollo</button>
+            </div>
+            <div class="col-lg-6 form-group" style="text-align: right; align-self: end;">
+                <button type="button" id="btnCrearSerieBulto">Crear Serie de Bulto / Rollo</button>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                <label for="gridBultoDetalle" id="lblgridBultoDetalle" class="tsm-label-center"><strong>Detalle de Bultos</strong></label>
+                <div id="gridBultoDetalle"></div>
+            </div>
+        </div>
+        @*<div class="form-row">
+                <div class="col-lg-6 form-group" style="text-align: center; align-self: end;">
+                    <button type="button" id="btnCancelar">Cancelar</button>
+                </div>
+
+            </div>*@
+
+
+
+    </div>
+   
+</div>
+@*modal ingreso de bulto*@
+<div id="vIngresoBulto"></div>
+
+@*modal ingreso serie bulto*@
+<div id="vIngresoBultoSerie"></div>
