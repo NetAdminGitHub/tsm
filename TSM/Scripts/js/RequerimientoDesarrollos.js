@@ -12,6 +12,8 @@ $(document).ready(function () {
     let vIdModulo = 1;
 
     // carga carrousel de imagenes 
+
+
     var DivCarousel = $("#Div_Carousel");
     DivCarousel.append(Fn_Carouselcontent());
     $("#idcloseMod").click(function () {
@@ -1658,9 +1660,15 @@ $(document).ready(function () {
         },
         showFileList: false,
         success: function (e) {
-            if (e.operation === "upload") {
-                GuardarArtAdj(UrlApiAAdj, e);
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    GuardarArtAdj(UrlApiAAdj, e);
+                }
+
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
             }
+            
         }
 
     });

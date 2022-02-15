@@ -31,6 +31,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -137,6 +138,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -176,8 +178,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -203,9 +204,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -221,6 +220,7 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -231,6 +231,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AdjuntosHttpHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -251,6 +252,8 @@
     </Compile>
     <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
+    <Compile Include="Controllers\AdjuntosController.cs" />
+    <Compile Include="Controllers\AduanasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\ArticulosController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
@@ -260,6 +263,8 @@
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
     <Compile Include="Controllers\BodegasClientesController.cs" />
+    <Compile Include="Controllers\CambioClienteOTController.cs" />
+    <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
@@ -278,7 +283,9 @@
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
+    <Compile Include="Controllers\ExtensionesArchivosModulosController.cs" />
     <Compile Include="Controllers\FichaProduccionController.cs" />
     <Compile Include="Controllers\ConsultaFichasDesarrollosController.cs" />
     <Compile Include="Controllers\ConsumoTintasPRDController.cs" />
@@ -303,6 +310,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
+    <Compile Include="Controllers\IncisosArancelariosController.cs" />
     <Compile Include="Controllers\IngresoMercanciasController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -322,6 +330,7 @@
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
+    <Compile Include="Controllers\PaisesController.cs" />
     <Compile Include="Controllers\PlantasController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
@@ -492,11 +501,14 @@
     <Content Include="Scripts\js\IngresoMercancias.js" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\Aduanas.js" />
     <Content Include="Scripts\js\AutorizarEstacionesPermitidas.js" />
     <Content Include="Scripts\js\Articulos.js" />
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
     <Content Include="Scripts\js\BasesMuestras.js" />
     <Content Include="Scripts\js\BasesPigmentos.js" />
+    <Content Include="Scripts\js\CambioClienteOT.js" />
+    <Content Include="Scripts\js\CambioClienteRD.js" />
     <Content Include="Scripts\js\CategoriasMotivosLaboratorio.js" />
     <Content Include="Scripts\js\ControlBulto.js" />
     <Content Include="Scripts\js\ControlIngresos.js" />
@@ -524,8 +536,11 @@
     <Content Include="Scripts\js\EstacionMuestra.js" />
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
+    <Content Include="Scripts\js\ExtensionesArchivosModulos.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\IncisosArancelarios.js" />
+    <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\IngresoBulto.js" />
     <Content Include="Scripts\js\IngresoBultoSerie.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
@@ -990,6 +1005,15 @@
     <Content Include="Views\Plantas\Index.cshtml" />
     <Content Include="Views\RecintosFiscales\Index.cshtml" />
     <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <Content Include="Web.UAT2.config">
+    </Content>
+    <Content Include="Views\Aduanas\Index.cshtml" />
+    <Content Include="Views\Paises\Index.cshtml" />
+    <Content Include="Views\ExtensionesArchivosModulos\Index.cshtml" />
+    <Content Include="Views\CambioClienteOT\Index.cshtml" />
+    <Content Include="Views\CambioClienteRD\Index.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\IncisosArancelarios\Index.cshtml" />
     <Content Include="Views\ControlIngresos\Index.cshtml" />
     <Content Include="Views\Shared\_ControlBulto.cshtml" />
     <Content Include="Views\Shared\_IngresoBulto.cshtml" />
@@ -1001,6 +1025,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="CrystalReferences\" />
     <Folder Include="Data\" />
+    <Folder Include="Views\Adjuntos\" />
     <Folder Include="Views\Imagen\" />
     <Folder Include="Views\ModalesIngresoMercancia\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
@@ -1087,6 +1112,17 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
