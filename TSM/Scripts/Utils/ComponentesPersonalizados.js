@@ -67,10 +67,10 @@
                     }
                 },
                 columns: [
-                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50,width:"0px" },
-                    { field: "Item", title: "Posición", width: 50, width: "0px" },
-                    { field: "NomIdTipoPantonera", title: "Pantonera", width: 200, width: "0px" },
-                    { field: "Codigo", title: "Pantone", width: 200, width: "0px" },
+                    { field: "IdTipoPantonera", title: "Cod. Pantonera", width: 50},
+                    { field: "Item", title: "Posición", width: 50 },
+                    { field: "NomIdTipoPantonera", title: "Pantonera"  },
+                    { field: "Codigo", title: "Pantone", width: 200 },
                     { field: "Nombre", title: "Nombre", width: 200 },
                     { field: "ColorHex", title: "&nbsp;", width: 50, template: '<span style="background-color: #:ColorHex#; width: 25px; height: 25px; border-radius: 50%; background-size: 100%; background-repeat: no-repeat; display: inline-block;"></span>' }
                 ]
@@ -342,6 +342,37 @@
                     { field: "NombreCliente", title: "Cliente", width: 300 }
                 ]
             });
+        });
+    },
+    ControlSelecionByClienteFMCatalogo: function (xidCliente) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoReferencia",
+                dataValueField: "IdCatalogoDiseno",
+                filter: "contains",
+                autoBind: false,
+                /*minLength: 3,*/
+                height: 400,
+                clearButton: false,
+                placeholder: "Selección de FM",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                //filterFields: ["NoReferencia", "Nombre"],
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenobyClienteFiltro/" + `${xidCliente}`; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "Nombre", title: "Nombre", width: 300 }
+                ]
+            });
+
         });
     },
     ControlSeleccionRequerimeintoSubli: function () {
