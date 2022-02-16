@@ -33,6 +33,7 @@ namespace TSM
             
             bundles.Add(new ScriptBundle("~/bundles/Utils/js").Include("~/Scripts/Utils/GridPersonalizar.js",
                                                                        "~/Scripts/Utils/Generico.js",
+                                                                        "~/Scripts/Utils/Modales.js",
                                                                        "~/Scripts/Utils/CmbPersonalizar.js",
                                                                        "~/Scripts/js/Layout.js",
                                                                        "~/Scripts/Utils/MltSelectPersonalizar.js",

@@ -2598,3 +2598,4 @@ var fn_ShowModalDimensiones = function (cargarJs, data, divDimen, dmIdreq, fnclo
 var fn_GetUnixTimestamp = function (fecha) {
     return new Date(kendo.toString(kendo.parseDate(fecha), 's')).getTime() / 1000;
 };
+
