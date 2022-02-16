@@ -191,25 +191,6 @@ let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
 
     //#endregion 
 
-    //$("#xcmbCliente").data("kendoComboBox").bind("change", function (e) {
-    //    let value = this.value();
-    //    if (value === "") {
-    //        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(0))
-    //    } else {
-    //        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(value));
-    //    }
-    //});
-
-    //$("#chkEnlazarTsm").click(function () {
-    //    if (this.checked) {
-    //        KdoMultiSelectEnable($("#Mtlfm"), true);
-    //        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(KdoCmbGetValue($("#xcmbCliente")) === null ? 0 : KdoCmbGetValue($("#xcmbCliente"))));
-    //    } else {
-    //        KdoMultiSelectEnable($("#Mtlfm"), false);
-    //        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(0));
-    //        $("#Mtlfm").data("kendoMultiSelect").value([""]);
-    //    }
-    //});
 
     //validador
     vFrmG = $("#FrmGhojaBandeo").kendoValidator(

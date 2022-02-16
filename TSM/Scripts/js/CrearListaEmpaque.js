@@ -3,8 +3,7 @@ let xidHoja;
 let StrIdHojaBandeo = "";
 let fn_Ini_CrearListaEmpaque = (sIdHb) => {
     xidHoja = sIdHb;
-//// crear realizar
-//    KdoButton($("#btn_Le_CrearReg"), "check-outline", "Crear Registro");
+
 
 //#region crear grid ingresos
 
@@ -73,10 +72,7 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
 
 //#endregion 
 
-    //$("#btn_Le_CrearReg").click(function () {
 
-    //    fn_CrearReg();
-    //});
 };
 
 let fn_CrearReg = () => {
