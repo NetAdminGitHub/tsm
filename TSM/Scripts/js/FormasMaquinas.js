@@ -1,23 +1,25 @@
 ﻿var Permisos;
+let UrlPl = TSM_Web_APi + "FormasMaquinas";
+
 $(document).ready(function () {
-    var dataSource = new kendo.data.DataSource({
+    let dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: Urlcm,
+                url: UrlPl + "/GetFormas",
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return Urlcm + "/" + datos.IdCategoriaMaquina; },
+                url: function (datos) { return UrlPl + "/" + datos.IdFormaMaquina; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return Urlcm + "/" + datos.IdCategoriaMaquina; },
+                url: function (datos) { return UrlPl + "/" + datos.IdFormaMaquina; },
                 type: "DELETE"
             },
             create: {
-                url: Urlcm,
+                url: UrlPl,
                 type: "POST",
                 contentType: "application/json; charset=utf-8"
             },
@@ -27,22 +29,28 @@ $(document).ready(function () {
                 }
             }
         },
+        //Ordenando GRID
+
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: Grid_requestEnd,
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
         schema: {
             model: {
-                id: "IdCategoriaMaquina",
+                id: "IdFormaMaquina",
                 fields: {
-                    IdCategoriaMaquina: { type: "number" },
+                    IdFormaMaquina: { type: "number" },
                     Nombre: {
                         type: "string",
                         validation: {
-                            required: true,
+                            //required: true,
                             maxlength: function (input) {
+                                if (input.is("[name='Nombre']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
                                 if (input.is("[name='Nombre']") && input.val().length > 200) {
-                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 200");
                                     return false;
                                 }
                                 return true;
@@ -50,31 +58,42 @@ $(document).ready(function () {
                         }
                     },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    Icono: { type: "string"}
                 }
             }
-        }
+        },
+        sort: { field: "Nombre", dir: "asc" }
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdCategoriaMaquina");
+            KdoHideCampoPopup(e.container, "IdFormaMaquina");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IconoView");
+            $('[name="Icono"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdCategoriaMaquina", title: "Codigo Categoría", hidden: true },
-            { field: "Nombre", title: "Nombre" },
+            { field: "IdFormaMaquina", title: "Forma Maquina", hidden: true },
+            { field: "Nombre", title: "Forma", sortable: { initialDirection: "asc" } },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "Icono", title: "Icono" },
+            {
+                template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
+                    "><img src='content/icons/#: data.Icono #'/></div>",
+                field: "IconoView",
+                title: "&nbsp;"
+            }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.No);
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);

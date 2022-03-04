@@ -273,7 +273,6 @@
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
-    <Compile Include="Controllers\CategoriaMaquinasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasUbicacionesController.cs" />
     <Compile Include="Controllers\CategoriaTallasController.cs" />
@@ -300,6 +299,7 @@
     <Compile Include="Controllers\EtapasOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
+    <Compile Include="Controllers\FormasMaquinasController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
     <Compile Include="Controllers\ConsultaFichasProduccionesController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
@@ -315,6 +315,7 @@
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
+    <Compile Include="Controllers\MarcaMaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
@@ -498,6 +499,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\FormasMaquinas.js" />
     <Content Include="Scripts\js\IngresoMercancias.js" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
@@ -517,7 +519,6 @@
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
-    <Content Include="Scripts\js\CategoriaMaquinas.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
@@ -540,6 +541,7 @@
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
     <Content Include="Scripts\js\IncisosArancelarios.js" />
+    <Content Include="Scripts\js\MarcaMaquinas.js" />
     <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\IngresoBulto.js" />
     <Content Include="Scripts\js\IngresoBultoSerie.js" />
@@ -970,7 +972,6 @@
     <Content Include="Views\Shared\_SolicitudReactivacionOrdenTrabajo.cshtml" />
     <Content Include="Views\TiposIgualacionesColores\Index.cshtml" />
     <Content Include="Views\EstructuraMaquinas\Index.cshtml" />
-    <Content Include="Views\CategoriaMaquinas\Index.cshtml" />
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
     <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
@@ -1020,7 +1021,10 @@
     <Content Include="Views\Shared\_IngresoBultoSerie.cshtml" />
     <Content Include="Views\Shared\_CrearListaEmpaque.cshtml" />
     <Content Include="Views\IngresoMercancias\Index.cshtml" />
-    <Content Include="Web.IST2.config"></Content>
+    <Content Include="Web.IST2.config">
+    </Content>
+    <Content Include="Views\MarcaMaquinas\Index.cshtml" />
+    <Content Include="Views\FormasMaquinas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
