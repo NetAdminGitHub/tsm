@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace TSM.Controllers
 {
-    public class CategoriaMaquinasController : Controller
+    public class MarcaMaquinasController : Controller
     {
-        // GET: CategoriaMaquinas
+        // GET: MarcaMaquinas
         public ActionResult Index()
         {
             return View();
