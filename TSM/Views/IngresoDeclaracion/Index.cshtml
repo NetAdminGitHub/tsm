@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Ingreso de Declaracion";
+    ViewBag.IdVersion = "TSM0101116|v22030101";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var xIdClienteIng = @ViewBag.IdCliente;
+        var xIdDeclaracionMercancia = @ViewBag.IdDeclaracionMercancia;
+    </script>
+    <script src="~/Scripts/js/IngresoDeclaracion.js?@ViewBag.IdVersion"></script>
+}
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+<div class="form-row">
+   
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <form id="FrmIngresoDeclaracion" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <div class="form-row">
+                        <div class="col-lg-6 form-group">
+                            <label for="cmbCliente">Cliente:</label>
+                            <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="MltBodegaCliente">Bodega Cliente:</label>
+                            <input id="MltBodegaCliente" name="MltBodegaCliente" class="form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="MltIngreso"># Ingreso:</label>
+                            <input id="MltIngreso" name="MltIngreso" type="text" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-3 form-group">
+                            <label for="TxtNoReferencia">No Referencia:</label>
+                            <input id="TxtNoReferencia" name="TxtNoReferencia" class="k-textbox form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="dFecha">Fecha:</label>
+                            <input id="dFecha" name="dFecha" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-3 form-group">
+                            <label for="cmbPaisExpor">Pais Exportacion:</label>
+                            <input id="cmbPaisExpor" name="cmbPaisExpor" class="form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="cmbAduana">Aduana:</label>
+                            <input id="cmbAduana" name="cmbAduana" class="form-control" />
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="TxtDireccion">Direccion del cliente:</label>
+                            <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
+                        </div>
+
+                        <div class="col-lg-3 form-group">
+                            <label for="numTotalBultos">Total de Bultos:</label>
+                            <input id="numTotalBultos" name="numTotalBultos" class="form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="numTotalCuantia">Total de Cuantia:</label>
+                            <input id="numTotalCuantia" name="numTotalCuantia" class="form-control" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="numTotalValor">Total de Valor:</label>
+                            <input id="numTotalValor" name="numTotalValor" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-3" style="text-align: left; align-self: center; ">
+                            <button type="button" id="btnGuardarDM">Guardar</button>
+                        </div>
+
+                        <div class="col-lg-6" style="text-align: right; align-self: center;">
+                            <button type="button" id="btnNotaRemision">Consultar Nota de Remision</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-12">
+                        <label for="gridDetalleItem"><strong>Detalle Item:</strong></label>
+                        <div id="gridDetalleItem"></div>
+                    </div>
+
+                </div>
+                <div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-12" style="text-align: right; align-self: end;">
+                        <button type="button" id="btnPLgregarItem">Agregar PL</button>
+                    </div>
+                </div>
+                <div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-12">
+                        <label for="griVincularListaEmpaque"><strong>Vincular Lista de Empaque:</strong></label>
+                        <div id="griVincularListaEmpaque"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@*detalle item*@
+<div id="vIngresoNotaremi"></div>

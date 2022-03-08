@@ -528,6 +528,61 @@
                 ]
             });
         });
+
+    }, ControlSeleccionBodegaClie: function (idCliente) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdBodegaCliente",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de bodega",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "BodegasClientes/GetbyCliente/" + idCliente; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdBodegaCliente", title: "Bodega", width: 150 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "Direccion", title: "Dirección", width: 500 }
+                ]
+            });
+        });
+    },ControlSeleccionIngresoMerca: function (idCliente) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NombreCliente",
+                dataValueField: "IdBodegaCliente",
+                filter: "contains",
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de bodega",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "IngresoMercancias/GetIngresoMercanciaByCliente/" + idCliente; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdIngreso", title: "Ingreso", width: 150 },
+                    { field: "FechaIngreso", title: "FechaIngreso", width: 300 },
+                    { field: "NombreCliente", title: "NombreCliente", width: 500 }
+                ]
+            });
+        });
     }
 
 });
