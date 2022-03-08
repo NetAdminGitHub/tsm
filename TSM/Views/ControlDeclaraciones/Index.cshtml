@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Consulta de Declaraciones";
+    ViewBag.IdVersion = "TSM0101114|v21022101";
+}
+@section Scripts {
+
+    <script src="~/Scripts/js/ControlDeclaraciones.js"></script>
+}
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-lg-4">
+                        <label for="cmbCliente" id="lblCliente">Cliente:</label>
+                        <input id="cmbCliente" name="cmbCliente" class="form-control" /> 
+                    </div>
+                    <div class="col-lg-2" style="text-align: center; align-self: end;">
+                        <button type="button" id="btnIngresarDeclaracion">Ingresar Declaración</button>
+                    </div>
+                    <div class="col-lg-2" style="text-align: center; align-self: end;" >
+                        <button type="button" id="btnImportarExcel">Importar Excel</button>
+                    </div>
+                </div>
+                <div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-12">
+                        <div id="gridDeclaraciones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -266,6 +266,7 @@
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\IncisosArancelariosController.cs" />
+    <Compile Include="Controllers\IngresoDeclaracionController.cs" />
     <Compile Include="Controllers\IngresoMercanciasController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -318,6 +320,7 @@
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
+    <Compile Include="Controllers\ModalesIngresoDeclaracionesController.cs" />
     <Compile Include="Controllers\ModalesIngresoMercanciaController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
@@ -498,6 +501,9 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\ControlDeclaraciones.js" />
+    <Content Include="Scripts\js\IngresoBultoAddItem.js" />
+    <Content Include="Scripts\js\IngresoDeclaracion.js" />
     <Content Include="Scripts\js\IngresoMercancias.js" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
@@ -540,6 +546,8 @@
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
     <Content Include="Scripts\js\IncisosArancelarios.js" />
+    <Content Include="Scripts\js\IngresoNotaRemision.js" />
+    <Content Include="Scripts\js\ListaEmpaqueAddPL.js" />
     <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\IngresoBulto.js" />
     <Content Include="Scripts\js\IngresoBultoSerie.js" />
@@ -1020,7 +1028,13 @@
     <Content Include="Views\Shared\_IngresoBultoSerie.cshtml" />
     <Content Include="Views\Shared\_CrearListaEmpaque.cshtml" />
     <Content Include="Views\IngresoMercancias\Index.cshtml" />
-    <Content Include="Web.IST2.config"></Content>
+    <Content Include="Web.IST2.config">
+    </Content>
+    <Content Include="Views\ControlDeclaraciones\Index.cshtml" />
+    <Content Include="Views\Shared\_IngresoNotaRemision.cshtml" />
+    <Content Include="Views\Shared\_IngresoBultoAddItem.cshtml" />
+    <Content Include="Views\Shared\_ListaEmpaqueAddPL.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1028,6 +1042,7 @@
     <Folder Include="Data\" />
     <Folder Include="Views\Adjuntos\" />
     <Folder Include="Views\Imagen\" />
+    <Folder Include="Views\ModalesIngresoDeclaraciones\" />
     <Folder Include="Views\ModalesIngresoMercancia\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
