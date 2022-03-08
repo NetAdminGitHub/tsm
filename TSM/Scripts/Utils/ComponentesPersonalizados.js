@@ -529,7 +529,7 @@
             });
         });
 
-    }, ControlSelecionBodegaClie: function (idCliente) {
+    }, ControlSeleccionBodegaClie: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "Nombre",
@@ -556,7 +556,7 @@
                 ]
             });
         });
-    },ControlSelecionIngresoMerca: function (idCliente) {
+    },ControlSeleccionIngresoMerca: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "NombreCliente",

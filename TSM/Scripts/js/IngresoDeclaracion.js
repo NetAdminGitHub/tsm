@@ -14,8 +14,8 @@ $(document).ready(function () {
     KdoButton($("#btnPLgregarItem"), "edit", "Agregar");
 
     // multicolum
-    $("#MltBodegaCliente").ControlSelecionBodegaClie(xIdClienteIng);
-    $("#MltIngreso").ControlSelecionIngresoMerca(xIdClienteIng);
+    $("#MltBodegaCliente").ControlSeleccionBodegaClie(xIdClienteIng);
+    $("#MltIngreso").ControlSeleccionIngresoMerca(xIdClienteIng);
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
         min: 0,
