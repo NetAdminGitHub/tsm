@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TSM</RootNamespace>
     <AssemblyName>TSM</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -407,6 +407,7 @@
   <ItemGroup>
     <Content Include="AzAppSettings.json" />
     <None Include="Connected Services\FrwkAuthSrv\Auth1.wsdl" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth11.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth12.wsdl" />
     <None Include="Connected Services\FrwkAuthSrv\Auth3.xsd">
       <SubType>Designer</SubType>
@@ -415,6 +416,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth33.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth34.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrwkAuthSrv\Auth35.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth36.xsd">
@@ -441,6 +451,7 @@
     </None>
     <None Include="Connected Services\FrwkAuthSrv\Auth1.disco" />
     <None Include="Connected Services\FrwkAuthSrv\Auth12.disco" />
+    <None Include="Connected Services\FrwkAuthSrv\Auth11.disco" />
     <Content Include="Content\bootstrap\AdjCarousel.css" />
     <Content Include="Content\bootstrap\boostrapKendoMod.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />
