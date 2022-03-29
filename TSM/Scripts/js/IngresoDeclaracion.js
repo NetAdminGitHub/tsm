@@ -266,6 +266,10 @@ $(document).ready(function () {
 
     });
 
+    $("#btnPLgregarItem").click(function () {
+        fn_vistaRelacionPLs("vRelacionPLs", 0);
+    });
+
     //compeltar campos de cabecera
 
     fn_Get_IngresoDeclaracion(xIdDeMerca);
