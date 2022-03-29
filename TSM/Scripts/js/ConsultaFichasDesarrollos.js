@@ -159,7 +159,10 @@ $(document).ready(function () {
                     CantidadPiezas: { type: "number" },
                     CantidadSTrikeOff: { type: "number" },
                     StrikeOffAdicional: { type: "number" },
-                    Tecnicas: { type: "string" }
+                    Tecnicas: { type: "string" },
+                    IdComposicionTela: { type: "number" },
+                    NombreComposicion: { type: "NombreComposicion"}
+
                 }
             }
         }
@@ -213,6 +216,8 @@ $(document).ready(function () {
             { field: "EstiloDiseno", title: "Estilo diseño", minResizableWidth: 150 },            
             { field: "IdCategoriaPrenda", title: "Cod. prenda", hidden: true },            
             { field: "NombrePrenda", title: "Prenda", minResizableWidth: 120 },
+            { field: "IdComposicionTela", title: "cod. Composicion Tela", minResizableWidth: 120 ,hidden:true},
+            { field: "NombreComposicion", title: "Composición Tela", minResizableWidth: 120 },
             { field: "IdCategoriaTallaDesarrollada", title: "Cod. categoría talla", hidden: true },            
             { field: "IdEjecutivoCuenta", title: "Cod. ejecutivo", hidden: true },
             { field: "NombreEjecutivo", title: "Ejecutivo de cuenta", minResizableWidth: 150 },
