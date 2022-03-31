@@ -1,6 +1,7 @@
 ﻿"use strict"
 let xidHoja;
 let StrIdHojaBandeo = "";
+let vFrmG;
 let fn_Ini_CrearListaEmpaque = (sIdHb) => {
     xidHoja = sIdHb;
 
@@ -72,34 +73,69 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
 
 //#endregion 
 
+    vFrmG = $("#FrmCrearListEmp").kendoValidator(
+        {
+            rules: {
+                MsgRequerido: function (input) {
+                  
+                    if (input.is("[name='txtNoRefePackingList']")) {
+                        return input.val() !== "";
+                    }
+
+                    return true;
+                },
+                MsgLong: function (input) {
+                    if (input.is("[name='txtNoRefePackingList']")) {
+                        return input.val().length <= 20;
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                MsgRequerido: "Requerido",
+                MsgLong: "Longitud del campo es 20"
+             
+            }
+        }).data("kendoValidator");
+
+    $("#txtNoRefePackingList").val("");
+    $("#txtNoRefePackingList").focus();
 
 };
 
 let fn_CrearReg = () => {
     let result = false;
-    if (StrIdHojaBandeo !== "") {
-        let Bandeos = [];
-        $.each(StrIdHojaBandeo, function (index, elemento) {
-            Bandeos.push({
-                IdHojaBandeo: Number(elemento),
-                Peso: 0,
-                Descripcion: ""
+    if (vFrmG.validate()) {
+        if (StrIdHojaBandeo !== "") {
+            let Bandeos = [];
+            $.each(StrIdHojaBandeo, function (index, elemento) {
+                Bandeos.push({
+                    IdHojaBandeo: Number(elemento),
+                    Peso: 0,
+                    Descripcion: ""
+                });
             });
-        });
-        result= fn_Gen_PakigList(Bandeos);
+            result = fn_Gen_PakigList(Bandeos);
 
+
+        } else {
+            result = false;
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
+        }
 
     } else {
         result = false;
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
     }
-
+   
     return result;
 };
 
 let fn_Reg_CrearListaEmpaque = (siaIdot) => {
 
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
+    $("#txtNoRefePackingList").val("");
+    $("#txtNoRefePackingList").focus();
 
 };
 
@@ -111,9 +147,9 @@ let fn_Gen_PakigList = (strBande) => {
             method: "POST",
             dataType: "json",
             data: JSON.stringify({
-                NoDocumento: "",
+                NoDocumento: $("#txtNoRefePackingList").val(),
                 Peso: 0,
-                dUsuarioMod: getUser(),
+                IdUsuarioMod: getUser(),
                 HojasBandeo: strBande
             }),
             contentType: "application/json; charset=utf-8",
@@ -121,6 +157,7 @@ let fn_Gen_PakigList = (strBande) => {
                 $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
                 RequestEndMsg(datos, "Post");
                 kendo.ui.progress($(".k-dialog"), false);
+                $("#txtNoRefePackingList").val("");
                 resultPak = true;
             },
             error: function (data) {
