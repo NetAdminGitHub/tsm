@@ -412,7 +412,115 @@ var fn_show_CrearListaEmpaque = (cargarJs, data, divListaEmpaque, sIdHb, fnclose
 };
 //#endregion
 
-//#region Modal Ingreso de Notas de Remision
+
+//#region Modal LIstado de Notas de Remision+
+
+
+/**
+ * 
+ * @param {HtmlElementId} divNotaRemisionLista Id del div que contendra listado nota remision
+ * @param {number} sIdDeclaracion id
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_vistaListadoNotaRemision = (divNotaRemisionLista, sIdDeclaracion, fnclose) => {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divNotaRemisionLista + "").children().length === 0) {
+        $.ajax({
+            url: "/ModalesIngresoDeclaraciones/ModalVerNotasRemision",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_cargar_ModalVerNotaRemision(resultado, divNotaRemisionLista, sIdDeclaracion, fnclose);
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_cargar_ModalVerNotaRemision("", divNotaRemisionLista, sIdDeclaracion, fnclose);
+    }
+};
+
+/**
+ * 
+ * @param {content} data el contenido html de Ingreso nota remision
+ * @param {HtmlElementId} divNotaRemisionLista Id del div que contendra la vista de Ingreso nota remision
+ * @param {number} sIdDeclaracion id de declaración
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_cargar_ModalVerNotaRemision = (data, divNotaRemisionLista, sIdDeclaracion, fnclose) => {
+    let script = "";
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    let fileJs = "ModalVerNotaRemision.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/" + fileJs;
+        script.onload = function () {
+            fn_show_ModalVerNotaRemision(true, data, divNotaRemisionLista, sIdDeclaracion, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+
+        fn_show_ModalVerNotaRemision(false, data, divNotaRemisionLista, sIdDeclaracion, fnclose);
+    }
+};
+/**
+ * 
+ * @param {boolean} cargarJs true inidica que primera vez que va cargar y dibujar la vista, false ya cargo y solo hay que consultar.
+ * @param {content} data  el contenido html del Ingreso nota remision
+ * @param {HtmlElementId} divNotaRemisionLista  Id del div que contendra la vista de Ingreso nota remision
+ * @param {number} sIdDeclaracion id
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+
+ */
+var fn_show_ModalVerNotaRemision = (cargarJs, data, divNotaRemisionLista, sIdDeclaracion, fnclose) => {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_Ini_ModalVerNotaRemision(sIdDeclaracion);
+        } else {
+            fn_Reg_ModalVerNotaRemision(sIdDeclaracion);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divNotaRemisionLista + "").kendoDialog({
+        height: "80%",
+        width: "65%",
+        title: "Notas de Remision",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        minWidth: "30%",
+        show: onShow,
+        close: fn_CloseSIC
+    
+    });
+
+    $("#" + divNotaRemisionLista + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion
+
+
+
+
+//#region Modal Ingreso de Notas de Remision+
+
+
 /**
  * 
  * @param {HtmlElementId} divIngresNotaRemi Id del div que contendra Ingreso nota remision
@@ -496,7 +604,7 @@ var fn_show_IngresoNotaRemision = (cargarJs, data, divIngresNotaRemi, sIdRegNota
     $("#" + divIngresNotaRemi + "").kendoDialog({
         height: "80%",
         width: "50%",
-        title: "Ingreso Nota Remision",
+        title: "Ingreso de nota de remisión del cliente",
         closable: true,
         modal: true,
         content: data,
@@ -505,19 +613,15 @@ var fn_show_IngresoNotaRemision = (cargarJs, data, divIngresNotaRemi, sIdRegNota
         show: onShow,
         close: fn_CloseSIC,
         actions: [
-            {
-                text: 'Crear Registro', primary: true
-                //, action: function (e) {
-                //    return fn_CrearReg();
-                //}
-            }
-        ],
+            { text: 'Registrar Nota', primary: true, action: function (e) { return fn_CreaNotaRemCliente(); } }
+        ]
     });
 
     $("#" + divIngresNotaRemi + "").data("kendoDialog").open().toFront();
 
 };
 //#endregion
+
 
 //#region Modal Ingresar Bulto Add Item
 /**
