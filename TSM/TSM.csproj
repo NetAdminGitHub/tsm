@@ -549,6 +549,7 @@
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\BodegasClientes.js" />
     <Content Include="Scripts\js\IncisosArancelarios.js" />
+    <Content Include="Scripts\js\ModalVerNotaRemision.js" />
     <Content Include="Scripts\js\MarcaMaquinas.js" />
     <Content Include="Scripts\js\IngresoNotaRemision.js" />
     <Content Include="Scripts\js\ListaEmpaqueAddPL.js" />
@@ -1043,6 +1044,7 @@
     <Content Include="Views\MarcaMaquinas\Index.cshtml" />
     <Content Include="Views\FormasMaquinas\Index.cshtml" />
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
+    <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,6 +17,11 @@ namespace TSM.Controllers
         {
             return PartialView("_IngresoNotaRemision");
         }
+        public ActionResult ModalVerNotasRemision()
+        {
+            return PartialView("_ModalVerNotasRemision");
+        }
+
         public ActionResult IngresoBultoAddItem()
         {
             return PartialView("_IngresoBultoAddItem");
