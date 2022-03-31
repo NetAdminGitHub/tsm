@@ -392,7 +392,7 @@ var fn_show_CrearListaEmpaque = (cargarJs, data, divListaEmpaque, sIdHb, fnclose
     };
 
     $("#" + divListaEmpaque + "").kendoDialog({
-        height: "60%",
+        height: "90%",
         width: "50%",
         title: "Creacion de Lista de Empaque",
         closable: true,
@@ -726,7 +726,7 @@ var fn_show_ListaEmpaqueAddPL = (cargarJs, data, divListaEmpaqueAddPL, ListaEmpa
  * @param {function} fnclose funcion a ejecutar al cerrar modal
  */
 var fn_vistaRelacionPLs = (divIngresNotaRemi, idDeclaracionMercancia, item, fnclose) => {
-    kendo.ui.progress($(document.body), true);
+    kendo.ui.progress($(document.activeElement), true);
     if ($("#" + divIngresNotaRemi + "").children().length === 0) {
         $.ajax({
             url: "/ModalesIngresoDeclaraciones/vRelacionPLs",
@@ -734,7 +734,7 @@ var fn_vistaRelacionPLs = (divIngresNotaRemi, idDeclaracionMercancia, item, fncl
             contentType: "text/html; charset=utf-8",
             datatype: "html",
             success: function (resultado) {
-                kendo.ui.progress($(document.body), false);
+                kendo.ui.progress($(document.activeElement), false);
                 fn_cargar_RelacionPLs(resultado, divIngresNotaRemi, idDeclaracionMercancia, item, fnclose);
             }
         });
@@ -793,7 +793,7 @@ var fn_show_RelacionPLs = (cargarJs, data, divRelacionPLs, idDeclaracionMercanci
     $("#" + divRelacionPLs + "").kendoDialog({
         height: "80%",
         width: "50%",
-        title: "Agregar Listas de Empaque",
+        title: "Creación de Lista de Empaque",
         closable: true,
         modal: true,
         content: data,
@@ -802,9 +802,7 @@ var fn_show_RelacionPLs = (cargarJs, data, divRelacionPLs, idDeclaracionMercanci
         show: onShow,
         close: fn_CloseSIC,
         actions: [
-            {
-                text: 'Agregar', primary: true
-            }
+            { text: 'Agregar PL', primary: true, action: function (e) { return fn_Crear_Reg(); } }
         ],
     });
 
