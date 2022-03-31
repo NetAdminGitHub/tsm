@@ -215,13 +215,13 @@ let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
                     
                     return true;
                 },
-                MsgCorte: function (input) {
+                MsgLong1: function (input) {
                     if (input.is("[name='txtCorte_Rollo']")  ) {
                         return input.val().length <=20;
                     }
                     return true;
                 },
-                MsgColor: function (input) {
+                MsgLong2: function (input) {
                     if (input.is("[name='txtColor']")) {
                         return input.val().length <= 200;
                     }
@@ -230,8 +230,8 @@ let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
             },
             messages: {
                 MsgRequerido: "Requerido",
-                MsgCorte: "Longitud del campo es 20",
-                MsgColor: "Longitud del campo es 200"
+                MsgLong1: "Longitud del campo es 20",
+                MsgLong2: "Longitud del campo es 200"
             }
         }).data("kendoValidator");
     //vista Ingreso Bulto(boton crear bulto)

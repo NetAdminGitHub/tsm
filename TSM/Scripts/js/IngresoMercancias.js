@@ -136,7 +136,7 @@ $(document).ready(function () {
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "/ListaEmpaquesBandeos/" + datos.IdListaEmpaqueBandeo; },
+                url: function (datos) { return TSM_Web_APi + "/ListaEmpaques/" + datos.IdListaEmpaqueBandeo; },
                 dataType: "json",
                 type: "DELETE"
             },
