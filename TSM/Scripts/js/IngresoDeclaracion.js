@@ -45,7 +45,7 @@ $(document).ready(function () {
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalValor"), false);
-    $("#numTotalCuantia").kendoNumericTextBox({
+    $("#numTotalPrecio").kendoNumericTextBox({
         min: 0,
         max: 999999999,
         format: "#",
@@ -53,7 +53,7 @@ $(document).ready(function () {
         decimals: 0,
         value: 0
     });
-    KdoNumerictextboxEnable($("#numTotalCuantia"), false);
+    KdoNumerictextboxEnable($("#numTotalPrecio"), false);
 
     KdoComboBoxEnable($("#cmbCliente"), false);
     KdoCmbSetValue($("#cmbCliente"), xIdClienteIng);
@@ -111,7 +111,7 @@ $(document).ready(function () {
                     IdUnidadPesoBruto: { type: "string", defaultValue: function () { return 1; }  },
                     Abreviatura: { type: "string" },
                     CantidadBultos: { type: "number" },
-                    Cuantia: { type: "number" },
+                    PrecioUnitario: { type: "number" },
                     IdEmbalaje: { type: "string", defaultValue: function () { return 1; } },
                     NombreEmbalaje: { type: "string" },
                     IdUsuarioMod: { type: "string" },
@@ -162,7 +162,7 @@ $(document).ready(function () {
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
-            { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "PrecioUnitario", title: "Precio Unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "Valor", title: "Valor", format: "{0:N2}" },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true /*editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."] */},
             { field: "NombreEmbalaje", title: "NombreEmbalaje" },
@@ -195,8 +195,13 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "DeclaracionMercancias/GetbyidDeclaracionMercancias/" + `${xIdDeMerca}` },
+                url: function () { return TSM_Web_APi + "DeclaracionItemsMercancias/GetbyidDeclaracionMercancias/" + `${xIdDeMerca}` },
                 contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "/DeclaracionItemsMercancias/" + datos.IdDeclaracionItemsMercancia; },
+                dataType: "json",
+                type: "DELETE"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -215,12 +220,14 @@ $(document).ready(function () {
                     IdListaEmpaque: { type: "number" },
                     IdHojaBandeo: { type: "number" },
                     IdMercancia: { type: "number" },
+                    NoDocumento: { type: "string" },
                     Estilo: { type: "string" },
                     Fecha: { type: "date" },
-                    Cuantia: { type: "number" },
+                    PrecioUnitario: { type: "number" },
                     Item: { type: "number" },
-                    Valor: { type: "number"},
-                    Valor2: { type: "string", format: "{0:N2}"}
+                    CantidadBultos: { type: "number" },
+                    PrecioUnitario: { type: "number" },
+                    Total: { type: "number" }
                 }
             }
         }
@@ -231,12 +238,13 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdListaEmpaque", title: "pl", hidden: true },
+            { field: "NoDocumento", title: "#PL" },
             { field: "Estilo", title: "Estilo", hidden: true },
-            { field: "Fecha", title: "Fecha", hidden: true, format: "{0: dd/MM/yyyy}" },
-            { field: "Cuantia", title: "Cuantía" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Item", title: "Item" },
-            { field: "valor", title: "Valor", format: "{0:N2}" },
-            { field: "valor2", title: "valor2", format: "{0:N2}" }
+            { field: "CantidadBultos", title: "Cantidad Bultos" },
+            { field: "PrecioUnitario", title: "Precio Unitario", format: "{0:N2}" },
+            { field: "Total", title: "Total", format: "{0:N2}" }
         ]
     });
 
@@ -267,7 +275,7 @@ $(document).ready(function () {
     });
 
     $("#btnPLgregarItem").click(function () {
-        fn_vistaRelacionPLs("vRelacionPLs", 0);
+        fn_vistaRelacionPLs("vRelacionPLs", xIdDeMerca, get_Item($("#gridDetalleItem").data("kendoGrid")), function () { return $("#griVincularListaEmpaque").data("kendoGrid").dataSource.read(); });
     });
 
     //compeltar campos de cabecera
@@ -343,7 +351,7 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 $("#TxtDireccion").val(dato.Direccion);
                 kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
                 kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
-                kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
+                kdoNumericSetValue($("#numTotalPrecio"), dato.TotalPrecio);
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), "");
@@ -354,7 +362,7 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 $("#TxtDireccion").val("");
                 kdoNumericSetValue($("#numTotalBultos"), 0);
                 kdoNumericSetValue($("#numTotalValor"),0);
-                kdoNumericSetValue($("#numTotalCuantia"), 0);
+                kdoNumericSetValue($("#numTotalPrecio"), 0);
             }
             kendo.ui.progress($(document.body), false);
         },
@@ -464,3 +472,9 @@ $.fn.extend({
 });
 
 //#endregion 
+
+let get_Item = (g) => {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.Item;
+
+};

@@ -17,7 +17,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresoMercanciaByCliente/" + `${xidclie}` },
+                url: function () { return TSM_Web_APi + "DeclaracionMercancias/GetConsulta/" + `${xidclie}` },
                 contentType: "application/json; charset=utf-8"
             },
 
@@ -31,18 +31,18 @@ $(document).ready(function () {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdIngreso",
+                id: "IdDeclaracionMercancia",
                 fields: {
-                    IdIngreso: { type: "number" },
-                    Fecha: { type: "date" },
-                    FechaIngreso: { type: "date" },
+                    IdDeclaracionMercancia: { type: "number" },
                     IdCliente: { type: "number" },
-                    NombreCliente: { type: "string" },
-                    Estado: { type: "string" },
                     Nombre: { type: "string" },
+                    IdBodegaCliente: { type: "number" },
+                    NomIdBodegaCliente: { type: "string" },
+                    Fecha: { type: "date" },
+                    Estado: { type: "string" },
+                    IdIngreso: { type: "number" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
-
+                    FechaMod: { type: "date"}
                 }
             }
         }
@@ -52,13 +52,12 @@ $(document).ready(function () {
     $("#gridDeclaraciones").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdIngreso", title: "Ingreso" },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
-            { field: "FechaIngreso", title: "Fecha Ingreso", format: "{0: dd/MM/yyyy}" },
+            { field: "IdDeclaracionMercancia", title: "Declaración de Mercancía" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },            
             { field: "IdCliente", title: "Id Cliente", hidden: true },
-            { field: "NombreBodegaCli", title: "Bodega" },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "Nombre", title: "Estado" },
+            { field: "Nombre", title: "Cliente" },
+            { field: "NomIdBodegaCliente", title: "Bodega" },
+            { field: "Estado", title: "Estado"},            
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             {
