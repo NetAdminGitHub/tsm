@@ -1,10 +1,24 @@
 ﻿var Permisos;
+var XIdCata = 0;
+let Mul2;
+
 $(document).ready(function () {
+    //KdoMultiColumnCmbSetValue($("#CmbFM"), "");
+
+    $("#CmbFmCata").ControlSelecionFMCatalogo();
+    if (sessionStorage.getItem("ForumlasFM_CmbFmCata") !== null && sessionStorage.getItem("ForumlasFM_CmbFmCata") !== "") {
+        Mul2 = $("#CmbFmCata").data("kendoMultiColumnComboBox");
+        Mul2.search(sessionStorage.getItem("ForumlasFM_NoReferencia"));
+        Mul2.text(sessionStorage.getItem("ForumlasFM_NoReferencia") === null ? "" : sessionStorage.getItem("ForumlasFM_NoReferencia"));
+        Mul2.trigger("change");
+        Mul2.close();
+    }
+
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: TSM_Web_APi + "TintasFormulaciones/GetFormulasOTByFM/69",
+                url: function () { return TSM_Web_APi + "TintasFormulaciones/GetFormulasOTByFM/" + XIdCata; },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -22,20 +36,20 @@ $(document).ready(function () {
                 id: "IdArticulo",
                 fields: {
                     FM: { type: "string" },
-                    IDOrdenTrabajo: { type: "string" },
+                    IDOrdenTrabajo: { type: "number" },
                     OT: { type: "string" },
-                    Cliente: { type: "number" },
+                    Cliente: { type: "string" },
                     Nombre: { type: "string" },
-                    Estacion: { type: "string" },
+                    Estacion: { type: "number" },
                     Diseno: { type: "string" },
-                    Seda: { type: "date" },
-                    Letra: { type: "number" },
+                    Seda: { type: "number" },
+                    Letra: { type: "string" },
                     Dureza: { type: "number" },
                     Quimica: { type: "string" },
                     IdArticulo: { type: "string" },
                     Articulo: { type: "string" },
                     Estado: { type: "string" },                    
-                    Porcentaje: { type: "string" }
+                    Porcentaje: { type: "number" }
                 }
             }
         }
@@ -85,7 +99,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Cliente", title: "Cliente", minResizableWidth: 200,
+                field: "Diseno", title: "Diseño", minResizableWidth: 200,
                 filterable: {
                     cell: {
                         operator: "contains",
@@ -94,7 +108,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Nombre", title: "Color", minResizableWidth: 200,
+                field: "Cliente", title: "Cliente", minResizableWidth: 200,
                 filterable: {
                     cell: {
                         operator: "contains",
@@ -111,7 +125,16 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Diseno", title: "Diseño", minResizableWidth: 200,
+                field: "Nombre", title: "Color", minResizableWidth: 200,
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Quimica", title: "Quimica", minResizableWidth: 200,
                 filterable: {
                     cell: {
                         operator: "contains",
@@ -144,15 +167,6 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Quimica", title: "Quimica", minResizableWidth: 200,
-                filterable: {
-                    cell: {
-                        operator: "contains",
-                        suggestionOperator: "contains"
-                    }
-                }
-            },
-            {
                 field: "IdArticulo", title: "IdArticulo", minResizableWidth: 200,
                 filterable: {
                     cell: {
@@ -179,7 +193,7 @@ $(document).ready(function () {
                 }
             },
             {
-                field: "Porcentaje", title: "Porcentaje", editor: Grid_ColNumeric,
+                field: "Porcentaje", title: "Porcentaje", editor: Grid_ColNumeric, format: "{0:p2}",
                 filterable: {
                     cell: {
                         enabled: false
@@ -208,7 +222,39 @@ $(document).ready(function () {
     });
 
     Fn_Grid_Resize($("#grid"), $(window).height() - "340");
+
+    $("#CmbFmCata").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        if (data === undefined) {
+            XIdCata = 0;
+            dataSource.read();
+            sessionStorage.setItem("ForumlasFM_CmbFmCata", "");
+            sessionStorage.setItem("ForumlasFM_NoReferencia", "");
+            fn_HabilitarControles(false);
+        } else {
+            XIdCata = data.IdCatalogoDiseno;
+            dataSource.read();
+            sessionStorage.setItem("ForumlasFM_CmbFmCata", data.IdCatalogoDiseno);
+            sessionStorage.setItem("ForumlasFM_NoReferencia", data.NoReferencia);
+            fn_HabilitarControles(true);
+        }
+    });
+
+    if (sessionStorage.getItem("ForumlasFM_CmbFmCata") !== null) {
+        XIdCata = sessionStorage.getItem("ForumlasFM_CmbFmCata") === "" || sessionStorage.getItem("ForumlasFM_CmbFmCata") === null ? 0 : sessionStorage.getItem("ForumlasFM_CmbFmCata");
+        dataSource.read();
+    }
 });
+
+let fn_HabilitarControles = function (estado) {
+    if (estado) {
+        $("#grid").removeClass("k-state-disabled");
+    }
+    else {
+        $("#grid").addClass("k-state-disabled");
+    }
+};
 
 fPermisos = function (datos) {
     Permisos = datos;
