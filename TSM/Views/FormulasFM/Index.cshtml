@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Consulta Fórmulas por FM";
+    ViewBag.IdVersion = "TSM0101120|v22033001";
+}
+@section Scripts {
+    <script src="~/Scripts/js/FormulasFM.js"></script>
+}
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label for="CmbFmCata">Código FM:</label>
+                        <input id="CmbFmCata" name="CmbFmCata" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
