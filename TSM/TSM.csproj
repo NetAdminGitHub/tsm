@@ -339,6 +339,7 @@
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PaisesController.cs" />
     <Compile Include="Controllers\PlantasController.cs" />
+    <Compile Include="Controllers\PreparacionCarritoController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\RecintosFiscalesController.cs" />
@@ -559,6 +560,7 @@
     <Content Include="Scripts\js\Paises.js" />
     <Content Include="Scripts\js\IngresoBulto.js" />
     <Content Include="Scripts\js\IngresoBultoSerie.js" />
+    <Content Include="Scripts\js\PreparacionCarrito.js" />
     <Content Include="Scripts\js\RecintosFiscales.js" />
     <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
@@ -1049,6 +1051,7 @@
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
+    <Content Include="Views\PreparacionCarrito\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
