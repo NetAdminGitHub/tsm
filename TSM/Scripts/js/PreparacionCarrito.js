@@ -1,41 +1,27 @@
 ﻿
 var Permisos;
+var xIdIngreso = 0;
 $(document).ready(function () {
     // crear combobox cliente
-    Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
- 
+    
     // crear campo numeric
-    $("#num_Ingreso").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "#",
-        restrictDecimals: true,
-        decimals: 0,
-        value: 0
-    });
 
-    KdoNumerictextboxEnable($("#num_Ingreso"), false);
-    KdoComboBoxEnable($("#cmbCliente"), false);
-    KdoCmbSetValue($("#cmbCliente"), xIdClienteIng);
-    kdoNumericSetValue($("#num_Ingreso"), xIdIngreso);
-    TextBoxEnable($("#txtEstado"), false);
 
-    // crear hoja de bamdeo
-    KdoButton($("#btnCrearHoja"), "gear", "Guardar");
-    // crear lista de empaque
-    KdoButton($("#btnCrearLista"), "gear", "Guardar");
 
-    //crear campo fecha
-    $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#dFecha").data("kendoDatePicker").value(Fhoy());
-    $("#dFecha").data("kendoDatePicker").enable(false);
+
+    // Agregar Corte
+    KdoButton($("#btnAgregarCorte"), "gear", "Agregar Corte");
+    // crear detakle de preparado
+    KdoButton($("#btnDetallePrep"), "gear", "Detalle de Preparado");
+
+
 
     //#region crear grid hojas
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "HojasBandeos/GetbyIdIngreso/" +`${xIdIngreso}` },
+                url: function () { return TSM_Web_APi + "HojasBandeos/GetbyIdIngreso/" + `${xIdIngreso}` },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
@@ -75,10 +61,10 @@ $(document).ready(function () {
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
-    $("#gridHoja").kendoGrid({
+    $("#gridDetCorte").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdHojaBandeo", title: "Id. Hoja" ,hidden: true },
+            { field: "IdHojaBandeo", title: "Id. Hoja", hidden: true },
             { field: "IdIngreso", title: "Id. Ingreso", hidden: true },
             { field: "IdPlanta", title: "Id. Planta", hidden: true },
             { field: "NoDocumento", title: "Correlativo" },
@@ -97,20 +83,7 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        let strjson = {
-                            config: [{
-                                Div: "vMod_controlbulto",
-                                Vista: "_ControlBulto",
-                                Js: "ControlBulto.js",
-                                Titulo: "Ingreso de control de bultos",
-                                Height: "90%",
-                                Width: "70%",
-                                MinWidth: "30%"
-                            }],
-                            Param: { sIdHB: dataItem.IdHojaBandeo, sIdIngreso: dataItem.IdIngreso, esNuevo: false, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
-                            fn: { fnclose: "fn_ImRefres", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto" }
-                        };
-                        fn_GenLoadModal(strjson);
+                        fn_vistaControlBultos("vMod_controlbulto", dataItem.IdHojaBandeo, dataItem.IdIngreso, false, 0, function () { return $("#gridDetCorte").data("kendoGrid").dataSource.read(); },);
                     }
                 },
                 width: "70px",
@@ -122,21 +95,21 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridHoja").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    SetGrid_CRUD_ToolbarTop($("#gridHoja").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridHoja").data("kendoGrid"), false, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#gridHoja").data("kendoGrid"), dS);
+    SetGrid($("#gridDetCorte").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#gridDetCorte").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridDetCorte").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridDetCorte").data("kendoGrid"), dS);
 
     var selectedRows = [];
-    $("#gridHoja").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridHoja"), selectedRows);
+    $("#gridDetCorte").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridDetCorte"), selectedRows);
     });
 
-    $("#gridHoja").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridHoja"), selectedRows);
+    $("#gridDetCorte").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridDetCorte"), selectedRows);
     });
 
-    $("#gridHoja").data("kendoGrid").dataSource.read();
+    $("#gridDetCorte").data("kendoGrid").dataSource.read();
 
     //#endregion 
 
@@ -162,13 +135,13 @@ $(document).ready(function () {
         requestEnd: Grid_requestEnd,
         error: Grid_error,
         group: {
-            field:"NoDocumento"
+            field: "NoDocumento"
         },
         schema: {
             model: {
                 id: "IdListaEmpaqueBandeo",
                 fields: {
-                    IdListaEmpaqueBandeo: { type: "number"},
+                    IdListaEmpaqueBandeo: { type: "number" },
                     IdIngreso: { type: "number" },
                     NoDocumento: { type: "string" },
                     Corte: { type: "string" },
@@ -182,12 +155,12 @@ $(document).ready(function () {
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
-    $("#gridLista").kendoGrid({
+    $("#gridDetCortePre").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
-            { field: "IdIngreso", title: "Id Ingreso",hidden:true },
-            { field: "NoDocumento", title: "#Lista",hidden:true },
+            { field: "IdIngreso", title: "Id Ingreso", hidden: true },
+            { field: "NoDocumento", title: "#Lista", hidden: true },
             { field: "Corte", title: "Corte" },
             { field: "CantidadTotal", title: "Cantidad" },
             { field: "Color", title: "Color" },
@@ -197,70 +170,50 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridLista").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    SetGrid_CRUD_ToolbarTop($("#gridLista").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridLista").data("kendoGrid"), false, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#gridLista").data("kendoGrid"), dSlis);
+    SetGrid($("#gridDetCortePre").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#gridDetCortePre").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridDetCortePre").data("kendoGrid"), false, Permisos.SNBorrar);
+    Set_Grid_DataSource($("#gridDetCortePre").data("kendoGrid"), dSlis);
 
     var selectedRows2 = [];
-    $("#gridLista").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridLista"), selectedRows2);
+    $("#gridDetCortePre").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+        Grid_SetSelectRow($("#gridDetCortePre"), selectedRows2);
     });
 
-    $("#gridLista").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridLista"), selectedRows2);
+    $("#gridDetCortePre").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridDetCortePre"), selectedRows2);
     });
 
-    $("#gridLista").data("kendoGrid").dataSource.read();
+    $("#gridDetCortePre").data("kendoGrid").dataSource.read();
 
     //#endregion 
 
 
     //crear hojas de bandeo
-    $("#btnCrearHoja").click(function () {
-        let strjson = {
-            config: [{
-                Div: "vMod_controlbulto",
-                Vista: "_ControlBulto",
-                Js: "ControlBulto.js",
-                Titulo: "Ingreso de control de bultos",
-                Height: "90%",
-                Width: "70%",
-                MinWidth: "30%"
-            }],
-            Param: { sIdHB: 0, sIdIngreso: xIdIngreso, esNuevo: true, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
-            fn: { fnclose: "fn_Imclose", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto"}
-        };
-
-        fn_GenLoadModal(strjson);
+    $("#btnAgregarCorte").click(function () {
+        fn_vistaControlBultos("vMod_controlbulto", 0, xIdIngreso, true,0, function () { return fn_Refrescar_Ingreso(); });
     });
 
-    $("#btnCrearLista").click(function () {
-        fn_vistaCreacionListaEmpaque("vMod_CrearListaEmpaque",xIdIngreso,function () { return $("#gridLista").data("kendoGrid").dataSource.read(); });
+    $("#btnDetallePrep").click(function () {
+        fn_vistaCreacionListaEmpaque("vMod_CrearListaEmpaque", xIdIngreso, function () { return $("#gridDetCortePre").data("kendoGrid").dataSource.read(); });
     });
 
     //compeltar campos de cabecera
 
-    fn_Get_IngresoMercancia(xIdIngreso);
+/*    fn_Get_IngresoMercancia(xIdIngreso);*/
 
 
 });
-let fn_Imclose = (strjson) => {
-    fn_Refrescar_Ingreso();
-};
-let fn_ImRefres = (strjson) => {
-    $("#gridHoja").data("kendoGrid").dataSource.read();
-};
 
 let fn_Refrescar_Ingreso = () => {
-    if (Bandeo !== null && xIdIngreso===0) {
+    if (Bandeo !== null && xIdIngreso === 0) {
         kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);
         xIdIngreso = Bandeo[0].IdIngreso;
-        $("#txtEstado").val(Bandeo[0].Estado);
+
         window.history.pushState('', '', "/IngresoMercancias/" + `${xIdClienteIng}/${xIdIngreso}`);
     }
 
-    $("#gridHoja").data("kendoGrid").dataSource.read();
+    $("#gridDetCorte").data("kendoGrid").dataSource.read();
 };
 let fn_Get_IngresoMercancia = (xId) => {
     kendo.ui.progress($(".k-dialog"), true);
@@ -270,11 +223,11 @@ let fn_Get_IngresoMercancia = (xId) => {
         type: 'GET',
         success: function (dato) {
             if (dato !== null) {
-                $("#txtEstado").val(dato.Estado);
+               
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaIngreso), 'dd/MM/yyyy'));
-         
+
             } else {
-                $("#txtEstado").val("");
+             
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Fhoy()), 'dd/MM/yyyy'));
             }
             kendo.ui.progress($(".k-dialog"), false);

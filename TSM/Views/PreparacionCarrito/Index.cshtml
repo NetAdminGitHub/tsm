@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Preparación de Mercancía";
+    ViewBag.IdVersion = "TSMTSM0101120|v22033101";
+}
+
+@section Scripts {
+    <script src="~/Scripts/js/PreparacionCarrito.js?@ViewBag.IdVersion"></script>
+
+}
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    
+                    <div class="col-lg-6" >
+                        <div class="form-row">
+                             <div class="col-lg-6" style="text-align: left; align-self: end;">
+                                 <button type="button" id="btnAgregarCorte">Crear Hojas de Bandeo</button>
+                             </div>
+                             <div class="col-lg-6"  style="text-align: right; align-self: end;">
+                                 <button type="button" id="btnDetallePrep">Crear Lista de Empaque</button>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                       
+                    </div>
+
+                </div>
+                <div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-6">
+                        <div id="gridDetCorte"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="gridDetCortePre"></div>
+                    </div>
+                </div>
+
+          
+            </div>
+        </div>
+    </div>
+</div>
