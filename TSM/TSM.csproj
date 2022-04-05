@@ -265,6 +265,7 @@
     <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
+    <Compile Include="Controllers\CarritosFinalizadosController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
@@ -504,6 +505,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
     <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\EmbalajeDeclaracionMercancias.js" />
@@ -1046,11 +1048,10 @@
     <Content Include="Views\MarcaMaquinas\Index.cshtml" />
     <Content Include="Views\FormasMaquinas\Index.cshtml" />
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
-
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
-
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
-
+    <Content Include="Views\CarritosFinalizados\Index.cshtml" />
+    <Content Include="Views\CarritosFinalizados\_CarritosFinalizados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
