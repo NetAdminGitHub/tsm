@@ -325,6 +325,7 @@
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModalesIngresoDeclaracionesController.cs" />
     <Compile Include="Controllers\ModalesIngresoMercanciaController.cs" />
+    <Compile Include="Controllers\ModalGenLoadController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
@@ -1046,11 +1047,8 @@
     <Content Include="Views\MarcaMaquinas\Index.cshtml" />
     <Content Include="Views\FormasMaquinas\Index.cshtml" />
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
-
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
-
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1060,6 +1058,7 @@
     <Folder Include="Views\Imagen\" />
     <Folder Include="Views\ModalesIngresoDeclaraciones\" />
     <Folder Include="Views\ModalesIngresoMercancia\" />
+    <Folder Include="Views\ModalGenLoad\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />

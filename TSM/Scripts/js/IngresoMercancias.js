@@ -97,7 +97,20 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        fn_vistaControlBultos("vMod_controlbulto", dataItem.IdHojaBandeo, dataItem.IdIngreso, false,KdoCmbGetValue($("#cmbCliente")), function () { return $("#gridHoja").data("kendoGrid").dataSource.read(); },);
+                        let strjson = {
+                            config: [{
+                                Div: "vMod_controlbulto",
+                                Vista: "_ControlBulto",
+                                Js: "ControlBulto.js",
+                                Titulo: "Ingreso de control de bultos",
+                                Height: "90%",
+                                Width: "70%",
+                                MinWidth: "30%"
+                            }],
+                            Param: { sIdHB: dataItem.IdHojaBandeo, sIdIngreso: dataItem.IdIngreso, esNuevo: false, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
+                            fn: { fnclose: "fn_ImRefres", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto" }
+                        };
+                        fn_GenLoadModal(strjson);
                     }
                 },
                 width: "70px",
@@ -205,7 +218,21 @@ $(document).ready(function () {
 
     //crear hojas de bandeo
     $("#btnCrearHoja").click(function () {
-        fn_vistaControlBultos("vMod_controlbulto", 0, xIdIngreso, true, KdoCmbGetValue($("#cmbCliente")), function () { return fn_Refrescar_Ingreso(); });
+        let strjson = {
+            config: [{
+                Div: "vMod_controlbulto",
+                Vista: "_ControlBulto",
+                Js: "ControlBulto.js",
+                Titulo: "Ingreso de control de bultos",
+                Height: "90%",
+                Width: "70%",
+                MinWidth: "30%"
+            }],
+            Param: { sIdHB: 0, sIdIngreso: xIdIngreso, esNuevo: true, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
+            fn: { fnclose: "fn_Imclose", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto"}
+        };
+
+        fn_GenLoadModal(strjson);
     });
 
     $("#btnCrearLista").click(function () {
@@ -218,6 +245,12 @@ $(document).ready(function () {
 
 
 });
+let fn_Imclose = (strjson) => {
+    fn_Refrescar_Ingreso();
+};
+let fn_ImRefres = (strjson) => {
+    $("#gridHoja").data("kendoGrid").dataSource.read();
+};
 
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo !== null && xIdIngreso===0) {
