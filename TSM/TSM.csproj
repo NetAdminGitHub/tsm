@@ -265,7 +265,6 @@
     <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
-    <Compile Include="Controllers\CarritosFinalizadosController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
@@ -1054,8 +1053,7 @@
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
-    <Content Include="Views\CarritosFinalizados\Index.cshtml" />
-    <Content Include="Views\CarritosFinalizados\_CarritosFinalizados.cshtml" />
+    <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
