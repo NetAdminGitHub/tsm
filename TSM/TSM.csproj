@@ -506,6 +506,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
     <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\EmbalajeDeclaracionMercancias.js" />
@@ -1052,6 +1053,7 @@
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
+    <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
