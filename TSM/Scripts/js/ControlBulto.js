@@ -1,17 +1,17 @@
 ﻿"use strict"
-let vFrmG;
+let vCbForm;
 let xidHojaBandeo = 0;
 let xIdIng = 0;
 let xesNuevo;
 let xidCliente;
 let Bandeo;
-let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
-
+var fn_Ini_ControlBulto = (xjson) => {
+   
     // crear combobox cliente
-    xidHojaBandeo = sIdHB;
-    xIdIng = sIdIngreso;
-    xesNuevo = esNuevo;
-    xidCliente = sidCliente;
+    xidHojaBandeo = xjson.sIdHB;
+    xIdIng = xjson.sIdIngreso;
+    xesNuevo = xjson.esNuevo;
+    xidCliente = xjson.sIdCliente;
     Kendo_CmbFiltrarGrid($("#xcmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     Kendo_CmbFiltrarGrid($("#xcmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione un cliente");
     KdoComboBoxEnable($("#xcmbCliente"), false);
@@ -193,7 +193,7 @@ let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
 
 
     //validador
-    vFrmG = $("#FrmGhojaBandeo").kendoValidator(
+    vCbForm = $("#FrmGhojaBandeo").kendoValidator(
         {
             rules: {
                 MsgRequerido: function (input) {
@@ -288,11 +288,12 @@ let fn_Ini_ControlBulto = (sIdHB, sIdIngreso,esNuevo,sidCliente) => {
     $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
 }
 
-let fn_Reg_ControlBulto = (sIdHB, sIdIngreso, esNuevo, sidCliente) => {
-    xidHojaBandeo = sIdHB;
-    xIdIng = sIdIngreso;
-    xesNuevo = esNuevo;
-    xidCliente = sidCliente;
+var fn_Reg_ControlBulto = (xjson) => {
+
+    xidHojaBandeo = xjson.sIdHB;
+    xIdIng = xjson.sIdIngreso;
+    xesNuevo = xjson.esNuevo;
+    xidCliente = xjson.sIdCliente;
     KdoComboBoxEnable($("#xcmbCliente"), false);
     TextBoxReadOnly($("#txtEstilo"), false);
     KdoCmbSetValue($("#xcmbCliente"), xidCliente);
@@ -341,7 +342,7 @@ let get_CatalogxCliente = (xidClie) => {
 };
 
 let fn_Gen_Hb = () => {
-    if (vFrmG.validate()) {
+    if (vCbForm.validate()) {
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "HojasBandeos/CrearHojasBandeo",
