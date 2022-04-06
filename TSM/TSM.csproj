@@ -265,6 +265,7 @@
     <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
+    <Compile Include="Controllers\CarritoEntregaController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
@@ -506,6 +507,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
     <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
@@ -1054,6 +1056,8 @@
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
+    <Content Include="Views\CarritoEntrega\Index.cshtml" />
+    <Content Include="Views\PreparacionCarrito\_CarritoEntregaTela.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
