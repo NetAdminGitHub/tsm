@@ -265,7 +265,6 @@
     <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
-    <Compile Include="Controllers\CarritoEntregaController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
@@ -587,6 +586,7 @@
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
+    <Content Include="Scripts\js\RelacionPLs.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SolicitudesCambios.js" />
@@ -1054,6 +1054,7 @@
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
     <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_vRelacionPLs.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
     <Content Include="Views\CarritoEntrega\Index.cshtml" />

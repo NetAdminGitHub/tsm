@@ -5,24 +5,23 @@ let vFrmG;
 let fn_Ini_CrearListaEmpaque = (sIdHb) => {
     xidHoja = sIdHb;
 
-
-//#region crear grid ingresos
-
-    var ds = new kendo.data.DataSource({
-        pageSize: 50,
+    let dS = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
         transport: {
             read: {
                 url: function () { return TSM_Web_APi + "HojasBandeos/GetSinPakingbyIdIngreso/" + `${xidHoja}`; },
+                dataType: "json",
                 contentType: "application/json; charset=utf-8"
-
             },
+
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
                 }
             }
-
         },
+        requestEnd: Grid_requestEnd,
+        error: Grid_error,
         schema: {
             model: {
                 id: "IdHojaBandeo",
@@ -38,25 +37,13 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
             }
         }
     });
+
+    //CONFIGURACION DEL GRID,CAMPOS
     $("#gridListaEmpaque").kendoGrid({
-        dataSource:ds,
-        noRecords: {
-            template: "No hay datos disponibles. La pagina actual es: #=this.dataSource.page()#"
-        },
-        scrollable: false,
-        persistSelection: true,
-        sortable: true,
         change: function (arg) {
             StrIdHojaBandeo = this.selectedKeyNames();
         },
-        pageable:{
-            input: true,
-            refresh: true,
-            pageSizes: [20, 50, 100, "all"]
-        },
-        height: 300,
-        resizable: true,
-        navigatable: true,
+        //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { selectable: true, width: "50px" },
             { field: "IdHojaBandeo", title: "id Hoja Bandeo", hidden: true },
@@ -69,9 +56,29 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
         ]
     });
 
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridListaEmpaque").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si,undefined,"multiple");
+    SetGrid_CRUD_ToolbarTop($("#gridListaEmpaque").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridListaEmpaque").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridListaEmpaque").data("kendoGrid"), dS);
+
+    $("#gridListaEmpaque").kendoTooltip({
+        filter: ".k-grid-btnIng",
+        content: function (e) {
+            return "Ingreso de Mercancía";
+        }
+    });
+    var selectedRows = [];
+    
+
+    $("#gridListaEmpaque").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridListaEmpaque"), selectedRows);
+    });
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
 
-//#endregion 
+
+
+
 
     vFrmG = $("#FrmCrearListEmp").kendoValidator(
         {
