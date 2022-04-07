@@ -51,16 +51,29 @@
             {
                 ds = JsonConvert.DeserializeObject<DataSet>(ViewState["ds"].ToString());
                 // si reporte Ficha Producción
-                if(ViewState["rpt"].ToString() == "crptFichaProduccion")
+                if (ViewState["rpt"].ToString() == "crptFichaProduccion")
                 {
 
-                    Dictionary<string,object> param = JsonConvert.DeserializeObject<Dictionary<string,object>>(ViewState["params"].ToString());
+                    Dictionary<string, object> param = JsonConvert.DeserializeObject<Dictionary<string, object>>(ViewState["params"].ToString());
                     DataColumn cat = new DataColumn("ImgCatalogo", typeof(byte[]));
                     cat.DefaultValue = Convert.FromBase64String(param["imgCat"].ToString());
                     DataColumn pla = new DataColumn("Imgplacement", typeof(byte[]));
                     pla.DefaultValue = Convert.FromBase64String(param["imgPla"].ToString());
                     ds.Tables[0].Columns.Add(cat);
                     ds.Tables[0].Columns.Add(pla);
+
+                }
+                else if (ViewState["rpt"].ToString() == "crptVinetasMercancias")
+                {
+                    //crea columna para alamacenar el byte array
+                    DataColumn QRBytes = new DataColumn("QRBytes", typeof(byte[]));
+                    ds.Tables[0].Columns.Add(QRBytes);
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        row["QRBytes"] = Convert.FromBase64String(row["QRData64"].ToString());
+                    }
+                    //remueve columna con base 64
+                    ds.Tables[0].Columns.Remove("QRData64");
 
                 }
 
