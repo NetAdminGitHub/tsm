@@ -5,8 +5,6 @@ var fn_Ini_RelacionPLs = (idDeclaracionMercancia, item) => {
     xidDeclaracionMercancia = idDeclaracionMercancia;
     xitem = item;
 
-/*    KdoButton($("#btnGuardarPLs"), "gear", "Relacionar Listas de EmpaqueCalcular Datos");*/
-
     ////#region crear grid ingresos
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD

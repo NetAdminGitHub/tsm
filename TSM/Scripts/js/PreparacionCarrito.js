@@ -1,115 +1,69 @@
 ﻿
 var Permisos;
 var xIdIngreso = 0;
+let xidclie = 0;
+let xidcata = 0;
+let StrId = "";
 $(document).ready(function () {
-    // crear combobox cliente
-    
-    // crear campo numeric
 
-
-
-
+    Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
+    //crear combobox catalogo 
+    $("#cmbFm").mlcFmCatalogo();
     // Agregar Corte
-    KdoButton($("#btnAgregarCorte"), "gear", "Agregar Corte");
+    KdoButton($("#btnEntProd"), "gear", "Agregar Corte");
+    KdoButton($("#btnPrep"), "gear", "Preparar");
     // crear detakle de preparado
     KdoButton($("#btnDetallePrep"), "gear", "Detalle de Preparado");
+    KdoButtonEnable($("#btnDetallePrep"), false);
+    KdoButtonEnable($("#btnEntProd"), false);
+    KdoButtonEnable($("#btnPrep"), false);
 
-
-
-    //#region crear grid hojas
-    let dS = new kendo.data.DataSource({
-        //CONFIGURACION DEL CRUD
-        transport: {
-            read: {
-                url: function () { return TSM_Web_APi + "HojasBandeos/GetbyIdIngreso/" + `${xIdIngreso}` },
-                contentType: "application/json; charset=utf-8"
-            },
-            destroy: {
-                url: function (datos) { return TSM_Web_APi + "/HojasBandeos/" + datos.IdHojaBandeo; },
-                dataType: "json",
-                type: "DELETE"
-            },
-            parameterMap: function (data, type) {
-                if (type !== "read") {
-                    return kendo.stringify(data);
-                }
-            }
-        },
-        requestEnd: Grid_requestEnd,
-        error: Grid_error,
-        schema: {
-            model: {
-                id: "IdHojaBandeo",
-                fields: {
-                    IdHojaBandeo: { type: "number" },
-                    IdIngreso: { type: "number" },
-                    NoDocumento: { type: "string" },
-                    Rollo: { type: "boolean" },
-                    Corte: { type: "string" },
-                    Cantidad: { type: "number" },
-                    Color: { type: "string" },
-                    Estilo: { type: "string" },
-                    Tallas: { type: "string" },
-                    Estado: { type: "string" },
-                    IdPlanta: { type: "number" },
-                    NombrePlanta: { type: "string" },
-                    IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
-                }
-            }
-        }
-    });
-
+    //#region crear bultos si preparar
+    
     //CONFIGURACION DEL GRID,CAMPOS
-    $("#gridDetCorte").kendoGrid({
-        //DEFICNICIÓN DE LOS CAMPOS
-        columns: [
-            { field: "IdHojaBandeo", title: "Id. Hoja", hidden: true },
-            { field: "IdIngreso", title: "Id. Ingreso", hidden: true },
-            { field: "IdPlanta", title: "Id. Planta", hidden: true },
-            { field: "NoDocumento", title: "Correlativo" },
-            { field: "Corte", title: "Corte" },
-            { field: "Cantidad", title: "Cantidad" },
-            { field: "Color", title: "Color" },
-            { field: "Estilo", title: "Estilo" },
-            { field: "Tallas", title: "Tallas" },
-            { field: "NombrePlanta", title: "Planta" },
-            {
-                field: "btnHb", title: "&nbsp;",
-                command: {
-                    name: "btnHb",
-                    iconClass: "k-icon k-i-edit",
-                    text: "",
-                    title: "&nbsp;",
-                    click: function (e) {
-                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        fn_vistaControlBultos("vMod_controlbulto", dataItem.IdHojaBandeo, dataItem.IdIngreso, false, 0, function () { return $("#gridDetCorte").data("kendoGrid").dataSource.read(); },);
-                    }
-                },
-                width: "70px",
-                attributes: {
-                    style: "text-align: center"
+
+    $("#treelist").kendoTreeList({
+        dataSource: new kendo.data.TreeListDataSource({
+            transport: {
+                read: {
+                    url: function () { return TSM_Web_APi + "HojasBandeosMercancias/GetBultosSinPreparar/" + `${xidcata}` }
+                }
+            },
+            schema: {
+                model: {
+                    id: "Id",
+                    parentId: "IdPadre",
+                    fields: {
+                        Id: { field: "Id", type: "number" },
+                        IdPadre: { field: "IdPadre", nullable: true },
+                        Corte: { field: "Corte", type: "string" },
+                        Talla: { field: "Talla", type: "string" },
+                        NoDocumento: { field: "NoDocumento", type: "string" },
+                        Cantidad: { field: "Cantidad", type: "number" },
+                        FM: { field: "FM", type: "string" },
+                        Diseno: { field: "Diseno", type: "string" },
+                        Estilo: { field: "Estilo", type: "string" }
+                    },
+                    expanded: true
                 }
             }
+        }),
+        height: 600,
+        columns: [
+            { selectable: true, width: "65px" },
+            { field: "Id", title: "Id", hidden: true },
+            { field: "IdPadre", title: "Id Padre", hidden: true },
+            { field: "Corte", title: "Corte" },
+            { field: "Talla", title: "Talla" },
+            { field: "NoDocumento", title: "Correlativo" },
+            { field: "Cantidad", title: "Cantidad" },
+            { field: "FM", title: "FM" },
+            { field: "Diseno", title: "Diseño" },
+            { field: "Estilo", title: "Estilo" }
         ]
     });
 
-    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridDetCorte").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    SetGrid_CRUD_ToolbarTop($("#gridDetCorte").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridDetCorte").data("kendoGrid"), false, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#gridDetCorte").data("kendoGrid"), dS);
-
-    var selectedRows = [];
-    $("#gridDetCorte").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridDetCorte"), selectedRows);
-    });
-
-    $("#gridDetCorte").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridDetCorte"), selectedRows);
-    });
-
-    $("#gridDetCorte").data("kendoGrid").dataSource.read();
+    $("#treelist").data("kendoTreeList").dataSource.read();
 
     //#endregion 
 
@@ -118,13 +72,8 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "ListaEmpaques/GetPacking/" + `${xIdIngreso}` },
+                url: function () { return TSM_Web_APi + "CarritosDetallesMercancias/GetCarritosEnPreparacion/" + `${xidcata}` },
                 contentType: "application/json; charset=utf-8"
-            },
-            destroy: {
-                url: function (datos) { return TSM_Web_APi + "/ListaEmpaques/" + datos.IdListaEmpaqueBandeo; },
-                dataType: "json",
-                type: "DELETE"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -134,21 +83,18 @@ $(document).ready(function () {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
-        group: {
-            field: "NoDocumento"
-        },
         schema: {
             model: {
-                id: "IdListaEmpaqueBandeo",
+                id: "IdCarrito",
                 fields: {
-                    IdListaEmpaqueBandeo: { type: "number" },
-                    IdIngreso: { type: "number" },
+                    IdCarrito: { type: "number" },
+                    IdMercancia: { type: "number" },
+                    IdCatalogoDiseno: { type: "number" },
                     NoDocumento: { type: "string" },
-                    Corte: { type: "string" },
-                    CantidadTotal: { type: "number" },
                     Color: { type: "string" },
-                    Estilos: { type: "string" },
-                    Tallas: { type: "string" }
+                    Talla: { type: "string" },
+                    Cantidad: { type: "number" },
+                    Estado: { type: "string" }
                 }
             }
         }
@@ -158,21 +104,21 @@ $(document).ready(function () {
     $("#gridDetCortePre").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
-            { field: "IdIngreso", title: "Id Ingreso", hidden: true },
-            { field: "NoDocumento", title: "#Lista", hidden: true },
-            { field: "Corte", title: "Corte" },
-            { field: "CantidadTotal", title: "Cantidad" },
+            { field: "IdCarrito", title: "Id Carrito", hidden: true },
+            { field: "IdMercancia", title: "Id Mercancia", hidden: true },
+            { field: "IdCatalogoDiseno", title: "Id Mercancia", hidden: true },
+            { field: "NoDocumento", title: "NoDocumento" },
             { field: "Color", title: "Color" },
-            { field: "Estilos", title: "Estilos" },
-            { field: "Tallas", title: "Tallas" }
+            { field: "Talla", title: "Talla" },
+            { field: "Cantidad", title: "Cantidad" },
+            { field: "Estado", title: "Estilos" }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridDetCortePre").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridDetCortePre").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridDetCortePre").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridDetCortePre").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDetCortePre").data("kendoGrid"), dSlis);
 
     var selectedRows2 = [];
@@ -189,22 +135,124 @@ $(document).ready(function () {
     //#endregion 
 
 
-    //crear hojas de bandeo
-    $("#btnAgregarCorte").click(function () {
-        fn_vistaControlBultos("vMod_controlbulto", 0, xIdIngreso, true,0, function () { return fn_Refrescar_Ingreso(); });
+    //crear entrega a prod
+    $("#btnEntProd").click(function () {
+        let strjson = {
+            config: [{
+                Div: "vEntreTela",
+                Vista: "~/Views/PreparacionCarrito/_CarritoEntregaTela.cshtml",
+                Js: "CarritoEntrega.js",
+                Titulo: "Entrega de Tela",
+                Height: "65%",
+                Width: "40%",
+                MinWidth: "30%"
+            }],
+            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
+            fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt" }
+        };
+
+        fn_GenLoadModal(strjson);
     });
 
     $("#btnDetallePrep").click(function () {
-        fn_vistaCreacionListaEmpaque("vMod_CrearListaEmpaque", xIdIngreso, function () { return $("#gridDetCortePre").data("kendoGrid").dataSource.read(); });
+        let strjson = {
+            config: [{
+                Div: "vdPreparado",
+                Vista: "~/Views/PreparacionCarrito/_CarritosFinalizados.cshtml",
+                Js: "CarritosFinalizados.js",
+                Titulo: "Detalle de preparado",
+                Height: "70%",
+                Width: "80%",
+                MinWidth: "30%"
+            }],
+            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
+            fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin" }
+        };
+
+        fn_GenLoadModal(strjson);
     });
 
     //compeltar campos de cabecera
 
-/*    fn_Get_IngresoMercancia(xIdIngreso);*/
+    /*    fn_Get_IngresoMercancia(xIdIngreso);*/
 
+    $("#cmbCliente").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xidcata = 0;
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+        }
+    });
+
+    $("#cmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidcata = 0;
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+        }
+        else {
+            xidcata = 0;
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+
+        }
+    });
+
+    $("#cmbFm").data("kendoMultiColumnComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidcata = this.dataItem(e.item.index()).IdCatalogoDiseno;
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), true);
+            KdoButtonEnable($("#btnEntProd"), true);
+            KdoButtonEnable($("#btnPrep"), true);
+
+        } else {
+            xidcata = 0;
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+        }
+    });
+
+    $("#cmbFm").data("kendoMultiColumnComboBox").bind("change", function () {
+        let mlt = $("#cmbFm").data("kendoMultiColumnComboBox");
+        let data = mlt.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        if (data === undefined) {
+            xidcata = 0
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+        } 
+
+    });
 
 });
 
+var fn_Close_CarritosFin = (xjson) => {
+
+    $("#gridDetCortePre").data("kendoGrid").dataSource.read()
+}
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo !== null && xIdIngreso === 0) {
         kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);
@@ -242,3 +290,38 @@ let fn_Get_IngresoMercancia = (xId) => {
 fPermisos = function (datos) {
     Permisos = datos;
 }
+
+// contro fm multicolum
+
+$.fn.extend({
+    mlcFmCatalogo: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoReferencia",
+                dataValueField: "IdCatalogoDiseno",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de FM",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                //filterFields: ["NoReferencia", "Nombre"],
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente")) }`; },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "NombreCliente", title: "Cliente", width: 300 }
+                ]
+            });
+        });
+    }
+});
