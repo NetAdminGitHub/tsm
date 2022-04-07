@@ -1,13 +1,18 @@
 ﻿var Permisos;
-$(document).ready(function () {
+let xIdcat = 0;
+let xIdclie = 0;
 
-    let UrlPl = TSM_Web_APi + "Carritos";
+var fn_Ini_CarritosFin = (xjson) => {
+    xIdcat = xjson.pcIdCatalogo;
+    xIdclie = xjson.pcCliente;
+    $('#chkVerTodo').prop('checked', 0);
+    let UrlPl = TSM_Web_APi + "Carritos/GetCarritosPreparados";
     //Codigo del Grid
     let dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: UrlPl,
+                url: function () { return TSM_Web_APi + "Carritos/GetCarritosPreparados/" + `${$("#chkVerTodo").is(':checked') === true ? 0 : xIdcat}` },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
@@ -31,21 +36,17 @@ $(document).ready(function () {
                 id: "IdCarrito",
                 fields: {
                     IdCarrito: { type: "number" },
-                    IdBandeosDisenos: { type: "number" },
-                    IdHojaBandeo: {type: "number"},
-                    IdCatalogoMaquina: { type: "number" },
-                    NombreMaquina: { type: "string" },
-                    Estado: { type: "string" },
-                    NombreDiseno: { type: "string" },
+                    IdCatalogoDiseno: { type: "number" },
+                    FM: { type: "string" },
+                    Diseno: { type: "string" },
+                    EstiloDiseno: { type: "string" },
                     Color: { type: "string" },
-                    Estilo: { type: "string" },
-                    IdCorte: { type: "string" },
-                    Corte: { type: "string" },
-                    RangoTallas: { type: "string" },
-                    TotalBultos: { type: "number" },
-                    TotalPiezas: { type: "number"},
-                    IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    Tallas: { type: "Tallas" },
+                    CantidadBultos: { type: "number" },
+                    IdCatalogoMaquina: { type: "number" },
+                    Maquina: { type: "string" },
+                    Estado: { type: "string" },
+                    NomEstado: { type: "string" }
                 }
             }
         },
@@ -54,36 +55,30 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
-        edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdUsuarioMod");
-            KdoHideCampoPopup(e.container, "FechaMod");
-            Grid_Focus(e, "IdCarrito");
-        },
+     
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdCarrito", title: "Código de Preparación", sortable: { initialDirection: "asc" }},
-            { field: "IdBandeosDisenos", title: "Bandeo Diseños"},
-            { field: "IdHojaBandeo", title: "Hoja de Bandeo" },
+            { field: "IdCarrito", title: "Código de Preparación", sortable: { initialDirection: "asc" }, hidden: true},
+            { field: "IdCatalogoDiseno", title: "Cod. CatalogoDiseno", hidden: true },
+            { field: "FM", title: "FM" },
             { field: "Diseno", title: "Diseño" },
+            { field: "EstiloDiseno", title: "Estilo Diseno" },
             { field: "Color", title: "Color" },
-            { field: "Estilo", title: "Estilo" },
-            { field: "Corte", title: "Corte" },
-            { field: "RangoTallas", title: "Rango de Tallas" },
-            { field: "TotalBultos", title: "Total de Bultos" },
-            { field: "TotalPiezas", title: "Total de Piezas" },
-            { field: "NombreMaquina", title: "Máquina" },
-            { field: "Estado", title: "Estado" },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "Tallas", title: "Tallas" },
+            { field: "CantidadBultos", title: "Cantidad Bultos" },
+            { field: "IdCatalogoMaquina", title: "cod. CatalogoMaquina", hidden:true },
+            { field: "Maquina", title: "Máquina" },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NomEstado", title: "Estado" },
             {
                 field: "btnEntrega", title: "&nbsp;",
                 command: {
                     name: "btnEntrega",
-                    iconClass: "k-icon k-i-cart k - i - shopping - cart",
+                    iconClass: "k-icon k-i-cart k-i-shopping-cart",
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        
+
                     }
                 },
                 width: "70px",
@@ -113,9 +108,21 @@ $(document).ready(function () {
     });
 
     Fn_Grid_Resize($("#grid"), $(window).height() - "371");
-        
-});
 
-fPermisos = function (datos) {
-    Permisos = datos;
-};
+  /*  $("#grid").data("kendoGrid").dataSource.read();*/
+
+
+    $("#chkVerTodo").click(function () {
+        $("#grid").data("kendoGrid").dataSource.read();
+    });
+
+
+}
+
+var fn_Reg_CarritosFin = (xjson) => {
+    xIdcat = xjson.pcIdCatalogo;
+    xIdclie = xjson.pcCliente;
+    $('#chkVerTodo').prop('checked', 0);
+    $("#grid").data("kendoGrid").dataSource.read();
+}
+

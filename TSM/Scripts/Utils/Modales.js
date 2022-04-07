@@ -392,7 +392,7 @@ var fn_show_CrearListaEmpaque = (cargarJs, data, divListaEmpaque, sIdHb, fnclose
     };
 
     $("#" + divListaEmpaque + "").kendoDialog({
-        height: "60%",
+        height: "90%",
         width: "50%",
         title: "Creacion de Lista de Empaque",
         closable: true,
@@ -819,5 +819,98 @@ var fn_show_ListaEmpaqueAddPL = (cargarJs, data, divListaEmpaqueAddPL, ListaEmpa
     $("#" + divListaEmpaqueAddPL + "").data("kendoDialog").open().toFront();
 
 };
-//#endregion
 
+
+//#region Modal Ingreso de Notas de Remision
+/**
+ * 
+ * @param {HtmlElementId} divIngresNotaRemi Id del div que contendra Ingreso nota remision
+ * @param {number} idDeclaracionMercancia IdDM
+ * @param {number} item Item DM
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_vistaRelacionPLs = (divIngresNotaRemi, idDeclaracionMercancia, item, fnclose) => {
+    kendo.ui.progress($(document.activeElement), true);
+    if ($("#" + divIngresNotaRemi + "").children().length === 0) {
+        $.ajax({
+            url: "/ModalesIngresoDeclaraciones/vRelacionPLs",
+            type: 'GET',
+            contentType: "text/html; charset=utf-8",
+            datatype: "html",
+            success: function (resultado) {
+                kendo.ui.progress($(document.activeElement), false);
+                fn_cargar_RelacionPLs(resultado, divIngresNotaRemi, idDeclaracionMercancia, item, fnclose);
+            }
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), false);
+        fn_cargar_RelacionPLs("", divIngresNotaRemi, idDeclaracionMercancia, item, fnclose);
+    }
+};
+/**
+ * 
+ * @param {content} data el contenido html de Ingreso nota remision
+ * @param {HtmlElementId} divIngresNotaRemi Id del div que contendra la vista de Ingreso nota remision
+ * @param {number} idDeclaracionMercancia IdDM
+ * @param {number} item Item DM
+ * @param {function} fnclose funcion a ejecutar al cerrar modal
+ */
+var fn_cargar_RelacionPLs = (data, divIngresNotaRemi, idDeclaracionMercancia, item, fnclose) => {
+    let script = "";
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    let fileJs = "RelacionPLs.js?" + _version;
+
+    if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/Scripts/js/" + fileJs;
+        script.onload = function () {
+            fn_show_RelacionPLs(true, data, divIngresNotaRemi, idDeclaracionMercancia, item, fnclose);
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+    } else {
+        fn_show_RelacionPLs(false, data, divIngresNotaRemi, idDeclaracionMercancia, item, fnclose);
+    }
+};
+
+var fn_show_RelacionPLs = (cargarJs, data, divRelacionPLs, idDeclaracionMercancia, item, fnclose) => {
+    let onShow = function () {
+        if (cargarJs === true) {
+            fn_Ini_RelacionPLs(idDeclaracionMercancia, item);
+        } else {
+            fn_Reg_RelacionPLs(idDeclaracionMercancia, item);
+        }
+    };
+
+    let fn_CloseSIC = function () {
+        if (fnclose === undefined) {
+            return true;
+        } else {
+            return fnclose();
+        }
+    };
+
+    $("#" + divRelacionPLs + "").kendoDialog({
+        height: "80%",
+        width: "50%",
+        title: "Creación de Lista de Empaque",
+        closable: true,
+        modal: true,
+        content: data,
+        visible: false,
+        minWidth: "10%",
+        show: onShow,
+        close: fn_CloseSIC,
+        actions: [
+            { text: 'Agregar PL', primary: true, action: function (e) { return fn_Crear_Reg(); } }
+        ],
+    });
+
+    $("#" + divRelacionPLs + "").data("kendoDialog").open().toFront();
+
+};
+//#endregion

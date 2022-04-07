@@ -31,5 +31,9 @@ namespace TSM.Controllers
             return PartialView("_ListaEmpaqueAddPL");
         }
 
+        public ActionResult vRelacionPLs()
+        {
+            return PartialView("~/views/IngresoDeclaracion/_vRelacionPLs.cshtml");
+        }
     }
 }
