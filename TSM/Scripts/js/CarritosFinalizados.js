@@ -2,6 +2,8 @@
 let xIdcat = 0;
 let xIdclie = 0;
 
+Fn_VistaCambioEstado($("#vCambioEstado"));
+
 var fn_Ini_CarritosFin = (xjson) => {
     xIdcat = xjson.pcIdCatalogo;
     xIdclie = xjson.pcCliente;
@@ -78,7 +80,7 @@ var fn_Ini_CarritosFin = (xjson) => {
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-
+                        Fn_VistaCambioEstadoMostrar("Carritos", datos.Estado, TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados", "Carritos_CambiarEstado", datos.IdCarrito, undefined, undefined);
                     }
                 },
                 width: "70px",

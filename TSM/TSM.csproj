@@ -1057,7 +1057,6 @@
     <Content Include="Views\IngresoDeclaracion\_vRelacionPLs.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
-    <Content Include="Views\CarritoEntrega\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritoEntregaTela.cshtml" />
   </ItemGroup>
   <ItemGroup>
