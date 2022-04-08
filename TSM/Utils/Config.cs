@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Text;
 
 namespace TSM.Utils
 {
@@ -67,6 +68,26 @@ namespace TSM.Utils
                 var response = httpClient.GetStringAsync(new Uri(url)).Result;
 
                 return response;
+            }
+        }
+
+
+        public static string PostData(string url,string Content)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                string token = "";
+                var data = new StringContent(Content,Encoding.UTF8,"application/json");
+                if (System.Web.HttpContext.Current.Request.Cookies["t"] != null && !string.IsNullOrWhiteSpace(System.Web.HttpContext.Current.Request.Cookies.Get("t").Value))
+                    token = System.Web.HttpContext.Current.Request.Cookies.Get("t").Value;
+
+                httpClient.DefaultRequestHeaders.Add("UserAgent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
+                httpClient.DefaultRequestHeaders.Add("t", token);
+
+                var response = httpClient.PostAsync(new Uri(url),data).Result;
+
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
         }
 

@@ -405,6 +405,7 @@
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
     <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
+    <Compile Include="Controllers\VinetasMercanciasController.cs" />
     <Compile Include="DAL\AzureAuthDAL.cs" />
     <Compile Include="DAL\ReportePbiDAL.cs" />
     <Compile Include="Global.asax.cs">
@@ -508,6 +509,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\VinetasMercancias.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
     <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\EmbalajeDeclaracionMercancias.js" />
@@ -1058,6 +1060,7 @@
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritoEntregaTela.cshtml" />
+    <Content Include="Views\VinetasMercancias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

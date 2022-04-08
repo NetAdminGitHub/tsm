@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Impresión de viñetas";
+    ViewBag.IdVersion = "TMS0101082|v22040503";
+}
+@section Scripts {
+    <script src="~/Scripts/js/VinetasMercancias.js?@ViewBag.IdVersion"></script>
+}
+<div class="card">
+    <div class="card-body">
+
+        <div class="form-row col-lg-12">
+
+            <div class="form-group col-lg-3">
+                <label for="cmbCliente">Cliente</label>
+                <input id="cmbCliente" name="cmbCliente" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="CmbFmCata">Código FM:</label>
+                <input id="CmbFmCata" name="CmbFmCata" type="text" class="form-control" />
+            </div>
+           
+
+        </div>
+        <div class="form-row col-lg-12">
+            <div class="form-group">
+                <div id="gridDatosVinetas"></div>
+            </div>
+        </div>
+
+        </div>
+    </div>
