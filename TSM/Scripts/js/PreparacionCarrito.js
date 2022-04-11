@@ -143,11 +143,11 @@ $(document).ready(function () {
                 Vista: "~/Views/PreparacionCarrito/_CarritoEntregaTela.cshtml",
                 Js: "CarritoEntrega.js",
                 Titulo: "Entrega de Tela",
-                Height: "65%",
-                Width: "40%",
+                Height: "90%",
+                Width: "50%",
                 MinWidth: "30%"
             }],
-            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
+            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")), divmod: "vEntreTela" },
             fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt" }
         };
 
@@ -165,7 +165,7 @@ $(document).ready(function () {
                 Width: "80%",
                 MinWidth: "30%"
             }],
-            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
+            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente"))},
             fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin" }
         };
 
@@ -174,7 +174,7 @@ $(document).ready(function () {
 
     //compeltar campos de cabecera
 
-    /*    fn_Get_IngresoMercancia(xIdIngreso);*/
+
 
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
         var value = this.value();
@@ -250,8 +250,13 @@ $(document).ready(function () {
 });
 
 var fn_Close_CarritosFin = (xjson) => {
-
     $("#gridDetCortePre").data("kendoGrid").dataSource.read()
+    $("#treelist").data("kendoTreeList").dataSource.read();
+}
+var fn_Close_CarritoEnt = (xjson) => {
+    $("#gridDetCortePre").data("kendoGrid").dataSource.read()
+    $("#treelist").data("kendoTreeList").dataSource.read();
+
 }
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo !== null && xIdIngreso === 0) {
@@ -263,29 +268,7 @@ let fn_Refrescar_Ingreso = () => {
 
     $("#gridDetCorte").data("kendoGrid").dataSource.read();
 };
-let fn_Get_IngresoMercancia = (xId) => {
-    kendo.ui.progress($(".k-dialog"), true);
-    $.ajax({
-        url: TSM_Web_APi + "IngresoMercancias/" + `${xId}`,
-        dataType: 'json',
-        type: 'GET',
-        success: function (dato) {
-            if (dato !== null) {
-               
-                $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaIngreso), 'dd/MM/yyyy'));
 
-            } else {
-             
-                $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Fhoy()), 'dd/MM/yyyy'));
-            }
-            kendo.ui.progress($(".k-dialog"), false);
-        },
-        error: function () {
-            kendo.ui.progress($(".k-dialog"), false);
-        }
-    });
-
-};
 
 fPermisos = function (datos) {
     Permisos = datos;

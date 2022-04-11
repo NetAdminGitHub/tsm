@@ -2,19 +2,22 @@
 let xIdcat = 0;
 let xIdclie = 0;
 
-Fn_VistaCambioEstado($("#vCambioEstado"));
+
 
 var fn_Ini_CarritosFin = (xjson) => {
     xIdcat = xjson.pcIdCatalogo;
     xIdclie = xjson.pcCliente;
     $('#chkVerTodo').prop('checked', 0);
     let UrlPl = TSM_Web_APi + "Carritos/GetCarritosPreparados";
+    //1. defincion de la modal
+    Fn_VistaCambioEstado($("#vCambioEstado"), function () { return fn_CloseCmb(); });
+
     //Codigo del Grid
     let dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "Carritos/GetCarritosPreparados/" + `${$("#chkVerTodo").is(':checked') === true ? 0 : xIdcat}` },
+                url: function (datos) { return TSM_Web_APi + "Carritos/GetCarritosPreparados/" + `${$("#chkVerTodo").is(':checked') === true ? 0 : xIdcat}` },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
@@ -79,8 +82,9 @@ var fn_Ini_CarritosFin = (xjson) => {
                     iconClass: "k-icon k-i-cart k-i-shopping-cart",
                     text: "",
                     title: "&nbsp;",
-                    click: function (e) {
-                        Fn_VistaCambioEstadoMostrar("Carritos", datos.Estado, TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados", "Carritos_CambiarEstado", datos.IdCarrito, undefined, undefined);
+                    click: function (e) { // datos recibe las columnas del grid
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        Fn_VistaCambioEstadoMostrar("Carritos", dataItem.Estado, TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados", "", dataItem.IdCarrito, undefined, function () { return fn_CloseCmb(); });
                     }
                 },
                 width: "70px",
@@ -111,8 +115,6 @@ var fn_Ini_CarritosFin = (xjson) => {
 
     Fn_Grid_Resize($("#grid"), $(window).height() - "371");
 
-  /*  $("#grid").data("kendoGrid").dataSource.read();*/
-
 
     $("#chkVerTodo").click(function () {
         $("#grid").data("kendoGrid").dataSource.read();
@@ -128,3 +130,6 @@ var fn_Reg_CarritosFin = (xjson) => {
     $("#grid").data("kendoGrid").dataSource.read();
 }
 
+var fn_CloseCmb = () => {
+    $("#grid").data("kendoGrid").dataSource.read();
+};
