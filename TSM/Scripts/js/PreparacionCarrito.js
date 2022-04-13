@@ -4,6 +4,8 @@ var xIdIngreso = 0;
 let xidclie = 0;
 let xidcata = 0;
 let StrId = "";
+let pkIdCarrito = 0;
+let pkIdHb = 0;
 
 $(document).ready(function () {
 
@@ -22,7 +24,7 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnCreaCarrito"), false);
 
     //#region crear bultos si preparar
-    
+
     //CONFIGURACION DEL GRID,CAMPOS
 
     $("#treelist").kendoTreeList({
@@ -52,8 +54,11 @@ $(document).ready(function () {
             }
         }),
         height: 600,
+        messages: {
+            noRows: "No hay datos dsiponibles"
+        },
         columns: [
-            { selectable: true, width: "65px", includeChildren: true  },
+            { selectable: true, width: "65px", includeChildren: true, name: "select" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
             { field: "Corte", title: "Corte" },
@@ -65,7 +70,7 @@ $(document).ready(function () {
             { field: "Estilo", title: "Estilo" },
             {
                 command: [
-                    { 
+                    {
                         name: "b_impresion",
                         text: " ",
                         click: fn_VinetaImp,
@@ -94,8 +99,28 @@ $(document).ready(function () {
                 }
             }
         },
-        requestEnd: Grid_requestEnd,
-        error: Grid_error,
+        requestEnd: function (e) {
+            if (e.response.length === 0) {
+                if (KdoCmbGetValue($("#cmbCliente")) === null || KdoMultiColumnCmbGetValue($("#cmbFm")) === null) {
+                    KdoButtonEnable($("#btnCreaCarrito"), false);
+                } else {
+                    KdoButtonEnable($("#btnCreaCarrito"), true);
+                }
+                pkIdCarrito = 0;
+                pkIdHb = 0;
+            } else {
+
+                pkIdCarrito = e.response[0].IdCarrito;
+                pkIdHb = e.response[0].IdHojaBandeo;
+
+            }
+            Grid_requestEnd;
+
+        },
+        error: function (e) {
+
+            Grid_error;
+        },
         schema: {
             model: {
                 id: "IdCarrito",
@@ -107,7 +132,8 @@ $(document).ready(function () {
                     Color: { type: "string" },
                     Talla: { type: "string" },
                     Cantidad: { type: "number" },
-                    Estado: { type: "string" }
+                    Estado: { type: "string" },
+                    IdHojaBandeo: { type: "number" }
                 }
             }
         }
@@ -167,7 +193,7 @@ $(document).ready(function () {
         fn_GenLoadModal(strjson);
     });
 
-   
+
     $("#btnDetallePrep").click(function () {
         let strjson = {
             config: [{
@@ -190,45 +216,92 @@ $(document).ready(function () {
         var treeList = $("#treelist").data("kendoTreeList");
         var row = treeList.select();
         let BultosPreCar = [];
+        let Lineas = [];
+        let Lcortes = [];
         if (row.length > 0) {
             $.each(row, function (index, elemento) {
                 let data = treeList.dataItem(elemento);
                 if (data.IdPadre !== null) {
-                    BultosPreCar.push({
-                        id: data.id
-                    });
+                    BultosPreCar.push(
+                        data.id
+                    );
+
+                    Lineas.push({ id: data.Id, idPadre: data.IdPadre });
                 }
             });
+
+            Lcortes = [...new Map(Lineas.map(item =>
+                [item['idPadre'], item])).values()].map(p => p.idPadre);
+
+            if (Lcortes.length > 1) {
+                $("#kendoNotificaciones").data("kendoNotification").show("No es Permitido seleccionar bultos de varios cortes", "error");
+                return;
+            }
+
+            if (Lineas.filter(v => v.idPadre !== pkIdHb).length > 0) {
+                $("#kendoNotificaciones").data("kendoNotification").show("No es Permitido bultos que no pertenezcan al corte que está en preparación de carrito", "error");
+                return;
+            }
+
+
+            kendo.ui.progress($(document.body), true);
+            $.ajax({
+                url: TSM_Web_APi + "Carritos/CrearCarrito",
+                method: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdCatalogoDiseno: KdoMultiColumnCmbGetValue($("#cmbFm")),
+                    IdUsuario: getUser(),
+                    IdBulto: BultosPreCar
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (datos) {
+                    $("#treelist").data("kendoTreeList").dataSource.read();
+                    $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+                    RequestEndMsg(datos, "Post");
+                },
+                error: function (data) {
+                    ErrorMsg(data);
+                },
+                complete: function () {
+                    kendo.ui.progress($(document.body), false);
+                }
+            });
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione uno o mas bultos", "error");
         }
     });
 
-    //Preparar Carrito
+    ////Preparar Carrito
     $("#btnPrep").click(function () {
-        let xidCarrito = 1;
-        let xEstadoF = "FINALIZADO";
-        let xMotivo = "";
-        kendo.ui.progress($(document.body), true);
-        $.ajax({
-            url = TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados/",
-            method: "POST",
-            dataType: "json",
-            data: JSON.stringify({
-                xidCarrito,
-                xEstadoF,
-                xMotivo
-            }),
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                alert('Carrito Finalizado');
-            },
-            error: function (data) {
-                ErrorMsg(data);
-                result = false;
-            },
-            complete: function () {
-                kendo.ui.progress($(document.body), false);
-            }
-        })
+        if (pkIdCarrito > 0) {
+            kendo.ui.progress($(document.body), true);
+            $.ajax({
+                url: TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados/",
+                method: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    Id: pkIdCarrito,
+                    EstadoSiguiente: "FINALIZADO",
+                    Motivo: "CARRITO EN PREPARACION PASA A FINALIZADO"
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    RequestEndMsg(data, "Post");
+                    $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+                },
+                error: function (data) {
+                    ErrorMsg(data);
+                },
+                complete: function () {
+                    kendo.ui.progress($(document.body), false);
+                }
+            })
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("No hay carrito generado", "error");
+        }
+
+       
     });
 
     //compeltar campos de cabecera
