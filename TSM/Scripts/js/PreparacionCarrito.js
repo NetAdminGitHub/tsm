@@ -202,6 +202,35 @@ $(document).ready(function () {
         }
     });
 
+    //Preparar Carrito
+    $("#btnPrep").click(function () {
+        let xidCarrito = 1;
+        let xEstadoF = "FINALIZADO";
+        let xMotivo = "";
+        kendo.ui.progress($(document.body), true);
+        $.ajax({
+            url = TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados/",
+            method: "POST",
+            dataType: "json",
+            data: JSON.stringify({
+                xidCarrito,
+                xEstadoF,
+                xMotivo
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                alert('Carrito Finalizado');
+            },
+            error: function (data) {
+                ErrorMsg(data);
+                result = false;
+            },
+            complete: function () {
+                kendo.ui.progress($(document.body), false);
+            }
+        })
+    });
+
     //compeltar campos de cabecera
 
 

@@ -84,7 +84,7 @@ var fn_Ini_CarritosFin = (xjson) => {
                     title: "&nbsp;",
                     click: function (e) { // datos recibe las columnas del grid
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        Fn_VistaCambioEstadoMostrar("Carritos", dataItem.Estado, TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados", "", dataItem.IdCarrito, undefined, function () { return fn_CloseCmb(); });
+                        Fn_VistaCambioEstadoMostrar("Carritos", dataItem.Estado, TSM_Web_APi + "Carritos/UpdCarritosCambiosEstados", "", dataItem.IdCarrito, undefined, function () { return fn_CloseCmb(); },false);
                     }
                 },
                 width: "70px",
