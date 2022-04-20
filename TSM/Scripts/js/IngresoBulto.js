@@ -96,7 +96,8 @@ let fn_HojaBandeoMercancia = (xid) => {
             Docenas: xesRollo_Bulto === true ? null : kdoNumericGetValue($("#num_Ib_Cantidad")) / 12,
             IdMercancia: 0,
             NoDocumento: $("#txt_Ib_Bulto").val(),
-            Estado: "ACTIVO"
+            Estado: "INGRESADO",
+            IdUnidad:9
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
