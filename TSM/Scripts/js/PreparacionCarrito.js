@@ -31,7 +31,7 @@ $(document).ready(function () {
         dataSource: new kendo.data.TreeListDataSource({
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "HojasBandeosMercancias/GetBultosSinPreparar/" + `${xidcata}` }
+                    url: TSM_Web_APi + "HojasBandeosMercancias/GetBultosSinPreparar/" + `${xidcata}` 
                 }
             },
             schema: {
@@ -48,8 +48,7 @@ $(document).ready(function () {
                         FM: { field: "FM", type: "string" },
                         Diseno: { field: "Diseno", type: "string" },
                         Estilo: { field: "Estilo", type: "string" }
-                    },
-                    expanded: false
+                    }
                 }
             }
         }),

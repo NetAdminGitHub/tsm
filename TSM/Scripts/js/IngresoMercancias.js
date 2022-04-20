@@ -245,10 +245,10 @@ $(document).ready(function () {
 
 
 });
-let fn_Imclose = (strjson) => {
+var fn_Imclose = (strjson) => {
     fn_Refrescar_Ingreso();
 };
-let fn_ImRefres = (strjson) => {
+var fn_ImRefres = (strjson) => {
     $("#gridHoja").data("kendoGrid").dataSource.read();
 };
 

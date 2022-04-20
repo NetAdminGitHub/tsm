@@ -2624,7 +2624,7 @@ let fn_GenLoadModal = (obj) => {
     };
 
     let fn_CloseSIC = function () {
-        obj.fn.fnclose !== "" ? undefined : window[obj.fn.fnclose](obj.Param);
+        obj.fn.fnclose === "" ? undefined : window[obj.fn.fnclose](obj.Param);
         kendo.ui.progress($(document.activeElement), false);
     };
 
