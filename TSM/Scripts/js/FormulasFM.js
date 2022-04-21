@@ -42,7 +42,7 @@ $(document).ready(function () {
                     Nombre: { type: "string" },
                     Estacion: { type: "number" },
                     Diseno: { type: "string" },
-                    Seda: { type: "number" },
+                    Seda: { type: "string" },
                     Letra: { type: "string" },
                     Dureza: { type: "number" },
                     Quimica: { type: "string" },
