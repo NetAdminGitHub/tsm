@@ -560,7 +560,7 @@
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
                 dataTextField: "NombreCliente",
-                dataValueField: "IdBodegaCliente",
+                dataValueField: "IdIngreso",
                 filter: "contains",
                 autoBind: false,
                 height: 400,
