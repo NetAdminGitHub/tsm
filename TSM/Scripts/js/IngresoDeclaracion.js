@@ -39,21 +39,21 @@ $(document).ready(function () {
     $("#numTotalValor").kendoNumericTextBox({
         min: 0,
         max: 999999999,
-        format: "#",
+        format: "{0:N2}",
         restrictDecimals: true,
-        decimals: 0,
+        decimals: 2,
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalValor"), false);
-    $("#numTotalPrecio").kendoNumericTextBox({
+    $("#numTotalCuantia").kendoNumericTextBox({
         min: 0,
         max: 999999999,
-        format: "#",
+        format: "{0:N2}",
         restrictDecimals: true,
-        decimals: 0,
+        decimals: 2,
         value: 0
     });
-    KdoNumerictextboxEnable($("#numTotalPrecio"), false);
+    KdoNumerictextboxEnable($("#numTotalCuantia"), false);
 
     KdoComboBoxEnable($("#cmbCliente"), false);
     KdoCmbSetValue($("#cmbCliente"), xIdClienteIng);
@@ -111,7 +111,7 @@ $(document).ready(function () {
                     IdUnidadPesoBruto: { type: "string", defaultValue: function () { return 1; }  },
                     Abreviatura: { type: "string" },
                     CantidadBultos: { type: "number" },
-                    PrecioUnitario: { type: "number" },
+                    Cuantia: { type: "number" },
                     IdEmbalaje: { type: "string", defaultValue: function () { return 1; } },
                     NombreEmbalaje: { type: "string" },
                     IdUsuarioMod: { type: "string" },
@@ -135,12 +135,10 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombrePais");
             KdoHideCampoPopup(e.container, "Abreviatura");
             KdoHideCampoPopup(e.container, "NombrePais");
-            KdoHideCampoPopup(e.container, "Valor");
             KdoHideCampoPopup(e.container, "NombreEmbalaje");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "DescripcionInciso");
-            KdoHideCampoPopup(e.container, "IdEmbalaje");
             Grid_Focus(e, "IdIncisoArancelario");
         },
         columns: [
@@ -162,9 +160,9 @@ $(document).ready(function () {
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
-            { field: "PrecioUnitario", title: "Precio Unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
-            { field: "Valor", title: "Valor", format: "{0:N2}" },
-            { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true /*editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."] */},
+            { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
             { field: "NombreEmbalaje", title: "NombreEmbalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
@@ -223,11 +221,11 @@ $(document).ready(function () {
                     NoDocumento: { type: "string" },
                     Estilo: { type: "string" },
                     Fecha: { type: "date" },
-                    PrecioUnitario: { type: "number" },
+                    Cuantia: { type: "number" },
                     Item: { type: "number" },
                     CantidadBultos: { type: "number" },
-                    PrecioUnitario: { type: "number" },
-                    Total: { type: "number" }
+                    Cuantia: { type: "number" },
+                    Valor: { type: "number" }
                 }
             }
         }
@@ -243,8 +241,8 @@ $(document).ready(function () {
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Item", title: "Item" },
             { field: "CantidadBultos", title: "Cantidad Bultos" },
-            { field: "PrecioUnitario", title: "Precio Unitario", format: "{0:N2}" },
-            { field: "Total", title: "Total", format: "{0:N2}" }
+            { field: "Cuantia", title: "Cuantia", format: "{0:N2}" },
+            { field: "Valor", title: "Valor", format: "{0:N2}" }
         ]
     });
 
@@ -352,7 +350,8 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 $("#TxtDireccion").val(dato.Direccion);
                 kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
                 kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
-                kdoNumericSetValue($("#numTotalPrecio"), dato.TotalPrecio);
+                kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
+                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), "");
@@ -363,7 +362,7 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 $("#TxtDireccion").val("");
                 kdoNumericSetValue($("#numTotalBultos"), 0);
                 kdoNumericSetValue($("#numTotalValor"),0);
-                kdoNumericSetValue($("#numTotalPrecio"), 0);
+                kdoNumericSetValue($("#numTotalCuantia"), 0);
             }
             kendo.ui.progress($(document.body), false);
         },
@@ -403,7 +402,8 @@ let fn_GuardarDM = () => {
             IdAduana: KdoCmbGetValue($("#cmbAduana")),
             IdPais: KdoCmbGetValue($("#cmbPaisExpor")),
             Estado: "ACTIVO",
-            Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's')
+            Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's'),
+            IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso"))
 
         }),
         contentType: 'application/json; charset=utf-8',

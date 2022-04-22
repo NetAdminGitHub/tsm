@@ -45,7 +45,7 @@ var fn_Ini_IngresoNotaRemision = (sidDeclaracion) => {
                     IdUnidadPesoBruto: { type: "string", defaultValue: function () { return 1; } },
                     Abreviatura: { type: "string" },
                     CantidadBultos: { type: "number" },
-                    PrecioUnitario: { type: "number" },
+                    Cuantia: { type: "number" },
                     IdEmbalaje: { type: "string", defaultValue: function () { return 1; } },
                     NombreEmbalaje: { type: "string" },
                     IdUsuarioMod: { type: "string" },
@@ -79,7 +79,7 @@ var fn_Ini_IngresoNotaRemision = (sidDeclaracion) => {
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
-            { field: "PrecioUnitario", title: "Precio unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "Valor", title: "Valor", format: "{0:N2}" },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true /*editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."] */ },
             { field: "NombreEmbalaje", title: "NombreEmbalaje" },
@@ -161,7 +161,7 @@ let fn_CreaNotaRemCliente = () => {
                     IdUnidad: Number(elemento.IdUnidadPesoBruto),
                     Cantidad: Number(elemento.CantidadBultos),
                     Descripcion: String(elemento.Descripcion),
-                    PrecioUnitario: Number(elemento.PrecioUnitario),
+                    PrecioUnitario: 0 /*Number(elemento.Cuantia)*/,
                     Monto: Number(elemento.Valor),
                     ItemDM: Number(elemento.Item)
 

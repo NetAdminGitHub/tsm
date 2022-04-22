@@ -117,7 +117,12 @@ var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
                     url: function () { return TSM_Web_APi + "NotasRemisionMercancias/NotaClienteDetalle/" + `${idDeclaracion}` },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
-                },           
+                },
+                update: {
+                    url: function (datos) { return TSM_Web_APi + "NotasRemisionMercancias/" + datos.IdNotaRemisionMercancia; },
+                    type: "PUT",
+                    contentType: "application/json; charset=utf-8"
+                },
                 parameterMap: function (data, type) {
                     if (type !== "read") {
                         return kendo.stringify(data);
@@ -154,6 +159,19 @@ var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
 
         var detailGrid = $("<div/>").appendTo(e.detailCell).kendoGrid({
             //DEFICNICIÓN DE LOS CAMPOS
+
+            edit: function (e) {
+                KdoHideCampoPopup(e.container, "IdNotaRemision");
+                KdoHideCampoPopup(e.container, "IdNotaRemisionMercancia");
+                KdoHideCampoPopup(e.container, "Item");
+                KdoHideCampoPopup(e.container, "ItemDM");
+                KdoHideCampoPopup(e.container, "Descripcion");
+                KdoHideCampoPopup(e.container, "IdUnidad");
+                KdoHideCampoPopup(e.container, "Abreviatura");
+                KdoHideCampoPopup(e.container, "Cantidad");
+
+                Grid_Focus(e, "PrecioUnitario");
+            },
             columns: [
               
                { field: "IdNotaRemision", title: "IdNotaRemision", hidden: true },
@@ -161,11 +179,11 @@ var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
                 { field: "Item", title: "Item", hidden: true },
                 { field: "ItemDM", title: "ItemDM", hidden: true },
                 { field: "Descripcion", title: "Descripción" },
-                { field: "PrecioUnitario", title: "Precio unitario", format: "{0:n2}"},
                 { field: "Cantidad", title: "Cantidad", format: "{0:n2}" },
                 { field: "IdUnidad", title: "Unidad", hidden: true },
+                { field: "PrecioUnitario", title: "Precio unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"},
                 { field: "Abreviatura", title: "Unidad de medida" },
-                { field: "Monto", title: "Monto" ,format:"{0:n2}"}
+                { field: "Monto", title: "Monto", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"}
             ]
         });
 
@@ -190,6 +208,7 @@ var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
     function ConfGDetalle(g, ds, IdentificadorGridDetalle) {
         
         SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 250);
+        SetGrid_CRUD_Command(g, true, false);
         Set_Grid_DataSource(g, ds);
     }
 
