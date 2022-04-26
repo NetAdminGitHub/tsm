@@ -180,7 +180,8 @@ let fn_Gen_entrega = (xidC) => {
         method: "POST",
         dataType: "json",
         data: JSON.stringify({
-            IdCarrito: xidC
+            IdCarrito: xidC,
+            IdCatalogoMaquina: Number( KdoCmbGetValue($("#dropdMaquina")))
         }),
         contentType: "application/json; charset=utf-8",
         success: function (datos) {

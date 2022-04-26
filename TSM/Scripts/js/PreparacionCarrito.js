@@ -237,7 +237,7 @@ $(document).ready(function () {
                 return;
             }
 
-            if (Lineas.filter(v => v.idPadre !== pkIdHb).length > 0) {
+            if (Lineas.filter(v => v.idPadre !== pkIdHb).length > 0 &&  pkIdHb !== 0) {
                 $("#kendoNotificaciones").data("kendoNotification").show("No es Permitido bultos que no pertenezcan al corte que está en preparación de carrito", "error");
                 return;
             }
