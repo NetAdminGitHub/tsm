@@ -298,6 +298,7 @@
     <Compile Include="Controllers\FactoresCostosController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
     <Compile Include="Controllers\ConsultaFichasProduccionesController.cs" />
+    <Compile Include="Controllers\FormulasFMController.cs" />
     <Compile Include="Controllers\GestionOTAsignacionesController.cs" />
     <Compile Include="Controllers\GestionOTController.cs" />
     <Compile Include="Controllers\GestionOTDesarrollosCobrosAproController.cs" />
@@ -533,6 +534,7 @@
     <Content Include="Scripts\js\EstacionVerifMuestra.js" />
     <Content Include="Scripts\js\EstructuraMaquinas.js" />
     <Content Include="Scripts\js\ExtensionesArchivosModulos.js" />
+    <Content Include="Scripts\js\FormulasFM.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
     <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
@@ -994,6 +996,7 @@
     <Content Include="Views\CambioClienteOT\Index.cshtml" />
     <Content Include="Views\CambioClienteRD\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\FormulasFM\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
