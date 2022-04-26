@@ -31,7 +31,7 @@ $(document).ready(function () {
         dataSource: new kendo.data.TreeListDataSource({
             transport: {
                 read: {
-                    url: TSM_Web_APi + "HojasBandeosMercancias/GetBultosSinPreparar/" + `${xidcata}` 
+                    url: function () { return TSM_Web_APi + "HojasBandeosMercancias/GetBultosSinPreparar/" + `${xidcata}`; }
                 }
             },
             schema: {
