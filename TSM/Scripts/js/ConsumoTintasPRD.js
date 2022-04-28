@@ -5,6 +5,14 @@ $(document).ready(function () {
     KdoButton($("#btnBuscar"), "search", "Buscar");
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un Cliente...");
     OrdenesTrabajos($("#cmbOrdenTrabajo"));
+    vpImgDis = $("#OtImgDis");
+    vpImgDis.children().remove();
+    vpImgDis.append(Fn_Carouselcontent());
+    $("#idcloseMod").click(function () {
+        $("#myModal").modal('toggle');
+        $("#myModal").modal('hide');
+    });
+    Fn_DibujarCarrousel($("#Mycarousel"), "", null);
 
     $("#tsContenido").kendoTabStrip({
         tabPosition: "top",
@@ -56,7 +64,8 @@ $(document).ready(function () {
                     Diferencia: { type: "number" },
                     Peso: { type: "number" },
                     Costo: { type: "number" },
-                    Valor: { type: "number" }                    
+                    Valor: { type: "number" },
+                    IdArte: { type: "number" }
                 }
             }
         },
@@ -506,6 +515,8 @@ let fn_Consultar = function (idOrdenTrabajo) {
 
 let fn_CargarCabecera = function () {
     let view = $("#gConsolidado").data("kendoGrid").dataSource.view();
+    // limpiar imagen 
+    Fn_DibujarCarrousel($("#Mycarousel"), "", null);
     if (view.length > 0) {
         $("#txtNomCliente").val(view[0].NomCliente);
         $("#txtNoCotizacion").val(view[0].NoCotizacion);
@@ -521,8 +532,13 @@ let fn_CargarCabecera = function () {
         $("#txtProyeccionProducida").val(kendo.toString(view[0].ProyeccionProducida, "c4"));
 
         fn_HabilitarControles(true);
+        //cargar imaen
+        fn_getImgAdjuntas(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + view[0].IdArte, view[0].NoOrdenTrabajo);
+
     }
     else if (xidOT !== 0) {
+            // limpiar imagen 
+        Fn_DibujarCarrousel($("#Mycarousel"), "", null);
         fn_HabilitarControles(false);
         ErrorMsg("No se encontraron registros que mostrar.");
     }
@@ -560,6 +576,24 @@ let OrdenesTrabajos = function (cmb) {
             { field: "FechaFinalMuestra", title: "Final Des. Muestra", template: '#:kendo.toString(kendo.parseDate(data.FechaFinalMuestra), "dd/MM/yyyy")#', width: 125 },
             { field: "FechaFinal", title: "Fecha Fin OT", template: '#:kendo.toString(kendo.parseDate(data.FechaFinalMuestra), "dd/MM/yyyy HH:mm:ss")#', width: 200 }
         ]
+    });
+};
+
+let fn_getImgAdjuntas = (url,NodocOT) => {
+    //LLena Splitter de imagenes
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        type: 'GET',
+        success: function (respuesta) {
+            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + NodocOT + "", respuesta);
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
     });
 };
 
