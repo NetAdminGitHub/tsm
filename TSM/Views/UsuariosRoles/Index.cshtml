@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Usuarios Roles";
-    ViewBag.IdVersion = "TSM0101038|v19010701";
+    ViewBag.IdVersion = "TSM0101038|v22050201";
 }
 @section Scripts {
     <script type="text/javascript">
@@ -8,7 +8,7 @@
         var UrlUsuariosRoles = "@string.Format("{0}UsuariosRoles", TSM.Utils.Config.TSM_WebApi)";
         var UrlRoles= "@string.Format("{0}Roles", TSM.Utils.Config.TSM_WebApi)";
     </script>
-    <script src="~/Scripts/js/UsuariosRoles.js"></script>
+    <script src="~/Scripts/js/UsuariosRoles.js?@ViewBag.IdVersion"></script>
 }
     <div class="form-row">
         <div class="col-lg-6">
