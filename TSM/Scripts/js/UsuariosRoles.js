@@ -54,17 +54,30 @@ $(document).ready(function () {
                         validation: {
                             required: true,
                             maxlength: function (input) {
-                                if (input.is("[name='IdUsuario']") && input.val().length > 200) {
+                                if (input.is("[name='IdUsuario']") && (input.val().length <= 0 && input.val().length > 200)) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
                                     return false;
                                 }
-                                if (input.is("[name='Nombre']") && input.val().length > 200) {
+                                if (input.is("[name='Nombre']") && (input.val().length <= 0 && input.val().length > 200)) {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 200");
+                                    return false;
+                                }
+                                if (input.is("[name='NoCarnet']") && (input.val().length <=0  && input.val().length > 20)) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 20");
                                     return false;
                                 }
                                 return true;
                             }
                         }
+                    },
+                    FechaMod: {
+                        type: "date"
+                    },
+                    IdUsuarioMod: {
+                        type: "string"
+                    },
+                    NoCarnet: {
+                        type: "string"
                     }
 
                 }
@@ -76,10 +89,11 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridUsuario").kendoGrid({
         edit: function (e) {
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+            KdoHideCampoPopup(e.container, "FechaMod");
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
             if (!e.model.isNew()) {
-                e.container.find("label[for=IdUsuario]").parent("div .k-edit-label").hide();
-                e.container.find("label[for=IdUsuario]").parent().next("div .k-edit-field").hide();
+                KdoHideCampoPopup(e.container, "IdUsuario");
                 Grid_Focus(e, "Nombre");
             } else {
                 Grid_Focus(e, "IdUsuario");
@@ -89,7 +103,10 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdUsuario", title: "Usuario "},
-            { field: "Nombre", title: "Nombre del Usuario" }
+            { field: "Nombre", title: "Nombre del Usuario" },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "NoCarnet", title: "No Carnet" },
         ]
 
     });
@@ -184,14 +201,13 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridUsuarioRoles").kendoGrid({
         edit: function (e) {
-
-            //e.container.find("label[for=IdUsuario]").parent("div .k-edit-label").hide();
-            //e.container.find("label[for=IdUsuario]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
             $('[name="Fecha"]').kendoDatePicker({ format: "dd/MM/yyyy" });
-            e.container.find("label[for=Fecha]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Fecha]").parent().next("div .k-edit-field").hide();
+            KdoHideCampoPopup(e.container, "IdUsuario");
+            KdoHideCampoPopup(e.container, "Nombre");
+            KdoHideCampoPopup(e.container, "Fecha");
+            KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "IdUsuarioMod");
+
             Grid_Focus(e, "IdRol");
          
         },
@@ -200,7 +216,9 @@ $(document).ready(function () {
             { field: "IdUsuario", title: "Usuario ", editor: Grid_ColLocked, hidden: true},
             { field: "IdRol", title: "Rol", hidden: true, editor: Grid_Combox, values: ["IdRol","Nombre",UrlRoles,"","Seleccione...","required","","Requerido"] },
             { field: "Nombre", title: "Nombre del Rol" },
-            { field: "Fecha", title: "Fecha de Asignación", format: "{0:dd/MM/yyyy}",hidden:true}
+            { field: "Fecha", title: "Fecha de Asignación", format: "{0:dd/MM/yyyy}", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
         ]
 
     });
