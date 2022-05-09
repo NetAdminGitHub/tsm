@@ -331,6 +331,7 @@
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesAjustesController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
+    <Compile Include="Controllers\MotivosSustraidasController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
@@ -509,6 +510,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
     <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
@@ -1061,6 +1063,7 @@
     <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
     <Content Include="Views\PreparacionCarrito\_CarritoEntregaTela.cshtml" />
     <Content Include="Views\VinetasMercancias\Index.cshtml" />
+    <Content Include="Views\MotivosSustraidas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
