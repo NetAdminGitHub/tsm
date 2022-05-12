@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Roles de Usuarios Públicos";
+    ViewBag.IdVersion = "TSM0101124|v22051101";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var UrlUsuarios = "@string.Format("{0}Usuarios/GetUsuariosPublicos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuariosRoles = "@string.Format("{0}UsuariosRoles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuariosRolesPrivados = "@string.Format("{0}UsuariosRoles/UsuariosRolesPublicos", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRoles= "@string.Format("{0}Roles/GetRolesPublico", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/UsuariosRolesPublicos.js?@ViewBag.IdVersion"></script>
+}
+<div class="form-row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div id="gridUsuario"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div id="gridUsuarioRoles"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
