@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Definición de Menus por Secciones de Vistas";
+    ViewBag.IdVersion = "TSM0101125|v20051601";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var UrlMenu = "@string.Format("{0}Menus", TSM.Utils.Config.TSM_WebApi)";
+        var UrlRoles = "@string.Format("{0}Roles/GetRolesPublico", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMenusSeccionesVistas = "@string.Format("{0}MenusSeccionesVistas", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMenusRoles = "@string.Format("{0}MenusRoles", TSM.Utils.Config.TSM_WebApi)";
+
+
+        var UrlNiveles = "@string.Format("{0}Niveles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuarioRoles = "@string.Format("{0}UsuariosRoles", TSM.Utils.Config.TSM_WebApi)";
+        var UrlMenusUsuarios = "@string.Format("{0}MenusUsuarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlUsuarios = "@string.Format("{0}Usuarios", TSM.Utils.Config.TSM_WebApi)";
+        var UrlCatalogoFuentes = "@string.Format("{0}CatalogoFuentes", TSM.Utils.Config.TSM_WebApi)";
+        var UrlModulo= "@string.Format("{0}Modulos", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/MenusSeccionesVistas.js"></script>
+}
+<link href="~/Content/TreeviewStyle.css" rel="stylesheet" />
+<link href="~/Content/UsuariosRoles.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="card">
+        <div class="card-body container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-5 border p-3">
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <label class="font-weight-bold">Menú</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <div id="MenuTreeView" style="height:576px; overflow: auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1 form-group align-self-center d-flex justify-content-center">
+                    <div class="form-row">
+                        <div class=" nav flex-column nav-pills align-middle" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <div class="row mb-1">
+                                <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
+                            </div>
+                            <div class="row mt-1">
+                                <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 border p-3">
+                    <div class="form-row"><div class="col-lg-12"> <label class="font-weight-bold">Asignación de menú </label></div></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="CmbRoles">Roles:</label>
+                            <input id="CmbRoles" name="CmbRoles" required validationMessage="Requerido" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <div id="RolesTreeView" style="height:503px; overflow: auto"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="form-group col-lg-12">
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                @Html.Partial("../Menus/_MenuPermisos")
+            </div>
+        </div>
+    </div>
+</div>
