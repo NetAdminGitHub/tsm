@@ -49,6 +49,7 @@ $(document).ready(function () {
             model: {
                 fields: {
                     NoOrdenTrabajo: { type: "string" },
+                    NoDocReq: { type: "string" },
                     NoCuenta: { type: "string" },
                     NomCliente: { type: "string" },
                     IdArticulo: { type: "string" },
@@ -129,6 +130,7 @@ $(document).ready(function () {
                 }
             },
             { field: "NoCotizacion", title: "NoCotizacion", hidden: true },
+            { field: "NoDocReq", title: "NoDocReq", hidden: true },
             { field: "NoPrograma", title: "NoPrograma", hidden: true },
             { field: "CantidadPiezas", title: "CantidadPiezas", hidden: true },
             { field: "PiezasProducidas", title: "PiezasProducidas", hidden: true },
@@ -533,7 +535,7 @@ let fn_CargarCabecera = function () {
 
         fn_HabilitarControles(true);
         //cargar imaen
-        fn_getImgAdjuntas(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + view[0].IdArte, view[0].NoOrdenTrabajo);
+        fn_getImgAdjuntas(TSM_Web_APi + "ArteAdjuntos/GetVistaImagenes/" + view[0].IdArte, view[0].NoDocReq);
 
     }
     else if (xidOT !== 0) {
@@ -579,7 +581,7 @@ let OrdenesTrabajos = function (cmb) {
     });
 };
 
-let fn_getImgAdjuntas = (url,NodocOT) => {
+let fn_getImgAdjuntas = (url, NodocReq) => {
     //LLena Splitter de imagenes
     kendo.ui.progress($(document.body), true);
     $.ajax({
@@ -587,7 +589,7 @@ let fn_getImgAdjuntas = (url,NodocOT) => {
         dataType: 'json',
         type: 'GET',
         success: function (respuesta) {
-            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + NodocOT + "", respuesta);
+            Fn_DibujarCarrousel($("#Mycarousel"), "/Adjuntos/" + NodocReq + "", respuesta);
 
             kendo.ui.progress($(document.body), false);
         },
