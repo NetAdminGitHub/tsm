@@ -322,6 +322,7 @@
     <Compile Include="Controllers\MarcaMaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
+    <Compile Include="Controllers\MenusSeccionesVistasController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
     <Compile Include="Controllers\ModalesIngresoDeclaracionesController.cs" />
     <Compile Include="Controllers\ModalesIngresoMercanciaController.cs" />
@@ -511,6 +512,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
@@ -1067,6 +1069,7 @@
     <Content Include="Views\VinetasMercancias\Index.cshtml" />
     <Content Include="Views\MotivosSustraidas\Index.cshtml" />
     <Content Include="Views\UsuariosRolesPublicos\Index.cshtml" />
+    <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
