@@ -60,7 +60,8 @@ $(document).ready(function () {
                                 return true;
                             }
                         }
-                    }
+                    },
+                    RolPublico: { type: "bool" }
 
                 }
             }
@@ -80,7 +81,8 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRol", title: "Código Rol ",  hidden: true },
-            { field: "Nombre", title: "Nombre del Rol" }
+            { field: "Nombre", title: "Nombre del Rol" },
+            { field: "RolPublico", title: "Rol Público", width: 150, editor: Grid_ColCheckbox, attributes: { style: "text-align: center" }, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RolPublico"); } }
         ]
 
     });
