@@ -192,7 +192,7 @@ var fn_show_IngresoBulto = (cargarJs, data, divIngresoBulto, sidHb, esRollo, fnc
     };
 
     $("#" + divIngresoBulto + "").kendoDialog({
-        height: "50%",
+        height: "60%",
         width: "20%",
         title: "Ingreso de Bulto / Rollo",
         closable: true,
@@ -293,7 +293,7 @@ var fn_show_IngresoBultoSerie = (cargarJs, data, divIngresoBultoSerie, sidHb, es
     };
 
     $("#" + divIngresoBultoSerie + "").kendoDialog({
-        height: "65%",
+        height: "70%",
         width: "20%",
         title: "Ingreso de Bulto / Rollo",
         closable: true,

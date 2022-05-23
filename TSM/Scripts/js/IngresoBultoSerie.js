@@ -2,6 +2,7 @@
 let xIdHojaBandeo;
 let xesRollo_BultoSerie = 0;
 let vFrmIngBulSerie;
+
 let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
     xIdHojaBandeo = sIdHojaBandeo;
     xesRollo_BultoSerie = esRollo;
@@ -16,6 +17,8 @@ let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
         decimals: esRollo === true ? 2 : 0,
         value: 0
     });
+
+    Kendo_CmbFiltrarGrid($("#cmb_Ibs_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
 
     vFrmIngBulSerie = $("#FrmIngresoBultoSerie").kendoValidator({
             rules: {
@@ -32,7 +35,7 @@ let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
                     return true;
                 },
                 MsgMayora0: function (input) {
-                    if (input.is("[name='num_Ib_Cantidad']")) {
+                    if (input.is("[name='num_Ibs_Cantidad']")) {
                         return input.val() > 0;
                     }
                     return true;
@@ -51,13 +54,20 @@ let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
                         return input.val().length <= 20;
                     }
                     return true;
+                },
+                MsgIdUniArea: function (input) {
+                    if (input.is("[name='cmb_Ibs_Unidades']")) {
+                        return $("#cmb_Ibs_Unidades").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
                 }
             },
             messages: {
                 MsgRequerido: "Campo Requerido",
                 MsgMayora0: "Cantidad debe ser mayor a 0",
                 MsgBulto: "Longitud del campo es 50",
-                MsgTalla: "Longitud del campo es 20"
+                MsgTalla: "Longitud del campo es 20",
+                MsgIdUniArea: "Requerido"
             }
         }).data("kendoValidator");
 
@@ -69,6 +79,7 @@ let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
         }
         
     });
+
     $("#txt_Ibs_Bulto_Ini").focus();
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
@@ -95,7 +106,8 @@ let fn_Gen_BultoSerie = () => {
             DocInicial: $("#txt_Ibs_Bulto_Ini").val(),
             DocFinal: $("#txt_Ibs_Bulto_Fin").val(),
             Talla: $("#txt_Ibs_Talla").val(),
-            Cantidad: kdoNumericGetValue($("#num_Ibs_Cantidad"))
+            Cantidad: kdoNumericGetValue($("#num_Ibs_Cantidad")),
+            IdUnidad: $("#cmb_Ibs_Unidades").val()
         }),
         contentType: "application/json; charset=utf-8",
         success: function (datos) {
@@ -104,6 +116,7 @@ let fn_Gen_BultoSerie = () => {
             $("#txt_Ibs_Bulto_Fin").val("");
             $("#txt_Ibs_Talla").val("");
             kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
+            $("#cmb_Ibs_Unidades").data("kendoComboBox").value("");
             RequestEndMsg(datos, "Post");
         },
         error: function (data) {
@@ -112,7 +125,5 @@ let fn_Gen_BultoSerie = () => {
         complete: function () {
             kendo.ui.progress($(".k-dialog"), false);
         }
-    });
-
-    
+    });    
 }

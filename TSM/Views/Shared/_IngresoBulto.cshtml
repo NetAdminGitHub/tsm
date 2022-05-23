@@ -1,17 +1,18 @@
 ﻿
-<form id="FrmIngresoBulto" method="POST" enctype="multipart/form-data" autocomplete="off">
-    <div class="col-lg-12">
-        <div class="form-row">
-            <div class="col-lg-12 form-group">
+<form id="FrmIngresoBulto" method="POST" enctype="multipart/form-data" autocomplete="off" class="h-100">
+    <div class="row h-100">
+        <div class="col-lg-12 d-flex flex-column">
+            <div class="form-group">
                 <label for="txt_Ib_Bulto">Bulto/Rollo:</label>
                 <input id="txt_Ib_Bulto" name="txt_Ib_Bulto" type="text" class="k-textbox form-control input-number" />
             </div>
-            <div class="col-lg-12 form-group">
+
+            <div class="form-group">
                 <label for="txt_Ib_Talla">Talla:</label>
                 <input id="txt_Ib_Talla" name="txt_Ib_Talla" type="text" class="k-textbox form-control" />
             </div>
 
-            <div class="col-lg-12 form-group">
+            <div class="form-group">
                 <label for="num_Ib_Cantidad">Cantidad:</label>
                 <input id="num_Ib_Cantidad" name="num_Ib_Cantidad" type="text" class="form-control" aria-describedby="num_Ib_CantidadHelp" />
                 <small id="num_Ib_CantidadHelp" class="form-text text-muted">
@@ -19,13 +20,15 @@
                 </small>
             </div>
 
-            <div class="col-lg-12 form-group" style="text-align: center; align-self: end;">
+            <div class="form-group">
+                <label for="cmb_Ib_Unidades">Unidades:</label>
+                <input id="cmb_Ib_Unidades" name="cmb_Ib_Unidades" type="text" class="form-control" />
+            </div>
+
+            <div class="text-center mt-auto">
                 <button type="button" id="btn_Ib_Guardar">Guardar Registro</button>
             </div>
         </div>
-
-
-
     </div>
 </form>
 
