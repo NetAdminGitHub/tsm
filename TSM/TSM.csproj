@@ -396,6 +396,7 @@
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposPiezasController.cs" />
+    <Compile Include="Controllers\TiposProcesosController.cs" />
     <Compile Include="Controllers\TiposRequerimientoColoresController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
@@ -514,6 +515,7 @@
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
@@ -1070,6 +1072,7 @@
     <Content Include="Views\MotivosSustraidas\Index.cshtml" />
     <Content Include="Views\UsuariosRolesPublicos\Index.cshtml" />
     <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
+    <Content Include="Views\TiposProcesos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
