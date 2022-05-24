@@ -182,3 +182,7 @@ let fn_Gen_PakigList = (strBande) => {
     return resultPak;
     
 }
+
+var fn_focusLista = () => {
+    $("#txtNoRefePackingList").focus()
+};

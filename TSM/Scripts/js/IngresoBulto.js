@@ -118,6 +118,7 @@ let fn_HojaBandeoMercancia = (xid) => {
             $("#txt_Ib_Talla").val("");
             $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
             $("#txt_Ib_Bulto").focus();
+            $("#cmb_Ib_Unidades").data("kendoComboBox").value("");
             window[xfn_Refresh]();
 
             RequestEndMsg(data, "Post");
@@ -128,4 +129,8 @@ let fn_HojaBandeoMercancia = (xid) => {
             kendo.ui.progress($(".k-window"), false);
         }
     });
+}
+
+var fn_FocusVista = () => {
+    $("#txt_Ib_Bulto").focus();
 }

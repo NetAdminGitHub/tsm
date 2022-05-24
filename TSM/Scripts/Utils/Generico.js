@@ -2701,6 +2701,11 @@ let fn_GenLoadModalWindow = (obj) => {
         kendo.ui.progress($(document.activeElement), false);
     };
 
+    let onActivate = function () {
+        obj.fn.fnActi === "" ? undefined : window[obj.fn.fnActi](obj.Param);
+        kendo.ui.progress($(document.activeElement), false);
+    };
+
     let fn_CloseSIC = function () {
         obj.fn.fnclose === "" ? undefined : window[obj.fn.fnclose](obj.Param);
         kendo.ui.progress($(document.activeElement), false);
@@ -2719,7 +2724,7 @@ let fn_GenLoadModalWindow = (obj) => {
              /*   content: data,*/
                 visible: false,
                 minWidth: obj.config[0].MinWidth,
-               /* activate: onShow,*/
+                activate: onActivate,
                 close: fn_CloseSIC
             });
             if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
@@ -2748,7 +2753,7 @@ let fn_GenLoadModalWindow = (obj) => {
        /*     content: xview,*/
             visible: false,
             minWidth: obj.config[0].MinWidth,
-            /*activate: onShow,*/
+            activate: onActivate,
             close: fn_CloseSIC
         });
         kendo.ui.progress($(document.activeElement), false);

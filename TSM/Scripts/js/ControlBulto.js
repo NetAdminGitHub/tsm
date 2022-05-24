@@ -248,12 +248,12 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Vista: "~/Views/IngresoMercancias/_IngresoBulto.cshtml",
                 Js: "IngresoBulto.js",
                 Titulo: "Ingreso de Bulto / Rollo",
-                Height: "50%",
+                Height: "60%",
                 Width: "20%",
                 MinWidth: "10%"
             }],
             Param: { sidHb: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
-            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBulto", fnReg: "fn_Reg_IngresoBulto" }
+            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBulto", fnReg: "fn_Reg_IngresoBulto", fnActi:"fn_FocusVista"}
         };
 
         fn_GenLoadModalWindow(strjson);
@@ -268,12 +268,12 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Vista: "~/Views/IngresoMercancias/_IngresoBultoSerie.cshtml",
                 Js: "IngresoBultoSerie.js",
                 Titulo: "Ingreso de Bulto / Rollo",
-                Height: "65%",
+                Height: "70%",
                 Width: "20%",
                 MinWidth: "10%"
             }],
             Param: { sIdHojaBandeo: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
-            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie" }
+            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie", fnActi:"fn_FocusVistaSerie" }
         };
 
         fn_GenLoadModalWindow(strjson);
@@ -471,3 +471,7 @@ var fn_RefrescarGrid = () => {
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
 };
 
+
+var fn_focusControl = () => {
+    $("#txtCorte_Rollo").focus();
+};
