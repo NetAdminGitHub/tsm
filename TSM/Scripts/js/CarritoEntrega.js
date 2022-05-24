@@ -199,3 +199,7 @@ let fn_Gen_entrega = (xidC) => {
        
     });
 }
+
+var fn_focusCarritoEnt = () => {
+    $("#txtBulto").focus();
+};

@@ -2,19 +2,20 @@
 let xIdHojaBandeo;
 let xesRollo_BultoSerie = 0;
 let vFrmIngBulSerie;
-
-let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
-    xIdHojaBandeo = sIdHojaBandeo;
-    xesRollo_BultoSerie = esRollo;
+let xfn_RefreshSerie;
+var fn_Ini_IngresoBultoSerie = (strjson) => {
+    xIdHojaBandeo = strjson.sIdHojaBandeo;
+    xesRollo_BultoSerie = strjson.esRollo;
+    xfn_RefreshSerie = strjson.fnRefresh;
     // crear realizar
     KdoButton($("#btn_Ibs_RealizarReg"), "check-outline", "Realizar Registro");
     //cnatidad de pieza
     $("#num_Ibs_Cantidad").kendoNumericTextBox({
         min: 0,
-        max: esRollo === true ? 9999999.99 : 999999999,
-        format: esRollo === true ? "{0:n2}" : "#",
-        restrictDecimals: esRollo === true ? false : true,
-        decimals: esRollo === true ? 2 : 0,
+        max: xesRollo_BultoSerie === true ? 9999999.99 : 999999999,
+        format: xesRollo_BultoSerie === true ? "{0:n2}" : "#",
+        restrictDecimals: xesRollo_BultoSerie === true ? false : true,
+        decimals: xesRollo_BultoSerie === true ? 2 : 0,
         value: 0
     });
 
@@ -85,9 +86,10 @@ let fn_Ini_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
 };
-let fn_Reg_IngresoBultoSerie = (sIdHojaBandeo, esRollo) => {
-    xIdHojaBandeo = sIdHojaBandeo;
-    xesRollo_BultoSerie = esRollo;
+var fn_Reg_IngresoBultoSerie = (strjson) => {
+    xIdHojaBandeo = strjson.sIdHojaBandeo;
+    xesRollo_BultoSerie = strjson.esRollo;
+    xfn_RefreshSerie = strjson.fnRefresh;
     $("#txt_Ibs_Bulto_Ini").focus();
     $("#txt_Ibs_Bulto_Ini").val("");
     $("#txt_Ibs_Bulto_Fin").val("");
@@ -115,6 +117,7 @@ let fn_Gen_BultoSerie = () => {
             $("#txt_Ibs_Bulto_Ini").val("");
             $("#txt_Ibs_Bulto_Fin").val("");
             $("#txt_Ibs_Talla").val("");
+            window[xfn_RefreshSerie]();
             kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
             $("#cmb_Ibs_Unidades").data("kendoComboBox").value("");
             RequestEndMsg(datos, "Post");
@@ -126,4 +129,9 @@ let fn_Gen_BultoSerie = () => {
             kendo.ui.progress($(".k-dialog"), false);
         }
     });    
+}
+
+
+var fn_FocusVistaSerie = () => {
+    $("#txt_Ibs_Bulto_Ini").focus();
 }

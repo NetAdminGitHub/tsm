@@ -2,20 +2,20 @@
 let xidHb = 0;
 let xesRollo_Bulto = 0;
 let vFrmIngBulto;
-
-
-let fn_Ini_IngresoBulto = (sidHb, esRollo) => {
-    xidHb = sidHb;
-    xesRollo_Bulto = esRollo;
+let xfn_Refresh
+var fn_Ini_IngresoBulto = (strjson) => {
+    xidHb = strjson.sidHb;
+    xesRollo_Bulto = strjson.esRollo;
+    xfn_Refresh = strjson.fnRefresh;
     // crear realizar
     KdoButton($("#btn_Ib_Guardar"), "check-outline", "Guardar Registro");
     //cnatidad de pieza
     $("#num_Ib_Cantidad").kendoNumericTextBox({
         min: 0,
-        max: esRollo === true ? 9999999.99 : 999999999,
-        format: esRollo === true ?"{0:n2}":"#",
-        restrictDecimals: esRollo===true? false:true,
-        decimals: esRollo===true? 2:0,
+        max: xesRollo_Bulto === true ? 9999999.99 : 999999999,
+        format: xesRollo_Bulto === true ?"{0:n2}":"#",
+        restrictDecimals: xesRollo_Bulto===true? false:true,
+        decimals: xesRollo_Bulto===true? 2:0,
         value: 0
     });
     //limpiar campos
@@ -85,10 +85,10 @@ let fn_Ini_IngresoBulto = (sidHb, esRollo) => {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
 };
-
-let fn_Reg_IngresoBulto = (sidHb, esRollo) => {
-    xidHb = sidHb;
-    xesRollo_Bulto = esRollo;
+var fn_Reg_IngresoBulto = (strjson) => {
+    xidHb = strjson.sidHb;
+    xesRollo_Bulto = strjson.esRollo;
+    xfn_Refresh = strjson.fnRefresh;
      //limpiar campos
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
@@ -97,7 +97,7 @@ let fn_Reg_IngresoBulto = (sidHb, esRollo) => {
 };
 
 let fn_HojaBandeoMercancia = (xid) => {
-    kendo.ui.progress($(".k-dialog"), true);
+    kendo.ui.progress($(".k-window"), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeosMercancias",
         type: "Post",
@@ -119,12 +119,18 @@ let fn_HojaBandeoMercancia = (xid) => {
             $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
             $("#txt_Ib_Bulto").focus();
             $("#cmb_Ib_Unidades").data("kendoComboBox").value("");
+            window[xfn_Refresh]();
+
             RequestEndMsg(data, "Post");
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window"), false);
         },
         error: function (data) {
             ErrorMsg(data);
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window"), false);
         }
     });
+}
+
+var fn_FocusVista = () => {
+    $("#txt_Ib_Bulto").focus();
 }

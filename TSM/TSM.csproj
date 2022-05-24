@@ -1045,10 +1045,10 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\IncisosArancelarios\Index.cshtml" />
     <Content Include="Views\ControlIngresos\Index.cshtml" />
-    <Content Include="Views\Shared\_ControlBulto.cshtml" />
-    <Content Include="Views\Shared\_IngresoBulto.cshtml" />
-    <Content Include="Views\Shared\_IngresoBultoSerie.cshtml" />
-    <Content Include="Views\Shared\_CrearListaEmpaque.cshtml" />
+    <Content Include="Views\IngresoMercancias\_ControlBulto.cshtml" />
+    <Content Include="Views\IngresoMercancias\_IngresoBulto.cshtml" />
+    <Content Include="Views\IngresoMercancias\_IngresoBultoSerie.cshtml" />
+    <Content Include="Views\IngresoMercancias\_CrearListaEmpaque.cshtml" />
     <Content Include="Views\IngresoMercancias\Index.cshtml" />
     <Content Include="Web.IST2.config">
     </Content>

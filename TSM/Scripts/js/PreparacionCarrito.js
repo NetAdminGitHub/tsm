@@ -186,10 +186,10 @@ $(document).ready(function () {
                 MinWidth: "30%"
             }],
             Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")), divmod: "vEntreTela" },
-            fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt" }
+            fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt", fnActi:"fn_focusCarritoEnt" }
         };
 
-        fn_GenLoadModal(strjson);
+        fn_GenLoadModalWindow(strjson);
     });
 
 
@@ -205,10 +205,10 @@ $(document).ready(function () {
                 MinWidth: "30%"
             }],
             Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
-            fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin" }
+            fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin", fnActi:"" }
         };
 
-        fn_GenLoadModal(strjson);
+        fn_GenLoadModalWindow(strjson);
     });
 
     $("#btnCreaCarrito").click(function () {

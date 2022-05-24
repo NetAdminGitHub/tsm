@@ -2678,3 +2678,88 @@ let fn_GenLoadModal = (obj) => {
 
     }
 }
+
+/**
+ * funcion para cargar vistas modales
+ * @param {JSON} obj configuración
+ */
+
+let fn_GenLoadModalWindow = (obj) => {
+
+    kendo.ui.progress($(document.activeElement), true);
+
+    let script = "";
+    let xview;
+    let a = document.getElementsByTagName("script");
+    let listJs = [];
+    $.each(a, function (index, elemento) {
+        listJs.push(elemento.src.toString());
+    });
+    let fileJs = `${obj.config[0].Js}?${_version}`;
+    let onShow = function () {
+        Jsload === true ? window[obj.fn.fnLoad](obj.Param) : window[obj.fn.fnReg](obj.Param);
+        kendo.ui.progress($(document.activeElement), false);
+    };
+
+    let onActivate = function () {
+        obj.fn.fnActi === "" ? undefined : window[obj.fn.fnActi](obj.Param);
+        kendo.ui.progress($(document.activeElement), false);
+    };
+
+    let fn_CloseSIC = function () {
+        obj.fn.fnclose === "" ? undefined : window[obj.fn.fnclose](obj.Param);
+        kendo.ui.progress($(document.activeElement), false);
+    };
+
+
+    if ($("#" + obj.config[0].Div + "").children().length === 0) {
+        $.get("/ModalGenLoad/Load/", { vistaParcial: `${obj.config[0].Vista}` }, function (data) {
+            xview = data;
+            //configurar modal
+            $("#" + obj.config[0].Div + "").kendoWindow({
+                height: obj.config[0].Height,
+                width: obj.config[0].Width,
+                title: obj.config[0].Titulo,
+                modal: true,
+             /*   content: data,*/
+                visible: false,
+                minWidth: obj.config[0].MinWidth,
+                activate: onActivate,
+                close: fn_CloseSIC
+            });
+            if (listJs.filter(listJs => listJs.toString().endsWith(fileJs)).length === 0) {
+                script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = "/Scripts/js/" + fileJs;
+                script.onload = function () {
+                    Jsload = true;
+                    kendo.ui.progress($(document.activeElement), false);
+                    $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
+                    $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
+                    onShow();
+                };
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }
+
+        });
+    } else {
+        kendo.ui.progress($(document.activeElement), true);
+        Jsload = false;
+        $("#" + obj.config[0].Div + "").kendoWindow({
+            height: obj.config[0].Height,
+            width: obj.config[0].Width,
+            title: obj.config[0].Titulo,
+            modal: true,
+       /*     content: xview,*/
+            visible: false,
+            minWidth: obj.config[0].MinWidth,
+            activate: onActivate,
+            close: fn_CloseSIC
+        });
+        kendo.ui.progress($(document.activeElement), false);
+        $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
+        $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
+        onShow();
+
+    }
+}
