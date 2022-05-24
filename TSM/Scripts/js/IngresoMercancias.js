@@ -100,7 +100,7 @@ $(document).ready(function () {
                         let strjson = {
                             config: [{
                                 Div: "vMod_controlbulto",
-                                Vista: "_ControlBulto",
+                                Vista: "~/Views/IngresoMercancias/_ControlBulto.cshtml",
                                 Js: "ControlBulto.js",
                                 Titulo: "Ingreso de control de bultos",
                                 Height: "90%",
@@ -110,7 +110,7 @@ $(document).ready(function () {
                             Param: { sIdHB: dataItem.IdHojaBandeo, sIdIngreso: dataItem.IdIngreso, esNuevo: false, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
                             fn: { fnclose: "fn_ImRefres", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto" }
                         };
-                        fn_GenLoadModal(strjson);
+                        fn_GenLoadModalWindow(strjson);
                     }
                 },
                 width: "70px",
@@ -149,7 +149,7 @@ $(document).ready(function () {
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "/ListaEmpaques/" + datos.IdListaEmpaqueBandeo; },
+                url: function (datos) { return TSM_Web_APi + "ListaEmpaquesBandeos/" + datos.IdListaEmpaqueBandeo; },
                 dataType: "json",
                 type: "DELETE"
             },
@@ -221,7 +221,7 @@ $(document).ready(function () {
         let strjson = {
             config: [{
                 Div: "vMod_controlbulto",
-                Vista: "_ControlBulto",
+                Vista: "~/Views/IngresoMercancias/_ControlBulto.cshtml",
                 Js: "ControlBulto.js",
                 Titulo: "Ingreso de control de bultos",
                 Height: "90%",
@@ -232,11 +232,29 @@ $(document).ready(function () {
             fn: { fnclose: "fn_Imclose", fnLoad: "fn_Ini_ControlBulto", fnReg: "fn_Reg_ControlBulto"}
         };
 
-        fn_GenLoadModal(strjson);
+        fn_GenLoadModalWindow(strjson);
     });
 
     $("#btnCrearLista").click(function () {
-        fn_vistaCreacionListaEmpaque("vMod_CrearListaEmpaque",xIdIngreso,function () { return $("#gridLista").data("kendoGrid").dataSource.read(); });
+      
+        let strjson = {
+            config: [{
+                Div: "vMod_CrearListaEmpaque",
+                Vista: "~/Views/IngresoMercancias/_CrearListaEmpaque.cshtml",
+                Js: "CrearListaEmpaque.js",
+                Titulo: "Creacion de Lista de Empaque",
+                Height: "90%",
+                Width: "50%",
+                MinWidth: "10%"
+            }],
+            Param: { sIdHb: xIdIngreso, sDiv: "vMod_CrearListaEmpaque" },
+            fn: { fnclose: "fn_RefresGridLista", fnLoad: "fn_Ini_CrearListaEmpaque", fnReg: "fn_Reg_CrearListaEmpaque" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+
+
+
     });
 
     //compeltar campos de cabecera
@@ -252,6 +270,9 @@ var fn_ImRefres = (strjson) => {
     $("#gridHoja").data("kendoGrid").dataSource.read();
 };
 
+var fn_RefresGridLista = () => {
+    $("#gridLista").data("kendoGrid").dataSource.read();
+};
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo !== null && xIdIngreso===0) {
         kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);

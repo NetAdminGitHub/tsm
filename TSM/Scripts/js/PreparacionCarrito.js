@@ -189,7 +189,7 @@ $(document).ready(function () {
             fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt" }
         };
 
-        fn_GenLoadModal(strjson);
+        fn_GenLoadModalWindow(strjson);
     });
 
 
@@ -208,7 +208,7 @@ $(document).ready(function () {
             fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin" }
         };
 
-        fn_GenLoadModal(strjson);
+        fn_GenLoadModalWindow(strjson);
     });
 
     $("#btnCreaCarrito").click(function () {

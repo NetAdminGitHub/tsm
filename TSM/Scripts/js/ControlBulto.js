@@ -236,12 +236,41 @@ var fn_Ini_ControlBulto = (xjson) => {
         }).data("kendoValidator");
     //vista Ingreso Bulto(boton crear bulto)
     $("#btnCrearBulto").click(function () {
-        fn_vistaCrearBulto("vIngresoBulto", xidHojaBandeo, $("#chkRollo").is(':checked') ? true : false, function () { return fn_RefrescarGrid();});
+        let strjson = {
+            config: [{
+                Div: "vIngresoBulto",
+                Vista: "~/Views/IngresoMercancias/_IngresoBulto.cshtml",
+                Js: "IngresoBulto.js",
+                Titulo: "Ingreso de Bulto / Rollo",
+                Height: "50%",
+                Width: "20%",
+                MinWidth: "10%"
+            }],
+            Param: { sidHb: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
+            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBulto", fnReg: "fn_Reg_IngresoBulto" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
     });
 
     //vista Ingreso Bulto serie (boton crear serie bulto)
     $("#btnCrearSerieBulto").click(function () {
-        fn_vistaCrearBultoSerie("vIngresoBultoSerie", xidHojaBandeo, $("#chkRollo").is(':checked') ? true : false, function () { return fn_RefrescarGrid(); });
+           
+        let strjson = {
+            config: [{
+                Div: "vIngresoBultoSerie",
+                Vista: "~/Views/IngresoMercancias/_IngresoBultoSerie.cshtml",
+                Js: "IngresoBultoSerie.js",
+                Titulo: "Ingreso de Bulto / Rollo",
+                Height: "65%",
+                Width: "20%",
+                MinWidth: "10%"
+            }],
+            Param: { sIdHojaBandeo: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
+            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
     });
 
    
@@ -251,7 +280,7 @@ var fn_Ini_ControlBulto = (xjson) => {
 
     $("#Mtlfm").data("kendoMultiSelect").bind("deselect", function (e) {
         if (xidHojaBandeo > 0) {
-            kendo.ui.progress($(".k-dialog"), true);
+            kendo.ui.progress($(".k-window"), true);
             $.ajax({
                 url: TSM_Web_APi + "HojasBandeosDisenos/" + `${xidHojaBandeo}/${e.dataItem.IdCatalogoDiseno}`,//
                 type: "Delete",
@@ -259,10 +288,10 @@ var fn_Ini_ControlBulto = (xjson) => {
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     RequestEndMsg(data, "Delete");
-                    kendo.ui.progress($(".k-dialog"), false);
+                    kendo.ui.progress($(".k-window"), false);
                 },
                 error: function (data) {
-                    kendo.ui.progress($(".k-dialog"), false);
+                    kendo.ui.progress($(".k-window"), false);
                     ErrorMsg(data);
                 }
             });
@@ -343,7 +372,7 @@ let get_CatalogxCliente = (xidClie) => {
 
 let fn_Gen_Hb = () => {
     if (vCbForm.validate()) {
-        kendo.ui.progress($(".k-dialog"), true);
+        kendo.ui.progress($(".k-window"), true);
         $.ajax({
             url: TSM_Web_APi + "HojasBandeos/CrearHojasBandeo",
             method: "POST",
@@ -372,7 +401,7 @@ let fn_Gen_Hb = () => {
                 ErrorMsg(data);
             },
             complete: function () {
-                kendo.ui.progress($(".k-dialog"), false);
+                kendo.ui.progress($(".k-window"), false);
             }
         });
 
@@ -382,7 +411,7 @@ let fn_Gen_Hb = () => {
 }
 
 let fn_Get_HojasBandeo = (xId)=> {
-    kendo.ui.progress($(".k-dialog"), true);
+    kendo.ui.progress($(".k-window"), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeos/GetbyIdHoja/" + `${xId}`,
         dataType: 'json',
@@ -395,19 +424,19 @@ let fn_Get_HojasBandeo = (xId)=> {
                 KdoCmbSetValue($("#xcmbCliente"), datos.IdCliente);
                 KdoCmbSetValue($("#xcmbPlanta"), datos.IdPlanta);
                 $('#chkRollo').prop('checked', datos.Rollo);
-                kendo.ui.progress($(".k-dialog"), false);
+                kendo.ui.progress($(".k-window"), false);
                 $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(datos.IdCliente));
                 fn_Get_HojasBandeoDisenos(xId);
             }
         },
         error: function () {
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window"), false);
         }
     });
 
 };
 let fn_Get_HojasBandeoDisenos = (xId) => {
-    kendo.ui.progress($(".k-dialog"), true);
+    kendo.ui.progress($(".k-window"), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeosDisenos/GetByIdHoja/" + `${xId}`,
         dataType: 'json',
@@ -419,16 +448,16 @@ let fn_Get_HojasBandeoDisenos = (xId) => {
             });
             $("#Mtlfm").data("kendoMultiSelect").value(lista.split(","));
             $('#chkEnlazarTsm').prop('checked', datos.length > 0 ? true : false);
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window"), false);
         },
         error: function () {
-            kendo.ui.progress($(".k-dialog"), false);
+            kendo.ui.progress($(".k-window"), false);
         }
     });
 
 };
 
-let fn_RefrescarGrid = () => {
+var fn_RefrescarGrid = () => {
     $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
     $("#gridHoja").data("kendoGrid").dataSource.read();
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();

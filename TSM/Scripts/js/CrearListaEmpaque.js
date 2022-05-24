@@ -2,9 +2,11 @@
 let xidHoja;
 let StrIdHojaBandeo = "";
 let vFrmG;
-let fn_Ini_CrearListaEmpaque = (sIdHb) => {
-    xidHoja = sIdHb;
-
+let xsDiv = "";//contiene el nombre de div donde se dibuja la modal
+var fn_Ini_CrearListaEmpaque = (strjson) => {
+    xidHoja = strjson.sIdHb;
+    xsDiv = strjson.sDiv;
+    KdoButton($("#btnCrea_registro"), "save", "Crear Registro");
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
@@ -68,17 +70,12 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
             return "Ingreso de Mercancía";
         }
     });
-    var selectedRows = [];
+    //var selectedRows = [];
     
-
-    $("#gridListaEmpaque").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridListaEmpaque"), selectedRows);
-    });
+    //$("#gridListaEmpaque").data("kendoGrid").bind("change", function (e) {
+    //    Grid_SelectRow($("#gridListaEmpaque"), selectedRows);
+    //});
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
-
-
-
-
 
     vFrmG = $("#FrmCrearListEmp").kendoValidator(
         {
@@ -107,6 +104,12 @@ let fn_Ini_CrearListaEmpaque = (sIdHb) => {
 
     $("#txtNoRefePackingList").val("");
     $("#txtNoRefePackingList").focus();
+
+    $("#btnCrea_registro").click(function () {
+        if (fn_CrearReg()) {
+            $("#xsDiv").data("kendoWindow").close();
+        }
+    });
 
 };
 
@@ -138,8 +141,9 @@ let fn_CrearReg = () => {
     return result;
 };
 
-let fn_Reg_CrearListaEmpaque = (siaIdot) => {
-
+var fn_Reg_CrearListaEmpaque = (strjson) => {
+    xidHoja = strjson.sIdHb;
+    xsDiv = strjson.sDiv;
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
     $("#txtNoRefePackingList").val("");
     $("#txtNoRefePackingList").focus();
@@ -148,7 +152,7 @@ let fn_Reg_CrearListaEmpaque = (siaIdot) => {
 
 let fn_Gen_PakigList = (strBande) => {
     let resultPak = false;
-        kendo.ui.progress($(".k-dialog"), true);
+        kendo.ui.progress($(".k-window"), true);
         $.ajax({
             url: TSM_Web_APi + "ListaEmpaques/Packing",
             method: "POST",
@@ -163,7 +167,7 @@ let fn_Gen_PakigList = (strBande) => {
             success: function (datos) {
                 $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
                 RequestEndMsg(datos, "Post");
-                kendo.ui.progress($(".k-dialog"), false);
+                kendo.ui.progress($(".k-window"), false);
                 $("#txtNoRefePackingList").val("");
                 resultPak = true;
             },
@@ -172,7 +176,7 @@ let fn_Gen_PakigList = (strBande) => {
                 resultPak = false;
             },
             complete: function () {
-                kendo.ui.progress($(".k-dialog"), false);
+                kendo.ui.progress($(".k-window"), false);
             }
         });
     return resultPak;
