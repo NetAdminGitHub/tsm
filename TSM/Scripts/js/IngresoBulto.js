@@ -1,4 +1,5 @@
-﻿let xidHb = 0;
+﻿
+let xidHb = 0;
 let xesRollo_Bulto = 0;
 let vFrmIngBulto;
 let xfn_Refresh
@@ -21,6 +22,7 @@ var fn_Ini_IngresoBulto = (strjson) => {
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
     $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
+    Kendo_CmbFiltrarGrid($("#cmb_Ib_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
 
     vFrmIngBulto = $("#FrmIngresoBulto").kendoValidator(
         {
@@ -51,13 +53,21 @@ var fn_Ini_IngresoBulto = (strjson) => {
                         return input.val().length <= 20;
                     }
                     return true;
+                },
+
+                MsgIdUniArea: function (input) {
+                    if (input.is("[name='cmb_Ib_Unidades']")) {
+                        return $("#cmb_Ib_Unidades").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    return true;
                 }
             },
             messages: {
                 MsgRequerido: "Campo Requerido",
                 MsgMayora0:"Cantidad debe ser mayor a 0",
                 MsgBulto: "Longitud del campo es 50",
-                MsgTalla: "Longitud del campo es 20"
+                MsgTalla: "Longitud del campo es 20",
+                MsgIdUniArea: "Requerido"
             }
         }).data("kendoValidator");
 
@@ -100,7 +110,7 @@ let fn_HojaBandeoMercancia = (xid) => {
             IdMercancia: 0,
             NoDocumento: $("#txt_Ib_Bulto").val(),
             Estado: "INGRESADO",
-            IdUnidad:9
+            IdUnidad: $("#cmb_Ib_Unidades").val()
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {

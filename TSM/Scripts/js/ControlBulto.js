@@ -5,6 +5,9 @@ let xIdIng = 0;
 let xesNuevo;
 let xidCliente;
 let Bandeo;
+
+let UrlUnidadesMedidas = TSM_Web_APi + "UnidadesMedidas";
+
 var fn_Ini_ControlBulto = (xjson) => {
    
     // crear combobox cliente
@@ -80,8 +83,8 @@ var fn_Ini_ControlBulto = (xjson) => {
                     Cantidad: { type: "number" },
                     Docenas: { type: "number" },
                     Estado: { type: "string" },
-                    NomEstado: { type:"string"}
-
+                    NomEstado: { type: "string" },
+                    NombreUnidad: { type: "string" }
                 }
             }
         }
@@ -96,6 +99,7 @@ var fn_Ini_ControlBulto = (xjson) => {
             KdoHideCampoPopup(e.container, "Docenas");
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "NomEstado");
+            KdoHideCampoPopup(e.container, "NombreUnidad");
             Grid_Focus(e, "NoDocumento");
         },
         columns: [
@@ -106,12 +110,14 @@ var fn_Ini_ControlBulto = (xjson) => {
             { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n0}', sum) : 0 #"},
             { field: "Docenas", title: "Docenas", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "NomEstado", title: "Estado", hidden: true }
+            { field: "NomEstado", title: "Estado", hidden: true },
+            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUnidadesMedidas, "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
+            { field: "NombreUnidad", title: "Unidad", menu: false, filterable: false }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si,700);
+    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 700);
     SetGrid_CRUD_ToolbarTop($("#gridBultoDetalle").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridBultoDetalle").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridBultoDetalle").data("kendoGrid"), dS);
