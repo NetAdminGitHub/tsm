@@ -242,9 +242,9 @@ $(document).ready(function () {
                 Div: "vMod_CrearListaEmpaque",
                 Vista: "~/Views/IngresoMercancias/_CrearListaEmpaque.cshtml",
                 Js: "CrearListaEmpaque.js",
-                Titulo: "Creacion de Lista de Empaque",
-                Height: "90%",
-                Width: "50%",
+                Titulo: "Creación de Lista de Empaque",
+                Height: "92%",
+                Width: "70%",
                 MinWidth: "10%"
             }],
             Param: { sIdHb: xIdIngreso, sDiv: "vMod_CrearListaEmpaque" },

@@ -34,6 +34,9 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
                     Cantidad: { type: "number" },
                     Color: { type: "string" },
                     Estilo: { type: "string" },
+                    FM: { type: "string" },
+                    NombreDiseno: { type: "string" },
+                    PartePrenda: { type: "string" },
                     Tallas: { type: "string" }
                 }
             }
@@ -50,11 +53,14 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
             { selectable: true, width: "50px" },
             { field: "IdHojaBandeo", title: "id Hoja Bandeo", hidden: true },
             { field: "NoDocumento", title: "Correlativo" },
-            { field: "Corte", title: "Corte" },
+            { field: "Corte", title: "Corte/Lotes" },
             { field: "Cantidad", title: "Cantidad" },
-            { field: "Color", title: "Color", },
+            { field: "FM", title: "FM/RD" },
+            { field: "NombreDiseno", title: "Nombre del Diseño" },
             { field: "Estilo", title: "Estilo" },
-            { field: "Tallas", title: "Tallas" }
+            { field: "Tallas", title: "Rango de Tallas" },
+            { field: "PartePrenda", title: "Parte" },
+            { field: "Color", title: "Color" }
         ]
     });
 
@@ -103,12 +109,12 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
         }).data("kendoValidator");
 
     $("#txtNoRefePackingList").val("");
+    $("#txtObservacionPackingList").val("");
     $("#txtNoRefePackingList").focus();
 
     $("#btnCrea_registro").click(function () {
         fn_CrearReg();
     });
-
 };
 
 let fn_CrearReg = () => {
@@ -124,8 +130,6 @@ let fn_CrearReg = () => {
                 });
             });
             result = fn_Gen_PakigList(Bandeos);
-
-
         } else {
             result = false;
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
@@ -144,6 +148,8 @@ var fn_Reg_CrearListaEmpaque = (strjson) => {
     xsDivLe = strjson.sDiv;
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
     $("#txtNoRefePackingList").val("");
+    $("#txtObservacionPackingList").val("");
+    StrIdHojaBandeo = "";
     $("#txtNoRefePackingList").focus();
 
 };
@@ -157,6 +163,7 @@ let fn_Gen_PakigList = (strBande) => {
             dataType: "json",
             data: JSON.stringify({
                 NoDocumento: $("#txtNoRefePackingList").val(),
+                Observacion: $("#txtObservacionPackingList").val(),
                 Peso: 0,
                 IdUsuarioMod: getUser(),
                 HojasBandeo: strBande
@@ -169,6 +176,7 @@ let fn_Gen_PakigList = (strBande) => {
                 $("#txtNoRefePackingList").val("");
                 $("#" + `${xsDivLe}`).data("kendoWindow").close();
                 resultPak = true;
+                StrIdHojaBandeo = "";
             },
             error: function (data) {
                 ErrorMsg(data);
