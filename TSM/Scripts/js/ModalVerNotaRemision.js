@@ -3,8 +3,8 @@
 let idNota;
 let idDeclaracion;
 
-var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
-    idDeclaracion = sIdRegNotaRemi;
+var fn_Ini_ModalVerNotaRemision = (strjson) => {
+    idDeclaracion = strjson.sIdRegNotaRemi;
     //fecha de ingreso
    
     KdoButton($("#btnRegistrarNota"), "plus", "Registrar nota de remisión");
@@ -215,16 +215,30 @@ var fn_Ini_ModalVerNotaRemision = (sIdRegNotaRemi) => {
 
 
     $("#btnRegistrarNota").click(function () {
-        fn_vistaIngresoNotaRemision("vIngresoNotaremi", idDeclaracion, fn_ActualizaGrid);
+        let strjson = {
+            config: [{
+                Div: "vIngresoNotaremi",
+                Vista: "~/Views/IngresoDeclaracion/_IngresoNotaRemision.cshtml",
+                Js: "IngresoNotaRemision.js",
+                Titulo: "Ingreso de nota de remisión del cliente",
+                Height: "90%",
+                Width: "50%",
+                MinWidth: "10%"
+            }],
+            Param: { sidDeclaracion: idDeclaracion, sDiv: "vIngresoNotaremi" },
+            fn: { fnclose: "fn_ActualizaGrid", fnLoad: "fn_Ini_IngresoNotaRemision", fnReg: "fn_Reg_IngresoNotaRemision", fnActi: "fn_FocusInNota" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
      });
 
 
 };
-let fn_ActualizaGrid = () => { $("#gNotaRemi").data("kendoGrid").dataSource.read();};
+var fn_ActualizaGrid = () => { $("#gNotaRemi").data("kendoGrid").dataSource.read();};
 
 
-var fn_Reg_ModalVerNotaRemision = (sIdRegNotaRemi) => {
-    idDeclaracion = sIdRegNotaRemi;
+var fn_Reg_ModalVerNotaRemision = (strjson) => {
+    idDeclaracion = strjson.sIdRegNotaRemi;
     $("#gNotaRemi").data("kendoGrid").dataSource.read();
    
 };

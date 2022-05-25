@@ -1,10 +1,12 @@
 ﻿let xidDeclaracionMercancia;
 let StrIdListaEmp = "";
 let xitem = 0;
-var fn_Ini_RelacionPLs = (idDeclaracionMercancia, item) => {
-    xidDeclaracionMercancia = idDeclaracionMercancia;
-    xitem = item;
-
+let xsDiv;
+var fn_Ini_RelacionPLs = (strjson) => {
+    xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
+    xitem = strjson.item;
+    xsDiv = strjson.sDiv;
+    KdoButton($("#btnCrea_registroPlAsig"), "save", "Crear Registro");
     ////#region crear grid ingresos
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -72,12 +74,17 @@ var fn_Ini_RelacionPLs = (idDeclaracionMercancia, item) => {
     $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
 
     ////#endregion 
+   
+    $("#btnCrea_registroPlAsig").click(function () {
+        fn_Crear_Reg()
+    });
 
 };
 
-var fn_Reg_RelacionPLs = (idDeclaracionMercancia, item) => {
-    xidDeclaracionMercancia = idDeclaracionMercancia;
-    xitem = item;
+var fn_Reg_RelacionPLs = (strjson) => {
+    xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
+    xitem = strjson.item;
+    xsDiv = strjson.sDiv;
     $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
 };
 
@@ -122,6 +129,7 @@ let fn_AgregarPL = (strPLs) => {
             RequestEndMsg(datos, "Post");
             kendo.ui.progress($(".k-dialog"), false);
             resultPak = true;
+            $("#" + `${xsDiv}`).data("kendoWindow").close();
         },
         error: function (data) {
             ErrorMsg(data);
