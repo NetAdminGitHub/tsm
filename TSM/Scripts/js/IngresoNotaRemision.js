@@ -3,14 +3,14 @@
 let StrJsonNotaRemision;
 let declaracion;
 let validarRemisionCliente;
-
-var fn_Ini_IngresoNotaRemision = (sidDeclaracion) => {
-    declaracion = sidDeclaracion;
+let xsDivInRe;
+var fn_Ini_IngresoNotaRemision = (strjson) => {
+    declaracion = strjson.sidDeclaracion;
+    xsDivInRe = strjson.sDiv;
     //fecha de ingreso
     $("#FechaDocumento").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#FechaDocumento").data("kendoDatePicker").value(Fhoy());
-
-
+    KdoButton($("#btnCrea_registroNota"), "save", "Crear Registro");
 
     //#region crear grid ingresos
     let dS = new kendo.data.DataSource({
@@ -135,7 +135,9 @@ var fn_Ini_IngresoNotaRemision = (sidDeclaracion) => {
 
 
 
-
+    $("#btnCrea_registroNota").click(function () {
+        fn_CreaNotaRemCliente();
+    });
 
 
 };
@@ -208,7 +210,7 @@ let fn_RegistraNota = (strDetalleNota) => {
             $("#gridItemsDmSinNota").data("kendoGrid").dataSource.read();
             RequestEndMsg(datos, "Post");
             kendo.ui.progress($(".k-dialog"), false);
-            result = true;
+            $("#" + `${xsDivInRe}`).data("kendoWindow").close();
         },
         error: function (data) {
             ErrorMsg(data);
@@ -228,8 +230,13 @@ let fn_RegistraNota = (strDetalleNota) => {
 
 
 
-var fn_Reg_IngresoNotaRemision = (sIdRegNotaRemi) => {
-    declaracion = sIdRegNotaRemi;
+var fn_Reg_IngresoNotaRemision = (strjson) => {
+    declaracion = strjson.sidDeclaracion;
+    xsDivInRe = strjson.sDiv;
     $("#gridItemsDmSinNota").data("kendoGrid").dataSource.read();
     $("#txtSerie").focus();
 };
+
+var fn_FocusInNota = () => {
+    $("#txtSerie").focus();
+}

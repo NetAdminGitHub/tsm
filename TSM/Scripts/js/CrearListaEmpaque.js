@@ -2,10 +2,10 @@
 let xidHoja;
 let StrIdHojaBandeo = "";
 let vFrmG;
-let xsDiv = "";//contiene el nombre de div donde se dibuja la modal
+let xsDivLe = "";//contiene el nombre de div donde se dibuja la modal
 var fn_Ini_CrearListaEmpaque = (strjson) => {
     xidHoja = strjson.sIdHb;
-    xsDiv = strjson.sDiv;
+    xsDivLe = strjson.sDiv;
     KdoButton($("#btnCrea_registro"), "save", "Crear Registro");
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -106,9 +106,7 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
     $("#txtNoRefePackingList").focus();
 
     $("#btnCrea_registro").click(function () {
-        if (fn_CrearReg()) {
-            $("#xsDiv").data("kendoWindow").close();
-        }
+        fn_CrearReg();
     });
 
 };
@@ -143,7 +141,7 @@ let fn_CrearReg = () => {
 
 var fn_Reg_CrearListaEmpaque = (strjson) => {
     xidHoja = strjson.sIdHb;
-    xsDiv = strjson.sDiv;
+    xsDivLe = strjson.sDiv;
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
     $("#txtNoRefePackingList").val("");
     $("#txtNoRefePackingList").focus();
@@ -169,6 +167,7 @@ let fn_Gen_PakigList = (strBande) => {
                 RequestEndMsg(datos, "Post");
                 kendo.ui.progress($(".k-window"), false);
                 $("#txtNoRefePackingList").val("");
+                $("#" + `${xsDivLe}`).data("kendoWindow").close();
                 resultPak = true;
             },
             error: function (data) {

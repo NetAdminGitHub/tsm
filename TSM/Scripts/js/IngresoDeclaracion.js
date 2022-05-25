@@ -267,14 +267,42 @@ $(document).ready(function () {
 
 
     $("#btnNotaRemision").click(function () {
-        fn_vistaListadoNotaRemision("vModalVerNotasRemi", xIdDeMerca);
-  
-    
+        let strjson = {
+            config: [{
+                Div: "vModalVerNotasRemi",
+                Vista: "~/Views/IngresoDeclaracion/_ModalVerNotasRemision.cshtml",
+                Js: "ModalVerNotaRemision.js",
+                Titulo: "Notas de Remision",
+                Height: "90%",
+                Width: "65%",
+                MinWidth: "30%"
+            }],
+            Param: { sIdRegNotaRemi: xIdDeMerca },
+            fn: { fnclose: "", fnLoad: "fn_Ini_ModalVerNotaRemision", fnReg: "fn_Reg_ModalVerNotaRemision", fnActi: "" }
+        };
 
+        fn_GenLoadModalWindow(strjson);
+  
     });
 
     $("#btnPLgregarItem").click(function () {
-        fn_vistaRelacionPLs("vRelacionPLs", xIdDeMerca, get_Item($("#gridDetalleItem").data("kendoGrid")), function () { return $("#griVincularListaEmpaque").data("kendoGrid").dataSource.read(); });
+        let strjson = {
+            config: [{
+                Div: "vRelacionPLs",
+                Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
+                Js: "RelacionPLs.js",
+                Titulo: "Asignaión de Lista de Empaque",
+                Height: "80%",
+                Width: "50%",
+                MinWidth: "10%"
+            }],
+            Param: { idDeclaracionMercancia: xIdDeMerca, item: get_Item($("#gridDetalleItem").data("kendoGrid")), sDiv:"vRelacionPLs" },
+            fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+
+
     });
 
     //compeltar campos de cabecera  
@@ -332,6 +360,10 @@ let fn_Refrescar_Ingreso = () => {
     }
 
     $("#gridHoja").data("kendoGrid").dataSource.read();
+};
+var fn_RefresVlist = () => {
+
+    $("#griVincularListaEmpaque").data("kendoGrid").dataSource.read();
 };
 let fn_Get_IngresoDeclaracion = (xId) => {
     kendo.ui.progress($(document.body), true);

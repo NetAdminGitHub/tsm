@@ -1053,7 +1053,7 @@
     <Content Include="Web.IST2.config">
     </Content>
     <Content Include="Views\ControlDeclaraciones\Index.cshtml" />
-    <Content Include="Views\Shared\_IngresoNotaRemision.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_IngresoNotaRemision.cshtml" />
     <Content Include="Views\Shared\_IngresoBultoAddItem.cshtml" />
     <Content Include="Views\Shared\_ListaEmpaqueAddPL.cshtml" />
     <Content Include="Views\IngresoDeclaracion\Index.cshtml" />
@@ -1062,7 +1062,7 @@
     <Content Include="Views\MarcaMaquinas\Index.cshtml" />
     <Content Include="Views\FormasMaquinas\Index.cshtml" />
     <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
-    <Content Include="Views\Shared\_ModalVerNotasRemision.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalVerNotasRemision.cshtml" />
     <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
     <Content Include="Views\IngresoDeclaracion\_vRelacionPLs.cshtml" />
     <Content Include="Views\PreparacionCarrito\Index.cshtml" />
