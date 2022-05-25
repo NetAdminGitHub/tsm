@@ -109,12 +109,12 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
         }).data("kendoValidator");
 
     $("#txtNoRefePackingList").val("");
+    $("#txtObservacionPackingList").val("");
     $("#txtNoRefePackingList").focus();
 
     $("#btnCrea_registro").click(function () {
         fn_CrearReg();
     });
-
 };
 
 let fn_CrearReg = () => {
@@ -130,8 +130,6 @@ let fn_CrearReg = () => {
                 });
             });
             result = fn_Gen_PakigList(Bandeos);
-
-
         } else {
             result = false;
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
@@ -150,6 +148,8 @@ var fn_Reg_CrearListaEmpaque = (strjson) => {
     xsDivLe = strjson.sDiv;
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
     $("#txtNoRefePackingList").val("");
+    $("#txtObservacionPackingList").val("");
+    StrIdHojaBandeo = "";
     $("#txtNoRefePackingList").focus();
 
 };
@@ -163,6 +163,7 @@ let fn_Gen_PakigList = (strBande) => {
             dataType: "json",
             data: JSON.stringify({
                 NoDocumento: $("#txtNoRefePackingList").val(),
+                Observacion: $("#txtObservacionPackingList").val(),
                 Peso: 0,
                 IdUsuarioMod: getUser(),
                 HojasBandeo: strBande
@@ -175,6 +176,7 @@ let fn_Gen_PakigList = (strBande) => {
                 $("#txtNoRefePackingList").val("");
                 $("#" + `${xsDivLe}`).data("kendoWindow").close();
                 resultPak = true;
+                StrIdHojaBandeo = "";
             },
             error: function (data) {
                 ErrorMsg(data);
