@@ -394,7 +394,7 @@ var fn_show_CrearListaEmpaque = (cargarJs, data, divListaEmpaque, sIdHb, fnclose
     $("#" + divListaEmpaque + "").kendoDialog({
         height: "90%",
         width: "50%",
-        title: "Creacion de Lista de Empaque",
+        title: "Creación de Lista de Empaque",
         closable: true,
         modal: true,
         content: data,

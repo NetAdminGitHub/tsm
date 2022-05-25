@@ -34,6 +34,9 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
                     Cantidad: { type: "number" },
                     Color: { type: "string" },
                     Estilo: { type: "string" },
+                    FM: { type: "string" },
+                    NombreDiseno: { type: "string" },
+                    PartePrenda: { type: "string" },
                     Tallas: { type: "string" }
                 }
             }
@@ -50,11 +53,14 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
             { selectable: true, width: "50px" },
             { field: "IdHojaBandeo", title: "id Hoja Bandeo", hidden: true },
             { field: "NoDocumento", title: "Correlativo" },
-            { field: "Corte", title: "Corte" },
+            { field: "Corte", title: "Corte/Lotes" },
             { field: "Cantidad", title: "Cantidad" },
-            { field: "Color", title: "Color", },
+            { field: "FM", title: "FM/RD" },
+            { field: "NombreDiseno", title: "Nombre del Diseño" },
             { field: "Estilo", title: "Estilo" },
-            { field: "Tallas", title: "Tallas" }
+            { field: "Tallas", title: "Rango de Tallas" },
+            { field: "PartePrenda", title: "Parte" },
+            { field: "Color", title: "Color" }
         ]
     });
 
