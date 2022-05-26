@@ -73,6 +73,12 @@ $(document).ready(function () {
                 url: function () { return TSM_Web_APi + "DeclaracionMercanciasItems/GetItemDetalle/" + `${xIdDeMerca}` },
                 contentType: "application/json; charset=utf-8"
             },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "/DeclaracionMercanciasItems/" + datos.IdDeclaracionMercancia + "/" + datos.Item; },
+                dataType: "json",
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
             destroy: {
                 url: function (datos) { return TSM_Web_APi + "DeclaracionMercanciasItems/" + datos.IdDeclaracionMercancia + "/" + datos.Item; },
                 dataType: "json",
@@ -172,7 +178,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridDetalleItem").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true);
     SetGrid_CRUD_ToolbarTop($("#gridDetalleItem").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDetalleItem").data("kendoGrid"), dS);
 
     var selectedRows = [];
