@@ -85,7 +85,10 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
+
+    fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
 };
+
 var fn_Reg_IngresoBultoSerie = (strjson) => {
     xIdHojaBandeo = strjson.sIdHojaBandeo;
     xesRollo_BultoSerie = strjson.esRollo;
@@ -95,6 +98,8 @@ var fn_Reg_IngresoBultoSerie = (strjson) => {
     $("#txt_Ibs_Bulto_Fin").val("");
     $("#txt_Ibs_Talla").val("");
     kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
+
+    fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
 };
 
 let fn_Gen_BultoSerie = () => {
@@ -117,6 +122,7 @@ let fn_Gen_BultoSerie = () => {
             $("#txt_Ibs_Bulto_Ini").val("");
             $("#txt_Ibs_Bulto_Fin").val("");
             $("#txt_Ibs_Talla").val("");
+            fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
             window[xfn_RefreshSerie]();
             kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
             $("#cmb_Ibs_Unidades").data("kendoComboBox").value("");
@@ -131,6 +137,25 @@ let fn_Gen_BultoSerie = () => {
     });    
 }
 
+let fn_Get_UltimoBultoDigitadoxCort_Serie = (xIdHojaBandeo) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosMercancias/GetUltimoBultoxCorte/" + `${xIdHojaBandeo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                $("#lbl_Ib_UltimoBultoSerie").text(dato.UltimoBulto);
+            } else {
+                $("#lbl_Ib_UltimoBultoSerie").text(0);
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
 
 var fn_FocusVistaSerie = () => {
     $("#txt_Ibs_Bulto_Ini").focus();
