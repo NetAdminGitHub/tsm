@@ -2,7 +2,7 @@
 let xidHb = 0;
 let xesRollo_Bulto = 0;
 let vFrmIngBulto;
-let xfn_Refresh
+let xfn_Refresh;
 var fn_Ini_IngresoBulto = (strjson) => {
     xidHb = strjson.sidHb;
     xesRollo_Bulto = strjson.esRollo;
@@ -84,7 +84,10 @@ var fn_Ini_IngresoBulto = (strjson) => {
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
+
+    fn_Get_UltimoBultoDigitadoxCorte(xidHb);
 };
+
 var fn_Reg_IngresoBulto = (strjson) => {
     xidHb = strjson.sidHb;
     xesRollo_Bulto = strjson.esRollo;
@@ -94,6 +97,8 @@ var fn_Reg_IngresoBulto = (strjson) => {
     $("#txt_Ib_Talla").val("");
     $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
     $("#txt_Ib_Bulto").focus();
+
+    fn_Get_UltimoBultoDigitadoxCorte(xidHb);
 };
 
 let fn_HojaBandeoMercancia = (xid) => {
@@ -119,6 +124,7 @@ let fn_HojaBandeoMercancia = (xid) => {
             $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
             $("#txt_Ib_Bulto").focus();
             $("#cmb_Ib_Unidades").data("kendoComboBox").value("");
+            fn_Get_UltimoBultoDigitadoxCorte(xidHb);
             window[xfn_Refresh]();
 
             RequestEndMsg(data, "Post");
@@ -130,6 +136,27 @@ let fn_HojaBandeoMercancia = (xid) => {
         }
     });
 }
+
+
+let fn_Get_UltimoBultoDigitadoxCorte = (xIdHB) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosMercancias/GetUltimoBultoxCorte/" + `${xIdHB}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                $("#lbl_Ib_UltimoBulto").text(dato.UltimoBulto);
+            } else {
+                $("#lbl_Ib_UltimoBulto").text(0);
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+};
 
 var fn_FocusVista = () => {
     $("#txt_Ib_Bulto").focus();

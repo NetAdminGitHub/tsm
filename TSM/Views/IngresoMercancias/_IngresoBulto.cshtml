@@ -2,6 +2,16 @@
 <form id="FrmIngresoBulto" method="POST" enctype="multipart/form-data" autocomplete="off" class="h-100">
     <div class="row h-100">
         <div class="col-lg-12 d-flex flex-column">
+            <div class="form-row">
+                <div class="col-lg-3 d-flex flex-column">
+                    <label>Ultimo Bulto:</label>
+                </div>
+                <div class="col-lg-9 d-flex flex-column">
+                    <label id="lbl_Ib_UltimoBulto"></label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 d-flex flex-column">
             <div class="form-group">
                 <label for="txt_Ib_Bulto">Bulto/Rollo:</label>
                 <input id="txt_Ib_Bulto" name="txt_Ib_Bulto" type="text" class="k-textbox form-control input-number" />
@@ -25,9 +35,9 @@
                 <input id="cmb_Ib_Unidades" name="cmb_Ib_Unidades" type="text" class="form-control" />
             </div>
 
-            <div class="text-center mt-auto">
-                <button type="button" id="btn_Ib_Guardar">Guardar Registro</button>
-            </div>
+                <div class="text-center mt-auto">
+                    <button type="button" id="btn_Ib_Guardar">Guardar Registro</button>
+                </div>
         </div>
     </div>
 </form>
