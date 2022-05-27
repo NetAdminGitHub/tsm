@@ -5,10 +5,14 @@ let xIdclie = 0;
 
 
 var fn_Ini_CarritosFin = (xjson) => {
-    xIdcat = xjson.pcIdCatalogo;
-    xIdclie = xjson.pcCliente;
-    $('#chkVerTodo').prop('checked', 0);
+
     let UrlPl = TSM_Web_APi + "Carritos/GetCarritosPreparados";
+
+    xIdcat = xjson.pcIdCatalogo === null ? 0 : xjson.pcIdCatalogo;
+    xIdclie = xjson.pcCliente;
+
+    $('#chkVerTodo').prop('checked', xjson.pcIdCatalogo === null ? 1 : 0);
+
     //1. defincion de la modal
     Fn_VistaCambioEstado($("#vCambioEstado"), function () { return fn_CloseCmb(); });
 
@@ -21,7 +25,7 @@ var fn_Ini_CarritosFin = (xjson) => {
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return UrlPl + "/" + datos.IdCarrito; },
+                url: function (datos) { return TSM_Web_APi + "Carritos/" + datos.IdCarrito; },
                 type: "DELETE"
             },
             parameterMap: function (data, type) {
@@ -51,10 +55,10 @@ var fn_Ini_CarritosFin = (xjson) => {
                     CantidadBultos: { type: "number" },
                     IdCatalogoMaquina: { type: "number" },
                     Maquina: { type: "string" },
-                    Estado: { type: "string" },
-                    NomEstado: { type: "string" },
                     Preparador: { type: "string" },
-                    FechaPreparacion: { type: "date" }
+                    FechaPreparacion: { type: "date" },
+                    Estado: { type: "string" },
+                    NomEstado: { type: "string" }
                 }
             }
         },
@@ -77,10 +81,10 @@ var fn_Ini_CarritosFin = (xjson) => {
             { field: "CantidadBultos", title: "Cantidad Bultos" },
             { field: "IdCatalogoMaquina", title: "cod. CatalogoMaquina", hidden:true },
             { field: "Maquina", title: "Máquina" },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "NomEstado", title: "Estado" },
             { field: "Preparador", title: "Preparador" },
             { field: "FechaPreparacion", title: "Fecha de Preparación", format: "{0: dd/MM/yyyy}" },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NomEstado", title: "Estado" },
             {
                 field: "btnEntrega", title: "&nbsp;",
                 command: {
