@@ -5,6 +5,8 @@ $(document).ready(function () {
   
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
+    //crear combobox Planta
+    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta")
     // crear boton ingreso producto
     KdoButton($("#btnIngresarMercancia"), "plus-outline", "Ingresar Mercancía");
     // crear boton importar excel
@@ -17,10 +19,13 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresoMercanciaByCliente/"+`${xidclie}`},
+                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasGeneral/"+`${xidclie}`},
                 contentType: "application/json; charset=utf-8"
             },
-          
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "IngresoMercancias/" + datos.IdIngreso; },
+                type: "DELETE"
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -41,8 +46,12 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     Nombre: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
-
+                    FechaMod: { type: "date" },
+                    ReferenciaPL: { type: "string" },
+                    CantidadCortes: { type: "number" },
+                    Planta: { type: "string" },
+                    TipoProceso: { type: "string" },
+                    CantidadTotal: { type: "number" }
                 }
             }
         }
@@ -53,12 +62,17 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdIngreso", title: "Ingreso" },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}", hidden: true},
             { field: "FechaIngreso", title: "Fecha Ingreso", format: "{0: dd/MM/yyyy}"},
             { field: "IdCliente", title: "Id Cliente",hidden:true },
-            { field: "NombreBodegaCli", title: "Bodega" },
+            { field: "NombreBodegaCli", title: "Bodega", hidden:true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "Nombre", title: "Estado" },
+            { field: "ReferenciaPL", title: "No. Referencia PL" },
+            { field: "CantidadCortes", title: "Cantidad de Cortes" },
+            { field: "CantidadTotal", title: "Cantidad" },
+            { field: "Planta", title: "Planta" },
+            { field: "TipoProceso", title: "Tipo de Proceso" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             {
@@ -84,7 +98,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridIngreso").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridIngreso").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridIngreso").data("kendoGrid"), false,false);
+    SetGrid_CRUD_Command($("#gridIngreso").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridIngreso").data("kendoGrid"), dS);
 
     $("#gridIngreso").kendoTooltip({
@@ -123,6 +137,8 @@ $(document).ready(function () {
             }
         }
     });
+
+
     //#endregion 
 
     //crear hojas de bandeo
