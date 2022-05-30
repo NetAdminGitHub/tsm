@@ -39,7 +39,7 @@ $(document).ready(function () {
     $("#numTotalValor").kendoNumericTextBox({
         min: 0,
         max: 999999999,
-        format: "{0:N2}",
+        format: "c",
         restrictDecimals: true,
         decimals: 2,
         value: 0
@@ -167,7 +167,7 @@ $(document).ready(function () {
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
             { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
-            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:c2}" },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
             { field: "NombreEmbalaje", title: "NombreEmbalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
@@ -248,7 +248,7 @@ $(document).ready(function () {
             { field: "Item", title: "Item" },
             { field: "CantidadBultos", title: "Cantidad Bultos" },
             { field: "Cuantia", title: "Cuantia", format: "{0:N2}" },
-            { field: "Valor", title: "Valor", format: "{0:N2}" }
+            { field: "Valor", title: "Valor", format: "{0:c2}" }
         ]
     });
 
