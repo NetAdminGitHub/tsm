@@ -44,6 +44,7 @@ $(document).ready(function () {
                     fields: {
                         Id: { field: "Id", type: "number" },
                         IdPadre: { field: "IdPadre", nullable: true },
+                        IdMercancia: { field: "IdMercancia", nullable: true },
                         Corte: { field: "Corte", type: "string" },
                         Talla: { field: "Talla", type: "string" },
                         NoDocumento: { field: "NoDocumento", type: "string" },
@@ -63,6 +64,7 @@ $(document).ready(function () {
             { selectable: true, width: "65px", includeChildren: true, name: "select" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
+            { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
             { field: "NoDocumento", title: "Correlativo" },
@@ -111,13 +113,10 @@ $(document).ready(function () {
                 pkIdCarrito = 0;
                 pkIdHb = 0;
             } else {
-
                 pkIdCarrito = e.response[0].IdCarrito;
                 pkIdHb = e.response[0].IdHojaBandeo;
-
             }
             Grid_requestEnd;
-
         },
         error: function (e) {
 
@@ -225,7 +224,7 @@ $(document).ready(function () {
                 let data = treeList.dataItem(elemento);
                 if (data.IdPadre !== null) {
                     BultosPreCar.push(
-                        data.id
+                        data.IdMercancia
                     );
                     Lineas.push({ id: data.Id, idPadre: data.IdPadre });
                 }
@@ -245,6 +244,7 @@ $(document).ready(function () {
             }
 
             kendo.ui.progress($(document.body), true);
+
             $.ajax({
                 url: TSM_Web_APi + "Carritos/CrearCarrito",
                 method: "POST",
@@ -445,8 +445,8 @@ let fn_VinetaImp = () => {
             let data = treeList.dataItem(elemento);
             if (data.IdPadre !== null) {
                 Lineas.push({
-                    id: data.Id,
-                    idPadre:data.IdPadre
+                    id: data.IdMercancia,
+                    idPadre: data.IdHojaBandeo
                 });
                
             }
