@@ -4,73 +4,150 @@
         text-align: center;
     }
 </style>
-<div class="form-row">
-    <div class="col-lg-4">
-        <form id="FrmGhojaBandeo" method="POST" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-row">
-                <div class="col-lg-12 form-group">
-                    <label for="xcmbCliente">Cliente:</label>
-                    <input id="xcmbCliente" name="xcmbCliente" class="form-control" />
-                </div>
-                <div class="col-lg-12 form-group">
-                    <label for="txtCorte_Rollo" id="lbltxtCorte_Rollo">Corte:</label>
-                    <input id="txtCorte_Rollo" name="txtCorte_Rollo" type="text" class="k-textbox form-control" />
-                </div>
-                <div class="col-lg-12 form-group">
-                    <label for="txtEstilo">Estilo:</label>
-                    <input id="txtEstilo" name="txtEstilo" type="text" class="k-textbox form-control" />
-                </div>
-                <div class="col-lg-12 form-group">
-                    <div class="form-row">
-                        <div class="form-group col-lg-6" style="text-align:start;">
-                            <input type="checkbox" id="chkRollo" name="chkRollo" class="k-checkbox">
-                            <label class="k-checkbox-label" for="chkRollo" id="lblchkRollo">Rollo</label>
+<div class="col-lg-12">
+    <form id="FrmGhojaBandeo" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="row h-100">
+            <div class="col-lg-7">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="row h-100">
+                            <div class="col-lg-12 d-flex flex-column">
+                                <div class="form-group">
+                                    <label for="xcmbCliente">Cliente:</label>
+                                    <input id="xcmbCliente" name="xcmbCliente" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="xcmbMarca">Marca:</label>
+                                    <input id="xcmbMarca" name="xcmbMarca" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="xcmbPlanta">Planta de Ingreso:</label>
+                                    <input id="xcmbPlanta" name="xcmbPlanta" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="xcmbProceso">Proceso:</label>
+                                    <input id="xcmbProceso" name="xcmbProceso" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtCorte_Rollo" id="lbltxtCorte_Rollo">Detalle de Corte / Lote:</label>
+                                    <input id="txtCorte_Rollo" name="txtCorte_Rollo" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtPO">Ingreso de Orden de Compra:</label>
+                                    <input id="txtPO" name="txtPO" type="text" class="k-textbox form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="xcmbIdUni">Unidad:</label>
+                                    <input id="xcmbIdUni" name="xcmbIdUni" type="text" class="form-control" />
+                                </div>
+
+
+                            </div>
+
                         </div>
-                        <div class="form-group col-lg-6" style="text-align:end;">
-                            <input type="checkbox" id="chkEnlazarTsm" name="chkEnlazarTsm" class="k-checkbox">
-                            <label class="k-checkbox-label" for="chkEnlazarTsm" id="lblchkEnlazarTsm">Enlazar TSM</label>
+
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-lg-12 d-flex flex-column">
+                                <div class="form-group">
+                                    <input type="checkbox" id="chkEnlazarTsm" name="chkEnlazarTsm" class="k-checkbox text-align-end">
+                                    <label class="k-checkbox-label" for="chkEnlazarTsm" id="lblchkEnlazarTsm">Enlazar TSM</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Mtlfm">FM:</label>
+                                    <input id="Mtlfm" name="Mtlfm" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-3 d-flex flex-column" id="listFM">
+
+                                        </div>
+                                        <div class="col-lg-9 d-flex flex-column">
+                                            <div class="form-group">
+                                                <label for="txtNombreDiseño">Nombre del Diseño:</label>
+                                                <input id="txtNombreDiseño" name="txtNombreDiseño" type="text" class="k-textbox form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="txtEstilo">Estilo:</label>
+                                                            <input id="txtEstilo" name="txtEstilo" type="text" class="k-textbox form-control" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="txtPrenda">Prenda:</label>
+                                                            <input id="txtPrenda" name="txtPrenda" type="text" class="k-textbox form-control" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="txtConfeccion">Estado de Confección:</label>
+                                                            <input id="txtConfeccion" name="txtConfeccion" type="text" class="k-textbox form-control" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="txtNumero">Número:</label>
+                                                            <input id="txtNumero" name="txtNumero" type="text" class="k-textbox form-control" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="txtPartePrenda">Parte de Prenda:</label>
+                                                            <input id="txtPartePrenda" name="txtPartePrenda" type="text" class="k-textbox form-control" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="txtServicio">Servicio:</label>
+                                                            <input id="txtServicio" name="txtServicio" type="text" class="k-textbox form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtColor">Color de tela:</label>
+                                                <input id="txtColor" name="txtColor" type="text" class="k-textbox form-control" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group" style="text-align: center; align-self: end;">
+                                    <button type="button" id="btnGuardarRegistro">Guardar Registro</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 form-group">
-                    <label for="Mtlfm">FM:</label>
-                    <input id="Mtlfm" name="Mtlfm" class="form-control" />
-                </div>
-                <div class="col-lg-6 form-group">
-                    <label for="txtColor">Color:</label>
-                    <input id="txtColor" name="txtColor" type="text" class="k-textbox form-control" />
-                </div>
-                <div class="col-lg-6 form-group">
-                    <label for="xcmbPlanta">Planta:</label>
-                    <input id="xcmbPlanta" name="xcmbPlanta" type="text" class="form-control" />
-                </div>
-                <div class="col-lg-12 form-group" style="text-align: center; align-self: end;">
-                    <button type="button" id="btnGuardarRegistro">Guardar Registro</button>
-                </div>
-                <div class="col-lg-12 form-group">
-                    <label for="gridIngreso" id="lblgridIngreso" class="tsm-label-center"><strong>Detalle de Datos Ingresos</strong></label>
-                    <div id="gridResumenIngreso"></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="gridIngreso" id="lblgridIngreso" class="tsm-label-center"><strong>Detalle de Datos Ingresos</strong></label>
+                            <div id="gridResumenIngreso"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <div class="col-lg-8">
-        <div class="form-row">
-            <div class="col-lg-12 form-group text-right">
-                <button type="button" id="btnCrearBulto" class="mr-1">Crear Bulto / Rollo</button>
-                <button type="button" id="btnCrearSerieBulto">Crear Serie de Bulto / Rollo</button>
-                <button type="button" id="btnImportarBultos">Importar Bulto / Rollo</button>
+            <div class="col-lg-5">
+                <div class="form-row">
+                    <div class="col-lg-12 form-group text-right">
+                        <button type="button" id="btnCrearBulto" class="mr-1">Crear Bulto / Rollo</button>
+                        <button type="button" id="btnCrearSerieBulto">Crear Serie de Bulto / Rollo</button>
+                    </div>
+
+                    <div class="col-lg-12 form-group">
+                        <label for="gridBultoDetalle" id="lblgridBultoDetalle" class="tsm-label-center"><strong>Detalle de Bultos</strong></label>
+                        <div id="gridBultoDetalle"></div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="col-lg-12 form-group">
-                <label for="gridBultoDetalle" id="lblgridBultoDetalle" class="tsm-label-center"><strong>Detalle de Bultos</strong></label>
-                <div id="gridBultoDetalle"></div>
-            </div>
         </div>
-
-    </div>
-
+    </form>
+  
 </div>
+
 @*modal ingreso de bulto*@
 <div id="vIngresoBulto"></div>
 

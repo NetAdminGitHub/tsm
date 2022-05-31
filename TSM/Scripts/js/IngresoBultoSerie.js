@@ -3,10 +3,12 @@ let xIdHojaBandeo;
 let xesRollo_BultoSerie = 0;
 let vFrmIngBulSerie;
 let xfn_RefreshSerie;
+let xUni;
 var fn_Ini_IngresoBultoSerie = (strjson) => {
     xIdHojaBandeo = strjson.sIdHojaBandeo;
     xesRollo_BultoSerie = strjson.esRollo;
     xfn_RefreshSerie = strjson.fnRefresh;
+    xUni = strjson.Uni;
     // crear realizar
     KdoButton($("#btn_Ibs_RealizarReg"), "check-outline", "Realizar Registro");
     //cnatidad de pieza
@@ -20,7 +22,7 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
     });
 
     Kendo_CmbFiltrarGrid($("#cmb_Ibs_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
-
+    KdoComboBoxEnable($("#cmb_Ibs_Unidades"), false);
     vFrmIngBulSerie = $("#FrmIngresoBultoSerie").kendoValidator({
             rules: {
                 MsgRequerido: function (input) {
@@ -87,19 +89,23 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
     });
 
     fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
+    KdoCmbSetValue($("#cmb_Ibs_Unidades"), xUni);
 };
 
 var fn_Reg_IngresoBultoSerie = (strjson) => {
     xIdHojaBandeo = strjson.sIdHojaBandeo;
     xesRollo_BultoSerie = strjson.esRollo;
     xfn_RefreshSerie = strjson.fnRefresh;
+    xUni = strjson.Uni;
     $("#txt_Ibs_Bulto_Ini").focus();
     $("#txt_Ibs_Bulto_Ini").val("");
     $("#txt_Ibs_Bulto_Fin").val("");
     $("#txt_Ibs_Talla").val("");
-    kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
-
+  
     fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
+    KdoCmbSetValue($("#cmb_Ibs_Unidades"), xUni);
+    KdoComboBoxEnable($("#cmb_Ibs_Unidades"), false);
+
 };
 
 let fn_Gen_BultoSerie = () => {

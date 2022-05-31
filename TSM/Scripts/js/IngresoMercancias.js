@@ -103,8 +103,8 @@ $(document).ready(function () {
                                 Vista: "~/Views/IngresoMercancias/_ControlBulto.cshtml",
                                 Js: "ControlBulto.js",
                                 Titulo: "Ingreso de control de bultos",
-                                Height: "90%",
-                                Width: "70%",
+                                Height: "95%",
+                                Width: "90%",
                                 MinWidth: "30%"
                             }],
                             Param: { sIdHB: dataItem.IdHojaBandeo, sIdIngreso: dataItem.IdIngreso, esNuevo: false, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },
@@ -224,8 +224,8 @@ $(document).ready(function () {
                 Vista: "~/Views/IngresoMercancias/_ControlBulto.cshtml",
                 Js: "ControlBulto.js",
                 Titulo: "Ingreso de control de bultos",
-                Height: "90%",
-                Width: "70%",
+                Height: "95%",
+                Width: "90%",
                 MinWidth: "30%"
             }],
             Param: { sIdHB: 0, sIdIngreso: xIdIngreso, esNuevo: true, sIdCliente: KdoCmbGetValue($("#cmbCliente")) },

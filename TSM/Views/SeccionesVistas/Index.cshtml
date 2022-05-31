@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Definición de Secciones de Vistas Públicas";
+    ViewBag.IdVersion = "TSM0101128|v22053101";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var UrlMenus = "@string.Format("{0}Menus", TSM.Utils.Config.TSM_WebApi)";
+        var UrlSecciones = "@string.Format("{0}MenusSecciones", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+    <script src="~/Scripts/js/SeccionesVistas.js"></script>
+}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body container">
+                <div class="row">
+                    <div class="col-lg-4 form-group">
+                        <label for="cmbMenus">Menú:</label>
+                        <input id="cmbMenus" name="cmbMenus" required validationMessage="Requerido" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group">
+                        <div id="gridSecciones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

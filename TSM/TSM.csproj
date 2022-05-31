@@ -345,6 +345,7 @@
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
     <Compile Include="Controllers\RecintosFiscalesController.cs" />
+    <Compile Include="Controllers\SeccionesVistasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -516,6 +517,7 @@
     <Content Include="Scripts\js\ImportarBultos.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
@@ -1074,6 +1076,7 @@
     <Content Include="Views\UsuariosRolesPublicos\Index.cshtml" />
     <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
     <Content Include="Views\TiposProcesos\Index.cshtml" />
+    <Content Include="Views\SeccionesVistas\Index.cshtml" />
     <Content Include="Views\IngresoMercancias\_ImportarBultos.cshtml" />
   </ItemGroup>
   <ItemGroup>

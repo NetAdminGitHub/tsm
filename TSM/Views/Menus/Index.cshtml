@@ -23,7 +23,7 @@
 <div class="form-row">
     <div class="form-group col-lg-12">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body container">
                     <div class="form-row">
                         <div class="form-group col-lg-3 border p-md-2 p-lg-2">
                             <div class="form-row">
@@ -42,13 +42,10 @@
                                         <button type="submit" value="Submit" id="btnCancelar" name="btnCancelar"></button>
                                     </div>
                                 </div>
-                                @*<div class="form-row" ">
-        <div class="form-group col-md-12 col-lg-12">
-            <label for="TxtNivel" hidden="hidden">Nivel:</label>*@
+
                                 <input id="TxtNivel" name="TxtNivel" class="form-control" style="width:100%" hidden="hidden" />
                                 <input id="TxtEstado" name="TxtEstado" class="form-control" style="width:100%" hidden="hidden" />
-                                @*</div>
-        </div>*@
+
                                 <div class="form-row">
                                     <div class="form-group col-md-12 col-lg-12">
                                         <label for="CmbMenuPadre">Opci&oacute;n men&uacute; padre:</label>
@@ -95,9 +92,13 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-lg-12">
+                                    <div class="form-group col-lg-4">
                                         <button type="submit" value="Submit" id="btnGuardar" name="btnGuardar"></button>
                                         <button type="submit" value="Submit" id="btnEliminar" name="btnEliminar"></button>
+                                    </div>
+                                    <div class="form-group col-lg-8 text-right">
+                                        <input type="checkbox" id="chkMenuPublico" name="chkMenuPublico" class="k-checkbox">
+                                        <label class="k-checkbox-label" for="chkMenuPublico" id="lblchkMenuPublico">Menú Público</label>
                                     </div>
                                 </div>
                             </form>
@@ -111,19 +112,15 @@
                             </div>
 
                         </div>
-                        <div class="form-group col-lg-0 align-self-center d-flex justify-content-center " style="width:60px">
+                        <div class="form-group col-lg-1 align-self-center d-flex justify-content-center ">
                             <div class="form-row ">
                                 <div class=" nav flex-column nav-pills align-middle" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <div class="input-group">
-                                        <div style="width:100%;">
-                                            <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
-                                            <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
-                                        </div>
+                                    <div class="row mt-1">
+                                        <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
                                     </div>
-                                   
-                                    @*<button type="submit" value="Submit" id="btnFlechaDerechaTodos" data-toggle="pill"></button>
-                            <button type="submit" value="Submit" id="btnFlechaIzqTodos" data-toggle="pill"></button>*@
-
+                                    <div class="row mt-1">
+                                        <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
