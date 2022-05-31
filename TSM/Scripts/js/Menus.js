@@ -381,7 +381,7 @@ $(document).ready(function () {
         $("#btnCancelar").data("kendoButton").enable(true);
         $("#btnEditar").data("kendoButton").enable(false);
         $("#btnNuevo").data("kendoButton").enable(false);
-      
+        $("#chkMenuPublico").attr("disabled", false);      
     });
 
     $("#CmbRoles").data("kendoComboBox").bind("select", function (e) {
@@ -544,6 +544,7 @@ $(document).ready(function () {
                 $("#TxtEtiquetaMenu").val(respuesta.EtiquetaMenu);
                 $("#CmbIdCatalogoFuente").data("kendoComboBox").value(respuesta.IdCatalogoFuente);
                 $("#TxtEstado").val(respuesta.Estado);
+                $("#chkMenuPublico").prop("checked", respuesta.Publico);
                 kendo.ui.progress($("#treeview"), false);
                 RequestEndMsg(respuesta, "Get");
             },
@@ -565,7 +566,7 @@ $(document).ready(function () {
         $("#TxtControlador").val("");
         $("#TxtAccion").val("");
         $("#CmbIdCatalogoFuente").data("kendoComboBox").value("");
-
+        $("#chkMenuPublico").prop("checked", false);
     }
 
     function fn_getSetCodigoMenuPadre(IdMenuPadre) {
@@ -592,17 +593,17 @@ $(document).ready(function () {
     }
 
     function fn_Habilitar(bool) {
-
-
         $("#TxtIdMenu").val() === "" ? $("#CmbMenuPadre").data("kendoComboBox").enable(bool) : $("#CmbMenuPadre").data("kendoComboBox").enable(false);
         HabilitaObje($("#TxtEtiquetaMenu"), bool);
         HabilitaObje($("#TxtUrl"), bool);
         HabilitaObje($("#TxtControlador"), bool);
         HabilitaObje($("#TxtAccion"), bool);
-        $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(bool); 
+        $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(bool);
+        $("#chkMenuPublico").attr("disabled", !bool);
     }
 
     function fn_HabilitaCampodeVista() {
+        console.log("habilitar");
         if (Kendo_CmbGetvalue($("#CmbMenuPadre")) !== 0) {
             var selected = $("#CmbMenuPadre").data("kendoComboBox").select(),
                 item = $("#CmbMenuPadre").data("kendoComboBox").dataItem(selected)
@@ -613,6 +614,7 @@ $(document).ready(function () {
                 HabilitaObje($("#TxtControlador"), true);
                 HabilitaObje($("#TxtAccion"), true);
                 HabilitaObje($("#TxtEtiquetaMenu"), true);
+                $("#chkMenuPublico").attr("disabled", false);
                 $("#btnGuardar").data("kendoButton").enable(true);
                 $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(true); 
                 $("#TxtEtiquetaMenu").focus();
@@ -620,6 +622,7 @@ $(document).ready(function () {
                 if (item.Nivel === 3) {
                     $("#btnGuardar").data("kendoButton").enable(false);
                     HabilitaObje($("#TxtEtiquetaMenu"), false);
+                    $("#chkMenuPublico").attr("disabled", true);
                     Kendo_CmbFocus($("#CmbMenuPadre"));
                 }
                 item.Nivel === 1 ? $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(true) : $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(false);
@@ -633,6 +636,7 @@ $(document).ready(function () {
             HabilitaObje($("#TxtUrl"), false);
             HabilitaObje($("#TxtControlador"), false);
             HabilitaObje($("#TxtAccion"), false);
+            $("#chkMenuPublico").attr("disabled", true);
             $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(false); 
             $("#btnGuardar").data("kendoButton").enable(true);
             $("#TxtEtiquetaMenu").focus();
@@ -766,8 +770,8 @@ $(document).ready(function () {
                 Accion: $("#TxtAccion").val(),
                 IdCatalogoFuente: $("#CmbIdCatalogoFuente").data("kendoComboBox").value(),
                 IdModulo: $("#cmbModulo").data("kendoComboBox").value(),
-                Estado: estado
-
+                Estado: estado,
+                Publico: $("#chkMenuPublico").is(':checked')
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
