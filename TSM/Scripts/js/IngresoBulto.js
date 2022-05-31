@@ -3,10 +3,12 @@ let xidHb = 0;
 let xesRollo_Bulto = 0;
 let vFrmIngBulto;
 let xfn_Refresh;
+let xUniB;
 var fn_Ini_IngresoBulto = (strjson) => {
     xidHb = strjson.sidHb;
-    xesRollo_Bulto = strjson.esRollo;
+    xesRollo_Bulto = strjson.Uni === 20 ? true : false
     xfn_Refresh = strjson.fnRefresh;
+    xUniB = strjson.Uni;
     // crear realizar
     KdoButton($("#btn_Ib_Guardar"), "check-outline", "Guardar Registro");
     //cnatidad de pieza
@@ -23,7 +25,7 @@ var fn_Ini_IngresoBulto = (strjson) => {
     $("#txt_Ib_Talla").val("");
     $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
     Kendo_CmbFiltrarGrid($("#cmb_Ib_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
-
+    KdoComboBoxEnable($("#cmb_Ib_Unidades"),false);
     vFrmIngBulto = $("#FrmIngresoBulto").kendoValidator(
         {
             rules: {
@@ -86,12 +88,15 @@ var fn_Ini_IngresoBulto = (strjson) => {
     });
 
     fn_Get_UltimoBultoDigitadoxCorte(xidHb);
+    KdoCmbSetValue($("#cmb_Ib_Unidades"), xUniB);
 };
 
 var fn_Reg_IngresoBulto = (strjson) => {
     xidHb = strjson.sidHb;
-    xesRollo_Bulto = strjson.esRollo;
+    xesRollo_Bulto = strjson.Uni ===20? true:false;
     xfn_Refresh = strjson.fnRefresh;
+    xUniB = strjson.Uni;
+    KdoComboBoxEnable($("#cmb_Ib_Unidades"), false);
      //limpiar campos
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
@@ -99,6 +104,7 @@ var fn_Reg_IngresoBulto = (strjson) => {
     $("#txt_Ib_Bulto").focus();
 
     fn_Get_UltimoBultoDigitadoxCorte(xidHb);
+    KdoCmbSetValue($("#cmb_Ib_Unidades"), xUniB);
 };
 
 let fn_HojaBandeoMercancia = (xid) => {
