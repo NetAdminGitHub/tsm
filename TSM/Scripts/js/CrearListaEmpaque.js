@@ -37,7 +37,8 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
                     FM: { type: "string" },
                     NombreDiseno: { type: "string" },
                     PartePrenda: { type: "string" },
-                    Tallas: { type: "string" }
+                    Tallas: { type: "string" },
+                    NombreProceso: { type: "string" }
                 }
             }
         }
@@ -60,7 +61,8 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
             { field: "Estilo", title: "Estilo" },
             { field: "Tallas", title: "Rango de Tallas" },
             { field: "PartePrenda", title: "Parte" },
-            { field: "Color", title: "Color" }
+            { field: "Color", title: "Color" },
+            { field: "NombreProceso", title: "Proceso" }
         ]
     });
 

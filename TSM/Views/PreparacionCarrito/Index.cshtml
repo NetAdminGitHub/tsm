@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Preparación de Mercancía";
-    ViewBag.IdVersion = "TSMTSM0101120|v22042201";
+    ViewBag.IdVersion = "TSMTSM0101120|v22042202";
 }
 
 @section Scripts {
@@ -17,45 +17,40 @@
 <div class="form-row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body container">
                 <div class="form-row">
-                    <div class="form-group col-lg-12" style="text-align: right; align-self: center;">
-                        <button type="button" id="btnDetallePrep">Detalle de Preparado</button>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-2">
                         <label for="cmbCliente">Cliente:</label>
                         <input id="cmbCliente" name="cmbCliente" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-2">
                         <label for="cmbFm">Código FM:</label>
                         <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3" style="text-align: right; align-self:end;">
-                        <button type="button" id="btnPrep">Preparar</button>
+                    <div class="form-group col-lg-2">
+                        <label for="cmbCorte">Corte:</label>
+                        <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
                     </div>
-
-                    <div class="form-group col-lg-3" style="text-align: right; align-self:end;">
-                        <button type="button" id="btnEntProd">Entrega a Produccion</button>
+                    <div class="form-group col-lg-6 text-right" style="align-self:end;">
+                        <button type="button" id="btnDetallePrep" class="mr-1">Detalle de Preparado</button>
+                        <button type="button" id="btnPrep" class="mr-1">Para Preparar</button>
+                        <button type="button" id="btnEntProd">Entrega a Maquina</button>
                     </div>
-
-
                 </div>
+
                 <div class="form-row"><br /></div>
                 <div class="form-row">
                     <div class="col-lg-6">
                         <div id="treelist"> </div>
                     </div>
-                    <div class="col-lg-1" style="text-align: center; align-self:center;">
+                    <div class="col-lg-1 d-flex flex-column justify-content-center align-items-center text-center">
                         <button type="button" id="btnCreaCarrito"></button>
+                        <label class="mt-1 px-3">Pasar a Generar un Carrito</label>
                     </div>
                     <div class="col-lg-5">
                         <div id="gridDetCortePre"></div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

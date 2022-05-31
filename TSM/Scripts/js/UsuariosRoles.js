@@ -34,7 +34,6 @@ $(document).ready(function () {
                 if (type !== "read") {
                     return kendo.stringify(data);
                 }
-
             }
         },
 
@@ -79,11 +78,9 @@ $(document).ready(function () {
                     NoCarnet: {
                         type: "string"
                     }
-
                 }
             }
         }
-
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -107,8 +104,8 @@ $(document).ready(function () {
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "NoCarnet", title: "No Carnet" },
+            { field: "UsuarioPublico", title: "Usuario Público", width: 100, editor: Grid_ColCheckbox, attributes: { style: "text-align: center" }, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "UsuarioPublico"); } }
         ]
-
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
@@ -162,7 +159,6 @@ $(document).ready(function () {
                 if (type !== "read") {
                     return kendo.stringify(data);
                 }
-
             }
         },
 
@@ -190,12 +186,11 @@ $(document).ready(function () {
                         }
                     },
                     Nombre: { type: "string" },
-                    Fecha: { type: "date" }
-
+                    Fecha: { type: "date" },
+                    UsuarioPublico: { type: "bool" }
                 }
             }
         }
-
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -220,7 +215,6 @@ $(document).ready(function () {
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
         ]
-
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
@@ -231,13 +225,11 @@ $(document).ready(function () {
     Grid_HabilitaToolbar($("#gridUsuarioRoles"), false, false, false);
     var selectedRows = [];
     $("#gridUsuarioRoles").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridUsuarioRoles"), selectedRows);
-        
+        Grid_SetSelectRow($("#gridUsuarioRoles"), selectedRows);        
     });
 
     $("#gridUsuarioRoles").data("kendoGrid").bind("change", function (e) { //foco en la fila
         Grid_SelectRow($("#gridUsuarioRoles"), selectedRows);
-
     });
     //#endregion  fin creacion usuario Roles
 
@@ -246,8 +238,7 @@ $(document).ready(function () {
     $("#gridUsuario").data("kendoGrid").bind("change", function (e) { 
         Grid_SelectRow($("#gridUsuario"), selectedRowsUser);
         $("#gridUsuarioRoles").data("kendoGrid").dataSource.data([]);
-        $("#gridUsuarioRoles").data("kendoGrid").dataSource.read();
-      
+        $("#gridUsuarioRoles").data("kendoGrid").dataSource.read();      
     });
 
     $(window).on("resize", function () {
@@ -259,13 +250,11 @@ $(document).ready(function () {
     Fn_Grid_Resize($("#gridUsuarioRoles"), ($(window).height() - "371"));
 
     //#endregion fin Navegacion grid Usuario
-
 });
 
 function Fn_getIdUsuario(g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdUsuario;
-
 }
 
 fPermisos = function (datos) {

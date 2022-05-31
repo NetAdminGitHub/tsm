@@ -1,8 +1,9 @@
 ﻿let xidDeclaracionMercancia;
-let StrIdListaEmp = "";
+let StrIdListaEmp = [];
 let xitem = 0;
 let xsDiv;
 var fn_Ini_RelacionPLs = (strjson) => {
+
     xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
     xitem = strjson.item;
     xsDiv = strjson.sDiv;
@@ -40,8 +41,16 @@ var fn_Ini_RelacionPLs = (strjson) => {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridListasEmpaques").kendoGrid({
-        change: function (arg) {
-            StrIdListaEmp = this.selectedKeyNames();
+        change: function (e) {
+            let rows = e.sender.select();
+            let items = [];
+
+            rows.each(function (e) {
+                let grid = $("#gridListasEmpaques").data("kendoGrid");
+                let dataItem = grid.dataItem(this);
+                items.push(dataItem.id);
+            });
+            StrIdListaEmp = items;
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -67,14 +76,13 @@ var fn_Ini_RelacionPLs = (strjson) => {
     });
     var selectedRows = [];
    
-
     $("#gridListasEmpaques").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridListasEmpaques"), selectedRows);
     });
     $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
 
     ////#endregion 
-   
+       
     $("#btnCrea_registroPlAsig").click(function () {
         fn_Crear_Reg()
     });
@@ -85,12 +93,13 @@ var fn_Reg_RelacionPLs = (strjson) => {
     xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
     xitem = strjson.item;
     xsDiv = strjson.sDiv;
+    StrIdListaEmp = [];
     $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
 };
 
 let fn_Crear_Reg = () => {
     let result = false;
-    if (StrIdListaEmp !== "") {
+    if (StrIdListaEmp.length !== 0 ) {
         let PLs = [];
         $.each(StrIdListaEmp, function (index, elemento) {
             PLs.push({
@@ -129,6 +138,7 @@ let fn_AgregarPL = (strPLs) => {
             RequestEndMsg(datos, "Post");
             kendo.ui.progress($(".k-dialog"), false);
             resultPak = true;
+            StrIdListaEmp = [];
             $("#" + `${xsDiv}`).data("kendoWindow").close();
         },
         error: function (data) {
