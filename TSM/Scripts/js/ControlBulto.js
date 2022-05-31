@@ -15,11 +15,31 @@ var fn_Ini_ControlBulto = (xjson) => {
     xIdIng = xjson.sIdIngreso;
     xesNuevo = xjson.esNuevo;
     xidCliente = xjson.sIdCliente;
-    Kendo_CmbFiltrarGrid($("#xcmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    Kendo_CmbFiltrarGrid($("#xcmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione un cliente");
+    Kendo_CmbFiltrarGrid($("#xcmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione..");
+    Kendo_CmbFiltrarGrid($("#xcmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione..");
+    Kendo_CmbFiltrarGrid($("#xcmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidCliente}`, "Nombre2", "IdMarca", "Seleccione..");
+    Kendo_CmbFiltrarGrid($("#xcmbProceso"), TSM_Web_APi + "TiposProcesos", "Nombre", "IdTipoProceso", "Seleccione..");
+    KdoComboBoxbyData($("#xcmbIdUni"), "[]", "Nombre", "IdUnidad", "Seleccione ....");
     KdoComboBoxEnable($("#xcmbCliente"), false);
     KdoCmbSetValue($("#xcmbCliente"), xidCliente);
     TextBoxReadOnly($("#txtEstilo"), false);
+    TextBoxReadOnly($("#txtPrenda"), false);
+    TextBoxReadOnly($("#txtConfeccion"), false);
+    TextBoxReadOnly($("#txtPartePrenda"), false);
+    TextBoxReadOnly($("#txtServicio"), false);
+    TextBoxReadOnly($("#txtNumero"), false);
+    TextBoxReadOnly($("#txtNombreDiseño"), false);
+    TextBoxReadOnly($("#txtColor"), false);
+    $("#txtNombreDiseño").val("");
+    $("#txtEstilo").val("");
+    $("#txtNumero").val("");
+    $("#txtPO").val("");
+    $("#txtColor").val("");
+    KdoCmbSetValue($("#xcmbPlanta"), "");
+    KdoCmbSetValue($("#xcmbMarca"), "");
+    KdoCmbSetValue($("#xcmbProceso"), "");
+
+    $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
 
     // crear boton "Crear Bulto"
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
@@ -212,12 +232,19 @@ var fn_Ini_ControlBulto = (xjson) => {
                     if (input.is("[name='xcmbPlanta']") ) {
                         return $("#xcmbPlanta").data("kendoComboBox").selectedIndex >= 0;
                     }
+                    if (input.is("[name='xcmbProceso']")) {
+                        return $("#xcmbProceso").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[name='xcmbMarca']")) {
+                        return $("#xcmbMarca").data("kendoComboBox").selectedIndex >= 0;
+                    }
                     if (input.is("[name='txtCorte_Rollo']")) {
                         return input.val() !== "";
                     }
-                    if (input.is("[name='txtColor']")) {
+                    if (input.is("[name='txtPO']")) {
                         return input.val() !== "";
                     }
+                    
                     
                     return true;
                 },
@@ -227,17 +254,19 @@ var fn_Ini_ControlBulto = (xjson) => {
                     }
                     return true;
                 },
-                MsgLong2: function (input) {
-                    if (input.is("[name='txtColor']")) {
-                        return input.val().length <= 200;
+                MsgLong3: function (input) {
+                    if (input.is("[name='txtPO']")) {
+                        return input.val().length <= 30;
                     }
                     return true;
                 }
+
             },
             messages: {
                 MsgRequerido: "Requerido",
                 MsgLong1: "Longitud del campo es 20",
-                MsgLong2: "Longitud del campo es 200"
+                MsgLong2: "Longitud del campo es 200",
+                MsgLong3: "Longitud del campo es 30"
             }
         }).data("kendoValidator");
     //vista Ingreso Bulto(boton crear bulto)
@@ -252,7 +281,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Width: "20%",
                 MinWidth: "10%"
             }],
-            Param: { sidHb: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
+            Param: { sidHb: xidHojaBandeo, fnRefresh: "fn_RefrescarGrid", Uni: Kendo_CmbGetvalue($("#xcmbIdUni")) },
             fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBulto", fnReg: "fn_Reg_IngresoBulto", fnActi:"fn_FocusVista"}
         };
 
@@ -272,7 +301,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Width: "20%",
                 MinWidth: "10%"
             }],
-            Param: { sIdHojaBandeo: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false, fnRefresh: "fn_RefrescarGrid" },
+            Param: { sIdHojaBandeo: xidHojaBandeo,  fnRefresh: "fn_RefrescarGrid", Uni: Kendo_CmbGetvalue($("#xcmbIdUni")) },
             fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie", fnActi:"fn_FocusVistaSerie" }
         };
 
@@ -295,6 +324,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 success: function (data) {
                     RequestEndMsg(data, "Delete");
                     kendo.ui.progress($(".k-window"), false);
+                    fn_Get_ListFms(xidHojaBandeo);
                 },
                 error: function (data) {
                     kendo.ui.progress($(".k-window"), false);
@@ -305,6 +335,33 @@ var fn_Ini_ControlBulto = (xjson) => {
         }
 
     });
+    $("#Mtlfm").data("kendoMultiSelect").bind("select", function (e) {
+        if (xidHojaBandeo > 0) {
+            kendo.ui.progress($(".k-window"), true);
+            $.ajax({
+                url: TSM_Web_APi +"HojasBandeosDisenos",//
+                type: "Post",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdBandeosDisenos:0,
+                    IdHojaBandeo: xidHojaBandeo,
+                    IdCatalogoDiseno: e.dataItem.IdCatalogoDiseno
+                }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    RequestEndMsg(data, "Post");
+                    kendo.ui.progress($(".k-window"), false);
+                    fn_Get_ListFms(xidHojaBandeo);
+                },
+                error: function (data) {
+                    fn_Get_HojasBandeoDisenos(xidHojaBandeo);
+                    kendo.ui.progress($(".k-window"), true);
+                    ErrorMsg(data);
+                }
+            });
+        }
+
+    });
 
 
     if (xidHojaBandeo > 0) {
@@ -312,15 +369,26 @@ var fn_Ini_ControlBulto = (xjson) => {
     } else {
         $("#txtCorte_Rollo").val("");
         $("#txtColor").val("");
-        $("#txtEstilo").val("");
-        $('#chkRollo').prop('checked', false);
         $('#chkEnlazarTsm').prop('checked', true);
         KdoCmbSetValue($("#xcmbPlanta"), "");
         $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(xidCliente));
         $("#Mtlfm").data("kendoMultiSelect").value([""]);
     }
-    $("#txtCorte_Rollo").focus().select();
+
+    $("#chkEnlazarTsm").click(function () {
+        if (this.checked) {
+            KdoMultiSelectEnable($("#Mtlfm"), true);
+
+        } else {
+            fn_DelHbDisenos();
+            KdoMultiSelectEnable($("#Mtlfm"), false);
+
+        }
+    });
+
     $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
+    KdoCmbFocus($("#xcmbMarca"));
+    fn_Get_ListFms(xidHojaBandeo);
 }
 
 var fn_Reg_ControlBulto = (xjson) => {
@@ -332,6 +400,24 @@ var fn_Reg_ControlBulto = (xjson) => {
     KdoComboBoxEnable($("#xcmbCliente"), false);
     TextBoxReadOnly($("#txtEstilo"), false);
     KdoCmbSetValue($("#xcmbCliente"), xidCliente);
+    TextBoxReadOnly($("#txtEstilo"), false);
+    TextBoxReadOnly($("#txtPrenda"), false);
+    TextBoxReadOnly($("#txtConfeccion"), false);
+    TextBoxReadOnly($("#txtPartePrenda"), false);
+    TextBoxReadOnly($("#txtServicio"), false);
+    TextBoxReadOnly($("#txtNumero"), false);
+    TextBoxReadOnly($("#txtNombreDiseño"), false);
+    TextBoxReadOnly($("#txtColor"), false);
+    $("#txtNombreDiseño").val("");
+    $("#txtEstilo").val("");
+    $("#txtNumero").val("");
+    $("#txtPO").val("");
+    $("#txtColor").val("");
+
+    KdoCmbSetValue($("#xcmbPlanta"), "");
+    KdoCmbSetValue($("#xcmbMarca"), "");
+    KdoCmbSetValue($("#xcmbProceso"), "");
+
     if (xidHojaBandeo > 0) {
         //llenar campos de  si existe hoja
         fn_Get_HojasBandeo(xidHojaBandeo);
@@ -341,10 +427,8 @@ var fn_Reg_ControlBulto = (xjson) => {
         // cuando no es edicion(registro nuevo)
         $("#txtCorte_Rollo").val("");
         $("#txtColor").val("");
-        $("#txtEstilo").val("");
         $("#Mtlfm").data("kendoMultiSelect").value([""]);
-        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(xidCliente))
-        $('#chkRollo').prop('checked', false);
+        $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(xidCliente));
         $('#chkEnlazarTsm').prop('checked', true);
         KdoCmbSetValue($("#xcmbPlanta"), "");
         KdoButtonEnable($("#btnCrearSerieBulto"), false );
@@ -354,7 +438,9 @@ var fn_Reg_ControlBulto = (xjson) => {
     //llenar grid detalle
     $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
-    $("#txtCorte_Rollo").focus().select();
+   
+    KdoCmbFocus($("#xcmbMarca"));
+    fn_Get_ListFms(xidHojaBandeo);
 }
 
 let get_CatalogxCliente = (xidClie) => {
@@ -387,11 +473,15 @@ let fn_Gen_Hb = () => {
                 IdHojaBandeo: xidHojaBandeo,
                 IdIngreso: xIdIng,
                 IdCliente: KdoCmbGetValue($("#xcmbCliente")).toString(),
-                Rollo: $("#chkRollo").is(':checked') ? 1 : 0,
                 Corte: $("#txtCorte_Rollo").val(),
                 Color: $("#txtColor").val(),
                 IdPlanta: KdoCmbGetValue($("#xcmbPlanta")),
-                IdCatalogoDisenosList: $("#Mtlfm").data("kendoMultiSelect").value().toString()
+                IdCatalogoDisenosList: $("#Mtlfm").data("kendoMultiSelect").value().toString(),
+                IdTipoProceso: KdoCmbGetValue($("#xcmbProceso")),
+                IdMarca: KdoCmbGetValue($("#xcmbMarca")),
+                PO: $("#txtPO").val(),
+                IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
+
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
@@ -402,6 +492,7 @@ let fn_Gen_Hb = () => {
                 KdoButtonEnable($("#btnCrearSerieBulto"), true);
                 KdoButtonEnable($("#btnCrearBulto"), true);
                 fn_Get_HojasBandeo(datos[0].IdHojaBandeo);
+                fn_Get_ListFms(datos[0].IdHojaBandeo);
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -425,13 +516,15 @@ let fn_Get_HojasBandeo = (xId)=> {
         success: function (datos) {
             if (datos !== null) {
                 $("#txtCorte_Rollo").val(datos.Corte);
-                $("#txtEstilo").val(datos.Estilo);
                 $("#txtColor").val(datos.Color);
                 KdoCmbSetValue($("#xcmbCliente"), datos.IdCliente);
                 KdoCmbSetValue($("#xcmbPlanta"), datos.IdPlanta);
-                $('#chkRollo').prop('checked', datos.Rollo);
                 kendo.ui.progress($(".k-window"), false);
                 $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(datos.IdCliente));
+                KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
+                KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
+                $("#txtPO").val(datos.PO);
+                KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
                 fn_Get_HojasBandeoDisenos(xId);
             }
         },
@@ -471,7 +564,147 @@ var fn_RefrescarGrid = () => {
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
 };
 
+let fn_dsFiltroUM = function (filtro) {
 
+    return new kendo.data.DataSource({
+        dataType: 'json',
+        sort: { field: "Nombre", dir: "asc" },
+        transport: {
+            read: function (datos) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    async: false,
+                    url: TSM_Web_APi + "UnidadesMedidas/GetUnidadesMedidasByFiltro",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(filtro),
+                    success: function (result) {
+                        datos.success(result);
+
+                    }
+                });
+            }
+        }
+    });
+};
 var fn_focusControl = () => {
     $("#txtCorte_Rollo").focus();
+};
+
+var fn_MostraTablaFm = function (ds, div) {
+    let xfm = $("#" + div + "");
+    xfm.children().remove();
+    xfm.append('<table class="table mt-3" >' +
+        '<thead>' +
+        '<tr>' +
+        '<th scope="col">FM Diseños</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody id="' + div + '_Det">' +
+        '</tbody>' +
+        '</table>'
+    );
+
+    let xfmDet = $("#" + div + "_Det");
+    xfmDet.children().remove();
+    $.each(ds, function (index, elemento) {
+        if (elemento.NodocCatalogo !== null) {
+            xfmDet.append('<tr>' +
+                '<td><a class ="btn" data-idbandeosdisenos="' + elemento.IdBandeosDisenos +'" onclick="fn_Get_Fms(this)">' + elemento.NodocCatalogo + '</a></td>' +
+                '</tr>');
+        }
+    });
+};
+
+let fn_Get_ListFms = (xId) => {
+    kendo.ui.progress($(".k-window"), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMs/" + `${xId}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            fn_MostraTablaFm(datos, "listFM");
+            if (datos.length > 0) {
+                fn_Fms(datos[0].IdBandeosDisenos);
+            } else {
+                fn_Fms(0);
+            }
+            $('#chkEnlazarTsm').prop('checked', datos.length > 0 ? true : false);
+            KdoMultiSelectEnable($("#Mtlfm"), datos.length > 0 ? true : false);
+         
+        },
+        error: function () {
+            kendo.ui.progress($(".k-window"), false);
+        }
+    });
+
+};
+
+let fn_Get_Fms = (e) => {
+    kendo.ui.progress($(".k-window"), true);
+    var obj = $(e);
+    let xvIdhbd = obj.data("idbandeosdisenos").toString();
+    fn_Fms(xvIdhbd);
+   
+}
+
+let fn_Fms = (id) => {
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMsByIdBandeosDis/" + `${id}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            if (datos.length > 0) {
+                $("#txtNombreDiseño").val(datos[0].Nombre);
+                $("#txtEstilo").val(datos[0].EstiloDiseno);
+                $("#txtNumero").val(datos[0].NumeroDiseno);
+
+            } else {
+                $("#txtNombreDiseño").val("");
+                $("#txtEstilo").val("");
+                $("#txtNumero").val("");
+            }
+            kendo.ui.progress($(".k-window"), false);
+        },
+        error: function () {
+            kendo.ui.progress($(".k-window"), false);
+        }
+    });
+}
+
+let fn_DelHbDisenos = function () {
+
+    kendo.ui.progress($(".k-window"), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMs/" + `${xidHojaBandeo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (datos) {
+            if (datos.length > 0) {
+                kendo.ui.progress($(".k-window"), true);
+                $.ajax({
+                    url: TSM_Web_APi + "HojasBandeosDisenos/DelbyIdHoja/" + `${xidHojaBandeo}`,//
+                    type: "Delete",
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        RequestEndMsg(data, "Delete");
+                        kendo.ui.progress($(".k-window"), false);
+                        fn_Get_ListFms(xidHojaBandeo);
+                        fn_Get_HojasBandeoDisenos(xidHojaBandeo);
+                    },
+                    error: function (data) {
+                        kendo.ui.progress($(".k-window"), false);
+                        $('#chkEnlazarTsm').prop('checked', true);
+                        ErrorMsg(data);
+                    }
+                });
+            }
+            kendo.ui.progress($(".k-window"), false);
+        },
+        error: function () {
+            kendo.ui.progress($(".k-window"), false);
+        }
+    });
+   
 };
