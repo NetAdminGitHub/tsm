@@ -25,9 +25,12 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
     // crear boton Crear serie Bulto
     KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
+    // crear boton Crear serie Bulto
+    KdoButton($("#btnImportarBultos"), "excel", "Importar Bultos");
 
     KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+    KdoButtonEnable($("#btnImportarBultos"), xesNuevo ? false : true);
 
     // crear Ingresar cantidad
     KdoButton($("#btnIngresarCatidad"), "", "Ingresar Cantidad");
@@ -279,6 +282,25 @@ var fn_Ini_ControlBulto = (xjson) => {
         fn_GenLoadModalWindow(strjson);
     });
 
+    //vista importar Bulto
+    $("#btnImportarBultos").click(function () {
+        let strjson = {
+            config: [{
+                Div: "vImportarBultos",
+                Vista: "~/Views/IngresoMercancias/_ImportarBultos.cshtml",
+                Js: "ImportarBultos.js",
+                Titulo: "Importación de Bultos / Rollos",
+                Height: "70%",
+                Width: "20%",
+                MinWidth: "10%"
+            }],
+            Param: { sIdHojaBandeo: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false },
+            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie", fnActi: "fn_FocusVistaSerie" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+    });
+
    
     $("#btnGuardarRegistro").click(function () {
         fn_Gen_Hb();
@@ -337,6 +359,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         fn_Get_HojasBandeo(xidHojaBandeo);
         KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
         KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+        KdoButtonEnable($("#btnImportarBultos"), xesNuevo ? false : true);
     } else {
         // cuando no es edicion(registro nuevo)
         $("#txtCorte_Rollo").val("");
@@ -349,6 +372,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         KdoCmbSetValue($("#xcmbPlanta"), "");
         KdoButtonEnable($("#btnCrearSerieBulto"), false );
         KdoButtonEnable($("#btnCrearBulto"), false);
+        KdoButtonEnable($("#btnImportarBultos"), false);
         $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     }
     //llenar grid detalle
@@ -401,6 +425,7 @@ let fn_Gen_Hb = () => {
                 xIdIng = datos[0].IdIngreso;
                 KdoButtonEnable($("#btnCrearSerieBulto"), true);
                 KdoButtonEnable($("#btnCrearBulto"), true);
+                KdoButtonEnable($("#btnImportarBultos"), true);
                 fn_Get_HojasBandeo(datos[0].IdHojaBandeo);
             },
             error: function (data) {
@@ -469,6 +494,7 @@ var fn_RefrescarGrid = () => {
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
     KdoButtonEnable($("#btnCrearSerieBulto"), xidHojaBandeo===0 ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
+    KdoButtonEnable($("#btnImportarBultos"), xidHojaBandeo === 0 ? false : true);
 };
 
 

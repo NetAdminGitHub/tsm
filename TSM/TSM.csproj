@@ -513,6 +513,7 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\ImportarBultos.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
@@ -1073,6 +1074,7 @@
     <Content Include="Views\UsuariosRolesPublicos\Index.cshtml" />
     <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
     <Content Include="Views\TiposProcesos\Index.cshtml" />
+    <Content Include="Views\IngresoMercancias\_ImportarBultos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
