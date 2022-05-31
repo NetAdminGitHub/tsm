@@ -1,6 +1,7 @@
 ﻿"use strict"
 var Permisos;
 let xidclie = 0;
+let xidPlanta = 0;
 $(document).ready(function () {
   
     // crear combobox cliente
@@ -19,7 +20,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasGeneral/"+`${xidclie}`},
+                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasGeneral/" + `${xidclie}/${xidPlanta}`},
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
@@ -131,6 +132,22 @@ $(document).ready(function () {
         } else {
             if ($.isNumeric(this.value())) {
                 xidclie = this.value();
+                $("#gridIngreso").data("kendoGrid").dataSource.read();
+                KdoButtonEnable($("#btnIngresarMercancia"), true);
+                KdoButtonEnable($("#btnImportarExcel"), true);
+            }
+        }
+    });
+    $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xidPlanta = 0
+            $("#gridIngreso").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarMercancia"), false);
+            KdoButtonEnable($("#btnImportarExcel"), false);
+        } else {
+            if ($.isNumeric(this.value())) {
+                xidPlanta = this.value();
                 $("#gridIngreso").data("kendoGrid").dataSource.read();
                 KdoButtonEnable($("#btnIngresarMercancia"), true);
                 KdoButtonEnable($("#btnImportarExcel"), true);
