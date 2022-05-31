@@ -244,9 +244,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                     if (input.is("[name='txtPO']")) {
                         return input.val() !== "";
                     }
-                    //if (input.is("[name='txtColor']")) {
-                    //    return input.val() !== "";
-                    //}
+                    
                     
                     return true;
                 },
@@ -254,12 +252,6 @@ var fn_Ini_ControlBulto = (xjson) => {
                     if (input.is("[name='txtCorte_Rollo']")  ) {
                         return input.val().length <=20;
                     }
-                    return true;
-                },
-                MsgLong2: function (input) {
-                    //if (input.is("[name='txtColor']")) {
-                    //    return input.val().length <= 200;
-                    //}
                     return true;
                 },
                 MsgLong3: function (input) {
@@ -524,7 +516,6 @@ let fn_Get_HojasBandeo = (xId)=> {
         success: function (datos) {
             if (datos !== null) {
                 $("#txtCorte_Rollo").val(datos.Corte);
-           /*     $("#txtEstilo").val(datos.Estilo);*/
                 $("#txtColor").val(datos.Color);
                 KdoCmbSetValue($("#xcmbCliente"), datos.IdCliente);
                 KdoCmbSetValue($("#xcmbPlanta"), datos.IdPlanta);
