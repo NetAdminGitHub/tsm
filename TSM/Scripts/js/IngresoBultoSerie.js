@@ -21,8 +21,6 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
         value: 0
     });
 
-    Kendo_CmbFiltrarGrid($("#cmb_Ibs_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
-    KdoComboBoxEnable($("#cmb_Ibs_Unidades"), false);
     vFrmIngBulSerie = $("#FrmIngresoBultoSerie").kendoValidator({
             rules: {
                 MsgRequerido: function (input) {
@@ -57,20 +55,13 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
                         return input.val().length <= 20;
                     }
                     return true;
-                },
-                MsgIdUniArea: function (input) {
-                    if (input.is("[name='cmb_Ibs_Unidades']")) {
-                        return $("#cmb_Ibs_Unidades").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
                 }
             },
             messages: {
                 MsgRequerido: "Campo Requerido",
                 MsgMayora0: "Cantidad debe ser mayor a 0",
                 MsgBulto: "Longitud del campo es 50",
-                MsgTalla: "Longitud del campo es 20",
-                MsgIdUniArea: "Requerido"
+                MsgTalla: "Longitud del campo es 20"
             }
         }).data("kendoValidator");
 
@@ -89,7 +80,6 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
     });
 
     fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
-    KdoCmbSetValue($("#cmb_Ibs_Unidades"), xUni);
 };
 
 var fn_Reg_IngresoBultoSerie = (strjson) => {
@@ -103,9 +93,6 @@ var fn_Reg_IngresoBultoSerie = (strjson) => {
     $("#txt_Ibs_Talla").val("");
   
     fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
-    KdoCmbSetValue($("#cmb_Ibs_Unidades"), xUni);
-    KdoComboBoxEnable($("#cmb_Ibs_Unidades"), false);
-
 };
 
 let fn_Gen_BultoSerie = () => {
@@ -119,8 +106,7 @@ let fn_Gen_BultoSerie = () => {
             DocInicial: $("#txt_Ibs_Bulto_Ini").val(),
             DocFinal: $("#txt_Ibs_Bulto_Fin").val(),
             Talla: $("#txt_Ibs_Talla").val(),
-            Cantidad: kdoNumericGetValue($("#num_Ibs_Cantidad")),
-            IdUnidad: $("#cmb_Ibs_Unidades").val()
+            Cantidad: kdoNumericGetValue($("#num_Ibs_Cantidad"))
         }),
         contentType: "application/json; charset=utf-8",
         success: function (datos) {
@@ -131,7 +117,6 @@ let fn_Gen_BultoSerie = () => {
             fn_Get_UltimoBultoDigitadoxCort_Serie(xIdHojaBandeo);
             window[xfn_RefreshSerie]();
             kdoNumericSetValue($("#num_Ibs_Cantidad"), 0);
-            $("#cmb_Ibs_Unidades").data("kendoComboBox").value("");
             RequestEndMsg(datos, "Post");
         },
         error: function (data) {
