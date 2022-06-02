@@ -45,12 +45,33 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
     // crear boton Crear serie Bulto
     KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
-    // crear boton Crear serie Bulto
-    KdoButton($("#btnImportarBultos"), "excel", "Importar Bultos");
+    //botón importar Bulto
+    $("#Adjunto").kendoUpload({
+        async: {
+            saveUrl: "/IngresoMercancias/SubirArchivo",
+            autoUpload: true
+        },
+        localization: {
+            select: '<div class="k-icon k-i-excel"></div>&nbsp;Importar'
+        },
+        upload: function (e) {
+            e.sender.options.async.saveUrl = "/IngresoMercancias/SubirArchivo/" + xidHojaBandeo;
+        },
+        showFileList: false,
+        success: function (e) {
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    ImportarExcel(e);
+                }
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
+            }
+        }
+    });
 
     KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
-    KdoButtonEnable($("#btnImportarBultos"), xesNuevo ? false : true);
+    $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 
     // crear Ingresar cantidad
     KdoButton($("#btnIngresarCatidad"), "", "Ingresar Cantidad");
@@ -311,24 +332,31 @@ var fn_Ini_ControlBulto = (xjson) => {
         fn_GenLoadModalWindow(strjson);
     });
 
-    //vista importar Bulto
-    $("#btnImportarBultos").click(function () {
-        let strjson = {
-            config: [{
-                Div: "vImportarBultos",
-                Vista: "~/Views/IngresoMercancias/_ImportarBultos.cshtml",
-                Js: "ImportarBultos.js",
-                Titulo: "Importación de Bultos / Rollos",
-                Height: "70%",
-                Width: "20%",
-                MinWidth: "10%"
-            }],
-            Param: { sIdHojaBandeo: xidHojaBandeo, esRollo: $("#chkRollo").is(':checked') ? true : false },
-            fn: { fnclose: "fn_RefrescarGrid", fnLoad: "fn_Ini_IngresoBultoSerie", fnReg: "fn_Reg_IngresoBultoSerie", fnActi: "fn_FocusVistaSerie" }
-        };
+    let ImportarExcel = function (e) {
+        kendo.ui.progress($("#body"), true);
+        var XType = "Post";
 
-        fn_GenLoadModalWindow(strjson);
-    });
+        $.ajax({
+            url: TSM_Web_APi + "/HojasBandeosMercancias/ImportarMercancias",
+            type: XType,
+            dataType: "json",
+            data: JSON.stringify({
+                IdHojaBandeo: xidHojaBandeo,
+                IdUnidad: 0,
+                RutaCompleta: e.files[0].name,
+                NombreArchivo: e.response.Ruta
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                kendo.ui.progress($("#body"), false);
+                RequestEndMsg(data, XType);
+            },
+            error: function (data) {
+                kendo.ui.progress($("#body"), false);
+                ErrorMsg(data);
+            }
+        });
+    }
 
    
     $("#btnGuardarRegistro").click(function () {
@@ -445,7 +473,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         fn_Get_HojasBandeo(xidHojaBandeo);
         KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
         KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
-        KdoButtonEnable($("#btnImportarBultos"), xesNuevo ? false : true);
+        KdoButton$("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
     } else {
         // cuando no es edicion(registro nuevo)
         $("#txtCorte_Rollo").val("");
@@ -456,7 +484,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         KdoCmbSetValue($("#xcmbPlanta"), "");
         KdoButtonEnable($("#btnCrearSerieBulto"), false );
         KdoButtonEnable($("#btnCrearBulto"), false);
-        KdoButtonEnable($("#btnImportarBultos"), false);
+        $("#Adjunto").data("kendoUpload").enable(false);
         $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     }
     //llenar grid detalle
@@ -515,7 +543,7 @@ let fn_Gen_Hb = () => {
                 xIdIng = datos[0].IdIngreso;
                 KdoButtonEnable($("#btnCrearSerieBulto"), true);
                 KdoButtonEnable($("#btnCrearBulto"), true);
-                KdoButtonEnable($("#btnImportarBultos"), true);
+                $("#Adjunto").data("kendoUpload").enable(true);
                 fn_Get_HojasBandeo(datos[0].IdHojaBandeo);
                 fn_Get_ListFms(datos[0].IdHojaBandeo);
             },
@@ -587,7 +615,7 @@ var fn_RefrescarGrid = () => {
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
     KdoButtonEnable($("#btnCrearSerieBulto"), xidHojaBandeo===0 ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
-    KdoButtonEnable($("#btnImportarBultos"), xidHojaBandeo === 0 ? false : true);
+    $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 };
 
 let fn_dsFiltroUM = function (filtro) {

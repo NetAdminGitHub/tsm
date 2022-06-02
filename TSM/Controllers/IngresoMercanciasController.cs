@@ -25,10 +25,11 @@ namespace TSM.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubirArchivo(string id, IEnumerable<HttpPostedFileBase> Adjunto)
+        [Route("IngresoMercancias/SubirArchivo/{id}")]
+        public ActionResult SubirArchivo(long id, IEnumerable<HttpPostedFileBase> Adjunto)
         {
-            string exten = "xlsx";
-            string physicalPath = Path.Combine(Server.MapPath("~/Importaciones"), id);
+            string exten = ".xlsx";
+            string physicalPath = Path.Combine(Server.MapPath("~/Importaciones"), id.ToString());
 
             Dictionary<string, object> respuesta = new Dictionary<string, object>(); 
 
