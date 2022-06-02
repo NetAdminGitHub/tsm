@@ -147,7 +147,7 @@ var fn_Ini_ControlBulto = (xjson) => {
         Grid_SelectRow($("#gridBultoDetalle"), selectedRows);
     });
 
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false) });
     //#endregion 
 
     //#region crear grid resumen
@@ -233,6 +233,9 @@ var fn_Ini_ControlBulto = (xjson) => {
                     }
                     if (input.is("[name='xcmbMarca']")) {
                         return $("#xcmbMarca").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[name='xcmbIdUni']")) {
+                        return $("#xcmbIdUni").data("kendoComboBox").selectedIndex >= 0;
                     }
                     if (input.is("[name='txtCorte_Rollo']")) {
                         return input.val() !== "";
@@ -432,11 +435,12 @@ var fn_Reg_ControlBulto = (xjson) => {
         $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     }
     //llenar grid detalle
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false) });
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
    
     KdoCmbFocus($("#xcmbMarca"));
     fn_Get_ListFms(xidHojaBandeo);
+  
 }
 
 let get_CatalogxCliente = (xidClie) => {
@@ -447,7 +451,7 @@ let get_CatalogxCliente = (xidClie) => {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoByCliente/" + `${xidClie}`,
+                    url: TSM_Web_APi + "HojasBandeosDisenos/GetFmsAprob/" + `${xidClie}`,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -553,11 +557,12 @@ let fn_Get_HojasBandeoDisenos = (xId) => {
 };
 
 var fn_RefrescarGrid = () => {
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false)});
     $("#gridHoja").data("kendoGrid").dataSource.read();
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
     KdoButtonEnable($("#btnCrearSerieBulto"), xidHojaBandeo===0 ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
+   
 };
 
 let fn_dsFiltroUM = function (filtro) {
@@ -646,7 +651,7 @@ let fn_Get_Fms = (e) => {
 
 let fn_Fms = (id) => {
     $.ajax({
-        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMsByIdBandeosDis/" + `${id}`,
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMsByIdBandeosDis/" + `${xidCliente}/${id}`,
         dataType: 'json',
         type: 'GET',
         success: function (datos) {
@@ -654,11 +659,20 @@ let fn_Fms = (id) => {
                 $("#txtNombreDiseño").val(datos[0].Nombre);
                 $("#txtEstilo").val(datos[0].EstiloDiseno);
                 $("#txtNumero").val(datos[0].NumeroDiseno);
-
+                $("#txtPrenda").val(datos[0].NombrePrenda);
+                $("#txtPartePrenda").val(datos[0].NombrePrenda);
+                $("#txtConfeccion").val(datos[0].NombreConfeccion);
+                $("#txtServicio").val(datos[0].NombreServicio);
+                $("#txtColor").val(datos[0].ColorTela);
             } else {
                 $("#txtNombreDiseño").val("");
                 $("#txtEstilo").val("");
                 $("#txtNumero").val("");
+                $("#txtPrenda").val("");
+                $("#txtPartePrenda").val("");
+                $("#txtConfeccion").val("");
+                $("#txtServicio").val("");
+                $("#txtColor").val("");
             }
             kendo.ui.progress($(".k-window"), false);
         },
