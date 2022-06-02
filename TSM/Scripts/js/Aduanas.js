@@ -53,11 +53,19 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 200");
                                     return false;
                                 }
-
+                                if (input.is("[name='CodigoAduana']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='CodigoAduana']") && input.val().length > 5) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 5");
+                                    return false;
+                                }
                                 return true;
                             }
                         }
                     },
+                    CodigoAduana: { type:"string" }, 
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -74,10 +82,11 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "FechaMod");
             Grid_Focus(e, "Nombre");
         },
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
             columns: [ 
             { field: "IdAduana", title: "Aduana", hidden: true },
-            { field: "Nombre", title: "Nombre", sortable: { initialDirection: "asc" }},
+            { field: "Nombre", title: "Nombre" },
+            { field: "CodigoAduana", title: "Código Aduana", sortable: { initialDirection: "asc" } },            
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]

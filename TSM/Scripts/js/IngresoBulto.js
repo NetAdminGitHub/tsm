@@ -24,8 +24,7 @@ var fn_Ini_IngresoBulto = (strjson) => {
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
     $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
-    Kendo_CmbFiltrarGrid($("#cmb_Ib_Unidades"), UrlUnidadesMedidas, "Abreviatura", "IdUnidad", "Seleccione...");
-    KdoComboBoxEnable($("#cmb_Ib_Unidades"),false);
+
     vFrmIngBulto = $("#FrmIngresoBulto").kendoValidator(
         {
             rules: {
@@ -55,21 +54,13 @@ var fn_Ini_IngresoBulto = (strjson) => {
                         return input.val().length <= 20;
                     }
                     return true;
-                },
-
-                MsgIdUniArea: function (input) {
-                    if (input.is("[name='cmb_Ib_Unidades']")) {
-                        return $("#cmb_Ib_Unidades").data("kendoComboBox").selectedIndex >= 0;
-                    }
-                    return true;
                 }
             },
             messages: {
                 MsgRequerido: "Campo Requerido",
                 MsgMayora0:"Cantidad debe ser mayor a 0",
                 MsgBulto: "Longitud del campo es 50",
-                MsgTalla: "Longitud del campo es 20",
-                MsgIdUniArea: "Requerido"
+                MsgTalla: "Longitud del campo es 20"
             }
         }).data("kendoValidator");
 
@@ -88,7 +79,6 @@ var fn_Ini_IngresoBulto = (strjson) => {
     });
 
     fn_Get_UltimoBultoDigitadoxCorte(xidHb);
-    KdoCmbSetValue($("#cmb_Ib_Unidades"), xUniB);
 };
 
 var fn_Reg_IngresoBulto = (strjson) => {
@@ -96,7 +86,6 @@ var fn_Reg_IngresoBulto = (strjson) => {
     xesRollo_Bulto = strjson.Uni ===20? true:false;
     xfn_Refresh = strjson.fnRefresh;
     xUniB = strjson.Uni;
-    KdoComboBoxEnable($("#cmb_Ib_Unidades"), false);
      //limpiar campos
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
@@ -104,7 +93,6 @@ var fn_Reg_IngresoBulto = (strjson) => {
     $("#txt_Ib_Bulto").focus();
 
     fn_Get_UltimoBultoDigitadoxCorte(xidHb);
-    KdoCmbSetValue($("#cmb_Ib_Unidades"), xUniB);
 };
 
 let fn_HojaBandeoMercancia = (xid) => {
@@ -120,8 +108,7 @@ let fn_HojaBandeoMercancia = (xid) => {
             Docenas: xesRollo_Bulto === true ? null : kdoNumericGetValue($("#num_Ib_Cantidad")) / 12,
             IdMercancia: 0,
             NoDocumento: $("#txt_Ib_Bulto").val(),
-            Estado: "INGRESADO",
-            IdUnidad: $("#cmb_Ib_Unidades").val()
+            Estado: "INGRESADO"
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -129,7 +116,6 @@ let fn_HojaBandeoMercancia = (xid) => {
             $("#txt_Ib_Talla").val("");
             $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
             $("#txt_Ib_Bulto").focus();
-            $("#cmb_Ib_Unidades").data("kendoComboBox").value("");
             fn_Get_UltimoBultoDigitadoxCorte(xidHb);
             window[xfn_Refresh]();
 
@@ -142,7 +128,6 @@ let fn_HojaBandeoMercancia = (xid) => {
         }
     });
 }
-
 
 let fn_Get_UltimoBultoDigitadoxCorte = (xIdHB) => {
     kendo.ui.progress($(document.body), true);

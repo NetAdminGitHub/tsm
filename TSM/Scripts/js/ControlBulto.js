@@ -127,8 +127,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                     Cantidad: { type: "number" },
                     Docenas: { type: "number" },
                     Estado: { type: "string" },
-                    NomEstado: { type: "string" },
-                    NombreUnidad: { type: "string" }
+                    NomEstado: { type: "string" }
                 }
             }
         }
@@ -143,7 +142,6 @@ var fn_Ini_ControlBulto = (xjson) => {
             KdoHideCampoPopup(e.container, "Docenas");
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "NomEstado");
-            KdoHideCampoPopup(e.container, "NombreUnidad");
             Grid_Focus(e, "NoDocumento");
         },
         columns: [
@@ -154,9 +152,7 @@ var fn_Ini_ControlBulto = (xjson) => {
             { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n0}', sum) : 0 #"},
             { field: "Docenas", title: "Docenas", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "NomEstado", title: "Estado", hidden: true },
-            { field: "IdUnidad", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Abreviatura", UrlUnidadesMedidas, "", "Seleccione...", "required", "", "Requerido"], hidden: true, menu: false, filterable: false },
-            { field: "NombreUnidad", title: "Unidad", menu: false, filterable: false }
+            { field: "NomEstado", title: "Estado", hidden: true }
         ]
     });
 
@@ -301,7 +297,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Vista: "~/Views/IngresoMercancias/_IngresoBulto.cshtml",
                 Js: "IngresoBulto.js",
                 Titulo: "Ingreso de Bulto / Rollo",
-                Height: "60%",
+                Height: "55%",
                 Width: "20%",
                 MinWidth: "10%"
             }],
@@ -321,7 +317,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 Vista: "~/Views/IngresoMercancias/_IngresoBultoSerie.cshtml",
                 Js: "IngresoBultoSerie.js",
                 Titulo: "Ingreso de Bulto / Rollo",
-                Height: "70%",
+                Height: "65%",
                 Width: "20%",
                 MinWidth: "10%"
             }],
