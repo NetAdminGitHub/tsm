@@ -4,22 +4,26 @@ let xesRollo_Bulto = 0;
 let vFrmIngBulto;
 let xfn_Refresh;
 let xUniB;
+
 var fn_Ini_IngresoBulto = (strjson) => {
+
     xidHb = strjson.sidHb;
-    xesRollo_Bulto = strjson.Uni === 20 ? true : false
+    xesRollo_Bulto = strjson.Uni == 20 ? true : false;
     xfn_Refresh = strjson.fnRefresh;
     xUniB = strjson.Uni;
     // crear realizar
     KdoButton($("#btn_Ib_Guardar"), "check-outline", "Guardar Registro");
+
     //cnatidad de pieza
     $("#num_Ib_Cantidad").kendoNumericTextBox({
         min: 0,
         max: xesRollo_Bulto === true ? 9999999.99 : 999999999,
-        format: xesRollo_Bulto === true ?"{0:n2}":"#",
-        restrictDecimals: xesRollo_Bulto===true? false:true,
-        decimals: xesRollo_Bulto===true? 2:0,
+        format: xesRollo_Bulto === true ? "{0:n2}" : "#",
+        restrictDecimals: xesRollo_Bulto === true ? false : true,
+        decimals: xesRollo_Bulto === true ? 2 : 0,
         value: 0
     });
+
     //limpiar campos
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
@@ -82,11 +86,22 @@ var fn_Ini_IngresoBulto = (strjson) => {
 };
 
 var fn_Reg_IngresoBulto = (strjson) => {
+
     xidHb = strjson.sidHb;
-    xesRollo_Bulto = strjson.Uni ===20? true:false;
+    xesRollo_Bulto = strjson.Uni == 20 ? true : false;
     xfn_Refresh = strjson.fnRefresh;
     xUniB = strjson.Uni;
-     //limpiar campos
+
+    $("#num_Ib_Cantidad").data("kendoNumericTextBox").setOptions({
+        min: 0,
+        max: xesRollo_Bulto === true ? 9999999.99 : 999999999,
+        format: xesRollo_Bulto === true ? "{0:n2}" : "#",
+        restrictDecimals: xesRollo_Bulto === true ? false : true,
+        decimals: xesRollo_Bulto === true ? 2 : 0,
+        value: 0
+    });
+
+    //limpiar campos
     $("#txt_Ib_Bulto").val("");
     $("#txt_Ib_Talla").val("");
     $("#num_Ib_Cantidad").data("kendoNumericTextBox").value(0.00);
@@ -96,6 +111,7 @@ var fn_Reg_IngresoBulto = (strjson) => {
 };
 
 let fn_HojaBandeoMercancia = (xid) => {
+
     kendo.ui.progress($(".k-window"), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeosMercancias",
@@ -130,6 +146,7 @@ let fn_HojaBandeoMercancia = (xid) => {
 }
 
 let fn_Get_UltimoBultoDigitadoxCorte = (xIdHB) => {
+
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeosMercancias/GetUltimoBultoxCorte/" + `${xIdHB}`,
