@@ -28,8 +28,8 @@ namespace TSM.Controllers
         [Route("IngresoMercancias/SubirArchivo/{id}")]
         public ActionResult SubirArchivo(long id, IEnumerable<HttpPostedFileBase> Adjunto)
         {
-            string exten = ".xlsx";
-            string physicalPath = Path.Combine(Server.MapPath("~/Importaciones"), id.ToString());
+            string exten = ".xlsx", physicalPath;
+            string rutaDirectorio = Path.Combine(Server.MapPath("~/Importaciones"), id.ToString());
 
             Dictionary<string, object> respuesta = new Dictionary<string, object>(); 
 
@@ -46,16 +46,16 @@ namespace TSM.Controllers
 
                     var fileName = Path.GetFileName(file.FileName);
                     
-                    if (!Directory.Exists(physicalPath))
-                        Directory.CreateDirectory(physicalPath);
+                    if (!Directory.Exists(rutaDirectorio))
+                        Directory.CreateDirectory(rutaDirectorio);
 
-                    physicalPath = Path.Combine(physicalPath, fileName);
+                    physicalPath = Path.Combine(rutaDirectorio, fileName);
 
                     file.SaveAs(physicalPath);
                 }
             }
 
-            respuesta.Add("Ruta", physicalPath);
+            respuesta.Add("Ruta", rutaDirectorio);
             respuesta.Add("Resultado", true);
             respuesta.Add("Msj", "");
             return Json(respuesta);

@@ -338,12 +338,12 @@ var fn_Ini_ControlBulto = (xjson) => {
             dataType: "json",
             data: JSON.stringify({
                 IdHojaBandeo: xidHojaBandeo,
-                IdUnidad: 0,
-                RutaCompleta: e.files[0].name,
-                NombreArchivo: e.response.Ruta
+                RutaCompleta: e.response.Ruta,
+                NombreArchivo: e.files[0].name
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
+                fn_RefrescarGrid();
                 kendo.ui.progress($("#body"), false);
                 RequestEndMsg(data, XType);
             },

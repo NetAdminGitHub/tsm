@@ -514,7 +514,6 @@
     <Content Include="Content\UsuariosRoles.css" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
-    <Content Include="Scripts\js\ImportarBultos.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
@@ -1077,6 +1076,7 @@
     <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
     <Content Include="Views\TiposProcesos\Index.cshtml" />
     <Content Include="Views\SeccionesVistas\Index.cshtml" />
+    <Content Include="Support\Plantilla_BultosRollos.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
