@@ -472,7 +472,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         fn_Get_HojasBandeo(xidHojaBandeo);
         KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
         KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
-        KdoButton$("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
+        $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
     } else {
         // cuando no es edicion(registro nuevo)
         $("#txtCorte_Rollo").val("");
