@@ -1,11 +1,13 @@
 ﻿"use strict"
 let xidHoja;
-let StrIdHojaBandeo = "";
+let StrIdHojaBandeo = [];
 let vFrmG;
 let xsDivLe = "";//contiene el nombre de div donde se dibuja la modal
+let xsIdListaEmpaque = 0;
 var fn_Ini_CrearListaEmpaque = (strjson) => {
     xidHoja = strjson.sIdHb;
     xsDivLe = strjson.sDiv;
+    xsIdListaEmpaque = strjson.sIdListaEmpaque;
     KdoButton($("#btnCrea_registro"), "save", "Crear Registro");
     let dS = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
@@ -46,8 +48,16 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridListaEmpaque").kendoGrid({
-        change: function (arg) {
-            StrIdHojaBandeo = this.selectedKeyNames();
+        change: function (e) {
+            let rows = e.sender.select();
+            let items = [];
+
+            rows.each(function (e) {
+                let grid = $("#gridListaEmpaque").data("kendoGrid");
+                let dataItem = grid.dataItem(this);
+                items.push(dataItem.id);
+            });
+            StrIdHojaBandeo = items;
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -110,9 +120,17 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
             }
         }).data("kendoValidator");
 
-    $("#txtNoRefePackingList").val("");
-    $("#txtObservacionPackingList").val("");
-    $("#txtNoRefePackingList").focus();
+    //$("#txtNoRefePackingList").val("");
+    //$("#txtObservacionPackingList").val("");
+    if (xsIdListaEmpaque === 0) {
+        $("#txtNoRefePackingList").val("");
+        $("#txtObservacionPackingList").val("");
+        TextBoxReadOnly($("#txtNoRefePackingList"), true);
+        TextBoxReadOnly($("#txtObservacionPackingList"), true);
+        $("#txtNoRefePackingList").focus();
+    } else {
+        fn_Get_CabLE(xsIdListaEmpaque);
+    }
 
     $("#btnCrea_registro").click(function () {
         fn_CrearReg();
@@ -122,7 +140,7 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
 let fn_CrearReg = () => {
     let result = false;
     if (vFrmG.validate()) {
-        if (StrIdHojaBandeo !== "") {
+        if (StrIdHojaBandeo.length !== 0) {
             let Bandeos = [];
             $.each(StrIdHojaBandeo, function (index, elemento) {
                 Bandeos.push({
@@ -148,11 +166,21 @@ let fn_CrearReg = () => {
 var fn_Reg_CrearListaEmpaque = (strjson) => {
     xidHoja = strjson.sIdHb;
     xsDivLe = strjson.sDiv;
+    xsIdListaEmpaque = strjson.sIdListaEmpaque;
     $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
-    $("#txtNoRefePackingList").val("");
-    $("#txtObservacionPackingList").val("");
-    StrIdHojaBandeo = "";
+    if (xsIdListaEmpaque === 0) {
+        $("#txtNoRefePackingList").val("");
+        $("#txtObservacionPackingList").val("");
+        TextBoxReadOnly($("#txtNoRefePackingList"), true);
+        TextBoxReadOnly($("#txtObservacionPackingList"), true);
+    } else {
+        fn_Get_CabLE(xsIdListaEmpaque);
+    }
+
+    StrIdHojaBandeo = [];
     $("#txtNoRefePackingList").focus();
+
+
 
 };
 
@@ -168,7 +196,8 @@ let fn_Gen_PakigList = (strBande) => {
                 Observacion: $("#txtObservacionPackingList").val(),
                 Peso: 0,
                 IdUsuarioMod: getUser(),
-                HojasBandeo: strBande
+                HojasBandeo: strBande,
+                IdListaEmpaque: xsIdListaEmpaque
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
@@ -178,7 +207,7 @@ let fn_Gen_PakigList = (strBande) => {
                 $("#txtNoRefePackingList").val("");
                 $("#" + `${xsDivLe}`).data("kendoWindow").close();
                 resultPak = true;
-                StrIdHojaBandeo = "";
+                StrIdHojaBandeo = [];
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -194,4 +223,32 @@ let fn_Gen_PakigList = (strBande) => {
 
 var fn_focusLista = () => {
     $("#txtNoRefePackingList").focus()
+};
+
+let fn_Get_CabLE = (xId) => {
+    kendo.ui.progress($(".k-dialog"), true);
+    $.ajax({
+        url: TSM_Web_APi + "ListaEmpaques/" + `${xId}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                $("#txtNoRefePackingList").val(dato.NoDocumento);
+                $("#txtObservacionPackingList").val(dato.Observacion);
+                TextBoxReadOnly($("#txtNoRefePackingList"), false);
+                TextBoxReadOnly($("#txtObservacionPackingList"), false);
+
+            } else {
+                $("#txtNoRefePackingList").val("");
+                $("#txtObservacionPackingList").val("");
+                TextBoxReadOnly($("#txtNoRefePackingList"), true);
+                TextBoxReadOnly($("#txtObservacionPackingList"), true);
+            }
+            kendo.ui.progress($(".k-dialog"), false);
+        },
+        error: function () {
+            kendo.ui.progress($(".k-dialog"), false);
+        }
+    });
+
 };
