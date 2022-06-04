@@ -1076,6 +1076,7 @@
     <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
     <Content Include="Views\TiposProcesos\Index.cshtml" />
     <Content Include="Views\SeccionesVistas\Index.cshtml" />
+    <Content Include="Support\Plantilla_BultosRollos.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

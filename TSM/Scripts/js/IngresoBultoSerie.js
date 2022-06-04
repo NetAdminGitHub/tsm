@@ -1,16 +1,20 @@
 ﻿"use strict"
+
 let xIdHojaBandeo;
 let xesRollo_BultoSerie = 0;
 let vFrmIngBulSerie;
 let xfn_RefreshSerie;
 let xUni;
+
 var fn_Ini_IngresoBultoSerie = (strjson) => {
+
     xIdHojaBandeo = strjson.sIdHojaBandeo;
-    xesRollo_BultoSerie = strjson.esRollo;
+    xesRollo_BultoSerie = strjson.Uni == 20 ? true : false;
     xfn_RefreshSerie = strjson.fnRefresh;
     xUni = strjson.Uni;
     // crear realizar
     KdoButton($("#btn_Ibs_RealizarReg"), "check-outline", "Realizar Registro");
+
     //cnatidad de pieza
     $("#num_Ibs_Cantidad").kendoNumericTextBox({
         min: 0,
@@ -83,10 +87,21 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
 };
 
 var fn_Reg_IngresoBultoSerie = (strjson) => {
+
     xIdHojaBandeo = strjson.sIdHojaBandeo;
-    xesRollo_BultoSerie = strjson.esRollo;
+    xesRollo_BultoSerie = strjson.Uni == 20 ? true : false;
     xfn_RefreshSerie = strjson.fnRefresh;
     xUni = strjson.Uni;
+
+    $("#num_Ibs_Cantidad").data("kendoNumericTextBox").setOptions({
+        min: 0,
+        max: xesRollo_BultoSerie === true ? 9999999.99 : 999999999,
+        format: xesRollo_BultoSerie === true ? "{0:n2}" : "#",
+        restrictDecimals: xesRollo_BultoSerie === true ? false : true,
+        decimals: xesRollo_BultoSerie === true ? 2 : 0,
+        value: 0
+    });
+
     $("#txt_Ibs_Bulto_Ini").focus();
     $("#txt_Ibs_Bulto_Ini").val("");
     $("#txt_Ibs_Bulto_Fin").val("");
