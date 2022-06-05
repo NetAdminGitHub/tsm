@@ -1,5 +1,6 @@
 ﻿
 var Permisos;
+let Gdet;
 $(document).ready(function () {
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
@@ -145,11 +146,11 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "ListaEmpaques/GetPacking/" + `${xIdIngreso}` },
+                url: function () { return TSM_Web_APi + "ListaEmpaques/GetPackingCab/" + `${xIdIngreso}` },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "ListaEmpaquesBandeos/" + datos.IdListaEmpaqueBandeo; },
+                url: function (datos) { return TSM_Web_APi + "ListaEmpaques/" + datos.IdListaEmpaque; },
                 dataType: "json",
                 type: "DELETE"
             },
@@ -161,21 +162,20 @@ $(document).ready(function () {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
-        group: {
-            field:"NoDocumento"
-        },
+        //group: {
+        //    field:"NoDocumento"
+        //},
         schema: {
             model: {
-                id: "IdListaEmpaqueBandeo",
+                id: "IdListaEmpaque",
                 fields: {
-                    IdListaEmpaqueBandeo: { type: "number"},
-                    IdIngreso: { type: "number" },
+                    IdListaEmpaque: { type: "number"},
                     NoDocumento: { type: "string" },
-                    Corte: { type: "string" },
-                    CantidadTotal: { type: "number" },
-                    Color: { type: "string" },
-                    Estilos: { type: "string" },
-                    Tallas: { type: "string" }
+                    Peso: { type: "number" },
+                    Estado: { type: "string" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" },
+                    Observacion: { type: "string" }
                 }
             }
         }
@@ -184,15 +184,49 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridLista").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
+        detailInit: detailInit,
+        dataBound: function () {
+            this.collapseRow(this.tbody.find("tr.k-master-row").first());
+        },
         columns: [
-            { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
-            { field: "IdIngreso", title: "Id Ingreso",hidden:true },
-            { field: "NoDocumento", title: "#Lista",hidden:true },
-            { field: "Corte", title: "Corte" },
-            { field: "CantidadTotal", title: "Cantidad" },
-            { field: "Color", title: "Color" },
-            { field: "Estilos", title: "Estilos" },
-            { field: "Tallas", title: "Tallas" }
+            { field: "IdListaEmpaque", title: "Id Lista Empaque", hidden: true },
+            { field: "NoDocumento", title: "No Documento"},
+            { field: "Peso", title: "Peso", hidden: true },
+            { field: "Estado", title: "Estado" },
+            { field: "Observacion", title: "Observacion" },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            {
+                field: "btnPL", title: "&nbsp;",
+                command: {
+                    name: "btnPL",
+                    iconClass: "k-icon k-i-edit",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        let strjson = {
+                            config: [{
+                                Div: "vMod_CrearListaEmpaque",
+                                Vista: "~/Views/IngresoMercancias/_CrearListaEmpaque.cshtml",
+                                Js: "CrearListaEmpaque.js",
+                                Titulo: "Creación de Lista de Empaque",
+                                Height: "92%",
+                                Width: "70%",
+                                MinWidth: "10%"
+                            }],
+                            Param: { sIdHb: xIdIngreso, sDiv: "vMod_CrearListaEmpaque", sIdListaEmpaque: dataItem.IdListaEmpaque },
+                            fn: { fnclose: "fn_RefresGridLista", fnLoad: "fn_Ini_CrearListaEmpaque", fnReg: "fn_Reg_CrearListaEmpaque", fnActi: "fn_focusLista" }
+                        };
+
+                        fn_GenLoadModalWindow(strjson);
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 
@@ -201,6 +235,96 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridLista").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridLista").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridLista").data("kendoGrid"), dSlis);
+
+    // gCHFor detalle
+    function detailInit(e) {
+     
+        var vidLe = e.data.IdListaEmpaque === null ? 0 : e.data.IdListaEmpaque;
+        var VdS = {
+            transport: {
+                read: {
+                    url: function () { return TSM_Web_APi + "ListaEmpaques/GetPackingDet/" + vidLe; },
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                },
+                destroy: {
+                    url: function (datos) { return TSM_Web_APi + "ListaEmpaquesBandeos/" + datos.IdListaEmpaqueBandeo; },
+                    dataType: "json",
+                    type: "DELETE"
+                },
+                parameterMap: function (data, type) {
+                    if (type !== "read") {
+                        return kendo.stringify(data);
+                    }
+                }
+            },
+            requestEnd: function (e) {
+                Grid_requestEnd(e);
+                if (Gdet !== undefined) {
+                    if (Gdet.dataSource.total() === 0 && e.type ==="destroy") {
+                        $("#gridLista").data("kendoGrid").dataSource.read();
+                    }
+                }
+               
+            },
+            error: Grid_error,
+            schema: {
+                model: {
+                    id: "IdListaEmpaque",
+                    fields: {
+                        IdListaEmpaque: { type: "number" },
+                        IdListaEmpaqueBandeo: { type: "number" },
+                        IdIngreso: { type: "number" },
+                        NoDocumento: { type: "string" },
+                        Corte: { type: "string" },
+                        CantidadTotal: { type: "number" },
+                        Color: { type: "string" },
+                        Estilos: { type: "string" },
+                        Tallas: { type: "string" }
+                    }
+                }
+            },
+            filter: { field: "IdListaEmpaque", operator: "eq", value: e.data.IdListaEmpaque }
+        };
+
+        var g = $("<div/>").appendTo(e.detailCell).kendoGrid({
+            //DEFICNICIÓN DE LOS CAMPOS
+            columns: [
+                { field: "IdListaEmpaque", title: "Id Lista Empaque", hidden: true },
+                { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
+                { field: "IdIngreso", title: "Id Ingreso", hidden: true },
+                { field: "NoDocumento", title: "#Lista", hidden: true },
+                { field: "Corte", title: "Corte" },
+                { field: "CantidadTotal", title: "Cantidad" },
+                { field: "Color", title: "Color" },
+                { field: "Estilos", title: "Estilos" },
+                { field: "Tallas", title: "Tallas" }
+            ]
+        });
+
+        ConfGDetalle(g.data("kendoGrid"), VdS, "gFor_detalle" + vidLe);
+
+        var selectedRowsTec = [];
+        g.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+            Grid_SetSelectRow(g, selectedRowsTec);
+
+            Gdet = g.data("kendoGrid");
+            
+        });
+
+        g.data("kendoGrid").bind("change", function (e) {
+            Grid_SelectRow(g, selectedRowsTec);
+        });
+    }
+
+    function ConfGDetalle(g, ds, Id_gCHForDetalle) {
+        SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si);
+        SetGrid_CRUD_Command(g, false, Permisos.SNBorrar, Id_gCHForDetalle);
+        Set_Grid_DataSource(g, ds);
+    }
+
+
+
 
     var selectedRows2 = [];
     $("#gridLista").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -247,7 +371,7 @@ $(document).ready(function () {
                 Width: "70%",
                 MinWidth: "10%"
             }],
-            Param: { sIdHb: xIdIngreso, sDiv: "vMod_CrearListaEmpaque" },
+            Param: { sIdHb: xIdIngreso, sDiv: "vMod_CrearListaEmpaque", sIdListaEmpaque:0},
             fn: { fnclose: "fn_RefresGridLista", fnLoad: "fn_Ini_CrearListaEmpaque", fnReg: "fn_Reg_CrearListaEmpaque", fnActi:"fn_focusLista" }
         };
 
@@ -272,6 +396,7 @@ var fn_ImRefres = (strjson) => {
 
 var fn_RefresGridLista = () => {
     $("#gridLista").data("kendoGrid").dataSource.read();
+    $("#gridLista").data("kendoGrid").dataSource.read("[]");
 };
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo != undefined) {

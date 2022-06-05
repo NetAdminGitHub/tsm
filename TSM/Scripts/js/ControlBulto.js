@@ -45,9 +45,33 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
     // crear boton Crear serie Bulto
     KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
+    //botón importar Bulto
+    $("#Adjunto").kendoUpload({
+        async: {
+            saveUrl: "/IngresoMercancias/SubirArchivo",
+            autoUpload: true
+        },
+        localization: {
+            select: '<div class="k-icon k-i-excel"></div>&nbsp;Importar'
+        },
+        upload: function (e) {
+            e.sender.options.async.saveUrl = "/IngresoMercancias/SubirArchivo/" + xidHojaBandeo;
+        },
+        showFileList: false,
+        success: function (e) {
+            if (e.response.Resultado === true) {
+                if (e.operation === "upload") {
+                    ImportarExcel(e);
+                }
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show(e.response.Msj, "error");
+            }
+        }
+    });
 
     KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+    $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 
     // crear Ingresar cantidad
     KdoButton($("#btnIngresarCatidad"), "", "Ingresar Cantidad");
@@ -147,7 +171,7 @@ var fn_Ini_ControlBulto = (xjson) => {
         Grid_SelectRow($("#gridBultoDetalle"), selectedRows);
     });
 
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false) });
     //#endregion 
 
     //#region crear grid resumen
@@ -234,6 +258,9 @@ var fn_Ini_ControlBulto = (xjson) => {
                     if (input.is("[name='xcmbMarca']")) {
                         return $("#xcmbMarca").data("kendoComboBox").selectedIndex >= 0;
                     }
+                    if (input.is("[name='xcmbIdUni']")) {
+                        return $("#xcmbIdUni").data("kendoComboBox").selectedIndex >= 0;
+                    }
                     if (input.is("[name='txtCorte_Rollo']")) {
                         return input.val() !== "";
                     }
@@ -303,6 +330,32 @@ var fn_Ini_ControlBulto = (xjson) => {
 
         fn_GenLoadModalWindow(strjson);
     });
+
+    let ImportarExcel = function (e) {
+        kendo.ui.progress($("#body"), true);
+        var XType = "Post";
+
+        $.ajax({
+            url: TSM_Web_APi + "/HojasBandeosMercancias/ImportarMercancias",
+            type: XType,
+            dataType: "json",
+            data: JSON.stringify({
+                IdHojaBandeo: xidHojaBandeo,
+                RutaCompleta: e.response.Ruta,
+                NombreArchivo: e.files[0].name
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                fn_RefrescarGrid();
+                kendo.ui.progress($("#body"), false);
+                RequestEndMsg(data, XType);
+            },
+            error: function (data) {
+                kendo.ui.progress($("#body"), false);
+                ErrorMsg(data);
+            }
+        });
+    }
 
    
     $("#btnGuardarRegistro").click(function () {
@@ -419,6 +472,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         fn_Get_HojasBandeo(xidHojaBandeo);
         KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
         KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+        $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
     } else {
         // cuando no es edicion(registro nuevo)
         $("#txtCorte_Rollo").val("");
@@ -429,14 +483,16 @@ var fn_Reg_ControlBulto = (xjson) => {
         KdoCmbSetValue($("#xcmbPlanta"), "");
         KdoButtonEnable($("#btnCrearSerieBulto"), false );
         KdoButtonEnable($("#btnCrearBulto"), false);
+        $("#Adjunto").data("kendoUpload").enable(false);
         $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     }
     //llenar grid detalle
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false) });
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
    
     KdoCmbFocus($("#xcmbMarca"));
     fn_Get_ListFms(xidHojaBandeo);
+  
 }
 
 let get_CatalogxCliente = (xidClie) => {
@@ -447,7 +503,7 @@ let get_CatalogxCliente = (xidClie) => {
                 $.ajax({
                     dataType: 'json',
                     async: false,
-                    url: TSM_Web_APi + "CatalogoDisenos/GetCatalogoByCliente/" + `${xidClie}`,
+                    url: TSM_Web_APi + "HojasBandeosDisenos/GetFmsAprob/" + `${xidClie}`,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -487,6 +543,7 @@ let fn_Gen_Hb = () => {
                 xIdIng = datos[0].IdIngreso;
                 KdoButtonEnable($("#btnCrearSerieBulto"), true);
                 KdoButtonEnable($("#btnCrearBulto"), true);
+                $("#Adjunto").data("kendoUpload").enable(true);
                 fn_Get_HojasBandeo(datos[0].IdHojaBandeo);
                 fn_Get_ListFms(datos[0].IdHojaBandeo);
             },
@@ -553,11 +610,12 @@ let fn_Get_HojasBandeoDisenos = (xId) => {
 };
 
 var fn_RefrescarGrid = () => {
-    $("#gridBultoDetalle").data("kendoGrid").dataSource.read();
+    $("#gridBultoDetalle").data("kendoGrid").dataSource.read().then(function () { $("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0 ? KdoComboBoxEnable($("#xcmbIdUni"), true) : KdoComboBoxEnable($("#xcmbIdUni"), false)});
     $("#gridHoja").data("kendoGrid").dataSource.read();
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
     KdoButtonEnable($("#btnCrearSerieBulto"), xidHojaBandeo===0 ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
+    $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 };
 
 let fn_dsFiltroUM = function (filtro) {
@@ -646,7 +704,7 @@ let fn_Get_Fms = (e) => {
 
 let fn_Fms = (id) => {
     $.ajax({
-        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMsByIdBandeosDis/" + `${id}`,
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFMsByIdBandeosDis/" + `${xidCliente}/${id}`,
         dataType: 'json',
         type: 'GET',
         success: function (datos) {
@@ -654,11 +712,20 @@ let fn_Fms = (id) => {
                 $("#txtNombreDiseño").val(datos[0].Nombre);
                 $("#txtEstilo").val(datos[0].EstiloDiseno);
                 $("#txtNumero").val(datos[0].NumeroDiseno);
-
+                $("#txtPrenda").val(datos[0].NombrePrenda);
+                $("#txtPartePrenda").val(datos[0].NombrePrenda);
+                $("#txtConfeccion").val(datos[0].NombreConfeccion);
+                $("#txtServicio").val(datos[0].NombreServicio);
+                $("#txtColor").val(datos[0].ColorTela);
             } else {
                 $("#txtNombreDiseño").val("");
                 $("#txtEstilo").val("");
                 $("#txtNumero").val("");
+                $("#txtPrenda").val("");
+                $("#txtPartePrenda").val("");
+                $("#txtConfeccion").val("");
+                $("#txtServicio").val("");
+                $("#txtColor").val("");
             }
             kendo.ui.progress($(".k-window"), false);
         },

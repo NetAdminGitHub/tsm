@@ -2686,7 +2686,7 @@ let fn_GenLoadModal = (obj) => {
 
 let fn_GenLoadModalWindow = (obj) => {
 
-    kendo.ui.progress($(document.activeElement), true);
+    kendo.ui.progress($(document.body), true);
 
     let script = "";
     let xview;
@@ -2698,17 +2698,17 @@ let fn_GenLoadModalWindow = (obj) => {
     let fileJs = `${obj.config[0].Js}?${_version}`;
     let onShow = function () {
         Jsload === true ? window[obj.fn.fnLoad](obj.Param) : window[obj.fn.fnReg](obj.Param);
-        kendo.ui.progress($(document.activeElement), false);
+        kendo.ui.progress($(document.body), false);
     };
 
     let onActivate = function () {
         obj.fn.fnActi === "" ? undefined : window[obj.fn.fnActi](obj.Param);
-        kendo.ui.progress($(document.activeElement), false);
+        kendo.ui.progress($(document.body), false);
     };
 
     let fn_CloseSIC = function () {
         obj.fn.fnclose === "" ? undefined : window[obj.fn.fnclose](obj.Param);
-        kendo.ui.progress($(document.activeElement), false);
+        kendo.ui.progress($(document.body), false);
     };
 
 
@@ -2733,7 +2733,7 @@ let fn_GenLoadModalWindow = (obj) => {
                 script.src = "/Scripts/js/" + fileJs;
                 script.onload = function () {
                     Jsload = true;
-                    kendo.ui.progress($(document.activeElement), false);
+                    kendo.ui.progress($(document.body), false);
                     $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
                     $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
                     onShow();
@@ -2743,7 +2743,7 @@ let fn_GenLoadModalWindow = (obj) => {
 
         });
     } else {
-        kendo.ui.progress($(document.activeElement), true);
+        kendo.ui.progress($(document.body), true);
         Jsload = false;
         $("#" + obj.config[0].Div + "").kendoWindow({
             height: obj.config[0].Height,
@@ -2756,7 +2756,7 @@ let fn_GenLoadModalWindow = (obj) => {
             activate: onActivate,
             close: fn_CloseSIC
         });
-        kendo.ui.progress($(document.activeElement), false);
+        kendo.ui.progress($(document.body), false);
         $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
         $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
         onShow();
