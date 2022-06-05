@@ -564,7 +564,7 @@
                 filter: "contains",
                 autoBind: false,
                 height: 400,
-                placeholder: "Selección de bodega",
+                placeholder: "Selección de Ingreso",
                 valuePrimitive: true,
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
@@ -578,11 +578,70 @@
                 },
                 columns: [
                     { field: "IdIngreso", title: "Ingreso", width: 150 },
-                    { field: "FechaIngreso", title: "FechaIngreso", width: 300 },
-                    { field: "NombreCliente", title: "NombreCliente", width: 500 }
+                    { field: "FechaIngreso", title: "Fecha", width: 300 },
+                    { field: "NombreCliente", title: "Cliente", width: 500 }
                 ]
             });
         });
-    }
-
+    },
+    ControlSeleccionPaises: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPais",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Paises",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "Paises";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "Nombre", title: "País", width: 300 },
+                    { field: "ISO2", title: "ISO 2", width: 100 }                   
+                ]
+            });
+        });
+    },
+    ControlSeleccionAduanas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdAduana",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Aduanas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "Aduanas";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "CodigoAduana", title: "Código de Aduana", width: 100 }                 
+                ]
+            });
+        });
+    },
 });

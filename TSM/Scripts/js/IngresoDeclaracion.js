@@ -5,8 +5,6 @@ $(document).ready(function () {
     xIdDeMerca = xIdDeclaracionMercancia;
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    Kendo_CmbFiltrarGrid($("#cmbPaisExpor"), TSM_Web_APi + "Paises", "Nombre", "IdPais", "Seleccione un pais");
-    Kendo_CmbFiltrarGrid($("#cmbAduana"), TSM_Web_APi + "Aduanas", "Nombre", "IdAduana", "Seleccione una aduana");
 
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
@@ -15,6 +13,9 @@ $(document).ready(function () {
     // multicolum
     $("#MltBodegaCliente").ControlSeleccionBodegaClie(xIdClienteIng);
     $("#MltIngreso").ControlSeleccionIngresoMerca(xIdClienteIng);
+    $("#MltPaisExpor").ControlSeleccionPaises();
+    $("#MltAduana").ControlSeleccionAduanas();
+
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
         min: 0,
@@ -156,7 +157,7 @@ $(document).ready(function () {
                 }
             },
 
-            { field: "IncisoArancelario", title: "IncisoArancelario" },
+            { field: "IncisoArancelario", title: "Inciso Arancelario" },
             { field: "DescripcionInciso", title: "DescripcionInciso", hidden: true },
             { field: "IdPais", title: "Pais", hidden: true },
             { field: "NombrePais", title: "NombrePais", hidden: true },
@@ -168,7 +169,7 @@ $(document).ready(function () {
             { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:c2}" },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
-            { field: "NombreEmbalaje", title: "Nombre del Embalaje" },
+            { field: "NombreEmbalaje", title: "Embalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             {
@@ -340,11 +341,11 @@ $(document).ready(function () {
                     if (input.is("[id='MltIngreso']")) {
                         return $("#MltIngreso").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                     }
-                    if (input.is("[id='cmbPaisExpor']")) {
-                        return $("#cmbPaisExpor").data("kendoComboBox").selectedIndex >= 0;
+                    if (input.is("[id='MltPaisExpor']")) {
+                        return $("#MltPaisExpor").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                     }
-                    if (input.is("[id='cmbAduana']")) {
-                        return $("#cmbAduana").data("kendoComboBox").selectedIndex >= 0;
+                    if (input.is("[id='MltAduana']")) {
+                        return $("#MltAduana").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                     }
                     return true;
                 }
@@ -391,8 +392,8 @@ let fn_Get_IngresoDeclaracion = (xId) => {
             if (dato !== null) {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), dato.IdBodegaCliente);
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.NoIngreso);
-                KdoCmbSetValue($("#cmbAduana"), dato.IdAduana);
-                KdoCmbSetValue($("#cmbPaisExpor"), dato.IdPais);
+                KdoMultiColumnCmbSetValue($("#MltAduana"), dato.IdAduana);
+                KdoMultiColumnCmbSetValue($("#MltPaisExpor"), dato.IdPais);
                 $("#TxtNoReferencia").val(dato.NoReferencia);
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.Fecha), 'dd/MM/yyyy'));
                 $("#TxtDireccion").val(dato.Direccion);
@@ -403,8 +404,8 @@ let fn_Get_IngresoDeclaracion = (xId) => {
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), "");
-                KdoCmbSetValue($("#cmbAduana"), "");
-                KdoCmbSetValue($("#cmbPaisExpor"),"");
+                KdoMultiColumnCmbSetValue($("#MltAduana"), "");
+                KdoMultiColumnCmbSetValue($("#MltPaisExpor"),"");
                 $("#TxtNoReferencia").val("");
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Fhoy()), 'dd/MM/yyyy'));
                 $("#TxtDireccion").val("");
@@ -447,8 +448,8 @@ let fn_GuardarDM = () => {
             IdBodegaCliente: KdoMultiColumnCmbGetValue($("#MltBodegaCliente")),
             NoIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso")),
             NoReferencia: $("#TxtNoReferencia").val(),
-            IdAduana: KdoCmbGetValue($("#cmbAduana")),
-            IdPais: KdoCmbGetValue($("#cmbPaisExpor")),
+            IdAduana: KdoCmbGetValue($("#MltAduana")),
+            IdPais: KdoCmbGetValue($("#MltPaisExpor")),
             Estado: "ACTIVO",
             Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's'),
             IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso"))
