@@ -11,7 +11,6 @@ $(document).ready(function () {
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
     KdoButton($("#btnNotaRemision"), "search", "Nota de Remision");
-    KdoButton($("#btnPLgregarItem"), "edit", "Agregar");
 
     // multicolum
     $("#MltBodegaCliente").ControlSeleccionBodegaClie(xIdClienteIng);
@@ -169,9 +168,40 @@ $(document).ready(function () {
             { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:c2}" },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
-            { field: "NombreEmbalaje", title: "NombreEmbalaje" },
+            { field: "NombreEmbalaje", title: "Nombre del Embalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            {
+                field: "btnvin", title: "&nbsp;",
+                command: {
+                    name: "btnvin",
+                    iconClass: "k-icon k-i-link-horizontal",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        let strjson = {
+                            config: [{
+                                Div: "vRelacionPLs",
+                                Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
+                                Js: "RelacionPLs.js",
+                                Titulo: "Asociar item a Lista de Empaque",
+                                Height: "80%",
+                                Width: "50%",
+                                MinWidth: "10%"
+                            }],
+                            Param: { idDeclaracionMercancia: xIdDeMerca, item: dataItem.Item, sDiv: "vRelacionPLs" },
+                            fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
+                        };
+
+                        fn_GenLoadModalWindow(strjson);
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 
@@ -289,26 +319,6 @@ $(document).ready(function () {
 
         fn_GenLoadModalWindow(strjson);
   
-    });
-
-    $("#btnPLgregarItem").click(function () {
-        let strjson = {
-            config: [{
-                Div: "vRelacionPLs",
-                Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
-                Js: "RelacionPLs.js",
-                Titulo: "Asignaión de Lista de Empaque",
-                Height: "80%",
-                Width: "50%",
-                MinWidth: "10%"
-            }],
-            Param: { idDeclaracionMercancia: xIdDeMerca, item: get_Item($("#gridDetalleItem").data("kendoGrid")), sDiv:"vRelacionPLs" },
-            fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
-        };
-
-        fn_GenLoadModalWindow(strjson);
-
-
     });
 
     //compeltar campos de cabecera  
