@@ -591,7 +591,7 @@
                 dataValueField: "IdPais",
                 filter: "contains",
                 autoBind: false,
-                minLength: 3,
+                minLength: 2,
                 height: 400,
                 placeholder: "Selección de Paises",
                 valuePrimitive: true,
@@ -601,7 +601,7 @@
                     transport: {
                         read: {
                             url: function (datos) {
-                                return TSM_Web_APi + "Paises";
+                                return TSM_Web_APi + "Paises/GetFiltroPais";
                             },
                             contentType: "application/json; charset=utf-8"
                         }
@@ -621,7 +621,7 @@
                 dataValueField: "IdAduana",
                 filter: "contains",
                 autoBind: false,
-                minLength: 3,
+                minLength: 2,
                 height: 400,
                 placeholder: "Selección de Aduanas",
                 valuePrimitive: true,
@@ -631,7 +631,7 @@
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "Aduanas";
+                                return TSM_Web_APi + "Aduanas/GetFiltroAduanas";
                             },
                             contentType: "application/json; charset=utf-8"
                         }
