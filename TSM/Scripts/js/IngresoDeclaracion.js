@@ -448,8 +448,8 @@ let fn_GuardarDM = () => {
             IdBodegaCliente: KdoMultiColumnCmbGetValue($("#MltBodegaCliente")),
             NoIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso")),
             NoReferencia: $("#TxtNoReferencia").val(),
-            IdAduana: KdoCmbGetValue($("#MltAduana")),
-            IdPais: KdoCmbGetValue($("#MltPaisExpor")),
+            IdAduana: KdoMultiColumnCmbGetValue($("#MltAduana")),
+            IdPais: KdoMultiColumnCmbGetValue($("#MltPaisExpor")),
             Estado: "ACTIVO",
             Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's'),
             IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso"))
