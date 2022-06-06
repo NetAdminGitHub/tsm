@@ -26,6 +26,10 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" },
+
+        ],
         schema: {
             model: {
                 id: "IdHojaBandeo",
@@ -63,16 +67,16 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
         columns: [
             { selectable: true, width: "50px" },
             { field: "IdHojaBandeo", title: "id Hoja Bandeo", hidden: true },
-            { field: "NoDocumento", title: "Correlativo" },
-            { field: "Corte", title: "Corte/Lotes" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "NoDocumento", title: "Correlativo", hidden: true },
+            { field: "Corte", title: "Corte/Lote", footerTemplate: "Total"  },
             { field: "FM", title: "FM/RD" },
             { field: "NombreDiseno", title: "Nombre del Diseño" },
             { field: "Estilo", title: "Estilo" },
             { field: "Tallas", title: "Rango de Tallas" },
             { field: "PartePrenda", title: "Parte" },
             { field: "Color", title: "Color" },
-            { field: "NombreProceso", title: "Proceso" }
+            { field: "NombreProceso", title: "Proceso" },
+            { field: "Cantidad", title: "Total Cuantía", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" }
         ]
     });
 

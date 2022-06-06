@@ -52,6 +52,10 @@ $(document).ready(function () {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" },
+
+        ],
         schema: {
             model: {
                 id: "IdHojaBandeo",
@@ -82,13 +86,13 @@ $(document).ready(function () {
             { field: "IdHojaBandeo", title: "Id. Hoja" ,hidden: true },
             { field: "IdIngreso", title: "Id. Ingreso", hidden: true },
             { field: "IdPlanta", title: "Id. Planta", hidden: true },
-            { field: "NoDocumento", title: "Correlativo" },
-            { field: "Corte", title: "Corte" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "NoDocumento", title: "Correlativo", hidden: true },
+            { field: "Corte", title: "Corte/Lote", footerTemplate: "Total" },
             { field: "Color", title: "Color" },
             { field: "Estilo", title: "Estilo" },
             { field: "Tallas", title: "Tallas" },
             { field: "NombrePlanta", title: "Planta" },
+            { field: "Cantidad", title: "Total Cuantía", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
             {
                 field: "btnHb", title: "&nbsp;",
                 command: {
@@ -119,6 +123,7 @@ $(document).ready(function () {
                     style: "text-align: center"
                 }
             }
+     
         ]
     });
 
@@ -162,9 +167,10 @@ $(document).ready(function () {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
-        //group: {
-        //    field:"NoDocumento"
-        //},
+        aggregate: [
+            { field: "TotalCuantia", aggregate: "sum" },
+
+        ],
         schema: {
             model: {
                 id: "IdListaEmpaque",
@@ -175,7 +181,8 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Observacion: { type: "string" }
+                    Observacion: { type: "string" },
+                    TotalCuantia: { type: "number" }
                 }
             }
         }
@@ -190,12 +197,14 @@ $(document).ready(function () {
         },
         columns: [
             { field: "IdListaEmpaque", title: "Id Lista Empaque", hidden: true },
-            { field: "NoDocumento", title: "No Documento"},
+            { field: "NoDocumento", title: "No Documento", footerTemplate: "Total"},
             { field: "Peso", title: "Peso", hidden: true },
-            { field: "Estado", title: "Estado" },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "TotalCuantia", title: "Total Cuantía", footerTemplate: "#: data.TotalCuantia ? kendo.format('{0:n2}', sum) : 0 #" },
             { field: "Observacion", title: "Observacion" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+           
             {
                 field: "btnPL", title: "&nbsp;",
                 command: {
@@ -295,10 +304,10 @@ $(document).ready(function () {
                 { field: "IdIngreso", title: "Id Ingreso", hidden: true },
                 { field: "NoDocumento", title: "#Lista", hidden: true },
                 { field: "Corte", title: "Corte" },
-                { field: "CantidadTotal", title: "Cantidad" },
-                { field: "Color", title: "Color" },
                 { field: "Estilos", title: "Estilos" },
-                { field: "Tallas", title: "Tallas" }
+                { field: "Tallas", title: "Tallas" },
+                { field: "Color", title: "Color" },
+                { field: "CantidadTotal", title: "Cantidad" }
             ]
         });
 
@@ -318,7 +327,7 @@ $(document).ready(function () {
     }
 
     function ConfGDetalle(g, ds, Id_gCHForDetalle) {
-        SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si);
+        SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si,0);
         SetGrid_CRUD_Command(g, false, Permisos.SNBorrar, Id_gCHForDetalle);
         Set_Grid_DataSource(g, ds);
     }

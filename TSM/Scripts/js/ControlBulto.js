@@ -111,6 +111,10 @@ var fn_Ini_ControlBulto = (xjson) => {
         requestEnd: function () {
             Grid_requestEnd;
             $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
+            if ($("#gridBultoDetalle").data("kendoGrid").dataSource.total() === 0) {
+                KdoComboBoxEnable($("#xcmbIdUni"),true)
+            }
+
         },
         aggregate: [
             { field: "Cantidad", aggregate: "sum" }
@@ -147,9 +151,9 @@ var fn_Ini_ControlBulto = (xjson) => {
         columns: [
             { field: "IdHojaBandeo", title: "Id HojaBandeo", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia",hidden:true },
-            { field: "NoDocumento", title: "Bulto/Corte",footerTemplate: "Totales" },
+            { field: "NoDocumento", title: "Bulto",footerTemplate: "Totales" },
             { field: "Talla", title: "Talla" },
-            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n0}', sum) : 0 #"},
+            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #"},
             { field: "Docenas", title: "Docenas", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NomEstado", title: "Estado", hidden: true }
@@ -213,7 +217,7 @@ var fn_Ini_ControlBulto = (xjson) => {
         columns: [
             { field: "Talla", title: "Talla", footerTemplate: "Totales"},
             { field: "Conteo", title: "Conteo" },
-            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n0}', sum) : 0 #"},
+            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #"},
             { field: "Docenas", title: "Docenas", footerTemplate: "#: data.Docenas ? kendo.format('{0:n2}', sum) : 0 #"}
         ]
     });
