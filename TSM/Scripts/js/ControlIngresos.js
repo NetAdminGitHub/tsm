@@ -71,7 +71,7 @@ $(document).ready(function () {
             { field: "Nombre", title: "Estado" },
             { field: "ReferenciaPL", title: "No. Referencia PL" },
             { field: "CantidadCortes", title: "Cantidad de Cortes" },
-            { field: "CantidadTotal", title: "Cantidad" },
+            { field: "CantidadTotal", title: "Total Cuantía" },
             { field: "Planta", title: "Planta" },
             { field: "TipoProceso", title: "Tipo de Proceso" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
