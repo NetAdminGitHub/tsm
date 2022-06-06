@@ -99,6 +99,13 @@ $(document).ready(function () {
         min: 1,
         value: 1
     });
+    $("#txtVeloMaquinaRecalcularFP").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 1,
+        value: 1
+    });
 
     KdoNumerictextboxEnable($("#NumCantidadTallasRecal"), false);
     let ValidNuevoSimRecal = $("#FrmRecalcularSim").kendoValidator({
@@ -134,7 +141,7 @@ $(document).ready(function () {
                 return true;
             },
             VeloMayorIgual0: function (input) {
-                if (input.is("[name='txtVeloMaquinaRecalcular']")) {
+                if (input.is("[name='txtVeloMaquinaRecalcular']") || input.is("[name='txtVeloMaquinaRecalcularFP']")) {
                     return input.val() > 0;
                 }
                 return true;
@@ -588,6 +595,7 @@ $(document).ready(function () {
         kdoNumericSetValue($("#TxtNoMontajeRecalcular"), kdoNumericGetValue($("#TxtMontajes")));
         kdoNumericSetValue($("#txtPersonalExtraRecalcular"), kdoNumericGetValue($("#txtNoPersonalExtra")));
         kdoNumericSetValue($("#txtVeloMaquinaRecalcular"), kdoNumericGetValue($("#txtVelocidadMaquina")));
+        kdoNumericSetValue($("#txtVeloMaquinaRecalcularFP"), kdoNumericGetValue($("#txtVelocidadMaquinaFP")));
         kdoNumericSetValue($("#txtPorcVariacionRecalcular"), kdoNumericGetValue($("#txtPorcVariacion")) === null ? 0 : kdoNumericGetValue($("#txtPorcVariacion")));
         kdoChkSetValue($("#chkUsarTermofijadoRecalcular"), KdoChkGetValue($("#chkUsarTermo")));
         kdoChkSetValue($("#chkApliCostoTranspRecalcular"), KdoChkGetValue($("#chkApliCostoTransp")));
@@ -816,7 +824,13 @@ let fn_CamposSimulacion = function () {
         min: 0,
         value: 0
     });
-
+    $("#txtVelocidadMaquinaFP").kendoNumericTextBox({
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        min: 0,
+        value: 0
+    });
     $("#txtPorcVariacion").kendoNumericTextBox({
         format: "p",
         restrictDecimals: true,
@@ -959,6 +973,7 @@ let fn_DHCamposSim = function () {
     $("#txtCantidadCombos").data("kendoNumericTextBox").enable(false);
     $("#txtCantidadTallas").data("kendoNumericTextBox").enable(false);
     $("#txtVelocidadMaquina").data("kendoNumericTextBox").enable(false);
+    $("#txtVelocidadMaquinaFP").data("kendoNumericTextBox").enable(false);
     $("#txtPorcVariacion").data("kendoNumericTextBox").enable(false);
 };
 
@@ -1001,6 +1016,7 @@ let fn_SetCamposValores = function (elemento) {
         $("#txtCantidadCombos").data("kendoNumericTextBox").value(elemento.CantidadCombos);
         $("#txtCantidadTallas").data("kendoNumericTextBox").value(elemento.CantidadTallas);
         $("#txtVelocidadMaquina").data("kendoNumericTextBox").value(elemento.VelocidadMaquina);
+        $("#txtVelocidadMaquinaFP").data("kendoNumericTextBox").value(elemento.ProductividadHoraProduccion);
         $("#txtPorcVariacion").data("kendoNumericTextBox").value(elemento.PorcVariacion);
         $("#txtTiempoProyecto").data("kendoNumericTextBox").value(elemento.TiempoProyecto);
         $("#txtFM").val(elemento.NoFM);
@@ -1074,7 +1090,7 @@ var fn_GetSimubyIdSimu = function () {
 let fn_RecalSimulacionVistaInf = function () {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString() + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTranspRecalcular").is(':checked') ? "1" : "0"),
+        url: TSM_Web_APi + "SimulacionesMuestras/Recalcular/" + vIdOT.toString() + "/" + vIdSimulacion.toString() + "/" + kdoNumericGetValue($("#TxtNuevaCantidadPiezasRecalcular")) + "/" + kdoNumericGetValue($("#TxtNoMontajeRecalcular")) + "/" + kdoNumericGetValue($("#txtPersonalExtraRecalcular")) + "/" + kdoNumericGetValue($("#txtCombosRecalcular")) + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcular")) + "/" + ($("#chkUsarTermofijadoRecalcular").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTranspRecalcular").is(':checked') ? "1" : "0") + "/" + kdoNumericGetValue($("#txtVeloMaquinaRecalcularFP")),
         type: "Post",
         dataType: "json",
         data: JSON.stringify({
