@@ -400,6 +400,14 @@ var Grid_ColLocked = function (container, options) {
 
 };
 
+// Funcion para desabilitar o bloquear campo
+var Grid_ColReadOnly = function (container, options) {
+    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')
+        .appendTo(container)
+        .attr("readonly", "readonly")
+        .addClass("k-input k-textbox");
+
+};
 // funcion para lista desplegables
 function Grid_CmbEditor(container, options) {
     $('<input required name="' + options.field + '"/>')
