@@ -13,8 +13,11 @@ let UrlCatalo = TSM_Web_APi + "CatalogoInsumos";
 let UrlEP = TSM_Web_APi +"EtapasProcesos";
 let UrlCI = TSM_Web_APi +"CatalogoInsumos";
 let UrlRequeDesarrollo = TSM_Web_APi + "RequerimientoDesarrollos"; 
-var vxIdSeteo=0;
-var vxIdEstacion=0;
+var vxIdSeteo = 0;
+var vxEtapa = 0;
+var vxItem = 0;
+var vxIdEstacion = 0;
+var vxIdOrdenTrabajo = 0;
 $(document).ready(function () {
 
     $("#MbtnSimuRecalcular").kendoDialog({
@@ -33,6 +36,7 @@ $(document).ready(function () {
     KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
     Kendo_MultiSelect($("#CmbTallasRecalcular"), TSM_Web_APi + "CategoriaTallas", "Nombre", "IdCategoriaTalla", "Seleccione ...");
     KdoButton($("#btnAceptarSimuRecal"), "check", "Recalcular Simulación");
+    KdoButton($("#btnSecuencia"),"thumbnails-down", "Secuencia maquina")
     //programar control de tabulacion
     $("#TabSimulacion").kendoTabStrip({
         tabPosition: "left",
@@ -407,6 +411,9 @@ $(document).ready(function () {
                 id: "IdSeteo",
                 fields: {
                     IdSeteo: { type: "number" },
+                    IdEtapaProceso: { type: "number" },
+                    Item: { type: "number" },
+                    IdOrdenTrabajo: { type: "number" },
                     IdEstacion: { type: "number" },
                     IdSimulacion: {
                         type: "number", defaultValue: function (e) { return vIdSimulacion; }
@@ -428,6 +435,9 @@ $(document).ready(function () {
     $("#gridSimuConsumo").kendoGrid({
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IdSeteo");
+            KdoHideCampoPopup(e.container, "IdEtapaProceso");
+            KdoHideCampoPopup(e.container, "Item");
+            KdoHideCampoPopup(e.container, "IdOrdenTrabajo");
             KdoHideCampoPopup(e.container, "IdEstacion");
             KdoHideCampoPopup(e.container, "IdSimulacion");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
@@ -437,6 +447,9 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdSeteo", title: "IdSeteo", hidden: true },
+            { field: "IdEtapaProceso", title: "IdEtapaProceso", hidden: true },
+            { field: "Item", title: "Item", hidden: true },
+            { field: "IdOrdenTrabajo", title: "IdOrdenTrabajo", hidden: true },
             { field: "IdSimulacion", title: "IdSimulacion", hidden: true },
             { field: "IdEstacion", title: "Estación Maquina", footerTemplate: "Totales"},
             { field: "Descripcion", title:"Descripción"},
@@ -608,6 +621,23 @@ $(document).ready(function () {
 
     $("#btnAceptarSimuRecal").click(function () {
         if (ValidNuevoSimRecal.validate()) { fn_RecalSimulacionVistaInf(); }
+    });
+    $("#btnSecuencia").click(function () {
+        let strjson = {
+            config: [{
+                Div: "ModalSecuencia",
+                Vista: "~/Views/SimulacionesMuestras/_vSecuenciaMaquina.cshtml",
+                Js: "SecuenciaMaquina.js",
+                Titulo: "Secuencia de maquina",
+                Height: "80%",
+                Width: "80%",
+                MinWidth: "10%"
+            }],
+            Param: { IdSeteo: vxIdSeteo, IdEtapa: vxEtapa, Item: vxItem, IdOt: vxIdOrdenTrabajo },
+            fn: { fnclose: "", fnLoad: "fn_Ini_Secuencia", fnReg: "fn_Reg_Secuencia", fnActi: "" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
     });
   
 });
@@ -1077,14 +1107,28 @@ var fn_getIdSeteo = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdSeteo;
 };
+var fn_getIdetapa = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdEtapaProceso;
+};
+var fn_getItem = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.Item;
+};
 var fn_getIdEstacion = function (g) {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.IdEstacion;
 };
-
+var fn_getIdOT = function (g) {
+    var SelItem = g.dataItem(g.select());
+    return SelItem === null ? 0 : SelItem.IdOrdenTrabajo;
+};
 var fn_ConsultarConsumoArt = function (gridcab) {
     vxIdSeteo = fn_getIdSeteo(gridcab.data("kendoGrid"));
+    vxEtapa = fn_getIdetapa(gridcab.data("kendoGrid"));
+    vxItem = fn_getItem(gridcab.data("kendoGrid"));
     vxIdEstacion = fn_getIdEstacion(gridcab.data("kendoGrid"));
+    vxIdOrdenTrabajo = fn_getIdOT(gridcab.data("kendoGrid"));
     $("#gridSimuConsumoArt").data("kendoGrid").dataSource.read();
 };
 
