@@ -144,7 +144,19 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombreEmbalaje");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
-            KdoHideCampoPopup(e.container, "DescripcionInciso");
+
+            $('[name="IdIncisoArancelario"]').on('change', function (e) {
+                var ml = $('[name="IdIncisoArancelario"]').data("kendoMultiColumnComboBox");
+                let data = ml.listView.dataSource.data().find(q => q.IdIncisoArancelario === Number(this.value));
+                if (data === undefined) {
+                    $('[name="DescripcionInciso"]').val("");
+                } else {
+                    $('[name="DescripcionInciso"]').val(data.Descripcion);
+                }
+
+            });
+
+
             Grid_Focus(e, "IdIncisoArancelario");
         },
         columns: [
@@ -158,10 +170,10 @@ $(document).ready(function () {
             },
 
             { field: "IncisoArancelario", title: "Inciso Arancelario" },
-            { field: "DescripcionInciso", title: "DescripcionInciso", hidden: true },
+            { field: "DescripcionInciso", title: "Descripción de Mercancía", hidden: true, editor: Grid_ColReadOnly },
             { field: "IdPais", title: "Pais", hidden: true },
             { field: "NombrePais", title: "NombrePais", hidden: true },
-            { field: "Descripcion", title: "Descripcion" },
+            { field: "Descripcion", title: "Descripción" },
             { field: "PesoBruto", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"},
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
