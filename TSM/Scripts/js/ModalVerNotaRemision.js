@@ -44,11 +44,16 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                     FechaDocumento: { type: "date" },
                     UsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Direccion: {type:"string"}
-
+                    Direccion: { type: "string" },
+                    TotalCantidad: { type: "number" },
+                    TotalMonto: { type: "number" }
                 }
             }
-        }
+        },
+        aggregate: [
+            { field: "TotalCantidad", aggregate: "sum" },
+            { field: "TotalMonto", aggregate: "sum" }
+        ]
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -69,9 +74,11 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdNotaRemision", title: "IdNotaRemision", hidden: true },
-            { field: "Serie", title: "Serie" },
+            { field: "Serie", title: "Serie", footerTemplate: "Total" },
             { field: "NoDocumento", title: "Número" },
-            { field: "Descripcion", title: "IdCliente", hidden: false },
+            { field: "TotalCantidad", title: "Total de Bulto", format: "{0:n2}", footerTemplate: "#: data.TotalCantidad ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "TotalMonto", title: "Monto Total", format: "{0:N2}", footerTemplate: "#: data.TotalMonto ? kendo.format('{0:n2}', sum) : 0 #"},
+            { field: "Descripcion", title: "Descripción", hidden: false },            
             { field: "Direccion", title: "Dirección", hidden: false },
             { field: "IdCliente", title: "IdCliente", hidden: true },
             { field: "IdBodegaCliente", title: "IdBodegaCliente", hidden: true },
@@ -179,7 +186,7 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                 { field: "Item", title: "Item", hidden: true },
                 { field: "ItemDM", title: "ItemDM", hidden: true },
                 { field: "Descripcion", title: "Descripción" },
-                { field: "Cantidad", title: "Cantidad", format: "{0:n2}" },
+                { field: "Cantidad", title: "Total de Bultos", format: "{0:n2}" },
                 { field: "IdUnidad", title: "Unidad", hidden: true },
                 { field: "PrecioUnitario", title: "Precio unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"},
                 { field: "Abreviatura", title: "Unidad de medida" },
@@ -207,7 +214,7 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
 
     function ConfGDetalle(g, ds, IdentificadorGridDetalle) {
         
-        SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 250);
+        SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0);
         SetGrid_CRUD_Command(g, true, false);
         Set_Grid_DataSource(g, ds);
     }
