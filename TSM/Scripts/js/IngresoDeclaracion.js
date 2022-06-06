@@ -129,7 +129,7 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridDetalleItem").kendoGrid({
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         edit: function (e) {
             // BLOQUEA CAMPO LLAVE ( ID)
             KdoHideCampoPopup(e.container, "IdDeclaracionMercancia");
@@ -270,7 +270,7 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#griVincularListaEmpaque").kendoGrid({
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdListaEmpaque", title: "pl", hidden: true },
             { field: "NoDocumento", title: "#PL" },
