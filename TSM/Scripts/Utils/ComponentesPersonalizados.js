@@ -577,9 +577,12 @@
                     }
                 },
                 columns: [
-                    { field: "IdIngreso", title: "Ingreso", width: 150 },
-                    { field: "FechaIngreso", title: "Fecha", width: 300 },
-                    { field: "NombreCliente", title: "Cliente", width: 500 }
+                    { field: "IdIngreso", title: "Ingreso", width: 75 },
+                    { field: "ReferenciaPL", title: "No. Referencia PL.", width: 300 },
+                    { field: "CortesCliente", title: "Cortes", width: 300 },
+                    { field: "TotalCuantia", title: "Total Cuantía", width:100 },
+                    { field: "FechaIngreso", title: "Fecha", width: 200 },
+                    { field: "NombreCliente", title: "Cliente", width: 300 }
                 ]
             });
         });
