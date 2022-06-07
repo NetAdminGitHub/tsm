@@ -151,7 +151,7 @@ var fn_Ini_ControlBulto = (xjson) => {
         columns: [
             { field: "IdHojaBandeo", title: "Id HojaBandeo", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia",hidden:true },
-            { field: "NoDocumento", title: "Bulto",footerTemplate: "Totales" },
+            { field: "NoDocumento", title: "Bulto/Rollo",footerTemplate: "Totales" },
             { field: "Talla", title: "Talla" },
             { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #"},
             { field: "Docenas", title: "Docenas", hidden: true },
