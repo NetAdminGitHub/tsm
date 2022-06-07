@@ -115,11 +115,18 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
                         return input.val().length <= 20;
                     }
                     return true;
+                },
+                MsgLong2: function (input) {
+                    if (input.is("[name='txtObservacionPackingList']")) {
+                        return input.val().length <= 200;
+                    }
+                    return true;
                 }
             },
             messages: {
                 MsgRequerido: "Requerido",
-                MsgLong: "Longitud del campo es 20"
+                MsgLong: "Longitud del campo es 20",
+                MsgLong2: "Longitud del campo es 200"
              
             }
         }).data("kendoValidator");
@@ -129,8 +136,6 @@ var fn_Ini_CrearListaEmpaque = (strjson) => {
     if (xsIdListaEmpaque === 0) {
         $("#txtNoRefePackingList").val("");
         $("#txtObservacionPackingList").val("");
-        TextBoxReadOnly($("#txtNoRefePackingList"), true);
-        TextBoxReadOnly($("#txtObservacionPackingList"), true);
         $("#txtNoRefePackingList").focus();
     } else {
         fn_Get_CabLE(xsIdListaEmpaque);
@@ -155,8 +160,39 @@ let fn_CrearReg = () => {
             });
             result = fn_Gen_PakigList(Bandeos);
         } else {
-            result = false;
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
+
+            if (xsIdListaEmpaque !== 0) {
+                kendo.ui.progress($(".k-window"), true);
+                $.ajax({
+                    url: TSM_Web_APi + "ListaEmpaques/" + `${xsIdListaEmpaque}`,
+                    method: "PUT",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        NoDocumento: $("#txtNoRefePackingList").val(),
+                        Observacion: $("#txtObservacionPackingList").val(),
+                        Peso: 0,
+                        Estado: 'ACTIVO',
+                        IdListaEmpaque: xsIdListaEmpaque
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (datos) {
+                        $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
+                        RequestEndMsg(datos, "Post");
+                        $("#" + `${xsDivLe}`).data("kendoWindow").close();
+                        result = true;
+                    },
+                    error: function (data) {
+                        ErrorMsg(data);
+                        result = false;
+                    },
+                    complete: function () {
+                        kendo.ui.progress($(".k-window"), false);
+                    }
+                });
+            } else {
+                $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
+            }
+            
         }
 
     } else {
@@ -175,8 +211,6 @@ var fn_Reg_CrearListaEmpaque = (strjson) => {
     if (xsIdListaEmpaque === 0) {
         $("#txtNoRefePackingList").val("");
         $("#txtObservacionPackingList").val("");
-        TextBoxReadOnly($("#txtNoRefePackingList"), true);
-        TextBoxReadOnly($("#txtObservacionPackingList"), true);
     } else {
         fn_Get_CabLE(xsIdListaEmpaque);
     }
@@ -208,7 +242,6 @@ let fn_Gen_PakigList = (strBande) => {
                 $("#gridListaEmpaque").data("kendoGrid").dataSource.read();
                 RequestEndMsg(datos, "Post");
                 kendo.ui.progress($(".k-window"), false);
-                $("#txtNoRefePackingList").val("");
                 $("#" + `${xsDivLe}`).data("kendoWindow").close();
                 resultPak = true;
                 StrIdHojaBandeo = [];
@@ -239,14 +272,10 @@ let fn_Get_CabLE = (xId) => {
             if (dato !== null) {
                 $("#txtNoRefePackingList").val(dato.NoDocumento);
                 $("#txtObservacionPackingList").val(dato.Observacion);
-                TextBoxReadOnly($("#txtNoRefePackingList"), false);
-                TextBoxReadOnly($("#txtObservacionPackingList"), false);
 
             } else {
                 $("#txtNoRefePackingList").val("");
                 $("#txtObservacionPackingList").val("");
-                TextBoxReadOnly($("#txtNoRefePackingList"), true);
-                TextBoxReadOnly($("#txtObservacionPackingList"), true);
             }
             kendo.ui.progress($(".k-dialog"), false);
         },
