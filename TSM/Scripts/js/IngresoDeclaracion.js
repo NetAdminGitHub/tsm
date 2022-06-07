@@ -188,7 +188,7 @@ $(document).ready(function () {
                 field: "btnvin", title: "&nbsp;",
                 command: {
                     name: "btnvin",
-                    iconClass: "k-icon k-i-link-horizontal",
+                    iconClass: "k-icon k-i-link-horizontal m-0",
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
@@ -256,7 +256,15 @@ $(document).ready(function () {
                 }
             }
         },
-        requestEnd: Grid_requestEnd,
+        requestEnd: function () {
+            Grid_requestEnd;
+            if ($("#griVincularListaEmpaque").data("kendoGrid").dataSource.total() === 0) {
+                KdoMultiColumnCmbEnable($("#MltIngreso"), true);
+            }
+            else {
+                KdoMultiColumnCmbEnable($("#MltIngreso"), false);
+            }
+        },
         error: Grid_error,
         schema: {
             model: {
@@ -300,7 +308,7 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#griVincularListaEmpaque").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#griVincularListaEmpaque").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#griVincularListaEmpaque").data("kendoGrid"), dsVinListEmp);
-
+    
     var selectedRows2 = [];
     $("#griVincularListaEmpaque").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#griVincularListaEmpaque"), selectedRows2);
@@ -308,6 +316,13 @@ $(document).ready(function () {
 
     $("#griVincularListaEmpaque").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#griVincularListaEmpaque"), selectedRows2);
+
+        if ($("#griVincularListaEmpaque").data("kendoGrid").dataSource.total() === 0) {
+            KdoMultiColumnCmbEnable($("#MltIngreso"), true);
+        }
+        else {
+            KdoMultiColumnCmbEnable($("#MltIngreso"), false);
+        }
     });
 
     $("#griVincularListaEmpaque").data("kendoGrid").dataSource.read();
