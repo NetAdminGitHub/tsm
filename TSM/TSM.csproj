@@ -329,7 +329,9 @@
     <Compile Include="Controllers\ModalGenLoadController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
+    <Compile Include="Controllers\MotivosDevolucionController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\MotivosRetencionController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesAjustesController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
     <Compile Include="Controllers\MotivosSustraidasController.cs" />
@@ -515,6 +517,8 @@
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
+    <Content Include="Scripts\js\MotivosDevolucion.js" />
+    <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
@@ -1077,6 +1081,8 @@
     <Content Include="Views\TiposProcesos\Index.cshtml" />
     <Content Include="Views\SeccionesVistas\Index.cshtml" />
     <Content Include="Support\Plantilla_BultosRollos.xlsx" />
+    <Content Include="Views\MotivosRetencion\Index.cshtml" />
+    <Content Include="Views\MotivosDevolucion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
