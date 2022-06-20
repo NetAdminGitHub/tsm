@@ -212,8 +212,8 @@ $(document).ready(function () {
             { field: "IdRol", title: "Rol", hidden: true, editor: Grid_Combox, values: ["IdRol","Nombre",UrlRoles,"","Seleccione...","required","","Requerido"] },
             { field: "Nombre", title: "Nombre del Rol" },
             { field: "Fecha", title: "Fecha de Asignación", format: "{0:dd/MM/yyyy}", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "IdUsuarioMod", title: "Usuario Mod" },
         ]
     });
 
