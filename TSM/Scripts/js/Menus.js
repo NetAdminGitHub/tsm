@@ -330,16 +330,15 @@ $(document).ready(function () {
         fn_Habilitar(true);
 
         if ($("#TxtNivel").val() === "3") {
-            HabilitaObje($("#TxtUrl"), true);
-            HabilitaObje($("#TxtControlador"), true);
-            HabilitaObje($("#TxtAccion"), true);
             $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(false);
         } else {
-            $("#TxtNivel").val() === "2" ? $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(true):$("#CmbIdCatalogoFuente").data("kendoComboBox").enable(false);
-            HabilitaObje($("#TxtUrl"), false);
-            HabilitaObje($("#TxtControlador"), false);
-            HabilitaObje($("#TxtAccion"), false);
+            $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(true);
         }
+
+        HabilitaObje($("#TxtControlador"), true);
+        HabilitaObje($("#TxtAccion"), true);
+        HabilitaObje($("#TxtUrl"), true);
+
         $("#btnGuardar").data("kendoButton").enable(true);
         $("#btnEliminar").data("kendoButton").enable(true);
         $("#btnCancelar").data("kendoButton").enable(true);
@@ -381,7 +380,11 @@ $(document).ready(function () {
         $("#btnCancelar").data("kendoButton").enable(true);
         $("#btnEditar").data("kendoButton").enable(false);
         $("#btnNuevo").data("kendoButton").enable(false);
-        $("#chkMenuPublico").attr("disabled", false);      
+        $("#chkMenuPublico").attr("disabled", false);
+        HabilitaObje($("#TxtControlador"), true);
+        HabilitaObje($("#TxtAccion"), true);
+        HabilitaObje($("#TxtUrl"), true);
+        $("#CmbIdCatalogoFuente").data("kendoComboBox").enable(true);
     });
 
     $("#CmbRoles").data("kendoComboBox").bind("select", function (e) {
