@@ -522,6 +522,7 @@
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
@@ -1085,6 +1086,7 @@
     <Content Include="Support\Plantilla_BultosRollos.xlsx" />
     <Content Include="Views\MotivosRetencion\Index.cshtml" />
     <Content Include="Views\MotivosDevolucion\Index.cshtml" />
+    <Content Include="Views\Menus\_SeccionesMenuPublico.cshtml" />
     <Content Include="Views\Auditoria_log\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

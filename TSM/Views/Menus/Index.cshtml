@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Definición de Menus";
-    ViewBag.IdVersion = "TSM0101039|v18082401";
+    ViewBag.IdVersion = "TSM0101039|v18082402";
 }
 @section Scripts {
     <script type="text/javascript">
@@ -24,149 +24,155 @@
     <div class="form-group col-lg-12">
         <div class="card">
             <div class="card-body container">
-                    <div class="form-row">
-                        <div class="form-group col-lg-3 border p-md-2 p-lg-2">
+                <div class="form-row">
+                    <div class="form-group col-lg-3 border p-md-2 p-lg-2">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="cmbModulo">Modulo:</label>
+                                <input id="cmbModulo" name="cmbModulo" required validationMessage="Requerido" class="form-control" />
+                            </div>
+                        </div>
+
+                        <form id="FrmMenu" method="POST" enctype="multipart/form-data" autocomplete="off">
+
                             <div class="form-row">
                                 <div class="form-group col-lg-12">
-                                    <label for="cmbModulo">Modulo:</label>
-                                    <input id="cmbModulo" name="cmbModulo" required validationMessage="Requerido" class="form-control" />
+                                    <button type="submit" value="Submit" id="btnNuevo" name="btnNuevo"></button>
+                                    <button type="submit" value="Submit" id="btnEditar" name="btnEditar"></button>
+                                    <button type="submit" value="Submit" id="btnCancelar" name="btnCancelar"></button>
                                 </div>
                             </div>
-                  
-                            <form id="FrmMenu" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                            <input id="TxtNivel" name="TxtNivel" class="form-control" style="width:100%" hidden="hidden" />
+                            <input id="TxtEstado" name="TxtEstado" class="form-control" style="width:100%" hidden="hidden" />
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="CmbMenuPadre">Opci&oacute;n men&uacute; padre:</label>
+                                    <input id="CmbMenuPadre" name="CmbMenuPadre" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="TxtIdMenu" hidden="hidden">Código men&uacute;:</label>
+                                    <input id="TxtIdMenu" name="TxtIdMenu" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" hidden="hidden" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="TxtEtiquetaMenu">Etiqueta men&uacute;:</label>
+                                    <input id="TxtEtiquetaMenu" name="TxtEtiquetaMenu" class=" k-textbox form-control" required validationMessage="Requerido" mayus="no" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="TxtControlador">Controlador:</label>
+                                    <input id="TxtControlador" name=" TxtControlador" class="k-textbox form-control" mayus="no" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="TxtAccion">Acci&oacute;n:</label>
+                                    <input id="TxtAccion" name="TxtAccion" class="k-textbox form-control" mayus="no" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="TxtUrl">Url:</label>
+                                    <input id="TxtUrl" name="TxtUrl" class="k-textbox form-control" mayus="no" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="CmbIdCatalogoFuente">Fuente Opción:</label>
+                                    <input id="CmbIdCatalogoFuente" name="CmbIdCatalogoFuente" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <button type="button" id="btnSecciones">Configurar Secciones</button>
+                                </div>
+                                <div class="form-group col-lg-6 text-right">
+                                    <input type="checkbox" id="chkMenuPublico" name="chkMenuPublico" class="k-checkbox">
+                                    <label class="k-checkbox-label" for="chkMenuPublico" id="lblchkMenuPublico">Menú Público</label>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <button type="submit" value="Submit" id="btnGuardar" name="btnGuardar"></button>
+                                    <button type="submit" value="Submit" id="btnEliminar" name="btnEliminar"></button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="form-group col-lg-3 border p-md-2 p-lg-2">
+
+                        <div class="form-row"><div class="col-lg-12"> <label class="font-weight-bold">Menú </label></div></div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-12"><div id="treeview" style="height:750px; overflow: auto"></div></div>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-lg-1 align-self-center d-flex justify-content-center ">
+                        <div class="form-row ">
+                            <div class=" nav flex-column nav-pills align-middle" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="row mt-1">
+                                    <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
+                                </div>
+                                <div class="row mt-1">
+                                    <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  col-lg-5 border p-md-2 p-lg-2 ">
+                        <div class="form-row"><div class="col-lg-12"> <label class="font-weight-bold">Asignación de menú </label></div></div>
+                        <div id="tabstrip-left">
+                            <ul>
+                                <li class="k-state-active ">
+                                    Rol Men&uacute;
+                                </li>
+                                <li>
+                                    Usuario Men&uacute;
+                                </li>
+                            </ul>
+                            <div id="tabMenus">
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-lg-12">
+                                        <label for="CmbRoles">Roles:</label>
+                                        <input id="CmbRoles" name="CmbRoles" required validationMessage="Requerido" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <div id="treeviewRoles" style="height:750px; overflow: auto"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tabMenuUsuario">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-lg-12">
+                                        <label for="CmbIdUsuario">Usuarios:</label>
+                                        <input id="CmbIdUsuario" name="CmbIdUsuario" required validationMessage="Requerido" class="form-control" />
+                                    </div>
+
+                                </div>
 
                                 <div class="form-row">
                                     <div class="form-group col-lg-12">
-                                        <button type="submit" value="Submit" id="btnNuevo" name="btnNuevo"></button>
-                                        <button type="submit" value="Submit" id="btnEditar" name="btnEditar"></button>
-                                        <button type="submit" value="Submit" id="btnCancelar" name="btnCancelar"></button>
-                                    </div>
-                                </div>
-
-                                <input id="TxtNivel" name="TxtNivel" class="form-control" style="width:100%" hidden="hidden" />
-                                <input id="TxtEstado" name="TxtEstado" class="form-control" style="width:100%" hidden="hidden" />
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="CmbMenuPadre">Opci&oacute;n men&uacute; padre:</label>
-                                        <input id="CmbMenuPadre" name="CmbMenuPadre" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="TxtIdMenu" hidden="hidden">Código men&uacute;:</label>
-                                        <input id="TxtIdMenu" name="TxtIdMenu" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" hidden="hidden" />
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="TxtEtiquetaMenu">Etiqueta men&uacute;:</label>
-                                        <input id="TxtEtiquetaMenu" name="TxtEtiquetaMenu" class=" k-textbox form-control" required validationMessage="Requerido" mayus="no" />
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="TxtControlador">Controlador:</label>
-                                        <input id="TxtControlador" name=" TxtControlador" class="k-textbox form-control" mayus="no" />
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="TxtAccion">Acci&oacute;n:</label>
-                                        <input id="TxtAccion" name="TxtAccion" class="k-textbox form-control" mayus="no" />
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="TxtUrl">Url:</label>
-                                        <input id="TxtUrl" name="TxtUrl" class="k-textbox form-control" mayus="no" />
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-12 col-lg-12">
-                                        <label for="CmbIdCatalogoFuente">Fuente Opción:</label>
-                                        <input id="CmbIdCatalogoFuente" name="CmbIdCatalogoFuente" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-lg-4">
-                                        <button type="submit" value="Submit" id="btnGuardar" name="btnGuardar"></button>
-                                        <button type="submit" value="Submit" id="btnEliminar" name="btnEliminar"></button>
-                                    </div>
-                                    <div class="form-group col-lg-8 text-right">
-                                        <input type="checkbox" id="chkMenuPublico" name="chkMenuPublico" class="k-checkbox">
-                                        <label class="k-checkbox-label" for="chkMenuPublico" id="lblchkMenuPublico">Menú Público</label>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                        <div class="form-group col-lg-3 border p-md-2 p-lg-2">
-
-                            <div class="form-row"><div class="col-lg-12"> <label class="font-weight-bold" >Menú </label></div></div>
-                            <div class="form-row">
-                                <div class="form-group col-lg-12"><div id="treeview" style="height:576px; overflow: auto"></div></div>
-                            </div>
-
-                        </div>
-                        <div class="form-group col-lg-1 align-self-center d-flex justify-content-center ">
-                            <div class="form-row ">
-                                <div class=" nav flex-column nav-pills align-middle" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <div class="row mt-1">
-                                        <button type="submit" value="Submit" id="btnFlechaDerecha" data-toggle="pill"></button>
-                                    </div>
-                                    <div class="row mt-1">
-                                        <button type="submit" value="Submit" id="btnFlechaIzq" data-toggle="pill"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group  col-lg-5 border p-md-2 p-lg-2 ">
-                            <div class="form-row"><div class="col-lg-12"> <label class="font-weight-bold" >Asignación de menú </label></div></div>
-                            <div id="tabstrip-left">
-                                <ul>
-                                    <li class="k-state-active ">
-                                        Rol Men&uacute;
-                                    </li>
-                                    <li>
-                                        Usuario Men&uacute;
-                                    </li>
-                                </ul>
-                                <div id="tabMenus">
-                             
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12 col-lg-12">
-                                            <label for="CmbRoles" >Roles:</label>
-                                            <input id="CmbRoles" name="CmbRoles" required validationMessage="Requerido" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-12">
-                                            <div id="treeviewRoles" style="height:503px; overflow: auto"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div  id="tabMenuUsuario">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12 col-lg-12">
-                                            <label for="CmbIdUsuario">Usuarios:</label>  
-                                            <input id="CmbIdUsuario" name="CmbIdUsuario" required validationMessage="Requerido" class="form-control" />
-                                        </div>
-                                   
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-12">
-                                            <div id="treeviewMenuUsuario" style="height:503px; overflow: auto"></div>
-                                        </div>
+                                        <div id="treeviewMenuUsuario" style="height:503px; overflow: auto"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -185,4 +191,5 @@
     </div>
 </div>
 
-
+@* Ingresar secciones para menu publico *@
+<div id="vModIngresarSecciones"></div>

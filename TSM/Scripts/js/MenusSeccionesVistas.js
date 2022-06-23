@@ -136,7 +136,6 @@ $(document).ready(function () {
         } else {
             Url = UrlMenusSeccionesVistas + "/" + IdRol.toString() + "/" + IdMenu.toString() + "/" + IdSeccion.toString();
         }
-        console.log("guardar");
 
         $.ajax({
             url: Url,
@@ -209,7 +208,6 @@ $(document).ready(function () {
     });
 
     $("#MenuTreeView").data("kendoTreeView").bind("change", function (e) {
-        console.log("change");
         var selected = $("#MenuTreeView").data("kendoTreeView").select(),
             item = $("#MenuTreeView").data("kendoTreeView").dataItem(selected);
         if (item) {
