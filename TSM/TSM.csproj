@@ -256,6 +256,7 @@
     <Compile Include="Controllers\AduanasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\ArticulosController.cs" />
+    <Compile Include="Controllers\Auditoria_logController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
     <Compile Include="Controllers\BasesMuestrasController.cs" />
@@ -514,6 +515,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
@@ -1083,6 +1085,7 @@
     <Content Include="Support\Plantilla_BultosRollos.xlsx" />
     <Content Include="Views\MotivosRetencion\Index.cshtml" />
     <Content Include="Views\MotivosDevolucion\Index.cshtml" />
+    <Content Include="Views\Auditoria_log\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
