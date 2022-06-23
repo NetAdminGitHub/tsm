@@ -21,11 +21,11 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
-                    url: TSM_Web_APi + "/GetLogAuditoriaByTablaByRangoFechas",
+                    url: TSM_Web_APi + "Auditoria_log/GetLogAuditoriaByTablaByRangoFechas",
                     data: JSON.stringify({
-                        IdCliente: xCliente,
-                        FechaDesde: xFechaDesde,
-                        FechaHasta: xFechaHasta
+                        Tabla: xTabla,
+                        FechaInicio: xFechaInicio,
+                        FechaFin: xFechaFin
                     }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
@@ -59,38 +59,26 @@ $(document).ready(function () {
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
-    $("#gridIngreso").kendoGrid({
+    $("#grid").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdIngreso", title: "Ingreso" },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "FechaIngreso", title: "Fecha Ingreso", format: "{0: dd/MM/yyyy}" },
-            { field: "IdCliente", title: "Id Cliente", hidden: true },
-            { field: "NombreBodegaCli", title: "Bodega", hidden: true },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "Nombre", title: "Estado" },
-            { field: "ReferenciaPL", title: "No. Referencia PL" },
-            { field: "CantidadCortes", title: "Cantidad de Cortes" },
-            { field: "CantidadTotal", title: "Total Cuantía" },
-            { field: "Planta", title: "Planta" },
-            { field: "TipoProceso", title: "Tipo de Proceso" },
-            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "Transaccion", title: "Transaccion" },
+            { field: "Tabla", title: "Tabla" },
+            { field: "PrimaryKey", title: "PrimaryKey" },
+            { field: "Campo", title: "Campo" },
+            { field: "ValorOriginal", title: "Valor Original" },
+            { field: "ValorNuevo", title: "Valor Nuevo" },
+            { field: "FechaTransaccion", title: "Fecha de Transacción", format: "{0: dd/MM/yyyy}", hidden: true },
+            { field: "IdUsuarioMod", title: "Usuario Mod" }                      
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridIngreso").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    SetGrid_CRUD_ToolbarTop($("#gridIngreso").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridIngreso").data("kendoGrid"), false, Permisos.SNBorrar);
-    Set_Grid_DataSource($("#gridIngreso").data("kendoGrid"), dS);
+    SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#grid").data("kendoGrid"), dS);
 
-    $("#grid").kendoTooltip({
-        filter: ".k-grid-btnIng",
-        content: function (e) {
-            return "Log de Auditoria de Tablas";
-        }
-    });
     var selectedRows = [];
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridIngreso"), selectedRows);
