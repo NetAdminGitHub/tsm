@@ -4,7 +4,9 @@ let xTabla;
 let xFechaInicio;
 let xFechaFin;
 $(document).ready(function () {
-
+    let xTabla = null;
+    let xFechaInicio = null;
+    let xFechaFin = null;
     // crear combobox tabla
     Kendo_CmbFiltrarGrid($("#cmbTabla"), TSM_Web_APi + "/Auditoria_log/GetTablasAuditadas", "Tabla", "Tabla", "Seleccione la Tabla");
     //Fecha Inicio y Fecha Fin
@@ -12,6 +14,7 @@ $(document).ready(function () {
     $("#ddFechaFin").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#ddFechaIni").data("kendoDatePicker").value(Fhoy());
     $("#ddFechaFin").data("kendoDatePicker").value(Fhoy());
+
 
     //#region crear grid ingresos
     let dS = new kendo.data.DataSource({
@@ -81,11 +84,11 @@ $(document).ready(function () {
 
     var selectedRows = [];
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridIngreso"), selectedRows);
+        Grid_SetSelectRow($("#grid"), selectedRows);
     });
 
     $("#grid").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridIngreso"), selectedRows);
+        Grid_SelectRow($("#grid"), selectedRows);
     });
 
     $(window).on("resize", function () {
@@ -106,9 +109,10 @@ $(document).ready(function () {
         }
         else
         {
-            xTabla = KdoCmbComboBox($("#cmbTabla"));
+            xTabla = KdoCmbGetValue($("#cmbTabla"));
             xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
             xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
+            $("#grid").data("kendoGrid").dataSource.read();
         }
     });
 
@@ -119,9 +123,10 @@ $(document).ready(function () {
             xTabla = "";
         }
         else {
-            xTabla = KdoCmbComboBox($("#cmbTabla"));
+            xTabla = KdoCmbGetValue($("#cmbTabla"));
             xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
             xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
+            $("#grid").data("kendoGrid").dataSource.read();
         }
     });
 
@@ -132,9 +137,10 @@ $(document).ready(function () {
             xTabla = "";
         }
         else {
-            xTabla = KdoCmbComboBox($("#cmbTabla"));
+            xTabla = KdoCmbGetValue($("#cmbTabla"));
             xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
             xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
+            $("#grid").data("kendoGrid").dataSource.read();
         }
     });
     //#endregion
