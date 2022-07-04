@@ -10,35 +10,32 @@ $(document).ready(function () {
     // crear combobox tabla
     Kendo_CmbFiltrarGrid($("#cmbTabla"), TSM_Web_APi + "/Auditoria_log/GetTablasAuditadas", "Tabla", "Tabla", "Seleccione la Tabla");
     //Fecha Inicio y Fecha Fin
-    $("#ddFechaIni").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#ddFechaFin").kendoDatePicker({ format: "dd/MM/yyyy" });
-    $("#ddFechaIni").data("kendoDatePicker").value(Fhoy());
-    $("#ddFechaFin").data("kendoDatePicker").value(Fhoy());
-
+    let end = new Date();
+    let start = new Date(end.getFullYear(), end.getMonth()-1, end.getDate());
+    let min = new Date();
+    
+    $("#daterangepicker").kendoDateRangePicker({
+        range: { start: start, end: end },
+        max: end,
+        "messages": {
+            "startLabel": "Fecha Inicio:",
+            "endLabel": "Fecha Fin:"            
+        }
+    });
 
     //#region crear grid ingresos
     let dS = new kendo.data.DataSource({
         transport: {
-            read: function (datos) {
-                kendo.ui.progress($(document.body), true);
-                $.ajax({
-                    type: "POST",
-                    dataType: 'json',
-                    url: TSM_Web_APi + "Auditoria_log/GetLogAuditoriaByTablaByRangoFechas",
-                    data: JSON.stringify({
-                        Tabla: xTabla,
-                        FechaInicio: xFechaInicio,
-                        FechaFin: xFechaFin
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        kendo.ui.progress($(document.body), false);
-                        datos.success(result);
-                    },
-                    error: function (result) {
-                        kendo.ui.progress($(document.body), false);
-                        options.error(result);
-                    }
+            read: {
+                url: TSM_Web_APi + "Auditoria_log/GetLogAuditoriaByTablaByRangoFechas",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
+            },
+            parameterMap: function (data, type) {
+                return kendo.stringify({
+                    Tabla: xTabla,
+                    FechaInicio: xFechaInicio,
+                    FechaFin: xFechaFin
                 });
             }
         },
@@ -65,14 +62,14 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "Transaccion", title: "Transaccion" },
-            { field: "Tabla", title: "Tabla" },
-            { field: "PrimaryKey", title: "PrimaryKey" },
+            { field: "FechaTransaccion", title: "Fecha de Transacción", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "Transaccion", title: "Tipo de Transacción" },
+            { field: "Tabla", title: "Tabla", hidden: true },
+            { field: "PrimaryKey", title: "Id. Registro" },
             { field: "Campo", title: "Campo" },
             { field: "ValorOriginal", title: "Valor Original" },
             { field: "ValorNuevo", title: "Valor Nuevo" },
-            { field: "FechaTransaccion", title: "Fecha de Transacción", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "IdUsuarioMod", title: "Usuario Mod" }                      
+            { field: "IdUsuario", title: "Usuario Modifica" }                      
         ]
     });
 
@@ -110,36 +107,24 @@ $(document).ready(function () {
         else
         {
             xTabla = KdoCmbGetValue($("#cmbTabla"));
-            xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
-            xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
+            xFechaInicio = kendo.toString(kendo.parseDate(start), 's');
+            xFechaFin = kendo.toString(kendo.parseDate(end), 's');
             $("#grid").data("kendoGrid").dataSource.read();
         }
     });
 
-    $("#ddFechaIni").data("kendoDatePicker").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
+
+
+    $("#daterangepicker").data("kendoDateRangePicker").bind("change", function () {
+        let range = this.range();
+        if (range === "") {
             $("#grid").data("kendoGrid").dataSource.read();
             xTabla = "";
         }
         else {
             xTabla = KdoCmbGetValue($("#cmbTabla"));
-            xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
-            xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
-            $("#grid").data("kendoGrid").dataSource.read();
-        }
-    });
-
-    $("#ddFechaFin").data("kendoDatePicker").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            $("#grid").data("kendoGrid").dataSource.read();
-            xTabla = "";
-        }
-        else {
-            xTabla = KdoCmbGetValue($("#cmbTabla"));
-            xFechaInicio = kendo.toString(kendo.parseDate($("#ddFechaIni").val()), 's');
-            xFechaFin = kendo.toString(kendo.parseDate($("#ddFechaFin").val()), 's');
+            xFechaInicio = kendo.toString(kendo.parseDate(range.start), 's');
+            xFechaFin = kendo.toString(kendo.parseDate(range.end), 's');
             $("#grid").data("kendoGrid").dataSource.read();
         }
     });
