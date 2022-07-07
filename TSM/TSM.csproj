@@ -332,6 +332,7 @@
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
+    <Compile Include="Controllers\ModalGenLoadController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
@@ -576,6 +577,7 @@
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
+    <Content Include="Scripts\js\SecuenciaMaquina.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SolicitudesCambios.js" />
@@ -1016,6 +1018,7 @@
     <Content Include="Views\CambioClienteRD\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\FormulasFM\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1023,6 +1026,7 @@
     <Folder Include="Data\" />
     <Folder Include="Views\Adjuntos\" />
     <Folder Include="Views\Imagen\" />
+    <Folder Include="Views\ModalGenLoad\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
     <Folder Include="Views\Token\" />
