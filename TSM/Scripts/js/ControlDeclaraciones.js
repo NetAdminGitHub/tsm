@@ -69,7 +69,7 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        window.location.href = "/IngresoDeclaracion/" + `${dataItem.IdCliente}/${dataItem.IdIngreso}`;
+                        window.location.href = "/IngresoDeclaracion/" + `${dataItem.IdCliente}/${dataItem.IdDeclaracionMercancia}`;
                     }
                 },
                 width: "70px",
