@@ -543,6 +543,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
                 fn_TecnicasArticuloSugerido($("#ArticuloSugerido_VerifMues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_VerifMues = setFor.IdBase === undefined ? "" : setFor.IdBase;
+                $("#OpcSelec_VerifMues").text('Nombre de Color');
                 break;
             case "TECNICA":
                 //guardo en Memoria la llave del tipo de selección
@@ -552,6 +553,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
                 fn_TecnicasArticuloSugerido($("#ArticuloSugerido_VerifMues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_VerifMues = null;
+                $("#OpcSelec_VerifMues").text('Nombre de Técnica');
                 break;
             case "BASE":
                 //guardo en Memoria la llave del tipo de selección
@@ -561,6 +563,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = null;
                 $("#ArticuloSugerido_VerifMues").val("");
                 xCmbBaseMezcla_VerifMues = null;
+                $("#OpcSelec_VerifMues").text('Nombre de Base');
                 break;
         }
 
