@@ -10,10 +10,9 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta")
     // crear boton ingreso producto
     KdoButton($("#btnIngresarMercancia"), "plus-outline", "Ingresar Mercancía");
-    // crear boton importar excel
-    KdoButton($("#btnImportarExcel"), "plus-outline", "Ingresar Producto");
+
     KdoButtonEnable($("#btnIngresarMercancia"), false);
-    KdoButtonEnable($("#btnImportarExcel"), false);
+ 
 
     //#region crear grid ingresos
     let dS = new kendo.data.DataSource({
@@ -122,39 +121,49 @@ $(document).ready(function () {
     //#endregion 
 
     //#region filtros
+   
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
             xidclie = 0
             $("#gridIngreso").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnIngresarMercancia"), false);
-            KdoButtonEnable($("#btnImportarExcel"), false);
-        } else {
-            if ($.isNumeric(this.value())) {
-                xidclie = this.value();
-                $("#gridIngreso").data("kendoGrid").dataSource.read();
-                KdoButtonEnable($("#btnIngresarMercancia"), true);
-                KdoButtonEnable($("#btnImportarExcel"), true);
-            }
+
         }
     });
+
+    $("#cmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidclie = this.dataItem(e.item.index()).IdCliente;
+            $("#gridIngreso").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarMercancia"), true);
+        }
+        else {
+            xidclie = 0
+            $("#gridIngreso").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarMercancia"), false);
+        }
+    });
+
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
             xidPlanta = 0
             $("#gridIngreso").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnIngresarMercancia"), false);
-            KdoButtonEnable($("#btnImportarExcel"), false);
-        } else {
-            if ($.isNumeric(this.value())) {
-                xidPlanta = this.value();
-                $("#gridIngreso").data("kendoGrid").dataSource.read();
-                KdoButtonEnable($("#btnIngresarMercancia"), true);
-                KdoButtonEnable($("#btnImportarExcel"), true);
-            }
         }
     });
 
+    $("#cmbPlanta").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidPlanta = this.dataItem(e.item.index()).IdPlanta;
+            $("#gridIngreso").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarMercancia"), true);
+        }
+        else {
+            xidPlanta = 0
+            $("#gridIngreso").data("kendoGrid").dataSource.read();
+        }
+    });
 
     //#endregion 
 
