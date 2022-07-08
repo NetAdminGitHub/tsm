@@ -4,7 +4,7 @@ let Gdet;
 $(document).ready(function () {
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
- 
+    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
         min: 0,
@@ -393,6 +393,11 @@ $(document).ready(function () {
     //compeltar campos de cabecera
 
     fn_Get_IngresoMercancia(xIdIngreso);
+
+    $("#btnRetornar").click(function () {
+        window.location.href = "/ControlIngresos/index"
+    });
+
 
 
 });

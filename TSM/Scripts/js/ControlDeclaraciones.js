@@ -7,10 +7,8 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     // crear boton ingreso de declaracion
     KdoButton($("#btnIngresarDeclaracion"), "plus-outline", "Ingresar Mercancía");
-    // crear boton importar excel
-    KdoButton($("#btnImportarExcel"), "plus-outline", "Ingresar Producto");
     KdoButtonEnable($("#btnIngresarDeclaracion"), false);
-    KdoButtonEnable($("#btnImportarExcel"), false);
+
 
     //#region crear grid ingresos
     let dS = new kendo.data.DataSource({
@@ -112,16 +110,25 @@ $(document).ready(function () {
             xidclie = 0
             $("#gridDeclaraciones").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnIngresarDeclaracion"), false);
-            KdoButtonEnable($("#btnImportarExcel"), false);
-        } else {
-            if ($.isNumeric(this.value())) {
-                xidclie = this.value();
-                $("#gridDeclaraciones").data("kendoGrid").dataSource.read();
-                KdoButtonEnable($("#btnIngresarDeclaracion"), true);
-                KdoButtonEnable($("#btnImportarExcel"), true);
-            }
+
         }
     });
+
+    $("#cmbCliente").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidclie = this.dataItem(e.item.index()).IdCliente;
+            $("#gridDeclaraciones").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarDeclaracion"), true);
+        }
+        else {
+            xidclie = 0
+            $("#gridDeclaraciones").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnIngresarDeclaracion"), false);
+        }
+    });
+
+   
+
     //#endregion 
 
     //crear hojas de bandeo

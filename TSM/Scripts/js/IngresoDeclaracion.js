@@ -9,6 +9,7 @@ $(document).ready(function () {
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
     KdoButton($("#btnNotaRemision"), "search", "Nota de Remision");
+    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
 
     // multicolum
     $("#MltBodegaCliente").ControlSeleccionBodegaClie(xIdClienteIng);
@@ -178,9 +179,9 @@ $(document).ready(function () {
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
-            { field: "Cuantia", title: "Cuantia", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "Cuantia", title: "Cuantía", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:c2}" },
-            { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
+            { field: "IdEmbalaje", title: "Embalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
             { field: "NombreEmbalaje", title: "Embalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
@@ -298,7 +299,7 @@ $(document).ready(function () {
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Item", title: "Item" },
             { field: "CantidadBultos", title: "Cantidad Bultos" },
-            { field: "Cuantia", title: "Cuantia", format: "{0:N2}" },
+            { field: "Cuantia", title: "Cuantía", format: "{0:N2}" },
             { field: "Valor", title: "Valor", format: "{0:c2}" }
         ]
     });
@@ -389,6 +390,10 @@ $(document).ready(function () {
             $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
         }
 
+    });
+
+    $("#btnRetornar").click(function () {
+        window.location.href="/ControlDeclaraciones/index"
     });
 
     $("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
