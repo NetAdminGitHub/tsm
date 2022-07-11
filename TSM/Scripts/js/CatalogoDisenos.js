@@ -297,7 +297,7 @@ var fn_getArtesAdjuntos = function () {
             if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdPrograma($("#CmbPrograma"), data.IdPrograma);}
             sessionStorage.setItem("CaDis_CmbCliente", data.IdCliente);
             xidClie = data.IdCliente;
-            xIdPrograma = 0;
+            xIdPrograma = data.IdPrograma;
             xIdOT = 0;
             XIdCata = data.IdCatalogoDiseno;
             dataSource.read();
@@ -592,7 +592,7 @@ let fn_SetValueMulticolumIdOT = (e, id) => {
         dataType: "json",
         success: function (data) {
             fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
-            sessionStorage.setItem('CaDis_Pro', JSON.stringify(data[0]));
+            sessionStorage.setItem('CaDis_Ot', JSON.stringify(data[0]));
         }
     });
 }
