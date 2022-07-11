@@ -53,15 +53,6 @@ const fn_VEVerifMuestraDocuReady = () => {
     Kendo_CmbFiltrarGrid($("#CmbIdTipoEstacion_VerifMues"), TSM_Web_APi + "TipoEstaciones/GetTipoEstacionesSinAccesorios", "Nombre", "IdTipoEstacion", "Seleccione ...");
     KdoComboBoxEnable($("#CmbIdTipoEstacion_VerifMues"), false);
 
-    KdoComboBoxbyData($("#CmbQuimica_VerifMues"), "[]", "Nombre", "IdQuimicaFormula", "Seleccione ....");
-    $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(0));
-
-    Kendo_CmbFiltrarGrid($("#CmbTipoTinta_VerifMues"), "[]", "Nombre", "IdTipoTinta", "Seleccione un tipo tintas ....");
-    $("#CmbTipoTinta_VerifMues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(0));
-
-    let UrlST = TSM_Web_APi + "TiposTintasSistemasPigmentos/GetByTipoTinta/0";
-    Kendo_CmbFiltrarGrid($("#CmbSistemaPigmentos_VerifMues"), UrlST, "Nombre", "IdSistemaPigmento", "Seleccione un sitema tintas ....", "", "");
-
     let UrlSed = TSM_Web_APi + "Sedas";
     Kendo_CmbFiltrarGrid($("#CmbSedas_VerifMues"), UrlSed, "Nombre", "IdSeda", "Seleccione una seda ....");
 
@@ -77,24 +68,7 @@ const fn_VEVerifMuestraDocuReady = () => {
 
     let frmVerifDiseno = $("#FrmGenEVerifDiseno").kendoValidator({
         rules: {
-            vST: function (input) {
-                if (input.is("[id='CmbSistemaPigmentos_VerifMues']")) {
-                    return $("#CmbSistemaPigmentos_VerifMues").data("kendoComboBox").selectedIndex >= 0;
-                }
-                return true;
-            },
-            vQui: function (input) {
-                if (input.is("[id='CmbQuimica_VerifMues']")) {
-                    return $("#CmbQuimica_VerifMues").data("kendoComboBox").selectedIndex >= 0;
-                }
-                return true;
-            },
-            vTT: function (input) {
-                if (input.is("[id='CmbTipoTinta_VerifMues']")) {
-                    return $("#CmbTipoTinta_VerifMues").data("kendoComboBox").selectedIndex >= 0;
-                }
-                return true;
-            },
+            
             vTSed: function (input) {
                 if (input.is("[id='CmbSedas_VerifMues']")) {
                     return $("#CmbSedas_VerifMues").data("kendoComboBox").selectedIndex >= 0;
@@ -336,9 +310,9 @@ const fn_GuardarMarcoFormuVerifMues = (xIdBrazo, xidRequerimientoColor, xidReque
 
     const SugerenciaFormula = $("#TxtFormulaSug_VerifMues").val();
     const IdUsuarioMod = getUser();
-    const IdSistemaPigmento = KdoCmbGetValue($("#CmbSistemaPigmentos_VerifMues"));
-    const IdTipoTinta = KdoCmbGetValue($("#CmbTipoTinta_VerifMues"));
-    const IdQuimica = KdoCmbGetValue($("#CmbQuimica_VerifMues"));
+    const IdSistemaPigmento = setFor.IdSistemaPigmento;
+    const IdTipoTinta =setFor.IdTipoTinta;
+    const IdQuimica = setFor.IdQuimica;
 
     const data = JSON.stringify({
         IdSeteo: maq[0].IdSeteo,
@@ -498,11 +472,11 @@ const fn_VEVerifMuestra = () => {
     TextBoxEnable($("#TxtOpcSelec_VerifMues"), false);
     KdoNumerictextboxEnable($("#NumArea_VerifMues"), false);
     KdoComboBoxEnable($("#CmdIdUnidadArea_VerifMues"), false);
-    KdoComboBoxEnable($("#CmbQuimica_VerifMues"), false);
+    TextBoxEnable($("#CmbQuimica_VerifMues"), false);
     $("#TxtFormulaSug_VerifMues").prop("readonly", true);
     TextBoxReadOnly($("#ArticuloSugerido_VerifMues"), false);
-    KdoComboBoxEnable($("#CmbSistemaPigmentos_VerifMues"), false);
-    KdoComboBoxEnable($("#CmbTipoTinta_VerifMues"), false);
+    TextBoxEnable($("#CmbSistemaPigmentos_VerifMues"), false);
+    TextBoxEnable($("#CmbTipoTinta_VerifMues"), false);
     $("#TxtOpcSelec_VerifMues").val($("#TxtOpcSelec_VerifMues").data("name"));
     EstacionBra = fn_Estaciones(maq[0].IdSeteo, $("#TxtOpcSelec_VerifMues").data("IdBrazo").replace("TxtInfo", "").replace("txtEdit", ""));
     xIdSeteoMq = EstacionBra === null ? 0 : maq[0].IdSeteo;
@@ -569,6 +543,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
                 fn_TecnicasArticuloSugerido($("#ArticuloSugerido_VerifMues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_VerifMues = setFor.IdBase === undefined ? "" : setFor.IdBase;
+                $("#OpcSelec_VerifMues").text('Nombre de Color');
                 break;
             case "TECNICA":
                 //guardo en Memoria la llave del tipo de selección
@@ -578,6 +553,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica;
                 fn_TecnicasArticuloSugerido($("#ArticuloSugerido_VerifMues"), maq[0].IdSeteo, setFor.IdRequerimientoTecnica === undefined ? "" : setFor.IdRequerimientoTecnica);
                 xCmbBaseMezcla_VerifMues = null;
+                $("#OpcSelec_VerifMues").text('Nombre de Técnica');
                 break;
             case "BASE":
                 //guardo en Memoria la llave del tipo de selección
@@ -587,6 +563,7 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
                 xCmbTecnica_VerifMues = null;
                 $("#ArticuloSugerido_VerifMues").val("");
                 xCmbBaseMezcla_VerifMues = null;
+                $("#OpcSelec_VerifMues").text('Nombre de Base');
                 break;
         }
 
@@ -595,23 +572,16 @@ const fn_SeccionMarcosFormulacion_VerifMues = (datos) => {
         KdoCmbSetValue($("#CmbIdTipoEstacion_VerifMues"), setFor.IdTipoEstacion === undefined ? "" : setFor.IdTipoEstacion);
         $("#CmbIdTipoEstacion_VerifMues").data("kendoComboBox").trigger("change");
         fn_DeshabilitarCamposMarco_VM($("#CmbIdTipoEstacion_VerifMues").data("kendoComboBox").dataItem().UtilizaMarco);
-
-        $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
-        KdoCmbSetValue($("#CmbQuimica_VerifMues"), setFor.IdQuimica === undefined ? xIdQuimica : setFor.IdQuimica);
-
-        $("#CmbTipoTinta_VerifMues").data("kendoComboBox").setDataSource(Fn_GetTiposTintas(setFor.IdQuimica === undefined ? "" : setFor.IdQuimica));
-        KdoCmbSetValue($("#CmbTipoTinta_VerifMues"), setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta);
-        $("#CmbSistemaPigmentos_VerifMues").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(setFor.IdTipoTinta === undefined ? "" : setFor.IdTipoTinta));
-        KdoCmbSetValue($("#CmbSistemaPigmentos_VerifMues"), setFor.IdSistemaPigmento === undefined ? "" : setFor.IdSistemaPigmento);
+        $("#CmbQuimica_VerifMues").val(setFor.NomIdQuimica);
+        $("#CmbTipoTinta_VerifMues").val(setFor.NomIdTipoTinta);
+        $("#CmbSistemaPigmentos_VerifMues").val(setFor.NombreSistPigmento);
         xCmbBasePigmentos_VerifMues = setFor.IdBasePigmento === undefined ? "" : setFor.IdBasePigmento;
-
-        Kendo_CmbFocus($("#CmbQuimica_VerifMues"));
+        $("#NumPeso_VerifMues").focus();
     } else {
         $("#TxtFormulaSug_VerifMues").val("");
-        KdoCmbSetValue($("#CmbTipoTinta_VerifMues"), "");
-        $("#CmbQuimica_VerifMues").data("kendoComboBox").setDataSource(Fn_GetQuimicaFormula(xIdQuimicaCliente));
-        $("#CmbSistemaPigmentos_VerifMues").data("kendoComboBox").setDataSource(Fn_GetSistemaPigmentos(0));
-        KdoCmbSetValue($("#CmbSistemaPigmentos_VerifMues"), "");
+        $("#CmbTipoTinta_VerifMues").val("");
+        $("#CmbQuimica_VerifMues").val("");
+        $("#CmbSistemaPigmentos_VerifMues").val("");
         xCmbBasePigmentos_VerifMues = null;
     }
 };
