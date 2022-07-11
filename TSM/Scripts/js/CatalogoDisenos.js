@@ -125,7 +125,7 @@ var fn_getArtesAdjuntos = function () {
                 contentType: "application/json; charset=utf-8"
             }
         },
-        pageSize: 20
+        pageSize: 12
     });
 
     dataSource.read();
@@ -133,7 +133,7 @@ var fn_getArtesAdjuntos = function () {
     $("#pager").kendoPager({
         dataSource: dataSource,
         input: true,
-        pageSizes: [20, 50, 100, "all"]
+        pageSizes: [12, 24, 36, "all"]
     });
 
      ValidarFrmGeneraOT_FMAX = $("#FrmGeneraOTAX").kendoValidator(
@@ -261,10 +261,12 @@ var fn_getArtesAdjuntos = function () {
 
             KdoCmbSetValue($("#CmbCliente"), data.IdCliente);
             if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdPrograma($("#CmbPrograma"), data.IdPrograma); }
+            if (KdoMultiColumnCmbGetValue($("#CmbFmCata")) === null) { fn_SetValueMulticolumIdFM($("#CmbFmCata"), data.IdCatalogoDiseno); }
             sessionStorage.setItem("CaDis_CmbCliente", data.IdCliente);
             xIdPrograma = data.IdPrograma;
             xidClie = data.IdCliente;
             xIdOT = data.IdOrdenTrabajo;
+            XIdCata = data.IdCatalogoDiseno;
             kdoChkSetValue($("#CmbCliente"), xIdOT);
             dataSource.read();
             sessionStorage.setItem('CaDis_Ot', JSON.stringify(data.toJSON()));
@@ -280,6 +282,8 @@ var fn_getArtesAdjuntos = function () {
         var multicolumncombobox = $("#CmbFmCata").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
         if (data === undefined) {
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('CaDis_Ot', "");
             xidClie = KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"));
             xIdPrograma = KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"));
             xIdOT = 0;
@@ -288,10 +292,12 @@ var fn_getArtesAdjuntos = function () {
             sessionStorage.setItem('CaDis_IdCat', "");
         } else {
             KdoCmbSetValue($("#CmbCliente"), data.IdCliente);
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('CaDis_Ot', "");
             if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdPrograma($("#CmbPrograma"), data.IdPrograma);}
             sessionStorage.setItem("CaDis_CmbCliente", data.IdCliente);
             xidClie = data.IdCliente;
-            xIdPrograma = 0;
+            xIdPrograma = data.IdPrograma;
             xIdOT = 0;
             XIdCata = data.IdCatalogoDiseno;
             dataSource.read();
@@ -365,7 +371,7 @@ $.fn.extend({
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function () { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoOrdenesTrabajos/" + (KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))); },
+                            url: function () { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoDisenoOrdenesTrabajos/" + (KdoCmbGetValue($("#CmbCliente")) === null ? 0 : KdoCmbGetValue($("#CmbCliente"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbFmCata")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbFmCata"))); },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -586,10 +592,23 @@ let fn_SetValueMulticolumIdOT = (e, id) => {
         dataType: "json",
         success: function (data) {
             fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
-            sessionStorage.setItem('CaDis_Pro', JSON.stringify(data[0]));
+            sessionStorage.setItem('CaDis_Ot', JSON.stringify(data[0]));
         }
     });
 }
+
+let fn_SetValueMulticolumIdFM = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "CatalogoDisenos/Getbyid/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data), id);
+            sessionStorage.setItem('CaDis_IdCat', JSON.stringify(data));
+        }
+    });
+}
+
 
 fPermisos = function (datos) {
     Permisos = datos;
