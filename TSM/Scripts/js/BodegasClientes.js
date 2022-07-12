@@ -83,8 +83,9 @@ $(document).ready(function () {
                     Descripcion: { type: "string" },
                     IdRecintoFiscal: { type: "number" },
                     NombreRecintoFiscal: {type: "string"},
-                IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" },
+                    Direccion: { type: "string"}
                 }
             }
         }
@@ -96,7 +97,6 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdBodegaCliente");
             KdoHideCampoPopup(e.container, "NombreCliente");
             KdoHideCampoPopup(e.container, "NombreRecintoFiscal");
-
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
 
@@ -110,16 +110,17 @@ $(document).ready(function () {
             });
             Grid_Focus(e, "Nombre");
         },
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdBodegaCliente", title: "Bodega de cliente", hidden: true },
             { field: "Nombre", title: "Nombre" },
             { field: "IdCliente", title: "Cliente", editor: Grid_Combox, values: ["IdCliente", "Nombre", TSM_Web_APi + "Clientes", "", "Seleccione....","","",""], hidden: true  },
             { field: "NombreCliente", title: "Cliente", hidden: false },
             { field: "Descripcion", title: "Descripción" },
+            { field: "Direccion", title: "Dirección" },
             { field: "IdRecintoFiscal", title: "Recinto Fiscal", editor: Grid_Combox, values: ["IdRecintoFiscal", "Nombre", TSM_Web_APi + "RecintosFiscales", "", "Seleccione...."], hidden: true },
             { field: "NombreRecintoFiscal", title: "Recinto Fiscal", hidden: false },
-           { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]
     });
 
