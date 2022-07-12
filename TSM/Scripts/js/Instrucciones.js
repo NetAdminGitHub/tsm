@@ -53,6 +53,10 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 300");
                                     return false;
                                 }
+                                if (input.is("[name='IdDepartamento']")) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return $("#IdDepartamento").data("kendoComboBox").selectedIndex >= 0;
+                                }
                                 /*if (input.is("[name='CodigoInstruccion']") && input.val().length === 0) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return false;
@@ -120,7 +124,7 @@ let departamentosDropDownEditor = function (container, options) {
         }
     ];
 
-    $('<input required name="' + options.field + '"/>')
+    $('<input required name="' + options.field + '" id="' + options.field + '"/>')
         .appendTo(container)
         .kendoComboBox({
             dataTextField: "displayValue",
