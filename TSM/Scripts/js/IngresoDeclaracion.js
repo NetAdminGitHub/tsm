@@ -16,7 +16,7 @@ $(document).ready(function () {
     $("#MltIngreso").ControlSeleccionIngresoMerca(xIdClienteIng);
     $("#MltPaisExpor").ControlSeleccionPaises();
     $("#MltAduana").ControlSeleccionAduanas();
-
+    KdoButtonEnable($("#btnNotaRemision"), false);
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
         min: 0,
@@ -100,6 +100,12 @@ $(document).ready(function () {
         requestEnd: function (e) {
             Grid_requestEnd(e);
             fn_Get_IngresoDeclaracion(xIdDeMerca);
+            if ($("#gridDetalleItem").data("kendoGrid").dataSource.total() === 0) {
+                KdoButtonEnable($("#btnNotaRemision"), false);
+            }
+            else {
+                KdoButtonEnable($("#btnNotaRemision"), true);
+            }
         },
         error: Grid_error,
         schema: {
@@ -122,7 +128,8 @@ $(document).ready(function () {
                     IdEmbalaje: { type: "string", defaultValue: function () { return 1; } },
                     NombreEmbalaje: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    plAsociado: {type:"boolean"}
                 }
             }
         }
@@ -145,6 +152,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "NombreEmbalaje");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
+            KdoHideCampoPopup(e.container, "plAsociado");
 
             $('[name="IdIncisoArancelario"]').on('change', function (e) {
                 var ml = $('[name="IdIncisoArancelario"]').data("kendoMultiColumnComboBox");
@@ -157,6 +165,13 @@ $(document).ready(function () {
 
             });
 
+            if (!e.model.isNew()) {
+                if (e.model.plAsociado == true) {
+                    KdoNumerictextboxEnable($('[name="CantidadBultos"]'), false);
+                    KdoNumerictextboxEnable($('[name="Cuantia"]'), false);
+
+                }
+            }
 
             Grid_Focus(e, "IdIncisoArancelario");
         },
@@ -180,11 +195,12 @@ $(document).ready(function () {
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
             { field: "Cuantia", title: "Cuantía", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
-            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:c2}" },
+            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
             { field: "IdEmbalaje", title: "Embalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
             { field: "NombreEmbalaje", title: "Embalaje" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
+            { field: "plAsociado", title: "plAsociado", hidden: true },
             {
                 field: "btnvin", title: "&nbsp;",
                 command: {
@@ -199,12 +215,18 @@ $(document).ready(function () {
                                 Div: "vRelacionPLs",
                                 Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
                                 Js: "RelacionPLs.js",
-                                Titulo: "Asociar item a Lista de Empaque",
+                                Titulo: "Asociar Lista de Empaque a Item #" + `${dataItem.Item}`,
                                 Height: "80%",
                                 Width: "50%",
                                 MinWidth: "10%"
                             }],
-                            Param: { idDeclaracionMercancia: xIdDeMerca, item: dataItem.Item, sDiv: "vRelacionPLs" },
+                            Param: {
+                                idDeclaracionMercancia: xIdDeMerca,
+                                item: dataItem.Item,
+                                sDiv: "vRelacionPLs",
+                                grid: $("#gridDetalleItem"),
+                                gd: this.dataItem("tr[data-uid='" + `${this.dataSource.get(dataItem.Item).uid}` + "']")
+                            },
                             fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
                         };
 
@@ -225,6 +247,12 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDetalleItem").data("kendoGrid"), dS);
 
+    $("#gridDetalleItem").kendoTooltip({
+        filter: ".k-grid-btnvin",
+        content: function (e) {
+            return "Vincular packing list";
+        }
+    });
     var selectedRows = [];
     $("#gridDetalleItem").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridDetalleItem"), selectedRows);
@@ -232,6 +260,12 @@ $(document).ready(function () {
 
     $("#gridDetalleItem").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridDetalleItem"), selectedRows);
+        if ($("#gridDetalleItem").data("kendoGrid").dataSource.total() === 0) {
+            KdoButtonEnable($("#btnNotaRemision"), false);
+        }
+        else {
+            KdoButtonEnable($("#btnNotaRemision"), true);
+        }
     });
 
     $("#gridDetalleItem").data("kendoGrid").dataSource.read();
@@ -257,14 +291,18 @@ $(document).ready(function () {
                 }
             }
         },
-        requestEnd: function () {
-            Grid_requestEnd;
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
             if ($("#griVincularListaEmpaque").data("kendoGrid").dataSource.total() === 0) {
                 KdoMultiColumnCmbEnable($("#MltIngreso"), true);
             }
             else {
                 KdoMultiColumnCmbEnable($("#MltIngreso"), false);
             }
+            if (e.type === "destroy") {
+                $("#gridDetalleItem").data("kendoGrid").dataSource.read();
+            }
+           
         },
         error: Grid_error,
         schema: {
@@ -274,16 +312,12 @@ $(document).ready(function () {
                     IdDeclaracionItemsMercancia: { type: "number" },
                     IdDeclaracionMercancias: { type: "number" },
                     IdListaEmpaque: { type: "number" },
-                    IdHojaBandeo: { type: "number" },
-                    IdMercancia: { type: "number" },
                     NoDocumento: { type: "string" },
-                    Estilo: { type: "string" },
                     Fecha: { type: "date" },
                     Cuantia: { type: "number" },
                     Item: { type: "number" },
                     CantidadBultos: { type: "number" },
-                    Cuantia: { type: "number" },
-                    Valor: { type: "number" }
+                    CantidadCorte: { type: "number" }
                 }
             }
         }
@@ -293,14 +327,13 @@ $(document).ready(function () {
     $("#griVincularListaEmpaque").kendoGrid({
         //DEFINICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdListaEmpaque", title: "pl", hidden: true },
-            { field: "NoDocumento", title: "#PL" },
-            { field: "Estilo", title: "Estilo", hidden: true },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "Item", title: "Item" },
-            { field: "CantidadBultos", title: "Cantidad Bultos" },
-            { field: "Cuantia", title: "Cuantía", format: "{0:N2}" },
-            { field: "Valor", title: "Valor", format: "{0:c2}" }
+            { field: "IdListaEmpaque", title: "IdListaEmpque", hidden: true },
+            { field: "NoDocumento", title: "# PL" },
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
+            { field: "CantidadCorte", title: "Cantidad de Cortes" },
+            { field: "CantidadBultos", title: "Total de Bultos" },
+            { field: "Cuantia", title: "Cuantía", format: "{0:N2}" }
         ]
     });
 
