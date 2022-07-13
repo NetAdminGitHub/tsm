@@ -48,10 +48,10 @@ $(document).ready(function () {
                         Corte: { field: "Corte", type: "string" },
                         Talla: { field: "Talla", type: "string" },
                         NoDocumento: { field: "NoDocumento", type: "string" },
-                        Cantidad: { field: "Cantidad", type: "number" },
                         FM: { field: "FM", type: "string" },
                         Diseno: { field: "Diseno", type: "string" },
-                        Estilo: { field: "Estilo", type: "string" }
+                        Estilo: { field: "Estilo", type: "string" },
+                        Cantidad: { field: "Cantidad", type: "number" }
                     }
                 }
             }
@@ -67,11 +67,11 @@ $(document).ready(function () {
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
-            { field: "NoDocumento", title: "Correlativo" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "NoDocumento", title: "Correlativo", hidden: true },
             { field: "FM", title: "FM" },
             { field: "Diseno", title: "Diseño" },
             { field: "Estilo", title: "Estilo" },
+            { field: "Cantidad", title: "Cantidad" },
             {
                 command: [
                     {
@@ -130,6 +130,10 @@ $(document).ready(function () {
                     IdMercancia: { type: "number" },
                     IdCatalogoDiseno: { type: "number" },
                     NoDocumento: { type: "string" },
+                    Corte: { field: "Corte", type: "string" },
+                    FM: { field: "FM", type: "string" },
+                    Diseno: { field: "Diseno", type: "string" },
+                    Estilo: { field: "Estilo", type: "string" },
                     Color: { type: "string" },
                     Talla: { type: "string" },
                     Cantidad: { type: "number" },
@@ -147,11 +151,15 @@ $(document).ready(function () {
             { field: "IdCarrito", title: "Id Carrito", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "IdCatalogoDiseno", title: "Id Mercancia", hidden: true },
-            { field: "NoDocumento", title: "NoDocumento" },
-            { field: "Color", title: "Color" },
+            { field: "NoDocumento", title: "Bulto/Rollo:" },
+            { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
+            { field: "FM", title: "FM" },
+            { field: "Diseno", title: "Diseño" },
+            { field: "Estilo", title: "Estilo" },
+            { field: "Color", title: "Color", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
-            { field: "Estado", title: "Estilos" }
+            { field: "Estado", title: "Estado", hidden:true }
         ]
     });
 
