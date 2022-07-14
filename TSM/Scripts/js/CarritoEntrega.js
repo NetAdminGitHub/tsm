@@ -129,12 +129,14 @@ var fn_Ini_CarritoEnt = (xjson) => {
 }
 
 
-let fn_Get_CarritoFin = (xIdMe) => {
+let fn_Get_CarritoFin = (idMercancia) => {
     kendo.ui.progress($(".k-dialog"), true);
     $.ajax({
-        url: TSM_Web_APi + "CarritosDetallesMercancias/GetCarritoFinbyBulto/" + `${xIdMe}`,
+        url: TSM_Web_APi + "CarritosDetallesMercancias/GetCarritoFinbyBulto",
         dataType: 'json',
-        type: 'GET',
+        data: JSON.stringify({ idMercancia: idMercancia }),
+        contentType: "application/json; charset=utf-8",
+        type: 'POST',
         success: function (dato) {
             if (dato !== null) {
                 xIdCarritoFin = dato.IdCarrito;
@@ -151,8 +153,10 @@ let fn_Get_CarritoFin = (xIdMe) => {
             }
            
             kendo.ui.progress($(".k-dialog"), false);
+            RequestEndMsg(dato, "Post");
         },
-        error: function () {
+        error: function (dato) {
+            ErrorMsg(dato);
             kendo.ui.progress($(".k-dialog"), false);
             KdoButtonEnable($("#btnRegistrar"), false);
         }
