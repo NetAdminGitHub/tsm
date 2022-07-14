@@ -150,6 +150,14 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                     }
                 }
 
+                if (e.type === "update") {
+                    let grid= $("#gNotaRemi").data("kendoGrid");
+                    let gdi = grid.dataItem("tr[data-uid='" + `${grid.dataSource.get(e.response[0].IdNotaRemision).uid}` + "']");
+                    gdi.set("TotalMonto", e.response[0].TotalLinea);
+                    $(".k-dirty-cell", $("#gNotaRemi")).removeClass("k-dirty-cell");
+                    $(".k-dirty", $("#gNotaRemi")).remove();
+                }
+
             },
             error: Grid_error,
             schema: {
@@ -167,7 +175,8 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                         PrecioUnitario: { type: "number" },
                         Monto: { type: "number" },
                         IdUsuarioMod: { type: "string" },
-                        FechaMod: { type: "date" }
+                        FechaMod: { type: "date" },
+                        TotalLinea: { type: "number" }
 
 
                     }
