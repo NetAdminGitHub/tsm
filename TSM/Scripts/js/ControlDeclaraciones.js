@@ -18,7 +18,11 @@ $(document).ready(function () {
                 url: function () { return TSM_Web_APi + "DeclaracionMercancias/GetConsulta/" + `${xidclie}` },
                 contentType: "application/json; charset=utf-8"
             },
-
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "DeclaracionMercancias/" + datos.IdDeclaracionMercancia; },
+                dataType: "json",
+                type: "DELETE"
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -81,7 +85,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridDeclaraciones").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridDeclaraciones").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridDeclaraciones").data("kendoGrid"), false, false);
+    SetGrid_CRUD_Command($("#gridDeclaraciones").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDeclaraciones").data("kendoGrid"), dS);
 
     $("#gridDeclaraciones").kendoTooltip({
