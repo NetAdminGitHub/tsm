@@ -2,7 +2,8 @@
 
 let idNota;
 let idDeclaracion;
-
+var Permisos;
+let Gdet;
 var fn_Ini_ModalVerNotaRemision = (strjson) => {
     idDeclaracion = strjson.sIdRegNotaRemi;
     //fecha de ingreso
@@ -76,21 +77,20 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
             { field: "IdNotaRemision", title: "IdNotaRemision", hidden: true },
             { field: "Serie", title: "Serie", footerTemplate: "Total" },
             { field: "NoDocumento", title: "Número" },
-            { field: "TotalCantidad", title: "Total de Bulto", format: "{0:n2}", footerTemplate: "#: data.TotalCantidad ? kendo.format('{0:n2}', sum) : 0 #" },
-            { field: "TotalMonto", title: "Monto Total", format: "{0:N2}", footerTemplate: "#: data.TotalMonto ? kendo.format('{0:n2}', sum) : 0 #"},
             { field: "Descripcion", title: "Descripción", hidden: false },            
             { field: "Direccion", title: "Dirección", hidden: false },
             { field: "IdCliente", title: "IdCliente", hidden: true },
             { field: "IdBodegaCliente", title: "IdBodegaCliente", hidden: true },
             { field: "IdDeclaracionMercancia", title: "IdDeclaracionMercancia", hidden: true },
-            { field: "FechaDocumento", title: "Fecha", hidden: true }
+            { field: "FechaDocumento", title: "Fecha", hidden: true },
+            { field: "TotalCantidad", title: "Total de Bulto", format: "{0:n2}", footerTemplate: "#: data.TotalCantidad ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "TotalMonto", title: "Monto Total", format: "{0:c2}", footerTemplate: "#: data.TotalMonto ? kendo.format('{0:c2}', sum) : 0 #" }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gNotaRemi").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
-    //SetGrid_CRUD_ToolbarTop($("#gNotaRemi").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gNotaRemi").data("kendoGrid"),false,true);
+    SetGrid_CRUD_Command($("#gNotaRemi").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gNotaRemi").data("kendoGrid"), ds);
 
 
@@ -104,6 +104,7 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
     var selectedRows = [];
     $("#gNotaRemi").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gNotaRemi"), selectedRows);
+        
     });
 
     $("#gNotaRemi").data("kendoGrid").bind("change", function (e) {
@@ -117,7 +118,7 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
 
         var idNota = e.data.IdNotaRemision === null ? 0 : e.data.IdNotaRemision;
 
-        let dsdetalle = new kendo.data.DataSource({
+        var dsdetalle = new kendo.data.DataSource({
             //CONFIGURACION DEL CRUD
             transport: {
                 read: {
@@ -130,17 +131,30 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                     type: "PUT",
                     contentType: "application/json; charset=utf-8"
                 },
+                destroy: {
+                    url: function (datos) { return TSM_Web_APi + "NotasRemisionMercancias/" + datos.IdNotaRemisionMercancia; },
+                    dataType: "json",
+                    type: "DELETE"
+                },
                 parameterMap: function (data, type) {
                     if (type !== "read") {
                         return kendo.stringify(data);
                     }
                 }
             },
-            requestEnd: Grid_requestEnd,
+            requestEnd: function (e) {
+                Grid_requestEnd(e);
+                if (Gdet !== undefined) {
+                    if (Gdet.dataSource.total() === 0 && e.type === "destroy") {
+                        $("#gNotaRemi").data("kendoGrid").dataSource.read();
+                    }
+                }
+
+            },
             error: Grid_error,
             schema: {
                 model: {
-                    id: "IdNotaRemisionMercancia",
+                    id: "IdNotaRemision",
                     fields: {
                         IdNotaRemision: { type: "number" },
                         IdNotaRemisionMercancia: { type: "number" },
@@ -162,8 +176,6 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
             filter: { field: "IdNotaRemision", operator: "eq", value: e.data.IdNotaRemision }
         });
 
-
-
         var detailGrid = $("<div/>").appendTo(e.detailCell).kendoGrid({
             //DEFICNICIÓN DE LOS CAMPOS
 
@@ -180,33 +192,32 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
                 Grid_Focus(e, "PrecioUnitario");
             },
             columns: [
-              
-               { field: "IdNotaRemision", title: "IdNotaRemision", hidden: true },
+
+                { field: "IdNotaRemision", title: "IdNotaRemision", hidden: true },
                 { field: "IdNotaRemisionMercancia", title: "IdNotaRemisionMercancia", hidden: true },
                 { field: "Item", title: "Item", hidden: true },
-                { field: "ItemDM", title: "ItemDM", hidden: true },
+                { field: "ItemDM", title: "Item declaración"},
                 { field: "Descripcion", title: "Descripción" },
                 { field: "Cantidad", title: "Total de Bultos", format: "{0:n2}" },
                 { field: "IdUnidad", title: "Unidad", hidden: true },
-                { field: "PrecioUnitario", title: "Precio unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"},
-                { field: "Abreviatura", title: "Unidad de medida" },
-                { field: "Monto", title: "Monto", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"}
+                { field: "PrecioUnitario", title: "Precio unitario", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
+                { field: "Abreviatura", title: "Unidad de medida", hidden: true },
+                { field: "Monto", title: "Monto", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" }
             ]
         });
 
 
         ConfGDetalle(detailGrid.data("kendoGrid"), dsdetalle, "griNotaRemiDetalle" + idNota);
-     
-            var selectedRowsTec = [];
-            detailGrid.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-                Grid_SetSelectRow(detailGrid, selectedRowsTec);
-            });
-        
-            detailGrid.data("kendoGrid").bind("change", function (e) {
-                Grid_SelectRow(detailGrid, selectedRowsTec);
-            });
-            
 
+        var selectedRowsTec = [];
+        detailGrid.data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+            Grid_SetSelectRow(detailGrid, selectedRowsTec);
+            Gdet = detailGrid.data("kendoGrid");
+        });
+
+        detailGrid.data("kendoGrid").bind("change", function (e) {
+            Grid_SelectRow(detailGrid, selectedRowsTec);
+        });
 
 
     }
@@ -215,7 +226,7 @@ var fn_Ini_ModalVerNotaRemision = (strjson) => {
     function ConfGDetalle(g, ds, IdentificadorGridDetalle) {
         
         SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0);
-        SetGrid_CRUD_Command(g, true, false);
+        SetGrid_CRUD_Command(g, true, Permisos.SNBorrar, IdentificadorGridDetalle);
         Set_Grid_DataSource(g, ds);
     }
 
@@ -249,3 +260,6 @@ var fn_Reg_ModalVerNotaRemision = (strjson) => {
     $("#gNotaRemi").data("kendoGrid").dataSource.read();
    
 };
+fPermisos = function (datos) {
+    Permisos = datos;
+}

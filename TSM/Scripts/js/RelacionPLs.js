@@ -2,11 +2,15 @@
 let StrIdListaEmp = [];
 let xitem = 0;
 let xsDiv;
+let xgrid;
+let xgd;
 var fn_Ini_RelacionPLs = (strjson) => {
 
     xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
     xitem = strjson.item;
     xsDiv = strjson.sDiv;
+    xgrid = strjson.grid;
+    xgd = strjson.gd;
     KdoButton($("#btnCrea_registroPlAsig"), "save", "Crear Registro");
     ////#region crear grid ingresos
     let dS = new kendo.data.DataSource({
@@ -94,6 +98,8 @@ var fn_Reg_RelacionPLs = (strjson) => {
     xitem = strjson.item;
     xsDiv = strjson.sDiv;
     StrIdListaEmp = [];
+    xgrid = strjson.grid;
+    xgd = strjson.gd;
     $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
 };
 
@@ -111,8 +117,6 @@ let fn_Crear_Reg = () => {
             });
         });
         result = fn_AgregarPL(PLs);
-
-
     } else {
         result = false;
         $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
@@ -139,6 +143,10 @@ let fn_AgregarPL = (strPLs) => {
             kendo.ui.progress($(".k-dialog"), false);
             resultPak = true;
             StrIdListaEmp = [];
+            xgd.set("plAsociado", true);
+            $(".k-dirty-cell", xgrid).removeClass("k-dirty-cell");
+            $(".k-dirty", xgrid).remove();
+            xgrid.data("kendoGrid").saveChanges();
             $("#" + `${xsDiv}`).data("kendoWindow").close();
         },
         error: function (data) {
