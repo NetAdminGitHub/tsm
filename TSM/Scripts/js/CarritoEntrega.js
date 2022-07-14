@@ -51,7 +51,7 @@ var fn_Ini_CarritoEnt = (xjson) => {
             { field: "IdCarrito", title: "Id Carrito", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "IdCatalogoDiseno", title: "Id Mercancia", hidden: true },
-            { field: "NoDocumento", title: "NoDocumento" },
+            { field: "NoDocumento", title: "Bulto/Rollo:" },
             { field: "Color", title: "Color" },
             { field: "Talla", title: "Talla" },
             { field: "Cantidad", title: "Cantidad" }
@@ -104,7 +104,7 @@ var fn_Ini_CarritoEnt = (xjson) => {
         }
     });
     $("#btnCancelar").click(function () {
-        $("#" + `${xdivmod}`).data("kendoDialog").close();
+        $("#" + `${xdivmod}`).data("kendoWindow").close();
     });
     $("#btnRegistrar").click(function () {
         if (KdoCmbGetValue($("#dropdMaquina")) === null ) {
@@ -122,9 +122,10 @@ var fn_Ini_CarritoEnt = (xjson) => {
         } else {
             fn_Gen_entrega(xIdCarritoFin)
         }
-      
+
+        $("#txtBulto").focus();
     });
-    $("#txtBulto").focus();
+    
 }
 
 
@@ -188,7 +189,7 @@ let fn_Gen_entrega = (xidC) => {
             RequestEndMsg(datos, "Post");
             kendo.ui.progress($(".k-dialog"), false);
             xIdCarritoFin = 0;
-            $("#" + `${xdivmod}`).data("kendoDialog").close();
+            $("#" + `${xdivmod}`).data("kendoWindow").close();
 
         },
         error: function (data) {
