@@ -59,7 +59,8 @@ $(document).ready(function () {
             { field: "IdCliente", title: "Id Cliente", hidden: true },
             { field: "Nombre", title: "Cliente" },
             { field: "NomIdBodegaCliente", title: "Bodega" },
-            { field: "Estado", title: "Estado"},            
+            { field: "Estado", title: "Estado" },  
+            { field: "IdIngreso", title: "# Ingreso" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             {
