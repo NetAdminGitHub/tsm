@@ -565,8 +565,8 @@ function Grid_error(e) {
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
-            width: "500px",
-            height: "200px",
+            width: "30%",
+            height: "30%",
             modal: true
         }).data("kendoWindow");
 
