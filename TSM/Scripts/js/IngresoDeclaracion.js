@@ -486,6 +486,34 @@ let fn_Get_IngresoDeclaracion = (xId) => {
     });
 
 };
+let fn_Get_RefresCab = (xId) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "DeclaracionMercancias/GetDatosCabecera/" + `${xId}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), dato.IdBodegaCliente);
+                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.NoIngreso);
+                KdoMultiColumnCmbSetValue($("#MltAduana"), dato.IdAduana);
+                KdoMultiColumnCmbSetValue($("#MltPaisExpor"), dato.IdPais);
+                $("#TxtNoReferencia").val(dato.NoReferencia);
+                $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.Fecha), 'dd/MM/yyyy'));
+                $("#TxtDireccion").val(dato.Direccion);
+                kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
+                kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
+                kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
+                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+};
 
 fPermisos = function (datos) {
     Permisos = datos;
@@ -529,6 +557,7 @@ let fn_GuardarDM = () => {
         },
         error: function (data) {
             ErrorMsg(data);
+            fn_Get_RefresCab(xIdDeMerca);
             kendo.ui.progress($(document.body), false);
         }
     });
