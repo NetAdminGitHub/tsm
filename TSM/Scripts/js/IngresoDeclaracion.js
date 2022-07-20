@@ -529,6 +529,7 @@ let fn_GuardarDM = () => {
         },
         error: function (data) {
             ErrorMsg(data);
+            fn_Get_IngresoDeclaracion(xIdDeMerca);
             kendo.ui.progress($(document.body), false);
         }
     });
