@@ -61,7 +61,8 @@ var fn_Ini_RelacionPLs = (strjson) => {
             { selectable: true, width: "50px" },
             { field: "IdListaEmpaque", title: "id Lista Empaque", hidden: true },
             { field: "NoDocumento", title: "No Documento" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "CantidadBultos", title: "Cantidad de Bultos" },
+            { field: "Cantidad", title: "Cuantía" , format: "{0:N2}"},
             { field: "Docenas", title: "Docenas" }
         ]
     });
