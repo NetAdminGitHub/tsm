@@ -149,16 +149,26 @@ let fn_Get_CarritoFin = (idMercancia) => {
                 $("#txtFm").val("");
                 $("#txtNoBulto").val("");
                 KdoButtonEnable($("#btnRegistrar"), false);
-
             }
            
             kendo.ui.progress($(".k-dialog"), false);
             RequestEndMsg(dato, "Post");
         },
         error: function (dato) {
-            ErrorMsg(dato);
-            kendo.ui.progress($(".k-dialog"), false);
-            KdoButtonEnable($("#btnRegistrar"), false);
+            var fnClose = function () {
+                kendo.ui.progress($(".k-dialog"), false);
+                KdoButtonEnable($("#btnRegistrar"), false);
+                $("#txtFm").val("");
+                $("#txtNoBulto").val("");
+                $("#gCarritoFinlizado").data("kendoGrid").dataSource.data([]);
+                $("#txtBulto").trigger("focus");
+                KdoCmbSetValue($("#dropdMaquina"), "");
+                $("#txtBulto").val("");
+                $("#txtBulto").one('blur', function () {
+                    $("#txtBulto").trigger("focus");
+                });
+            };
+            ErrorMsg(dato, fnClose);
         }
     });
 
