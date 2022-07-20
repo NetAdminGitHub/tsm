@@ -81,10 +81,19 @@ function RequestEndMsg(e, type) {
     }
 }
 
-function ErrorMsg(e) {
+function ErrorMsg(e, fnClose) {
     var icono = "";
     var MensajeTemplate = "";
     var mensaje = "";
+
+    let onClose = function () {
+        if (fnClose === undefined || fnClose === "") {
+            return true;
+        } else {
+            return fnClose();
+        }
+    };
+
     if (e.responseJSON) {
         mensaje = (e.responseJSON.Mensaje === null || e.responseJSON.Mensaje === undefined ? e.responseJSON.ExceptionMessage === undefined ? e.responseJSON.Message : e.responseJSON.ExceptionMessage : e.responseJSON.Mensaje)
             + (e.responseJSON.Output === null || e.responseJSON.Output === undefined ? "" : " " + e.responseJSON.Output);
@@ -95,7 +104,8 @@ function ErrorMsg(e) {
             visible: false,
             width: "30%",
             height: "30%",
-            modal: true
+            modal: true,
+            close: onClose
         }).data("kendoWindow");
 
         windowMensaje.content(MensajeTemplate);
@@ -110,7 +120,8 @@ function ErrorMsg(e) {
             visible: false,
             width: "30%", //400px
             height: "30%",//200px
-            modal: true
+            modal: true,
+            close: onClose
         }).data("kendoWindow");
 
         windowMensaje.content(MensajeTemplate);
