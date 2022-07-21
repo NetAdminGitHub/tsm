@@ -559,7 +559,7 @@
     },ControlSeleccionIngresoMerca: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
-                dataTextField: "NombreCliente",
+                dataTextField: "NoDocumento",
                 dataValueField: "IdIngreso",
                 filter: "contains",
                 autoBind: false,
@@ -571,13 +571,13 @@
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "IngresoMercancias/GetIngresoMercanciaByCliente/" + idCliente; },
+                            url: function (datos) { return TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasFiltro/" + idCliente; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
                 },
                 columns: [
-                    { field: "IdIngreso", title: "Ingreso", width: 75 },
+                    { field: "NoDocumento", title: "Ingreso", width: 100},                 
                     { field: "ReferenciaPL", title: "No. Referencia PL.", width: 300 },
                     { field: "CortesCliente", title: "Cortes", width: 300 },
                     { field: "TotalCuantia", title: "Total Cuantía", width:100 },
