@@ -43,6 +43,7 @@ $(document).ready(function () {
                     Fecha: { type: "date" },
                     Estado: { type: "string" },
                     IdIngreso: { type: "number" },
+                    NoDocumento:{ type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date"}
                 }
@@ -55,12 +56,13 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdDeclaracionMercancia", title: "Declaración de Mercancía" },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },            
+            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
+            { field: "IdIngreso", title: "# Id Ingreso", hidden: true },
+            { field: "NoDocumento", title: "# Ingreso" },
             { field: "IdCliente", title: "Id Cliente", hidden: true },
             { field: "Nombre", title: "Cliente" },
             { field: "NomIdBodegaCliente", title: "Bodega" },
             { field: "Estado", title: "Estado" },  
-            { field: "IdIngreso", title: "# Ingreso" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             {

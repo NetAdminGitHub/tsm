@@ -51,7 +51,8 @@ $(document).ready(function () {
                     CantidadCortes: { type: "number" },
                     Planta: { type: "string" },
                     TipoProceso: { type: "string" },
-                    CantidadTotal: { type: "number" }
+                    CantidadTotal: { type: "number" },
+                    NoDocumento: {type:"string"}
                 }
             }
         }
@@ -61,13 +62,12 @@ $(document).ready(function () {
     $("#gridIngreso").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdIngreso", title: "Ingreso" },
+            { field: "IdIngreso", title: "Id. Ingreso", hidden:true },
+            { field: "NoDocumento", title: "# Ingreso" },
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}", hidden: true},
             { field: "FechaIngreso", title: "Fecha Ingreso", format: "{0: dd/MM/yyyy}"},
             { field: "IdCliente", title: "Id Cliente",hidden:true },
             { field: "NombreBodegaCli", title: "Bodega", hidden:true },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "Nombre", title: "Estado" },
             { field: "ReferenciaPL", title: "No. Referencia PL" },
             { field: "CantidadCortes", title: "Cantidad de Cortes" },
             { field: "CantidadTotal", title: "Total Cuantía" },
@@ -75,6 +75,8 @@ $(document).ready(function () {
             { field: "TipoProceso", title: "Tipo de Proceso" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "Nombre", title: "Estado" },
             {
                 field: "btnIng", title: "&nbsp;",
                 command: {
