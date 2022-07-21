@@ -20,6 +20,7 @@ $(document).ready(function () {
     KdoCmbSetValue($("#cmbCliente"), xIdClienteIng);
     kdoNumericSetValue($("#num_Ingreso"), xIdIngreso);
     TextBoxEnable($("#txtEstado"), false);
+    TextBoxEnable($("#num_Nodoc"), false);
 
     // crear hoja de bamdeo
     KdoButton($("#btnCrearHoja"), "gear", "Guardar");
@@ -418,6 +419,7 @@ let fn_Refrescar_Ingreso = () => {
             kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);
             xIdIngreso = Bandeo[0].IdIngreso;
             $("#txtEstado").val(Bandeo[0].Estado);
+            $("#num_Nodoc").val(Bandeo[0].NoDocumento);
             window.history.pushState('', '', "/IngresoMercancias/" + `${xIdClienteIng}/${xIdIngreso}`);
         }
     }
@@ -433,10 +435,12 @@ let fn_Get_IngresoMercancia = (xId) => {
             if (dato !== null) {
                 $("#txtEstado").val(dato.Estado);
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaIngreso), 'dd/MM/yyyy'));
+                $("#num_Nodoc").val(dato.NoDocumento);
          
             } else {
                 $("#txtEstado").val("");
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Fhoy()), 'dd/MM/yyyy'));
+                $("#num_Nodoc").val("");
             }
             kendo.ui.progress($(".k-dialog"), false);
         },

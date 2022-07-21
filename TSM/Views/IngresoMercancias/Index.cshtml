@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Ingresos de Mercancía";
-    ViewBag.IdVersion = "TSM0101112|v22070706";
+    ViewBag.IdVersion = "TSM0101112|v22072103";
 }
 
 @section Scripts {
@@ -24,9 +24,13 @@
                     <button type="button" id="btnRetornar"></button>
                 </div>
                 <div class="form-row">
-                    <div class="col-lg-3 form-group">
-                        <label for="num_Ingreso"># Ingreso:</label>
+                    <div class="col-lg-3 form-group d-none d-print-block">
+                        <label for="num_Ingreso"># cod Ingreso:</label>
                         <input id="num_Ingreso" name="num_Ingreso" type="text" class="form-control" />
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="num_Nodoc"># Ingreso:</label>
+                        <input id="num_Nodoc" name="num_Nodoc" type="text" class="k-textbox form-control" />
                     </div>
                     <div class="col-lg-3 form-group">
                         <label for="dFecha">Fecha:</label>
