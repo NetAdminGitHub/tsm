@@ -9,6 +9,9 @@ $(document).ready(function () {
 
     //covertir a kendo combobox
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selecione un Cliente...");
+
+    // crear boton imprimir
+    KdoButton($("#btn_print"), "print", "Imprimir");
     
 
     $("#CmbFmCata").mcBandeoDisenos();
@@ -103,7 +106,6 @@ $(document).ready(function () {
             { field: "FM", title: "Número FM" },
             { field: "RowId", title: "rowId", hidden:true},
             { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true },
-            { command: { name: "h_print", text: "", iconClass: "k-icon k-i-print", click: fn_ImprimirVinetas }, title: " ", width: "70px" }
         ]
     });
 
@@ -197,7 +199,6 @@ $(document).ready(function () {
                 { field: "Docenas", title: "Docenas", format: "{0:n2}" },                
                 { field: "Estado", title: "IdEstado", hidden: true },
                 { field: "NomEstado", title: "Estado" },
-                { command: { name: "b_print", text: "", iconClass: "k-icon k-i-print", click: fn_ImprimirVinetas }, title: " ", width: "70px" }
             ]
         });
 
@@ -281,7 +282,9 @@ $(document).ready(function () {
     });
 
 
-
+    $("#btn_print").click(function () {
+        fn_ImprimirVinetas();
+    });
 
 
 });

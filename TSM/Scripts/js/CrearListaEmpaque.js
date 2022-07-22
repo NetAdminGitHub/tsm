@@ -170,6 +170,7 @@ let fn_CrearReg = () => {
                     data: JSON.stringify({
                         NoDocumento: $("#txtNoRefePackingList").val(),
                         Observacion: $("#txtObservacionPackingList").val(),
+                        IdIngreso: $("#num_Ingreso").val(),
                         Peso: 0,
                         Estado: 'ACTIVO',
                         IdListaEmpaque: xsIdListaEmpaque
@@ -232,6 +233,7 @@ let fn_Gen_PakigList = (strBande) => {
             data: JSON.stringify({
                 NoDocumento: $("#txtNoRefePackingList").val(),
                 Observacion: $("#txtObservacionPackingList").val(),
+                IdIngreso: $("#num_Ingreso").val(),
                 Peso: 0,
                 IdUsuarioMod: getUser(),
                 HojasBandeo: strBande,
