@@ -456,7 +456,6 @@ let fn_Get_IngresoDeclaracion = (xId) => {
         success: function (dato) {
             if (dato !== null) {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), dato.IdBodegaCliente);
-                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.NoIngreso);
                 KdoMultiColumnCmbSetValue($("#MltAduana"), dato.IdAduana);
                 KdoMultiColumnCmbSetValue($("#MltPaisExpor"), dato.IdPais);
                 $("#TxtNoReferencia").val(dato.NoReferencia);
@@ -495,7 +494,6 @@ let fn_Get_RefresCab = (xId) => {
         success: function (dato) {
             if (dato !== null) {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), dato.IdBodegaCliente);
-                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.NoIngreso);
                 KdoMultiColumnCmbSetValue($("#MltAduana"), dato.IdAduana);
                 KdoMultiColumnCmbSetValue($("#MltPaisExpor"), dato.IdPais);
                 $("#TxtNoReferencia").val(dato.NoReferencia);
@@ -504,7 +502,7 @@ let fn_Get_RefresCab = (xId) => {
                 kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
                 kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
                 kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
-                KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
+                fn_SetValueMulticolumIngreso($("#MltIngreso"), dato.IdIngreso);
             }
             kendo.ui.progress($(document.body), false);
         },
@@ -576,7 +574,6 @@ $.fn.extend({
                 filter: "contains",
                 filterFields: ["IdIncisoArancelario", "IncisoArancelario", "Descripcion"],
                 autoBind: false,
-                //minLength: 3,
                 height: 400,
                 placeholder: "Selección de Inciso Arancelario",
                 valuePrimitive: true,
@@ -622,3 +619,14 @@ let get_Item = (g) => {
     return SelItem === null ? 0 : SelItem.Item;
 
 };
+
+let fn_SetValueMulticolumIngreso = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasbyId/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data), id);
+        }
+    });
+}
