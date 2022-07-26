@@ -17,7 +17,7 @@ $(document).ready(function () {
     // Agregar Corte
     KdoButton($("#btnEntProd"), "gear");
     KdoButton($("#btnPrep"), "track-changes-accept");
-    KdoButton($("#btnCreaCarrito"), "arrow-60-right k-icon-xl");
+    KdoButton($("#btnCreaCarrito"), "cart k-icon-xl");
     $("#btnCreaCarrito").removeClass("k-button-icon");
     // crear detakle de preparado
     KdoButton($("#btnDetallePrep"), "zoom-in");
@@ -68,7 +68,7 @@ $(document).ready(function () {
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
             { field: "NoDocumento", title: "Correlativo", hidden: true },
-            { field: "FM", title: "FM" },
+            { field: "FM", title: "FM", hidden: true },
             { field: "Diseno", title: "Diseño" },
             { field: "Estilo", title: "Estilo" },
             { field: "Cantidad", title: "Cantidad" },
