@@ -2774,3 +2774,8 @@ let fn_GenLoadModalWindow = (obj) => {
 
     }
 }
+let fn_multiColumnSetJson = (e, registro, valor) => {
+    var mcbm = e.data("kendoMultiColumnComboBox");
+    mcbm.dataSource.add(JSON.parse(registro));
+    mcbm.value(valor);
+};
