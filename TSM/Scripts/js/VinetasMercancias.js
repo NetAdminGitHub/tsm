@@ -2,6 +2,9 @@
 let xCliente = 0;
 let xIdCat = 0; //id en la tabla BandeosDisenos
 let xIdHojaBandeo = 0;
+var StrIdBulto = [];
+var StrIdTalla = [];
+var StrIdMercaEtapa = [];
 
 
 $(document).ready(function () {
@@ -82,14 +85,76 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridDatosVinetas").kendoGrid({
         detailInit: GridDetalleInit,
-        dataBound: function () {
-            this.collapseRow(this.tbody.find("tr.k-master-row").first());
+        dataBound: function (e) {
+            //this.collapseRow(this.tbody.find("tr.k-master-row").first());
+            var grid = e.sender;
+
+            grid.tbody.find("tr.k-master-row").click(function (e) {
+                var target = $(e.target);
+                if ((target.hasClass("k-i-expand")) || (target.hasClass("k-i-collapse"))) {
+                    return;
+                }
+
+                var row = target.closest("tr.k-master-row");
+                var icon = row.find(".k-i-expand");
+
+                if (icon.length) {
+                    grid.expandRow(row);
+                } else {
+                    grid.collapseRow(row);
+                }
+            })
         },
         change: function (e) {
-            var childRow = this.element.closest("table").next();
+            /*var childRow = this.element.closest("table").next();
             if (this.select().length === false ) {
                 childRow.removeClass("k-state-selected");
-            } 
+            }*/
+            $("tr", ".lump-child-grid").removeClass("k-state-selected");
+            let child = this.select().next().find(".lump-child-grid");
+            $("tr", child).addClass("k-state-selected");
+
+            let childRow = this.element.closest("table").next();
+            if (this.select().length > 0) {
+                childRow.removeClass("k-state-selected");
+            }
+
+            let grid = $("#gridDatosVinetas").data("kendoGrid");
+            let detailRow = grid.element.find(".k-detail-row");
+
+            let items = [];
+            let rows = detailRow.find(".idHB-detail");
+            setTimeout(function () {
+
+                rows.each(function (currentValue, index, array) {
+                    let row = index.closest("tr");
+                    let chk = row.querySelector("input");
+                    if (chk.checked) {
+                        items.push(index.innerText);
+                    }
+                });
+                StrIdBulto = items;
+
+                items = [];
+                rows = detailRow.find(".idMercancia-detail");
+                rows.each(function (currentValue, index, array) {
+                    let row = index.closest("tr");
+                    let chk = row.querySelector("input");
+                    if (chk.checked)
+                        items.push(index.innerText);
+                });
+                StrIdMercaEtapa = items;
+
+            }, 250);
+
+            let masterRows = e.sender.select();
+            let talla = [];
+
+            masterRows.each(function (e) {
+                let dataItem = grid.dataItem(this);
+                talla.find(x => x == dataItem.Talla) == null ? talla.push(dataItem.Talla) : null;
+            });
+            StrIdTalla = talla;
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
@@ -135,6 +200,54 @@ $(document).ready(function () {
         }
     });
 
+    //EVENTS
+    $("#gridDatosVinetas").data("kendoGrid").tbody.on("change", ".k-checkbox", function (e) {
+        let checkbox = $(this);
+        let nextRow = checkbox.closest("tr").next();
+
+        if (nextRow.hasClass("k-detail-row")) {
+            nextRow.find(":checkbox").prop("checked", checkbox.is(":checked"));
+        }
+    });
+
+    $("#gridDatosVinetas").data("kendoGrid").thead.on("change", ".k-checkbox", function (e) {
+        let checkbox = $(this);
+        let content = checkbox.closest(".k-grid-header").next();
+
+        if (content.hasClass("k-grid-content")) {
+            let detailRow = content.find("tr.k-detail-row");
+
+            if (detailRow.length > 0) {
+                detailRow.find(":checkbox").prop("checked", checkbox.is(":checked"));
+            }
+
+            let items = [];
+            let rows = detailRow.find(".idHB-detail");
+            rows.each(function (currentValue, index, array) {
+                let row = index.closest("tr");
+                let chk = row.querySelector("input");
+                if (chk.checked) {
+                    items.push(index.innerText);
+                }
+            });
+            StrIdBulto = items;
+
+            items = [];
+            rows = detailRow.find(".idMercancia-detail");
+            rows.each(function (currentValue, index, array) {
+                let row = index.closest("tr");
+                let chk = row.querySelector("input");
+                if (chk.checked)
+                    items.push(index.innerText);
+            });
+            StrIdMercaEtapa = items;
+        }
+    });
+
+    $("#gridDatosVinetas").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridDatosVinetas"), selectedRows);
+    });
+
 
     function GridDetalleInit(e) {
 
@@ -177,7 +290,7 @@ $(document).ready(function () {
 
 
 
-        var detailGrid = $(`<div id= "gridBandeoMercancia${rowId}"></div>`).appendTo(e.detailCell).kendoGrid({
+        var detailGrid = $(`<div id= "gridBandeoMercancia${rowId}" class='lump-child-grid'></div>`).appendTo(e.detailCell).kendoGrid({
             //Marca fila en grid padre
             change: function (e) {
                 var masterRow = this.element.closest("tr").prev();
@@ -190,9 +303,9 @@ $(document).ready(function () {
             },
                //DEFICNICIÓN DE LOS CAMPOS
             columns: [
-                { selectable: true, width: "50px" },
-                { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
-                { field: "IdMercancia", title: "IdMercancia", hidden: true },
+                { selectable: true, width: "50px", headerTemplate: ' ' },
+                { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true, attributes: { "class": "idHB-detail" } },
+                { field: "IdMercancia", title: "IdMercancia", hidden: true, attributes: { "class": "idMercancia-detail" } },
                 { field: "NoDocumento", title: "Bulto" },
                 { field: "Talla", title: "Talla" },
                 { field: "Cantidad", title: "Cantidad", format: "{0:n2}" },
@@ -248,6 +361,16 @@ $(document).ready(function () {
             xIdCat = null;
             $("#CmbFmCata").data("kendoMultiColumnComboBox").dataSource.read();
             fn_ConsultarVinetas();
+            setTimeout(function () {
+                var gridV = $("#gridDatosVinetas").data("kendoGrid");
+                $(".k-master-row").each(function (index) {
+                    gridV.expandRow(this);
+                });
+
+                $(".k-master-row").each(function (index) {
+                    gridV.collapseRow(this);
+                });
+            }, 1800);
         }
         else {
             xIdCat = null;
@@ -369,6 +492,16 @@ let fn_GeneraVinetas = (strVineta) => {
                 $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
 
             kendo.ui.progress($("#gridDatosVinetas"), false);
+            setTimeout(function () {
+                var gridV = $("#gridDatosVinetas").data("kendoGrid");
+                $(".k-master-row").each(function (index) {
+                    gridV.expandRow(this);
+                });
+
+                $(".k-master-row").each(function (index) {
+                    gridV.collapseRow(this);
+                });
+            }, 1800);
         },
         error: function (data) {
             ErrorMsg(data);
