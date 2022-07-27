@@ -44,6 +44,7 @@ $(document).ready(function () {
                     fields: {
                         Id: { field: "Id", type: "number" },
                         IdPadre: { field: "IdPadre", nullable: true },
+                        IdHojaBandeo: { field: "IdHojaBandeo" },
                         IdMercancia: { field: "IdMercancia", nullable: true },
                         Corte: { field: "Corte", type: "string" },
                         Talla: { field: "Talla", type: "string" },
@@ -64,6 +65,7 @@ $(document).ready(function () {
             { selectable: true, width: "35px", includeChildren: true, name: "select" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
+            { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "Corte", title: "Corte", hidden: true },
             { field: "NoDocumento", title: "Correlativo" },
@@ -234,16 +236,19 @@ $(document).ready(function () {
         if (row.length > 0) {
             $.each(row, function (index, elemento) {
                 let data = treeList.dataItem(elemento);
+                console.log(data.IdPadre);
                 if (data.IdPadre !== null) {
                     BultosPreCar.push(
                         data.IdMercancia
                     );
-                    Lineas.push({ id: data.Id, idPadre: data.IdPadre });
+                    Lineas.push({ id: data.Id, idPadre: data.IdHojaBandeo });
                 }
             });
 
             Lcortes = [...new Map(Lineas.map(item =>
                 [item['idPadre'], item])).values()].map(p => p.idPadre);
+
+            //console.log(Lcortes.length);
 
             if (Lcortes.length > 1) {
                 $("#kendoNotificaciones").data("kendoNotification").show("No es Permitido seleccionar bultos de varios cortes", "error");
@@ -380,7 +385,6 @@ $(document).ready(function () {
                 var treeList = $("#treelist").data("kendoTreeList");
                 var data = treeList.dataItem("tbody>tr:eq(0)");
 
-                console.log(data);
                 $("#txtDiseño").val(data.Diseno);
                 $("#txtEstilo").val(data.Estilo);
             }, 0300);
