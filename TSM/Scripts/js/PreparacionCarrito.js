@@ -163,14 +163,11 @@ $(document).ready(function () {
             { field: "Color", title: "Color", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
             { field: "Estado", title: "Estado", hidden:true }
-        ],
-        dataBound: function () {
-            $('#gridDetCortePre').height(659);
-        }
+        ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridDetCortePre").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid($("#gridDetCortePre").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659);
     SetGrid_CRUD_ToolbarTop($("#gridDetCortePre").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridDetCortePre").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDetCortePre").data("kendoGrid"), dSlis);
@@ -236,7 +233,6 @@ $(document).ready(function () {
         if (row.length > 0) {
             $.each(row, function (index, elemento) {
                 let data = treeList.dataItem(elemento);
-                console.log(data.IdPadre);
                 if (data.IdPadre !== null) {
                     BultosPreCar.push(
                         data.IdMercancia
@@ -247,8 +243,6 @@ $(document).ready(function () {
 
             Lcortes = [...new Map(Lineas.map(item =>
                 [item['idPadre'], item])).values()].map(p => p.idPadre);
-
-            //console.log(Lcortes.length);
 
             if (Lcortes.length > 1) {
                 $("#kendoNotificaciones").data("kendoNotification").show("No es Permitido seleccionar bultos de varios cortes", "error");
@@ -374,20 +368,14 @@ $(document).ready(function () {
         if (e.item) {
             xidcata = this.dataItem(e.item.index()).IdCatalogoDiseno;
             xidCorte = 0;
-            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#treelist").data("kendoTreeList").dataSource.read().then(function () {
+                fn_readonly();
+            });
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnDetallePrep"), true);
             KdoButtonEnable($("#btnEntProd"), true);
             KdoButtonEnable($("#btnPrep"), true);
             KdoButtonEnable($("#btnCreaCarrito"), true);
-
-            setTimeout(function () {
-                var treeList = $("#treelist").data("kendoTreeList");
-                var data = treeList.dataItem("tbody>tr:eq(0)");
-
-                $("#txtDiseño").val(data.Diseno);
-                $("#txtEstilo").val(data.Estilo);
-            }, 0300);
 
 
         } else {
@@ -444,6 +432,15 @@ $(document).ready(function () {
         }
     });
 });
+
+var fn_readonly = () =>
+{
+    var treeList = $("#treelist").data("kendoTreeList");
+    var data = treeList.dataItem("tbody>tr:eq(0)");
+
+    $("#txtDiseño").val(data.Diseno);
+    $("#txtEstilo").val(data.Estilo);
+}
 
 var fn_Close_CarritosFin = (xjson) => {
     $("#gridDetCortePre").data("kendoGrid").dataSource.read()
