@@ -61,16 +61,16 @@ $(document).ready(function () {
             noRows: "No hay datos dsiponibles"
         },
         columns: [
-            { selectable: true, width: "65px", includeChildren: true, name: "select" },
+            { selectable: true, width: "35px", includeChildren: true, name: "select" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
-            { field: "Corte", title: "Corte" },
+            { field: "Corte", title: "Corte", hidden: true },
+            { field: "NoDocumento", title: "Correlativo" },
             { field: "Talla", title: "Talla" },
-            { field: "NoDocumento", title: "Correlativo", hidden: true },
             { field: "FM", title: "FM", hidden: true },
-            { field: "Diseno", title: "Diseño" },
-            { field: "Estilo", title: "Estilo" },
+            { field: "Diseno", title: "Diseño", hidden: true },
+            { field: "Estilo", title: "Estilo", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
             {
                 command: [
@@ -80,7 +80,8 @@ $(document).ready(function () {
                         click: fn_VinetaImp,
                         imageClass: "k-i-print m-0"
                     }
-                ]
+                ],
+                width: "70px"
             }
         ]
     });
@@ -155,12 +156,15 @@ $(document).ready(function () {
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
             { field: "FM", title: "FM" },
-            { field: "Diseno", title: "Diseño" },
-            { field: "Estilo", title: "Estilo" },
+            { field: "Diseno", title: "Diseño", hidden: true },
+            { field: "Estilo", title: "Estilo", hidden: true },
             { field: "Color", title: "Color", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
             { field: "Estado", title: "Estado", hidden:true }
-        ]
+        ],
+        dataBound: function () {
+            $('#gridDetCortePre').height(659);
+        }
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
@@ -325,6 +329,8 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnEntProd"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnCreaCarrito"), false);
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
         }
     });
 
@@ -333,6 +339,8 @@ $(document).ready(function () {
             xidcata = 0;
             xidCorte = 0;
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnDetallePrep"), true);
@@ -344,6 +352,8 @@ $(document).ready(function () {
             xidcata = 0;
             xidCorte = 0;
             $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
@@ -366,6 +376,16 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnPrep"), true);
             KdoButtonEnable($("#btnCreaCarrito"), true);
 
+            setTimeout(function () {
+                var treeList = $("#treelist").data("kendoTreeList");
+                var data = treeList.dataItem("tbody>tr:eq(0)");
+
+                console.log(data);
+                $("#txtDiseño").val(data.Diseno);
+                $("#txtEstilo").val(data.Estilo);
+            }, 0300);
+
+
         } else {
             xidcata = 0;
             xidCorte = 0;
@@ -376,6 +396,8 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnCreaCarrito"), false);
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
         }
     });
 
