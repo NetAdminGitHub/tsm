@@ -326,6 +326,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
+    <Compile Include="Controllers\InstruccionesController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
@@ -556,6 +557,7 @@
     <Content Include="Scripts\js\ExtensionesArchivosModulos.js" />
     <Content Include="Scripts\js\FormulasFM.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
+    <Content Include="Scripts\js\Instrucciones.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
     <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
     <Content Include="Scripts\js\OrigenesPruebasLaboratorio.js" />
@@ -1019,6 +1021,7 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
+    <Content Include="Views\Instrucciones\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
