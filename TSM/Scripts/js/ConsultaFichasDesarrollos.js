@@ -59,34 +59,24 @@ $(document).ready(function () {
     var dataSource = new kendo.data.DataSource({
         //CONFIGURACION DEL CRUD
         transport: {
-            read: function (datos) {
-                kendo.ui.progress($(document.body), true);
-                $.ajax({
-                    type: "POST",
-                    dataType: 'json',
-                    url: UrlOT + "/GetConsultarFichasDesarrollos",
-                    data: JSON.stringify({
-                        FechaDesde: xFechaDesde,// $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
-                        FechaHasta: xFechaHasta, //$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
-                        IdCliente: xCliente,
-                        NoOt: xNoOt,
-                        IdejecutivoCuenta: null,
-                        IdPrograma: xIdPrograma,
-                        IdTemporada: null,
-                        IdCategoriaPrenda: null,//KdoCmbGetValue($("#CmbCategoriaPrenda")),
-                        IdUbicacion: null,
-                        IdServicio: xIdServicio,
-                        IdCatalogoDiseno: xIdCatalogoDiseno
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        kendo.ui.progress($(document.body), false);
-                        datos.success(result);
-                    },
-                    error: function (result) {
-                        kendo.ui.progress($(document.body), false);
-                        options.error(result);
-                    }
+            read: {
+                url: UrlOT + "/GetConsultarFichasDesarrollos",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
+            },
+            parameterMap: function (data, type) {
+                return kendo.stringify({
+                    FechaDesde: xFechaDesde,// $("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaDesde").val()), 's'),
+                    FechaHasta: xFechaHasta, //$("#chkRangFechas").is(':checked') === false ? null : kendo.toString(kendo.parseDate($("#dFechaHasta").val()), 's'),
+                    IdCliente: xCliente,
+                    NoOt: xNoOt,
+                    IdejecutivoCuenta: null,
+                    IdPrograma: xIdPrograma,
+                    IdTemporada: null,
+                    IdCategoriaPrenda: null,//KdoCmbGetValue($("#CmbCategoriaPrenda")),
+                    IdUbicacion: null,
+                    IdServicio: xIdServicio,
+                    IdCatalogoDiseno: xIdCatalogoDiseno
                 });
             }
         },
