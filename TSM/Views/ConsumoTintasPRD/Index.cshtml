@@ -1,12 +1,15 @@
 ﻿@{
     ViewBag.Title = "Consulta Consumo Tintas Producción Costeado";
-    ViewBag.IdVersion = "TSM0102007|v20110501";
+    ViewBag.IdVersion = "TSM0102007|v22042801";
 }
 @section Scripts {
     <script type="text/javascript">
         var crudServiceBaseUrl = "@string.Format("{0}CotizacionesMuestras/", TSM.Utils.Config.TSM_WebApi)";
     </script>
-    <script src="~/Scripts/js/ConsumoTintasPRD.js"></script>
+    <script src="~/Scripts/js/TSM_VerDiseno.js"></script>
+    <script src="~/Scripts/js/ConsumoTintasPRD.js?@ViewBag.IdVersion"></script>
+    <link href="~/Content/TSM_imagen_modal.css" rel="stylesheet" />
+    <link href="~/Content/TSM_VerDiseno.css" rel="stylesheet" />
 }
 
 <div class="form-row">
@@ -24,72 +27,90 @@
                             <input class="form-control" id="cmbOrdenTrabajo" name="cmbOrdenTrabajo" type="text" required validationMessage="Requerido" />
                         </div>
                     </div>
+
                     <div class="form border rounded p-2 m-2">
                         <div class="form-row">
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-7">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <h4>Diseño Cotizado</h4>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <h4>Diseño en Producción</h4>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <h4>Diferencia</h4>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtNomCliente">Cliente:</label>
+                                        <input id="txtNomCliente" name="txtNomCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtCantidadPiezas">N&uacute;mero de Piezas:</label>
+                                        <input id="txtCantidadPiezas" name="txtCantidadPiezas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtPiezasProducidas">N&uacute;mero de Piezas:</label>
+                                        <input id="txtPiezasProducidas" name="txtPiezasProducidas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtDiferencia">Diferencia:</label>
+                                        <input id="txtDiferencia" name="txtDiferencia" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtNoCotizacion">No. Cotizaci&oacute;n:</label>
+                                        <input id="txtNoCotizacion" name="txtNoCotizacion" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtCostoMP">Costo Materia Prima:</label>
+                                        <input id="txtCostoMP" name="txtCostoMP" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtCostoPorPieza">Costo por Pieza:</label>
+                                        <input id="txtCostoPorPieza" name="txtCostoPorPieza" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtFacPerdidaGanancia">Factor (perdida o ganancia):</label>
+                                        <input id="txtFacPerdidaGanancia" name="txtFacPerdidaGanancia" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtNoPrograma">No. Programa:</label>
+                                        <input id="txtNoPrograma" name="txtNoPrograma" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtPrecioCliente">Precio al Cliente:</label>
+                                        <input id="txtPrecioCliente" name="txtPrecioCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtValorTotal">Total tinta:</label>
+                                        <input id="txtValorTotal" name="txtValorTotal" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="txtProyeccionProducida">Proyección:</label>
+                                        <input id="txtProyeccionProducida" name="txtProyeccionProducida" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <h4>Diseño Cotizado</h4>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <h4>Diseño en Producción</h4>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <h4>Diferencia</h4>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-3">
-                                <label for="txtNomCliente">Cliente:</label>
-                                <input id="txtNomCliente" name="txtNomCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtCantidadPiezas">N&uacute;mero de Piezas:</label>
-                                <input id="txtCantidadPiezas" name="txtCantidadPiezas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtPiezasProducidas">N&uacute;mero de Piezas:</label>
-                                <input id="txtPiezasProducidas" name="txtPiezasProducidas" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtDiferencia">Diferencia:</label>
-                                <input id="txtDiferencia" name="txtDiferencia" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-3">
-                                <label for="txtNoCotizacion">No. Cotizaci&oacute;n:</label>
-                                <input id="txtNoCotizacion" name="txtNoCotizacion" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtCostoMP">Costo Materia Prima:</label>
-                                <input id="txtCostoMP" name="txtCostoMP" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtCostoPorPieza">Costo por Pieza:</label>
-                                <input id="txtCostoPorPieza" name="txtCostoPorPieza" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtFacPerdidaGanancia">Factor (perdida o ganancia):</label>
-                                <input id="txtFacPerdidaGanancia" name="txtFacPerdidaGanancia" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-lg-3">
-                                <label for="txtNoPrograma">No. Programa:</label>
-                                <input id="txtNoPrograma" name="txtNoPrograma" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtPrecioCliente">Precio al Cliente:</label>
-                                <input id="txtPrecioCliente" name="txtPrecioCliente" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtValorTotal">Total tinta:</label>
-                                <input id="txtValorTotal" name="txtValorTotal" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtProyeccionProducida">Proyección:</label>
-                                <input id="txtProyeccionProducida" name="txtProyeccionProducida" class="k-input k-textbox form-control" , disabled="disabled" style="width:100%" />
+                            <div class="form-group col-lg-5">
+                                <!-- SECION ADJUNTOS-->
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12" id="OtImgDis">
+                                        @* aqui se coloca dinamicamente las imagenes  *@
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -103,7 +124,7 @@
                             </li>
                         </ul>
                         <div class="form-group">
-                                <div id="gConsolidado"></div>
+                            <div id="gConsolidado"></div>
                         </div>
                         <div class="form-group">
                             <div id="gDetalle"></div>
