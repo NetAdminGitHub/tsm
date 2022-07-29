@@ -2666,7 +2666,7 @@ let fn_GenLoadModal = (obj) => {
                     $("#" + obj.config[0].Div + "").data("kendoDialog").open().toFront()
                 };
                 document.getElementsByTagName('head')[0].appendChild(script);
-            } 
+            }
 
         });
     } else {
@@ -2732,7 +2732,7 @@ let fn_GenLoadModalWindow = (obj) => {
                 width: obj.config[0].Width,
                 title: obj.config[0].Titulo,
                 modal: true,
-             /*   content: data,*/
+                /*   content: data,*/
                 visible: false,
                 minWidth: obj.config[0].MinWidth,
                 activate: onActivate,
@@ -2761,7 +2761,7 @@ let fn_GenLoadModalWindow = (obj) => {
             width: obj.config[0].Width,
             title: obj.config[0].Titulo,
             modal: true,
-       /*     content: xview,*/
+            /*     content: xview,*/
             visible: false,
             minWidth: obj.config[0].MinWidth,
             activate: onActivate,
@@ -2774,8 +2774,12 @@ let fn_GenLoadModalWindow = (obj) => {
 
     }
 }
+
+// #region asigan Json a MulticolumnCombobox
 let fn_multiColumnSetJson = (e, registro, valor) => {
     var mcbm = e.data("kendoMultiColumnComboBox");
     mcbm.dataSource.add(JSON.parse(registro));
     mcbm.value(valor);
 };
+
+//#endregion 

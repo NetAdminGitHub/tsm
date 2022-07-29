@@ -940,6 +940,7 @@ let fn_CrearPrenda = function () {
         success: function (data) {
             dataPren = data;
             $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").dataSource.read().then(function () {
+                $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").setDataSource(Fn_PrendasReg(KdoMultiColumnCmbGetValue($('[name="IdPrograma"]'))));
                 KdoMultiColumnCmbSetValue($('[name="IdRegistroSolicitudPrenda"]'), data[0].IdRegistroSolicitudPrenda);
                 $('[name="IdRegistroSolicitudPrenda"]').data("kendoMultiColumnComboBox").trigger("change");
                 $("#ModalCliePrenda").data("kendoDialog").close();
@@ -1004,6 +1005,8 @@ let fn_CreaItemProm = function (widgetId, value) {
             widget.trigger("change");
             $("#kendoNotificaciones").data("kendoNotification").show("Programa creado satisfactoriamente!!", "success");
             Kendo_CmbFocus($('[name="IdTipoMuestra"]'));
+            KdoMultiColumnCmbEnable($('[name="IdRegistroSolicitudPrenda"]'), true);
+            widget.close();
         });
 
         dsProN.sync();

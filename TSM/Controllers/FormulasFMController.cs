@@ -6,16 +6,12 @@ using System.Web.Mvc;
 
 namespace TSM.Controllers
 {
-    public class ModalGenLoadController : Controller
+    public class FormulasFMController : Controller
     {
-        // GET: ModalGenLoad
+        // GET: FormulasFM
         public ActionResult Index()
         {
             return View();
-        }
-        public ActionResult Load(string vistaParcial)
-        {
-            return PartialView(vistaParcial);
         }
     }
 }

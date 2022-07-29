@@ -13,6 +13,9 @@
     </script>
     <script src="~/Scripts/js/SimulacionesMuestrasInfo.js?@ViewBag.IdVersion"></script>
     <script src="~/Scripts/Utils/ChartTSMPersonalizar.js"></script>
+    <script src="~/Scripts/Vue/Vue.js"></script>
+    <script src="~/Scripts/VueComp/inquisalva-components.min.js"></script>
+    <script src="~/Scripts/VueComp/maquinaSerigrafia.js"></script>
 }
 
 <div class="form-row">
@@ -74,8 +77,11 @@
                                 <label class="font-weight-bold">Consumos por estaci&oacute;n</label>
                             </div>
                             <div class="form-group col-lg-3 align-self-end">
-                                <input id="chkSecuenciaCompleta" type="checkbox" name="chkSecuenciaCompleta" class="k-checkbox"  />
+                                <input id="chkSecuenciaCompleta" type="checkbox" name="chkSecuenciaCompleta" class="k-checkbox" />
                                 <label class="k-checkbox-label" for="chkSecuenciaCompleta">Ver secuencia completa</label>
+                            </div>
+                            <div class="form-group col-lg-9 align-self-end" style="text-align: end;">
+                                <button type="button" id="btnSecuencia" name="btnSecuencia">Ver secuencia maquina</button>
                             </div>
                         </div>
                         <div class="form-row">
@@ -110,5 +116,7 @@
     @*Etiqueta vista parcial cambio de estado*@
     <div class="form-control col-md-12 col-lg-12" id="vCambioEstado"></div>
 </div>
+
+<div id="ModalSecuencia" style="text-align: -webkit-center;"></div>
 
 @Html.Partial("_Recalcular")
