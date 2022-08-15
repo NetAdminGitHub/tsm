@@ -38,7 +38,6 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoCmbSetValue($("#xcmbPlanta"), "");
     KdoCmbSetValue($("#xcmbMarca"), "");
     KdoCmbSetValue($("#xcmbProceso"), "");
-    $("#txtTO").prop("disabled", true);
 
     $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
 
@@ -162,7 +161,7 @@ var fn_Ini_ControlBulto = (xjson) => {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 700);
+    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 672);
     SetGrid_CRUD_ToolbarTop($("#gridBultoDetalle").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridBultoDetalle").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridBultoDetalle").data("kendoGrid"), dS);
@@ -440,18 +439,6 @@ var fn_Ini_ControlBulto = (xjson) => {
         }
     });
 
-    $("#xcmbPlanta").change(function () {
-        if ($("#xcmbPlanta").data("kendoComboBox").text() =="PLANTA 2")
-        {
-            $("#txtTO").prop("disabled", false);
-        }
-        else
-        {
-            $("#txtTO").val("");
-            $("#txtTO").prop("disabled", true);
-        }
-    });
-
     $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     KdoCmbFocus($("#xcmbMarca"));
     fn_Get_ListFms(xidHojaBandeo);
@@ -480,7 +467,6 @@ var fn_Reg_ControlBulto = (xjson) => {
     $("#txtPO").val("");
     $("#txtTO").val("");
     $("#txtColor").val("");
-    $("#txtTO").prop("disabled", true);
 
     KdoCmbSetValue($("#xcmbPlanta"), "");
     KdoCmbSetValue($("#xcmbMarca"), "");
@@ -596,9 +582,6 @@ let fn_Get_HojasBandeo = (xId)=> {
                 $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(datos.IdCliente));
                 KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
                 KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
-                if ($("#xcmbPlanta").data("kendoComboBox").text() == "PLANTA 2") {
-                    $("#txtTO").prop("disabled", false);
-                }
                 $("#txtTO").val(datos.TrafficOn);
                 $("#txtPO").val(datos.PO);
                 KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
