@@ -38,6 +38,7 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoCmbSetValue($("#xcmbPlanta"), "");
     KdoCmbSetValue($("#xcmbMarca"), "");
     KdoCmbSetValue($("#xcmbProceso"), "");
+    $("#txtTO").prop("disabled", true);
 
     $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
 
@@ -439,6 +440,18 @@ var fn_Ini_ControlBulto = (xjson) => {
         }
     });
 
+    $("#xcmbPlanta").change(function () {
+        if ($("#xcmbPlanta").data("kendoComboBox").text() =="PLANTA 2")
+        {
+            $("#txtTO").prop("disabled", false);
+        }
+        else
+        {
+            $("#txtTO").val("");
+            $("#txtTO").prop("disabled", true);
+        }
+    });
+
     $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     KdoCmbFocus($("#xcmbMarca"));
     fn_Get_ListFms(xidHojaBandeo);
@@ -465,7 +478,9 @@ var fn_Reg_ControlBulto = (xjson) => {
     $("#txtEstilo").val("");
     $("#txtNumero").val("");
     $("#txtPO").val("");
+    $("#txtTO").val("");
     $("#txtColor").val("");
+    $("#txtTO").prop("disabled", true);
 
     KdoCmbSetValue($("#xcmbPlanta"), "");
     KdoCmbSetValue($("#xcmbMarca"), "");
@@ -535,6 +550,7 @@ let fn_Gen_Hb = () => {
                 IdCatalogoDisenosList: $("#Mtlfm").data("kendoMultiSelect").value().toString(),
                 IdTipoProceso: KdoCmbGetValue($("#xcmbProceso")),
                 IdMarca: KdoCmbGetValue($("#xcmbMarca")),
+                TrafficOn: $("#txtTO").val(),
                 PO: $("#txtPO").val(),
                 IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
 
@@ -580,6 +596,10 @@ let fn_Get_HojasBandeo = (xId)=> {
                 $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(datos.IdCliente));
                 KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
                 KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
+                if ($("#xcmbPlanta").data("kendoComboBox").text() == "PLANTA 2") {
+                    $("#txtTO").prop("disabled", false);
+                }
+                $("#txtTO").val(datos.TrafficOn);
                 $("#txtPO").val(datos.PO);
                 KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
                 fn_Get_HojasBandeoDisenos(xId);
