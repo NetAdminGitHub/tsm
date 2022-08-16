@@ -161,7 +161,7 @@ var fn_Ini_ControlBulto = (xjson) => {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 700);
+    SetGrid($("#gridBultoDetalle").data("kendoGrid"), ModoEdicion.EnPopup, false, true, true, true, redimensionable.Si, 672);
     SetGrid_CRUD_ToolbarTop($("#gridBultoDetalle").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridBultoDetalle").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridBultoDetalle").data("kendoGrid"), dS);
@@ -465,6 +465,7 @@ var fn_Reg_ControlBulto = (xjson) => {
     $("#txtEstilo").val("");
     $("#txtNumero").val("");
     $("#txtPO").val("");
+    $("#txtTO").val("");
     $("#txtColor").val("");
 
     KdoCmbSetValue($("#xcmbPlanta"), "");
@@ -535,6 +536,7 @@ let fn_Gen_Hb = () => {
                 IdCatalogoDisenosList: $("#Mtlfm").data("kendoMultiSelect").value().toString(),
                 IdTipoProceso: KdoCmbGetValue($("#xcmbProceso")),
                 IdMarca: KdoCmbGetValue($("#xcmbMarca")),
+                TrafficOn: $("#txtTO").val(),
                 PO: $("#txtPO").val(),
                 IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
 
@@ -580,6 +582,7 @@ let fn_Get_HojasBandeo = (xId)=> {
                 $("#Mtlfm").data("kendoMultiSelect").setDataSource(get_CatalogxCliente(datos.IdCliente));
                 KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
                 KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
+                $("#txtTO").val(datos.TrafficOn);
                 $("#txtPO").val(datos.PO);
                 KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
                 fn_Get_HojasBandeoDisenos(xId);
