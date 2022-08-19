@@ -79,7 +79,7 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     Nombre2: { type: "string" },
                     Macro: { type: "string" },
-                    IdEtapaProcesoMacro: { type: "number" },
+                    IdEtapaProcesoMacro: { type: "string" },
                     VistaFormulario: { type: "string" },
                     TablaEtapa: { type: "string" }
 
@@ -96,14 +96,15 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdModulo");
             KdoHideCampoPopup(e.container, "Nombre1");
             KdoHideCampoPopup(e.container, "Nombre2");
+            KdoHideCampoPopup(e.container, "Nombre3");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IconoView");
             $('[name="Icono"').attr('mayus', 'no');
 
             $('[name="IdEtapaProcesoMacro"]').on('change', function (e) {
-                $("[name='Macro']").val($('[name="IdEtapaProcesoMacro"]').data("kendoComboBox").text());
-                $("[name='Macro']").trigger("change");
+                $("[name='Nombre3']").val($('[name="IdEtapaProcesoMacro"]').data("kendoComboBox").text());
+                $("[name='Nombre3']").trigger("change");
             });
 
             Grid_Focus(e, "Nombre");
