@@ -287,6 +287,7 @@
     <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\ConsultaDespachoController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
@@ -547,6 +548,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\ConsultaDespacho.js" />
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
@@ -556,6 +558,7 @@
     <Content Include="Scripts\js\MotivosSustraidas.js" />
     <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
+    <Content Include="Scripts\js\statusOrdenDespacho.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
@@ -1126,6 +1129,8 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\ConsultaDespacho\Index.cshtml" />
+    <Content Include="Views\ConsultaDespacho\_statusOrdenDespacho.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
