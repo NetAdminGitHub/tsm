@@ -78,6 +78,8 @@ $(document).ready(function () {
                     FechaMod: { type: "date" },
                     Estado: { type: "string" },
                     Nombre2: { type: "string" },
+                    Macro: { type: "string" },
+                    IdEtapaProcesoMacro: { type: "number" },
                     VistaFormulario: { type: "string" },
                     TablaEtapa: { type: "string" }
 
@@ -98,6 +100,12 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "FechaMod");
             KdoHideCampoPopup(e.container, "IconoView");
             $('[name="Icono"').attr('mayus', 'no');
+
+            $('[name="IdEtapaProcesoMacro"]').on('change', function (e) {
+                $("[name='Macro']").val($('[name="IdEtapaProcesoMacro"]').data("kendoComboBox").text());
+                $("[name='Macro']").trigger("change");
+            });
+
             Grid_Focus(e, "Nombre");
         },
 
@@ -119,6 +127,8 @@ $(document).ready(function () {
             { field: "TablaEtapa", title: "Tabla Etapa" },
             { field: "Nombre2", title: "Estado" },
             { field: "Estado", title: "Estado", values: ["Estado", "Nombre", UrlE, "EtapasProcesos", "Seleccione....", "required", "", "requerido"], editor: Grid_Combox, hidden: true },
+            { field: "Nombre3", title: "Macro Etapa" },
+            { field: "IdEtapaProcesoMacro", title: "Macro Etapa", editor: Grid_Combox, values: ["IdEtapaProcesoMacro", "Nombre", TSM_Web_APi + "EtapasProcesosMacro", "", "Seleccione....", "required", "", "requiredo"], hidden: true },
             {
                 template: "<div class='customer-photo' style='text-align:-webkit-center;'" +
                     "><span class='#: (data.Icono ===null? '': data.Icono).startsWith('k-i') === true ? 'k-icon ' + data.Icono : data.Icono  #' style='font-size:xx-large;'></span></div>",
