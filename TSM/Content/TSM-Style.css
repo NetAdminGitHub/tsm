@@ -16104,3 +16104,8 @@ div.table-responsive > div.dataTables_wrapper > div.row {
         padding: 60px 15px !important
     }
 }
+
+div.k-grid-norecords {
+    justify-content: center;
+    flex-direction: column;
+}

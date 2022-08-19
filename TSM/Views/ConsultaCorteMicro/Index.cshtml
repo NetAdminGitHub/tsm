@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Consulta de Corte Micro";
+    ViewBag.IdVersion = "TSM0101141|v22081601";
+}
+@section Scripts {
+    <script src="~/Scripts/js/ConsultaCorteMicro.js?@ViewBag.IdVersion"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group" id="divImagenDiseno">
+                            <img class="k-card-image rounded mx-auto d-block" src="/Images/NoImagen.png" />
+                        </div>
+                        <div class="form-group">
+                            <hr />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtCodigoFM" id="lblCodigoFM">Catálogo de Diseño:</label>
+                            <input id="txtCodigoFM" name="txtCodigoFM" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtDiseño" id="lblDiseño">Diseño:</label>
+                            <input id="txtDiseño" name="txtDiseño" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtEstilo" id="lblEstilo">Estilo:</label>
+                            <input id="txtEstilo" name="txtEstilo" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtColorTela" id="lblColorTela">Color de Tela:</label>
+                            <input id="txtColorTela" name="txtColorTela" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtParte" id="lblParte">Parte de Prenda:</label>
+                            <input id="txtParte" name="txtParte" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtProducto" id="lblProducto">Producto:</label>
+                            <input id="txtProducto" name="txtProducto" class="k-textbox form-control" />
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="row mb-3">
+                            <div class="col-lg-2">
+                                <label for="txtCorte" id="lblCorte">Corte:</label>
+                                <input id="txtCorte" name="txtCorte" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="txtCantidad" id="lblCantidad">Cantidad:</label>
+                                <input id="txtCantidad" name="txtCantidad" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="txtBultos" id="lblBultos">Bultos/Rollos:</label>
+                                <input id="txtBultos" name="txtBultos" class="form-control" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="txtTallas" id="lblTallas">Tallas:</label>
+                                <input id="txtPlanta" name="txtPlanta" class="form-control" />
+                            </div>
+                            <div class="col-lg-4 d-flex pl-0">
+                                <div>
+                                    <label for="cmbEtapa" id="lblEtapa">Segundas:</label>
+                                    <div id="chart"></div>
+                                </div>
+                                <div class="ml-3 mt-auto">
+                                    <button type="button" id="btnGenerarExcel">Descargar Data</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="gridBultos"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
