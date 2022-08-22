@@ -289,6 +289,7 @@
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
+    <Compile Include="Controllers\ControlUnidadesEmbalajeController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
@@ -550,10 +551,12 @@
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\ControlUnidadesEmbalaje.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\RegistroListaEmpaque.js" />
     <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
@@ -1126,6 +1129,8 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\ControlUnidadesEmbalaje\Index.cshtml" />
+    <Content Include="Views\ControlUnidadesEmbalaje\_RegistroListaEmpaque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Control de Unidades de Embalaje";
+    ViewBag.IdVersion = "TSM0101143|v22081901";
+}
+@section Scripts {
+    <script src="~/Scripts/js/ControlUnidadesEmbalaje.js?@ViewBag.IdVersion"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-lg-2">
+                        <label for="cmbCliente" id="lblCliente">Cliente:</label>
+                        <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbMarca" id="lblMarca">Marca:</label>
+                        <input id="cmbMarca" name="cmbMarca" class="form-control" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                        <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbServicio" id="lblServicio">Servicio:</label>
+                        <input id="cmbServicio" name="cmbServicio" class="form-control" />
+                    </div>
+                    <div class="col-lg-2 text-right mt-auto">
+                        <button type="button" id="btnCrearListaEmpaque">Crear Lista de Empaque</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div id="gridEmbalajes"></div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group mb-3">
+                            <h2>INFORMACIÓN GENERAL</h2>
+                        </div>
+                        <div class="form-group">
+                            <hr />
+                        </div>
+                        <div class="form-group" id="divImagenDiseno">
+                            <img class="k-card-image rounded mx-auto d-block" src="/Images/NoImagen.png" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtCodigoFM" id="lblCodigoFM">Catálogo de Diseño:</label>
+                            <input id="txtCodigoFM" name="txtCodigoFM" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtDiseño" id="lblDiseño">Diseño:</label>
+                            <input id="txtDiseño" name="txtDiseño" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtEstilo" id="lblEstilo">Estilo:</label>
+                            <input id="txtEstilo" name="txtEstilo" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtNumero" id="lblNumero">Numero:</label>
+                            <input id="txtNumero" name="txtNumero" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtColorTela" id="lblColorTela">Color de Tela:</label>
+                            <input id="txtColorTela" name="txtColorTela" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtParte" id="lblParte">Parte de Prenda:</label>
+                            <input id="txtParte" name="txtParte" class="k-textbox form-control" />
+                        </div>
+                        <div class="form-group mb-3 input-div">
+                            <label for="txtProducto" id="lblProducto">Producto:</label>
+                            <input id="txtProducto" name="txtProducto" class="k-textbox form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="vMod_RegistroListaEmpaque"></div>
