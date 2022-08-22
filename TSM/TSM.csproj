@@ -804,6 +804,7 @@
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\GenInfoFM.js" />
     <Content Include="Scripts\js\_HistoricoSeteos.js" />
     <Content Include="Scripts\js\_InfoPruebaLaboratorio.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
@@ -1126,6 +1127,7 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\Shared\_GenInfoFM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
