@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Crear Ordenes para Despachar";
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+    </script>
+
+    <script src="~/Scripts/js/CreacionOrdenDespacho.js?@ViewBag.IdVersion"></script>
+
+}
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body container">
+
+
+                <div class="form-row">
+
+                    <div class="form-group col-lg-6">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="CmbServicio">Servicio:</label>
+                                <input id="CmbServicio" name="CmbServicio" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                                <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbFm">Código FM:</label>
+                                <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbPL"># de Envío (No. Referncia PL):</label>
+                                <input id="cmbPL" name="cmbPL" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <div id="treelist"> </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="cmbCliente">Cliente:</label>
+                                <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbMarca">Marca:</label>
+                                <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="cmbCorte">Corte:</label>
+                                <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-6" style="margin-top: 30px; margin-bottom: 17px; text-align:right;">
+                                <button type="button" id="btnSolicitarProducto">Solicitar Producto</button>
+                                <button type="button" id="btnCrearOrdenDespacho">Crear Orden de Despacho</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <div id="gridDetCortePre"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <!--<div class="form-row"><br /></div>
+                <div class="form-row">
+                    <div class="col-lg-5">
+
+                    </div>
+                    <div class="col-lg-1 d-flex flex-column justify-content-center align-items-center text-center">
+                        <button type="button" id="btnCreaCarrito"></button>
+                        <label class="mt-1 px-3">Pasar a Generar un Carrito</label>
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+                </div>-->
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@*vista modal detalle de preparado*@
+<div id="vdPreparado"></div>
+
+@*vista modal entrega a prod*@
+<div id="vEntreTela"></div>

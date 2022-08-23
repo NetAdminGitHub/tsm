@@ -359,6 +359,7 @@
     <Compile Include="Controllers\MotivosSustraidasController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
+    <Compile Include="Controllers\OrdenDespachoController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
@@ -550,6 +551,7 @@
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
@@ -1127,6 +1129,7 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\OrdenDespacho\Index.cshtml" />
     <Content Include="Views\Shared\_GenInfoFM.cshtml" />
   </ItemGroup>
   <ItemGroup>
