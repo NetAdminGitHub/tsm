@@ -12,21 +12,17 @@ $(document).ready(function () {
     TextBoxEnable($("#txtProducto"), false);
     TextBoxEnable($("#txtCantidad"), false);
     TextBoxEnable($("#txtBultos"), false);
-    TextBoxEnable($("#txtPlanta"), false);
+    TextBoxEnable($("#txtTallas"), false);
 
     KdoButton($("#btnGenerarExcel"), "download", "Descargar Data");
 
-    KdoButtonEnable($("#btnGenerarExcel"), false);
+    detalleHojaBandeo(IdHojaBandeo);
 
     let dataSourceMicro = new kendo.data.DataSource({
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "IngresoMercancias/GetIngresosMercanciasGeneral/" + `${0}/${0}` },
+                url: function () { return TSM_Web_APi + `HojasBandeos/ConsultaMicroEtapasByHojaBandeo/${IdHojaBandeo}` },
                 contentType: "application/json; charset=utf-8"
-            },
-            destroy: {
-                url: function (datos) { return TSM_Web_APi + "IngresoMercancias/" + datos.IdIngreso; },
-                type: "DELETE"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
@@ -36,66 +32,76 @@ $(document).ready(function () {
         },
         requestEnd: Grid_requestEnd,
         error: Grid_error,
+        aggregate: [
+            { field: "CantidadSustraida", aggregate: "sum" },
+            { field: "CantidadRecupera", aggregate: "sum" },
+            { field: "CantidadSegunda", aggregate: "sum" },
+            { field: "CantidadAveria", aggregate: "sum" },
+            { field: "Primeras", aggregate: "sum" },
+
+        ],
         schema: {
             model: {
-                id: "IdIngreso",
+                id: "IdMercancia",
                 fields: {
-                    IdIngreso: { type: "number" },
-                    Fecha: { type: "date" },
-                    FechaIngreso: { type: "date" },
-                    IdCliente: { type: "number" },
-                    NombreCliente: { type: "string" },
-                    Estado: { type: "string" },
-                    Nombre: { type: "string" },
-                    IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" },
-                    ReferenciaPL: { type: "string" },
-                    CantidadCortes: { type: "number" },
-                    Planta: { type: "string" },
-                    TipoProceso: { type: "string" },
-                    CantidadTotal: { type: "number" },
-                    NoDocumento: { type: "string" }
+                    Corte: { type: "string" },
+                    IdMercancia: { type: "number" },
+                    NoDocumento: { type: "string" },
+                    Talla: { type: "string" },
+                    Cantidad: { type: "number" },
+                    TotalCuantiaHojaBandeo: { type: "number" },
+                    CantidadSustraida: { type: "number" },
+                    CantidadRecupera: { type: "number" },
+                    CantidadSegunda: { type: "number" },
+                    CantidadAveria: { type: "number" },
+                    Primeras: { type: "number" }
                 }
             }
         }
     });
 
     $("#gridBultos").kendoGrid({
+        dataBound: function (e) {
+            let columnIndex = this.wrapper.find(".k-grid-header [data-field=" + "Estado" + "]").index();
+            let rows = e.sender.tbody.children();
+            for (var j = 0; j < rows.length; j++) {
+                var row = $(rows[j]);
+
+                var dataItem = e.sender.dataItem(row);
+                console.log(dataItem);
+                var Estado = dataItem.get("Estado");
+                dataItem.set("Estado", setEstadoIcon(Estado));
+
+                //var cell = row.children().eq(columnIndex);
+                //console.log(cell);
+                //cell[0].innerHtml = setEstadoIcon(Estado);
+            }
+        },
         excel: {
             allPages: true,
             fileName: "Consulta de Corte Micro.xlsx"
         },
         columns: [
-            { field: "IdIngreso", title: "Id. Ingreso", hidden: true },
-            { field: "NoDocumento", title: "# Ingreso" },
-            { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "FechaIngreso", title: "Fecha Ingreso", format: "{0: dd/MM/yyyy}" },
-            { field: "IdCliente", title: "Id Cliente", hidden: true },
-            { field: "NombreBodegaCli", title: "Bodega", hidden: true },
-            { field: "ReferenciaPL", title: "No. Referencia PL" },
-            { field: "CantidadCortes", title: "Cantidad de Cortes" },
-            { field: "CantidadTotal", title: "Total Cuantía" },
-            { field: "Planta", title: "Planta" },
-            { field: "TipoProceso", title: "Tipo de Proceso" },
-            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "Estado", title: "Estado", hidden: true },
-            { field: "Nombre", title: "Estado" }
+            { field: "Corte", title: "Corte", hidden: true },
+            { field: "IdMercancia", title: "ID Mercancia", hidden: true },
+            { field: "NoDocumento", title: "Bulto/Rollo" },
+            { field: "Talla", title: "Talla" },
+            { field: "Cantidad", title: "Cantidad" },
+            { field: "CantidadSustraida", title: "Sustraidas", footerTemplate: "#: data.CantidadSustraida ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "CantidadRecupera", title: "Recuperadas", footerTemplate: "#: data.CantidadRecupera ? kendo.format('{0:n2}', sum) : 0 #"  },
+            { field: "CantidadSegunda", title: "Segundas", footerTemplate: "#: data.CantidadSegunda ? kendo.format('{0:n2}', sum) : 0 #"  },
+            { field: "CantidadAveria", title: "Averia", footerTemplate: "#: data.CantidadAveria ? kendo.format('{0:n2}', sum) : 0 #"  },
+            { field: "Primeras", title: "Facturadas", footerTemplate: "#: data.Primeras ? kendo.format('{0:n2}', sum) : 0 #"  },
+            { field: "Etapa", title: "Etapa" },
+            { field: "Estado", title: "Estado" }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridBultos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 680);
     SetGrid_CRUD_ToolbarTop($("#gridBultos").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridBultos").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridBultos").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridBultos").data("kendoGrid"), dataSourceMicro);
-
-    $("#gridBultos").kendoTooltip({
-        filter: ".k-grid-btnIng",
-        content: function (e) {
-            return "Ingreso de Mercancía";
-        }
-    });
 
     let selectedRows = [];
     $("#gridBultos").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -113,54 +119,108 @@ $(document).ready(function () {
         grid.saveAsExcel();
     });
 
-    $("#chart").kendoChart({
-        chartArea: {
-            height: 45
-        },
-        legend: {
-            visible: false
-        },
-        seriesDefaults: {
-            type: "bar",
-            stack: {
-                type: "100%"
-            }
-        },
-        series: [{
-            name: "Gold Medals",
-            data: [40],
-            color: "#f3ac32"
-        }, {
-            name: "Silver Medals",
-            data: [19],
-            color: "#b8b8b8"
-        }, {
-            name: "Bronze Medals",
-            data: [41],
-            color: "#bb6e36"
-        }],
-        valueAxis: {
-            line: {
-                visible: false
-            },
-            minorGridLines: {
-                visible: true
-            }
-        },
-        categoryAxis: {
-            categories: [],
-            majorGridLines: {
-                visible: false
-            }
-        },
-        tooltip: {
-            visible: true,
-            template: "#= series.name #: #= value #"
+    const pb = $("#progressBar").kendoProgressBar({
+        min: 0,
+        max: 100,
+        type: "percent",
+        value: 15,
+        animation: {
+            duration: 400
         }
-    });
-
+    }).data("kendoProgressBar");
 
 });
+
+let detalleHojaBandeo = (IdHojaBandeo) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + `HojasBandeos/GetbyIdHoja/${IdHojaBandeo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+
+            if (dato !== null) {
+                $("#txtCorte").val(dato.Corte);
+                $("#txtCantidad").val(dato.Cantidad);
+                $("#txtBultos").val(dato.TotalBultos);
+                $("#txtTallas").val(dato.Tallas);
+                infoDiseno(dato.IdCatalogoDiseno);
+            } else {
+                $("#txtCorte").val("");
+                $("#txtCantidad").val("");
+                $("#txtBultos").val("");
+                $("#txtTallas").val("");
+            }
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+}
+
+let infoDiseno = (idCatalogo) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFmxIdCatalogo/" + `${idCatalogo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            let img = $("#divImagenDiseno");
+            img.children().remove();
+
+            if (dato !== null) {
+                $("#txtCodigoFM").val(dato.NoReferencia);
+                $("#txtDiseño").val(dato.Nombre);
+                $("#txtEstilo").val(dato.EstiloDiseno);
+                $("#txtColorTela").val(dato.ColorTela);
+                $("#txtParte").val(dato.NombreParte);
+                $("#txtProducto").val(dato.NombrePrenda);
+
+                img.append('<img class="k-card-image rounded mx-auto d-block" src="/Adjuntos/' + dato.NoReferencia + '/' + dato.NombreArchivo + '" onerror="imgError(this)"  />');
+            } else {
+                $("#txtCodigoFM").val("");
+                $("#txtDiseño").val("");
+                $("#txtEstilo").val("");
+                $("#txtParte").val("");
+                $("#txtProducto").val("");
+                img.append('<img class="k-card-image rounded mx-auto d-block" src="' + srcDefault + '"/>')
+            }
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+}
+
+let setEstadoIcon = (Estado) => {
+    switch (Estado) {
+        case 'OPERACION':
+            return '<div class="estadoCircle">IO</div>';
+            break;
+        case 'SUSPENDIDO':
+            return '<div class="estadoCircle">OS</div>';
+            break;
+        case 'FINALIZADO':
+            return '<div class="estadoCircle">F</div>';
+            break;
+        case 'ENTREGADO':
+            return '<div class="estadoCircle">PE</div>';
+            break;
+        case 'RETENIDO':
+            return '<div class="estadoCircle">R</div>';
+            break;
+        case 'DEVOLUCION':
+            return '<div class="estadoCircle">D</div>';
+            break;
+        case 'TRANSITO':
+            return '<div class="estadoCircle">T</div>';
+            break;
+    }
+}
 
 fPermisos = (datos) => {
     Permisos = datos;
