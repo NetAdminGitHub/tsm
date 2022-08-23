@@ -37,39 +37,41 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
 
-    $("#treelist").kendoGrid({
-        dataSource: new kendo.data.TreeListDataSource({
-            transport: {
-                read: {
-                    url: function () { return TSM_Web_APi + `HojasBandeosMercancias/GetBultosSinPreparar/${xidcata}/${xidCorte}`; }
-                }
-            },
-            schema: {
-                model: {
-                    id: "Id",
-                    parentId: "IdPadre",
-                    fields: {
-                        Id: { field: "Id", type: "number" },
-                        IdPadre: { field: "IdPadre", nullable: true },
-                        IdHojaBandeo: { field: "IdHojaBandeo" },
-                        IdMercancia: { field: "IdMercancia", nullable: true },
-                        Corte: { field: "Corte", type: "string" },
-                        Talla: { field: "Talla", type: "string" },
-                        NoDocumento: { field: "NoDocumento", type: "string" },
-                        FM: { field: "FM", type: "string" },
-                        Diseno: { field: "Diseno", type: "string" },
-                        Estilo: { field: "Estilo", type: "string" },
-                        Cantidad: { field: "Cantidad", type: "number" }
-                    }
+    let dTree = new kendo.data.TreeListDataSource({
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + `HojasBandeosMercancias/GetBultosSinPreparar/${xidcata}/${xidCorte}`; }
+            }
+        },
+        schema: {
+            model: {
+                id: "Id",
+                parentId: "IdPadre",
+                fields: {
+                    Id: { field: "Id", type: "number" },
+                    IdPadre: { field: "IdPadre", nullable: true },
+                    IdHojaBandeo: { field: "IdHojaBandeo" },
+                    IdMercancia: { field: "IdMercancia", nullable: true },
+                    Corte: { field: "Corte", type: "string" },
+                    Talla: { field: "Talla", type: "string" },
+                    NoDocumento: { field: "NoDocumento", type: "string" },
+                    FM: { field: "FM", type: "string" },
+                    Diseno: { field: "Diseno", type: "string" },
+                    Estilo: { field: "Estilo", type: "string" },
+                    Cantidad: { field: "Cantidad", type: "number" }
                 }
             }
-        }),
+        }
+    });
+
+    $("#treelist").kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
         height: 660,
         messages: {
             noRows: "No hay datos dsiponibles"
         },
         columns: [
-            { selectable: true, width: "35px", includeChildren: true, name: "select" },
+            { selectable: true, width: "35px" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
             { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
@@ -82,14 +84,23 @@ $(document).ready(function () {
             { field: "Estilo", title: "Estilo", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
             {
-                title: "",
-                template: '<button class="k-button k-button-icon" name="b_search" id="b_search"><span class="k-icon k-i-search"></span></button>',
-                width: 70
+                command: [
+                    {
+                        name: "b_search",
+                        text: " ",
+                        click: getInfoGeneral,
+                        iconClass: "k-icon k-i-search m-0"
+                    }
+                ],
+                width: "70px"
             }
+            /*{
+                title: "",
+                template: '<button class="k-button k-button-icon btnGenInfo" name="b_search"><span class="k-icon k-i-search"></span></button>',
+                width: 70
+            }*/
         ]
     });
-
-    $("#treelist").data("kendoGrid").dataSource.read();
 
     //#endregion 
 
@@ -167,9 +178,11 @@ $(document).ready(function () {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridDetCortePre").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659);
+    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, "multiple")
     SetGrid_CRUD_ToolbarTop($("#gridDetCortePre").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridDetCortePre").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDetCortePre").data("kendoGrid"), dSlis);
+    Set_Grid_DataSource($("#treelist").data("kendoGrid"), dTree);
 
     var selectedRows2 = [];
     $("#gridDetCortePre").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
@@ -187,21 +200,22 @@ $(document).ready(function () {
 
     //crear entrega a prod
     $("#btnSolicitarProducto").click(function () {
-        let strjson = {
-            config: [{
-                Div: "vEntreTela",
-                Vista: "~/Views/PreparacionCarrito/_CarritoEntregaTela.cshtml",
-                Js: "CarritoEntrega.js",
-                Titulo: "Entrega de Tela",
-                Height: "90%",
-                Width: "50%",
-                MinWidth: "30%"
-            }],
-            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")), divmod: "vEntreTela" },
-            fn: { fnclose: "fn_Close_CarritoEnt", fnLoad: "fn_Ini_CarritoEnt", fnReg: "fn_Reg_CarritoEnt", fnActi: "fn_focusCarritoEnt" }
-        };
+        let checks = [];
+        let grid = $("#treelist").data("kendoGrid");
 
-        fn_GenLoadModalWindow(strjson);
+        grid.tbody.find("input:checked").closest("tr").each(function (index) {
+            checks.push(index);
+        });
+
+        if (checks.length >= 1)
+        {
+
+        }
+        else
+        {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar al menos un elemento de la lista.", "error");
+        }
+
     });
 
 
@@ -267,16 +281,14 @@ $(document).ready(function () {
             $("#treelist").data("kendoGrid").dataSource.read().then(function () {
                 fn_readonly();
             });
-            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            //$("#gridDetCortePre").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnSolicitarProducto"), true);
         } else {
             xidcata = 0;
             xidCorte = 0;
             $("#treelist").data("kendoGrid").dataSource.read();
-            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            //$("#gridDetCortePre").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnSolicitarProducto"), false);
-            $("#txtDiseño").val("");
-            $("#txtEstilo").val("");
         }
     });
 
@@ -315,6 +327,7 @@ $(document).ready(function () {
             $("#treelist").data("kendoGrid").dataSource.read();
         }
     });
+
 });
 
 var fn_readonly = () => {
@@ -331,6 +344,24 @@ var fn_Close_CarritoEnt = (xjson) => {
     $("#treelist").data("kendoGrid").dataSource.read();
 
 }
+
+var getInfoGeneral = () => {
+    let strjson = {
+        config: [{
+            Div: "vInfDiseno",
+            Vista: "~/Views/Shared/_GenInfoFM.cshtml",
+            Js: "GenInfoFM.js",
+            Titulo: "Información General",
+            Width: "40%",
+            MinWidth: "30%"
+            }],
+        Param: { idCatalogo: 73 },
+        fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
+};
+
+fn_GenLoadModalWindow(strjson)
+};
+
 let fn_Refrescar_Ingreso = () => {
     if (Bandeo !== null && xIdIngreso === 0) {
         kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);
