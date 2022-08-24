@@ -11,7 +11,17 @@ namespace TSM.Controllers
         // GET: ConsultaCorteMicro
         public ActionResult Index()
         {
+
             return View();
         }
+
+        [Route("ConsultaCorteMicro/{IdHojaBandeo}")]
+        public ActionResult Index(long IdHojaBandeo)
+        {
+            ViewBag.IdHojaBandeo = IdHojaBandeo;
+
+            return View();
+        }
+
     }
 }

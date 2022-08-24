@@ -4,8 +4,30 @@
     ViewBag.IdVersion = "TSM0101141|v22081601";
 }
 @section Scripts {
+    <script type="text/javascript">
+        var IdHojaBandeo = 0;
+        @if (ViewBag.IdHojaBandeo != null )
+        {
+            <text>
+                IdHojaBandeo = @ViewBag.IdHojaBandeo;
+            </text>
+        }
+    </script>
     <script src="~/Scripts/js/ConsultaCorteMicro.js?@ViewBag.IdVersion"></script>
 }
+
+<style>
+    .estadoCircle {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        padding: 8px;
+        text-align: center;
+        background: #54C45E;
+        /*color: #000;*/
+        /*font: 32px Arial, sans-serif;*/
+    }
+</style>
 
 <div class="row">
     <div class="col-lg-12">
@@ -48,24 +70,25 @@
                         <div class="row mb-3">
                             <div class="col-lg-2">
                                 <label for="txtCorte" id="lblCorte">Corte:</label>
-                                <input id="txtCorte" name="txtCorte" class="form-control" />
+                                <input id="txtCorte" name="txtCorte" class="k-textbox form-control" />
                             </div>
                             <div class="col-lg-2">
                                 <label for="txtCantidad" id="lblCantidad">Cantidad:</label>
-                                <input id="txtCantidad" name="txtCantidad" class="form-control" />
+                                <input id="txtCantidad" name="txtCantidad" class="k-textbox form-control" />
                             </div>
                             <div class="col-lg-2">
-                                <label for="txtBultos" id="lblBultos">Bultos/Rollos:</label>
-                                <input id="txtBultos" name="txtBultos" class="form-control" />
+                                <label for="txtBultos" id="lblBultos">Cantidad Bultos/Rollos:</label>
+                                <input id="txtBultos" name="txtBultos" class="k-textbox form-control" />
                             </div>
                             <div class="col-lg-2">
                                 <label for="txtTallas" id="lblTallas">Tallas:</label>
-                                <input id="txtPlanta" name="txtPlanta" class="form-control" />
+                                <input id="txtTallas" name="txtTallas" class="k-textbox form-control" />
                             </div>
                             <div class="col-lg-4 d-flex pl-0">
                                 <div>
                                     <label for="cmbEtapa" id="lblEtapa">Segundas:</label>
-                                    <div id="chart"></div>
+                                    @*<div id="chart"></div>*@
+                                    <div id="progressBar" style="width: 20em; height: calc(2.25rem + 2px); "></div>
                                 </div>
                                 <div class="ml-3 mt-auto">
                                     <button type="button" id="btnGenerarExcel">Descargar Data</button>

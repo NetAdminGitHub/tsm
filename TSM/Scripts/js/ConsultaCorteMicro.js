@@ -61,22 +61,6 @@ $(document).ready(function () {
     });
 
     $("#gridBultos").kendoGrid({
-        dataBound: function (e) {
-            let columnIndex = this.wrapper.find(".k-grid-header [data-field=" + "Estado" + "]").index();
-            let rows = e.sender.tbody.children();
-            for (var j = 0; j < rows.length; j++) {
-                var row = $(rows[j]);
-
-                var dataItem = e.sender.dataItem(row);
-                console.log(dataItem);
-                var Estado = dataItem.get("Estado");
-                dataItem.set("Estado", setEstadoIcon(Estado));
-
-                //var cell = row.children().eq(columnIndex);
-                //console.log(cell);
-                //cell[0].innerHtml = setEstadoIcon(Estado);
-            }
-        },
         excel: {
             allPages: true,
             fileName: "Consulta de Corte Micro.xlsx"
@@ -123,12 +107,15 @@ $(document).ready(function () {
         min: 0,
         max: 100,
         type: "percent",
-        value: 15,
+        value: 0,
         animation: {
             duration: 400
+        },
+        change: function (e) {
+            this.progressWrapper.css({ "background-color": "#32c728", "border-color": "#32c728" });
         }
     }).data("kendoProgressBar");
-
+    pb.value(20);
 });
 
 let detalleHojaBandeo = (IdHojaBandeo) => {
@@ -194,32 +181,6 @@ let infoDiseno = (idCatalogo) => {
             kendo.ui.progress($(document.body), false);
         }
     });
-}
-
-let setEstadoIcon = (Estado) => {
-    switch (Estado) {
-        case 'OPERACION':
-            return '<div class="estadoCircle">IO</div>';
-            break;
-        case 'SUSPENDIDO':
-            return '<div class="estadoCircle">OS</div>';
-            break;
-        case 'FINALIZADO':
-            return '<div class="estadoCircle">F</div>';
-            break;
-        case 'ENTREGADO':
-            return '<div class="estadoCircle">PE</div>';
-            break;
-        case 'RETENIDO':
-            return '<div class="estadoCircle">R</div>';
-            break;
-        case 'DEVOLUCION':
-            return '<div class="estadoCircle">D</div>';
-            break;
-        case 'TRANSITO':
-            return '<div class="estadoCircle">T</div>';
-            break;
-    }
 }
 
 fPermisos = (datos) => {
