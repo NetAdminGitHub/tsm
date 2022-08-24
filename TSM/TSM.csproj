@@ -510,10 +510,12 @@
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrapMod.css" />
+    <Content Include="Content\ConsultaCorteStyle.css" />
     <Content Include="Content\Font-HelveticaNeue.css" />
     <Content Include="Content\Font-TS-Icons.css" />
     <Content Include="Content\Font-TSM-General.css" />
     <Content Include="Content\CatalogoDisenos.css" />
+    <Content Include="Content\Font-TSM-Tablet.css" />
     <Content Include="Content\icons\14.svg" />
     <Content Include="Content\icons\16.svg" />
     <Content Include="Content\icons\22.svg" />
@@ -551,6 +553,7 @@
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\ConsultaEtapaCorte.js" />
     <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
@@ -908,6 +911,7 @@
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
     <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <Content Include="jsonsettings.azconf" />
+    <Content Include="Fonts\TSM-Icons-Tablet.woff" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -1131,6 +1135,7 @@
     <Content Include="Views\Instrucciones\Index.cshtml" />
     <Content Include="Views\OrdenDespacho\Index.cshtml" />
     <Content Include="Views\Shared\_GenInfoFM.cshtml" />
+    <Content Include="Views\Shared\_ConsultaEtapaCorte.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
