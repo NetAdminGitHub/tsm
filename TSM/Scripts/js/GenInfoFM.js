@@ -32,7 +32,7 @@ let fn_DisenoInfLoad = (idCatalogo) => {
                 $("#txtEstilo").val(dato.EstiloDiseno);
                 $("#txtParte").val(dato.NombreParte);
                 $("#txtComposicion").val(dato.Composicion);
-                $("#txtNombrePrenda").val(dato.NombreServicio);
+                $("#txtNombrePrenda").val(dato.NombrePrenda);
                 $("#txtNumero").val(dato.NumeroDiseno);
                 img.append('<img class="k-card-image rounded mx-auto d-block" src="/Adjuntos/' + dato.NoReferencia + '/' + dato.NombreArchivo + '" onerror="imgError(this)"  />');
             } else {
