@@ -4,6 +4,44 @@
     ViewBag.IdVersion = "TSM0101140|v22081601";
 }
 @section Scripts {
+    <script type="text/javascript">
+        var idCliente = 0;
+        var idMarca = 0;
+        var idPlanta = 0;
+        var idEtapaProcesoMacro = 0;
+        var idCatalogoDiseno = 0;
+        var FM = '';
+        var idServicio = 0;
+
+        @if (ViewBag.IdCliente != null ) {
+            <text> idCliente = @ViewBag.IdCliente; </text>
+        }
+
+        @if (ViewBag.IdMarca != null ) {
+            <text> idMarca = @ViewBag.IdMarca; </text>
+        }
+
+        @if (ViewBag.IdPlanta != null ) {
+            <text> idPlanta = @ViewBag.IdPlanta; </text>
+        }
+
+        @if (ViewBag.IdEtapaProcesoMacro != null ) {
+            <text> idEtapaProcesoMacro = @ViewBag.IdEtapaProcesoMacro; </text>
+        }
+
+        @if (ViewBag.IdCatalogoDiseno != null ) {
+            <text> idCatalogoDiseno = @ViewBag.IdCatalogoDiseno; </text>
+        }
+
+        @if (ViewBag.FM != null ) {
+            <text> FM = '@ViewBag.FM'; </text>
+        }
+
+        @if (ViewBag.IdServicio != null ) {
+            <text> idServicio = @ViewBag.IdServicio; </text>
+        }
+    </script>
+
     <script src="~/Scripts/js/ConsultaCorteMacro.js?@ViewBag.IdVersion"></script>
 }
 
@@ -15,6 +53,10 @@
                     <div class="col-lg-3">
                         <label for="cmbCliente" id="lblCliente">Cliente:</label>
                         <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="cmbFm" id="lblFm">Código FM:</label>
+                        <input id="cmbFm" name="cmbFm" class="form-control" />
                     </div>
                     <div class="col">
                         <label for="cmbMarca" id="lblMarca">Marca:</label>
