@@ -720,7 +720,7 @@ let fn_Fms = (id) => {
                 $("#txtEstilo").val(datos[0].EstiloDiseno);
                 $("#txtNumero").val(datos[0].NumeroDiseno);
                 $("#txtPrenda").val(datos[0].NombrePrenda);
-                $("#txtPartePrenda").val(datos[0].NombrePrenda);
+                $("#txtPartePrenda").val(datos[0].NombreParte);
                 $("#txtConfeccion").val(datos[0].NombreConfeccion);
                 $("#txtServicio").val(datos[0].NombreServicio);
                 $("#txtColor").val(datos[0].ColorTela);
