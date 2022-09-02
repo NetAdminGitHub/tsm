@@ -1,9 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Consulta de Despacho";
+    ViewBag.Title = "Consulta Ordenes de Despacho";
     ViewBag.IdVersion = "TSM0101142|v22081901";
 }
 @section Scripts {
-
     <script src="~/Scripts/js/ConsultaDespacho.js?@ViewBag.IdVersion"></script>
 }
 
@@ -16,13 +15,13 @@
                         <label for="cmbCliente" id="lblCliente">Cliente:</label>
                         <input id="cmbCliente" name="cmbCliente" class="form-control" />
                     </div>
-                    <div class="col-lg-3">
-                        <label for="cmbMarca" id="lblMarca">Marca:</label>
-                        <input id="cmbMarca" name="cmbMarca" class="form-control" />
-                    </div>
                     <div class="col-lg-2">
                         <label for="cmbPlanta" id="lblPlanta">Planta:</label>
                         <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="cmbMarca" id="lblMarca">Marca:</label>
+                        <input id="cmbMarca" name="cmbMarca" class="form-control" />
                     </div>
 
                     <div class="col-lg-2 mt-auto">
@@ -43,3 +42,5 @@
 
 @*status de orden de despacho*@
 <div id="vMod_statusOrdenDespacho"></div>
+
+<div id="vCambioEstado"></div>
