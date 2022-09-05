@@ -135,20 +135,6 @@ $(document).ready(function () {
         grid.saveAsExcel();
     });
 
-    const pb = $("#progressBar").kendoProgressBar({
-        min: 0,
-        max: 100,
-        type: "percent",
-        value: 0,
-        animation: {
-            duration: 400
-        },
-        change: function (e) {
-            this.progressWrapper.css({ "background-color": "#32c728", "border-color": "#32c728" });
-        }
-    }).data("kendoProgressBar");
-    pb.value(20);
-
     $("#btnRetornar").click(function () {
         window.location = window.location.origin + '/ConsultaCorteMacro/'
             + `${idCliente}/`
@@ -165,7 +151,7 @@ $(document).ready(function () {
 let detalleHojaBandeo = (IdHojaBandeo) => {
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: TSM_Web_APi + `HojasBandeos/GetbyIdHoja/${IdHojaBandeo}`,
+        url: TSM_Web_APi + `HojasBandeos/GetbyIdHoja/${IdHojaBandeo}/${idCatalogoDiseno}`,
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
@@ -174,12 +160,14 @@ let detalleHojaBandeo = (IdHojaBandeo) => {
                 $("#txtCorte").val(dato.Corte);
                 $("#txtCantidad").val(dato.Cantidad);
                 $("#txtBultos").val(dato.TotalBultos);
-                $("#txtTallas").val(dato.Tallas);                
+                $("#txtTallas").val(dato.Tallas);
+                porcentajeSegundas(dato.PorcSegundas);
             } else {
                 $("#txtCorte").val("");
                 $("#txtCantidad").val("");
                 $("#txtBultos").val("");
                 $("#txtTallas").val("");
+                porcentajeSegundas(0);
             }
 
             kendo.ui.progress($(document.body), false);
@@ -224,6 +212,24 @@ let infoDiseno = (idCatalogo) => {
             kendo.ui.progress($(document.body), false);
         }
     });
+}
+
+const porcentajeSegundas = (porcentaje) => {
+    console.log(porcentaje);
+    const pb = $("#progressBar").kendoProgressBar({
+        min: 0,
+        max: 100,
+        type: "percent",
+        value: 0,
+        animation: {
+            duration: 400
+        },
+        change: function (e) {
+            this.progressWrapper.css({ "background-color": "#32c728", "border-color": "#32c728" });
+        }
+    }).data("kendoProgressBar");
+
+    pb.value(porcentaje);
 }
 
 fPermisos = (datos) => {
