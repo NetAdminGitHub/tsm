@@ -3881,6 +3881,10 @@ label.error {
     border: 1px solid #ddd
 }
 
+.badge.f-12 {
+    font-size: 12px;
+}
+
 .badge-count {
     border: 1px solid #ddd
 }
@@ -3917,6 +3921,130 @@ label.error {
 
 .badge-danger {
     background-color: #f3545d
+}
+
+.badge-sin-estampar {
+    background-color: #002949;
+    color: #FFFFFF;
+}
+
+.badge-en-produccion {
+    background-color: #004170;
+    color: #FFFFFF;
+}
+
+.badge-estampado {
+    background-color: #005F9D;
+    color: #FFFFFF;
+}
+
+.badge-en-preparacion {
+    background-color: #54C45E;
+    color: #000000;
+}
+
+.badge-envio {
+    background-color: #99CA3C;
+    color: #000000;
+}
+
+.badge-dia-transito-1 {
+    background-color: #B5F6A5;
+    color: #000000;
+}
+
+.badge-dia-transito-2 {
+    background-color: #FFE74E;
+    color: #000000;
+}
+
+.badge-dia-transito-3 {
+    background-color: #FF6C54;
+    color: #000000;
+}
+
+.badge-estado {
+    border-radius: 50%;
+    width: 29px;
+    height: 29px;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    border: none;
+}
+
+.badge-estado-io {
+    background-color: #C3F7C8;
+    color: #000000;
+}
+
+.badge-estado-os {
+    background-color: #FFDDA6;
+    color: #000000;
+}
+
+.badge-estado-f {
+    background-color: #FFD9D9;
+    color: #000000;
+}
+
+.badge-estado-pe {
+    background-color: #54C45E;
+    color: #000000;
+}
+
+.badge-estado-r {
+    background-color: #FF8F8F;
+    color: #000000;
+}
+
+.badge-estado-d {
+    background-color: #97999A;
+    color: #000000;
+}
+
+.badge-estado-t {
+    background-color: #6DB1FF;
+    color: #000000;
+}
+
+.badge-estado-c {
+    background-color: #E81313;
+    color: #FFFFFF;
+}
+
+.badge-etapa {
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    border: none;
+}
+
+.badge-InspeccionProduccion {
+    background-color: #38AAE0;
+}
+
+.badge-Reproceso {
+    background-color: #FF2E3D;
+}
+
+.badge-SegundoProceso {
+    background-color: #007BFF;
+}
+
+.badge-ValidacionReproceso {
+    background-color: #FFB136;
+}
+
+.badge-Auditoria {
+    background-color: #FFD919;
+}
+
+.badge-Despacho {
+    background-color: #9ED63C;
 }
 
 .dropdown-menu {
@@ -16103,4 +16231,9 @@ div.table-responsive > div.dataTables_wrapper > div.row {
         width: 100% !important;
         padding: 60px 15px !important
     }
+}
+
+div.k-grid-norecords {
+    justify-content: center;
+    flex-direction: column;
 }

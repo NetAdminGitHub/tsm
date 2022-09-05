@@ -287,6 +287,8 @@
     <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
@@ -552,6 +554,8 @@
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\MacroEtapas.js" />
+    <Content Include="Scripts\js\ConsultaCorteMacro.js" />
+    <Content Include="Scripts\js\ConsultaCorteMicro.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
@@ -1129,6 +1133,8 @@
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
     <Content Include="Views\MacroEtapas\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMacro\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMicro\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

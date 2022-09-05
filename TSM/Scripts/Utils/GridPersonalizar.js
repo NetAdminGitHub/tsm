@@ -236,7 +236,7 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
     DSource = {
         dataSource: ds,
         noRecords: {
-            template: e.getOptions().pageable !== false ? "No hay datos disponibles. La pagina actual es: #=this.dataSource.page()#" : "No hay datos disponibles."
+            template: e.getOptions().pageable !== false ? "No hay datos disponibles. <br /> La pagina actual es: #=this.dataSource.page()# " : "No hay datos disponibles."
         }
     };
     e.setOptions($.extend({}, e.getOptions(), DSource));
