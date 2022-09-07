@@ -1,14 +1,22 @@
 ﻿"use strict"
 var Permisos;
 
+let idCliente = 0;
+let idMarca = 0;
+let idPlanta = 0;
+let idServicio = 0;
+let StrIdEmbalajeMercancia = [];
+let StrIdBulto = [];
+
 $(document).ready(function () {
 
-    KdoButton($("#btnSolicitarDespacho"), "plus-outline", "Crear Lista de Empaque");
+    KdoButton($("#btnCrearListaEmpaque"), "plus-outline", "Crear Lista de Empaque");
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "Marcas", "Nombre", "IdPlanta", "Seleccione Planta");
+    KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "Seleccione una Marca");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
-    Kendo_CmbFiltrarGrid($("#cmbServicio"), TSM_Web_APi + "Servicios", "Nombre", "IdServicio", "Seleccione Planta");
+    Kendo_CmbFiltrarGrid($("#cmbServicio"), TSM_Web_APi + "Servicios", "Nombre", "IdServicio", "Seleccione un Servicio");
+    KdoComboBoxFM($("#cmbFM"), "[]", "NodocCatalogo", "IdCatalogoDiseno", "Seleccione un Diseño", "", "", false);
 
     TextBoxEnable($("#txtCodigoFM"), false);
     TextBoxEnable($("#txtDiseño"), false);
@@ -17,13 +25,27 @@ $(document).ready(function () {
     TextBoxEnable($("#txtColorTela"), false);
     TextBoxEnable($("#txtParte"), false);
     TextBoxEnable($("#txtProducto"), false);
+    TextBoxEnable($("#txtServicio"), false);
 
     let dataSource = new kendo.data.DataSource({
         transport: {
-            read: {
-                url: function () { return `${TSM_Web_APi}HojasBandeosMercanciasEtapas/GetBultosValidacionDespacho/${xidCatalogo}/${xIdEtapaProceso}/${xidHojaBandeo}`; },
-                dataType: "json",
-                contentType: "application/json; charset=utf-8"
+            read: function (datos) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    async: false,
+                    data: JSON.stringify({
+                        IdCliente: idCliente,
+                        IdPlanta: idPlanta,
+                        IdMarca: idMarca,
+                        IdServicio: idServicio
+                    }),
+                    url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl/",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        datos.success(result);
+                    }
+                });
             },
 
             parameterMap: function (data, type) {
@@ -36,15 +58,15 @@ $(document).ready(function () {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdHojaBandeo",
+                id: "IdEmbalajeMercancia",
                 fields: {
-                    IdHojaBandeo: { type: "number" },
-                    Talla: { type: "string" },
-                    Cantidad: { type: "number" },
-                    Unidades: { type: "number" },
-                    CantidadSegunda: { type: "number" },
-                    CantidadAveria: { type: "number" },
-                    CantidadFacturar: { type: "number" }
+                    IdEmbalajeMercancia: { type: "number" },
+                    NoDocumento: { type: "string" },
+                    FechaCreacion: { type: "date" },
+                    IdEmbalaje: { type: "number" },
+                    CantidadCortes: { type: "number" },
+                    CantidadMercancia: { type: "number" },
+                    Cantidad: { type: "number" }
                 }
             }
         }
@@ -57,50 +79,44 @@ $(document).ready(function () {
             $("tr.k-master-row").each(function (index) {
                 grid.expandRow(this);
             });
+            infoDiseno(0);
+            setFMCbxData(0);
         },
         change: function (e) {
+            let grid = $("#gridEmbalajes").data("kendoGrid");
 
             let rows = e.sender.select();
-            let tallas = [];
-            let HojaBandeos = [];
+            let EmbalajeMercancia = [];
 
-            let grid = $("#gridEmbalajes").data("kendoGrid");
             rows.each(function (e) {
                 let dataItem = grid.dataItem(this);
-                HojaBandeos.push(dataItem.IdHojaBandeo);
-                tallas.push(dataItem.Talla);
+                EmbalajeMercancia.push(dataItem.IdEmbalajeMercancia);
             });
-            StrIdHojaBandeo = HojaBandeos;
-            StrIdTalla = tallas;
+            StrIdEmbalajeMercancia = EmbalajeMercancia;
 
             let detailGrid = grid.element.find(".k-detail-row");
             let detailRows = detailGrid.find(".idBulto-detail");
-            console.log(detailRows);
+
             let idBulto = [];
+
             detailRows.each(function (currentValue, index, array) {
                 idBulto.push(index.innerText);
             });
             StrIdBulto = idBulto;
 
-            let estadoDetailRows = detailGrid.find(".Estado-detail");
-            console.log(estadoDetailRows);
-            let estado = [];
-            estadoDetailRows.each(function (currentValue, index, array) {
-                estado.push(index.innerText);
-            });
-            StrEstados = estado;
         },
 
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { selectable: true, width: "35px" },
-            { field: "IdHojaBandeo", title: "id Hoja Bandeo", hidden: true },
-            { field: "Talla", title: "Talla" },
-            { field: "Cantidad", title: "Cant. Bultos" },
-            { field: "Unidades", title: "Piezas" },
-            { field: "CantidadSegunda", title: "Segundas" },
-            { field: "CantidadAveria", title: "Averia" },
-            { field: "CantidadFacturar", title: "Primeras" }
+            { field: "IdEmbalajeMercancia", title: "id", hidden: true },
+            { field: "IdEmbalaje", title: "id Embalaje", hidden: true },
+            { field: "NoDocumento", title: "Correlativo" },
+            { field: "FechaCreacion", title: "Fecha Registro", format: "{0: dd/MM/yyyy HH:mm:ss}" },
+            { field: "UnidadEmbalaje", title: "Unidad Embalaje" },
+            { field: "CantidadCortes", title: "Corte" },
+            { field: "CantidadMercancia", title: "Mercancía" },
+            { field: "Cantidad", title: "Cantidad" }
         ]
     });
 
@@ -109,6 +125,48 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridEmbalajes").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridEmbalajes").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridEmbalajes").data("kendoGrid"), dataSource);
+
+    $("#cmbCliente").data("kendoComboBox").bind("change", function () {
+        idCliente = this.value() === "" ? 0 : this.value();
+
+        let dsm = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: function () { return TSM_Web_APi + `ClientesMarcas/GetByCliente/${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}` },
+                    contentType: "application/json; charset=utf-8"
+                }
+            }
+        });
+
+        idMarca = 0;
+        idPlanta = 0;
+        idServicio = 0;
+
+        $("#cmbMarca").data("kendoComboBox").value("");
+        $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
+
+        $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+    });
+
+    $("#cmbMarca").data("kendoComboBox").bind("change", function () {
+        idMarca = this.value() === "" ? 0 : this.value();
+        $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+    });
+
+    $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
+        idPlanta = this.value() === "" ? 0 : this.value();
+        $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+    });
+
+    $("#cmbServicio").data("kendoComboBox").bind("change", function () {
+        idServicio = this.value() === "" ? 0 : this.value();
+        $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+    });
+
+    $("#cmbFM").data("kendoComboBox").bind("change", function () {
+        let idCatalogo = this.value() === "" ? 0 : this.value();
+        infoDiseno(idCatalogo);
+    });
 
     $("#btnCrearListaEmpaque").data("kendoButton").bind("click", function (e) {
 
@@ -124,12 +182,8 @@ $(document).ready(function () {
             }],
             Param: {
                 pCorte: $("#txtCorteProceso").val(),
-                pvModal: "vCambiarEstado",
-                pIdMercancia: dataItem.IdMercancia,
-                pIdMercanciaEtapa: dataItem.IdMercanciaEtapa,
-                pidEtapaActual: xIdEtapaProceso,
-                pCantidad: dataItem.Cantidad,
-                pCantidadAveria: dataItem.CantidadAveria
+                pvModal: "vMod_RegistroListaEmpaque",
+                plistaCortes: []
             },
             fn: { fnclose: "fn_RefreshGrid", fnLoad: "fn_Ini_StatusOrdenDespacho", fnReg: "fn_Reg_StatusOrdenDespacho", fnActi: "" }
         };
@@ -142,14 +196,13 @@ $(document).ready(function () {
 
 const detailInit = (e) => {
 
-    let vidHojaBandeo = e.data.IdHojaBandeo === null ? 0 : e.data.IdHojaBandeo;
-    let Talla = e.data.IdHojaBandeo === null ? "" : e.data.Talla;
+    let vIdEmbalajeMercancia = e.data.IdEmbalajeMercancia === null ? 0 : e.data.IdEmbalajeMercancia;
 
-    let dsBultos = new kendo.data.DataSource({
+    let dsCortes = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function () {
-                    return TSM_Web_APi + `HojasBandeosMercanciasEtapas/GetDetalleBultoPorEtapa/${vidHojaBandeo}/${Talla}/${xIdEtapaProceso}`;
+                    return TSM_Web_APi + `EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControlDetalle/${vIdEmbalajeMercancia}`;
                 },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -164,42 +217,48 @@ const detailInit = (e) => {
         error: Grid_error,
         schema: {
             model: {
-                id: "IdHojaBandeo",
+                id: "IdEmbalajeMercancia",
                 fields: {
-                    IdHojaBandeo: { type: "number" },
+                    IdEmbalajeMercancia: { type: "number" },
+                    IdEmbalaje: { type: "number" },
                     IdMercancia: { type: "number" },
-                    IdMercanciaEtapa: { type: "number" },
-                    Cantidad: { type: "number" },
-                    CantidadSustraida: { type: "number" },
-                    CantidadAveria: { type: "number" },
-                    CantidadSegunda: { type: "number" },
-                    CantidadFacturar: { type: "number" },
+                    IdHojaBandeo: { type: "number" },
                     NoDocumento: { type: "string" },
-                    Estado: { type: "string" }
+                    FechaCreacion: { type: "date" },
+                    Corte: { type: "string" },
+                    Talla: { type: "string" },
+                    Cantidad: { type: "number" },
+                    Docenas: { type: "number" },
+                    Primera: { type: "number" },
+                    CantidadSegunda: { type: "number" },
+                    CantidadAveria: { type: "number" }
                 }
             }
         },
-        filter: { field: "IdHojaBandeo", operator: "eq", value: e.data.IdHojaBandeo }
+        filter: { field: "IdEmbalajeMercancia", operator: "eq", value: e.data.IdEmbalajeMercancia }
     });
 
     let detailGrid = $("<div class='lump-child-grid'/>").appendTo(e.detailCell).kendoGrid({
-
+        change: function (e) {
+            let row = e.sender.select();
+            let data = this.dataItem(row);
+            setFMCbxData(data.IdHojaBandeo);            
+        },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdMercancia", title: "IdMercancia", attributes: { "class": "idMercancia-detail" }, hidden: true },
+            { field: "IdMercancia", title: "Id Mercancia", attributes: { "class": "idMercancia-detail" }, hidden: true },
+            { field: "IdHojaBandeo", title: "Id Hoja Bandeo", attributes: { "class": "idHojaBandeo-detail" }, hidden: true },
+            { field: "Corte", title: "Corte" },
+            { field: "Talla", title: "Talla" },
             { field: "NoDocumento", title: "Bulto/#Rollo", attributes: { "class": "idBulto-detail" } },
-            { field: "IdMercanciaEtapa", title: "idMercanciaEtapa", attributes: { "class": "idMercanciaEtapa-detail" }, hidden: true },
-            { field: "IdHojaBandeo", title: "Id Hoja Bandeo", hidden: true },
             { field: "Cantidad", title: "Cantidad" },
-            { field: "CantidadSustraida", title: "Sustraidas" },
+            { field: "Primera", title: "Primeras" },
             { field: "CantidadSegunda", title: "Segundas" },
-            { field: "CantidadAveria", title: "Averia" },
-            { field: "CantidadFacturar", title: "Primeras" },
-            { field: "Estado", title: "Estado", attributes: { "class": "Estado-detail" }, hidden: true }
+            { field: "CantidadAveria", title: "Averia" }
         ]
     });
 
-    ConfGDetalle(detailGrid.data("kendoGrid"), dsBultos, "gFor_detalle" + vidHojaBandeo);
+    ConfGDetalle(detailGrid.data("kendoGrid"), dsCortes, "gFor_detalle" + vIdEmbalajeMercancia);
 
     let selectedRowsTec = [];
     detailGrid.data("kendoGrid").bind("change", function (e) {
@@ -208,7 +267,90 @@ const detailInit = (e) => {
 }
 
 const ConfGDetalle = (g, ds, Id_gCHForDetalle) => {
-    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, "multiple");
+    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, "row");
     SetGrid_CRUD_Command(g, false, false, Id_gCHForDetalle);
     Set_Grid_DataSource(g, ds);
 }
+
+const setFMCbxData = (IdHojaBandeo) => {
+    let dsFM = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: function () {
+                    return TSM_Web_APi + `HojasBandeosDisenos/GetFMs/${IdHojaBandeo}`
+                },
+                contentType: "application/json; charset=utf-8"
+            }
+        }
+    });
+    $("#cmbFM").data("kendoComboBox").setDataSource(dsFM);
+    setTimeout(function () {
+        let cbFM = $("#cmbFM").data("kendoComboBox");
+        cbFM.value("");
+
+        if (cbFM.dataSource.data().length > 0) {
+            cbFM.select(cbFM.ul.children().eq(0));
+            infoDiseno(KdoCmbGetValue($("#cmbFM")));
+        }
+    }, 250);
+}
+
+const infoDiseno = (idCatalogo) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "HojasBandeosDisenos/GetFmxIdCatalogo/" + `${idCatalogo}`,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            let img = $("#divImagenDiseno");
+            img.children().remove();
+
+            if (dato !== null) {
+                //$("#txtCodigoFM").val(dato.NoReferencia);
+                $("#txtDiseño").val(dato.Nombre);
+                $("#txtEstilo").val(dato.EstiloDiseno);
+                $("#txtColorTela").val(dato.ColorTela);
+                $("#txtParte").val(dato.NombreParte);
+                $("#txtProducto").val(dato.NombrePrenda);
+                $("#txtServicio").val(dato.NombreServicio);
+                $("#txtNumero").val(dato.NumeroDiseno);
+
+                img.append('<img class="k-card-image rounded mx-auto d-block" src="/Adjuntos/' + dato.NoReferencia + '/' + dato.NombreArchivo + '" onerror="imgError(this)"  />');
+            } else {
+                //$("#txtCodigoFM").val("");
+                $("#txtDiseño").val("");
+                $("#txtEstilo").val("");
+                $("#txtColorTela").val("");
+                $("#txtParte").val("");
+                $("#txtProducto").val("");
+                $("#txtServicio").val("");
+                $("#txtNumero").val("");
+
+                img.append('<img class="k-card-image rounded mx-auto d-block" src="' + srcDefault + '"/>')
+            }
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+}
+
+const KdoComboBoxFM = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+    e.kendoComboBox({
+        dataTextField: textField,
+        dataValueField: valueField,
+        autoWidth: true,
+        filter: "contains",
+        clearButton: givenOrDefault(clearButton, true),
+        placeholder: givenOrDefault(opcPlaceHolder, "Seleccione un valor ...."),
+        height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
+        cascadeFrom: givenOrDefault(parentCascade, ""),
+        dataSource: function () { return datos; }
+    });
+};
+
+fPermisos = (datos) => {
+    Permisos = datos;
+};

@@ -1,5 +1,5 @@
-﻿
-'use strict'
+﻿'use strict'
+
 let pJsonCP = "";
 
 var fn_Ini_StatusOrdenDespacho = (xjson) => {
