@@ -68,14 +68,19 @@
                                 <label for="cmbCorte">Corte:</label>
                                 <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-6" style="margin-top: 30px; margin-bottom: 17px; text-align:right;">
-                                <button type="button" id="btnSolicitarProducto">Solicitar Producto</button>
-                                <button type="button" id="btnCrearOrdenDespacho">Crear Orden de Despacho</button>
+                            <div class="form-group col-lg-3" style="margin-top: 30px; margin-bottom: 17px;">
+                                <input id="dtFechaProyectada" name="dtFechaProyectada" type="date" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-3" style="margin-top: 30px; margin-bottom: 17px;">
+                                <button type="button" id="btnCrearOrdenDespacho">Crear Orden Despacho</button>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-lg-12">
-                                <div id="gridDetCortePre"></div>
+                            <div class="col-lg-2 d-flex flex-column justify-content-center align-items-center text-center">
+                                <button type="button" id="btnMoveData"></button>
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <div id="gridOrdenDespacho"></div>
                             </div>
                         </div>
                     </div>
