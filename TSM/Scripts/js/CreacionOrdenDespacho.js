@@ -400,7 +400,7 @@ $(document).ready(function () {
             { field: "CantidadBultos", title: "Cuantía" },
             {
                 field: "Button", title: "Eliminar", template: "<button class='k-button k-button-icontext k-grid-b_deleteOD' onclick='fn_delOD(\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 70
-            },
+            }/*,
             {
                 command: [
                     {
@@ -411,7 +411,7 @@ $(document).ready(function () {
                     }
                 ],
                 width: "70px"
-            }
+            }*/
         ]
     });
 
@@ -421,197 +421,101 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridOrdenDespacho").data("kendoGrid"), dSlis);
 
-    //crear entrega a prod
+    //crear orden despacho
     $("#btnMoveData").click(function () {
-        var treeList = $("#treelist").data("kendoGrid");
-        var row = treeList.select();
-        let countHijoHidden = [];
 
         rowsPadre = [];
         rowsHijo = [];
-        dataPadre = [];
-        dataHijo = [];
+        let mercancias = [];
 
-        if (row.length > 0) {
-            $.each(row, function (index, elemento) {
-                let data = treeList.dataItem(elemento);
-            });
+        $.each($(".k-state-selected.k-master-row"), function (index, elemento) {
 
-            $.each($(".k-state-selected.k-master-row"), function (index, elemento) {
-                //LineasPreOD.push(elemento);
-                //console.log(elemento.cells);
-                //console.log(elemento.cells[3].innerText);
-                //console.log(elemento.cells[4].className);
-                if (elemento.cells[6].className == "selCata") {
-                    rowsPadre.push(elemento);
-
-
-                    if (acumRowPadre.length > 0) {
-                        $.each($(acumRowPadre), function (indice, element) {
-                            if (elemento !== acumRowPadre[indice]) {
-                                if (elemento.cells[2].innerText != acumRowPadre[indice].cells[2].innerText) {
-                                    if (oldElement.includes(elemento.cells[2].innerText)==false)
-                                    {
-                                        acumRowPadre.push(elemento);
-                                        oldElement.push(elemento.cells[2].innerText);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        acumRowPadre.push(elemento);
-                        oldElement.push(elemento.cells[2].innerText)
-                    }
-                    
-                }
-                else {
-                    rowsHijo.push(elemento);
-                    acumRowHijo.push(elemento);
-                    elemento.classList.remove("k-state-selected");
-                }
-            });
-
-           /*console.log(rowsPadre);
-            console.log(rowsHijo);*/
-
-            $.each($(acumRowPadre), function (index, elemento) {
-                let tempPadre = [];
-                $.each(elemento.cells, function (indice, element) {
-                    if (element.innerText != "") {
-                        tempPadre.push(element.innerText);
-                    }
-                });
-                dataPadre.push(tempPadre);
-            });
-
-            $.each($(acumRowHijo), function (index, elemento) {
-                let tempHijo = [];
-                $.each(elemento.cells, function (indice, element) {
-                    if (element.innerText != "") {
-                        tempHijo.push(element.innerText);
-                    }
-                });
-                dataHijo.push(tempHijo);
-            });
-
-            /*console.clear();
-            console.log(acumRowPadre);
-            console.log(acumRowHijo);*/
-
-            let dsTemp = [];
-
-            $.each(dataPadre, function (index, elemento) {
-
-                var contTallas = 0;
-                let tallas = [];
-                var contBultos = 0;
-                var cuant = 0;
-                
-                $.each(dataHijo, function (indice, element) {
-                    if (elemento[0] == element[0] && elemento[3] == element[1])
-                    {
-                        contBultos++;
-                        cuant = cuant + parseInt(element[4]);
-                        tallas.push(dataHijo[indice][2]);
-                    }
-                });
-
-                tallas.sort();
-
-                tallas.forEach(function (value, key) {
-                    if (key < 1) {
-                        contTallas++;
-                    }
-                    else {
-                        oldTalla = tallas[key - 1];
-                        newTalla = tallas[key];
-                        if (oldTalla != newTalla) {
-                            contTallas++;
-                        }
-                    }
-                });
-
-
-                dsTemp.push({
-                    IdHojaBandeo: elemento[0],
-                    NoReferencia: elemento[1],
-                    Diseno: elemento[2],
-                    Corte: elemento[3],
-                    IdCatalogoDiseno: elemento[4],
-                    TotalTallas: contTallas,
-                    TotaBultos: contBultos,
-                    CantidadBultos: cuant
-                });
-
+            if (elemento.cells[6].className == "selCata") {
+                rowsPadre.push(elemento);
+            }
+            else {
+                rowsHijo.push(elemento);
+                //elemento.classList.remove("k-state-selected");
+            }
         });
 
+        $.each($(rowsHijo), function (index, elemento) {
+            mercancias.push(parseInt(elemento.cells[4].innerText));
+        });
 
-            let localDataSource = new kendo.data.DataSource({ data: dsTemp });
+        if (rowsHijo.length>0)
+        {
+            let d = new Date();
+            let now = d.getFullYear() + "/" + "0" + (d.getMonth() + 1) + "/" + "0"+d.getDate();
+            let fecha = kendo.toString($("#dtFechaProyectada").data("kendoDatePicker").value(), "yyyy/MM/dd");
 
-            $("#gridOrdenDespacho").data("kendoGrid").setDataSource(localDataSource);
+            if (fecha >= now)
+            {
+                if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "")
+                {
+                    /*let registro = {
+                        "FechaSolicitud": now.replace(/\//g, ''),
+                        "IdCliente": xidclie,
+                        "Estado": "OPERACION",
+                        "FechaEntrega": fecha.replace(/\//g, ''),
+                        "IdUsuarioSolicita": getUser(),
+                        "IdUsuarioMod": getUser(),
+                        "IdMercancia": mercancias,
+                        "IdMotivo": 1,
+                        "IdPlanta": xidPlanta
+                    }
+                    console.log(registro);*/
 
-            $.each($(acumRowPadre), function (index, elemento) {
-                let maxbultos = elemento.cells[8].innerText;
-                let contHidden = 0;
-                let contHistoricHidden = 0;
-
-                $.each($(acumRowHijo), function (ind, elem) {
-                    if (elemento.cells[2].innerText == elem.cells[1].innerText && elemento.cells[5].innerText == elem.cells[2].innerText) {
-                        if (elem.classList.contains("d-none")) {
-                            contHistoricHidden++;
+                    $.ajax({
+                        url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
+                        method: "POST",
+                        dataType: "json",
+                        data: JSON.stringify({
+                            FechaSolicitud: now.replace(/\//g, ''),
+                            IdCliente: xidclie,
+                            Estado: "OPERACION",
+                            FechaEntrega: fecha.replace(/\//g, ''),
+                            IdUsuarioSolicita: getUser(),
+                            IdUsuarioMod: getUser(),
+                            IdMercancia: mercancias,
+                            IdMotivo: 1,
+                            IdPlanta: xidPlanta
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (datos) {
+                            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                                closeOpenDetailGrid();
+                            });
+                            //$("#gridDetCortePre").data("kendoGrid").dataSource.read();
+                            RequestEndMsg(datos, "Post");
+                        },
+                        error: function (data) {
+                            ErrorMsg(data);
+                        },
+                        complete: function () {
+                            kendo.ui.progress($(document.body), false);
                         }
-                    }  
-                });
-
-                $.each($(acumRowHijo), function (indice, element) {
-                    if (elemento.cells[2].innerText == element.cells[1].innerText && elemento.cells[5].innerText == element.cells[2].innerText) {
-                        element.classList.add("d-none");
-                        contHidden++;
-                        if (maxbultos == contHidden) {
-                            let tbody = element.closest("div.k-grid-content.k-auto-scrollable");
-                            let trest = tbody.closest('.k-detail-row');
-                            if (trest != null)
-                            {
-                                trest.classList.add("d-none");
-                            }
-                        }
-
-                    }
-                });
-
-                if (maxbultos == contHidden) {
-                    if (contHistoricHidden == 0) {
-                        elemento.classList.add("d-none");
-                    }
-                    else
-                    {
-                        $.each($(rowsPadre), function (ind, elmnt) {
-                            if (elemento.cells[0].innerText == rowsPadre[ind].cells[0].innerText
-                                && elemento.cells[1].innerText == rowsPadre[ind].cells[1].innerText
-                                && elemento.cells[2].innerText == rowsPadre[ind].cells[2].innerText
-                                && elemento.cells[3].innerText == rowsPadre[ind].cells[3].innerText
-                                && elemento.cells[4].innerText == rowsPadre[ind].cells[4].innerText
-                                && elemento.cells[5].innerText == rowsPadre[ind].cells[5].innerText
-                                && elemento.cells[6].innerText == rowsPadre[ind].cells[6].innerText
-                                && elemento.cells[7].innerText == rowsPadre[ind].cells[7].innerText
-                                && elemento.cells[8].innerText == rowsPadre[ind].cells[8].innerText
-                                && elemento.cells[9].innerText == rowsPadre[ind].cells[9].innerText
-                                && elemento.cells[10].innerText == rowsPadre[ind].cells[10].innerText) {
-                                elmnt.classList.add("d-none");
-                            }
-                        });
-                    }
-                    
+                    });
                 }
-
-            });
-
-            KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
-            $("#dtFechaProyectada").data("kendoDatePicker").enable(true);
-
-
+                else
+                {
+                    $("#kendoNotificaciones").data("kendoNotification").show("El campo planta es necesario, por favor escoja una.", "error");
+                }
+            }
+            else
+            {
+                $("#kendoNotificaciones").data("kendoNotification").show("Escoja una fecha válida.", "error");
+            }
         }
+        else
+        {
+            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione al menos una talla.", "error");
+        }
+
+    });
+
+    $("#btnCrearOrdenDespacho").click(function () {
+
     });
 
 
@@ -667,11 +571,16 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
-            KdoButtonEnable($("#btnMoveData"), false);
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+                KdoButtonEnable($("#btnMoveData"), false);
+                $("#dtFechaProyectada").data("kendoDatePicker").enable(false);
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
     });
     
@@ -722,10 +631,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
         else {
             xidcata = 0;
@@ -773,11 +686,16 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
-            KdoButtonEnable($("#btnMoveData"), false);
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+                KdoButtonEnable($("#btnMoveData"), false);
+                $("#dtFechaProyectada").data("kendoDatePicker").enable(false);
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
     });
 
@@ -806,13 +724,16 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                fn_readonly();
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
-            //$("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnMoveData"), true);
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    fn_readonly();
+                    closeOpenDetailGrid();
+                });
+                KdoButtonEnable($("#btnMoveData"), true);
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         } else {
             xidcata = 0;
             xidCorte = 0;
@@ -837,12 +758,15 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
-            //$("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnMoveData"), false);
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+                KdoButtonEnable($("#btnMoveData"), false);
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
     });
 
@@ -873,11 +797,15 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
-            KdoButtonEnable($("#btnMoveData"), false);
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+                KdoButtonEnable($("#btnMoveData"), false);
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
         else {
             $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
@@ -909,10 +837,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
 
         } else {
             xidCorte = 0;
@@ -937,10 +869,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
     });
 
@@ -970,10 +906,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
     });
 
@@ -1005,10 +945,14 @@ $(document).ready(function () {
         if (xidListaEmpaque == 0) {
             xidListaEmpaque = null;
         }
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-            fn_valTreeList();
-        });
+        if (xidclie != "" && xidclie != 0 && xidclie != null) {
+            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                closeOpenDetailGrid();
+            });
+        }
+        else {
+            $("#treelist").data("kendoGrid").dataSource.data([]);
+        }
     });
 
     $("#CmbServicio").data("kendoComboBox").bind("change", function () {
@@ -1036,10 +980,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
         
     });
@@ -1072,10 +1020,14 @@ $(document).ready(function () {
         if (xidListaEmpaque == 0) {
             xidListaEmpaque = null;
         }
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-            fn_valTreeList();
-        });
+        if (xidclie != "" && xidclie != 0 && xidclie != null) {
+            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                closeOpenDetailGrid();
+            });
+        }
+        else {
+            $("#treelist").data("kendoGrid").dataSource.data([]);
+        }
     });
 
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
@@ -1103,10 +1055,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
         
     });
@@ -1139,10 +1095,14 @@ $(document).ready(function () {
         if (xidListaEmpaque == 0) {
             xidListaEmpaque = null;
         }
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-            fn_valTreeList();
-        });
+        if (xidclie != "" && xidclie != 0 && xidclie != null) {
+            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                closeOpenDetailGrid();
+            });
+        }
+        else {
+            $("#treelist").data("kendoGrid").dataSource.data([]);
+        }
     });
 
     $("#cmbMarca").data("kendoComboBox").bind("change", function () {
@@ -1170,10 +1130,14 @@ $(document).ready(function () {
             if (xidListaEmpaque == 0) {
                 xidListaEmpaque = null;
             }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
 
         
@@ -1206,10 +1170,14 @@ $(document).ready(function () {
         if (xidListaEmpaque == 0) {
             xidListaEmpaque = null;
         }
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-            fn_valTreeList();
-        });
+        if (xidclie != "" && xidclie != 0 && xidclie != null) {
+            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                closeOpenDetailGrid();
+            });
+        }
+        else {
+            $("#treelist").data("kendoGrid").dataSource.data([]);
+        }
     });
 
     $("#cmbPL").data("kendoComboBox").bind("change", function () {
@@ -1237,280 +1205,50 @@ $(document).ready(function () {
         if (xidListaEmpaque == 0) {
             xidListaEmpaque = null;
         }
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-                fn_valTreeList();
-            });
+            if (xidclie != "" && xidclie != 0 && xidclie != null) {
+                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                    closeOpenDetailGrid();
+                });
+            }
+            else
+            {
+                $("#treelist").data("kendoGrid").dataSource.data([]);
+            }
         }
         
     });
 
 });
 
-var fn_valTreeList = () =>
-{
-    $.each($(acumRowPadre), function (index, elemento) {
-
-        let grid = $("#treelist").data("kendoGrid");
-        let gridRows = $("#treelist").data("kendoGrid").tbody.find("tr");
-        let tempComp = [];
-        let tempCompR = [];
-        let tempRP = [];
-        let tempRPR = [];
-        let gr = [];
-
-        gridRows.each(function (indice, elemento) {
-            if (elemento.classList.contains("k-master-row")==true)
-            {
-                tempComp = [];
-                $.each(elemento.cells, function (indice, element) {
-                    if (element.innerText != "") {
-                        tempComp.push(element.innerText);
-                    }
-                });
-                tempCompR.push(tempComp);
-                gr.push(elemento);
-            }
-        });
-
-        $.each($(acumRowPadre), function (index, elemento) {
-            if (elemento.classList.contains("k-master-row") == true)
-            {
-                tempRP = [];
-                $.each(elemento.cells, function (indice, element) {
-                    if (element.innerText != "" && element.innerText != " ") {
-                        tempRP.push(element.innerText);
-                    }
-                });
-                tempRPR.push(tempRP);
-            }
-        });
-
-        $.each(tempRPR, function (indice, elem) {
-            $.each(tempCompR, function (index, elementoo) {
-                if (JSON.stringify(elementoo) == JSON.stringify(elem))
-                {
-                    grid.expandRow(gr[index]);
-
-                    //////////////////////////OCULTAR FILAS//////////////////////////////////////
-                    let maxbultos = gr[index].cells[8].innerText;
-                    let contHidden = 0;
-
-                    $.each($(acumRowHijo), function (indice, element) {
-                        if (gr[index].cells[2].innerText == element.cells[1].innerText && gr[index].cells[5].innerText == element.cells[2].innerText) {
-                            let subGrid = gr[index].nextSibling;
-                            let dataSG = subGrid.children[1].children[0].children[1];
-                            let tinfo = dataSG.children[1].tBodies[0].rows;
-                            let tbd = dataSG.children[1].tBodies[0];
-                            setTimeout(function () {
-                                $.each($(tinfo), function (ind, el) {
-
-                                    if (element.cells[0].innerText == el.cells[0].innerText 
-                                        && element.cells[1].innerText == el.cells[1].innerText
-                                        && element.cells[2].innerText == el.cells[2].innerText
-                                        && element.cells[3].innerText == el.cells[3].innerText
-                                        && element.cells[4].innerText == el.cells[4].innerText
-                                        && element.cells[5].innerText == el.cells[5].innerText
-                                        && element.cells[6].innerText == el.cells[6].innerText) {
-                                        el.classList.add("d-none");
-                                    }
-
-                                });
-                            }, 0200);
-                            
-                            
-                            contHidden++;
-                            if (maxbultos == contHidden) {
-                                let tbody = tbd;
-                                let trest = tbody.closest('.k-detail-row');
-                                trest.classList.add("d-none");
-                            }
-
-                        }
-                    });
-
-                    if (maxbultos == contHidden) {
-                        gr[index].classList.add("d-none");
-                    }
-                    ////////////////////////////////////////////////////////////////////////////////
-
-                    grid.collapseRow(gr[index]);
-
-                }
-            });
-        });
-
-    });
-}
-
-var fn_delOD = (idHojaBandeo) => {
-
-    console.log(idHojaBandeo);
-    console.log("\n");
-
-    console.log(oldElement);
-    console.log(acumRowPadre);
-    console.log(acumRowHijo);
-
-    oldElement = oldElement.filter(function (item) {
-        return item !== idHojaBandeo;
-    });
-
-    $.each($(acumRowPadre), function (indice, element) {
-        let ban = false;
-
-        if (idHojaBandeo == element.cells[2].innerText) {
-            ban = true;
-        }
-
-        if (ban == true) {
-            $.each($(acumRowHijo), function (index, elemento) {
-                if (element.cells[2].innerText == elemento.cells[1].innerText && element.cells[5].innerText == elemento.cells[2].innerText) {
-                    acumRowHijo = acumRowHijo.filter(function (item) {
-                        return item !== elemento;
-                    });
-                }
-            });
-
-            acumRowPadre.splice(indice, 1);
-        }
-
-    });
-
-    /////////////////////////////////////////////RELOAD DATA//////////////////////////////////////////////////
-
-    dataPadre = [];
-    dataHijo = [];
-
-    $.each($(acumRowPadre), function (index, elemento) {
-        let tempPadre = [];
-        $.each(elemento.cells, function (indice, element) {
-            if (element.innerText != "") {
-                tempPadre.push(element.innerText);
-            }
-        });
-        dataPadre.push(tempPadre);
-    });
-
-    $.each($(acumRowHijo), function (index, elemento) {
-        let tempHijo = [];
-        $.each(elemento.cells, function (indice, element) {
-            if (element.innerText != "") {
-                tempHijo.push(element.innerText);
-            }
-        });
-        dataHijo.push(tempHijo);
-    });
-
-    let dsTemp = [];
-
-    $.each(dataPadre, function (index, elemento) {
-
-        var contTallas = 0;
-        let tallas = [];
-        var contBultos = 0;
-        var cuant = 0;
-
-        $.each(dataHijo, function (indice, element) {
-            if (elemento[0] == element[0] && elemento[3] == element[1]) {
-                contBultos++;
-                cuant = cuant + parseInt(element[4]);
-                tallas.push(dataHijo[indice][2]);
-            }
-        });
-
-        tallas.sort();
-
-        tallas.forEach(function (value, key) {
-            if (key < 1) {
-                contTallas++;
-            }
-            else {
-                oldTalla = tallas[key - 1];
-                newTalla = tallas[key];
-                if (oldTalla != newTalla) {
-                    contTallas++;
-                }
-            }
-        });
-
-
-        dsTemp.push({
-            IdHojaBandeo: elemento[0],
-            NoReferencia: elemento[1],
-            Diseno: elemento[2],
-            Corte: elemento[3],
-            IdCatalogoDiseno: elemento[4],
-            TotalTallas: contTallas,
-            TotaBultos: contBultos,
-            CantidadBultos: cuant
-        });
-
-    });
-
-
-
-    let localDataSource = new kendo.data.DataSource({ data: dsTemp });
-
-    $("#gridOrdenDespacho").data("kendoGrid").setDataSource(localDataSource);
-
-    $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-        closeOpenDetailGrid();
-        fn_valTreeList();
-    });
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    console.log("\n");
-    console.log(oldElement);
-    console.log(acumRowPadre);
-    console.log(acumRowHijo);
-
-}
-
 var fn_readonly = () => {
     var treeList = $("#treelist").data("kendoGrid");
     var data = treeList.dataItem("tbody>tr:eq(0)");
 }
 
-var fn_Close_CarritosFin = (xjson) => {
-    $("#gridOrdenDespacho").data("kendoGrid").dataSource.read()
-    $("#treelist").data("kendoGrid").dataSource.read();
-}
-var fn_Close_CarritoEnt = (xjson) => {
-    $("#gridOrdenDespacho").data("kendoGrid").dataSource.read()
-    $("#treelist").data("kendoGrid").dataSource.read();
-
-}
-
 var getInfoGeneral = () => {
     $(".k-grid-b_search").on("click", function () {
         var cata = $(this).closest("tr").find(".selCata").text();
-        let strjson = {
-            config: [{
-                Div: "vInfDiseno",
-                Vista: "~/Views/Shared/_GenInfoFM.cshtml",
-                Js: "GenInfoFM.js",
-                Titulo: "Información General",
-                Width: "40%",
-                MinWidth: "30%"
-            }],
-            Param: { idCatalogo: cata },
-            fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
-        };
+        if (cata != "" && cata != null) {
+            let strjson = {
+                config: [{
+                    Div: "vInfDiseno",
+                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
+                    Js: "GenInfoFM.js",
+                    Titulo: "Información General",
+                    Width: "40%",
+                    MinWidth: "30%"
+                }],
+                Param: { idCatalogo: cata },
+                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
+            };
 
-        fn_GenLoadModalWindow(strjson)
+            fn_GenLoadModalWindow(strjson);
+        }
+        else
+        {
+            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione código de FM para ver la información del diseño.", "error");
+        }
     });
-};
-
-let fn_Refrescar_Ingreso = () => {
-    if (Bandeo !== null && xIdIngreso === 0) {
-        kdoNumericSetValue($("#num_Ingreso"), Bandeo[0].IdIngreso);
-        xIdIngreso = Bandeo[0].IdIngreso;
-
-        window.history.pushState('', '', "/IngresoMercancias/" + `${xIdClienteIng}/${xIdIngreso}`);
-    }
-
-    $("#gridDetCorte").data("kendoGrid").dataSource.read();
 };
 
 var closeOpenDetailGrid = () => {
@@ -1526,11 +1264,13 @@ var closeOpenDetailGrid = () => {
         });
 
         KdoButtonEnable($("#btnMoveData"), true);
+        $("#dtFechaProyectada").data("kendoDatePicker").enable(true);
 
     }
     else
     {
         KdoButtonEnable($("#btnMoveData"), false);
+        $("#dtFechaProyectada").data("kendoDatePicker").enable(false);
     }
 }
 
