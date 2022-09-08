@@ -130,11 +130,11 @@ body {
 }
 
 .bg-Aprobado {
-    background: #E2FFF2
+    background: #E2FFF2 !important;
 }
 
 .bg-NoDisponible {
-    background: #FFDFE7
+    background: #FFDFE7 !important;
 }
 
 .bg-default-gradient {
