@@ -1,17 +1,18 @@
 ﻿
 'use strict'
 let pJsonCP = "";
+let strIdHojasBandeo = [];
 
 var fn_Ini_StatusOrdenDespacho = (xjson) => {
     pJsonCP = xjson;
 
-    KdoButton($("#btnGenerarUnidad"), "save", "Generar Unidad de Embalaje");
+    KdoButton($("#btnGenerarEmbalaje"), "save", "Generar Unidad de Embalaje");
 
     let dataSourceStatus = new kendo.data.DataSource({
         transport: {
             read: {
                 url: function () {
-                    return TSM_Web_APi + `DespachosMercancias/statusOrdenDespacho/${pJsonCP.pIdDespachoMercancia}`
+                    return TSM_Web_APi + `DespachosMercanciasDetalles/GetEstatusCortesDespachosMercancias/${pJsonCP.pIdDespachoMercancia}`
                 },
                 contentType: "application/json; charset=utf-8"
             },
@@ -30,8 +31,10 @@ var fn_Ini_StatusOrdenDespacho = (xjson) => {
                     IdHojaBandeo: { type: "number" },
                     IdDespachoMercancia: { type: "number" },
                     Corte: { type: "string" },
-                    Talla: { type: "string" },
-                    Cantidad: { type: "number" },
+                    DespachosMercancias: { type: "string" },
+                    Tallas: { type: "string" },
+                    CantidadTotal: { type: "number" },
+                    CantidadProducido: { type: "number" },
                     Estatus: { type: "string" }
                 }
             }
@@ -39,12 +42,33 @@ var fn_Ini_StatusOrdenDespacho = (xjson) => {
     });
 
     $("#gridEstatusDespacho").kendoGrid({
+        dataBound: function (e) {
+            let hojasBandeo = [];
+            let rows = e.sender.tbody.children();
+
+            for (let i = 0; i < rows.length; i++) {
+                let row = $(rows[i]);
+                let dataItem = e.sender.dataItem(row);
+                let estatus = dataItem.get("Estatus");
+
+                if (estatus == "Aprobado") {
+                    row.addClass("bg-Aprobado");
+                } else if (estatus == "No Disponible") {
+                    row.addClass("bg-NoDisponible");
+                }
+
+                hojasBandeo.push(dataItem.IdHojaBandeo);
+            }
+
+            strIdHojasBandeo = hojasBandeo;
+        },
         columns: [
             { field: "IdHojaBandeo", title: "Id Hoja Bandeo", hidden: true },
             { field: "IdDespachoMercancia", title: "Id Despacho", hidden: true  },
             { field: "Corte", title: "Corte" },
-            { field: "Talla", title: "Tallas" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "Tallas", title: "Tallas" },
+            { field: "CantidadTotal", title: "Cantidad" },
+            { field: "CantidadProducido", title: "Producido" },
             { field: "Estatus", title: "Estatus" }
         ]
     });
@@ -54,16 +78,33 @@ var fn_Ini_StatusOrdenDespacho = (xjson) => {
     SetGrid_CRUD_Command($("#gridEstatusDespacho").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridEstatusDespacho").data("kendoGrid"), dataSourceStatus);
 
-    let selectedRows = [];
-    $("#gridEstatusDespacho").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridEstatusDespacho"), selectedRows);
-    });
-
-    $("#gridEstatusDespacho").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridEstatusDespacho"), selectedRows);
-    });
-
     $("#gridEstatusDespacho").data("kendoGrid").dataSource.read();
+
+    $("#btnGenerarEmbalaje").click(function () {
+        let grid = $("#gridEstatusDespacho").data("kendoGrid");
+        let jsonData = {
+            IdDespachoMercancia: pJsonCP.pIdDespachoMercancia,
+            IdUsuario: getUser(),
+            IdMercancias: strIdHojasBandeo
+        }
+
+        kendo.ui.progress($(".k-dialog"), true);
+
+        $.ajax({
+            url: TSM_Web_APi + "EmbalajesMercancias/GenerarDespachoEmbalaje",
+            method: "POST",
+            dataType: "json",
+            data: JSON.stringify(jsonData),
+            contentType: "application/json; charset=utf-8",
+            success: function (resultado) {
+                window.location.href = `/CrearEmbalaje/${pJsonCP.pIdDespachoMercancia}`;
+            },
+            error: function (data) {
+                ErrorMsg(data);
+                kendo.ui.progress($(".k-dialog"), false);
+            }
+        });
+    });
 
 }
 

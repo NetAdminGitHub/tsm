@@ -75,7 +75,7 @@ $(document).ready(function () {
                     seriesDefaults: {
                         labels: {
                             visible: true,
-                            format: '{0}%',
+                            format: '{0:c2}%',
                             background: 'none'
                         }
                     },
@@ -139,7 +139,7 @@ $(document).ready(function () {
                                 Div: "vMod_statusOrdenDespacho",
                                 Vista: "~/Views/ConsultaDespacho/_statusOrdenDespacho.cshtml",
                                 Js: "statusOrdenDespacho.js",
-                                Titulo: `Estatus de Orden de Despacho.`,
+                                Titulo: `Estatus de Orden de Despacho`,
                                 Height: "60%",
                                 Width: "50%",
                                 MinWidth: "30%"
@@ -206,13 +206,25 @@ $(document).ready(function () {
     SetGrid_CRUD_Command($("#gridDespachos").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDespachos").data("kendoGrid"), dataSourceDespacho);
 
-    let selectedRows = [];
-    $("#gridDespachos").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#gridDespachos"), selectedRows);
+    $("#gridDespachos").kendoTooltip({
+        filter: ".k-grid-btnStatus",
+        content: function (e) {
+            return "Estatus de Orden de Despacho";
+        }
     });
 
-    $("#gridDespachos").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#gridDespachos"), selectedRows);
+    $("#gridDespachos").kendoTooltip({
+        filter: ".k-grid-btnEdit",
+        content: function (e) {
+            return "Editar";
+        }
+    });
+
+    $("#gridDespachos").kendoTooltip({
+        filter: ".k-grid-btnEstado",
+        content: function (e) {
+            return "Cambio de Estado";
+        }
     });
 
     $("#gridDespachos").data("kendoGrid").dataSource.read();

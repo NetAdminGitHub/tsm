@@ -129,6 +129,14 @@ body {
     background: #f1f1f1
 }
 
+.bg-Aprobado {
+    background: #E2FFF2
+}
+
+.bg-NoDisponible {
+    background: #FFDFE7
+}
+
 .bg-default-gradient {
     background: #282a3c !important;
     background: -webkit-linear-gradient(legacy-direction(-45deg),#08080e,#282a3c) !important;
