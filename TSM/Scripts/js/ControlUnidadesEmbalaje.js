@@ -5,6 +5,7 @@ let idCliente = 0;
 let idMarca = 0;
 let idPlanta = 0;
 let idServicio = 0;
+
 let StrIdEmbalajeMercancia = [];
 let StrIdBulto = [];
 
@@ -86,19 +87,21 @@ $(document).ready(function () {
             let grid = $("#gridEmbalajes").data("kendoGrid");
 
             let rows = e.sender.select();
+            console.log(rows);
             let EmbalajeMercancia = [];
-
             rows.each(function (e) {
                 let dataItem = grid.dataItem(this);
                 EmbalajeMercancia.push(dataItem.IdEmbalajeMercancia);
             });
             StrIdEmbalajeMercancia = EmbalajeMercancia;
 
+
             let detailGrid = grid.element.find(".k-detail-row");
             let detailRows = detailGrid.find(".idBulto-detail");
 
-            let idBulto = [];
+            console.log(detailRows);
 
+            let idBulto = [];
             detailRows.each(function (currentValue, index, array) {
                 idBulto.push(index.innerText);
             });
