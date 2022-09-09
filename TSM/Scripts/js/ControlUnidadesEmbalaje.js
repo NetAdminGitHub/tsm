@@ -7,7 +7,7 @@ let idPlanta = 0;
 let idServicio = 0;
 
 let StrIdEmbalajeMercancia = [];
-let arrayCortes = [];
+let arrayEmbalajeMercancia = [];
 
 $(document).ready(function () {
 
@@ -76,10 +76,6 @@ $(document).ready(function () {
     $("#gridEmbalajes").kendoGrid({
         detailInit: detailInit,
         dataBound: function () {
-            let grid = $("#gridEmbalajes").data("kendoGrid");
-            $("tr.k-master-row").each(function (index) {
-                grid.expandRow(this);
-            });
             infoDiseno(0);
             setFMCbxData(0);
         },
@@ -87,45 +83,15 @@ $(document).ready(function () {
             let grid = $("#gridEmbalajes").data("kendoGrid");
             let rows = e.sender.select();
 
-            let EmbalajeMercancia = [];
+            let idEmbalajeMercancia = [];
+            let listaEmbalajeMercancia = [];
             rows.each(function (e) {
                 let dataItem = grid.dataItem(this);
-                EmbalajeMercancia.push(dataItem.IdEmbalajeMercancia);
+                idEmbalajeMercancia.push(dataItem.IdEmbalajeMercancia);
+                listaEmbalajeMercancia.push(dataItem);
             });
-            StrIdEmbalajeMercancia = EmbalajeMercancia;
-
-            let objDataRows = [];
-            rows.each(function (e) {
-                let detailRows = $(this).next().children().find(".lump-child-grid").find("tr.k-master-row");
-                let grid = $(this).next().children().find(".lump-child-grid").data("kendoGrid");
-                detailRows.each(function (e) {
-                    let item = grid.dataItem(this);
-                    objDataRows.push(item);
-                })
-            })
-            arrayCortes = objDataRows;
-
-            let arreglo = [];
-            arrayCortes.forEach((e) => {
-                let item = {};
-                if (arreglo.find(x => x.Corte == e.Corte) == null) {
-                    item = {
-                        Corte: e.Corte,
-                        Talla: e.Talla,
-                        Cantidad: e.Cantidad,
-                        Docenas: e.Docenas,
-                        bultos: 1
-                    };
-                    arreglo.push(item);
-                }
-                else {
-                    let index = arreglo.findIndex(x => x.Corte == e.Corte);
-                    arreglo[index].Talla = arreglo[index].Talla.concat(", ", e.Talla);
-                    arreglo[index].Cantidad = arreglo[index].Cantidad + e.Cantidad;
-                    arreglo[index].Docenas = arreglo[index].Docenas + e.Docenas;
-                    arreglo[index].bultos++;
-                }
-            })
+            StrIdEmbalajeMercancia = idEmbalajeMercancia;
+            arrayEmbalajeMercancia = listaEmbalajeMercancia;
         },
 
         //DEFICNICIÓN DE LOS CAMPOS
@@ -191,23 +157,23 @@ $(document).ready(function () {
     });
 
     $("#btnCrearListaEmpaque").data("kendoButton").bind("click", function (e) {
-
         let strjson = {
             config: [{
                 Div: "vMod_RegistroListaEmpaque",
-                Vista: "~/_RegistroListaEmpaque.cshtml",
+                Vista: "~/Views/ControlUnidadesEmbalaje/_RegistroListaEmpaque.cshtml",
                 Js: "RegistroListaEmpaque.js",
                 Titulo: `Revisión para Registro de Lista de Empaque.`,
-                Height: "80%",
-                Width: "80%",
+                Height: "60%",
+                Width: "60%",
                 MinWidth: "30%"
             }],
             Param: {
                 pCorte: $("#txtCorteProceso").val(),
                 pvModal: "vMod_RegistroListaEmpaque",
-                plistaCortes: []
+                pListaIdEmbalaje: StrIdEmbalajeMercancia,
+                pArrayEmbalaje: arrayEmbalajeMercancia
             },
-            fn: { fnclose: "fn_RefreshGrid", fnLoad: "fn_Ini_StatusOrdenDespacho", fnReg: "fn_Reg_StatusOrdenDespacho", fnActi: "" }
+            fn: { fnclose: "", fnLoad: "fn_Ini_RegistrarEmpaque", fnReg: "fn_Reg_RegistrarEmpaque", fnActi: "" }
         };
 
         fn_GenLoadModalWindow(strjson);
@@ -372,6 +338,10 @@ const KdoComboBoxFM = function (e, datos, textField, valueField, opcPlaceHolder,
         dataSource: function () { return datos; }
     });
 };
+
+//var fn_RefreshGrid = () => {
+//    $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+//};
 
 fPermisos = (datos) => {
     Permisos = datos;
