@@ -7,7 +7,7 @@ let idPlanta = 0;
 let idServicio = 0;
 
 let StrIdEmbalajeMercancia = [];
-let StrIdBulto = [];
+let arrayCortes = [];
 
 $(document).ready(function () {
 
@@ -85,9 +85,8 @@ $(document).ready(function () {
         },
         change: function (e) {
             let grid = $("#gridEmbalajes").data("kendoGrid");
-
             let rows = e.sender.select();
-            console.log(rows);
+
             let EmbalajeMercancia = [];
             rows.each(function (e) {
                 let dataItem = grid.dataItem(this);
@@ -95,18 +94,38 @@ $(document).ready(function () {
             });
             StrIdEmbalajeMercancia = EmbalajeMercancia;
 
+            let objDataRows = [];
+            rows.each(function (e) {
+                let detailRows = $(this).next().children().find(".lump-child-grid").find("tr.k-master-row");
+                let grid = $(this).next().children().find(".lump-child-grid").data("kendoGrid");
+                detailRows.each(function (e) {
+                    let item = grid.dataItem(this);
+                    objDataRows.push(item);
+                })
+            })
+            arrayCortes = objDataRows;
 
-            let detailGrid = grid.element.find(".k-detail-row");
-            let detailRows = detailGrid.find(".idBulto-detail");
-
-            console.log(detailRows);
-
-            let idBulto = [];
-            detailRows.each(function (currentValue, index, array) {
-                idBulto.push(index.innerText);
-            });
-            StrIdBulto = idBulto;
-
+            let arreglo = [];
+            arrayCortes.forEach((e) => {
+                let item = {};
+                if (arreglo.find(x => x.Corte == e.Corte) == null) {
+                    item = {
+                        Corte: e.Corte,
+                        Talla: e.Talla,
+                        Cantidad: e.Cantidad,
+                        Docenas: e.Docenas,
+                        bultos: 1
+                    };
+                    arreglo.push(item);
+                }
+                else {
+                    let index = arreglo.findIndex(x => x.Corte == e.Corte);
+                    arreglo[index].Talla = arreglo[index].Talla.concat(", ", e.Talla);
+                    arreglo[index].Cantidad = arreglo[index].Cantidad + e.Cantidad;
+                    arreglo[index].Docenas = arreglo[index].Docenas + e.Docenas;
+                    arreglo[index].bultos++;
+                }
+            })
         },
 
         //DEFICNICIÓN DE LOS CAMPOS
