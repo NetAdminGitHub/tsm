@@ -171,7 +171,7 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        window.location.href = `/OrdenDespacho/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}`;
+                        window.location.href = `/OrdenDespacho/Edit/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}`;
                     }
                 },
                 width: "70px",

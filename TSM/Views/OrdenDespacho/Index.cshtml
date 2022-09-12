@@ -7,6 +7,8 @@
 
     <script type="text/javascript">
         var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var readIdCliente = "@ViewBag.IdCliente";
+        var readIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
     </script>
 
     <script src="~/Scripts/js/CreacionOrdenDespacho.js?@ViewBag.IdVersion"></script>
@@ -87,29 +89,11 @@
 
                 </div>
 
-
-
-
-
-                <!--<div class="form-row"><br /></div>
-                <div class="form-row">
-                    <div class="col-lg-5">
-
-                    </div>
-                    <div class="col-lg-1 d-flex flex-column justify-content-center align-items-center text-center">
-                        <button type="button" id="btnCreaCarrito"></button>
-                        <label class="mt-1 px-3">Pasar a Generar un Carrito</label>
-                    </div>
-                    <div class="col-lg-6">
-
-                    </div>
-                </div>-->
-
-
             </div>
         </div>
     </div>
 </div>
+
 @*vista modal detalle de preparado*@
 <div id="vdPreparado"></div>
 

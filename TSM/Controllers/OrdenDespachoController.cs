@@ -13,5 +13,22 @@ namespace TSM.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [Route("OrdenDespacho/{idCliente}")]
+        public ActionResult Index(long idCliente)
+        {
+            ViewBag.IdCliente = idCliente;
+            return View();
+        }
+
+        [HttpGet]
+        [Route("OrdenDespacho/Edit/{idCliente}/{IdDespachoMercancia}")]
+        public ActionResult Edit(long idCliente, long IdDespachoMercancia)
+        {
+            ViewBag.IdCliente = idCliente;
+            ViewBag.IdDespachoMercancia = IdDespachoMercancia;
+            return View("Index");
+        }
     }
 }
