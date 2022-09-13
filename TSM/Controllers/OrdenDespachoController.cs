@@ -23,11 +23,14 @@ namespace TSM.Controllers
         }
 
         [HttpGet]
-        [Route("OrdenDespacho/Edit/{idCliente}/{IdDespachoMercancia}")]
-        public ActionResult Edit(long idCliente, long IdDespachoMercancia)
+        [Route("OrdenDespacho/Edit/{idCliente}/{IdDespachoMercancia}/{fecha}/{planta}/{NoDocumento}")]
+        public ActionResult Edit(long idCliente, long IdDespachoMercancia, DateTime fecha, int planta, string NoDocumento)
         {
             ViewBag.IdCliente = idCliente;
             ViewBag.IdDespachoMercancia = IdDespachoMercancia;
+            ViewBag.Fecha = fecha;
+            ViewBag.Planta = planta;
+            ViewBag.NoDocumento = NoDocumento;
             return View("Index");
         }
     }

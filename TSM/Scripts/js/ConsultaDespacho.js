@@ -171,7 +171,10 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        window.location.href = `/OrdenDespacho/Edit/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}`;
+                        let fechaEntrega = dataItem.FechaEntrega;
+                        let fecha = fechaEntrega.getFullYear() + "-" + (fechaEntrega.getMonth() + 1) + "-" + fechaEntrega.getDate();
+                        let planta = dataItem.IdPlanta;
+                        window.location.href = `/OrdenDespacho/Edit/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}/${fecha}/${planta}/${dataItem.NoDocumento}`;
                     }
                 },
                 width: "70px",

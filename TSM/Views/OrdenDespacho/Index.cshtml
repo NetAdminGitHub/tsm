@@ -9,6 +9,9 @@
         var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
         var readIdCliente = "@ViewBag.IdCliente";
         var readIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
+        var readFecha = "@ViewBag.Fecha";
+        var readPlanta = "@ViewBag.Planta";
+        var readNoDoc = "@ViewBag.NoDocumento";
     </script>
 
     <script src="~/Scripts/js/CreacionOrdenDespacho.js?@ViewBag.IdVersion"></script>
@@ -33,8 +36,8 @@
                     <div class="form-group col-lg-6">
                         <div class="row">
                             <div class="form-group col-lg-6">
-                                <label for="CmbServicio">Servicio:</label>
-                                <input id="CmbServicio" name="CmbServicio" class="form-control" />
+                                <label for="cmbCliente">Cliente:</label>
+                                <input id="cmbCliente" name="cmbCliente" class="form-control" />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="cmbPlanta" id="lblPlanta">Planta:</label>
@@ -59,19 +62,24 @@
                     <div class="form-group col-lg-6">
                         <div class="row">
                             <div class="form-group col-lg-6">
-                                <label for="cmbCliente">Cliente:</label>
-                                <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                                <label for="dtFechaProyectada">Fecha Entrega:</label>
+                                <input id="dtFechaProyectada" name="dtFechaProyectada" type="date" class="form-control" />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="cmbMarca">Marca:</label>
                                 <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-6">
+                            <div class="form-group col-lg-3">
                                 <label for="cmbCorte">Corte:</label>
                                 <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-3" style="margin-top: 30px; margin-bottom: 17px;">
-                                <input id="dtFechaProyectada" name="dtFechaProyectada" type="date" class="form-control" />
+                            <div class="form-group col-lg-3">
+                                <label for="CmbServicio">Servicio:</label>
+                                <input id="CmbServicio" name="CmbServicio" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="txtNoDoc">No. Documento:</label>
+                                <input id="txtNoDoc" name="txtNoDoc" class="form-control" style="height:38px;" readonly/>
                             </div>
                             <div class="form-group col-lg-3" style="margin-top: 30px; margin-bottom: 17px;">
                                 <button type="button" id="btnCrearOrdenDespacho">Crear Orden Despacho</button>
