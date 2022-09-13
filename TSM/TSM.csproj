@@ -290,6 +290,7 @@
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\ControlUnidadesEmbalajeController.cs" />
+    <Compile Include="Controllers\CrearEmbalajeController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
@@ -552,6 +553,7 @@
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\ControlUnidadesEmbalaje.js" />
+    <Content Include="Scripts\js\CreacionEmbalaje.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
@@ -1131,6 +1133,8 @@
     <Content Include="Views\Instrucciones\Index.cshtml" />
     <Content Include="Views\ControlUnidadesEmbalaje\Index.cshtml" />
     <Content Include="Views\ControlUnidadesEmbalaje\_RegistroListaEmpaque.cshtml" />
+    <Content Include="Views\CrearEmbalaje\Index.cshtml" />
+    <Content Include="Views\CrearEmbalaje\_CreacionEmbalaje.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
