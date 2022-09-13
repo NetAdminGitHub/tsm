@@ -5,6 +5,7 @@ let idCliente = 0;
 let idMarca = 0;
 let idPlanta = 0;
 let idServicio = 0;
+let IdDespachoMercancia = 0;
 
 let StrIdEmbalajeMercancia = [];
 let arrayEmbalajeMercancia = [];
@@ -12,12 +13,13 @@ let arrayEmbalajeMercancia = [];
 $(document).ready(function () {
 
     KdoButton($("#btnCrearListaEmpaque"), "plus-outline", "Crear Lista de Empaque");
+    KdoButton($("#btnCrearEmbalaje"), "plus-outline", "Crear Nuevo Embalaje");
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "Seleccione una Marca");
-    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
-    Kendo_CmbFiltrarGrid($("#cmbServicio"), TSM_Web_APi + "Servicios", "Nombre", "IdServicio", "Seleccione un Servicio");
+    KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "(Opcional)");
+    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "(Opcional)");
     KdoComboBoxFM($("#cmbFM"), "[]", "NodocCatalogo", "IdCatalogoDiseno", "Seleccione un Diseño", "", "", false);
+    $("#cmbDespacho").mlcDespachos();
 
     TextBoxEnable($("#txtCodigoFM"), false);
     TextBoxEnable($("#txtDiseño"), false);
@@ -37,9 +39,7 @@ $(document).ready(function () {
                     async: false,
                     data: JSON.stringify({
                         IdCliente: idCliente,
-                        IdPlanta: idPlanta,
-                        IdMarca: idMarca,
-                        IdServicio: idServicio
+                        IdDespachoMercancia: IdDespachoMercancia
                     }),
                     url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl/",
                     contentType: "application/json; charset=utf-8",
@@ -133,21 +133,32 @@ $(document).ready(function () {
         $("#cmbMarca").data("kendoComboBox").value("");
         $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
 
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").value("");
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").dataSource.read();
+
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
     });
 
     $("#cmbMarca").data("kendoComboBox").bind("change", function () {
         idMarca = this.value() === "" ? 0 : this.value();
+
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").value("");
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").dataSource.read();
+
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
     });
 
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
         idPlanta = this.value() === "" ? 0 : this.value();
+
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").value("");
+        $("#cmbDespacho").data("kendoMultiColumnComboBox").dataSource.read();
+
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
     });
 
-    $("#cmbServicio").data("kendoComboBox").bind("change", function () {
-        idServicio = this.value() === "" ? 0 : this.value();
+    $("#cmbDespacho").data("kendoMultiColumnComboBox").bind("change", function () {
+        IdDespachoMercancia = this.value() === "" ? 0 : this.value();
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
     });
 
@@ -177,6 +188,10 @@ $(document).ready(function () {
         };
 
         fn_GenLoadModalWindow(strjson);
+
+    });
+
+    $("#btnCrearEmbalaje").data("kendoButton").bind("click", function (e) {
 
     });
 
@@ -346,3 +361,40 @@ const KdoComboBoxFM = function (e, datos, textField, valueField, opcPlaceHolder,
 fPermisos = (datos) => {
     Permisos = datos;
 };
+
+
+$.fn.extend({
+    mlcDespachos: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdDespachoMercancia",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de un Despacho",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + `DespachosMercancias/GetFiltroDespachoByCliente/${idCliente}/${idPlanta}/${idMarca}`;
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "IdDespachoMercancia", title: "ID", width: 50 },
+                    { field: "NoDocumento", title: "No. Despacho", width: 100 },
+                    { field: "Servicio", title: "Servicio", width: 100 },
+                    { field: "UsuarioSolicitante", title: "Solicitante", width: 200 },
+                    { field: "Planta", title: "Planta", width: 150 }
+                ]
+            });
+        });
+    }
+});
