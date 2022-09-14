@@ -69,13 +69,13 @@ $(document).ready(function () {
                     seriesColors: ["#21C998"],
                     chartArea: {
                         margin: 0,
-                        width: 180,
+                        width: 220,
                         background: "transparent"
                     },
                     seriesDefaults: {
                         labels: {
                             visible: true,
-                            format: '{0:c2}%',
+                            format: '{0:n2}%',
                             background: 'none'
                         }
                     },
@@ -90,7 +90,7 @@ $(document).ready(function () {
                     valueAxis: {
                         type: "numeric",
                         min: 0,
-                        max: 130,
+                        max: 140,
                         visible: false,
                         labels: {
                             visible: false
@@ -119,7 +119,7 @@ $(document).ready(function () {
                 field: "Progreso",
                 title: "Progreso",
                 template: "<div id='progressChart_#= IdDespachoMercancia#' class='progress'></div>",
-                format: "{0:c}",
+                format: "{0:n2}",
                 width: 220
             },
             {
