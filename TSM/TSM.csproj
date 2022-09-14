@@ -558,6 +558,7 @@
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\RegistroCreacionEmbalaje.js" />
     <Content Include="Scripts\js\RegistroListaEmpaque.js" />
     <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
