@@ -373,7 +373,7 @@ $(document).ready(function () {
 
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659);
+    SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
     SetGrid_CRUD_ToolbarTop($("#gridOrdenDespacho").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridOrdenDespacho").data("kendoGrid"), dsDM);
