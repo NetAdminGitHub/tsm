@@ -1,0 +1,53 @@
+﻿@font-face {
+    font-family: 'TSM-Icons-Tablet';
+    src: url('../Fonts/TSM-Icons-Tablet.woff?#iefix') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="T-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'TSM-Icons-Tablet';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.T-icon-VALIDACIN-REPRO:before {
+    content: "\e900";
+}
+
+.T-icon-REPROCESO:before {
+    content: "\e901";
+}
+
+.T-icon-PREPARADO:before {
+    content: "\e902";
+}
+
+.T-icon-INSPECCIN-DE-PRODUCCIN:before {
+    content: "\e903";
+}
+
+.T-icon-DEVOLUCION:before {
+    content: "\e904";
+}
+
+.T-icon-ENTREGADO:before {
+    content: "\e905";
+}
+
+.T-icon-AUDITORIA:before {
+    content: "\e906";
+}
+
+.T-icon-SEGUNDO-PROCESO:before {
+    content: "\e907";
+}
