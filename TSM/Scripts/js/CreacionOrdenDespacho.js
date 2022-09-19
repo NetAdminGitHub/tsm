@@ -298,6 +298,8 @@ $(document).ready(function () {
         xidclie = parseInt(readIdCliente);
         $("#cmbCliente").data("kendoComboBox").value(xidclie);
         $('#cmbCliente').data("kendoComboBox").readonly(true);
+        Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
+        Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
         KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
         $("#treelist").data("kendoGrid").dataSource.read().then(function () {
             closeOpenDetailGrid();
