@@ -288,6 +288,8 @@
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
     <Compile Include="Controllers\ConsultaDespachoController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
@@ -341,6 +343,7 @@
     <Compile Include="Controllers\InstruccionesController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MacroEtapasController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
     <Compile Include="Controllers\MarcaMaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
@@ -558,6 +561,9 @@
     <Content Include="Scripts\js\ConsultaEtapaCorte.js" />
     <Content Include="Scripts\js\ConsultaMercancia.js" />
     <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
+    <Content Include="Scripts\js\MacroEtapas.js" />
+    <Content Include="Scripts\js\ConsultaCorteMacro.js" />
+    <Content Include="Scripts\js\ConsultaCorteMicro.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
@@ -1144,6 +1150,9 @@
     <Content Include="Views\Shared\_ConsultaEtapaCorte.cshtml" />
     <Content Include="Views\Shared\_VistaFM.cshtml" />
     <Content Include="Views\Shared\_ConsultaMercancia.cshtml" />
+    <Content Include="Views\MacroEtapas\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMacro\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMicro\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
