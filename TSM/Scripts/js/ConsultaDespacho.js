@@ -60,6 +60,7 @@ $(document).ready(function () {
             grid.table.find("tr").each(function () {
                 let dataItem = grid.dataItem(this);
 
+                //Configuracion de grafica porcentaje
                 $(this).find(".progress").kendoSparkline({
                     legend: {
                         visible: false
@@ -108,11 +109,11 @@ $(document).ready(function () {
         },
         columns: [
             { field: "IdDespachoMercancia", title: "# Despacho" },
-            { field: "FechaSolicitud", title: "Fecha de solicitud", format: "{0: dd/MM/yyyy}" },
+            { field: "FechaSolicitud", title: "Fecha solicitud", format: "{0: dd/MM/yyyy}" },
             { field: "UsuarioSolicitante", title: "Solicitante" },
-            { field: "CantidadCortes", title: "Cantidad de Cortes" },
+            { field: "CantidadCortes", title: "Cantidad Cortes" },
             { field: "cantidadPiezas", title: "Cantidad" },
-            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
+            { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss}" },
             { field: "Servicio", title: "Servicio" },
             { field: "Estado", title: "Estado" },
             {
@@ -123,11 +124,67 @@ $(document).ready(function () {
                 width: 220
             },
             {
+                field: "btnGenerarEmbalaje",
+                title: "&nbsp;",
+                command: {
+                    name: "btnGenerarEmbalaje",
+                    iconClass: "k-icon k-i-play m-0",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        let strIdHojasBandeo = [];
+
+                        kendo.ui.progress($(".k-dialog"), true);
+                        $.ajax({
+                            url: TSM_Web_APi + `DespachosMercanciasDetalles/GetEstatusCortesDespachosMercancias/${dataItem.IdDespachoMercancia}`,
+                            method: "GET",
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (resultado) {
+                                strIdHojasBandeo = [...new Set(resultado.map(x => x.IdHojaBandeo))];                                
+                            },
+                            error: function (data) {
+                                ErrorMsg(data);
+                                kendo.ui.progress($(".k-dialog"), false);
+                            }
+                        });
+
+                        let jsonData = {
+                            IdDespachoMercancia: dataItem.IdDespachoMercancia,
+                            IdUsuario: getUser(),
+                            IdMercancias: strIdHojasBandeo
+                        }
+
+                        kendo.ui.progress($(".k-dialog"), true);
+                        $.ajax({
+                            url: TSM_Web_APi + "EmbalajesMercancias/GenerarDespachoEmbalaje",
+                            method: "POST",
+                            dataType: "json",
+                            data: JSON.stringify(jsonData),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (resultado) {
+                                window.location.href = `/CrearEmbalaje/${dataItem.IdDespachoMercancia}`;
+                            },
+                            error: function (data) {
+                                ErrorMsg(data);
+                                kendo.ui.progress($(".k-dialog"), false);
+                            }
+                        });
+
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            },
+            {
                 field: "btnStatus",
                 title: "&nbsp;",
                 command: {
                     name: "btnStatus",
-                    iconClass: "k-icon k-i-play m-0",
+                    iconClass: "k-icon k-i-eye m-0",
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
@@ -208,6 +265,13 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridDespachos").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridDespachos").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDespachos").data("kendoGrid"), dataSourceDespacho);
+
+    $("#gridDespachos").kendoTooltip({
+        filter: ".k-grid-btnGenerarEmbalaje",
+        content: function (e) {
+            return "Generar Embalaje";
+        }
+    });
 
     $("#gridDespachos").kendoTooltip({
         filter: ".k-grid-btnStatus",

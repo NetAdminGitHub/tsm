@@ -6,8 +6,6 @@ let strIdHojasBandeo = [];
 var fn_Ini_StatusOrdenDespacho = (xjson) => {
     pJsonCP = xjson;
 
-    KdoButton($("#btnGenerarEmbalaje"), "save", "Generar Unidad de Embalaje");
-
     let dataSourceStatus = new kendo.data.DataSource({
         transport: {
             read: {
@@ -79,33 +77,6 @@ var fn_Ini_StatusOrdenDespacho = (xjson) => {
     Set_Grid_DataSource($("#gridEstatusDespacho").data("kendoGrid"), dataSourceStatus);
 
     $("#gridEstatusDespacho").data("kendoGrid").dataSource.read();
-
-    $("#btnGenerarEmbalaje").click(function () {
-        let grid = $("#gridEstatusDespacho").data("kendoGrid");
-        let jsonData = {
-            IdDespachoMercancia: pJsonCP.pIdDespachoMercancia,
-            IdUsuario: getUser(),
-            IdMercancias: strIdHojasBandeo
-        }
-
-        kendo.ui.progress($(".k-dialog"), true);
-
-        $.ajax({
-            url: TSM_Web_APi + "EmbalajesMercancias/GenerarDespachoEmbalaje",
-            method: "POST",
-            dataType: "json",
-            data: JSON.stringify(jsonData),
-            contentType: "application/json; charset=utf-8",
-            success: function (resultado) {
-                window.location.href = `/CrearEmbalaje/${pJsonCP.pIdDespachoMercancia}`;
-            },
-            error: function (data) {
-                ErrorMsg(data);
-                kendo.ui.progress($(".k-dialog"), false);
-            }
-        });
-    });
-
 }
 
 var fn_Reg_StatusOrdenDespacho = (xjson) => {
