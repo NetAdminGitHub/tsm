@@ -1,1 +1,49 @@
 ﻿
+
+<div class="row mb-3">
+    <div class="col-2 my-auto">
+        <input type="checkbox" id="chkNuevoEmbalaje" name="chkNuevoEmbalaje" class="k-checkbox text-align-end">
+        <label class="k-checkbox-label" for="chkNuevoEmbalaje" id="lblchkNuevoEmbalaje">Nuevo Embalaje</label>
+    </div>
+    <div class="col-3">
+        <div id="divUnidadEmbalaje">
+            <label for="cmbUnidadEmbalaje" id="lblUnidadEmbalaje">Unidad de Embalaje:</label>
+            <input id="cmbUnidadEmbalaje" name="cmbUnidadEmbalaje" class="form-control" />
+        </div>
+        <div id="AsignacionEmbalaje">
+            <label for="cmbEmbAsignacion" id="lblEmbAsignacion">Asignación de Embalajes:</label>
+            <input id="cmbEmbAsignacion" name="cmbEmbAsignacion" class="form-control" />
+        </div>
+    </div>
+    <div class="col-2">
+        <label for="txtPesoKg" id="lblPesoKg">Peso(Kg):</label>
+        <input id="txtPesoKg" name="txtPesoKg" class="form-control" />
+    </div>
+    <div class="col-2">
+        <label for="cmbPesoLb" id="lblPesoLb">Peso(Lb):</label>
+        <input id="cmbPesoLb" name="cmbPesoLb" class="form-control" />
+    </div>
+    <div class="col-3 text-right mt-auto">
+        <button type="button" id="btnGuardarRegistro">Guardar Registro</button>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-4">
+        <label for="txtCantidadPiezas" id="lblCantidadPiezas">Cantidad de Piezas:</label>
+        <input id="txtCantidadPiezas" name="txtCantidadPiezas" class="k-textbox form-control" />
+    </div>
+    <div class="col-4">
+        <label for="txtCantidadBultos" id="lblCantidadBultos">Cantidad de Bultos:</label>
+        <input id="txtCantidadBultos" name="txtCantidadBultos" class="k-textbox form-control" />
+    </div>
+    <div class="col-4">
+        <label for="txtCortes" id="lblCortes">Cortes:</label>
+        <input id="txtCortes" name="txtCortes" class="k-textbox form-control" />
+    </div>
+</div>
+<div class="row">
+    <h3>Detalle de Mercancia</h3>
+    <div class="col-12">
+        <div id="gridMercancia"></div>
+    </div>
+</div>
