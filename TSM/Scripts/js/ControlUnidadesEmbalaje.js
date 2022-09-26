@@ -327,7 +327,6 @@ const infoDiseno = (idCatalogo) => {
             img.children().remove();
 
             if (dato !== null) {
-                //$("#txtCodigoFM").val(dato.NoReferencia);
                 $("#txtDiseño").val(dato.Nombre);
                 $("#txtEstilo").val(dato.EstiloDiseno);
                 $("#txtColorTela").val(dato.ColorTela);
@@ -338,7 +337,6 @@ const infoDiseno = (idCatalogo) => {
 
                 img.append('<img class="k-card-image rounded mx-auto d-block" src="/Adjuntos/' + dato.NoReferencia + '/' + dato.NombreArchivo + '" onerror="imgError(this)"  />');
             } else {
-                //$("#txtCodigoFM").val("");
                 $("#txtDiseño").val("");
                 $("#txtEstilo").val("");
                 $("#txtColorTela").val("");
