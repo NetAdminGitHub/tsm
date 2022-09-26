@@ -71,7 +71,7 @@ var fn_Ini_StatusOrdenDespacho = (xjson) => {
         ]
     });
 
-    SetGrid($("#gridEstatusDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 400);
+    SetGrid($("#gridEstatusDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 455);
     SetGrid_CRUD_ToolbarTop($("#gridEstatusDespacho").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridEstatusDespacho").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridEstatusDespacho").data("kendoGrid"), dataSourceStatus);

@@ -133,38 +133,24 @@ $(document).ready(function () {
                     title: "&nbsp;",
                     click: function (e) {
                         let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        let strIdHojasBandeo = [];
-
-                        kendo.ui.progress($(".k-dialog"), true);
-                        $.ajax({
-                            url: TSM_Web_APi + `DespachosMercanciasDetalles/GetEstatusCortesDespachosMercancias/${dataItem.IdDespachoMercancia}`,
-                            method: "GET",
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (resultado) {
-                                strIdHojasBandeo = [...new Set(resultado.map(x => x.IdHojaBandeo))];                                
-                            },
-                            error: function (data) {
-                                ErrorMsg(data);
-                                kendo.ui.progress($(".k-dialog"), false);
-                            }
-                        });
 
                         let jsonData = {
-                            IdDespachoMercancia: dataItem.IdDespachoMercancia,
+                            IdDespachoEmbalajeMercancia: 0,
                             IdUsuario: getUser(),
-                            IdMercancias: strIdHojasBandeo
+                            IdPlanta: 0,
+                            IdCliente: KdoCmbGetValue($("#cmbCliente")),
+                            IdDespachoMercancia: dataItem.IdDespachoMercancia
                         }
 
                         kendo.ui.progress($(".k-dialog"), true);
                         $.ajax({
-                            url: TSM_Web_APi + "EmbalajesMercancias/GenerarDespachoEmbalaje",
+                            url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
                             method: "POST",
                             dataType: "json",
                             data: JSON.stringify(jsonData),
                             contentType: "application/json; charset=utf-8",
                             success: function (resultado) {
-                                window.location.href = `/CrearEmbalaje/${dataItem.IdDespachoMercancia}`;
+                                window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}`;
                             },
                             error: function (data) {
                                 ErrorMsg(data);
