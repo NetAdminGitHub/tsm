@@ -2769,7 +2769,8 @@ let fn_GenLoadModalWindow = (obj) => {
         });
         kendo.ui.progress($(document.body), false);
         $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
-        $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
+        $("#" + obj.config[0].Div + "").data("kendoWindow").open();
+        $("#" + obj.config[0].Div + "").data("kendoWindow").center();
         onShow();
 
     }

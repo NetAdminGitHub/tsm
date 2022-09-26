@@ -59,6 +59,7 @@ namespace TSM
                                                                  "~/Content/Font-TS-Icons.css",
                                                                  "~/Content/Font-TSM-General.css",
                                                                  "~/Content/Font-TSM-SeteoMaquinas.css",
+                                                                 "~/Content/Font-TSM-Tablet.css",
                                                                  "~/Content/TSM-Style.css",
                                                                  "~/Content/smart_wizard.css",
                                                                  "~/Content/smart_wizard_theme_arrows.css"

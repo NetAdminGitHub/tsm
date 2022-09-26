@@ -287,6 +287,9 @@
     <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\ConsultaDespachoController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\ControlUnidadesEmbalajeController.cs" />
@@ -342,6 +345,7 @@
     <Compile Include="Controllers\InstruccionesController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MacroEtapasController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
     <Compile Include="Controllers\MarcaMaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
@@ -361,6 +365,7 @@
     <Compile Include="Controllers\MotivosSustraidasController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
+    <Compile Include="Controllers\OrdenDespachoController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
@@ -511,10 +516,12 @@
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrapMod.css" />
+    <Content Include="Content\ConsultaCorteStyle.css" />
     <Content Include="Content\Font-HelveticaNeue.css" />
     <Content Include="Content\Font-TS-Icons.css" />
     <Content Include="Content\Font-TSM-General.css" />
     <Content Include="Content\CatalogoDisenos.css" />
+    <Content Include="Content\Font-TSM-Tablet.css" />
     <Content Include="Content\icons\14.svg" />
     <Content Include="Content\icons\16.svg" />
     <Content Include="Content\icons\22.svg" />
@@ -549,9 +556,16 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\ConsultaDespacho.js" />
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\ConsultaEtapaCorte.js" />
+    <Content Include="Scripts\js\ConsultaMercancia.js" />
+    <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
+    <Content Include="Scripts\js\MacroEtapas.js" />
+    <Content Include="Scripts\js\ConsultaCorteMacro.js" />
+    <Content Include="Scripts\js\ConsultaCorteMicro.js" />
     <Content Include="Scripts\js\ControlUnidadesEmbalaje.js" />
     <Content Include="Scripts\js\CreacionEmbalaje.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
@@ -562,6 +576,7 @@
     <Content Include="Scripts\js\RegistroListaEmpaque.js" />
     <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
+    <Content Include="Scripts\js\statusOrdenDespacho.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
@@ -810,6 +825,7 @@
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\GenInfoFM.js" />
     <Content Include="Scripts\js\_HistoricoSeteos.js" />
     <Content Include="Scripts\js\_InfoPruebaLaboratorio.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
@@ -911,6 +927,7 @@
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
     <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <Content Include="jsonsettings.azconf" />
+    <Content Include="Fonts\TSM-Icons-Tablet.woff" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -1132,6 +1149,16 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\ConsultaDespacho\Index.cshtml" />
+    <Content Include="Views\ConsultaDespacho\_statusOrdenDespacho.cshtml" />
+    <Content Include="Views\OrdenDespacho\Index.cshtml" />
+    <Content Include="Views\Shared\_GenInfoFM.cshtml" />
+    <Content Include="Views\Shared\_ConsultaEtapaCorte.cshtml" />
+    <Content Include="Views\Shared\_VistaFM.cshtml" />
+    <Content Include="Views\Shared\_ConsultaMercancia.cshtml" />
+    <Content Include="Views\MacroEtapas\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMacro\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMicro\Index.cshtml" />
     <Content Include="Views\ControlUnidadesEmbalaje\Index.cshtml" />
     <Content Include="Views\ControlUnidadesEmbalaje\_RegistroListaEmpaque.cshtml" />
     <Content Include="Views\CrearEmbalaje\Index.cshtml" />
