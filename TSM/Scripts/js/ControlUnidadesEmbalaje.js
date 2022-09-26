@@ -15,6 +15,9 @@ $(document).ready(function () {
     KdoButton($("#btnCrearListaEmpaque"), "plus-outline", "Crear Lista de Empaque");
     KdoButton($("#btnCrearEmbalaje"), "plus-outline", "Crear Nuevo Embalaje");
 
+    KdoButtonEnable($("#btnCrearListaEmpaque"), false);
+    KdoButtonEnable($("#btnCrearEmbalaje"), false);
+
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "(Opcional)");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "(Opcional)");
@@ -117,6 +120,11 @@ $(document).ready(function () {
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
         idCliente = this.value() === "" ? 0 : this.value();
 
+        if (idCliente > 0)
+            KdoButtonEnable($("#btnCrearEmbalaje"), true);
+        else
+            KdoButtonEnable($("#btnCrearEmbalaje"), false);
+
         let dsm = new kendo.data.DataSource({
             transport: {
                 read: {
@@ -136,7 +144,7 @@ $(document).ready(function () {
         $("#cmbDespacho").data("kendoMultiColumnComboBox").value("");
         $("#cmbDespacho").data("kendoMultiColumnComboBox").dataSource.read();
 
-        $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+        KdoButtonEnable($("#btnCrearListaEmpaque"), false);
     });
 
     $("#cmbMarca").data("kendoComboBox").bind("change", function () {
@@ -160,6 +168,11 @@ $(document).ready(function () {
     $("#cmbDespacho").data("kendoMultiColumnComboBox").bind("change", function () {
         IdDespachoMercancia = this.value() === "" ? 0 : this.value();
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+
+        if (IdDespachoMercancia != 0)
+            KdoButtonEnable($("#btnCrearListaEmpaque"), true);
+        else
+            KdoButtonEnable($("#btnCrearListaEmpaque"), false);
     });
 
     $("#cmbFM").data("kendoComboBox").bind("change", function () {
@@ -168,31 +181,36 @@ $(document).ready(function () {
     });
 
     $("#btnCrearListaEmpaque").data("kendoButton").bind("click", function (e) {
-        let strjson = {
-            config: [{
-                Div: "vMod_RegistroListaEmpaque",
-                Vista: "~/Views/ControlUnidadesEmbalaje/_RegistroListaEmpaque.cshtml",
-                Js: "RegistroListaEmpaque.js",
-                Titulo: `Revisión para Registro de Lista de Empaque.`,
-                Height: "60%",
-                Width: "60%",
-                MinWidth: "30%"
-            }],
-            Param: {
-                pCorte: $("#txtCorteProceso").val(),
-                pvModal: "vMod_RegistroListaEmpaque",
-                pListaIdEmbalaje: StrIdEmbalajeMercancia,
-                pArrayEmbalaje: arrayEmbalajeMercancia
-            },
-            fn: { fnclose: "", fnLoad: "fn_Ini_RegistrarEmpaque", fnReg: "fn_Reg_RegistrarEmpaque", fnActi: "" }
-        };
 
-        fn_GenLoadModalWindow(strjson);
+        if (StrIdEmbalajeMercancia.length > 0 && arrayEmbalajeMercancia.length) {
+            let strjson = {
+                config: [{
+                    Div: "vMod_RegistroListaEmpaque",
+                    Vista: "~/Views/ControlUnidadesEmbalaje/_RegistroListaEmpaque.cshtml",
+                    Js: "RegistroListaEmpaque.js",
+                    Titulo: `Revisión para Registro de Lista de Empaque.`,
+                    Height: "60%",
+                    Width: "60%",
+                    MinWidth: "30%"
+                }],
+                Param: {
+                    pCorte: $("#txtCorteProceso").val(),
+                    pvModal: "vMod_RegistroListaEmpaque",
+                    pListaIdEmbalaje: StrIdEmbalajeMercancia,
+                    pArrayEmbalaje: arrayEmbalajeMercancia
+                },
+                fn: { fnclose: "", fnLoad: "fn_Ini_RegistrarEmpaque", fnReg: "fn_Reg_RegistrarEmpaque", fnActi: "" }
+            };
 
+            fn_GenLoadModalWindow(strjson);
+        }
+        else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar al menos un embalaje para poder continuar.", "error");
+        }
     });
 
     $("#btnCrearEmbalaje").data("kendoButton").bind("click", function (e) {
-
+        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}`;
     });
 
 });
@@ -375,7 +393,7 @@ $.fn.extend({
                 height: 400,
                 placeholder: "Selección de un Despacho",
                 valuePrimitive: true,
-                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                footerTemplate: '#: instance.dataSource.total() # registros en total.',
                 dataSource: {
                     serverFiltering: true,
                     transport: {
@@ -391,8 +409,13 @@ $.fn.extend({
                     { field: "IdDespachoMercancia", title: "ID", width: 50 },
                     { field: "NoDocumento", title: "No. Despacho", width: 100 },
                     { field: "Servicio", title: "Servicio", width: 100 },
-                    { field: "UsuarioSolicitante", title: "Solicitante", width: 200 },
-                    { field: "Planta", title: "Planta", width: 150 }
+                    { field: "UsuarioSolicitante", title: "Solicitada por:", width: 200 },
+                    { field: "Planta", title: "Planta", width: 80 },
+                    { field: "FechaSolicitud", title: "Fecha Solicitud", template: '#:kendo.toString(kendo.parseDate(data.FechaSolicitud), "dd/MM/yyyy HH:mm:ss")#', width: 150 },
+                    { field: "FechaEntrega", title: "Fecha Entrega", template: '#:kendo.toString(kendo.parseDate(data.FechaEntrega), "dd/MM/yyyy")#', width: 110 },
+                    { field: "CantidadCortes", title: "Cant. Corte", width: 100 },
+                    { field: "cantidadBultos", title: "Cantidad Bultos", width: 115 },
+                    { field: "cantidadPiezas", title: "Cantidad", width: 100 }
                 ]
             });
         });
