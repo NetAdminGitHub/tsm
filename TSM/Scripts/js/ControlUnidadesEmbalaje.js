@@ -120,9 +120,7 @@ $(document).ready(function () {
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
         idCliente = this.value() === "" ? 0 : this.value();
 
-        if (idCliente > 0)
-            KdoButtonEnable($("#btnCrearEmbalaje"), true);
-        else
+        if (idCliente < 1)
             KdoButtonEnable($("#btnCrearEmbalaje"), false);
 
         let dsm = new kendo.data.DataSource({
@@ -169,10 +167,14 @@ $(document).ready(function () {
         IdDespachoMercancia = this.value() === "" ? 0 : this.value();
         $("#gridEmbalajes").data("kendoGrid").dataSource.read();
 
-        if (IdDespachoMercancia != 0)
+        if (IdDespachoMercancia != 0) {
+            KdoButtonEnable($("#btnCrearEmbalaje"), true);
             KdoButtonEnable($("#btnCrearListaEmpaque"), true);
-        else
+        }
+        else {
+            KdoButtonEnable($("#btnCrearEmbalaje"), false);
             KdoButtonEnable($("#btnCrearListaEmpaque"), false);
+        }
     });
 
     $("#cmbFM").data("kendoComboBox").bind("change", function () {
@@ -210,7 +212,7 @@ $(document).ready(function () {
     });
 
     $("#btnCrearEmbalaje").data("kendoButton").bind("click", function (e) {
-        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}`;
+        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${KdoMultiColumnCmbGetValue($("#cmbDespacho"))}`;
     });
 
 });
