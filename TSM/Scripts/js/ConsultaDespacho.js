@@ -1,7 +1,7 @@
 ﻿"use strict"
 var Permisos;
 
-let idCliente = 0;
+//let idCliente = 0;
 let idPlanta = 0;
 let idMarca = 0;
 
@@ -17,6 +17,25 @@ $(document).ready(function () {
     KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "Seleccione una Marca");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
 
+    if (idCliente !== 0) {
+        KdoButtonEnable($("#btnSolicitarDespacho"), true);
+
+        $("#cmbCliente").data("kendoComboBox").value(idCliente);
+        $("#cmbCliente").data("kendoComboBox").trigger("change");
+
+        let dsm = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: function () {
+                        return TSM_Web_APi +
+                            `ClientesMarcas/GetByCliente/${idCliente === null ? 0 : idCliente}`
+                    },
+                    contentType: "application/json; charset=utf-8"
+                }
+            }
+        });
+        $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
+    }
 
     let dataSourceDespacho = new kendo.data.DataSource({
         transport: {
@@ -247,7 +266,7 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridDespachos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 700);
+    SetGrid($("#gridDespachos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, false, redimensionable.Si, 700);
     SetGrid_CRUD_ToolbarTop($("#gridDespachos").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridDespachos").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridDespachos").data("kendoGrid"), dataSourceDespacho);

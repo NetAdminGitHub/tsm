@@ -13,5 +13,13 @@ namespace TSM.Controllers
         {
             return View();
         }
+
+        [Route("ConsultaDespacho/{IdCliente}")]
+        public ActionResult Index(long IdCliente)
+        {
+            ViewBag.IdCliente = IdCliente;
+
+            return View();
+        }
     }
 }

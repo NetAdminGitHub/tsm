@@ -27,6 +27,8 @@ var oldElement = [];
 
 $(document).ready(function () {
 
+    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
 
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
@@ -185,12 +187,33 @@ $(document).ready(function () {
             { field: "CantidadDisponible", title: "Cantidad Disponible"},
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
             {
+                field: "btnGenerarEmbalaje",
+                title: "&nbsp;",
                 command: [
                     {
                         name: "b_search",
+                        iconClass: "k-icon k-i-search m-0",
                         text: " ",
-                        click: getInfoGeneral,
-                        iconClass: "k-icon k-i-search m-0"
+                        title: "&nbsp;",
+                        click: function (e) {
+                            let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            let strjson = {
+                                config: [{
+                                    Div: "vInfDiseno",
+                                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
+                                    Js: "GenInfoFM.js",
+                                    Titulo: "Información General",
+                                    Width: "60%",
+                                    MinWidth: "40%"
+                                }],
+                                Param: {
+                                    pIdHojaBandeo: dataItem.IdHojaBandeo
+                                },
+                                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
+                            };
+
+                            fn_GenLoadModalWindow(strjson);
+                        },
                     }
                 ],
                 width: "70px"
@@ -200,7 +223,7 @@ $(document).ready(function () {
 
     //#endregion
 
-    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
+    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
     Set_Grid_DataSource($("#treelist").data("kendoGrid"), dTree);
 
     var selectedRows = [];
@@ -1372,6 +1395,10 @@ $(document).ready(function () {
         
     });
 
+    $("#btnRetornar").click(function () {
+        window.location = window.location.origin + `/ConsultaDespacho/${readIdCliente}/`;
+    });
+
 });
 
 var fn_readonly = () => {
@@ -1381,8 +1408,7 @@ var fn_readonly = () => {
 
 var getInfoGeneral = () => {
     $(".k-grid-b_search").on("click", function () {
-        var cata = $(this).closest("tr").find(".selCata").text();
-        if (cata != "" && cata != null) {
+        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
             let strjson = {
                 config: [{
                     Div: "vInfDiseno",
@@ -1392,11 +1418,15 @@ var getInfoGeneral = () => {
                     Width: "40%",
                     MinWidth: "30%"
                 }],
-                Param: { idCatalogo: cata },
+                Param: {
+                    pIdHojaBandeo: dataItem.IdHojaBandeo
+                },
                 fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
             };
 
-            fn_GenLoadModalWindow(strjson);
+        fn_GenLoadModalWindow(strjson);
+
+        if (cata != "" && cata != null) {
         }
         else
         {
