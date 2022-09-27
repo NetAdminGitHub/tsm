@@ -200,7 +200,7 @@ $(document).ready(function () {
 
     //#endregion
 
-    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, "multiple");
+    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
     Set_Grid_DataSource($("#treelist").data("kendoGrid"), dTree);
 
     var selectedRows = [];
@@ -208,9 +208,18 @@ $(document).ready(function () {
     $("#treelist").data("kendoGrid").tbody.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
         let nextRow = checkbox.closest("tr").next();
+        let prevRow = "";
+        let prevCheck = "";
         let currentRow = checkbox.closest("tr")[0];
         let allRows = checkbox.closest("tr")[0].parentElement.rows;
         let tallaActual = currentRow.cells[3].innerText;
+        let contRowsChecked = 0;
+        var acumRowChecked = 0;
+
+        if (currentRow.cells.length == 7) {
+            prevRow = checkbox.closest(".k-detail-row")[0].previousSibling;
+            prevCheck = prevRow.children[1].children[0];
+        }
 
         if (nextRow.hasClass("k-detail-row")) {
             nextRow.find(":checkbox").prop("checked", checkbox.is(":checked"));
@@ -218,21 +227,96 @@ $(document).ready(function () {
 
         //función para marcar y desmarcar todas las tallas
         $.each($(allRows), function (indice, elemento) {
-            if (elemento.cells[3].innerText == tallaActual)
+            if (elemento.cells.length == 7)
             {
-                let tempCheck = elemento.cells[0].children[0];
-                if (checkbox.is(":checked")) {
-                    tempCheck.checked = true;
-                    elemento.classList.add("k-state-selected");
+                if (elemento.cells[3].innerText == tallaActual) {
+                    let tempCheck = elemento.cells[0].children[0];
+                    if (checkbox.is(":checked")) {
+                        tempCheck.checked = true;
+                        elemento.classList.add("k-state-selected");
+                        contRowsChecked++;
+                    }
+                    else {
+                        tempCheck.checked = false;
+                        elemento.classList.remove("k-state-selected");
+                    }
                 }
-                else {
-                    tempCheck.checked = false;
-                    elemento.classList.remove("k-state-selected");
+                if (elemento.classList.contains("k-state-selected") == true) {
+                    acumRowChecked++;
                 }
             }
         });
 
+        if (prevRow != "" && prevCheck != "")
+        {
+            if (acumRowChecked == allRows.length) {
+                prevCheck.checked = true;
+            }
+            else if (acumRowChecked == 0)
+            {
+                prevCheck.checked = false;
+                prevRow.classList.remove("k-state-selected");
+            }
+            else {
+                prevCheck.checked = false;
+            }
+        }
+
     });
+
+    /*$("#treelist").data("kendoGrid").tbody.on("click", ".k-master-row", function (e) {
+        let checkbox = "";
+        if (this.cells[6].classList == "selCata") {
+            checkbox = this.children[1].children[0];
+        }
+        else
+        {
+            checkbox = this.children[0].children[0];
+        }
+        if (checkbox.checked == true) {
+            checkbox.checked = false;
+        }
+        else
+        {
+            checkbox.checked = true;
+        }
+        let nextRow = checkbox.closest("tr").nextElementSibling;
+        let currentRow = this;
+        let allRows = this.parentElement.rows;
+        let tallaActual = this.cells[3].innerText;
+
+        if (nextRow.classList == "k-detail-row") {
+            let checks = nextRow.querySelectorAll("input[type=checkbox]");
+            $.each($(checks), function (indice, elemento) {
+                if ((elemento.checked = checkbox.checked) == true) {
+                    elemento.closest("tr").classList.add("k-state-selected");
+                }
+                else
+                {
+                    elemento.closest("tr").classList.remove("k-state-selected");
+                }
+
+            });
+        }
+
+        //función para marcar y desmarcar todas las tallas
+        $.each($(allRows), function (indice, elemento) {
+            if (elemento.cells.length == 7) {
+                if (elemento.cells[3].innerText == tallaActual) {
+                    let tempCheck = elemento.cells[0].children[0];
+                    if (checkbox.hasClass("k-state-selected")) {
+                        tempCheck.checked = false;
+                        elemento.classList.remove("k-state-selected");
+                    }
+                    else {
+                        tempCheck.checked = true;
+                        elemento.classList.add("k-state-selected");
+                    }
+                }
+            }
+        });
+
+    });*/
 
     $("#treelist").data("kendoGrid").thead.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
@@ -872,7 +956,6 @@ $(document).ready(function () {
                 $("#treelist").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnMoveData"), false);
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1475,7 +1558,7 @@ var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
 }
 
 var ConfGDetalle = (g, ds, Id_gCHForDetalle) => {
-    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
+    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, false);
     SetGrid_CRUD_Command(g, false, false, Id_gCHForDetalle);
     Set_Grid_DataSource(g, ds);
 }
