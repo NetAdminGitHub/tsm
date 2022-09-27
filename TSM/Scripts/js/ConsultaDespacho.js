@@ -1,7 +1,6 @@
 ﻿"use strict"
 var Permisos;
 
-//let idCliente = 0;
 let idPlanta = 0;
 let idMarca = 0;
 
