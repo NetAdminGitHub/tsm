@@ -238,7 +238,9 @@ $(document).ready(function () {
         let contRowsChecked = 0;
         var acumRowChecked = 0;
 
-        if (currentRow.cells.length == 7) {
+        let gridElement = checkbox.closest(".lump-child-grid.k-grid.k-widget");
+
+        if (gridElement.length > 0) {
             prevRow = checkbox.closest(".k-detail-row")[0].previousSibling;
             prevCheck = prevRow.children[1].children[0];
         }
@@ -249,7 +251,7 @@ $(document).ready(function () {
 
         //función para marcar y desmarcar todas las tallas
         $.each($(allRows), function (indice, elemento) {
-            if (elemento.cells.length == 7)
+            if (gridElement.length > 0)
             {
                 if (elemento.cells[3].innerText == tallaActual) {
                     let tempCheck = elemento.cells[0].children[0];
