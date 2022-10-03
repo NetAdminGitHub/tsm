@@ -3,6 +3,15 @@
     ViewBag.IdVersion = "TSM0101142|v22081901";
 }
 @section Scripts {
+
+    <script type="text/javascript">
+        var idCliente = 0;
+
+        @if (ViewBag.IdCliente != null ) {
+            <text> idCliente = @ViewBag.IdCliente; </text>
+        }
+    </script>
+
     <script src="~/Scripts/js/ConsultaDespacho.js?@ViewBag.IdVersion"></script>
 }
 

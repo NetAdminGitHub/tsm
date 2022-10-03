@@ -287,6 +287,8 @@
     <Compile Include="Controllers\CambioClienteRDController.cs" />
     <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\CodigosModalidadController.cs" />
+    <Compile Include="Controllers\CodigosRegimenController.cs" />
     <Compile Include="Controllers\ConsultaDespachoController.cs" />
     <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
     <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
@@ -556,6 +558,8 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CodigosModalidad.js" />
+    <Content Include="Scripts\js\CodigosRegimen.js" />
     <Content Include="Scripts\js\ConsultaDespacho.js" />
     <Content Include="Scripts\js\Auditoria_log.js" />
     <Content Include="Scripts\js\CarritoEntrega.js" />
@@ -1163,6 +1167,8 @@
     <Content Include="Views\ControlUnidadesEmbalaje\_RegistroListaEmpaque.cshtml" />
     <Content Include="Views\CrearEmbalaje\Index.cshtml" />
     <Content Include="Views\CrearEmbalaje\_CreacionEmbalaje.cshtml" />
+    <Content Include="Views\CodigosRegimen\Index.cshtml" />
+    <Content Include="Views\CodigosModalidad\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1175,6 +1181,7 @@
     <Folder Include="Views\ModalGenLoad\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
+    <Folder Include="Views\Regimenes\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
   <ItemGroup>

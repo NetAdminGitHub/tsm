@@ -27,6 +27,8 @@ var oldElement = [];
 
 $(document).ready(function () {
 
+    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
 
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
@@ -108,7 +110,6 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         detailInit: DIDM,
         dataBound: function (e) {
-            //this.collapseRow(this.tbody.find("tr.k-master-row").first());
             var grid = e.sender;
 
             grid.tbody.find("tr.k-master-row").click(function (e) {
@@ -185,12 +186,33 @@ $(document).ready(function () {
             { field: "CantidadDisponible", title: "Cantidad Disponible"},
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
             {
+                field: "btnGenerarEmbalaje",
+                title: "&nbsp;",
                 command: [
                     {
                         name: "b_search",
+                        iconClass: "k-icon k-i-search m-0",
                         text: " ",
-                        click: getInfoGeneral,
-                        iconClass: "k-icon k-i-search m-0"
+                        title: "&nbsp;",
+                        click: function (e) {
+                            let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            let strjson = {
+                                config: [{
+                                    Div: "vInfDiseno",
+                                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
+                                    Js: "GenInfoFM.js",
+                                    Titulo: "Información General",
+                                    Width: "60%",
+                                    MinWidth: "40%"
+                                }],
+                                Param: {
+                                    pIdHojaBandeo: dataItem.IdHojaBandeo
+                                },
+                                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
+                            };
+
+                            fn_GenLoadModalWindow(strjson);
+                        },
                     }
                 ],
                 width: "70px"
@@ -200,7 +222,7 @@ $(document).ready(function () {
 
     //#endregion
 
-    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, "multiple");
+    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
     Set_Grid_DataSource($("#treelist").data("kendoGrid"), dTree);
 
     var selectedRows = [];
@@ -208,9 +230,20 @@ $(document).ready(function () {
     $("#treelist").data("kendoGrid").tbody.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
         let nextRow = checkbox.closest("tr").next();
+        let prevRow = "";
+        let prevCheck = "";
         let currentRow = checkbox.closest("tr")[0];
         let allRows = checkbox.closest("tr")[0].parentElement.rows;
         let tallaActual = currentRow.cells[3].innerText;
+        let contRowsChecked = 0;
+        var acumRowChecked = 0;
+
+        let gridElement = checkbox.closest(".lump-child-grid.k-grid.k-widget");
+
+        if (gridElement.length > 0) {
+            prevRow = checkbox.closest(".k-detail-row")[0].previousSibling;
+            prevCheck = prevRow.children[1].children[0];
+        }
 
         if (nextRow.hasClass("k-detail-row")) {
             nextRow.find(":checkbox").prop("checked", checkbox.is(":checked"));
@@ -218,19 +251,40 @@ $(document).ready(function () {
 
         //función para marcar y desmarcar todas las tallas
         $.each($(allRows), function (indice, elemento) {
-            if (elemento.cells[3].innerText == tallaActual)
+            if (gridElement.length > 0)
             {
-                let tempCheck = elemento.cells[0].children[0];
-                if (checkbox.is(":checked")) {
-                    tempCheck.checked = true;
-                    elemento.classList.add("k-state-selected");
+                if (elemento.cells[3].innerText == tallaActual) {
+                    let tempCheck = elemento.cells[0].children[0];
+                    if (checkbox.is(":checked")) {
+                        tempCheck.checked = true;
+                        elemento.classList.add("k-state-selected");
+                        contRowsChecked++;
+                    }
+                    else {
+                        tempCheck.checked = false;
+                        elemento.classList.remove("k-state-selected");
+                    }
                 }
-                else {
-                    tempCheck.checked = false;
-                    elemento.classList.remove("k-state-selected");
+                if (elemento.classList.contains("k-state-selected") == true) {
+                    acumRowChecked++;
                 }
             }
         });
+
+        if (prevRow != "" && prevCheck != "")
+        {
+            if (acumRowChecked == allRows.length) {
+                prevCheck.checked = true;
+            }
+            else if (acumRowChecked == 0)
+            {
+                prevCheck.checked = false;
+                prevRow.classList.remove("k-state-selected");
+            }
+            else {
+                prevCheck.checked = false;
+            }
+        }
 
     });
 
@@ -362,8 +416,6 @@ $(document).ready(function () {
             { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
             { field: "NoReferencia", title: "FM", attributes: { "class": "selFM" } },
             { field: "Disenos", title: "Diseños" },
-            /*{ field: "Corte", title: "Corte" },
-            { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true, attributes: { "class": "selCata" } },*/
             { field: "CantidadTallas", title: "Cantidad Tallas" },
             { field: "CantidadMercancia", title: "Cantidad Mercancia" },
             { field: "Cantidad", title: "Cantidad" },
@@ -401,7 +453,6 @@ $(document).ready(function () {
             }
             else {
                 rowsHijo.push(elemento);
-                //elemento.classList.remove("k-state-selected");
             }
         });
 
@@ -437,19 +488,6 @@ $(document).ready(function () {
             {
                 if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "")
                 {
-                    /*let registro = {
-                        "FechaSolicitud": now.replace(/\//g, ''),
-                        "IdCliente": xidclie,
-                        "Estado": "OPERACION",
-                        "FechaEntrega": fecha.replace(/\//g, ''),
-                        "IdUsuarioSolicita": getUser(),
-                        "IdUsuarioMod": getUser(),
-                        "IdMercancia": mercancias,
-                        "IdMotivo": 1,
-                        "IdPlanta": xidPlanta
-                    }
-                    console.log(registro);*/
-
                     if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
                         readIdDespachoMercancia == null;
                     }
@@ -599,7 +637,6 @@ $(document).ready(function () {
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
             $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
-            //$("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
             let dsm = new kendo.data.DataSource({
                 transport: {
                     read: {
@@ -644,12 +681,10 @@ $(document).ready(function () {
                     closeOpenDetailGrid();
                 });
                 KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
-                //KdoButtonEnable($("#btnMoveData"), true);
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
                 KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
-                //KdoButtonEnable($("#btnMoveData"), false);
             }
         }
     });
@@ -872,7 +907,6 @@ $(document).ready(function () {
                 $("#treelist").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnMoveData"), false);
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1289,38 +1323,16 @@ $(document).ready(function () {
         
     });
 
+    $("#btnRetornar").click(function () {
+        window.location = window.location.origin + `/ConsultaDespacho/${readIdCliente}/`;
+    });
+
 });
 
 var fn_readonly = () => {
     var treeList = $("#treelist").data("kendoGrid");
     var data = treeList.dataItem("tbody>tr:eq(0)");
 }
-
-var getInfoGeneral = () => {
-    $(".k-grid-b_search").on("click", function () {
-        var cata = $(this).closest("tr").find(".selCata").text();
-        if (cata != "" && cata != null) {
-            let strjson = {
-                config: [{
-                    Div: "vInfDiseno",
-                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
-                    Js: "GenInfoFM.js",
-                    Titulo: "Información General",
-                    Width: "40%",
-                    MinWidth: "30%"
-                }],
-                Param: { idCatalogo: cata },
-                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
-            };
-
-            fn_GenLoadModalWindow(strjson);
-        }
-        else
-        {
-            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione código de FM para ver la información del diseño.", "error");
-        }
-    });
-};
 
 var DIDM = (e) => {
 
@@ -1422,7 +1434,6 @@ var DIDM = (e) => {
                         Corte: { type: "string" },
                         Tallas: { type: "string" },
                         IdMercancia: { type: "number" },
-                        //CantidadIngreso: { type: "number" },
                         CantidadDisponible: { type: "number" },
                         CantidadDespacho: { type: "number" }
                     }
@@ -1449,7 +1460,6 @@ var DIDM = (e) => {
                 { field: "Corte", title: "Corte", hidden: true, attributes: { "class": "corte-detail" } },
                 { field: "Tallas", title: "Tallas", attributes: { "class": "tallas-detail" } },
                 { field: "IdMercancia", title: "Id Mercancia", hidden: true },
-                //{ field: "CantidadIngreso", title: "Cantidad Ingreso" },
                 { field: "CantidadDisponible", title: "Cantidad Disponible" },
                 { field: "CantidadDespacho", title: "Cantidad Despacho" }
             ]
@@ -1475,7 +1485,7 @@ var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
 }
 
 var ConfGDetalle = (g, ds, Id_gCHForDetalle) => {
-    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
+    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, false);
     SetGrid_CRUD_Command(g, false, false, Id_gCHForDetalle);
     Set_Grid_DataSource(g, ds);
 }
