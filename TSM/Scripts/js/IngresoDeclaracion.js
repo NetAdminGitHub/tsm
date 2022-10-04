@@ -1,15 +1,22 @@
 ﻿
 var Permisos;
 let xIdDeMerca = 0;
+var tpc = "";
+var tsc = "";
+var ttc = "";
+var tcc = "";
+
 $(document).ready(function () {
     xIdDeMerca = xIdDeclaracionMercancia;
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
+    Kendo_CmbFiltrarGrid($("#cmbModalidad"), TSM_Web_APi + "Modalidades", "Nombre", "IdModalidad", "Seleccione una modalidad");
 
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
     KdoButton($("#btnNotaRemision"), "search", "Nota de Remision");
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+    $("#cmbModalidad").data("kendoComboBox").value("3");
 
     // multicolum
     $("#MltBodegaCliente").ControlSeleccionBodegaClie(xIdClienteIng);
@@ -19,6 +26,7 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnNotaRemision"), false);
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
+        min: 0,
         min: 0,
         max: 999999999,
         format: "#",
@@ -55,16 +63,73 @@ $(document).ready(function () {
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalCuantia"), false);
+    //////////////////////Totales INCOTERMS///////////////////////////
+    $("#numTotalKgs").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "{0:N2}",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#numTotalKgs"), false);
+    $("#numTotalFlete").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "c",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#numTotalFlete"), false);
+    $("#numTotalSeguro").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "c",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#numTotalSeguro"), false);
+    $("#numTotalOtros").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "c",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#numTotalOtros"), false);
+    $("#numTotalAduana").kendoNumericTextBox({
+        min: 0,
+        max: 999999999,
+        format: "c",
+        restrictDecimals: true,
+        decimals: 2,
+        value: 0
+    });
+    KdoNumerictextboxEnable($("#numTotalAduana"), false);
+
 
     KdoComboBoxEnable($("#cmbCliente"), false);
     KdoCmbSetValue($("#cmbCliente"), xIdClienteIng);
 
     TextBoxReadOnly($("#TxtDireccion"), false);
 
+    TextBoxReadOnly($("#TaDespachante"), false);
+    TextBoxReadOnly($("#TaConsignatario"), false);
+    TextBoxReadOnly($("#TaExportador"), false);
+
+    TextBoxReadOnly($("#TxtNoRegistro"), false);
+
     //crear campo fecha
     $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
     $("#dFecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#dFecha"), false);
+
+    //crear campo fecha aceptación
+    $("#dFechaAceptacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaAceptacion").data("kendoDatePicker").value(Fhoy());
 
     //#region crear item detalle
     let dS = new kendo.data.DataSource({
@@ -246,6 +311,24 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridDetalleItem").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDetalleItem").data("kendoGrid"), dS);
+
+    $("#modalExportador").on("click", function () {
+        let strjson = {
+            config: [{
+                Div: "vModalExportador",
+                Vista: "~/Views/IngresoDeclaracion/_ModalExportador.cshtml",
+                Js: "ModalExportador.js",
+                Titulo: "Datos Exportador",
+                Height: "53%",
+                Width: "25%",
+                MinWidth: "20%"
+            }],
+            Param: { sIdRegNotaRemi: xIdDeMerca },
+            fn: { fnclose: "", fnLoad: "fn_Ini_Expo", fnReg: "fn_Reg_Expo", fnActi: "" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+    });
 
     $("#gridDetalleItem").kendoTooltip({
         filter: ".k-grid-btnvin",
