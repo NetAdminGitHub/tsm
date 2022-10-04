@@ -73,8 +73,8 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return false;
                                 }
-                                if (input.is("[name='Telefono']") && input.val().length > 8) {
-                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 8");
+                                if (input.is("[name='Telefono']") && input.val().length > 9) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 9");
                                     return false;
                                 }
                                 return true;
