@@ -13,7 +13,7 @@ var fn_Ini_Expo = () => {
             tsc = $("#sCampo").val();
             ttc = $("#tCampo").val();
             tcc = $("#cCampo").val();
-            let tatxt = "1er. Campo > " + tpc + "\n2do. Campo > " + tsc + "\n3er. Campo  > " + ttc + "\n4to. Campo  > " + tcc;
+            let tatxt = "1er. Campo > " + tpc + "\n2do. Campo > " + tsc + "\n3er. Campo > " + ttc + "\n4to. Campo > " + tcc;
             $("#TaExportador").val(tatxt);
             $("#vModalExportador").data("kendoWindow").close();
         }

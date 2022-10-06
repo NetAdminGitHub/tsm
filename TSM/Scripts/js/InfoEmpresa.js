@@ -1,5 +1,5 @@
 ﻿var Permisos;
-let UrlPl = TSM_Web_APi + "Plantas";
+let UrlPl = TSM_Web_APi + "InfoEmpresa";
 
 $(document).ready(function () {
     let dataSource = new kendo.data.DataSource({
@@ -10,12 +10,12 @@ $(document).ready(function () {
                 contentType: "application/json; charset=utf-8"
             },
             update: {
-                url: function (datos) { return UrlPl + "/" + datos.IdPlanta; },
+                url: function (datos) { return UrlPl + "/" + datos.IdInfoEmpresa; },
                 type: "PUT",
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
-                url: function (datos) { return UrlPl + "/" + datos.IdPlanta; },
+                url: function (datos) { return UrlPl + "/" + datos.IdInfoEmpresa; },
                 type: "DELETE"
             },
             create: {
@@ -29,20 +29,30 @@ $(document).ready(function () {
                 }
             }
         },
+        //Ordenando GRID
+
         //FINALIZACIÓN DE UNA PETICIÓN
         requestEnd: Grid_requestEnd,
         // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
         schema: {
             model: {
-                id: "IdPlanta",
+                id: "IdInfoEmpresa",
                 fields: {
-                    IdPlanta: { type: "number" },                    
-                    Nombre: {
+                    IdInfoEmpresa: { type: "number" },
+                    NIT: {
                         type: "string",
                         validation: {
                             //required: true,
                             maxlength: function (input) {
+                                if (input.is("[name='NIT']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='NIT']") && input.val().length > 15) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 15");
+                                    return false;
+                                }
                                 if (input.is("[name='Nombre']") && input.val().length === 0) {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return false;
@@ -51,34 +61,54 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 200");
                                     return false;
                                 }
-                              
+                                if (input.is("[name='Direccion']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='Direccion']") && input.val().length > 2000) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 2000");
+                                    return false;
+                                }
+                                if (input.is("[name='Telefono']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='Telefono']") && input.val().length > 9) {
+                                    input.attr("data-maxlength-msg", "La longitud máxima del campo es 9");
+                                    return false;
+                                }
                                 return true;
                             }
-                        }                        
+                        }
                     },
-                IdUsuarioMod: { type: "string" },
-                FechaMod: { type: "date" },
-                Direccion: { type: "string" }
+                    Nombre: { type: "string" },
+                    Direccion: { type: "string" },
+                    Telefono: { type: "string" },
+                    IdUsuarioMod: { type: "string" },
+                    FechaMod: { type: "date" }
                 }
             }
-        }
+        },
+        sort: { field: "Nombre", dir: "asc" }
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            KdoHideCampoPopup(e.container, "IdPlanta");
+            KdoHideCampoPopup(e.container, "IdInfoEmpresa");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
-            Grid_Focus(e, "Nombre");
+            Grid_Focus(e, "NIT");
         },
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdPlanta", title: "Planta", hidden: true },
+            { field: "IdInfoEmpresa", title: "ID", hidden: true },
+            { field: "NIT", title: "NIT" },
             { field: "Nombre", title: "Nombre" },
-            { field: "Direccion", title: "Dirección" },
-            { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
-            { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
+            { field: "Direccion", title: "Direccion" },
+            { field: "Telefono", title: "Telefono" },
+            { field: "IdUsuarioMod", title: "IdUsuarioMod", hidden: true },
+            { field: "FechaMod", title: "FechaMod", hidden: true }
         ]
     });
 
@@ -92,7 +122,7 @@ $(document).ready(function () {
     $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#grid"), selectedRows);
     });
-     
+
     $("#grid").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#grid"), selectedRows);
     });
@@ -101,6 +131,7 @@ $(document).ready(function () {
     });
 
     Fn_Grid_Resize($("#grid"), $(window).height() - "371");
+
 });
 
 fPermisos = function (datos) {

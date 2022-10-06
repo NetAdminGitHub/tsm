@@ -6,11 +6,17 @@ var tsc = "";
 var ttc = "";
 var tcc = "";
 
+var campo1Consig = "";
+var campo2Consig = "";
+var campo3Consig = "";
+var campo4Consig = "";
+
 $(document).ready(function () {
     xIdDeMerca = xIdDeclaracionMercancia;
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     Kendo_CmbFiltrarGrid($("#cmbModalidad"), TSM_Web_APi + "Modalidades", "Nombre", "IdModalidad", "Seleccione una modalidad");
+    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione una planta");
 
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
@@ -24,6 +30,63 @@ $(document).ready(function () {
     $("#MltPaisExpor").ControlSeleccionPaises();
     $("#MltAduana").ControlSeleccionAduanas();
     KdoButtonEnable($("#btnNotaRemision"), false);
+
+    $.ajax({
+        url: TSM_Web_APi + "InfoEmpresa/1/",
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                let consig = dato[0];
+                let tactxt = "1er. Campo > " + dato[0]['NIT'] + "\n2do. Campo > " + dato[0]['Nombre'] + "\n3er. Campo > " + dato[0]['Direccion'] + "\n4to. Campo > " + dato[0]['Telefono'];
+                $("#TaConsignatario").val(tactxt);
+                campo1Consig = dato[0]['NIT'];
+                campo2Consig = dato[0]['Nombre'];
+                campo3Consig = dato[0]['Direccion'];
+                campo4Consig = dato[0]['Telefono'];
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+    $("#cmbPlanta").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+
+            let IdPlanta = this.dataItem(e.item.index()).IdPlanta;
+            $.ajax({
+                url: TSM_Web_APi + "Plantas/GetPlantaById/" + IdPlanta +"/",
+                dataType: 'json',
+                type: 'GET',
+                success: function (dato) {
+                    if (dato !== null) {
+                        let planta = dato;
+                        let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + dato['Direccion'] + "\n4to. Campo > " + campo4Consig;
+                        $("#TaConsignatario").val(tactxt);
+                    }
+                    kendo.ui.progress($(document.body), false);
+                },
+                error: function () {
+                    kendo.ui.progress($(document.body), false);
+                }
+            });
+
+        } else {
+            let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + campo3Consig + "\n4to. Campo > " + campo4Consig;
+            $("#TaConsignatario").val(tactxt);
+        }
+    });
+
+    $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + campo3Consig + "\n4to. Campo > " + campo4Consig;
+            $("#TaConsignatario").val(tactxt);
+        }
+    });
+
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
         min: 0,
