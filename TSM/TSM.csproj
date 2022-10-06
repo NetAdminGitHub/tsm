@@ -341,10 +341,12 @@
     <Compile Include="Controllers\ImpresoresController.cs" />
     <Compile Include="Controllers\IncisosArancelariosController.cs" />
     <Compile Include="Controllers\InfoEmpresaController.cs" />
+    <Compile Include="Controllers\IncotermsController.cs" />
     <Compile Include="Controllers\IngresoDeclaracionController.cs" />
     <Compile Include="Controllers\IngresoMercanciasController.cs" />
     <Compile Include="Controllers\InstruccionesController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
+    <Compile Include="Controllers\LocalizacionesMercanciasDMController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MacroEtapasController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
@@ -567,6 +569,8 @@
     <Content Include="Scripts\js\ConsultaMercancia.js" />
     <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
     <Content Include="Scripts\js\InfoEmpresa.js" />
+    <Content Include="Scripts\js\Incoterms.js" />
+    <Content Include="Scripts\js\LocalizacionesMercanciasDM.js" />
     <Content Include="Scripts\js\MacroEtapas.js" />
     <Content Include="Scripts\js\ConsultaCorteMacro.js" />
     <Content Include="Scripts\js\ConsultaCorteMicro.js" />
@@ -1162,6 +1166,8 @@
     <Content Include="Views\CodigosRegimen\Index.cshtml" />
     <Content Include="Views\CodigosModalidad\Index.cshtml" />
     <Content Include="Views\InfoEmpresa\Index.cshtml" />
+    <Content Include="Views\LocalizacionesMercanciasDM\Index.cshtml" />
+    <Content Include="Views\Incoterms\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
