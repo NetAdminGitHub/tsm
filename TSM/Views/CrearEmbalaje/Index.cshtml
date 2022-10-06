@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Crear Embalaje";
+    ViewBag.Title = "Creacion de Embalajes";
 }
 
 @section Scripts {
@@ -8,13 +8,12 @@
     <script type="text/javascript">
         var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
         var readIdCliente = "@ViewBag.IdCliente";
-        var readIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
-        var readFecha = "@ViewBag.Fecha";
+        var readIdDespachoEmbalajeMercancia = "@ViewBag.IdDespachoEmbalajeMercancia";
         var readPlanta = "@ViewBag.Planta";
-        var readNoDoc = "@ViewBag.NoDocumento";
+        var readSugeridos = @ViewBag.Sugerido;
     </script>
 
-    <script src="~/Scripts/js/RegistroCreacionEmbalaje.js?@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/RegistroCreacionEmbalaje.js"></script>
 
 }
 <link href="~/Content/ConsultaCorteStyle.css" rel="stylesheet" />
@@ -25,85 +24,97 @@
     }
 </style>
 
-<div class="form-row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body container">
-
-
-                <div class="form-row">
-
-                    <div class="form-group col-lg-6">
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <label for="cmbCliente">Cliente:</label>
-                                <input id="cmbCliente" name="cmbCliente" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="cmbPlanta" id="lblPlanta">Planta:</label>
-                                <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="cmbFm">Código FM:</label>
-                                <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="cmbPL"># de Envío (No. Referncia PL):</label>
-                                <input id="cmbPL" name="cmbPL" type="text" class="form-control" />
-                            </div>
+<div class="row">
+    <div class="card">
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="form-group col-lg-12" style="display:none;" >
+                            <label for="txtIdDespachoMerc">Id Despacho:</label>
+                            <input id="txtIdDespachoMerc" name="txtIdDespachoMerc" class="form-control" readonly />
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                <div id="treelist"> </div>
-                            </div>
+                        <div class="col-lg-12 text-right">
+                            <button type="button" id="btnRetornar"></button>
                         </div>
                     </div>
-
-                    <div class="form-group col-lg-6">
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <label for="dtFechaProyectada">Fecha Entrega:</label>
-                                <input id="dtFechaProyectada" name="dtFechaProyectada" type="date" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="cmbMarca">Marca:</label>
-                                <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="cmbCorte">Corte:</label>
-                                <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="CmbServicio">Servicio:</label>
-                                <input id="CmbServicio" name="CmbServicio" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="txtNoDoc">No. Documento:</label>
-                                <input id="txtNoDoc" name="txtNoDoc" class="form-control" style="height:38px;" readonly />
-                            </div>
-                            <div class="form-group col-lg-3" style="margin-top: 30px; margin-bottom: 17px;">
-                                <button type="button" id="btnCrearOrdenDespacho">Crear Orden Despacho</button>
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="cmbCliente">Cliente:</label>
+                            <input id="cmbCliente" name="cmbCliente" class="form-control" />
                         </div>
-                        <div class="row">
-                            <div class="col-lg-2 d-flex flex-column justify-content-center align-items-center text-center">
-                                <button type="button" id="btnMoveData"></button>
-                            </div>
-                            <div class="form-group col-lg-10">
-                                <div id="gridOrdenDespacho"></div>
-                            </div>
+                        <div class="form-group col-lg-3">
+                            <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                            <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
                         </div>
+                        <div class="form-group col-lg-2" style="display:none;">
+                            <label for="txtNoDoc">No. Embalaje:</label>
+                            <input id="txtNoDoc" name="txtNoDoc" class="form-control" style="height:38px;" readonly />
+                        </div>
+                        <div class="form-group col-lg-6 mt-auto text-right">
+                            <button type="button" id="btnGuardar">Guardar Registro</button>
+                            <button type="button" id="btnCrearUniEmbalaje">Crear Unidad Embalaje</button>
+                            <button type="button" id="btnFinalizarEmb">Finalizar Embalaje</button>
+                        </div>
+                       
                     </div>
+                    <hr />
 
                 </div>
+            </div>
 
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="cmbMarca">Marca:</label>
+                            <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="cmbFm">Código FM:</label>
+                            <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="cmbPL"># de Envío (No. Referncia PL):</label>
+                            <input id="cmbPL" name="cmbPL" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <div id="gCortes"> </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <div class="row">
+                        <div class="form-group col-lg-3 align-self-center">
+                            <input type="checkbox" id="chkSugerido" name="chkEnlazarTsm" class="k-checkbox text-align-end">
+                            <label class="k-checkbox-label" for="chkSugerido">Mostrar sugeridos</label>
+                        </div>
+                        <div class="form-group col-lg-5 ">
+                            <label for="cmbCorte">Corte:</label>
+                            <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbServicio">Servicio:</label>
+                            <input id="CmbServicio" name="CmbServicio" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                     
+                        <div class="form-group col-lg-12">
+                            <div id="gEnEmbalaje"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 @*vista modal detalle de preparado*@
-<div id="vdPreparado"></div>
+<div id="vCrearUnidad"></div>
 
 @*vista modal entrega a prod*@
 <div id="vInfDiseno"></div>

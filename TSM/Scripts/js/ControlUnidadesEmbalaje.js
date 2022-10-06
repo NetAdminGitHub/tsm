@@ -35,42 +35,56 @@ $(document).ready(function () {
 
     let dataSource = new kendo.data.DataSource({
         transport: {
-            read: function (datos) {
-                $.ajax({
-                    type: "POST",
-                    dataType: 'json',
-                    async: false,
-                    data: JSON.stringify({
-                        IdCliente: idCliente,
-                        IdDespachoMercancia: IdDespachoMercancia
-                    }),
-                    url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl/",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        datos.success(result);
-                    }
-                });
+            read: {
+                url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
             },
-
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "DespachosEmbalajesMercancias/DeleteDespachoEmbalajesMercancias/" + `${datos.IdDespachoEmbalajeMercancia}`; },
+                dataType: "json",
+                type: "DELETE"
+            },
             parameterMap: function (data, type) {
+                return kendo.stringify({
+                    IdCliente: idCliente,
+                    IdDespachoMercancia: IdDespachoMercancia
+                });
+
                 if (type !== "read") {
                     return kendo.stringify(data);
+                } else {
+                    return kendo.stringify({
+                        IdCliente: idCliente,
+                        IdDespachoMercancia: IdDespachoMercancia
+                    });
                 }
             }
+            
         },
-        requestEnd: Grid_requestEnd,
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+            if (e.type === "destroy") {
+                $("#gridEmbalajes").data("kendoGrid").dataSource.read();
+                $("#cmbDespacho").data("kendoMultiColumnComboBox").dataSource.read();
+                
+            }
+        },
         error: Grid_error,
         schema: {
             model: {
                 id: "IdEmbalajeMercancia",
                 fields: {
+                    IdDespachoEmbalajeMercancia: { type: "number" },
+                    IdPlanta: { type: "number" },
                     IdEmbalajeMercancia: { type: "number" },
                     NoDocumento: { type: "string" },
                     FechaCreacion: { type: "date" },
                     IdEmbalaje: { type: "number" },
                     CantidadCortes: { type: "number" },
                     CantidadMercancia: { type: "number" },
-                    Cantidad: { type: "number" }
+                    Cantidad: { type: "number" },
+                    Sugerido: { type: "number" }
                 }
             }
         }
@@ -100,6 +114,9 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { selectable: true, width: "35px" },
+            { field: "IdDespachoEmbalajeMercancia", title: "IdDespachoEmbalajeMercancia", hidden: true },
+            { field: "IdPlanta", title: "IdPlanta", hidden: true },
+            { field: "Sugerido", title: "Sugerido", hidden: true },
             { field: "IdEmbalajeMercancia", title: "id", hidden: true },
             { field: "IdEmbalaje", title: "id Embalaje", hidden: true },
             { field: "NoDocumento", title: "Correlativo" },
@@ -107,14 +124,31 @@ $(document).ready(function () {
             { field: "UnidadEmbalaje", title: "Unidad Embalaje" },
             { field: "CantidadCortes", title: "Corte" },
             { field: "CantidadMercancia", title: "Mercancía" },
-            { field: "Cantidad", title: "Cantidad" }
+            { field: "Cantidad", title: "Cantidad" },
+            {
+                field: "btnHb", title: "&nbsp;",
+                command: {
+                    name: "btnHb",
+                    iconClass: "k-icon k-i-edit",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoEmbalajeMercancia}/${dataItem.IdPlanta}/${dataItem.Sugerido}`;
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
+            }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridEmbalajes").data("kendoGrid"), ModoEdicion.NoEditable, true, true, true, true, redimensionable.Si, 650, "multiple");
     SetGrid_CRUD_ToolbarTop($("#gridEmbalajes").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridEmbalajes").data("kendoGrid"), false, false);
+    SetGrid_CRUD_Command($("#gridEmbalajes").data("kendoGrid"), false, true);
     Set_Grid_DataSource($("#gridEmbalajes").data("kendoGrid"), dataSource);
 
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
@@ -132,6 +166,12 @@ $(document).ready(function () {
             }
         });
 
+        if (idCliente != 0) {
+            KdoButtonEnable($("#btnCrearEmbalaje"), true);
+        }
+        else {
+            KdoButtonEnable($("#btnCrearEmbalaje"), false);
+        }
         idMarca = 0;
         idPlanta = 0;
         idServicio = 0;
@@ -212,7 +252,7 @@ $(document).ready(function () {
     });
 
     $("#btnCrearEmbalaje").data("kendoButton").bind("click", function (e) {
-        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${KdoMultiColumnCmbGetValue($("#cmbDespacho"))}`;
+        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${0}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${0}`;
     });
 
 });
@@ -372,9 +412,7 @@ const KdoComboBoxFM = function (e, datos, textField, valueField, opcPlaceHolder,
     });
 };
 
-//var fn_RefreshGrid = () => {
-//    $("#gridEmbalajes").data("kendoGrid").dataSource.read();
-//};
+
 
 fPermisos = (datos) => {
     Permisos = datos;

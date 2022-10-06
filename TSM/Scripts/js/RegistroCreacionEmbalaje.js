@@ -1,4 +1,4 @@
-﻿var Gdet;
+﻿
 var Permisos;
 var xIdIngreso = 0;
 var StrId = "";
@@ -13,7 +13,7 @@ var xidPlanta = 0;
 var xidMarca = 0;
 var xidListaEmpaque = 0;
 var xidServicio = 0;
-var xidDM = 0;
+var xidDem = 0;
 var xNoDoc = 0;
 
 var rowsPadre = [];
@@ -24,63 +24,59 @@ var acumRowPadre = [];
 var acumRowHijo = [];
 var acumDSOD = [];
 var oldElement = [];
-
+let Gdet;
 $(document).ready(function () {
 
+    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
-
     Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
-
     Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
-
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
 
-    KdoCmbSetValue($("#CmbServicio"), sessionStorage.getItem("cFOT_CmbServicio") === null ? "" : sessionStorage.getItem("cFOT_CmbServicio"));
 
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
     $("#cmbCorte").mlcCorteCatalogo();
     // Agregar Corte
-    KdoButton($("#btnCrearOrdenDespacho"), "save");
+    KdoButton($("#btnGuardar"), "save");
+    KdoButton($("#btnCrearUniEmbalaje"), "plus-outline");
+    KdoButton($("#btnFinalizarEmb"), "zoom-in");
     // crear detakle de preparado
-    KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
-    $("#dtFechaProyectada").kendoDatePicker({ format: "dd/MM/yyyy" });
-    KdoButton($("#btnMoveData"), "redo k-icon-xl");
-    $("#btnMoveData").removeClass("k-button-icon");
-    KdoButtonEnable($("#btnMoveData"), false);
+    KdoButtonEnable($("#btnGuardar"), false);
+    $("#txtIdDespachoMerc").val(0);
+
+
+
+    if (readIdDespachoEmbalajeMercancia > 0) {
+        fn_Get_DatosCab(readIdDespachoEmbalajeMercancia)
+    } else {
+        KdoButtonEnable($("#btnCrearUniEmbalaje"), false);
+        KdoButtonEnable($("#btnFinalizarEmb"), false);
+    }
 
     //#region crear bultos si preparar
 
     //CONFIGURACION DEL GRID,CAMPOS
 
-    let dTree = new kendo.data.DataSource({
+    let dsCorte = new kendo.data.DataSource({
         transport: {
-            read: function (datos) {
-                kendo.ui.progress($(document.body), true);
-                $.ajax({
-                    type: "POST",
-                    dataType: 'json',
-                    url: TSM_Web_APi + "HojasBandeos/GetCortesPorDespachar/",
-                    data: JSON.stringify({
-                        IdCliente: xidclie,
-                        IdPlanta: xidPlanta,
-                        IdMarca: xidMarca,
-                        IdCatalogo: xidcata,
-                        IdHojaBandeo: xidCorte,
-                        IdListaEmpaque: xidListaEmpaque,
-                        IdServicio: xidServicio
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        datos.success(result);
-                        kendo.ui.progress($(document.body), false);
-                    },
-                    error: function (result) {
-                        options.error(result);
-                        kendo.ui.progress($(document.body), false);
-                    }
+             read: {
+                url: TSM_Web_APi + "EmbalajesMercancias/GetCortesPorEmbalar",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
+            },
+            parameterMap: function (data, type) {
+                return kendo.stringify({
+                    IdCliente: xidclie,
+                    IdPlanta: xidPlanta,
+                    IdMarca: xidMarca,
+                    IdCatalogo: xidcata,
+                    IdHojaBandeo: xidCorte,
+                    IdListaEmpaque: xidListaEmpaque,
+                    IdServicio: xidServicio,
+                    IdDespachoMercancia: $("#txtIdDespachoMerc").val(),
+                    Sugerido: readSugeridos === 0 ? false : true
                 });
             }
         },
@@ -104,11 +100,10 @@ $(document).ready(function () {
         }
     });
 
-    $("#treelist").kendoGrid({
+    $("#gCortes").kendoGrid({
         //DEFICNICIÓN DE LOS CAMPOS
         detailInit: DIDM,
         dataBound: function (e) {
-            //this.collapseRow(this.tbody.find("tr.k-master-row").first());
             var grid = e.sender;
 
             grid.tbody.find("tr.k-master-row").click(function (e) {
@@ -137,7 +132,7 @@ $(document).ready(function () {
                 childRow.removeClass("k-state-selected");
             }
 
-            let grid = $("#treelist").data("kendoGrid");
+            let grid = $("#gCortes").data("kendoGrid");
             let detailRow = grid.element.find(".k-detail-row");
 
             let items = [];
@@ -185,12 +180,33 @@ $(document).ready(function () {
             { field: "CantidadDisponible", title: "Cantidad Disponible" },
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
             {
+                field: "btnGenerarEmbalaje",
+                title: "&nbsp;",
                 command: [
                     {
                         name: "b_search",
+                        iconClass: "k-icon k-i-search m-0",
                         text: " ",
-                        click: getInfoGeneral,
-                        iconClass: "k-icon k-i-search m-0"
+                        title: "&nbsp;",
+                        click: function (e) {
+                            let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            let strjson = {
+                                config: [{
+                                    Div: "vInfDiseno",
+                                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
+                                    Js: "GenInfoFM.js",
+                                    Titulo: "Información General",
+                                    Width: "60%",
+                                    MinWidth: "40%"
+                                }],
+                                Param: {
+                                    pIdHojaBandeo: dataItem.IdHojaBandeo
+                                },
+                                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
+                            };
+
+                            fn_GenLoadModalWindow(strjson);
+                        },
                     }
                 ],
                 width: "70px"
@@ -200,17 +216,28 @@ $(document).ready(function () {
 
     //#endregion
 
-    SetGrid($("#treelist").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, "multiple");
-    Set_Grid_DataSource($("#treelist").data("kendoGrid"), dTree);
+    SetGrid($("#gCortes").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
+    Set_Grid_DataSource($("#gCortes").data("kendoGrid"), dsCorte);
 
     var selectedRows = [];
 
-    $("#treelist").data("kendoGrid").tbody.on("change", ".k-checkbox", function (e) {
+    $("#gCortes").data("kendoGrid").tbody.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
         let nextRow = checkbox.closest("tr").next();
+        let prevRow = "";
+        let prevCheck = "";
         let currentRow = checkbox.closest("tr")[0];
         let allRows = checkbox.closest("tr")[0].parentElement.rows;
         let tallaActual = currentRow.cells[3].innerText;
+        let contRowsChecked = 0;
+        var acumRowChecked = 0;
+
+        let gridElement = checkbox.closest(".lump-child-grid.k-grid.k-widget");
+
+        if (gridElement.length > 0) {
+            prevRow = checkbox.closest(".k-detail-row")[0].previousSibling;
+            prevCheck = prevRow.children[1].children[0];
+        }
 
         if (nextRow.hasClass("k-detail-row")) {
             nextRow.find(":checkbox").prop("checked", checkbox.is(":checked"));
@@ -218,22 +245,41 @@ $(document).ready(function () {
 
         //función para marcar y desmarcar todas las tallas
         $.each($(allRows), function (indice, elemento) {
-            if (elemento.cells[3].innerText == tallaActual) {
-                let tempCheck = elemento.cells[0].children[0];
-                if (checkbox.is(":checked")) {
-                    tempCheck.checked = true;
-                    elemento.classList.add("k-state-selected");
+            if (gridElement.length > 0) {
+                if (elemento.cells[3].innerText == tallaActual) {
+                    let tempCheck = elemento.cells[0].children[0];
+                    if (checkbox.is(":checked")) {
+                        tempCheck.checked = true;
+                        elemento.classList.add("k-state-selected");
+                        contRowsChecked++;
+                    }
+                    else {
+                        tempCheck.checked = false;
+                        elemento.classList.remove("k-state-selected");
+                    }
                 }
-                else {
-                    tempCheck.checked = false;
-                    elemento.classList.remove("k-state-selected");
+                if (elemento.classList.contains("k-state-selected") == true) {
+                    acumRowChecked++;
                 }
             }
         });
 
+        if (prevRow != "" && prevCheck != "") {
+            if (acumRowChecked == allRows.length) {
+                prevCheck.checked = true;
+            }
+            else if (acumRowChecked == 0) {
+                prevCheck.checked = false;
+                prevRow.classList.remove("k-state-selected");
+            }
+            else {
+                prevCheck.checked = false;
+            }
+        }
+
     });
 
-    $("#treelist").data("kendoGrid").thead.on("change", ".k-checkbox", function (e) {
+    $("#gCortes").data("kendoGrid").thead.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
         let content = checkbox.closest(".k-grid-header").next();
 
@@ -267,20 +313,18 @@ $(document).ready(function () {
         }
     });
 
-    $("#treelist").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#treelist"), selectedRows);
+    $("#gCortes").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gCortes"), selectedRows);
     });
 
 
-    $("#treelist").data("kendoGrid").dataSource.read();
+    $("#gCortes").data("kendoGrid").dataSource.read();
 
-    if (readFecha != "" && readFecha != undefined) {
-        $("#dtFechaProyectada").data("kendoDatePicker").value(readFecha);
-    }
 
     if (readPlanta > 0 && readPlanta != "" && readPlanta != undefined) {
         xidPlanta = readPlanta;
         $("#cmbPlanta").data("kendoComboBox").value(readPlanta);
+        KdoComboBoxEnable($("#cmbPlanta"), false);
     }
     else {
         xidPlanta = null;
@@ -296,285 +340,216 @@ $(document).ready(function () {
         xidclie = parseInt(readIdCliente);
         $("#cmbCliente").data("kendoComboBox").value(xidclie);
         $('#cmbCliente').data("kendoComboBox").readonly(true);
-        KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+        Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
+        Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
+        KdoButtonEnable($("#btnGuardar"), true);
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
             closeOpenDetailGrid();
         });
     }
 
-    if (readNoDoc != "" && readNoDoc != undefined) {
-        xNoDoc = readNoDoc;
-        $("#txtNoDoc").val(xNoDoc);
+    if ( readSugeridos != undefined) {
+        $('#chkSugerido').prop('checked', readSugeridos);
+    } else {
+        $('#chkSugerido').prop('checked', 0);
     }
 
-    if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
-        KdoButtonEnable($("#btnMoveData"), true);
-    }
+    $("#chkSugerido").click(function () {
+        if (this.checked) {
+            readSugeridos = 1;
+            $("#gCortes").data("kendoGrid").dataSource.read();
+
+        } else {
+            readSugeridos = 0;
+            $("#gCortes").data("kendoGrid").dataSource.read();
+
+        }
+    });
+
 
 
     //#region crear grid Lista
     let dsDM = new kendo.data.DataSource({
+
         transport: {
-            read: function (datos) {
-                kendo.ui.progress($(document.body), true);
-                $.ajax({
-                    type: "GET",
-                    dataType: 'json',
-                    url: TSM_Web_APi + "DespachosMercanciasDetalles/GetCortesSugeridos/" + xidDM,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        datos.success(result);
-                        kendo.ui.progress($(document.body), false);
-                    },
-                    error: function (result) {
-                        options.error(result);
-                        kendo.ui.progress($(document.body), false);
-                    }
-                });
+            read: {
+                url: function () { return TSM_Web_APi + "EmbalajesMercancias/GetCortesEnEmbalajes/" + xidDem; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            destroy: {
+                url: function (datos) { return TSM_Web_APi + "EmbalajesMercancias/DeleteEmbalajesMercanciasxId/" + `${datos.IdDespachoEmbalajeMercancia}/${datos.IdEmbalajeMercancia}`; },
+                dataType: "json",
+                type: "DELETE"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
             }
         },
+         requestEnd: function (e) {
+             Grid_requestEnd(e);
+             if (e.type === "destroy") {
+                 if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
+                     $("#gCortes").data("kendoGrid").dataSource.read();
+                 }
+             }
+             
+         },
+         error: Grid_error,
         schema: {
             model: {
-                id: "IdDespachoMercancia",
+                id: "IdEmbalajeMercancia",
                 fields: {
-                    IdDespachoMercancia: { type: "number" },
-                    IdHojaBandeo: { type: "number" },
-                    NoReferencia: { type: "string" },
-                    Disenos: { type: "string" },
-                    CantidadTallas: { type: "number" },
-                    CantidadMercancia: { type: "number" },
-                    Cantidad: { type: "number" }
+                    IdEmbalajeMercancia: { type: "number" },
+                    IdEmbalaje: { type: "number" },
+                    NombreUnidadEmb: { type: "string" },
+                    NoDocumento: { type: "string" },
+                    CantTallas: { type: "number" },
+                    CantBultos: { type: "number" },
+                    Cantidad: { type: "number" },
+                    IdDespachoEmbalajeMercancia: { type: "number" },
                 }
             }
         }
     });
 
     //CONFIGURACION DEL GRID,CAMPOS
-    $("#gridOrdenDespacho").kendoGrid({
+    $("#gEnEmbalaje").kendoGrid({
         detailInit: DIDM,
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdDespachoMercancia", title: "IdDespachoMercancia", hidden: true },
-            { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
-            { field: "NoReferencia", title: "FM", attributes: { "class": "selFM" } },
-            { field: "Disenos", title: "Diseños" },
-            /*{ field: "Corte", title: "Corte" },
-            { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true, attributes: { "class": "selCata" } },*/
-            { field: "CantidadTallas", title: "Cantidad Tallas" },
-            { field: "CantidadMercancia", title: "Cantidad Mercancia" },
+            { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
+            { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
+            { field: "NombreUnidadEmb", title: "Unidad Embalaje", attributes: { "class": "selFM" } },
+            { field: "NoDocumento", title: "NoDocumento" },
+            { field: "CantTallas", title: "Cantidad Tallas" },
+            { field: "CantBultos", title: "Cantidad Bultos" },
             { field: "Cantidad", title: "Cantidad" },
-            {
-                field: "", title: "", template: "<button class='k-button k-button-icontext k-grid-b_deleteOD' id='eod#=data.IdDespachoMercancia#' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"Todas las tallas\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 70
-            }
+            { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true }
+            
         ]
     });
 
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659);
-    SetGrid_CRUD_ToolbarTop($("#gridOrdenDespacho").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, false);
-    Set_Grid_DataSource($("#gridOrdenDespacho").data("kendoGrid"), dsDM);
+    SetGrid($("#gEnEmbalaje").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
+    SetGrid_CRUD_ToolbarTop($("#gEnEmbalaje").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gEnEmbalaje").data("kendoGrid"), false, true);
+    Set_Grid_DataSource($("#gEnEmbalaje").data("kendoGrid"), dsDM);
 
-    if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
-        xidDM = readIdDespachoMercancia;
-        $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-    }
+    $("#btnGuardar").click(function () {
+
+        if (Kendo_CmbGetvalue($("#cmbPlanta")) === 0 || Kendo_CmbGetvalue($("#cmbPlanta")) === undefined) {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una planta para continuar.", "error");
+        } else {
+            fn_GenCabEmbalaje();
+        }
 
 
+    });
 
-    //crear orden despacho
-    $("#btnMoveData").click(function () {
-
-        rowsPadre = [];
+    $("#btnCrearUniEmbalaje").click(function () {
+        kendo.ui.progress($(document.body), true);
         rowsHijo = [];
-        let mercancias = [];
-
+        mercancias = [];
         $.each($(".k-state-selected.k-master-row"), function (index, elemento) {
+            rowsHijo.push(elemento);
 
-            if (elemento.cells[6].className == "selCata") {
-                rowsPadre.push(elemento);
-            }
-            else {
-                rowsHijo.push(elemento);
-                //elemento.classList.remove("k-state-selected");
-            }
         });
 
         $.each($(rowsHijo), function (index, elemento) {
-            mercancias.push(parseInt(elemento.cells[4].innerText));
+            if (Number(elemento.cells[4].innerText) ) {
+                mercancias.push(parseInt(elemento.cells[4].innerText));
+            }
+           
         });
 
-        if (rowsHijo.length > 0) {
-            let d = new Date();
-            let now = "";
-            if (d.getMonth() + 1 < 10) {
-                if (d.getDate() < 10) {
-                    now = d.getFullYear() + "/" + "0" + (d.getMonth() + 1) + "/" + "0" + d.getDate();
-                }
-                else {
-                    now = d.getFullYear() + "/" + "0" + (d.getMonth() + 1) + "/" + d.getDate();
-                }
-            }
-            else {
-                if (d.getDate() < 10) {
-                    now = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + "0" + d.getDate();
-                }
-                else {
-                    now = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
-                }
-            }
-            let fecha = kendo.toString($("#dtFechaProyectada").data("kendoDatePicker").value(), "yyyy/MM/dd");
 
-            if (fecha >= now) {
-                if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "") {
-                    /*let registro = {
-                        "FechaSolicitud": now.replace(/\//g, ''),
-                        "IdCliente": xidclie,
-                        "Estado": "OPERACION",
-                        "FechaEntrega": fecha.replace(/\//g, ''),
-                        "IdUsuarioSolicita": getUser(),
-                        "IdUsuarioMod": getUser(),
-                        "IdMercancia": mercancias,
-                        "IdMotivo": 1,
-                        "IdPlanta": xidPlanta
-                    }
-                    console.log(registro);*/
-
-                    if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
-                        readIdDespachoMercancia == null;
-                    }
-
-                    $.ajax({
-                        url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
-                        method: "POST",
-                        dataType: "json",
-                        data: JSON.stringify({
-                            IdDespachoMercancia: readIdDespachoMercancia,
-                            FechaSolicitud: now.replace(/\//g, ''),
-                            IdCliente: xidclie,
-                            Estado: "OPERACION",
-                            FechaEntrega: fecha.replace(/\//g, ''),
-                            IdUsuarioSolicita: getUser(),
-                            IdUsuarioMod: getUser(),
-                            IdMercancia: mercancias,
-                            IdMotivo: 1,
-                            IdPlanta: xidPlanta
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (datos) {
-                            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                                closeOpenDetailGrid();
-                            });
-                            readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
-                            xidDM = datos[0][0]["IdDespachoMercancia"];
-                            readNoDoc = datos[0][0]["NoDocumento"];
-                            xNoDoc = datos[0][0]["NoDocumento"];
-                            $("#txtNoDoc").val(xNoDoc);
-                            $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                            RequestEndMsg(datos, "Post");
+        if ( mercancias.length >0) {
+            $.ajax({
+                url: TSM_Web_APi + "EmbalajesMercancias/GetDetalleMercanciaEmbalar",
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify({
+                    IdMercancias: mercancias
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (datos) {
+                    let strjson = {
+                        config: [{
+                            Div: "vCrearUnidad",
+                            Vista: "~/Views/CrearEmbalaje/_CreacionEmbalaje.cshtml",
+                            Js: "CreacionEmbalaje.js",
+                            Titulo: "Crear Unidad de Embalaje",
+                            Width: "50%",
+                            MinWidth: "30%"
+                        }],
+                        Param: {
+                            pvModal: "vCrearUnidad",
+                            pArrayCortes: datos, //Columnas: Corte, Tallas, Cantidad
+                            pCantidadPiezas: datos[0].TotalPiezas,
+                            pCantidadBultos: datos[0].TotalBultos,
+                            pCantidadCortes: datos[0].TotalCortes,
+                            pIdDespachoEmbalajeMercancia: $("#txtNoDoc").val(),
+                            pIdDespachoMercancia: $("#txtIdDespachoMerc").val(),
+                            pIdPlanta: Kendo_CmbGetvalue($("#cmbPlanta")),
+                            pIdCliente: Kendo_CmbGetvalue($("#cmbCliente")),
+                            pIdMercancias: mercancias
                         },
-                        error: function (data) {
-                            ErrorMsg(data);
-                        },
-                        complete: function () {
-                            kendo.ui.progress($(document.body), false);
-                        }
-                    });
+                        fn: { fnclose: "fn_RefreshGrid", fnLoad: "fn_Ini_CreacionEmbalaje", fnReg: "fn_Reg_CreacionEmbalaje", fnActi: "" }
+                    };
+
+                    fn_GenLoadModalWindow(strjson);
+                    kendo.ui.progress($(document.body), false);
+                },
+                error: function () {
+                    kendo.ui.progress($(document.body), false);
                 }
-                else {
-                    $("#kendoNotificaciones").data("kendoNotification").show("El campo planta es necesario, por favor escoja una.", "error");
-                }
-            }
-            else {
-                $("#kendoNotificaciones").data("kendoNotification").show("Escoja una fecha válida.", "error");
-            }
+            });
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar almenos una fila de la mercancia.", "error");
+            kendo.ui.progress($(document.body), false);
         }
-        else {
-            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione al menos una talla.", "error");
-        }
+  
+
 
     });
 
-    $("#btnCrearOrdenDespacho").click(function () {
+    $("#btnFinalizarEmb").click(function () {
 
-        let d = new Date();
-        let now = "";
-        if (d.getMonth() + 1 < 10) {
-            if (d.getDate() < 10) {
-                now = d.getFullYear() + "/" + "0" + (d.getMonth() + 1) + "/" + "0" + d.getDate();
-            }
-            else {
-                now = d.getFullYear() + "/" + "0" + (d.getMonth() + 1) + "/" + d.getDate();
-            }
-        }
-        else {
-            if (d.getDate() < 10) {
-                now = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + "0" + d.getDate();
-            }
-            else {
-                now = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
-            }
-        }
-        let fecha = kendo.toString($("#dtFechaProyectada").data("kendoDatePicker").value(), "yyyy/MM/dd");
+        if (readIdDespachoEmbalajeMercancia > 0 && $("#gEnEmbalaje").data("kendoGrid").dataSource.total() !== 0) {
+            kendo.ui.progress($(document.body), true);
+            $.ajax({
+                url: TSM_Web_APi + "EmbalajesMercancias/Estado/CambiarEstadoEmbalajeRegistrados",
+                method: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    IdDespachoEmbalajeMercancia: readIdDespachoEmbalajeMercancia,
+                    EstadoSiguiente: "FINALIZADO",
+                    Motivo: "EMBALAJE FINALIZADO"
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    RequestEndMsg(data, "Post");
+                    $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+                    window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
 
-        if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "") {
-            if (fecha >= now) {
-                if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
-                    readIdDespachoMercancia == null;
+                },
+                error: function (data) {
+                    ErrorMsg(data);
+                },
+                complete: function () {
+                    kendo.ui.progress($(document.body), false);
                 }
+            })
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("No hay embalajes generados para finalizar", "error");
+        }
 
-                $.ajax({
-                    url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
-                    method: "POST",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        IdDespachoMercancia: readIdDespachoMercancia,
-                        FechaSolicitud: now.replace(/\//g, ''),
-                        IdCliente: xidclie,
-                        Estado: "OPERACION",
-                        FechaEntrega: fecha.replace(/\//g, ''),
-                        IdUsuarioSolicita: getUser(),
-                        IdUsuarioMod: getUser(),
-                        IdMercancia: null,
-                        IdMotivo: 1,
-                        IdPlanta: xidPlanta
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (datos) {
-                        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                            closeOpenDetailGrid();
-                        });
-                        readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
-                        xidDM = datos[0][0]["IdDespachoMercancia"];
-                        readNoDoc = datos[0][0]["NoDocumento"];
-                        xNoDoc = datos[0][0]["NoDocumento"];
-                        $("#txtNoDoc").val(xNoDoc);
-                        $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                        $('#cmbCliente').data("kendoComboBox").readonly(true);
-                        KdoButtonEnable($("#btnMoveData"), true);
-                        RequestEndMsg(datos, "Post");
-                    },
-                    error: function (data) {
-                        KdoButtonEnable($("#btnMoveData"), false);
-                        ErrorMsg(data);
-                    },
-                    complete: function () {
-                        kendo.ui.progress($(document.body), false);
-                    }
-                });
-            }
-            else {
-                $("#kendoNotificaciones").data("kendoNotification").show("Escoja una fecha válida.", "error");
-            }
-        }
-        else {
-            $("#kendoNotificaciones").data("kendoNotification").show("El campo planta es necesario, por favor escoja una.", "error");
-        }
 
     });
-
-
     //compeltar campos de cabecera
 
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
@@ -587,7 +562,6 @@ $(document).ready(function () {
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
             $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
-            //$("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
             let dsm = new kendo.data.DataSource({
                 transport: {
                     read: {
@@ -628,16 +602,14 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
-                //KdoButtonEnable($("#btnMoveData"), true);
+                KdoButtonEnable($("#btnGuardar"), true);
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
-                KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
-                //KdoButtonEnable($("#btnMoveData"), false);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
+                KdoButtonEnable($("#btnGuardar"), false);
             }
         }
     });
@@ -690,14 +662,14 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
+                KdoButtonEnable($("#btnGuardar"), true);
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
-                KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
+                KdoButtonEnable($("#btnGuardar"), false);
             }
         }
         else {
@@ -747,13 +719,13 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
+                KdoButtonEnable($("#btnGuardar"), false);
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
     });
@@ -784,14 +756,14 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     fn_readonly();
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnMoveData"), true);
+
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         } else {
             xidcata = 0;
@@ -818,13 +790,13 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnMoveData"), false);
+           /*     KdoButtonEnable($("#btnMoveData"), false);*/
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
     });
@@ -857,13 +829,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
-                KdoButtonEnable($("#btnMoveData"), false);
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
         else {
@@ -897,12 +868,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
 
         } else {
@@ -929,12 +900,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
     });
@@ -966,12 +937,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
     });
@@ -1005,12 +976,12 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                 closeOpenDetailGrid();
             });
         }
         else {
-            $("#treelist").data("kendoGrid").dataSource.data([]);
+            $("#gCortes").data("kendoGrid").dataSource.data([]);
         }
     });
 
@@ -1040,12 +1011,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
 
@@ -1080,12 +1051,12 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                 closeOpenDetailGrid();
             });
         }
         else {
-            $("#treelist").data("kendoGrid").dataSource.data([]);
+            $("#gCortes").data("kendoGrid").dataSource.data([]);
         }
     });
 
@@ -1115,12 +1086,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
 
@@ -1155,12 +1126,12 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                 closeOpenDetailGrid();
             });
         }
         else {
-            $("#treelist").data("kendoGrid").dataSource.data([]);
+            $("#gCortes").data("kendoGrid").dataSource.data([]);
         }
     });
 
@@ -1190,12 +1161,12 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
 
@@ -1230,12 +1201,12 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                 closeOpenDetailGrid();
             });
         }
         else {
-            $("#treelist").data("kendoGrid").dataSource.data([]);
+            $("#gCortes").data("kendoGrid").dataSource.data([]);
         }
     });
 
@@ -1265,65 +1236,65 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
                     closeOpenDetailGrid();
                 });
             }
             else {
-                $("#treelist").data("kendoGrid").dataSource.data([]);
+                $("#gCortes").data("kendoGrid").dataSource.data([]);
             }
         }
 
     });
 
+    $("#btnRetornar").click(function () {
+        window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
+    });
+
+    if (readIdDespachoEmbalajeMercancia > 0 && readIdDespachoEmbalajeMercancia != "" && readIdDespachoEmbalajeMercancia != undefined) {
+        xidDem = readIdDespachoEmbalajeMercancia;
+        $("#gEnEmbalaje").data("kendoGrid").dataSource.read
+        KdoButtonEnable($("#btnGuardar"), false);
+    }
+
+    $("#gEnEmbalaje").data("kendoGrid").bind("dataBound", function (e) {
+      
+        if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
+            KdoButtonEnable($("#btnFinalizarEmb"), false);
+        } else {
+            KdoButtonEnable($("#btnFinalizarEmb"), true);
+        }
+
+    });
+   
 });
 
 var fn_readonly = () => {
-    var treeList = $("#treelist").data("kendoGrid");
-    var data = treeList.dataItem("tbody>tr:eq(0)");
+    var gCortes = $("#gCortes").data("kendoGrid");
+    var data = gCortes.dataItem("tbody>tr:eq(0)");
 }
-
-var getInfoGeneral = () => {
-    $(".k-grid-b_search").on("click", function () {
-        var cata = $(this).closest("tr").find(".selCata").text();
-        if (cata != "" && cata != null) {
-            let strjson = {
-                config: [{
-                    Div: "vInfDiseno",
-                    Vista: "~/Views/Shared/_GenInfoFM.cshtml",
-                    Js: "GenInfoFM.js",
-                    Titulo: "Información General",
-                    Width: "40%",
-                    MinWidth: "30%"
-                }],
-                Param: { idCatalogo: cata },
-                fn: { fnclose: "", fnLoad: "fn_Ini_GenInfo", fnReg: "fn_Reg_GenInfo", fnActi: "" }
-            };
-
-            fn_GenLoadModalWindow(strjson);
-        }
-        else {
-            $("#kendoNotificaciones").data("kendoNotification").show("Seleccione código de FM para ver la información del diseño.", "error");
-        }
-    });
-};
 
 var DIDM = (e) => {
 
     let classList = e.masterRow[0].cells[3].classList;
-
+   
     if (classList.contains("selFM") == true) {
         /////////////////////////////////GRID DERECHO///////////////////////////////////
-        let viddm = e.masterRow[0].cells[1].innerText === null ? 0 : e.masterRow[0].cells[1].innerText;
-        let vidhob2 = e.masterRow[0].cells[2].innerText === null ? 0 : e.masterRow[0].cells[2].innerText;
+   
+        let vidEmbmerc = e.masterRow[0].cells[1].innerText === null ? 0 : e.masterRow[0].cells[1].innerText;
         let rowId2 = e.masterRow[0].cells[1].innerText;
 
         let VdSDM = {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "DespachosMercanciasDetalles/GetCortesSugeridosDet/" + viddm + "/" + vidhob2; },
+                    url: function () { return TSM_Web_APi + `EmbalajesMercancias/GetCortesEnEmbalajesDet/${vidEmbmerc}`; },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
+                },
+                destroy: {
+                    url: function (datos) { return TSM_Web_APi + "EmbalajesMercancias/DeleteEmbalajesMercanciasxIdHojaBandeo/" + `${datos.IdEmbalajeMercancia}/${datos.IdHojaBandeo}`; },
+                    dataType: "json",
+                    type: "DELETE"
                 },
                 parameterMap: function (data, type) {
                     if (type !== "read") {
@@ -1333,46 +1304,52 @@ var DIDM = (e) => {
             },
             requestEnd: function (e) {
                 Grid_requestEnd(e);
+                if (Gdet !== undefined) {
+                    if (Gdet.dataSource.total() === 0 && e.type === "destroy") {
+                        $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+                        $("#gCortes").data("kendoGrid").dataSource.read();
+                    }
+                }
             },
             error: Grid_error,
             schema: {
                 model: {
-                    id: "IdDespachoMercancia",
+                    id: "IdEmbalajeMercancia",
                     fields: {
-                        IdDespachoMercancia: { type: "number" },
+                        IdDespachoEmbalajeMercancia: { type: "number" },
+                        IdEmbalajeMercancia: { type: "number" },
                         IdHojaBandeo: { type: "number" },
-                        NoReferencia: { type: "string" },
-                        Disenos: { type: "string" },
-                        Talla: { type: "string" },
-                        CantidadMercancia: { type: "number" },
+                        Corte: { type: "string" },
+                        CantTallas: { type: "number" },
+                        CantBultos: { type: "number" },
                         Cantidad: { type: "number" }
                     }
                 }
             },
-            filter: { field: "NoReferencia", operator: "eq", value: e.masterRow[0].cells[3].innerText }
+            filter: { field: "IdEmbalajeMercancia", operator: "eq", value: e.masterRow[0].cells[1].innerText }
         };
 
         let gt = $(`<div id= "gridDM${rowId2}"></div>`).appendTo(e.detailCell).kendoGrid({
             //DEFICNICIÓN DE LOS CAMPOS
             columns: [
-                { field: "IdDespachoMercancia", title: "IdDespachoMercancia", hidden: true },
-                { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true, attributes: { "class": "idHB-detail" } },
-                { field: "NoReferencia", title: "FM" },
-                { field: "Disenos", title: "Disenos" },
-                { field: "Talla", title: "Talla" },
-                { field: "CantidadMercancia", title: "Cantidad Mercancia" },
-                { field: "Cantidad", title: "Cantidad" },
-                {
-                    field: "", title: "", template: "<button class='k-button k-button-icontext k-grid-del_detalle' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"#=data.Talla#\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 90
-                }
+                { field: "IdDespachoEmbalajeMercancia", title: "Id DespachoEmbalaje Mercancia", hidden: true },
+                { field: "IdEmbalajeMercancia", title: "IdEmbalaje Mercancia", hidden: true },
+                { field: "IdHojaBandeo", title: "IdHoja Bandeo", hidden: true, attributes: { "class": "idHB-detail" } },
+                { field: "Corte", title: "Corte" },
+                { field: "CantTallas", title: "Cantidad Tallas" },
+                { field: "CantBultos", title: "Cantidad Bultos" },
+                { field: "Cantidad", title: "Cantidad" }
+                
             ]
         });
 
-        ConfGDetalleDM(gt.data("kendoGrid"), VdSDM, "gFor_detalleDM" + viddm);
+        ConfGDetalleDM(gt.data("kendoGrid"), VdSDM, "gFor_detalleDM" + vidEmbmerc);
 
         let selectedRowsTec = [];
+        gt.data("kendoGrid").bind("dataBound", function (e) { 
+            Gdet = gt.data("kendoGrid");
 
-
+        });
         gt.data("kendoGrid").bind("change", function (e) {
             Grid_SelectRow(gt, selectedRowsTec);
         });
@@ -1385,7 +1362,7 @@ var DIDM = (e) => {
         let VdS = {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "HojasBandeos/GetCortesPorDespacharDet/" + vidhb; },
+                    url: function () { return TSM_Web_APi + `EmbalajesMercancias/GetCortesPorEmbalarDet/${vidhb}/${$("#txtIdDespachoMerc").val()}/${readSugeridos === 0 ? false : true}`; },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 },
@@ -1407,7 +1384,6 @@ var DIDM = (e) => {
                         Corte: { type: "string" },
                         Tallas: { type: "string" },
                         IdMercancia: { type: "number" },
-                        //CantidadIngreso: { type: "number" },
                         CantidadDisponible: { type: "number" },
                         CantidadDespacho: { type: "number" }
                     }
@@ -1434,7 +1410,6 @@ var DIDM = (e) => {
                 { field: "Corte", title: "Corte", hidden: true, attributes: { "class": "corte-detail" } },
                 { field: "Tallas", title: "Tallas", attributes: { "class": "tallas-detail" } },
                 { field: "IdMercancia", title: "Id Mercancia", hidden: true },
-                //{ field: "CantidadIngreso", title: "Cantidad Ingreso" },
                 { field: "CantidadDisponible", title: "Cantidad Disponible" },
                 { field: "CantidadDespacho", title: "Cantidad Despacho" }
             ]
@@ -1455,76 +1430,21 @@ var DIDM = (e) => {
 
 var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
     SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
-    SetGrid_CRUD_Command(gt, false, false, Id_gCHForDetalleX);
+    SetGrid_CRUD_Command(gt, false, true, Id_gCHForDetalleX);
     Set_Grid_DataSource(gt, ds2);
 }
 
 var ConfGDetalle = (g, ds, Id_gCHForDetalle) => {
-    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
+    SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, false);
     SetGrid_CRUD_Command(g, false, false, Id_gCHForDetalle);
     Set_Grid_DataSource(g, ds);
 }
 
-var fn_delOD = (IdDespachoMercancia, Talla, IdHojaBandeo) => {
 
-    if (Talla == "Todas las tallas") {
-        $.ajax({
-            url: TSM_Web_APi + "DespachosMercanciasDetalles/DelDespachoMercanciaxTalla",
-            method: "DELETE",
-            dataType: "json",
-            data: JSON.stringify({
-                IdDespachoMercancia: IdDespachoMercancia,
-                Talla: null,
-                IdHojaBandeo: IdHojaBandeo,
-            }),
-            contentType: "application/json; charset=utf-8",
-            success: function (datos) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                RequestEndMsg(datos, "Post");
-            },
-            error: function (data) {
-                ErrorMsg(data);
-            },
-            complete: function () {
-                kendo.ui.progress($(document.body), false);
-            }
-        });
-    }
-    else {
-        $.ajax({
-            url: TSM_Web_APi + "DespachosMercanciasDetalles/DelDespachoMercanciaxTalla",
-            method: "DELETE",
-            dataType: "json",
-            data: JSON.stringify({
-                IdDespachoMercancia: IdDespachoMercancia,
-                Talla: Talla,
-                IdHojaBandeo: IdHojaBandeo,
-            }),
-            contentType: "application/json; charset=utf-8",
-            success: function (datos) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                RequestEndMsg(datos, "Post");
-            },
-            error: function (data) {
-                ErrorMsg(data);
-            },
-            complete: function () {
-                kendo.ui.progress($(document.body), false);
-            }
-        });
-    }
-
-}
 
 
 var closeOpenDetailGrid = () => {
-    var gridV = $("#treelist").data("kendoGrid");
+    var gridV = $("#gCortes").data("kendoGrid");
 
     if (gridV.dataSource.total() > 0) {
         $(".k-master-row").each(function (index) {
@@ -1545,7 +1465,7 @@ var loadModalCorte = (IdHojaBandeo, Corte) => {
             Vista: "~/Views/Shared/_ConsultaEtapaCorte.cshtml",
             Js: "ConsultaEtapaCorte.js",
             Titulo: "Estatus Etapas",
-            Width: "70%",
+            Width: "80%",
             MinWidth: "30%"
         }],
         Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte },
@@ -1627,3 +1547,77 @@ $.fn.extend({
         });
     }
 });
+
+let fn_Get_DatosCab = (xIdDesEm) => {
+    kendo.ui.progress($(document), true);
+    $.ajax({
+        url: TSM_Web_APi + "DespachosEmbalajesMercancias/GetDatosCab/" + `${xIdDesEm}`,
+        dataType: 'json',
+        type: 'GET',
+        async:false,
+        success: function (dato) {
+            if (dato !== null) {
+                KdoCmbSetValue($("#cmbPlanta"), dato.IdPlanta);
+                $("#txtNoDoc").val(dato.IdDespachoEmbalajeMercancia);
+                $("#txtIdDespachoMerc").val(dato.IdDespachoMercancia);
+                KdoComboBoxEnable($("#cmbPlanta"), false);
+                KdoButtonEnable($("#btnGuardar"), false);
+                xidPlanta = KdoCmbGetValue($("#cmbPlanta"))
+            } else {
+                KdoCmbSetValue($("#cmbPlanta"),"");
+                $("#txtNoDoc").val("");
+                $("#txtIdDespachoMerc").val(0);
+                KdoComboBoxEnable($("#cmbPlanta"), true);
+                KdoButtonEnable($("#btnGuardar"), true);
+                xidPlanta = null;
+            }
+            kendo.ui.progress($(document), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document), false);
+        }
+    });
+
+};
+
+
+const fn_GenCabEmbalaje = () => {
+    let resul = false;
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
+        method: "POST",
+        dataType: "json",
+        data: JSON.stringify({
+            IdDespachoEmbalajeMercancia: 0,
+            IdUsuario: getUser(),
+            IdCliente: Kendo_CmbGetvalue($("#cmbCliente")),
+            IdPlanta: Kendo_CmbGetvalue($("#cmbPlanta")),
+            IdDespachoMercancia: 0
+        }),
+        contentType: "application/json; charset=utf-8",
+        success: function (datos) {
+            $("#txtNoDoc").val(datos[0]);
+            fn_Get_DatosCab(datos[0]);
+            RequestEndMsg(datos, "Post");
+            kendo.ui.progress($(document.body), false);
+            KdoButtonEnable($("#btnCrearUniEmbalaje"), true);
+            xidDem = datos[0];
+            readIdDespachoEmbalajeMercancia = xidDem = datos[0];
+            resul = true;
+            window.history.pushState('', '', `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${datos[0]}/${KdoCmbGetValue($("#cmbPlanta"))}/${readSugeridos}`);
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            kendo.ui.progress($(document.body), false);
+            resul = false;
+        }
+    });
+    return resul;
+
+}
+
+var fn_RefreshGrid = () => {
+    $("#gCortes").data("kendoGrid").dataSource.read();
+    $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+}
