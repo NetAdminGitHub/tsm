@@ -76,7 +76,8 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     TextBoxEnable($("#txtCortes"), false);
 
     let dataSource = new kendo.data.DataSource({
-        data: pJson.pArrayCortes
+        data: pJson.pArrayCortes,
+        cache: false
     });
 
     $("#gridMercancia").kendoGrid({
@@ -179,11 +180,29 @@ var fn_Reg_CreacionEmbalaje = (xjson) => {
     $("#txtCantidadBultos").val(pJson.pCantidadBultos);
     $("#txtCortes").val(pJson.pCantidadCortes);
 
+    $("#gridMercancia").data("kendoGrid").destroy();
+
     let dataSource = new kendo.data.DataSource({
-        data: pJson.pArrayCortes
+        data: pJson.pArrayCortes,
+        cache: false
     });
 
-    $("#gridMercancia").data("kendoGrid").setDataSource(dataSource);
+    $("#gridMercancia").kendoGrid({
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
+            { field: "Corte", title: "Corte" },
+            { field: "Tallas", title: "Tallas" },
+            { field: "Cantidad", title: "Cantidad" }
+        ]
+    });
+
+    //// FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridMercancia").data("kendoGrid"), ModoEdicion.NoEditable, true, true, true, true, redimensionable.Si, 400, "multiple");
+    SetGrid_CRUD_ToolbarTop($("#gridMercancia").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridMercancia").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridMercancia").data("kendoGrid"), dataSource);
+
     KdoNumerictextboxEnable($("#textPesoLb"), false);
     $("#cmbEmbAsignacion").data("kendoComboBox").dataSource.read();
 }
