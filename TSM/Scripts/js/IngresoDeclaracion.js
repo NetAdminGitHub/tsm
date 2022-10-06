@@ -29,6 +29,8 @@ $(document).ready(function () {
     $("#MltIngreso").ControlSeleccionIngresoMerca(xIdClienteIng);
     $("#MltPaisExpor").ControlSeleccionPaises();
     $("#MltAduana").ControlSeleccionAduanas();
+    $("#cmbCL").ControlSeleccionCodigoLocalizacion();
+    $("#cmbINCOTERMS").ControlSeleccionINCOTERMS();
     KdoButtonEnable($("#btnNotaRemision"), false);
 
     $.ajax({
@@ -553,6 +555,12 @@ $(document).ready(function () {
                     }
                     if (input.is("[id='MltAduana']")) {
                         return $("#MltAduana").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[id='cmbCL']")) {
+                        return $("#cmbCL").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[id='cmbCL']")) {
+                        return $("#cmbCL").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                     }
                     return true;
                 }
