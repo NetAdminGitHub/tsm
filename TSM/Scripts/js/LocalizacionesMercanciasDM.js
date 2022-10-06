@@ -60,10 +60,10 @@ $(document).ready(function () {
                                 if (input.is("[name='Codigo']") && input.val().length > 5) {
                                     input.attr("data-maxlength-msg", "La longitud máxima del campo es 5");
                                     return false;
-                                }
-                                if (input.is("[name='IdAduana']") && input.val().length === 0) {
-                                    input.attr("data-maxlength-msg", "Requerido");
-                                    return false;
+                                }                                
+                                if (input.is("[name='IdAduana']")) {
+                                    input.attr("data-maxlength-msg", "Selección Requerida");
+                                    return $("#IdAduana").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                                 }
                                 return true;
                             }
@@ -147,7 +147,7 @@ $.fn.extend({
     ControlSeleccionAduanas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
-                dataTextField: "CodigoAduana",
+                dataTextField: "Nombre",
                 dataValueField: "IdAduana",
                 filter: "contains",
                 filterFields: ["IdAduana","CodigoAduana", "Nombre"],

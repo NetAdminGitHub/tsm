@@ -208,7 +208,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridIncotermsDetalles").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridIncotermsDetalles").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridIncotermsDetalles").data("kendoGrid"), false, Permisos.SNBorrar);
+    SetGrid_CRUD_Command($("#gridIncotermsDetalles").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridIncotermsDetalles").data("kendoGrid"), dsIncotermDetalle);
     Grid_HabilitaToolbar($("#gridIncotermsDetalles"), false, false, false);
 
@@ -232,7 +232,7 @@ $(document).ready(function () {
         if ($("#gridIncoterms").data("kendoGrid").dataSource.total() == 0) {
             Grid_HabilitaToolbar($("#gridIncotermsDetalles"), false, false, false);
         } else {
-            Grid_HabilitaToolbar($("#gridIncotermsDetalles"), Permisos.SNAgregar, false, Permisos.SNBorrar);
+            Grid_HabilitaToolbar($("#gridIncotermsDetalles"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
         }
     });
 
