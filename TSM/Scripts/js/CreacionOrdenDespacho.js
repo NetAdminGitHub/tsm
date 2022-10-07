@@ -1,10 +1,13 @@
-﻿var Gdet;
+﻿var dTree;
+var Gdet;
 var Permisos;
 var xIdIngreso = 0;
 var StrId = "";
 var pkIdCarrito = 0;
 var pkIdHb = 0;
 var bgd = 0;
+var banFReadGrid = 0;
+var oldPlanta = 0;
 
 var xidcata = 0;
 var xidCorte = 0;
@@ -57,7 +60,7 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
 
-    let dTree = new kendo.data.DataSource({
+    dTree = new kendo.data.DataSource({
         transport: {
             read: function (datos) {
                 kendo.ui.progress($(document.body), true);
@@ -343,7 +346,14 @@ $(document).ready(function () {
     }
 
     if (readIdCliente > 0 && readIdCliente != "" && readIdCliente != undefined) {
-        xidServicio = null;
+        if (banFReadGrid == 0 && (readNoDoc == "" || readNoDoc == undefined)) {
+            xidServicio = 0;
+            banFReadGrid = 1;
+        }
+        else
+        {
+            xidServicio = null;
+        }
         xidclie = null;
         xidMarca = null;
         xidcata = null;
@@ -355,9 +365,7 @@ $(document).ready(function () {
         Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
         Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
         KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
-        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-        });
+        loadGridIzquierdo();
     }
 
     if (readNoDoc != "" && readNoDoc != undefined) {
@@ -367,8 +375,13 @@ $(document).ready(function () {
 
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         KdoButtonEnable($("#btnMoveData"), true);
+        loadGridIzquierdo();
     }
 
+    if (readPlanta != "" && readPlanta != undefined)
+    {
+        oldPlanta = readPlanta;
+    }
 
     //#region crear grid Lista
     let dsDM = new kendo.data.DataSource({
@@ -488,46 +501,58 @@ $(document).ready(function () {
             {
                 if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "")
                 {
-                    if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
-                        readIdDespachoMercancia == null;
+                    let tlds = $("#gridOrdenDespacho").data("kendoGrid").dataSource;
+                    let rownum = tlds.total();
+
+                    if (rownum == 0) {
+                        oldPlanta = 0;
                     }
 
-                    $.ajax({
-                        url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
-                        method: "POST",
-                        dataType: "json",
-                        data: JSON.stringify({
-                            IdDespachoMercancia: readIdDespachoMercancia,
-                            FechaSolicitud: now.replace(/\//g, ''),
-                            IdCliente: xidclie,
-                            Estado: "OPERACION",
-                            FechaEntrega: fecha.replace(/\//g, ''),
-                            IdUsuarioSolicita: getUser(),
-                            IdUsuarioMod: getUser(),
-                            IdMercancia: mercancias,
-                            IdMotivo: 1,
-                            IdPlanta: xidPlanta
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (datos) {
-                            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                                closeOpenDetailGrid();
-                            });
-                            readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
-                            xidDM = datos[0][0]["IdDespachoMercancia"];
-                            readNoDoc = datos[0][0]["NoDocumento"];
-                            xNoDoc = datos[0][0]["NoDocumento"];
-                            $("#txtNoDoc").val(xNoDoc);
-                            $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                            RequestEndMsg(datos, "Post");
-                        },
-                        error: function (data) {
-                            ErrorMsg(data);
-                        },
-                        complete: function () {
-                            kendo.ui.progress($(document.body), false);
+                    if (oldPlanta == "0" || oldPlanta == xidPlanta) {
+                        if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
+                            readIdDespachoMercancia == null;
                         }
-                    });
+
+                        $.ajax({
+                            url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
+                            method: "POST",
+                            dataType: "json",
+                            data: JSON.stringify({
+                                IdDespachoMercancia: readIdDespachoMercancia,
+                                FechaSolicitud: now.replace(/\//g, ''),
+                                IdCliente: xidclie,
+                                Estado: "OPERACION",
+                                FechaEntrega: fecha.replace(/\//g, ''),
+                                IdUsuarioSolicita: getUser(),
+                                IdUsuarioMod: getUser(),
+                                IdMercancia: mercancias,
+                                IdMotivo: 1,
+                                IdPlanta: xidPlanta
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (datos) {
+                                oldPlanta = xidPlanta;
+                                loadGridIzquierdo();
+                                readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
+                                xidDM = datos[0][0]["IdDespachoMercancia"];
+                                readNoDoc = datos[0][0]["NoDocumento"];
+                                xNoDoc = datos[0][0]["NoDocumento"];
+                                $("#txtNoDoc").val(xNoDoc);
+                                $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
+                                RequestEndMsg(datos, "Post");
+                            },
+                            error: function (data) {
+                                ErrorMsg(data);
+                            },
+                            complete: function () {
+                                kendo.ui.progress($(document.body), false);
+                            }
+                        });
+                    }
+                    else {
+                        $("#kendoNotificaciones").data("kendoNotification").show("La Orden de Despacho ya cuenta con mercancia en la planta actual, si quieres agregar mercancia de otra planta elimine la mercancia.", "error");
+                    }
+                    
                 }
                 else
                 {
@@ -570,49 +595,63 @@ $(document).ready(function () {
 
         if (xidPlanta != 0 && xidPlanta != null && xidPlanta != "") {
             if (fecha >= now) {
-                if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
-                    readIdDespachoMercancia == null;
+
+                let tlds = $("#gridOrdenDespacho").data("kendoGrid").dataSource;
+                let rownum = tlds.total();
+
+                if (rownum==0)
+                {
+                    oldPlanta = 0;
                 }
 
-                $.ajax({
-                    url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
-                    method: "POST",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        IdDespachoMercancia: readIdDespachoMercancia,
-                        FechaSolicitud: now.replace(/\//g, ''),
-                        IdCliente: xidclie,
-                        Estado: "OPERACION",
-                        FechaEntrega: fecha.replace(/\//g, ''),
-                        IdUsuarioSolicita: getUser(),
-                        IdUsuarioMod: getUser(),
-                        IdMercancia: null,
-                        IdMotivo: 1,
-                        IdPlanta: xidPlanta
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (datos) {
-                        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                            closeOpenDetailGrid();
-                        });
-                        readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
-                        xidDM = datos[0][0]["IdDespachoMercancia"];
-                        readNoDoc = datos[0][0]["NoDocumento"];
-                        xNoDoc = datos[0][0]["NoDocumento"];
-                        $("#txtNoDoc").val(xNoDoc);
-                        $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                        $('#cmbCliente').data("kendoComboBox").readonly(true);
-                        KdoButtonEnable($("#btnMoveData"), true);
-                        RequestEndMsg(datos, "Post");
-                    },
-                    error: function (data) {
-                        KdoButtonEnable($("#btnMoveData"), false);
-                        ErrorMsg(data);
-                    },
-                    complete: function () {
-                        kendo.ui.progress($(document.body), false);
+                if (oldPlanta == "0" || oldPlanta == xidPlanta) {
+                    if (readIdDespachoMercancia == "" || readIdDespachoMercancia == 0 || readIdDespachoMercancia == undefined) {
+                        readIdDespachoMercancia == null;
                     }
-                });
+
+                    $.ajax({
+                        url: TSM_Web_APi + "DespachosMercancias/CrearOrdenDespachoSugerida",
+                        method: "POST",
+                        dataType: "json",
+                        data: JSON.stringify({
+                            IdDespachoMercancia: readIdDespachoMercancia,
+                            FechaSolicitud: now.replace(/\//g, ''),
+                            IdCliente: xidclie,
+                            Estado: "OPERACION",
+                            FechaEntrega: fecha.replace(/\//g, ''),
+                            IdUsuarioSolicita: getUser(),
+                            IdUsuarioMod: getUser(),
+                            IdMercancia: null,
+                            IdMotivo: 1,
+                            IdPlanta: xidPlanta
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (datos) {
+                            readIdDespachoMercancia = datos[0][0]["IdDespachoMercancia"];
+                            xidDM = datos[0][0]["IdDespachoMercancia"];
+                            readNoDoc = datos[0][0]["NoDocumento"];
+                            xNoDoc = datos[0][0]["NoDocumento"];
+                            $("#txtNoDoc").val(xNoDoc);
+                            $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
+                            $('#cmbCliente').data("kendoComboBox").readonly(true);
+                            oldPlanta = xidPlanta;
+                            KdoButtonEnable($("#btnMoveData"), true);
+                            loadGridIzquierdo();
+                            RequestEndMsg(datos, "Post");
+                        },
+                        error: function (data) {
+                            KdoButtonEnable($("#btnMoveData"), false);
+                            ErrorMsg(data);
+                        },
+                        complete: function () {
+                            kendo.ui.progress($(document.body), false);
+                        }
+                    });
+                }
+                else
+                {
+                    $("#kendoNotificaciones").data("kendoNotification").show("La Orden de Despacho ya cuenta con mercancia en la planta actual, si quieres cambiar de planta elimine la mercancia.", "error");
+                }
             }
             else {
                 $("#kendoNotificaciones").data("kendoNotification").show("Escoja una fecha válida.", "error");
@@ -677,9 +716,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
                 KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
             }
             else {
@@ -737,9 +774,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
                 KdoButtonEnable($("#btnCrearOrdenDespacho"), true);
             }
             else {
@@ -794,9 +829,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
                 KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
             }
             else {
@@ -831,11 +864,8 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    fn_readonly();
-                    closeOpenDetailGrid();
-                });
-                KdoButtonEnable($("#btnMoveData"), true);
+                loadGridIzquierdo();
+                //KdoButtonEnable($("#btnMoveData"), true);
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -865,10 +895,8 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                KdoButtonEnable($("#btnMoveData"), false);
+                loadGridIzquierdo();
+                //KdoButtonEnable($("#btnMoveData"), false);
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -904,9 +932,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -943,9 +969,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -975,9 +999,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1012,9 +1034,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1051,9 +1071,7 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
+            loadGridIzquierdo();
         }
         else {
             $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1086,9 +1104,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1126,9 +1142,7 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
+            loadGridIzquierdo();
         }
         else {
             $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1161,9 +1175,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1201,9 +1213,7 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
+            loadGridIzquierdo();
         }
         else {
             $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1236,9 +1246,7 @@ $(document).ready(function () {
                 xidListaEmpaque = null;
             }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else {
                 $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1276,9 +1284,7 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
         if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
+            loadGridIzquierdo();
         }
         else {
             $("#treelist").data("kendoGrid").dataSource.data([]);
@@ -1311,9 +1317,7 @@ $(document).ready(function () {
             xidListaEmpaque = null;
         }
             if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
             }
             else
             {
@@ -1504,9 +1508,7 @@ var fn_delOD = (IdDespachoMercancia, Talla, IdHojaBandeo) => {
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                loadGridIzquierdo();
                 $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
                 RequestEndMsg(datos, "Post");
             },
@@ -1531,9 +1533,7 @@ var fn_delOD = (IdDespachoMercancia, Talla, IdHojaBandeo) => {
             }),
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
-                $("#treelist").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
+                $loadGridIzquierdo();
                 $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
                 RequestEndMsg(datos, "Post");
             },
@@ -1563,6 +1563,22 @@ var closeOpenDetailGrid = () => {
 
     }
 }
+
+var loadGridIzquierdo = () => {
+
+    if ($("#btnMoveData").is(":disabled") == false) {
+
+        if (xidServicio==0)
+        {
+            xidServicio = null;
+        }
+
+        $("#treelist").data("kendoGrid").dataSource.read().then(function () {
+            closeOpenDetailGrid();
+        });
+    }
+}
+
 
 var loadModalCorte = (IdHojaBandeo, Corte) => {
     let strjson = {
