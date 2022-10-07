@@ -1,4 +1,4 @@
-﻿
+﻿'use strict'
 var Permisos;
 var xIdIngreso = 0;
 var StrId = "";
@@ -24,9 +24,17 @@ var acumRowPadre = [];
 var acumRowHijo = [];
 var acumDSOD = [];
 var oldElement = [];
+var mercancias = [];
 let Gdet;
+function myconfirm(content) {
+    return $("<div></div>").kendoConfirm({
+        title: "Finalizar Embalaje",
+        content: content
+    }).data("kendoConfirm").open().result;
+}
 $(document).ready(function () {
 
+   
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
@@ -382,18 +390,30 @@ $(document).ready(function () {
                 dataType: "json",
                 type: "DELETE"
             },
+            update: {
+                url: function (datos) { return TSM_Web_APi + "EmbalajesMercancias/UpdEmbalajesMercanciaPeso/" + `${datos.IdEmbalajeMercancia}`; },
+                dataType: "json",
+                type: "PUT",
+                contentType: "application/json; charset=utf-8"
+            },
             parameterMap: function (data, type) {
                 if (type !== "read") {
-                    return kendo.stringify(data);
+                    if (type === "update") {
+                        return kendo.stringify({
+                            IdEmbalajeMercancia: data.IdEmbalajeMercancia,
+                            Peso: data.Peso
+                        });
+                    } else {
+                        return kendo.stringify(data);
+                    }
+
                 }
             }
         },
          requestEnd: function (e) {
              Grid_requestEnd(e);
              if (e.type === "destroy") {
-                 if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
                      $("#gCortes").data("kendoGrid").dataSource.read();
-                 }
              }
              
          },
@@ -410,6 +430,21 @@ $(document).ready(function () {
                     CantBultos: { type: "number" },
                     Cantidad: { type: "number" },
                     IdDespachoEmbalajeMercancia: { type: "number" },
+                    Peso: {
+                        type: "number",
+                        validation: {
+                            required: true,
+                            maxlength: function (input) {
+                                if (input.is("[name='Peso']")) {
+                                    input.attr("data-maxlength-msg", "debe ser mayor que 0");
+                                    return $("[name='Peso']").data("kendoNumericTextBox").value() > 0;
+                                }
+
+                                return true;
+                            }
+                        }
+                    },
+                    IdUnidad: { type: "number" }
                 }
             }
         }
@@ -417,16 +452,31 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gEnEmbalaje").kendoGrid({
+        edit: function (e) {
+            KdoHideCampoPopup(e.container, "IdEmbalajeMercancia");
+            KdoHideCampoPopup(e.container, "IdEmbalaje");
+            KdoHideCampoPopup(e.container, "NombreUnidadEmb");
+            KdoHideCampoPopup(e.container, "NoDocumento");
+            KdoHideCampoPopup(e.container, "IdUnidad");
+            KdoHideCampoPopup(e.container, "CantTallas");
+            KdoHideCampoPopup(e.container, "CantBultos");
+            KdoHideCampoPopup(e.container, "Cantidad");
+            KdoHideCampoPopup(e.container, "IdDespachoEmbalajeMercancia");
+
+            Grid_Focus(e, "Peso");
+        },
         detailInit: DIDM,
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
             { field: "NombreUnidadEmb", title: "Unidad Embalaje", attributes: { "class": "selFM" } },
-            { field: "NoDocumento", title: "NoDocumento" },
+            { field: "NoDocumento", title: "Documento" },
             { field: "CantTallas", title: "Cantidad Tallas" },
             { field: "CantBultos", title: "Cantidad Bultos" },
             { field: "Cantidad", title: "Cantidad" },
+            { field: "Peso", title: "Peso (Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
+            { field: "IdUnidad", title: "IdUnidad", hidden: true },
             { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true }
             
         ]
@@ -436,7 +486,7 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gEnEmbalaje").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
     SetGrid_CRUD_ToolbarTop($("#gEnEmbalaje").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gEnEmbalaje").data("kendoGrid"), false, true);
+    SetGrid_CRUD_Command($("#gEnEmbalaje").data("kendoGrid"), true, true);
     Set_Grid_DataSource($("#gEnEmbalaje").data("kendoGrid"), dsDM);
 
     $("#btnGuardar").click(function () {
@@ -482,7 +532,7 @@ $(document).ready(function () {
                             Div: "vCrearUnidad",
                             Vista: "~/Views/CrearEmbalaje/_CreacionEmbalaje.cshtml",
                             Js: "CreacionEmbalaje.js",
-                            Titulo: "Crear Unidad de Embalaje",
+                            Titulo: "Agregar a Unidad Embalaje",
                             Width: "50%",
                             MinWidth: "30%"
                         }],
@@ -520,34 +570,42 @@ $(document).ready(function () {
     $("#btnFinalizarEmb").click(function () {
 
         if (readIdDespachoEmbalajeMercancia > 0 && $("#gEnEmbalaje").data("kendoGrid").dataSource.total() !== 0) {
-            kendo.ui.progress($(document.body), true);
-            $.ajax({
-                url: TSM_Web_APi + "EmbalajesMercancias/Estado/CambiarEstadoEmbalajeRegistrados",
-                method: "POST",
-                dataType: "json",
-                data: JSON.stringify({
-                    IdDespachoEmbalajeMercancia: readIdDespachoEmbalajeMercancia,
-                    EstadoSiguiente: "FINALIZADO",
-                    Motivo: "EMBALAJE FINALIZADO"
-                }),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    RequestEndMsg(data, "Post");
-                    $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
-                    window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
 
-                },
-                error: function (data) {
-                    ErrorMsg(data);
-                },
-                complete: function () {
-                    kendo.ui.progress($(document.body), false);
-                }
-            })
+            window.myconfirm("¿Está seguro de que desea finalizar el embalaje?").then(function () {
+               kendo.ui.progress($(document.body), true);
+                $.ajax({
+                    url: TSM_Web_APi + "EmbalajesMercancias/Estado/CambiarEstadoEmbalajeRegistrados",
+                    method: "POST",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        IdDespachoEmbalajeMercancia: readIdDespachoEmbalajeMercancia,
+                        EstadoSiguiente: "FINALIZADO",
+                        Motivo: "EMBALAJE FINALIZADO"
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        RequestEndMsg(data, "Post");
+                        $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+                        window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
+
+                    },
+                    error: function (data) {
+                        ErrorMsg(data);
+                    },
+                    complete: function () {
+                        kendo.ui.progress($(document.body), false);
+                    }
+                })
+            }, function () {
+                $("#cmbMarca").focus();
+            });
+
+            
+           
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("No hay embalajes generados para finalizar", "error");
         }
-
+        
 
     });
     //compeltar campos de cabecera
@@ -1298,7 +1356,7 @@ var DIDM = (e) => {
                 },
                 parameterMap: function (data, type) {
                     if (type !== "read") {
-                        return kendo.stringify(data);
+                            return kendo.stringify(data);
                     }
                 }
             },
@@ -1322,7 +1380,9 @@ var DIDM = (e) => {
                         Corte: { type: "string" },
                         CantTallas: { type: "number" },
                         CantBultos: { type: "number" },
-                        Cantidad: { type: "number" }
+                        Cantidad: { type: "number" },
+                        Tallas: { type: "string" }
+                       
                     }
                 }
             },
@@ -1336,10 +1396,10 @@ var DIDM = (e) => {
                 { field: "IdEmbalajeMercancia", title: "IdEmbalaje Mercancia", hidden: true },
                 { field: "IdHojaBandeo", title: "IdHoja Bandeo", hidden: true, attributes: { "class": "idHB-detail" } },
                 { field: "Corte", title: "Corte" },
-                { field: "CantTallas", title: "Cantidad Tallas" },
+                { field: "Tallas", title: "Tallas" },
+                { field: "CantTallas", title: "Cantidad Tallas", hidden: true },
                 { field: "CantBultos", title: "Cantidad Bultos" },
                 { field: "Cantidad", title: "Cantidad" }
-                
             ]
         });
 
@@ -1537,7 +1597,7 @@ $.fn.extend({
                 },
                 columns: [
                     { field: "Corte", title: "Corte", width: 300 },
-                    { field: "NoDocumento", title: "No Documento", width: 300 },
+                    { field: "NoDocumento", title: "Documento", width: 300 },
                     { field: "NoReferencia", title: "No FM", width: 300 },
                     {
                         field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
@@ -1549,7 +1609,7 @@ $.fn.extend({
 });
 
 let fn_Get_DatosCab = (xIdDesEm) => {
-    kendo.ui.progress($(document), true);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "DespachosEmbalajesMercancias/GetDatosCab/" + `${xIdDesEm}`,
         dataType: 'json',
@@ -1571,10 +1631,10 @@ let fn_Get_DatosCab = (xIdDesEm) => {
                 KdoButtonEnable($("#btnGuardar"), true);
                 xidPlanta = null;
             }
-            kendo.ui.progress($(document), false);
+            kendo.ui.progress($(document.body), false);
         },
         error: function () {
-            kendo.ui.progress($(document), false);
+            kendo.ui.progress($(document.body), false);
         }
     });
 

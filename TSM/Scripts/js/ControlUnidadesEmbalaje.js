@@ -46,10 +46,7 @@ $(document).ready(function () {
                 type: "DELETE"
             },
             parameterMap: function (data, type) {
-                return kendo.stringify({
-                    IdCliente: idCliente,
-                    IdDespachoMercancia: IdDespachoMercancia
-                });
+              
 
                 if (type !== "read") {
                     return kendo.stringify(data);
@@ -252,7 +249,13 @@ $(document).ready(function () {
     });
 
     $("#btnCrearEmbalaje").data("kendoButton").bind("click", function (e) {
-        window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${0}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${0}`;
+        if (Kendo_CmbGetvalue($("#cmbPlanta")) === 0 || Kendo_CmbGetvalue($("#cmbPlanta")) === undefined) {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una planta para continuar.", "error");
+           
+        } else {
+            window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${0}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${0}`;
+        }
+       
     });
 
 });

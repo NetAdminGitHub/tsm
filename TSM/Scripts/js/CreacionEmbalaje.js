@@ -30,7 +30,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     $("#txtCortes").val(pJson.pCantidadCortes);
    
 
-    KdoComboBoxbyData($("#cmbEmbAsignacion"), [], "NoDocumento", "IdDespachoEmbalajeMercancia", "seleccione una opción", "", "");
+    KdoComboBoxbyData($("#cmbEmbAsignacion"), [], "NoDocumento", "IdEmbalajeMercancia", "seleccione una opción", "", "");
     Kendo_CmbFiltrarGrid($("#cmbUnidadEmbalaje"), TSM_Web_APi + "EmbalajeDeclaracionMercancias", "Nombre", "IdEmbalaje", "Seleccione una opción");
 
     $("#cmbEmbAsignacion").data("kendoComboBox").setDataSource(fn_dsDespacho(pJson));
@@ -100,6 +100,10 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
         if (this.checked) {
             $("#divUnidadEmbalaje").show("slow");
             $("#divAsignacionEmbalaje").hide("slow");
+            $("#txtPesoKg").data("kendoNumericTextBox").value(0);
+            $("#textPesoLb").data("kendoNumericTextBox").value(0);
+            idUnidad = 1;
+            KdoCmbSetValue($("#cmbEmbAsignacion"), "");
         } else {
             $("#divUnidadEmbalaje").hide("slow");
             $("#divAsignacionEmbalaje").show("slow");
@@ -160,6 +164,12 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
                 kendo.ui.progress($(".k-dialog"), false);
             }
         });
+    });
+
+
+    $("#cmbEmbAsignacion").data("kendoComboBox").bind("change", function () {
+        let xidEb = this.value() === "" ? 0 : this.value();
+        fn_Get_DatosEmbalaje(xidEb);
     });
 }
 
@@ -234,3 +244,30 @@ let fn_dsDespacho = function (pJson) {
 };
 
 
+
+let fn_Get_DatosEmbalaje = (xidEmbalaje) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "EmbalajesMercancias/" + `${xidEmbalaje === null ? 0 : xidEmbalaje}`,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (dato) {
+            if (dato !== null) {
+                $("#txtPesoKg").data("kendoNumericTextBox").value(dato.Peso);
+                $("#textPesoLb").data("kendoNumericTextBox").value(dato.Peso * 2.20462);
+                idUnidad = dato.IdUnidad
+
+            } else {
+                $("#txtPesoKg").data("kendoNumericTextBox").value(0);
+                $("#textPesoLb").data("kendoNumericTextBox").value(0);
+                idUnidad = 1
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+};
