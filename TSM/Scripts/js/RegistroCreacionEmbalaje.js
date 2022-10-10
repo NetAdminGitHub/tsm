@@ -557,7 +557,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar almenos una fila de la mercancia.", "error");
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una o más filas del listado de mercancías .", "error");
             kendo.ui.progress($(document.body), false);
         }
   
