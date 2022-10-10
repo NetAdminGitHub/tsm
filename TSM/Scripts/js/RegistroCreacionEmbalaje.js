@@ -38,8 +38,8 @@ $(document).ready(function () {
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
-    Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
-    Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
+    Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${readIdCliente}`, "Nombre2", "IdMarca", "Seleccione..");
+    Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${readIdCliente}`, "PL", "IdListaEmpaque", "Seleccione..");
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
 
 
@@ -348,8 +348,6 @@ $(document).ready(function () {
         xidclie = parseInt(readIdCliente);
         $("#cmbCliente").data("kendoComboBox").value(xidclie);
         $('#cmbCliente').data("kendoComboBox").readonly(true);
-        Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}`, "Nombre2", "IdMarca", "Seleccione..");
-        Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}`, "PL", "IdListaEmpaque", "Seleccione..");
         KdoButtonEnable($("#btnGuardar"), true);
         $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
             closeOpenDetailGrid();
