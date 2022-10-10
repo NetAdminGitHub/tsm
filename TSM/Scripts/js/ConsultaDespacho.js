@@ -168,7 +168,7 @@ $(document).ready(function () {
                             data: JSON.stringify(jsonData),
                             contentType: "application/json; charset=utf-8",
                             success: function (resultado) {
-                                window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${dataItem.IdDespachoMercancia}`;
+                                window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${resultado[0]}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${1}`;
                             },
                             error: function (data) {
                                 ErrorMsg(data);
