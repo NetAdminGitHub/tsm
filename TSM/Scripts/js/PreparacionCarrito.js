@@ -121,6 +121,9 @@ $(document).ready(function () {
             }
             Grid_requestEnd;
         },
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" }
+        ],
         error: function (e) {
 
             Grid_error;
@@ -154,14 +157,14 @@ $(document).ready(function () {
             { field: "IdCarrito", title: "Id Carrito", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "IdCatalogoDiseno", title: "Id Mercancia", hidden: true },
-            { field: "NoDocumento", title: "Bulto/Rollo:" },
+            { field: "NoDocumento", title: "Bulto/Rollo:", footerTemplate: "Total"},
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
             { field: "FM", title: "FM" },
             { field: "Diseno", title: "Diseño", hidden: true },
             { field: "Estilo", title: "Estilo", hidden: true },
             { field: "Color", title: "Color", hidden: true },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
             { field: "Estado", title: "Estado", hidden:true }
         ]
     });
