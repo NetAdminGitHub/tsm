@@ -1,7 +1,7 @@
 ﻿var Permisos;
 let xIdcat = 0;
 let xIdclie = 0;
-
+let xopc = 0;
 
 
 var fn_Ini_CarritosFin = (xjson) => {
@@ -12,6 +12,34 @@ var fn_Ini_CarritosFin = (xjson) => {
     xIdclie = xjson.pcCliente;
 
     $('#chkVerTodo').prop('checked', xjson.pcIdCatalogo === null ? 1 : 0);
+    KdoComboBoxbyData($("#cmbOpcion"), "[]", "Nombre", "IdOpcion", "Seleccione ....");
+
+    $("#cmbOpcion").data("kendoComboBox").dataSource.pushCreate([
+        { IdOpcion: 1, Nombre: "Carritos finalizados en este corte" },
+        { IdOpcion: 2, Nombre: "Carritos finalizados de todos los cortes" },
+        { IdOpcion: 3, Nombre: "Carritos entregados en este corte" },
+        { IdOpcion: 4, Nombre: "Carritos entregados en todos los cortes" }
+    ]);
+
+    KdoCmbSetValue($("#cmbOpcion"), "");
+    $("#cmbOpcion").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xopc = 0;
+            $("#grid").data("kendoGrid").dataSource.read();
+        }
+    });
+
+    $("#cmbOpcion").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xopc = this.dataItem(e.item.index()).IdOpcion;
+            $("#grid").data("kendoGrid").dataSource.read();
+        }
+        else {
+            xopc = 0;
+            $("#grid").data("kendoGrid").dataSource.read();
+        }
+    });
 
     //1. defincion de la modal
     Fn_VistaCambioEstado($("#vCambioEstado"), function () { return fn_CloseCmb(); });
@@ -21,7 +49,8 @@ var fn_Ini_CarritosFin = (xjson) => {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return TSM_Web_APi + "Carritos/GetCarritosPreparados/" + `${$("#chkVerTodo").is(':checked') === true ? 0 : xIdcat}` },
+                url: function (datos) {
+                    return TSM_Web_APi + "Carritos/GetCarritosPreparados/" + `${xIdcat}/${xopc}/${xIdclie}` },
                 contentType: "application/json; charset=utf-8"
             },
             destroy: {
@@ -70,7 +99,7 @@ var fn_Ini_CarritosFin = (xjson) => {
      
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdCarrito", title: "Código de Preparación", sortable: { initialDirection: "asc" }, hidden: true},
+            { field: "IdCarrito", title: "No. Carrito", sortable: { initialDirection: "asc" }},
             { field: "IdCatalogoDiseno", title: "Cod. CatalogoDiseno", hidden: true },
             { field: "FM", title: "FM" },
             { field: "Corte", title: "Corte" },
@@ -134,9 +163,10 @@ var fn_Ini_CarritosFin = (xjson) => {
 }
 
 var fn_Reg_CarritosFin = (xjson) => {
-    xIdcat = xjson.pcIdCatalogo;
+    xIdcat = xjson.pcIdCatalogo === null ? 0 : xjson.pcIdCatalogo;
     xIdclie = xjson.pcCliente;
-    $('#chkVerTodo').prop('checked', 0);
+    xopc = 0;
+    KdoCmbSetValue($("#cmbOpcion"), "");
     $("#grid").data("kendoGrid").dataSource.read();
 }
 

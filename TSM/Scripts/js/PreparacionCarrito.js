@@ -383,7 +383,7 @@ $(document).ready(function () {
             xidCorte = 0;
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnDetallePrep"), KdoCmbGetValue($("#cmbCliente")) === null ? false : true);
             KdoButtonEnable($("#btnEntProd"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnPrep"), false);
@@ -401,7 +401,7 @@ $(document).ready(function () {
             xidCorte = 0;
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnDetallePrep"), KdoCmbGetValue($("#cmbCliente")) === null ? false : true);
             KdoButtonEnable($("#btnEntProd"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnCreaCarrito"), false);
