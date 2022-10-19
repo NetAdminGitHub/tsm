@@ -122,7 +122,7 @@ var fn_Ini_CarritosFin = (xjson) => {
                 type: "POST"
             },
             destroy: {
-                url: function (datos) { return TSM_Web_APi + "Carritos/" + datos.IdCarrito; },
+                url: function (datos) { return TSM_Web_APi + "Carrito/DeleteCarrito/" + datos.IdCarrito; },
                 type: "DELETE"
             },
             parameterMap: function (data, type) {
@@ -305,8 +305,9 @@ $.fn.extend({
                 },
                 columns: [
                     { field: "Corte", title: "Corte", width: 300 },
-                    { field: "NoDocumento", title: "No Documento", width: 300 },
-                    { field: "NoReferencia", title: "No FM", width: 300 }
+                    { field: "NoReferencia", title: "Código FM", width: 300 },
+                    { field: "NombreDiseño", title: "Nombre del Diseño", width: 300 },
+                    { field: "EstiloDiseno", title: "Estilo del Diseño", width: 300 }
                 ]
             });
         });
