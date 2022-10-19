@@ -1,6 +1,7 @@
 ﻿
 var Permisos;
 var xIdIngreso = 0;
+let xidPlanta = 0;
 let xidclie = 0;
 let xidcata = 0;
 let xidCorte = 0;
@@ -10,7 +11,9 @@ let pkIdHb = 0;
 
 $(document).ready(function () {
 
-    Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
+    Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Selección de cliente");
+    //crear combobox Planta
+    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Selección de Planta")
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
     $("#cmbCorte").mlcCorteCatalogo();
@@ -34,7 +37,7 @@ $(document).ready(function () {
         dataSource: new kendo.data.TreeListDataSource({
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + `HojasBandeosMercancias/GetBultosSinPreparar/${xidcata}/${xidCorte}`; }
+                    url: function () { return TSM_Web_APi + `HojasBandeosMercancias/GetBultosSinPreparar/${xidcata}/${xidCorte}/${xidPlanta}`; }
                 }
             },
             schema: {
@@ -57,7 +60,7 @@ $(document).ready(function () {
                 }
             }
         }),
-        height: 600,
+        height: 665,
         messages: {
             noRows: "No hay datos dsiponibles"
         },
@@ -97,7 +100,7 @@ $(document).ready(function () {
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "CarritosDetallesMercancias/GetCarritosEnPreparacion/" + `${xidcata}` },
+                url: function () { return TSM_Web_APi + "CarritosDetallesMercancias/GetCarritosEnPreparacion/" + `${xidcata}/${xidPlanta}` },
                 contentType: "application/json; charset=utf-8"
             },
             parameterMap: function (data, type) {
@@ -121,6 +124,9 @@ $(document).ready(function () {
             }
             Grid_requestEnd;
         },
+        aggregate: [
+            { field: "Cantidad", aggregate: "sum" }
+        ],
         error: function (e) {
 
             Grid_error;
@@ -154,14 +160,14 @@ $(document).ready(function () {
             { field: "IdCarrito", title: "Id Carrito", hidden: true },
             { field: "IdMercancia", title: "Id Mercancia", hidden: true },
             { field: "IdCatalogoDiseno", title: "Id Mercancia", hidden: true },
-            { field: "NoDocumento", title: "Bulto/Rollo:" },
+            { field: "NoDocumento", title: "Bulto/Rollo:", footerTemplate: "Total"},
             { field: "Corte", title: "Corte" },
             { field: "Talla", title: "Talla" },
             { field: "FM", title: "FM" },
             { field: "Diseno", title: "Diseño", hidden: true },
             { field: "Estilo", title: "Estilo", hidden: true },
             { field: "Color", title: "Color", hidden: true },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "Cantidad", title: "Cantidad", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
             { field: "Estado", title: "Estado", hidden:true }
         ]
     });
@@ -212,12 +218,12 @@ $(document).ready(function () {
                 Div: "vdPreparado",
                 Vista: "~/Views/PreparacionCarrito/_CarritosFinalizados.cshtml",
                 Js: "CarritosFinalizados.js",
-                Titulo: "Detalle de preparado",
+                Titulo: "Consulta de Carritos: " + `${KdoCmbGetText($("#cmbCliente"))} - ${ KdoCmbGetText($("#cmbPlanta"))}`,
                 Height: "80%",
-                Width: "80%",
+                Width: "90%",
                 MinWidth: "30%"
             }],
-            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")) },
+            Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")), pcPlanta: KdoCmbGetValue($("#cmbPlanta")) },
             fn: { fnclose: "fn_Close_CarritosFin", fnLoad: "fn_Ini_CarritosFin", fnReg: "fn_Reg_CarritosFin", fnActi:"" }
         };
 
@@ -320,6 +326,10 @@ $(document).ready(function () {
         if (value === "") {
             xidcata = 0;
             xidCorte = 0;
+            xidPlanta = 0;
+            KdoCmbSetValue($("#cmbPlanta"), "");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
             $("#cmbFm").data("kendoMultiColumnComboBox").value("");
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read();
@@ -337,6 +347,71 @@ $(document).ready(function () {
         if (e.item) {
             xidcata = 0;
             xidCorte = 0;
+            xidPlanta = 0;
+            KdoCmbSetValue($("#cmbPlanta"), "");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+            KdoButtonEnable($("#btnCreaCarrito"), false);
+        }
+        else {
+            xidcata = 0;
+            xidCorte = 0;
+            xidPlanta = 0;
+            KdoCmbSetValue($("#cmbPlanta"), "");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+            KdoButtonEnable($("#btnCreaCarrito"), false);
+
+        }
+    });
+
+    $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
+        var value = this.value();
+        if (value === "") {
+            xidcata = 0;
+            xidCorte = 0;
+            xidPlanta = 0;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#treelist").data("kendoTreeList").dataSource.read();
+            $("#gridDetCortePre").data("kendoGrid").dataSource.read();
+            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnEntProd"), false);
+            KdoButtonEnable($("#btnPrep"), false);
+            KdoButtonEnable($("#btnCreaCarrito"), false);
+            $("#txtDiseño").val("");
+            $("#txtEstilo").val("");
+        }
+    });
+
+    $("#cmbPlanta").data("kendoComboBox").bind("select", function (e) {
+        if (e.item) {
+            xidcata = 0;
+            xidCorte = 0;
+            xidPlanta = this.dataItem(e.item.index()).IdPlanta;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
+            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
             $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#txtDiseño").val("");
             $("#txtEstilo").val("");
@@ -350,10 +425,13 @@ $(document).ready(function () {
         else {
             xidcata = 0;
             xidCorte = 0;
+            xidPlanta = 0;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
             $("#cmbFm").data("kendoMultiColumnComboBox").value("");
+            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#txtDiseño").val("");
             $("#txtEstilo").val("");
-            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
             KdoButtonEnable($("#btnDetallePrep"), false);
@@ -364,10 +442,13 @@ $(document).ready(function () {
         }
     });
 
+
     $("#cmbFm").data("kendoMultiColumnComboBox").bind("select", function (e) {
         if (e.item) {
             xidcata = this.dataItem(e.item.index()).IdCatalogoDiseno;
             xidCorte = 0;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read().then(function () {
                 fn_readonly();
             });
@@ -381,9 +462,11 @@ $(document).ready(function () {
         } else {
             xidcata = 0;
             xidCorte = 0;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnDetallePrep"), KdoCmbGetValue($("#cmbCliente")) === null ? false : true);
             KdoButtonEnable($("#btnEntProd"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnPrep"), false);
@@ -399,9 +482,11 @@ $(document).ready(function () {
         if (data === undefined) {
             xidcata = 0;
             xidCorte = 0;
+            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
+            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
             $("#treelist").data("kendoTreeList").dataSource.read();
             $("#gridDetCortePre").data("kendoGrid").dataSource.read();
-            KdoButtonEnable($("#btnDetallePrep"), false);
+            KdoButtonEnable($("#btnDetallePrep"), KdoCmbGetValue($("#cmbCliente")) === null ? false : true);
             KdoButtonEnable($("#btnEntProd"), false);
             KdoButtonEnable($("#btnPrep"), false);
             KdoButtonEnable($("#btnCreaCarrito"), false);
@@ -575,7 +660,7 @@ $.fn.extend({
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente")) }`; },
+                            url: function (datos) { return TSM_Web_APi + "HojasBandeosDisenos/GetDisenoByClientePlanta/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}`; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -604,7 +689,7 @@ $.fn.extend({
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}`;
+                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xidPlanta}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }
@@ -612,8 +697,9 @@ $.fn.extend({
                 },
                 columns: [
                     { field: "Corte", title: "Corte", width: 300 },
-                    { field: "NoDocumento", title: "No Documento", width: 300 },
-                    { field: "NoReferencia", title: "No FM", width: 300 }
+                    { field: "NoReferencia", title: "Código FM", width: 300 },
+                    { field: "NombreDiseño", title: "Nombre del Diseño", width: 300 },
+                    { field: "EstiloDiseno", title: "Estilo del Diseño", width: 300 }
                 ]
             });
         });
