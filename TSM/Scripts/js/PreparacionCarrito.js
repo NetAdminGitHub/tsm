@@ -220,7 +220,7 @@ $(document).ready(function () {
                 Js: "CarritosFinalizados.js",
                 Titulo: "Detalle de preparado: " + `${ KdoCmbGetText($("#cmbPlanta"))}`,
                 Height: "80%",
-                Width: "80%",
+                Width: "90%",
                 MinWidth: "30%"
             }],
             Param: { pcIdCatalogo: KdoMultiColumnCmbGetValue($("#cmbFm")), pcCliente: KdoCmbGetValue($("#cmbCliente")), pcPlanta: KdoCmbGetValue($("#cmbPlanta")) },

@@ -163,7 +163,9 @@ var fn_Ini_CarritosFin = (xjson) => {
                     Preparador: { type: "string" },
                     FechaPreparacion: { type: "date" },
                     Estado: { type: "string" },
-                    NomEstado: { type: "string" }
+                    NomEstado: { type: "string" },
+                    CarritoDevuelto: { type: "boolean" },
+                    IdCarritoOrigen: { type: "number" }
                 }
             }
         },
@@ -172,7 +174,19 @@ var fn_Ini_CarritosFin = (xjson) => {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
-     
+        dataBound: function (e) {
+            let rows = e.sender.tbody.children();
+            for (let i = 0; i < rows.length; i++) {
+                let row = $(rows[i]);
+                let dataItem = e.sender.dataItem(row);
+                let dev = dataItem.get("CarritoDevuelto");
+                if (dev) {
+                    row.addClass("bg-Devuelto");
+                } else {
+                    row.removeClass("bg-Devuelto");
+                }
+            }
+        },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdCarrito", title: "No. Carrito", sortable: { initialDirection: "asc" }},
@@ -190,6 +204,7 @@ var fn_Ini_CarritosFin = (xjson) => {
             { field: "FechaPreparacion", title: "Fecha de Preparación", format: "{0: dd/MM/yyyy}" },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NomEstado", title: "Estado" },
+            { field: "IdCarritoOrigen", title: "No. Carrito Origen" },
             {
                 field: "btnEntrega", title: "&nbsp;",
                 command: {
