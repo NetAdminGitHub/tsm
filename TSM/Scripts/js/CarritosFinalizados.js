@@ -201,7 +201,7 @@ var fn_Ini_CarritosFin = (xjson) => {
             { field: "IdCatalogoMaquina", title: "cod. CatalogoMaquina", hidden:true },
             { field: "Maquina", title: "Máquina" },
             { field: "Preparador", title: "Preparador" },
-            { field: "FechaPreparacion", title: "Fecha de Preparación", format: "{0: dd/MM/yyyy}" },
+            { field: "FechaPreparacion", title: "Fecha de Actualización", format: "{0: dd/MM/yyyy HH:mm:ss.ss}" },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NomEstado", title: "Estado" },
             { field: "IdCarritoOrigen", title: "No. Carrito Origen" },
@@ -226,19 +226,19 @@ var fn_Ini_CarritosFin = (xjson) => {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.No);
+    SetGrid($("#grid").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.No,0,false);
     SetGrid_CRUD_ToolbarTop($("#grid").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
-    var selectedRows = [];
-    $("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-        Grid_SetSelectRow($("#grid"), selectedRows);
-    });
+    //var selectedRows = [];
+    //$("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
+    //    Grid_SetSelectRow($("#grid"), selectedRows);
+    //});
 
-    $("#grid").data("kendoGrid").bind("change", function (e) {
-        Grid_SelectRow($("#grid"), selectedRows);
-    });
+    //$("#grid").data("kendoGrid").bind("change", function (e) {
+    //    Grid_SelectRow($("#grid"), selectedRows);
+    //});
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#grid"), $(window).height() - "371");
     });

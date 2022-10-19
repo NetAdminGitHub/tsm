@@ -218,7 +218,7 @@ $(document).ready(function () {
                 Div: "vdPreparado",
                 Vista: "~/Views/PreparacionCarrito/_CarritosFinalizados.cshtml",
                 Js: "CarritosFinalizados.js",
-                Titulo: "Detalle de preparado: " + `${ KdoCmbGetText($("#cmbPlanta"))}`,
+                Titulo: "Consulta de Carritos: " + `${KdoCmbGetText($("#cmbCliente"))} - ${ KdoCmbGetText($("#cmbPlanta"))}`,
                 Height: "80%",
                 Width: "90%",
                 MinWidth: "30%"
