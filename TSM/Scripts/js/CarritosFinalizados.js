@@ -231,14 +231,7 @@ var fn_Ini_CarritosFin = (xjson) => {
     SetGrid_CRUD_Command($("#grid").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#grid").data("kendoGrid"), dataSource);
 
-    //var selectedRows = [];
-    //$("#grid").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
-    //    Grid_SetSelectRow($("#grid"), selectedRows);
-    //});
 
-    //$("#grid").data("kendoGrid").bind("change", function (e) {
-    //    Grid_SelectRow($("#grid"), selectedRows);
-    //});
     $(window).on("resize", function () {
         Fn_Grid_Resize($("#grid"), $(window).height() - "371");
     });
