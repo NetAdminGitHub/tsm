@@ -75,7 +75,7 @@ $(document).ready(function () {
         },
         //DEFINICIÓN DE LOS CAMPOS
         columns: [
-            { field: "IdTipoTransporte", title: "Aduana", hidden: true },
+            { field: "IdTipoTransporte", title: "Tipo Transporte", hidden: true },
             { field: "Nombre", title: "Nombre" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
