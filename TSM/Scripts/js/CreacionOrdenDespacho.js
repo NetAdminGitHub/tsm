@@ -1587,7 +1587,7 @@ var loadModalCorte = (IdHojaBandeo, Corte) => {
             Vista: "~/Views/Shared/_ConsultaEtapaCorte.cshtml",
             Js: "ConsultaEtapaCorte.js",
             Titulo: "Estatus Etapas",
-            Width: "70%",
+            Width: "60%",
             MinWidth: "30%"
         }],
         Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte },
@@ -1651,7 +1651,7 @@ $.fn.extend({
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}`;
+                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xidPlanta === null ? 0 : xidPlanta}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }

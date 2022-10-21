@@ -24,12 +24,19 @@ $(document).ready(function () {
     let dataSourceMicro = new kendo.data.DataSource({
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + `HojasBandeos/ConsultaMicroEtapasByHojaBandeo/${IdHojaBandeo}/${idCatalogoDiseno}` },
-                contentType: "application/json; charset=utf-8"
+                url: TSM_Web_APi + "HojasBandeos/ConsultaMicroEtapasByHojaBandeo",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
+                } else {
+                    return kendo.stringify({
+                        IdCatalogoDiseno: idCatalogoDiseno,
+                        IdHojaBandeo: IdHojaBandeo,
+                        Etapas: EtpSelected
+                    });
                 }
             }
         },
@@ -235,3 +242,7 @@ const porcentajeSegundas = (porcentaje) => {
 fPermisos = (datos) => {
     Permisos = datos;
 };
+
+let fn_RefrescarObj = () => {
+    $("#gridBultos").data("kendoGrid").dataSource.read();
+}

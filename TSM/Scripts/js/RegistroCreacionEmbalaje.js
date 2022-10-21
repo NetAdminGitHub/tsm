@@ -1587,7 +1587,7 @@ $.fn.extend({
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}`;
+                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xidPlanta === null ? 0 : xidPlanta}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }
