@@ -437,7 +437,6 @@
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
     <Compile Include="Controllers\TiposTintasController.cs" />
-    <Compile Include="Controllers\TiposTransportesController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\ReportesPbiController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
@@ -584,7 +583,6 @@
     <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\statusOrdenDespacho.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
-    <Content Include="Scripts\js\TiposTransportes.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
     <Content Include="Scripts\js\VinetasMercancias.js" />
     <Content Include="Scripts\js\CatalogoMaquinas.js" />
@@ -1172,7 +1170,6 @@
     <Content Include="Views\LocalizacionesMercanciasDM\Index.cshtml" />
     <Content Include="Views\Incoterms\Index.cshtml" />
     <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
-    <Content Include="Views\TiposTransportes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
