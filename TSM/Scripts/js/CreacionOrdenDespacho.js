@@ -1580,7 +1580,7 @@ var loadGridIzquierdo = () => {
 }
 
 
-var loadModalCorte = (IdHojaBandeo, Corte) => {
+var loadModalCorte = (IdHojaBandeo, Corte, IdCatalogoDiseno) => {
     let strjson = {
         config: [{
             Div: "vConsultaEtapa",
@@ -1590,7 +1590,7 @@ var loadModalCorte = (IdHojaBandeo, Corte) => {
             Width: "60%",
             MinWidth: "30%"
         }],
-        Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte },
+        Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte, IdCatalogoDiseno: IdCatalogoDiseno },
         fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
     };
 
@@ -1661,8 +1661,9 @@ $.fn.extend({
                     { field: "Corte", title: "Corte", width: 300 },
                     { field: "NoDocumento", title: "No Documento", width: 300 },
                     { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "IdCatalogoDiseno", title: "IdCatalogo", width: 300,hidden:true },
                     {
-                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
+                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\,\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
                     }
                 ]
             });

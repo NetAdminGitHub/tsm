@@ -4058,6 +4058,16 @@ label.error {
     background-color: #9ED63C;
 }
 
+.badge-IngresoMercancia {
+    background-color: #33a561;
+}
+.badge-PreparacionCarrito {
+    background-color: #1a2bc9;
+}
+.badge-OrdenDespacho {
+    background-color: #c933bd;
+}
+
 .dropdown-menu {
     border: 0;
     border-radius: 0;

@@ -42,7 +42,7 @@ var fn_GetEtapaActivas = (xjson) => {
                 let htmltextElemnt = `<div class="col px-2 d-flex justify-content-center showdetailcc">` +
                     '<a class="text-decoration-none d-flex flex-column">' +
                     '<div class="custom-icon">' +
-                    `<div class="${vIcon}" style = "font-size:2.5vw; color: ${colores[cont]};" ></div >` +
+                    `<div class="${vIcon}" style = "font-size:2.5vw; color: ${item.Color};" ></div >` +
                     '</div>' +
                     `<div class="fs-6 text-uppercase mb-0 mt-2 text-center" style="max-width: 129px;">${NombreEtapa}</div>` +
                     `<div id="etp-${etp}" class="mt-auto text-center"></div>` +
@@ -64,7 +64,7 @@ var fn_GetEtapaActivas = (xjson) => {
 var fn_GetEtapasCorte = (xjson) => {
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: TSM_Web_APi + "HojasBandeos/GetConsultaEtapaCorte/" + `${xjson.IdHojaBandeo}`,
+        url: TSM_Web_APi + "HojasBandeos/GetConsultaEtapaCorte/" + `${xjson.IdHojaBandeo}/${xjson.IdCatalogoDiseno}`,
         dataType: 'json',
         type: 'GET',
         success: function (dato) {

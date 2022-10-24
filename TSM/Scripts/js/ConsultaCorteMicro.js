@@ -3,7 +3,7 @@ var Permisos;
 
 $(document).ready(function () {
 
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
 
     TextBoxEnable($("#txtCorte"), false);
     TextBoxEnable($("#txtCodigoFM"), false);
@@ -98,6 +98,9 @@ $(document).ready(function () {
                             else if(VistaFormulario == 'ValidacionReproceso') { #<span class='badge badge-etapa badge-ValidacionReproceso m-0 mr-1'> </span># }
                             else if(VistaFormulario == 'Auditoria') { #<span class='badge badge-etapa badge-Auditoria m-0 mr-1'> </span># }
                             else if(VistaFormulario == 'Despacho') { #<span class='badge badge-etapa badge-Despacho m-0 mr-1'> </span># }
+                             else if(VistaFormulario == 'IngresoMercancia') { #<span class='badge badge-etapa badge-IngresoMercancia m-0 mr-1'> </span># }
+                             else if(VistaFormulario == 'PreparacionCarrito') { #<span class='badge badge-etapa badge-PreparacionCarrito m-0 mr-1'> </span># }
+                              else if(VistaFormulario == 'OrdenDespacho') { #<span class='badge badge-etapa badge-OrdenDespacho m-0 mr-1'> </span># }
                             else { #<span class='badge badge-etapa badge-default m-0 mr-1'> </span># } #
                          #=Etapa#</div>`
             },
