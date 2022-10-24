@@ -18,12 +18,13 @@
     }
 </style>
 <div class="form-row">
-   
+
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-lg-12  text-lg-right">
+                        <button type="button" id="btnCambiarEstado">Cambiar Estado</button>
                         <button type="button" id="btnRetornar"></button>
                     </div>
                 </div>
@@ -79,7 +80,7 @@
                             <textarea id="TaConsignatario" name="TaConsignatario" class="form-control" cols="50" rows="5"></textarea>
                         </div>
                         <div class="col-lg-4 form-group">
-                            <label for="TaExportador">Código, nombre y dirección del exportador: <a id="modalExportador" name="modalExportador" style="color: blue; cursor: pointer;">Agregar/Editar</a></label>
+                            <label for="TaExportador">Código, nombre y dirección del exportador: <a id="modalExportador" name="modalExportador" style="color: blue; cursor: pointer;">Editar</a></label>
                             <textarea id="TaExportador" name="TaExportador" class="form-control" cols="50" rows="5"></textarea>
                         </div>
 
@@ -92,9 +93,9 @@
                             <input id="MltPaisExpor" name="MltPaisExpor" class="form-control" />
                         </div>
                         <!--<div class="col-lg-6 form-group">
-        <label for="TxtDireccion">Dirección del cliente:</label>
-        <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
-    </div>-->
+                            <label for="TxtDireccion">Dirección del cliente:</label>
+                            <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
+                        </div>-->
                         <div class="col-lg-2 form-group">
                             <label for="numTotalBultos">Total de Bultos:</label>
                             <input id="numTotalBultos" name="numTotalBultos" class="form-control" />
@@ -116,7 +117,7 @@
                             <label for="numTotalValor">Total de Valor:</label>
                             <input id="numTotalValor" name="numTotalValor" class="form-control" />
                         </div>
-                        <div class="col-lg-2 form-group">
+                        <!--<div class="col-lg-2 form-group">
                             <label for="numTotalFlete">Total de Flete:</label>
                             <input id="numTotalFlete" name="numTotalFlete" class="form-control" />
                         </div>
@@ -127,7 +128,7 @@
                         <div class="col-lg-2 form-group">
                             <label for="numTotalOtros">Total de Otros Gastos:</label>
                             <input id="numTotalOtros" name="numTotalOtros" class="form-control" />
-                        </div>
+                        </div>-->
                         <div class="col-lg-2 form-group">
                             <label for="numTotalAduana">Total de Aduana:</label>
                             <input id="numTotalAduana" name="numTotalAduana" class="form-control" />
@@ -136,7 +137,8 @@
                             <label for="numTotalCuantia">Cuantía Total:</label>
                             <input id="numTotalCuantia" name="numTotalCuantia" class="form-control" />
                         </div>
-                        <div class="col-lg-8 form-group">
+                        <div class="col-lg-10 form-group">
+                            <!--Cambiar col a 8 cuando se habiliten los otros campos-->
                         </div>
                         <div class="col-lg-2 d-flex align-items-center">
                             <button type="button" id="btnGuardarDM" class="w-100 form-control" style="margin-top:16px;">Guardar</button>
@@ -144,7 +146,7 @@
                         <div class="col-lg-10 form-group">
                         </div>
                         <div class="col-lg-2 d-flex align-items-end justify-content-end">
-                            <button type="button" id="btnNotaRemision" class="w-100 form-control">Gestión de Nota de Remisión</button>
+                            <button type="button" id="btnNotaRemision" class="w-100 form-control" style="margin-top:8px;">Gestión de Nota de Remisión</button><!--Quitar margin top si es necesario cuando se habiliten los otros inputs-->
                         </div>
                     </div>
                 </form>
@@ -175,3 +177,5 @@
 <div id="vRelacionPLs"></div>
 <div id="vModalVerNotasRemi"></div>
 <div id="vModalExportador"></div>
+<div id="vModalItem"></div>
+<div id="vCambioEstado"></div>

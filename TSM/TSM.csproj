@@ -576,6 +576,7 @@
     <Content Include="Scripts\js\ConsultaCorteMicro.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
     <Content Include="Scripts\js\ModalExportador.js" />
+    <Content Include="Scripts\js\ModalItem.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
@@ -1170,6 +1171,7 @@
     <Content Include="Views\LocalizacionesMercanciasDM\Index.cshtml" />
     <Content Include="Views\Incoterms\Index.cshtml" />
     <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

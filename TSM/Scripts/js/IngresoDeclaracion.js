@@ -11,7 +11,17 @@ var campo2Consig = "";
 var campo3Consig = "";
 var campo4Consig = "";
 
+var campo1Expo = "";
+var campo2Expo = "";
+var campo3Expo = "";
+var campo4Expo = "";
+
+var estadoDM = "";
+
 $(document).ready(function () {
+    //1. defincion de la modal
+    Fn_VistaCambioEstado($("#vCambioEstado"), function () { return fn_CloseCmb(); });
+
     xIdDeMerca = xIdDeclaracionMercancia;
     // crear combobox cliente
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
@@ -21,6 +31,7 @@ $(document).ready(function () {
     //botones
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
     KdoButton($("#btnNotaRemision"), "search", "Nota de Remision");
+    KdoButton($("#btnCambiarEstado"), "gear", "Cambiar estado");
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     $("#cmbModalidad").data("kendoComboBox").value("3");
 
@@ -33,14 +44,17 @@ $(document).ready(function () {
     $("#cmbINCOTERMS").ControlSeleccionINCOTERMS();
     KdoButtonEnable($("#btnNotaRemision"), false);
 
+    $("#btnCambiarEstado").on("click", function () {
+        Fn_VistaCambioEstadoMostrar("DeclaracionMercancias", estadoDM, TSM_Web_APi + "DeclaracionMercancias/CambiarEstado", "", xIdDeMerca, undefined, function () { return fn_CloseCmb(); } , false);
+    });
+
     $.ajax({
         url: TSM_Web_APi + "InfoEmpresa/1/",
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
             if (dato !== null) {
-                let consig = dato[0];
-                let tactxt = "1er. Campo > " + dato[0]['NIT'] + "\n2do. Campo > " + dato[0]['Nombre'] + "\n3er. Campo > " + dato[0]['Direccion'] + "\n4to. Campo > " + dato[0]['Telefono'];
+                let tactxt = "NIT: " + dato[0]['NIT'] + "\nNombre: " + dato[0]['Nombre'] + "\nDirección: " + dato[0]['Direccion'] + "\nTeléfono: " + dato[0]['Telefono'];
                 $("#TaConsignatario").val(tactxt);
                 campo1Consig = dato[0]['NIT'];
                 campo2Consig = dato[0]['Nombre'];
@@ -58,25 +72,10 @@ $(document).ready(function () {
         if (e.item) {
 
             let IdPlanta = this.dataItem(e.item.index()).IdPlanta;
-            $.ajax({
-                url: TSM_Web_APi + "Plantas/GetPlantaById/" + IdPlanta +"/",
-                dataType: 'json',
-                type: 'GET',
-                success: function (dato) {
-                    if (dato !== null) {
-                        let planta = dato;
-                        let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + dato['Direccion'] + "\n4to. Campo > " + campo4Consig;
-                        $("#TaConsignatario").val(tactxt);
-                    }
-                    kendo.ui.progress($(document.body), false);
-                },
-                error: function () {
-                    kendo.ui.progress($(document.body), false);
-                }
-            });
+            cargarDirPlantaTS(IdPlanta);
 
         } else {
-            let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + campo3Consig + "\n4to. Campo > " + campo4Consig;
+            let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + campo3Consig + "\nTeléfono: " + campo4Consig;
             $("#TaConsignatario").val(tactxt);
         }
     });
@@ -84,9 +83,15 @@ $(document).ready(function () {
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
-            let tactxt = "1er. Campo > " + campo1Consig + "\n2do. Campo > " + campo2Consig + "\n3er. Campo > " + campo3Consig + "\n4to. Campo > " + campo4Consig;
+            let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + campo3Consig + "\nTeléfono: " + campo4Consig;
             $("#TaConsignatario").val(tactxt);
         }
+    });
+
+    $("#MltBodegaCliente").data("kendoMultiColumnComboBox").bind("change", function () {
+
+        cargarDatosTACliente();
+
     });
 
     // crear campo numeric
@@ -138,7 +143,7 @@ $(document).ready(function () {
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalKgs"), false);
-    $("#numTotalFlete").kendoNumericTextBox({
+    /*$("#numTotalFlete").kendoNumericTextBox({
         min: 0,
         max: 999999999,
         format: "c",
@@ -164,7 +169,7 @@ $(document).ready(function () {
         decimals: 2,
         value: 0
     });
-    KdoNumerictextboxEnable($("#numTotalOtros"), false);
+    KdoNumerictextboxEnable($("#numTotalOtros"), false);*/
     $("#numTotalAduana").kendoNumericTextBox({
         min: 0,
         max: 999999999,
@@ -184,8 +189,6 @@ $(document).ready(function () {
     TextBoxReadOnly($("#TaDespachante"), false);
     TextBoxReadOnly($("#TaConsignatario"), false);
     TextBoxReadOnly($("#TaExportador"), false);
-
-    TextBoxReadOnly($("#TxtNoRegistro"), false);
 
     //crear campo fecha
     $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -251,7 +254,7 @@ $(document).ready(function () {
                     NombrePais: { type: "string" },
                     Descripcion: { type: "string" },
                     PesoBruto: { type: "number" },
-                    IdUnidadPesoBruto: { type: "string", defaultValue: function () { return 1; }  },
+                    IdUnidadPesoBruto: { type: "string", defaultValue: function () { return 1; } },
                     Abreviatura: { type: "string" },
                     CantidadBultos: { type: "number" },
                     Cuantia: { type: "number" },
@@ -259,7 +262,14 @@ $(document).ready(function () {
                     NombreEmbalaje: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    plAsociado: {type:"boolean"}
+                    plAsociado: { type: "boolean" },
+                    IdTipoTrasladoRegimen: { type: "number" },
+                    PesoNeto: { type: "number" },
+                    ValorFactura: { type: "number" },
+                    ValorFlete: { type: "number" },
+                    ValorSeguro: { type: "number" },
+                    ValorOtrosGastos: { type: "number" },
+                    ValorAduana: { type: "number" }
                 }
             }
         }
@@ -305,9 +315,10 @@ $(document).ready(function () {
 
             Grid_Focus(e, "IdIncisoArancelario");
         },
+        toolbar: "<button class='k-button k-button-icontext' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
         columns: [
             { field: "IdDeclaracionMercancia", title: "id Declaracion", hidden: true },
-            { field: "Item", title: "Item"},
+            { field: "Item", title: "Item" },
             {
                 field: "IdIncisoArancelario", title: "Inciso Arancelario", hidden: true,
                 editor: function (container, options) {
@@ -317,17 +328,21 @@ $(document).ready(function () {
 
             { field: "IncisoArancelario", title: "Inciso Arancelario" },
             { field: "DescripcionInciso", title: "Descripción de Mercancía", hidden: true, editor: Grid_ColReadOnly },
-            { field: "IdPais", title: "Pais", hidden: true },
-            { field: "NombrePais", title: "NombrePais", hidden: true },
             { field: "Descripcion", title: "Descripción" },
-            { field: "PesoBruto", title: "Peso", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}"},
+            { field: "IdPais", title: "ID País", hidden: true },
+            { field: "NombrePais", title: "País" },
+            { field: "IdTipoTrasladoRegimen", title: "Código Regímenes", hidden: true },
+            { field: "PesoNeto", title: "Peso Neto (KG)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "PesoBruto", title: "Peso Bruto (KG)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
             { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
-            { field: "Cuantia", title: "Cuantía", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
-            { field: "Valor", title: "Valor", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
-            { field: "IdEmbalaje", title: "Embalaje", hidden: true ,editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."]},
+            { field: "IdEmbalaje", title: "Embalaje", editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."], hidden: true },
             { field: "NombreEmbalaje", title: "Embalaje" },
+            { field: "Cuantia", title: "Cuantía", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "Valor", title: "Valor Factura", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
+            { field: "ValorAduana", title: "Valor Aduana", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
+            //////////////////
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true },
             { field: "plAsociado", title: "plAsociado", hidden: true },
@@ -367,32 +382,52 @@ $(document).ready(function () {
                 attributes: {
                     style: "text-align: center"
                 }
+            },
+            {
+                field: "btnedit", title: "&nbsp;",
+                command: {
+                    name: "btnedit",
+                    iconClass: "k-icon k-i-edit m-0",
+                    text: "",
+                    title: "&nbsp;",
+                    click: function (e) {
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        agregarItem(dataItem.Item);
+                    }
+                },
+                width: "70px",
+                attributes: {
+                    style: "text-align: center"
+                }
             }
         ]
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridDetalleItem").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 350);
-    SetGrid_CRUD_ToolbarTop($("#gridDetalleItem").data("kendoGrid"), Permisos.SNAgregar);
-    SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
+    //SetGrid_CRUD_ToolbarTop($("#gridDetalleItem").data("kendoGrid"), Permisos.SNAgregar);
+    SetGrid_CRUD_Command($("#gridDetalleItem").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridDetalleItem").data("kendoGrid"), dS);
 
     $("#modalExportador").on("click", function () {
-        let strjson = {
-            config: [{
-                Div: "vModalExportador",
-                Vista: "~/Views/IngresoDeclaracion/_ModalExportador.cshtml",
-                Js: "ModalExportador.js",
-                Titulo: "Datos Exportador",
-                Height: "53%",
-                Width: "25%",
-                MinWidth: "20%"
-            }],
-            Param: { sIdRegNotaRemi: xIdDeMerca },
-            fn: { fnclose: "", fnLoad: "fn_Ini_Expo", fnReg: "fn_Reg_Expo", fnActi: "" }
-        };
+        if (KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != "" && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != 0 && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != undefined && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != null)
+        {
+            let strjson = {
+                config: [{
+                    Div: "vModalExportador",
+                    Vista: "~/Views/IngresoDeclaracion/_ModalExportador.cshtml",
+                    Js: "ModalExportador.js",
+                    Titulo: "Datos Exportador",
+                    Height: "53%",
+                    Width: "25%",
+                    MinWidth: "20%"
+                }],
+                Param: { sIdRegNotaRemi: xIdDeMerca, campo1Expo: campo1Expo, campo2Expo: campo2Expo, campo3Expo: campo3Expo, campo4Expo: campo4Expo },
+                fn: { fnclose: "", fnLoad: "fn_Ini_Expo", fnReg: "fn_Reg_Expo", fnActi: "" }
+            };
 
-        fn_GenLoadModalWindow(strjson);
+            fn_GenLoadModalWindow(strjson);
+        }
     });
 
     $("#gridDetalleItem").kendoTooltip({
@@ -562,6 +597,24 @@ $(document).ready(function () {
                     if (input.is("[id='cmbCL']")) {
                         return $("#cmbCL").data("kendoMultiColumnComboBox").selectedIndex >= 0;
                     }
+                    if (input.is("[name='TxtNoRegistro']")) {
+                        return input.val() !== "";
+                    }
+                    if (input.is("[name='dFechaAceptacion']")) {
+                        return input.val() !== "";
+                    }
+                    if (input.is("[id='cmbPlanta']")) {
+                        return $("#cmbPlanta").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[name='TxtRTMT']")) {
+                        return input.val() !== "";
+                    }
+                    if (input.is("[id='cmbModalidad']")) {
+                        return $("#cmbModalidad").data("kendoComboBox").selectedIndex >= 0;
+                    }
+                    if (input.is("[id='cmbINCOTERMS']")) {
+                        return $("#cmbINCOTERMS").data("kendoMultiColumnComboBox").selectedIndex >= 0;
+                    }
                     return true;
                 }
             },
@@ -617,18 +670,40 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 $("#TxtDireccion").val(dato.Direccion);
                 kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
                 kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
+                kdoNumericSetValue($("#numTotalAduana"), dato.TotalValorAduana);
+                kdoNumericSetValue($("#numTotalKgs"), dato.TotalPesoBruto);
                 kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
+                /////////////////////////////NUEVOS CAMPOS/////////////////////////////////
+                $("#TxtRTMT").val(dato.RegistroTransporte);
+                $("#TxtNoRegistro").val(dato.NoRegistro);
+                $("#dFechaAceptacion").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaAceptacion), 'dd/MM/yyyy'));
+                KdoCmbSetValue($("#cmbPlanta"), dato.IdPlanta);
+                KdoMultiColumnCmbSetValue($("#cmbCL"), dato.IdLocalizacion);
+                KdoCmbSetValue($("#cmbModalidad"), dato.IdModalidad);
+                KdoMultiColumnCmbSetValue($("#cmbINCOTERMS"), dato.IdIncoterm);
+                cargarDirPlantaTS(dato.IdPlanta);
+                cargarDatosTACliente();
+                campo1Expo = dato.ExportadorNit;
+                campo2Expo = dato.ExportadorNombre;
+                campo3Expo = dato.ExportadorDireccion;
+                campo4Expo = dato.ExportadorTelefono;
+                let taInfoExpo = "NIT: " + dato.ExportadorNit + "\nNombre: " + dato.ExportadorNombre + "\nDirección: " + dato.ExportadorDireccion + "\nTeléfono: " + dato.ExportadorTelefono;
+                $("#TaExportador").val(taInfoExpo);
+                estadoDM = dato.Estado;
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), "");
                 KdoMultiColumnCmbSetValue($("#MltAduana"), "");
-                KdoMultiColumnCmbSetValue($("#MltPaisExpor"),"");
+                KdoMultiColumnCmbSetValue($("#MltPaisExpor"), "");
+                KdoMultiColumnCmbSetValue($("#cmbCL"), "");
+                KdoMultiColumnCmbSetValue($("#cmbINCOTERMS"), "");
                 $("#TxtNoReferencia").val("");
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(Fhoy()), 'dd/MM/yyyy'));
                 $("#TxtDireccion").val("");
                 kdoNumericSetValue($("#numTotalBultos"), 0);
-                kdoNumericSetValue($("#numTotalValor"),0);
+                kdoNumericSetValue($("#numTotalValor"), 0);
+                kdoNumericSetValue($("#numTotalAduana"), 0);
                 kdoNumericSetValue($("#numTotalCuantia"), 0);
             }
             kendo.ui.progress($(document.body), false);
@@ -655,6 +730,8 @@ let fn_Get_RefresCab = (xId) => {
                 $("#TxtDireccion").val(dato.Direccion);
                 kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
                 kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
+                kdoNumericSetValue($("#numTotalAduana"), dato.TotalValorAduana);
+                kdoNumericSetValue($("#numTotalKgs"), dato.TotalPesoBruto);
                 kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
                 fn_SetValueMulticolumIngreso($("#MltIngreso"), dato.IdIngreso);
             }
@@ -697,8 +774,19 @@ let fn_GuardarDM = () => {
             IdPais: KdoMultiColumnCmbGetValue($("#MltPaisExpor")),
             Estado: "ACTIVO",
             Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's'),
-            IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso"))
-
+            IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso")),
+            NoRegistro: $("#TxtNoRegistro").val(),
+            FechaAceptacion: kendo.toString(kendo.parseDate($("#dFechaAceptacion").val()), 's'),
+            IdLocalizacion: KdoMultiColumnCmbGetValue($("#cmbCL")),
+            ExportadorNit: campo1Expo,
+            ExportadorDireccion: campo3Expo,
+            ExportadorNombre: campo2Expo,
+            ExportadorTelefono: campo4Expo,
+            IdInfoEmpresa: 1,
+            RegistroTransporte: $("#TxtRTMT").val(),
+            IdModalidad: KdoCmbGetValue($("#cmbModalidad")),
+            IdIncoterm: KdoMultiColumnCmbGetValue($("#cmbINCOTERMS")),
+            IdPlanta: KdoCmbGetValue($("#cmbPlanta"))
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
@@ -763,6 +851,94 @@ $.fn.extend({
                 ]
             });
         });
+    },
+    ControlSeleccionRegimen: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Codigo",
+                dataValueField: "IdTipoTrasladoRegimen",
+                filter: "contains",
+                filterFields: ["IdTipoTrasladoRegimen", "Codigo", "Nombre"],
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de Código de Régimen",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "RelacionTiposTrasladosRegimenes";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function (data, type) {
+                            if (type !== "read" && data.models) {
+                                return kendo.stringify(data.models[0]);
+                            }
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "IdTipoTrasladoRegimen",
+                            fields: {
+                                IdTipoTrasladoRegimen: { type: "number" },
+                                Codigo: { type: "string" },
+                                Nombre: { type: "string" }
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "Codigo", title: "Código de Régimen", width: 200 },
+                    { field: "Nombre", title: "Nombre del código de Régimen", width: 400 }
+                ]
+            });
+        });
+    },
+    ControlSeleccionUnidadesAduanas: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "CodigoAduana",
+                dataValueField: "IdUnidad",
+                filter: "contains",
+                filterFields: ["IdUnidad", "CodigoAduana", "Nombre"],
+                autoBind: false,
+                height: 400,
+                placeholder: "Selección de Código de Unidades de Medidas de Aduana",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: function (datos) {
+                                return TSM_Web_APi + "UnidadesMedidas/GetUnidadesMedidasAduanas";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function (data, type) {
+                            if (type !== "read" && data.models) {
+                                return kendo.stringify(data.models[0]);
+                            }
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "IdUnidad",
+                            fields: {
+                                IdUnidad: { type: "number" },
+                                CodigoAduana: { type: "string" },
+                                Nombre: { type: "string" }
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "CodigoAduana", title: "Código de Unidad de Medida de Aduana", width: 200 },
+                    { field: "Nombre", title: "Nombre de Unidad de Medida de Aduana", width: 400 }
+                ]
+            });
+        });
     }
 });
 
@@ -771,6 +947,84 @@ $.fn.extend({
 let get_Item = (g) => {
     var SelItem = g.dataItem(g.select());
     return SelItem === null ? 0 : SelItem.Item;
+
+};
+
+let agregarItem = (Item) => {
+    let strjson = {
+        config: [{
+            Div: "vModalItem",
+            Vista: "~/Views/IngresoDeclaracion/_ModalItem.cshtml",
+            Js: "ModalItem.js",
+            Titulo: "Item",
+            Height: "70%", //Height de 90% cuando se habiliten los campos de INCOTERM
+            Width: "50%",
+            MinWidth: "30%"
+        }],
+        Param: { IdDM: xIdDeMerca, Item: Item },
+        fn: { fnclose: "", fnLoad: "fn_Ini_Item", fnReg: "fn_Reg_Item", fnActi: "" }
+    };
+
+    fn_GenLoadModalWindow(strjson);
+};
+
+let cargarDirPlantaTS = (IdPlanta) => {
+
+    $.ajax({
+        url: TSM_Web_APi + "Plantas/GetPlantaById/" + IdPlanta + "/",
+        dataType: 'json',
+        type: 'GET',
+        success: function (dato) {
+            if (dato !== null) {
+                let planta = dato;
+                let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + dato['Direccion'] + "\nTeléfono: " + campo4Consig;
+                $("#TaConsignatario").val(tactxt);
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+};
+
+let cargarDatosTACliente = () => {
+
+    if (KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != "" && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != undefined && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != 0) {
+        $.ajax({
+            url: TSM_Web_APi + "BodegasCLientes/GetDatosDMPorIdBodegaCliente/" + KdoMultiColumnCmbGetValue($("#MltBodegaCliente")),
+            dataType: 'json',
+            type: 'GET',
+            success: function (dato) {
+                if (dato !== null) {
+                    let tactxtcli = "NIT: " + dato['NIT'] + "\nNombre: " + dato['Nombre'] + "\nDirección: " + dato['Direccion'] + "\nTeléfono: " + dato['Telefono'];
+                    $("#TaDespachante").val(tactxtcli);
+                    if (xIdDeMerca == "" || xIdDeMerca == undefined || xIdDeMerca == 0 || xIdDeMerca == null)
+                    {
+                        $("#TaExportador").val(tactxtcli);
+                        campo1Expo = dato['NIT'];
+                        campo2Expo = dato['Nombre'];
+                        campo3Expo = dato['Direccion'];
+                        campo4Expo = dato['Telefono'];
+                    }
+
+                }
+                kendo.ui.progress($(document.body), false);
+            },
+            error: function () {
+                kendo.ui.progress($(document.body), false);
+            }
+        });
+    }
+    else {
+        $("#TaDespachante").val("");
+        $("#TaExportador").val("");
+        campo1Expo = null;
+        campo2Expo = null;
+        campo3Expo = null;
+        campo4Expo = null;
+    }
 
 };
 
@@ -784,3 +1038,8 @@ let fn_SetValueMulticolumIngreso = (e, id) => {
         }
     });
 }
+
+var fn_CloseCmb = () => {
+    $("#gridDetalleItem").data("kendoGrid").dataSource.read();
+};
+
