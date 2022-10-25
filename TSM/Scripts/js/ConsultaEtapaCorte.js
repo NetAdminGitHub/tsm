@@ -13,6 +13,9 @@ var fn_Ini_ConsultaEtapa = (xjson) => {
         type: "percent",
         animation: {
             duration: 400
+        },
+        change: function (e) {
+            this.progressStatus.text(`${e.value}%`);
         }
     }).data("kendoProgressBar");
     fn_GetEtapaActivas(xjson);
@@ -41,7 +44,7 @@ var fn_GetEtapaActivas = (xjson) => {
                 nomEtapas.push(item.Nombre);
                 let htmltextElemnt = `<div class="col px-2 d-flex justify-content-center showdetailcc">` +
                     '<a class="text-decoration-none d-flex flex-column">' +
-                    '<div class="custom-icon">' +
+                    '<div class="custom-icon align-self-center">' +
                     `<div class="${vIcon}" style = "font-size:2.5vw; color: ${item.Color};" ></div >` +
                     '</div>' +
                     `<div class="fs-6 text-uppercase mb-0 mt-2 text-center" style="max-width: 129px;">${NombreEtapa}</div>` +

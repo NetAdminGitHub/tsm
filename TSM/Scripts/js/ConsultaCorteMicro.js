@@ -236,6 +236,7 @@ const porcentajeSegundas = (porcentaje) => {
         },
         change: function (e) {
             this.progressWrapper.css({ "background-color": "#32c728", "border-color": "#32c728" });
+            this.progressStatus.text(`${e.value}%`);
         }
     }).data("kendoProgressBar");
 
