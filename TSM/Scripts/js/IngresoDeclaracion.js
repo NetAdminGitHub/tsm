@@ -45,7 +45,10 @@ $(document).ready(function () {
     KdoButtonEnable($("#btnNotaRemision"), false);
 
     $("#btnCambiarEstado").on("click", function () {
-        Fn_VistaCambioEstadoMostrar("DeclaracionMercancias", estadoDM, TSM_Web_APi + "DeclaracionMercancias/CambiarEstado", "", xIdDeMerca, undefined, function () { return fn_CloseCmb(); } , false);
+        var lstId = {
+            IdDeclaracionMercancia: xIdDeMerca
+        };
+        Fn_VistaCambioEstadoMostrar("DeclaracionMercancias", estadoDM, TSM_Web_APi + "DeclaracionMercancias/CambiarEstado", "", lstId, undefined, function () { return fn_CloseCmb(); } , false);
     });
 
     $.ajax({
@@ -772,7 +775,7 @@ let fn_GuardarDM = () => {
             NoReferencia: $("#TxtNoReferencia").val(),
             IdAduana: KdoMultiColumnCmbGetValue($("#MltAduana")),
             IdPais: KdoMultiColumnCmbGetValue($("#MltPaisExpor")),
-            Estado: "ACTIVO",
+            Estado: "OPERACION",
             Fecha: kendo.toString(kendo.parseDate($("#dFecha").val()), 's'),
             IdIngreso: KdoMultiColumnCmbGetValue($("#MltIngreso")),
             NoRegistro: $("#TxtNoRegistro").val(),
@@ -794,6 +797,7 @@ let fn_GuardarDM = () => {
             window.history.pushState('', '', "/IngresoDeclaracion/" + `${xIdClienteIng}/${xIdDeMerca}`);
             RequestEndMsg(data, "Post");
             kendo.ui.progress($(document.body), false);
+            estadoDM = data[0].Estado;
         },
         error: function (data) {
             ErrorMsg(data);
