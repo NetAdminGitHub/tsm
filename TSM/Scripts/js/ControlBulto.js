@@ -8,6 +8,13 @@ let Bandeo;
 
 let UrlUnidadesMedidas = TSM_Web_APi + "UnidadesMedidas";
 
+let fn_confirmar = function (content) {
+    return $("<div></div>").kendoConfirm({
+        title: "Borrar Bultos / Rollos",
+        content: content
+    }).data("kendoConfirm").open().result;
+};
+
 var fn_Ini_ControlBulto = (xjson) => {
    
     // crear combobox cliente
@@ -45,6 +52,9 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
     // crear boton Crear serie Bulto
     KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
+    // crear boton Crear serie Bulto
+    KdoButton($("#btnBorrarMercancias"), "trash", "Borrar Bultos / Rollos");
+
     //botón importar Bulto
     $("#Adjunto").kendoUpload({
         async: {
@@ -71,6 +81,7 @@ var fn_Ini_ControlBulto = (xjson) => {
 
     KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+    KdoButtonEnable($("#btnBorrarMercancias"), xesNuevo ? false : true);
     $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 
     // crear Ingresar cantidad
@@ -296,6 +307,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                 MsgLong3: "Longitud del campo es 30"
             }
         }).data("kendoValidator");
+
     //vista Ingreso Bulto(boton crear bulto)
     $("#btnCrearBulto").click(function () {
         let strjson = {
@@ -333,6 +345,29 @@ var fn_Ini_ControlBulto = (xjson) => {
         };
 
         fn_GenLoadModalWindow(strjson);
+    });
+
+    //Eliminar mercancías
+    $("#btnBorrarMercancias").click(function () {
+        fn_confirmar("¿Está seguro que desea borrar todos los bultos / rollos?").then(function () {
+            kendo.ui.progress($("#body"), true);
+            $.ajax({
+                url: TSM_Web_APi + `/HojasBandeosMercancias/DelHojasBandeosMercanciaByHojaBandeo/${xidHojaBandeo}`,
+                type: "Delete",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    fn_RefrescarGrid();
+                    kendo.ui.progress($("#body"), false);
+                    RequestEndMsg(data, "Delete");
+                },
+                error: function (data) {
+                    kendo.ui.progress($("#body"), false);
+                    ErrorMsg(data);
+                }
+            });
+        }, function () {
+            $("#xcmbMarca").focus();
+        });
     });
 
     let ImportarExcel = function (e) {
@@ -477,6 +512,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         fn_Get_HojasBandeo(xidHojaBandeo);
         KdoButtonEnable($("#btnCrearSerieBulto"), xesNuevo ? false : true);
         KdoButtonEnable($("#btnCrearBulto"), xesNuevo ? false : true);
+        KdoButtonEnable($("#btnBorrarMercancias"), xesNuevo ? false : true);
         $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
     } else {
         // cuando no es edicion(registro nuevo)
@@ -488,6 +524,7 @@ var fn_Reg_ControlBulto = (xjson) => {
         KdoCmbSetValue($("#xcmbPlanta"), "");
         KdoButtonEnable($("#btnCrearSerieBulto"), false );
         KdoButtonEnable($("#btnCrearBulto"), false);
+        KdoButtonEnable($("#btnBorrarMercancias"), false);
         $("#Adjunto").data("kendoUpload").enable(false);
         $("#Mtlfm").data("kendoMultiSelect").dataSource.read();
     }
@@ -549,6 +586,7 @@ let fn_Gen_Hb = () => {
                 xIdIng = datos[0].IdIngreso;
                 KdoButtonEnable($("#btnCrearSerieBulto"), true);
                 KdoButtonEnable($("#btnCrearBulto"), true);
+                KdoButtonEnable($("#btnBorrarMercancias"), true);
                 $("#Adjunto").data("kendoUpload").enable(true);
                 fn_Get_HojasBandeo(datos[0].IdHojaBandeo);
                 fn_Get_ListFms(datos[0].IdHojaBandeo);
@@ -622,6 +660,7 @@ var fn_RefrescarGrid = () => {
     $("#gridResumenIngreso").data("kendoGrid").dataSource.read();
     KdoButtonEnable($("#btnCrearSerieBulto"), xidHojaBandeo===0 ? false : true);
     KdoButtonEnable($("#btnCrearBulto"), xidHojaBandeo === 0 ? false : true);
+    KdoButtonEnable($("#btnBorrarMercancias"), xidHojaBandeo === 0 ? false : true);
     $("#Adjunto").data("kendoUpload").enable(xidHojaBandeo === 0 ? false : true);
 };
 
