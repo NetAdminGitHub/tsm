@@ -3,8 +3,9 @@ var Permisos;
 
 $(document).ready(function () {
 
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
-
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
+    KdoButton($("#btnRefrescar"), "arrow-rotate-cw", "Actualizar");
+    
     TextBoxEnable($("#txtCorte"), false);
     TextBoxEnable($("#txtCodigoFM"), false);
     TextBoxEnable($("#txtDiseño"), false);
@@ -24,12 +25,19 @@ $(document).ready(function () {
     let dataSourceMicro = new kendo.data.DataSource({
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + `HojasBandeos/ConsultaMicroEtapasByHojaBandeo/${IdHojaBandeo}/${idCatalogoDiseno}` },
-                contentType: "application/json; charset=utf-8"
+                url: TSM_Web_APi + "HojasBandeos/ConsultaMicroEtapasByHojaBandeo",
+                contentType: "application/json; charset=utf-8",
+                type: "POST"
             },
             parameterMap: function (data, type) {
                 if (type !== "read") {
                     return kendo.stringify(data);
+                } else {
+                    return kendo.stringify({
+                        IdCatalogoDiseno: idCatalogoDiseno,
+                        IdHojaBandeo: IdHojaBandeo,
+                        Etapas: EtpSelected
+                    });
                 }
             }
         },
@@ -91,6 +99,9 @@ $(document).ready(function () {
                             else if(VistaFormulario == 'ValidacionReproceso') { #<span class='badge badge-etapa badge-ValidacionReproceso m-0 mr-1'> </span># }
                             else if(VistaFormulario == 'Auditoria') { #<span class='badge badge-etapa badge-Auditoria m-0 mr-1'> </span># }
                             else if(VistaFormulario == 'Despacho') { #<span class='badge badge-etapa badge-Despacho m-0 mr-1'> </span># }
+                             else if(VistaFormulario == 'IngresoMercancia') { #<span class='badge badge-etapa badge-IngresoMercancia m-0 mr-1'> </span># }
+                             else if(VistaFormulario == 'PreparacionCarrito') { #<span class='badge badge-etapa badge-PreparacionCarrito m-0 mr-1'> </span># }
+                              else if(VistaFormulario == 'OrdenDespacho') { #<span class='badge badge-etapa badge-OrdenDespacho m-0 mr-1'> </span># }
                             else { #<span class='badge badge-etapa badge-default m-0 mr-1'> </span># } #
                          #=Etapa#</div>`
             },
@@ -134,7 +145,12 @@ $(document).ready(function () {
         const grid = $("#gridBultos").data("kendoGrid");
         grid.saveAsExcel();
     });
-
+    $("#btnRefrescar").data("kendoButton").bind("click", function (e) {
+        detalleHojaBandeo(IdHojaBandeo);
+        infoDiseno(idCatalogoDiseno);
+        fn_Get_EtapasCorte(IdHojaBandeo);
+        $("#gridBultos").data("kendoGrid").dataSource.read();
+    });
     $("#btnRetornar").click(function () {
         window.location = window.location.origin + '/ConsultaCorteMacro/'
             + `${idCliente}/`
@@ -226,6 +242,7 @@ const porcentajeSegundas = (porcentaje) => {
         },
         change: function (e) {
             this.progressWrapper.css({ "background-color": "#32c728", "border-color": "#32c728" });
+            this.progressStatus.text(`${e.value}%`);
         }
     }).data("kendoProgressBar");
 
@@ -235,3 +252,7 @@ const porcentajeSegundas = (porcentaje) => {
 fPermisos = (datos) => {
     Permisos = datos;
 };
+
+let fn_RefrescarObj = () => {
+    $("#gridBultos").data("kendoGrid").dataSource.read();
+}
