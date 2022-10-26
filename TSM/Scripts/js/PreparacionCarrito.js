@@ -65,7 +65,7 @@ $(document).ready(function () {
             noRows: "No hay datos dsiponibles"
         },
         columns: [
-            { selectable: true, width: "35px", includeChildren: true, name: "select" },
+            { selectable: "multiple, row", width: "35px", includeChildren: true, name: "select" },
             { field: "Id", title: "Id", hidden: true },
             { field: "IdPadre", title: "Id Padre", hidden: true },
             { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
@@ -88,7 +88,8 @@ $(document).ready(function () {
                 ],
                 width: "70px"
             }
-        ]
+        ],
+        selectable: "multiple, row"
     });
 
     $("#treelist").data("kendoTreeList").dataSource.read();
