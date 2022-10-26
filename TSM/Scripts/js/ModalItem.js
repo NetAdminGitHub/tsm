@@ -2,8 +2,10 @@
 
 var Permisos;
 let banLoad = 0;
+var Item = null;
 
 var fn_Ini_Item = (strjson) => {
+    Item = strjson.Item;
     if (banLoad == 0)
     {
         KdoButton($("#btnGuardarItem"), "save", "Guardar");
@@ -156,7 +158,10 @@ var fn_Ini_Item = (strjson) => {
                 KdoMultiColumnCmbSetValue($("#cmbInciAr"), result.IdIncisoArancelario);
                 $("#txtDesPar").val(result.DescripcionInciso);
                 $("#txtDesMerc").val(result.Descripcion);
-                KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
+                //KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
+                $("#cmbPais").data("kendoMultiColumnComboBox").value(result.IdPais);
+                $("#cmbPais").data("kendoMultiColumnComboBox").text(result.NombrePais);
+                $("#cmbPais").data("kendoMultiColumnComboBox").trigger("change");
                 KdoMultiColumnCmbSetValue($("#cmbRegimen"), result.IdTipoTrasladoRegimen);
                 $("#txtCodReg").val(result.NombreReg);
                 kdoNumericSetValue($("#txtPesoN"), result.PesoNeto);
@@ -195,7 +200,7 @@ var fn_Ini_Item = (strjson) => {
 
             let DeclaracionMercanciasItems = {
                 IdDeclaracionMercancia: strjson.IdDM,
-                Item: strjson.Item,
+                Item: Item,
                 IdIncisoArancelario: valIncisoAran,
                 IdPais: valcmbPais,
                 Descripcion: valDescMerc,
@@ -212,7 +217,7 @@ var fn_Ini_Item = (strjson) => {
                 ValorAduana: valAduana
             };
 
-            if (strjson.Item == null) {
+            if (Item == null) {
                 $.ajax({
                     url: TSM_Web_APi + "DeclaracionMercanciasItems",
                     dataType: "json",
@@ -223,6 +228,27 @@ var fn_Ini_Item = (strjson) => {
                         $("#vModalItem").data("kendoWindow").close();
                         let grid = $("#gridDetalleItem").data("kendoGrid");
                         grid.dataSource.add(result[0]);
+
+                        $.ajax({
+                            url: TSM_Web_APi + "DeclaracionMercancias/GetDatosCabecera/" + `${strjson.IdDM}`,
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function (dato) {
+                                if (dato !== null) {
+                                    kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
+                                    kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
+                                    kdoNumericSetValue($("#numTotalAduana"), dato.TotalValorAduana);
+                                    kdoNumericSetValue($("#numTotalKgs"), dato.TotalPesoBruto);
+                                    kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
+                                    KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
+                                }
+                                kendo.ui.progress($(document.body), false);
+                            },
+                            error: function () {
+                                kendo.ui.progress($(document.body), false);
+                            }
+                        });
+
                     },
                     error: function (jqXHR, exception) {
                         alert(exception);
@@ -233,7 +259,7 @@ var fn_Ini_Item = (strjson) => {
             {
 
                 $.ajax({
-                    url: TSM_Web_APi + "/DeclaracionMercanciasItems/" + strjson.IdDM + "/" + strjson.Item,
+                    url: TSM_Web_APi + "/DeclaracionMercanciasItems/" + strjson.IdDM + "/" + Item,
                     dataType: "json",
                     type: "PUT",
                     contentType: "application/json; charset=utf-8",
@@ -242,6 +268,27 @@ var fn_Ini_Item = (strjson) => {
                         $("#vModalItem").data("kendoWindow").close();
                         let grid = $("#gridDetalleItem").data("kendoGrid");
                         grid.dataSource.read();
+
+                        $.ajax({
+                            url: TSM_Web_APi + "DeclaracionMercancias/GetDatosCabecera/" + `${strjson.IdDM }`,
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function (dato) {
+                                if (dato !== null) {
+                                    kdoNumericSetValue($("#numTotalBultos"), dato.TotalBulto);
+                                    kdoNumericSetValue($("#numTotalValor"), dato.TotalValor);
+                                    kdoNumericSetValue($("#numTotalAduana"), dato.TotalValorAduana);
+                                    kdoNumericSetValue($("#numTotalKgs"), dato.TotalPesoBruto);
+                                    kdoNumericSetValue($("#numTotalCuantia"), dato.TotalCuantia);
+                                    KdoMultiColumnCmbSetValue($("#MltIngreso"), dato.IdIngreso);
+                                }
+                                kendo.ui.progress($(document.body), false);
+                            },
+                            error: function () {
+                                kendo.ui.progress($(document.body), false);
+                            }
+                        });
+
                     },
                     error: function (jqXHR, exception) {
                         alert(exception);
@@ -260,11 +307,13 @@ var fn_Ini_Item = (strjson) => {
 };
 
 var fn_Reg_Item = (strjson) => {
-
+    Item = strjson.Item;
     if (strjson.Item == null) {
         KdoMultiColumnCmbSetValue($("#cmbInciAr"), "");
         $("#txtDesMerc").val("");
         $("#txtCodReg").val("");
+        $("#txtDesPar").val("");
+        $("#txtUnidad").val("");
         KdoMultiColumnCmbSetValue($("#cmbPais"), "");
         KdoMultiColumnCmbSetValue($("#cmbRegimen"), "");
         kdoNumericSetValue($("#txtPesoN"), 0);
@@ -311,7 +360,10 @@ var fn_Reg_Item = (strjson) => {
                     KdoMultiColumnCmbSetValue($("#cmbInciAr"), result.IdIncisoArancelario);
                     $("#txtDesPar").val(result.DescripcionInciso);
                     $("#txtDesMerc").val(result.Descripcion);
-                    KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
+                    //KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
+                    $("#cmbPais").data("kendoMultiColumnComboBox").value(result.IdPais);
+                    $("#cmbPais").data("kendoMultiColumnComboBox").text(result.NombrePais);
+                    $("#cmbPais").data("kendoMultiColumnComboBox").trigger("change");
                     KdoMultiColumnCmbSetValue($("#cmbRegimen"), result.IdTipoTrasladoRegimen);
                     $("#txtCodReg").val(result.NombreReg);
                     kdoNumericSetValue($("#txtPesoN"), result.PesoNeto);

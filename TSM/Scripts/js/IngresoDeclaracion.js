@@ -192,6 +192,7 @@ $(document).ready(function () {
     TextBoxReadOnly($("#TaDespachante"), false);
     TextBoxReadOnly($("#TaConsignatario"), false);
     TextBoxReadOnly($("#TaExportador"), false);
+    TextBoxReadOnly($("#txtEstadoDM"), false);
 
     //crear campo fecha
     $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
@@ -373,7 +374,7 @@ $(document).ready(function () {
                                 item: dataItem.Item,
                                 sDiv: "vRelacionPLs",
                                 grid: $("#gridDetalleItem"),
-                                gd: this.dataItem("tr[data-uid='" + `${this.dataSource.get(dataItem.Item).uid}` + "']")
+                                gd: this.dataItem("tr[data-uid='" + `${this.dataSource.get(dataItembtnNotaRemision.Item).uid}` + "']")
                             },
                             fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
                         };
@@ -450,7 +451,10 @@ $(document).ready(function () {
             KdoButtonEnable($("#btnNotaRemision"), false);
         }
         else {
-            KdoButtonEnable($("#btnNotaRemision"), true);
+            if ($("#txtEstadoDM").val() != "FINALIZADO")
+            {
+                KdoButtonEnable($("#btnNotaRemision"), true);
+            }
         }
     });
 
@@ -691,9 +695,18 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 campo2Expo = dato.ExportadorNombre;
                 campo3Expo = dato.ExportadorDireccion;
                 campo4Expo = dato.ExportadorTelefono;
+                $("#txtEstadoDM").val(dato.Estado);
                 let taInfoExpo = "NIT: " + dato.ExportadorNit + "\nNombre: " + dato.ExportadorNombre + "\nDirección: " + dato.ExportadorDireccion + "\nTeléfono: " + dato.ExportadorTelefono;
                 $("#TaExportador").val(taInfoExpo);
                 estadoDM = dato.Estado;
+                if ($("#txtEstadoDM").val() == "FINALIZADO") {
+                    KdoButtonEnable($("#btnCambiarEstado"), false);
+                    KdoButtonEnable($("#btnGuardarDM"), false);
+                    KdoButtonEnable($("#btnNotaRemision"), false);
+                    $(".k-grid-btnvin").addClass("k-state-disabled");
+                    $(".k-grid-btnedit").addClass("k-state-disabled");
+                    $(".k-grid-Eliminar").addClass("k-state-disabled");
+                }
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
                 KdoMultiColumnCmbSetValue($("#MltIngreso"), "");
@@ -798,6 +811,7 @@ let fn_GuardarDM = () => {
             RequestEndMsg(data, "Post");
             kendo.ui.progress($(document.body), false);
             estadoDM = data[0].Estado;
+            $("#txtEstadoDM").val(estadoDM);
         },
         error: function (data) {
             ErrorMsg(data);
@@ -1044,6 +1058,16 @@ let fn_SetValueMulticolumIngreso = (e, id) => {
 }
 
 var fn_CloseCmb = () => {
-    $("#gridDetalleItem").data("kendoGrid").dataSource.read();
+    $("#gridDetalleItem").data("kendoGrid").dataSource.read().then(function () {
+        if ($("#txtEstadoDM").val() == "FINALIZADO") {
+            KdoButtonEnable($("#btnCambiarEstado"), false);
+            KdoButtonEnable($("#btnGuardarDM"), false);
+            KdoButtonEnable($("#btnNotaRemision"), false);
+            $(".k-grid-btnvin").addClass("k-state-disabled");
+            $(".k-grid-btnedit").addClass("k-state-disabled");
+            $(".k-grid-Eliminar").addClass("k-state-disabled");
+        }
+    });
+    
 };
 
