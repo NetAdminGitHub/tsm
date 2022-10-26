@@ -4,7 +4,8 @@ var Permisos;
 $(document).ready(function () {
 
     KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
-
+    KdoButton($("#btnRefrescar"), "arrow-rotate-cw", "Actualizar");
+    
     TextBoxEnable($("#txtCorte"), false);
     TextBoxEnable($("#txtCodigoFM"), false);
     TextBoxEnable($("#txtDiseño"), false);
@@ -144,7 +145,10 @@ $(document).ready(function () {
         const grid = $("#gridBultos").data("kendoGrid");
         grid.saveAsExcel();
     });
-
+    $("#btnRefrescar").data("kendoButton").bind("click", function (e) {
+        fn_Get_EtapasCorte(IdHojaBandeo);
+        $("#gridBultos").data("kendoGrid").dataSource.read();
+    });
     $("#btnRetornar").click(function () {
         window.location = window.location.origin + '/ConsultaCorteMacro/'
             + `${idCliente}/`
