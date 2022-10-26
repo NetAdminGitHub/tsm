@@ -30,7 +30,7 @@ var oldElement = [];
 
 $(document).ready(function () {
 
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
 
@@ -43,6 +43,8 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
 
     KdoCmbSetValue($("#CmbServicio"), sessionStorage.getItem("cFOT_CmbServicio") === null ? "" : sessionStorage.getItem("cFOT_CmbServicio"));
+
+    Kendo_CmbFiltrarGrid($("#cmbTipoTrans"), TSM_Web_APi + "TiposTransportes", "Nombre", "IdTipoTransporte", "Seleccione un tipo de transporte");
 
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
@@ -376,6 +378,22 @@ $(document).ready(function () {
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         KdoButtonEnable($("#btnMoveData"), true);
         loadGridIzquierdo();
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: TSM_Web_APi + "DespachosMercancias/" + readIdDespachoMercancia +"/",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $("#txtMotorista").val(result.Motorista);
+                $("#txtPlaca").val(result.MotoristaPlaca);
+                KdoCmbSetValue($("#cmbTipoTrans"), result.IdTipoTransporte);
+            },
+            error: function (result) {
+                
+            }
+        });
+
     }
 
     if (readPlanta != "" && readPlanta != undefined)
@@ -527,7 +545,10 @@ $(document).ready(function () {
                                 IdUsuarioMod: getUser(),
                                 IdMercancia: mercancias,
                                 IdMotivo: 1,
-                                IdPlanta: xidPlanta
+                                IdPlanta: xidPlanta,
+                                Motorista: $("#txtMotorista").val(),
+                                MotoristaPlaca: $("#txtPlaca").val(),
+                                IdTipoTransporte: Kendo_CmbGetvalue($("#cmbTipoTrans"))
                             }),
                             contentType: "application/json; charset=utf-8",
                             success: function (datos) {
@@ -623,7 +644,10 @@ $(document).ready(function () {
                             IdUsuarioMod: getUser(),
                             IdMercancia: null,
                             IdMotivo: 1,
-                            IdPlanta: xidPlanta
+                            IdPlanta: xidPlanta,
+                            Motorista: $("#txtMotorista").val(),
+                            MotoristaPlaca: $("#txtPlaca").val(),
+                            IdTipoTransporte: Kendo_CmbGetvalue($("#cmbTipoTrans"))
                         }),
                         contentType: "application/json; charset=utf-8",
                         success: function (datos) {
