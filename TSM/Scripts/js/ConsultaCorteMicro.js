@@ -146,6 +146,8 @@ $(document).ready(function () {
         grid.saveAsExcel();
     });
     $("#btnRefrescar").data("kendoButton").bind("click", function (e) {
+        detalleHojaBandeo(IdHojaBandeo);
+        infoDiseno(idCatalogoDiseno);
         fn_Get_EtapasCorte(IdHojaBandeo);
         $("#gridBultos").data("kendoGrid").dataSource.read();
     });
