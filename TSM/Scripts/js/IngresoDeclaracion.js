@@ -32,7 +32,7 @@ $(document).ready(function () {
     KdoButton($("#btnGuardarDM"), "save", "Guardar");
     KdoButton($("#btnNotaRemision"), "search", "Nota de Remision");
     KdoButton($("#btnCambiarEstado"), "gear", "Cambiar estado");
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
     $("#cmbModalidad").data("kendoComboBox").value("3");
 
     // multicolum
@@ -319,7 +319,7 @@ $(document).ready(function () {
 
             Grid_Focus(e, "IdIncisoArancelario");
         },
-        toolbar: "<button class='k-button k-button-icontext' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
+        toolbar: "<button class='k-button k-button-icontext' id='btnAddItem' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
         columns: [
             { field: "IdDeclaracionMercancia", title: "id Declaracion", hidden: true },
             { field: "Item", title: "Item" },
@@ -643,7 +643,7 @@ $(document).ready(function () {
         window.location.href="/ControlDeclaraciones/index"
     });
 
-    $("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
+    //$("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
     
 });
 
@@ -706,6 +706,27 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                     $(".k-grid-btnvin").addClass("k-state-disabled");
                     $(".k-grid-btnedit").addClass("k-state-disabled");
                     $(".k-grid-Eliminar").addClass("k-state-disabled");
+                    $("#btnAddItem").addClass("k-state-disabled");
+                    $("#MltBodegaCliente").addClass("k-state-disabled");
+                    $("#TxtNoRegistro").addClass("k-state-disabled");
+                    $("#TxtNoReferencia").addClass("k-state-disabled");
+                    $("#dFechaAceptacion").addClass("k-state-disabled");
+                    $('[name="MltAduana_input"]').addClass("k-state-disabled");
+                    $('[name="cmbCL_input"]').addClass("k-state-disabled");
+                    $('[name="cmbPlanta_input"]').addClass("k-state-disabled");
+                    $("#TxtRTMT").addClass("k-state-disabled");
+                    $('[name="MltPaisExpor_input"]').addClass("k-state-disabled");
+                    $('[name="cmbModalidad_input"]').addClass("k-state-disabled");
+                    $('[name="cmbINCOTERMS_input"]').addClass("k-state-disabled");
+                    $(".k-dropdowngrid").addClass("k-state-disabled");
+                    $(".k-combobox-clearable").addClass("k-state-disabled");
+                    $(".k-picker-wrap").addClass("k-state-disabled");
+                    $("#modalExportador").addClass("k-state-disabled");
+                }
+                else {
+                    $("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
+                    KdoButtonEnable($("#btnCambiarEstado"), true);
+                    $("#btnAddItem").removeClass("k-state-disabled");
                 }
             } else {
                 KdoMultiColumnCmbSetValue($("#MltBodegaCliente"), "");
@@ -721,6 +742,9 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 kdoNumericSetValue($("#numTotalValor"), 0);
                 kdoNumericSetValue($("#numTotalAduana"), 0);
                 kdoNumericSetValue($("#numTotalCuantia"), 0);
+                $("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
+                KdoButtonEnable($("#btnCambiarEstado"), false);
+                $("#btnAddItem").addClass("k-state-disabled");
             }
             kendo.ui.progress($(document.body), false);
         },
@@ -812,6 +836,11 @@ let fn_GuardarDM = () => {
             kendo.ui.progress($(document.body), false);
             estadoDM = data[0].Estado;
             $("#txtEstadoDM").val(estadoDM);
+            if ($("#txtEstadoDM").val() != "FINALIZADO") {
+                $("#MltBodegaCliente").data("kendoMultiColumnComboBox").focus();
+                KdoButtonEnable($("#btnCambiarEstado"), true);
+                $("#btnAddItem").removeClass("k-state-disabled");
+            }
         },
         error: function (data) {
             ErrorMsg(data);
@@ -1066,6 +1095,22 @@ var fn_CloseCmb = () => {
             $(".k-grid-btnvin").addClass("k-state-disabled");
             $(".k-grid-btnedit").addClass("k-state-disabled");
             $(".k-grid-Eliminar").addClass("k-state-disabled");
+            $("#btnAddItem").addClass("k-state-disabled");
+            $("#MltBodegaCliente").addClass("k-state-disabled");
+            $("#TxtNoRegistro").addClass("k-state-disabled");
+            $("#TxtNoReferencia").addClass("k-state-disabled");
+            $("#dFechaAceptacion").addClass("k-state-disabled");
+            $('[name="MltAduana_input"]').addClass("k-state-disabled");
+            $('[name="cmbCL_input"]').addClass("k-state-disabled");
+            $('[name="cmbPlanta_input"]').addClass("k-state-disabled");
+            $("#TxtRTMT").addClass("k-state-disabled");
+            $('[name="MltPaisExpor_input"]').addClass("k-state-disabled");
+            $('[name="cmbModalidad_input"]').addClass("k-state-disabled");
+            $('[name="cmbINCOTERMS_input"]').addClass("k-state-disabled");
+            $(".k-dropdowngrid").addClass("k-state-disabled");
+            $(".k-combobox-clearable").addClass("k-state-disabled");
+            $(".k-picker-wrap").addClass("k-state-disabled");
+            $("#modalExportador").addClass("k-state-disabled");
         }
     });
     
