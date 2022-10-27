@@ -374,7 +374,7 @@ $(document).ready(function () {
                                 item: dataItem.Item,
                                 sDiv: "vRelacionPLs",
                                 grid: $("#gridDetalleItem"),
-                                gd: this.dataItem("tr[data-uid='" + `${this.dataSource.get(dataItembtnNotaRemision.Item).uid}` + "']")
+                                gd: this.dataItem("tr[data-uid='" + `${this.dataSource.get(dataItem.Item).uid}` + "']")
                             },
                             fn: { fnclose: "fn_RefresVlist", fnLoad: "fn_Ini_RelacionPLs", fnReg: "fn_Reg_RelacionPLs", fnActi: "" }
                         };
