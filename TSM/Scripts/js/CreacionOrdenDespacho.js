@@ -30,7 +30,7 @@ var oldElement = [];
 
 $(document).ready(function () {
 
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
 
@@ -43,6 +43,8 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
 
     KdoCmbSetValue($("#CmbServicio"), sessionStorage.getItem("cFOT_CmbServicio") === null ? "" : sessionStorage.getItem("cFOT_CmbServicio"));
+
+    Kendo_CmbFiltrarGrid($("#cmbTipoTrans"), TSM_Web_APi + "TiposTransportes", "Nombre", "IdTipoTransporte", "Seleccione un tipo de transporte");
 
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
@@ -376,6 +378,22 @@ $(document).ready(function () {
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         KdoButtonEnable($("#btnMoveData"), true);
         loadGridIzquierdo();
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: TSM_Web_APi + "DespachosMercancias/" + readIdDespachoMercancia +"/",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $("#txtMotorista").val(result.Motorista);
+                $("#txtPlaca").val(result.MotoristaPlaca);
+                KdoCmbSetValue($("#cmbTipoTrans"), result.IdTipoTransporte);
+            },
+            error: function (result) {
+                
+            }
+        });
+
     }
 
     if (readPlanta != "" && readPlanta != undefined)
@@ -527,7 +545,10 @@ $(document).ready(function () {
                                 IdUsuarioMod: getUser(),
                                 IdMercancia: mercancias,
                                 IdMotivo: 1,
-                                IdPlanta: xidPlanta
+                                IdPlanta: xidPlanta,
+                                Motorista: $("#txtMotorista").val(),
+                                MotoristaPlaca: $("#txtPlaca").val(),
+                                IdTipoTransporte: Kendo_CmbGetvalue($("#cmbTipoTrans"))
                             }),
                             contentType: "application/json; charset=utf-8",
                             success: function (datos) {
@@ -623,7 +644,10 @@ $(document).ready(function () {
                             IdUsuarioMod: getUser(),
                             IdMercancia: null,
                             IdMotivo: 1,
-                            IdPlanta: xidPlanta
+                            IdPlanta: xidPlanta,
+                            Motorista: $("#txtMotorista").val(),
+                            MotoristaPlaca: $("#txtPlaca").val(),
+                            IdTipoTransporte: Kendo_CmbGetvalue($("#cmbTipoTrans"))
                         }),
                         contentType: "application/json; charset=utf-8",
                         success: function (datos) {
@@ -1580,17 +1604,17 @@ var loadGridIzquierdo = () => {
 }
 
 
-var loadModalCorte = (IdHojaBandeo, Corte) => {
+var loadModalCorte = (IdHojaBandeo, Corte, IdCatalogoDiseno) => {
     let strjson = {
         config: [{
             Div: "vConsultaEtapa",
             Vista: "~/Views/Shared/_ConsultaEtapaCorte.cshtml",
             Js: "ConsultaEtapaCorte.js",
             Titulo: "Estatus Etapas",
-            Width: "70%",
+            Width: "60%",
             MinWidth: "30%"
         }],
-        Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte },
+        Param: { IdModulo: 9, IdHojaBandeo: IdHojaBandeo, Corte: Corte, IdCatalogoDiseno: IdCatalogoDiseno },
         fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
     };
 
@@ -1651,7 +1675,7 @@ $.fn.extend({
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}`;
+                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xidPlanta === null ? 0 : xidPlanta}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }
@@ -1661,8 +1685,9 @@ $.fn.extend({
                     { field: "Corte", title: "Corte", width: 300 },
                     { field: "NoDocumento", title: "No Documento", width: 300 },
                     { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "IdCatalogoDiseno", title: "IdCatalogo", width: 300,hidden:true },
                     {
-                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
+                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\",\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
                     }
                 ]
             });

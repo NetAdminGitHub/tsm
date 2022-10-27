@@ -2,31 +2,12 @@
 var etapas = [];
 var nomEtapas = [];
 var colores = ["#5ba7db", "#e93353", "#f2aa3e", "#3579f6", "#9abf51", "#a7a7a7"];
-let pb;
-var fn_Ini_ConsultaEtapa = (xjson) => {
-    TextBoxEnable($("#txtCorte"), false);
-    $("#txtCorte").val(xjson.Corte);
-    pb = $("#progressBar").kendoProgressBar({
-        min: 0,
-        max: 100,
-        type: "value",
-        type: "percent",
-        animation: {
-            duration: 400
-        },
-        change: function (e) {
-            this.progressStatus.text(`${e.value}%`);
-        }
-    }).data("kendoProgressBar");
-    fn_GetEtapaActivas(xjson);
-}
+var EtpSelected = [];
+$(document).ready(function () {
+    fn_Get_EtapaActivas();
+});
 
-var fn_con_ConsultaEtapa = (xjson) => {
-    $("#txtCorte").val(xjson.Corte);
-    fn_GetEtapasCorte(xjson);
-}
-
-var fn_GetEtapaActivas = (xjson) => {
+var fn_Get_EtapaActivas = () => {
     kendo.ui.progress($(document.body), true);
     $.ajax({
         url: TSM_Web_APi + "HojasBandeosMercanciasEtapas/GetEtapasMercanciasActivas",
@@ -42,9 +23,9 @@ var fn_GetEtapaActivas = (xjson) => {
 
                 etapas.push(item.IdEtapaProceso);
                 nomEtapas.push(item.Nombre);
-                let htmltextElemnt = `<div class="col px-2 d-flex justify-content-center showdetailcc">` +
+                let htmltextElemnt = `<div class="col px-2 d-flex justify-content-center showdetailgrid">` +
                     '<a class="text-decoration-none d-flex flex-column">' +
-                    '<div class="custom-icon align-self-center">' +
+                    `<div id="e-${etp}" class="custom-icon etp align-self-center">` +
                     `<div class="${vIcon}" style = "font-size:2.5vw; color: ${item.Color};" ></div >` +
                     '</div>' +
                     `<div class="fs-6 text-uppercase mb-0 mt-2 text-center" style="max-width: 129px;">${NombreEtapa}</div>` +
@@ -52,10 +33,12 @@ var fn_GetEtapaActivas = (xjson) => {
                     '</a >' +
                     `</div>`;
                 $("#stepConsulta").append(htmltextElemnt);
+                $("#e-" + `${etp}`).data("Etapa", etp);
+
                 cont++;
             });
 
-            fn_GetEtapasCorte(xjson)
+            fn_Get_EtapasCorte(IdHojaBandeo);
             kendo.ui.progress($(document.body), false);
         },
         error: function () {
@@ -64,31 +47,20 @@ var fn_GetEtapaActivas = (xjson) => {
     });
 }
 
-var fn_GetEtapasCorte = (xjson) => {
+
+var fn_Get_EtapasCorte = (idHojaBandeo) => {
     kendo.ui.progress($(document.body), true);
     $.ajax({
-        url: TSM_Web_APi + "HojasBandeos/GetConsultaEtapaCorte/" + `${xjson.IdHojaBandeo}/${xjson.IdCatalogoDiseno}`,
+        url: TSM_Web_APi + "HojasBandeos/GetConsultaEtapaCorte/" + `${idHojaBandeo}/${idCatalogoDiseno}`,
         dataType: 'json',
         type: 'GET',
         success: function (dato) {
             $.each(dato, function (i, item) {
                 $("#etp-" + `${item.IdEtapaProceso}`).children().remove();
                 let Porc = item.Porcentaje.toFixed(2) + '%';
-                let Tallas = item.tallas === null ? '' : item.tallas;
-                let BulRollo = item.CantidadMercancia;
-                let Cantidad = item.Cantidad;
-
-/*                percent.push(Porc);*/
-
-                let htmltextElemntdet = '<div class="fs-6 text-uppercase mb-0 mt-2 text-center">' + `${Porc}` + '</div>' +
-                    '<div class="fs-6 text-uppercase mb-0 m-2 text-start">Tallas : ' + `${Tallas}` + '</div>' +
-                    '<div class="fs-6 text-uppercase mb-0 m-2 text-start">Bultos/Rollos : ' + `${BulRollo}` + '</div>' +
-                    '<div class="fs-6 text-uppercase mb-0 m-2 text-start">Cantidad : ' + `${Cantidad}` + '</div>';
-
+                let htmltextElemntdet = '<div class="fs-6 text-uppercase mb-0 mt-2 text-center">' + `${Porc}` + '</div>';
                 $("#etp-" + `${item.IdEtapaProceso}`).append(htmltextElemntdet);
-
             });
-            pb.value(dato.length > 0 ? dato[0].TotalPorcentaje : 0);
             kendo.ui.progress($(document.body), false);
         },
         error: function () {
@@ -96,3 +68,15 @@ var fn_GetEtapasCorte = (xjson) => {
         }
     });
 }
+
+
+$(document).on("click", ".etp", function () {
+    $(this).toggleClass("Activa_Etapa");
+    let row = $(".Activa_Etapa");
+    EtpSelected = [];
+    $.each(row, function (i, item) {
+        EtpSelected.push( $(`#${item.id}`).data("Etapa"))
+    });
+    fn_RefrescarObj ()
+});
+
