@@ -95,9 +95,9 @@
                             <input id="MltPaisExpor" name="MltPaisExpor" class="form-control" />
                         </div>
                         <!--<div class="col-lg-6 form-group">
-                            <label for="TxtDireccion">Dirección del cliente:</label>
-                            <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
-                        </div>-->
+        <label for="TxtDireccion">Dirección del cliente:</label>
+        <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
+    </div>-->
                         <div class="col-lg-2 form-group">
                             <label for="numTotalBultos">Total de Bultos:</label>
                             <input id="numTotalBultos" name="numTotalBultos" class="form-control" />
@@ -111,7 +111,7 @@
                             <input id="cmbModalidad" name="cmbModalidad" class="form-control" />
                         </div>
 
-                        <div class="col-lg-2 form-group">
+                        <div class="col-lg-4 form-group">
                             <label for="cmbINCOTERMS">INCOTERMS:</label>
                             <input id="cmbINCOTERMS" name="cmbINCOTERMS" class="form-control" />
                         </div>
@@ -120,17 +120,17 @@
                             <input id="numTotalValor" name="numTotalValor" class="form-control" />
                         </div>
                         <!--<div class="col-lg-2 form-group">
-                            <label for="numTotalFlete">Total de Flete:</label>
-                            <input id="numTotalFlete" name="numTotalFlete" class="form-control" />
-                        </div>
-                        <div class="col-lg-2 form-group">
-                            <label for="numTotalSeguro">Total de Seguro:</label>
-                            <input id="numTotalSeguro" name="numTotalSeguro" class="form-control" />
-                        </div>
-                        <div class="col-lg-2 form-group">
-                            <label for="numTotalOtros">Total de Otros Gastos:</label>
-                            <input id="numTotalOtros" name="numTotalOtros" class="form-control" />
-                        </div>-->
+        <label for="numTotalFlete">Total de Flete:</label>
+        <input id="numTotalFlete" name="numTotalFlete" class="form-control" />
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="numTotalSeguro">Total de Seguro:</label>
+        <input id="numTotalSeguro" name="numTotalSeguro" class="form-control" />
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="numTotalOtros">Total de Otros Gastos:</label>
+        <input id="numTotalOtros" name="numTotalOtros" class="form-control" />
+    </div>-->
                         <div class="col-lg-2 form-group">
                             <label for="numTotalAduana">Total de Aduana:</label>
                             <input id="numTotalAduana" name="numTotalAduana" class="form-control" />
@@ -143,24 +143,23 @@
                             <label for="txtEstadoDM">Estado Actual:</label>
                             <input id="txtEstadoDM" name="txtEstadoDM" class="form-control k-textbox" />
                         </div>
-                        <div class="col-lg-10 form-group">
-                            <!--Cambiar col a 8 cuando se habiliten los otros campos-->
-                        </div>
-                        <div class="col-lg-2 d-flex align-items-center">
-                            <button type="button" id="btnGuardarDM" class="w-100 form-control" style="margin-top:16px;">Guardar</button>
-                        </div>
-                        <div class="col-lg-10 form-group">
-                        </div>
-                        <div class="col-lg-2 d-flex align-items-end justify-content-end">
-                            <button type="button" id="btnNotaRemision" class="w-100 form-control" style="margin-top:8px;">Gestión de Nota de Remisión</button><!--Quitar margin top si es necesario cuando se habiliten los otros inputs-->
-                        </div>
                     </div>
+                    
                 </form>
 
-                <div class="form-row"><br /></div>
+                <div class="form-row d-flex justify-content-end mb-3">
+                    <div class="col-lg-8 d-flex align-items-end">
+                        <label for="gridDetalleItem"><strong>Ingreso de Item</strong></label>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" id="btnGuardarDM" class="w-100 form-control">Guardar</button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" id="btnNotaRemision" class="w-100 form-control">Gestión de Nota de Remisión</button><!--Quitar margin top si es necesario cuando se habiliten los otros inputs-->
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-lg-12">
-                        <label for="gridDetalleItem"><strong>Ingreso de Item</strong></label>
                         <div id="gridDetalleItem"></div>
                     </div>
 
