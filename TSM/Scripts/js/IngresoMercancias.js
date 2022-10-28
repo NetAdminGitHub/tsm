@@ -436,6 +436,18 @@ let fn_Get_IngresoMercancia = (xId) => {
                 $("#txtEstado").val(dato.Estado);
                 $("#dFecha").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaIngreso), 'dd/MM/yyyy'));
                 $("#num_Nodoc").val(dato.NoDocumento);
+                if ($("#txtEstado").val() == "FINALIZADO") {
+                    KdoButtonEnable($("#btnCrearHoja"), false);
+                    KdoButtonEnable($("#btnCrearLista"), false);
+                    $("#gridHoja").data("kendoGrid").dataSource.read().then(function () {
+                        $(".k-grid-btnHb").addClass("k-state-disabled");
+                        $(".k-grid-Eliminar").addClass("k-state-disabled");
+                    });
+                    $("#gridLista").data("kendoGrid").dataSource.read().then(function () {
+                        $(".k-grid-btnPL").addClass("k-state-disabled");
+                        $(".k-grid-Eliminar").addClass("k-state-disabled");
+                    });
+                }
          
             } else {
                 $("#txtEstado").val("");

@@ -85,7 +85,8 @@ $(document).ready(function () {
                     NombreRecintoFiscal: {type: "string"},
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" },
-                    Direccion: { type: "string"}
+                    Direccion: { type: "string" },
+                    Telefono: { type: "string" }
                 }
             }
         }
@@ -118,6 +119,7 @@ $(document).ready(function () {
             { field: "NombreCliente", title: "Cliente", hidden: false },
             { field: "Descripcion", title: "Descripción" },
             { field: "Direccion", title: "Dirección" },
+            { field: "Telefono", title: "Telefono" },
             { field: "IdRecintoFiscal", title: "Recinto Fiscal", editor: Grid_Combox, values: ["IdRecintoFiscal", "Nombre", TSM_Web_APi + "RecintosFiscales", "", "Seleccione...."], hidden: true },
             { field: "NombreRecintoFiscal", title: "Recinto Fiscal", hidden: false },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }

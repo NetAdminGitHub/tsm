@@ -647,4 +647,64 @@
             });
         });
     },
+    ControlSeleccionCodigoLocalizacion: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdLocalizacion",
+                filter: "contains",
+                autoBind: false,
+                minLength: 2,
+                height: 400,
+                placeholder: "Selección de Códigos de Localización",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "LocalizacionesMercanciasDM/GetFiltroLocalizacion";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "Codigo", title: "Codigo", width: 200 },
+                ]
+            });
+        });
+    },
+    ControlSeleccionINCOTERMS: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdIncoterm",
+                filter: "contains",
+                autoBind: false,
+                minLength: 2,
+                height: 400,
+                placeholder: "Selección de Códigos de Localización",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "Incoterms/GetFiltroINCOTERMS";
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "Codigo", title: "Codigo", width: 200 },
+                ]
+            });
+        });
+    },
 });

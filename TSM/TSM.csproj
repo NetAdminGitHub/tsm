@@ -582,6 +582,8 @@
     <Content Include="Scripts\js\ControlUnidadesEmbalaje.js" />
     <Content Include="Scripts\js\CreacionEmbalaje.js" />
     <Content Include="Scripts\js\MenusSeccionesVistas.js" />
+    <Content Include="Scripts\js\ModalExportador.js" />
+    <Content Include="Scripts\js\ModalItem.js" />
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
@@ -1183,6 +1185,8 @@
     <Content Include="Views\LocalizacionesMercanciasDM\Index.cshtml" />
     <Content Include="Views\Incoterms\Index.cshtml" />
     <Content Include="Views\Shared\_EtapasMercanciasConsulta.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
     <Content Include="Views\TiposTransportes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

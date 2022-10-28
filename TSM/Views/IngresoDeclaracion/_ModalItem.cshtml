@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "_ModalItem";
+}
+
+<form id="FrmIngresoDeclaracion" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <div class="form-row">
+        <div class="col-lg-4 form-group">
+            <label for="txtNoItem"># Item:</label>
+            <input id="txtNoItem" name="txtNoItem" class="k-textbox form-control" readonly />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="cmbInciAr">Inciso Arancelario:</label>
+            <input id="cmbInciAr" name="cmbInciAr" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtDesPar">Descripción partida:</label>
+            <input id="txtDesPar" name="txtDesPar" type="text" class="k-textbox form-control" readonly />
+        </div>
+        <div class="col-lg-8 form-group">
+            <label for="txtDesMerc">Descripción Mercancía:</label>
+            <input id="txtDesMerc" name="txtDesMerc" class="k-textbox form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="cmbPais">País de Origen:</label>
+            <input id="cmbPais" name="cmbPais" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="cmbRegimen">Código de Régimen:</label>
+            <input id="cmbRegimen" name="cmbRegimen" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtCodReg">Descripción de Código de Régimen:</label>
+            <input id="txtCodReg" name="txtCodReg" type="text" class="k-textbox form-control" readonly />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtPesoN">Peso Neto (KG):</label>
+            <input id="txtPesoN" name="txtPesoN" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtPesoB">Peso Bruto (KG):</label>
+            <input id="txtPesoB" name="txtPesoB" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtCantBultos">Cantidad de Bultos:</label>
+            <input id="txtCantBultos" name="txtCantBultos" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="cmbEmb">Embalaje:</label>
+            <input id="cmbEmb" name="cmbEmb" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtCuantia">Cuantía:</label>
+            <input id="txtCuantia" name="txtCuantia" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="cmbUnidad">Código Unidad Medida:</label>
+            <input id="cmbUnidad" name="cmbUnidad" class="form-control" />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtUnidad">Descripción de Unidad de Medida:</label>
+            <input id="txtUnidad" name="txtUnidad" type="text" class="k-textbox form-control" readonly />
+        </div>
+        <div class="col-lg-4 form-group">
+            <label for="txtValFac">Valor Factura:</label>
+            <input id="txtValFac" name="txtValFac" class="form-control" />
+        </div>
+        <!--<div class="col-lg-4 form-group">
+        <label for="txtValFlete">Valorde  Flete:</label>
+        <input id="txtValFlete" name="txtValFlete" class="form-control" />
+    </div>
+    <div class="col-lg-4 form-group">
+        <label for="txtValSeg">Valor de Seguro:</label>
+        <input id="txtValSeg" name="txtValSeg" class="form-control" />
+    </div>
+    <div class="col-lg-4 form-group">
+        <label for="txtValOtros">Valor de Otros Gastos:</label>
+        <input id="txtValOtros" name="txtValOtros" class="form-control" />
+    </div>-->
+        <div class="col-lg-4 form-group">
+            <label for="txtValAduana">Valor Aduana:</label>
+            <input id="txtValAduana" name="txtValAduana" class="form-control" />
+        </div>
+        <!--<div class="col-lg-6 form-group">
+        <label for="txtDAI">DAI %</label>
+        <input id="txtDAI" name="txtDAI" class="form-control" readonly />
+    </div>
+
+    <div class="col-lg-6 form-group">
+        <label for="txtIVA">IVA %</label>
+        <input id="txtIVA" name="txtIVA" class="form-control" readonly />
+    </div>-->
+
+        <div class="col-lg-8 form-group">
+        </div>
+        <div class="col-lg-4 d-flex align-items-end justify-content-end">
+            <button type="button" id="btnGuardarItem" style="margin-right:5px;">Guardar</button>
+            <button type="button" id="btnCancelarItem">Cancelar</button>
+        </div>
+
+    </div>
+</form>
+
