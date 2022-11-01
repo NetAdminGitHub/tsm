@@ -33,7 +33,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     KdoComboBoxbyData($("#cmbEmbAsignacion"), [], "NoDocumento", "IdEmbalajeMercancia", "seleccione una opción", "", "");
     Kendo_CmbFiltrarGrid($("#cmbUnidadEmbalaje"), TSM_Web_APi + "EmbalajeDeclaracionMercancias", "Nombre", "IdEmbalaje", "Seleccione una opción");
 
-    $("#cmbEmbAsignacion").data("kendoComboBox").setDataSource(fn_dsDespacho(pJson));
+    $("#cmbEmbAsignacion").data("kendoComboBox").setDataSource(fn_EmbalajeEnPreparacion(pJson));
 
     $("#divUnidadEmbalaje").show();
     $("#divAsignacionEmbalaje").hide();
@@ -217,8 +217,8 @@ var fn_Reg_CreacionEmbalaje = (xjson) => {
     $("#cmbEmbAsignacion").data("kendoComboBox").dataSource.read();
 }
 
-let fn_dsDespacho = function (pJson) {
-
+let fn_EmbalajeEnPreparacion = function (pJson) {
+    /* funcion que devuelve los embalajes creados o que estan en preparación*/
     return new kendo.data.DataSource({
         dataType: 'json',
         sort: { field: "NoDocumento", dir: "asc" },
@@ -226,14 +226,10 @@ let fn_dsDespacho = function (pJson) {
             read: function (datos) {
                 $.ajax({
                     dataType: 'json',
-                    type: "POST",
+                    type: "GET",
                     async: false,
-                    url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl/",
+                    url: TSM_Web_APi + `EmbalajesMercancias/GetEmbalajesEnPreparacion/${pJson.pIdDespachoMercancia}`,
                     contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({
-                        IdCliente: pJson.pIdCliente,
-                        IdDespachoMercancia: pJson.pIdDespachoMercancia
-                    }),
                     success: function (result) {
                         datos.success(result);
                     }
