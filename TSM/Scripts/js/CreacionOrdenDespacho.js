@@ -1,10 +1,7 @@
 ﻿var dTree;
 var Gdet;
 var Permisos;
-var xIdIngreso = 0;
 var StrId = "";
-var pkIdCarrito = 0;
-var pkIdHb = 0;
 var bgd = 0;
 var banFReadGrid = 0;
 var oldPlanta = 0;
@@ -21,12 +18,6 @@ var xNoDoc = 0;
 
 var rowsPadre = [];
 var rowsHijo = [];
-var dataPadre = [];
-var dataHijo = [];
-var acumRowPadre = [];
-var acumRowHijo = [];
-var acumDSOD = [];
-var oldElement = [];
 
 $(document).ready(function () {
 

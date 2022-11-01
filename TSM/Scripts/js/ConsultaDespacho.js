@@ -123,6 +123,20 @@ $(document).ready(function () {
                 });
 
                 kendo.bind($(this), dataItem);
+
+                let idOD = dataItem.IdDespachoMercancia;
+
+                $("#opcOD" + idOD).kendoSplitButton({
+                    items: [
+                        { id: "opcEmb" + idOD, text: "Embalaje", icon: "plus-outline", click: function () {  } },
+                        { id: "opcPL" + idOD, text: "Lista de Empaque", icon: "plus-outline", click: function () {  } },
+                        { id: "opcPV" + idOD, text: "Pedido de Venta", icon: "plus-outline", click: function () {  } },
+                        { id: "opcFac" + idOD, text: "Factura", icon: "plus-outline", click: function () { } },
+                        { id: "opcDM" + idOD, text: "Devolución DM", icon: "plus-outline", click: function () { } },
+                        { id: "opcNR" + idOD, text: "Nota de Remisión", icon: "plus-outline", click: function () { } }
+                    ]
+                });
+
             });
         },
         columns: [
@@ -141,48 +155,7 @@ $(document).ready(function () {
                 format: "{0:n2}",
                 width: 220
             },
-            {
-                field: "btnGenerarEmbalaje",
-                title: "&nbsp;",
-                command: {
-                    name: "btnGenerarEmbalaje",
-                    iconClass: "k-icon k-i-play m-0",
-                    text: "",
-                    title: "&nbsp;",
-                    click: function (e) {
-                        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-                        let jsonData = {
-                            IdDespachoEmbalajeMercancia: 0,
-                            IdUsuario: getUser(),
-                            IdPlanta: 0,
-                            IdCliente: KdoCmbGetValue($("#cmbCliente")),
-                            IdDespachoMercancia: dataItem.IdDespachoMercancia
-                        }
-
-                        kendo.ui.progress($(".k-dialog"), true);
-                        $.ajax({
-                            url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
-                            method: "POST",
-                            dataType: "json",
-                            data: JSON.stringify(jsonData),
-                            contentType: "application/json; charset=utf-8",
-                            success: function (resultado) {
-                                window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${resultado[0]}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${1}`;
-                            },
-                            error: function (data) {
-                                ErrorMsg(data);
-                                kendo.ui.progress($(".k-dialog"), false);
-                            }
-                        });
-
-                    }
-                },
-                width: "70px",
-                attributes: {
-                    style: "text-align: center"
-                }
-            },
+            { template: "<div class='opcOD' id='opcOD\#=data.IdDespachoMercancia#\'>Etapas</div>" },
             {
                 field: "btnStatus",
                 title: "&nbsp;",
@@ -252,8 +225,10 @@ $(document).ready(function () {
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        Fn_VistaCambioEstadoMostrar("DespachosMercancias", dataItem.Estado, TSM_Web_APi + "DespachosMercancias/CambiarEstadoOrdenDespacho", "", dataItem.IdDespachoMercancia, undefined, function () { return fn_RefreshGrid(); }, false);
+                        ConfirmacionMsg("¿Estás seguro que deseas cambiar la etapa de la Orden de Despacho?",
+                            null,
+                            function () { return false; }
+                        );
                     }
                 },
                 width: "70px",
