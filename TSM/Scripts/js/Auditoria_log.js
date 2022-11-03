@@ -16,6 +16,7 @@ $(document).ready(function () {
     
     $("#daterangepicker").kendoDateRangePicker({
         range: { start: start, end: end },
+        size: "large",
         max: end,
         "messages": {
             "startLabel": "Fecha Inicio:",

@@ -1054,6 +1054,7 @@ $.fn.extend({
     ControlSelecionOTSublimacionConfirmadas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoOT",
                 dataValueField: "IdRequerimiento",
                 filter: "contains",

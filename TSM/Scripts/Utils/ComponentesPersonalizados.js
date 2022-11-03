@@ -1,9 +1,8 @@
 ﻿$.fn.extend({
     ControlPantones: function () {
-     
-        
-            return this.each(function () {
+        return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Codigo",
                 dataValueField: "ID",
                 filter: "contains",
@@ -46,10 +45,9 @@
         }
        // strcontroller: "/Pantoneras/GetBusquedaPantoneraLab",
 
-
-
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Codigo",
                 dataValueField: "ID",
                 filter: "contains",
@@ -80,6 +78,7 @@
     ControlSelecionMateriaPrima: function (idQuimica) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdArticulo",
                 filter: "contains",
@@ -108,6 +107,7 @@
     ControlSelecionMateriaPrimaOEKOTEX: function (idQuimica) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdArticulo",
                 filter: "contains",
@@ -139,6 +139,7 @@
     ControlSelecionOTSublimacion: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoOT",
                 dataValueField: "IdRequerimiento",
                 filter: "contains",
@@ -167,6 +168,7 @@
     ControlSelecionPrograma: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -197,6 +199,7 @@
     ControlSeleccionOrdenesTrabajos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -232,6 +235,7 @@
     ControlSelecionSolicitudesCambios: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdSolicitudCambio",
                 filter: "contains",
@@ -260,6 +264,7 @@
     ControlSelecionSolicitudesCambiosAjustes: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdSolicitudCambio",
                 filter: "contains",
@@ -288,6 +293,7 @@
     ControlSelecionSolicitudesCambiosAjustesTipoOT: function (idTipoOT) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdSolicitudCambio",
                 filter: "contains",
@@ -316,6 +322,7 @@
     ControlSelecionFMCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",
@@ -347,6 +354,7 @@
     ControlSelecionByClienteFMCatalogo: function (xidCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",
@@ -378,6 +386,7 @@
     ControlSeleccionRequerimeintoSubli: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdRequerimiento",
                 filter: "contains",
@@ -411,6 +420,7 @@
     ControlSelecionSolicitudesCambiosTipoOT: function (idTipoOt) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdSolicitudCambio",
                 filter: "contains",
@@ -439,6 +449,7 @@
     ControlSelecionSolicitudProdOT: function (idOT) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -466,6 +477,7 @@
     ControlSeleccionOts: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -499,6 +511,7 @@
     }, ControlSeleccionRDs: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdRequerimiento",
                 filter: "contains",
@@ -532,6 +545,7 @@
     }, ControlSeleccionBodegaClie: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdBodegaCliente",
                 filter: "contains",
@@ -559,6 +573,7 @@
     },ControlSeleccionIngresoMerca: function (idCliente) {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdIngreso",
                 filter: "contains",
@@ -590,6 +605,7 @@
     ControlSeleccionPaises: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPais",
                 filter: "contains",
@@ -620,6 +636,7 @@
     ControlSeleccionAduanas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdAduana",
                 filter: "contains",

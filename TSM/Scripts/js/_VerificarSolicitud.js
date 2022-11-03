@@ -2244,6 +2244,7 @@ let CmbNuevoItem = function(widgetId, value) {
 let fn_CmbCriterioCalidad = function () {
 
     $("#CmbIdCalidadCriterio").kendoMultiColumnComboBox({
+        size: "large",
         dataTextField: "Nombre",
         dataValueField: "IdCalidadCriterio",
         height: 400,
@@ -2399,6 +2400,7 @@ $.fn.extend({
     ControlSeleccionOtporFM: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",

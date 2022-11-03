@@ -472,6 +472,7 @@ $.fn.extend({
     ControlSelecionOTSolicitudesProducion: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",

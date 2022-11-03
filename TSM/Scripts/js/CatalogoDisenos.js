@@ -359,6 +359,7 @@ $.fn.extend({
     CatalogoOrdenesTrabajos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -394,6 +395,7 @@ $.fn.extend({
     ControlSelecionFM_AX: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "CODIGODISENO",
                 dataValueField: "CODIGODISENO",
                 filter: "contains",
@@ -433,6 +435,7 @@ $.fn.extend({
     ControlSelecionProg: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -465,6 +468,7 @@ $.fn.extend({
     CSFMCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",

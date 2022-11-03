@@ -550,6 +550,7 @@ let fn_CargarCabecera = function () {
 
 let OrdenesTrabajos = function (cmb) {
     cmb.kendoMultiColumnComboBox({
+        size: "large",
         dataTextField: "Nombre",
         dataValueField: "IdOrdenTrabajo",
         filter: "contains",

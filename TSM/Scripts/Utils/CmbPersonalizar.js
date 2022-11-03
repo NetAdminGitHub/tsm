@@ -9,8 +9,9 @@
  * @param {string} parentCascade Nombre del campo del cual dependerá el ComboBox en cascada
  * @param {string} clearButton activar boton clear
  */
-var Kendo_CmbFiltrarGrid = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+var Kendo_CmbFiltrarGrid = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, sizeValue = "large") {
     e.kendoComboBox({
+        size: sizeValue,
         dataTextField: textField,
         dataValueField: valueField,
         autoWidth: true,

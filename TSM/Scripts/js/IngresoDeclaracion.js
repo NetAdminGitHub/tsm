@@ -569,6 +569,7 @@ $.fn.extend({
     ControlSelecionIncisos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "IncisoArancelario",
                 dataValueField: "IdIncisoArancelario",
                 filter: "contains",

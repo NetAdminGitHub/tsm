@@ -88,6 +88,7 @@ $.fn.extend({
     SelecionProgbyCliente: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",

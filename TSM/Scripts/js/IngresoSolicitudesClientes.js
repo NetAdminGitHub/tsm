@@ -1017,6 +1017,7 @@ $.fn.extend({
     ControlSelecionProgramaCli: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -1074,6 +1075,7 @@ $.fn.extend({
     ControlSelecionPrenda: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdRegistroSolicitudPrenda",
                 filter: "contains",
@@ -1100,6 +1102,7 @@ $.fn.extend({
     ControlSelecionFM: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdRegistroSolicitudPrenda",
                 filter: "contains",

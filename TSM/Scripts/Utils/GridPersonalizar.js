@@ -539,7 +539,7 @@ function Grid_requestEnd(e) {
         }
 
         if (tipo === "error") {
-            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
             windowMensaje = $("<div />").kendoWindow({
                 title: "Información",
                 visible: false,
@@ -561,7 +561,7 @@ function Grid_error(e) {
     if (e.status === "error" && e.xhr.responseJSON) {
         let mensaje = (e.xhr.responseJSON.Mensaje === null || e.xhr.responseJSON.Mensaje === undefined ? e.xhr.responseJSON.ExceptionMessage : e.xhr.responseJSON.Mensaje) + (e.xhr.responseJSON.Output === null || e.xhr.responseJSON.Output === undefined ? "" : " " + e.xhr.responseJSON.Output);
         let icono = e.xhr.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
-        let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,

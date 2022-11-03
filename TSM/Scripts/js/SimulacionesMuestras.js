@@ -892,6 +892,7 @@ $.fn.extend({
     OrdenesTrabajos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -931,6 +932,7 @@ $.fn.extend({
     OrdenesTrabajosSimulacion: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
