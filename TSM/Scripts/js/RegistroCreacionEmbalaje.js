@@ -595,7 +595,10 @@ $(document).ready(function () {
     // #endregion
 
     //cargada la pagina leer los grid
-    $("#gCortes").data("kendoGrid").dataSource.read();
+    $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+        //se debe abrir y cerrar el detalle para la primera selección
+        closeOpenDetailGrid();
+    });
     $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
    
 });
