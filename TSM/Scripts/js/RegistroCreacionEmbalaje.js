@@ -1,31 +1,14 @@
 ﻿'use strict'
 var Permisos;
-var xIdIngreso = 0;
-var StrId = "";
-var pkIdCarrito = 0;
-var pkIdHb = 0;
-var bgd = 0;
-
-var xidcata = 0;
-var xidCorte = 0;
-var xidclie = 0;
-var xidPlanta = 0;
-var xidMarca = 0;
-var xidListaEmpaque = 0;
-var xidServicio = 0;
-var xidDem = 0;
-var xNoDoc = 0;
-
-var rowsPadre = [];
-var rowsHijo = [];
-var dataPadre = [];
-var dataHijo = [];
-var acumRowPadre = [];
-var acumRowHijo = [];
-var acumDSOD = [];
-var oldElement = [];
-var mercancias = [];
+let xIdIngreso = 0;
+let xidcata = 0;
+let xidCorte = 0;
+let xidServicio = 0;
+let xIdDespachoEmb = 0;
 let Gdet;
+let xOpcion = 0;
+let xCliente = 0;
+let xPlanta = 0;
 function myconfirm(content) {
     return $("<div></div>").kendoConfirm({
         title: "Finalizar Embalaje",
@@ -33,37 +16,39 @@ function myconfirm(content) {
     }).data("kendoConfirm").open().result;
 }
 $(document).ready(function () {
-
-   
-    KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
-    Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
-    Kendo_CmbFiltrarGrid($("#cmbMarca"), TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${readIdCliente}`, "Nombre2", "IdMarca", "Seleccione..");
-    Kendo_CmbFiltrarGrid($("#cmbPL"), TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${readIdCliente}`, "PL", "IdListaEmpaque", "Seleccione..");
+    KdoButton($("#btnFinalizarEmb"), "zoom-in");
+    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
+    $("#dfDespacho").kendoDatePicker({ format: "dd/MM/yyyy" });
 
+    /* inhabilitar textbox*/
+    TextBoxEnable($("#txtCliente"), false);
+    TextBoxEnable($("#txtPlanta"), false);
+    TextBoxEnable($("#txtOrdenDespacho"), false);
+    KdoDatePikerEnable($("#dfDespacho"), false);
+
+    /*combo filtrar por opcion 1: Solicitado para Despachar 2: Disponible en Bodega */
+    KdoComboBoxbyData($("#cmbOpcion"), "[]", "Nombre", "IdOpcion", "Seleccione ....");
+    $("#cmbOpcion").data("kendoComboBox").dataSource.pushCreate([
+        { IdOpcion: 1, Nombre: "Solicitado para Despachar" },
+        { IdOpcion: 2, Nombre: "Disponible en Bodega" },
+     
+    ]);
+
+    KdoCmbSetValue($("#cmbOpcion"), 1);
+    xOpcion = KdoCmbGetValue($("#cmbOpcion"));
 
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
     $("#cmbCorte").mlcCorteCatalogo();
-    // Agregar Corte
-    KdoButton($("#btnGuardar"), "save");
-    KdoButton($("#btnCrearUniEmbalaje"), "plus-outline");
-    KdoButton($("#btnFinalizarEmb"), "zoom-in");
-    // crear detakle de preparado
-    KdoButtonEnable($("#btnGuardar"), false);
+
+    // crear detalle de preparado
     $("#txtIdDespachoMerc").val(0);
 
-
-
-    if (readIdDespachoEmbalajeMercancia > 0) {
-        fn_Get_DatosCab(readIdDespachoEmbalajeMercancia)
-    } else {
-        KdoButtonEnable($("#btnCrearUniEmbalaje"), false);
-        KdoButtonEnable($("#btnFinalizarEmb"), false);
-    }
-
-    //#region crear bultos si preparar
+    //obtner los datos de la cabecera del embalaje
+    fn_Get_DatosCab(xIdDespachoMercancia)
+    
+    //#region Listar bultos sin o por embalar
 
     //CONFIGURACION DEL GRID,CAMPOS
 
@@ -76,15 +61,11 @@ $(document).ready(function () {
             },
             parameterMap: function (data, type) {
                 return kendo.stringify({
-                    IdCliente: xidclie,
-                    IdPlanta: xidPlanta,
-                    IdMarca: xidMarca,
+                    IdDespachoMercancia: $("#txtIdDespachoMerc").val(),
                     IdCatalogo: xidcata,
                     IdHojaBandeo: xidCorte,
-                    IdListaEmpaque: xidListaEmpaque,
                     IdServicio: xidServicio,
-                    IdDespachoMercancia: $("#txtIdDespachoMerc").val(),
-                    Sugerido: readSugeridos === 0 ? false : true
+                    opcion:xOpcion
                 });
             }
         },
@@ -222,8 +203,6 @@ $(document).ready(function () {
         ]
     });
 
-    //#endregion
-
     SetGrid($("#gCortes").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
     Set_Grid_DataSource($("#gCortes").data("kendoGrid"), dsCorte);
 
@@ -286,7 +265,6 @@ $(document).ready(function () {
         }
 
     });
-
     $("#gCortes").data("kendoGrid").thead.on("change", ".k-checkbox", function (e) {
         let checkbox = $(this);
         let content = checkbox.closest(".k-grid-header").next();
@@ -320,66 +298,20 @@ $(document).ready(function () {
             StrCorte = items;
         }
     });
-
     $("#gCortes").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gCortes"), selectedRows);
     });
 
 
-    $("#gCortes").data("kendoGrid").dataSource.read();
+    //#endregion
 
+    //#region listar cortes en embalaje
 
-    if (readPlanta > 0 && readPlanta != "" && readPlanta != undefined) {
-        xidPlanta = readPlanta;
-        $("#cmbPlanta").data("kendoComboBox").value(readPlanta);
-        KdoComboBoxEnable($("#cmbPlanta"), false);
-    }
-    else {
-        xidPlanta = null;
-    }
-
-    if (readIdCliente > 0 && readIdCliente != "" && readIdCliente != undefined) {
-        xidServicio = null;
-        xidclie = null;
-        xidMarca = null;
-        xidcata = null;
-        xidCorte = null;
-        xidListaEmpaque = null;
-        xidclie = parseInt(readIdCliente);
-        $("#cmbCliente").data("kendoComboBox").value(xidclie);
-        $('#cmbCliente').data("kendoComboBox").readonly(true);
-        KdoButtonEnable($("#btnGuardar"), true);
-        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-            closeOpenDetailGrid();
-        });
-    }
-
-    if ( readSugeridos != undefined) {
-        $('#chkSugerido').prop('checked', readSugeridos);
-    } else {
-        $('#chkSugerido').prop('checked', 0);
-    }
-
-    $("#chkSugerido").click(function () {
-        if (this.checked) {
-            readSugeridos = 1;
-            $("#gCortes").data("kendoGrid").dataSource.read();
-
-        } else {
-            readSugeridos = 0;
-            $("#gCortes").data("kendoGrid").dataSource.read();
-
-        }
-    });
-
-
-
-    //#region crear grid Lista
     let dsDM = new kendo.data.DataSource({
 
         transport: {
             read: {
-                url: function () { return TSM_Web_APi + "EmbalajesMercancias/GetCortesEnEmbalajes/" + xidDem; },
+                url: function () { return TSM_Web_APi + "EmbalajesMercancias/GetCortesEnEmbalajes/" + xIdDespachoEmb; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -486,97 +418,65 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gEnEmbalaje").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gEnEmbalaje").data("kendoGrid"), true, true);
     Set_Grid_DataSource($("#gEnEmbalaje").data("kendoGrid"), dsDM);
+    //#endregion
+   
+    //#region Filtros de vista
 
-    $("#btnGuardar").click(function () {
-
-        if (Kendo_CmbGetvalue($("#cmbPlanta")) === 0 || Kendo_CmbGetvalue($("#cmbPlanta")) === undefined) {
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una planta para continuar.", "error");
-        } else {
-            fn_GenCabEmbalaje();
-        }
-
+    $("#cmbFm").data("kendoMultiColumnComboBox").bind("change", function () {
+        let mlt = $("#cmbFm").data("kendoMultiColumnComboBox");
+        let data = mlt.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
+        xidcata = data === undefined ? 0 : this.value();
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+            closeOpenDetailGrid();
+        });
 
     });
 
-    $("#btnCrearUniEmbalaje").click(function () {
-        kendo.ui.progress($(document.body), true);
-        rowsHijo = [];
-        mercancias = [];
-        $.each($(".k-state-selected.k-master-row"), function (index, elemento) {
-            rowsHijo.push(elemento);
+    $("#cmbCorte").data("kendoMultiColumnComboBox").bind("change", function () {
+        let mlt = $("#cmbCorte").data("kendoMultiColumnComboBox");
+        let data = mlt.listView.dataSource.data().find(q => q.IdHojaBandeo === Number(this.value()));
+        xidCorte = data === undefined ? 0 : this.value();
 
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+            closeOpenDetailGrid();
         });
-
-        $.each($(rowsHijo), function (index, elemento) {
-            if (Number(elemento.cells[4].innerText) ) {
-                mercancias.push(parseInt(elemento.cells[4].innerText));
-            }
-           
-        });
-
-
-        if ( mercancias.length >0) {
-            $.ajax({
-                url: TSM_Web_APi + "EmbalajesMercancias/GetDetalleMercanciaEmbalar",
-                dataType: 'json',
-                type: 'post',
-                data: JSON.stringify({
-                    IdMercancias: mercancias
-                }),
-                contentType: "application/json; charset=utf-8",
-                success: function (datos) {
-                    let strjson = {
-                        config: [{
-                            Div: "vCrearUnidad",
-                            Vista: "~/Views/CrearEmbalaje/_CreacionEmbalaje.cshtml",
-                            Js: "CreacionEmbalaje.js",
-                            Titulo: "Agregar a Unidad Embalaje",
-                            Width: "50%",
-                            MinWidth: "30%"
-                        }],
-                        Param: {
-                            pvModal: "vCrearUnidad",
-                            pArrayCortes: datos, //Columnas: Corte, Tallas, Cantidad
-                            pCantidadPiezas: datos[0].TotalPiezas,
-                            pCantidadBultos: datos[0].TotalBultos,
-                            pCantidadCortes: datos[0].TotalCortes,
-                            pIdDespachoEmbalajeMercancia: $("#txtNoDoc").val(),
-                            pIdDespachoMercancia: $("#txtIdDespachoMerc").val(),
-                            pIdPlanta: Kendo_CmbGetvalue($("#cmbPlanta")),
-                            pIdCliente: Kendo_CmbGetvalue($("#cmbCliente")),
-                            pIdMercancias: mercancias
-                        },
-                        fn: { fnclose: "fn_RefreshGrid", fnLoad: "fn_Ini_CreacionEmbalaje", fnReg: "fn_Reg_CreacionEmbalaje", fnActi: "" }
-                    };
-
-                    fn_GenLoadModalWindow(strjson);
-                    kendo.ui.progress($(document.body), false);
-                },
-                error: function () {
-                    kendo.ui.progress($(document.body), false);
-                }
-            });
-        } else {
-            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una o más filas del listado de mercancías .", "error");
-            kendo.ui.progress($(document.body), false);
-        }
-  
-
 
     });
 
+
+    $("#cmbOpcion").data("kendoComboBox").bind("change", function () {
+        xOpcion = this.value() === "" ? 0 : this.value();
+
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+            closeOpenDetailGrid();
+        });
+
+    });
+
+    $("#CmbServicio").data("kendoComboBox").bind("change", function () {
+        xidServicio = this.value() === "" ? 0 : this.value();
+
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+            closeOpenDetailGrid();
+        });
+
+    });
+
+    //#endregion 
+
+    //#region Botones de negocio
     $("#btnFinalizarEmb").click(function () {
 
-        if (readIdDespachoEmbalajeMercancia > 0 && $("#gEnEmbalaje").data("kendoGrid").dataSource.total() !== 0) {
+        if (xIdDespachoMercancia > 0 && $("#gEnEmbalaje").data("kendoGrid").dataSource.total() !== 0) {
 
             window.myconfirm("¿Está seguro de que desea finalizar el embalaje?").then(function () {
-               kendo.ui.progress($(document.body), true);
+                kendo.ui.progress($(document.body), true);
                 $.ajax({
                     url: TSM_Web_APi + "EmbalajesMercancias/Estado/CambiarEstadoEmbalajeRegistrados",
                     method: "POST",
                     dataType: "json",
                     data: JSON.stringify({
-                        IdDespachoEmbalajeMercancia: readIdDespachoEmbalajeMercancia,
+                        IdDespachoEmbalajeMercancia: xIdDespachoMercancia,
                         EstadoSiguiente: "FINALIZADO",
                         Motivo: "EMBALAJE FINALIZADO"
                     }),
@@ -595,724 +495,20 @@ $(document).ready(function () {
                     }
                 })
             }, function () {
-                $("#cmbMarca").focus();
+                $("#cmbOpcion").focus();
             });
 
-            
-           
+
+
         } else {
             $("#kendoNotificaciones").data("kendoNotification").show("No hay embalajes generados para finalizar", "error");
         }
-        
-
-    });
-    //compeltar campos de cabecera
-
-    $("#cmbCliente").data("kendoComboBox").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            xidcata = 0;
-            xidCorte = 0;
-            xidclie = 0;
-            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
-            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
-            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
-            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
-            let dsm = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${0}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
-            let dspl = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${0}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbPL").data("kendoComboBox").setDataSource(dspl);
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                KdoButtonEnable($("#btnGuardar"), true);
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-                KdoButtonEnable($("#btnGuardar"), false);
-            }
-        }
-    });
-
-    $("#cmbCliente").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidclie = this.dataItem(e.item.index()).IdCliente;
-            xidcata = 0;
-            xidCorte = 0;
-            $("#cmbMarca").data("kendoComboBox").value("");
-            $("#cmbPL").data("kendoComboBox").value("");
-            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
-            let dsm = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${xidclie}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
-            let dspl = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${xidclie}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbPL").data("kendoComboBox").setDataSource(dspl);
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                KdoButtonEnable($("#btnGuardar"), true);
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-                KdoButtonEnable($("#btnGuardar"), false);
-            }
-        }
-        else {
-            xidcata = 0;
-            xidCorte = 0;
-            $("#cmbFm").data("kendoMultiColumnComboBox").value("");
-            $("#txtDiseño").val("");
-            $("#txtEstilo").val("");
-            $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
-            let dsm = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ClientesMarcas/GetByCliente/" + `${0}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
-            let dspl = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: function () { return TSM_Web_APi + "ListaEmpaques/GetAllPLByIdCliente/" + `${0}` },
-                        contentType: "application/json; charset=utf-8"
-                    }
-                }
-            });
-            $("#cmbPL").data("kendoComboBox").setDataSource(dspl);
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-                KdoButtonEnable($("#btnGuardar"), false);
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-    });
-
-    $("#cmbFm").data("kendoMultiColumnComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidcata = this.dataItem(e.item.index()).IdCatalogoDiseno;
-            xidCorte = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    fn_readonly();
-                    closeOpenDetailGrid();
-                });
-
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        } else {
-            xidcata = 0;
-            xidCorte = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-           /*     KdoButtonEnable($("#btnMoveData"), false);*/
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-    });
-
-    $("#cmbFm").data("kendoMultiColumnComboBox").bind("change", function () {
-        let mlt = $("#cmbFm").data("kendoMultiColumnComboBox");
-        let data = mlt.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
-        if (data === undefined) {
-            xidcata = 0;
-            xidCorte = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-        else {
-            $("#cmbCorte").data("kendoMultiColumnComboBox").value("");
-            $("#cmbCorte").data("kendoMultiColumnComboBox").dataSource.read();
-        }
-    });
-
-    $("#cmbCorte").data("kendoMultiColumnComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidCorte = this.dataItem(e.item.index()).IdHojaBandeo;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-
-        } else {
-            xidCorte = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-    });
-
-    $("#cmbCorte").data("kendoMultiColumnComboBox").bind("change", function () {
-        let mlt = $("#cmbCorte").data("kendoMultiColumnComboBox");
-        let data = mlt.listView.dataSource.data().find(q => q.IdHojaBandeo === Number(this.value()));
-        if (data === undefined) {
-            xidCorte = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-    });
-
-    $("#CmbServicio").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidServicio = this.dataItem(e.item.index()).IdServicio;
-
-        } else {
-            xidServicio = 0;
-        }
-        if (xidServicio == 0) {
-            xidServicio = null;
-        }
-        if (xidclie == 0) {
-            xidclie = null;
-        }
-        if (xidPlanta == 0) {
-            xidPlanta = null;
-        }
-        if (xidMarca == 0) {
-            xidMarca = null;
-        }
-        if (xidcata == 0) {
-            xidcata = null;
-        }
-        if (xidCorte == 0) {
-            xidCorte = null;
-        }
-        if (xidListaEmpaque == 0) {
-            xidListaEmpaque = null;
-        }
-        if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
-        }
-        else {
-            $("#gCortes").data("kendoGrid").dataSource.data([]);
-        }
-    });
-
-    $("#CmbServicio").data("kendoComboBox").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            xidServicio = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-
-    });
-
-    $("#cmbPlanta").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidPlanta = this.dataItem(e.item.index()).IdPlanta;
-
-        } else {
-            xidPlanta = 0;
-        }
-        if (xidServicio == 0) {
-            xidServicio = null;
-        }
-        if (xidclie == 0) {
-            xidclie = null;
-        }
-        if (xidPlanta == 0) {
-            xidPlanta = null;
-        }
-        if (xidMarca == 0) {
-            xidMarca = null;
-        }
-        if (xidcata == 0) {
-            xidcata = null;
-        }
-        if (xidCorte == 0) {
-            xidCorte = null;
-        }
-        if (xidListaEmpaque == 0) {
-            xidListaEmpaque = null;
-        }
-        if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
-        }
-        else {
-            $("#gCortes").data("kendoGrid").dataSource.data([]);
-        }
-    });
-
-    $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            xidPlanta = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-
-    });
-
-    $("#cmbMarca").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidMarca = this.dataItem(e.item.index()).IdMarca;
-
-        } else {
-            xidMarca = 0;
-        }
-        if (xidServicio == 0) {
-            xidServicio = null;
-        }
-        if (xidclie == 0) {
-            xidclie = null;
-        }
-        if (xidPlanta == 0) {
-            xidPlanta = null;
-        }
-        if (xidMarca == 0) {
-            xidMarca = null;
-        }
-        if (xidcata == 0) {
-            xidcata = null;
-        }
-        if (xidCorte == 0) {
-            xidCorte = null;
-        }
-        if (xidListaEmpaque == 0) {
-            xidListaEmpaque = null;
-        }
-        if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
-        }
-        else {
-            $("#gCortes").data("kendoGrid").dataSource.data([]);
-        }
-    });
-
-    $("#cmbMarca").data("kendoComboBox").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            xidMarca = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
 
 
     });
-
-    $("#cmbPL").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            xidListaEmpaque = this.dataItem(e.item.index()).IdListaEmpaque;
-        } else {
-            xidListaEmpaque = 0;
-        }
-        if (xidServicio == 0) {
-            xidServicio = null;
-        }
-        if (xidclie == 0) {
-            xidclie = null;
-        }
-        if (xidPlanta == 0) {
-            xidPlanta = null;
-        }
-        if (xidMarca == 0) {
-            xidMarca = null;
-        }
-        if (xidcata == 0) {
-            xidcata = null;
-        }
-        if (xidCorte == 0) {
-            xidCorte = null;
-        }
-        if (xidListaEmpaque == 0) {
-            xidListaEmpaque = null;
-        }
-        if (xidclie != "" && xidclie != 0 && xidclie != null) {
-            $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                closeOpenDetailGrid();
-            });
-        }
-        else {
-            $("#gCortes").data("kendoGrid").dataSource.data([]);
-        }
-    });
-
-    $("#cmbPL").data("kendoComboBox").bind("change", function () {
-        var value = this.value();
-        if (value === "") {
-            xidListaEmpaque = 0;
-            if (xidServicio == 0) {
-                xidServicio = null;
-            }
-            if (xidclie == 0) {
-                xidclie = null;
-            }
-            if (xidPlanta == 0) {
-                xidPlanta = null;
-            }
-            if (xidMarca == 0) {
-                xidMarca = null;
-            }
-            if (xidcata == 0) {
-                xidcata = null;
-            }
-            if (xidCorte == 0) {
-                xidCorte = null;
-            }
-            if (xidListaEmpaque == 0) {
-                xidListaEmpaque = null;
-            }
-            if (xidclie != "" && xidclie != 0 && xidclie != null) {
-                $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-                    closeOpenDetailGrid();
-                });
-            }
-            else {
-                $("#gCortes").data("kendoGrid").dataSource.data([]);
-            }
-        }
-
-    });
-
     $("#btnRetornar").click(function () {
         window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
     });
-
-    if (readIdDespachoEmbalajeMercancia > 0 && readIdDespachoEmbalajeMercancia != "" && readIdDespachoEmbalajeMercancia != undefined) {
-        xidDem = readIdDespachoEmbalajeMercancia;
-        $("#gEnEmbalaje").data("kendoGrid").dataSource.read
-        KdoButtonEnable($("#btnGuardar"), false);
-    }
-
     $("#gEnEmbalaje").data("kendoGrid").bind("dataBound", function (e) {
       
         if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
@@ -1322,6 +518,12 @@ $(document).ready(function () {
         }
 
     });
+
+    // #endregion
+
+    //cargada la pagina leer los grid
+    $("#gCortes").data("kendoGrid").dataSource.read();
+    $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
    
 });
 
@@ -1401,7 +603,7 @@ var DIDM = (e) => {
             ]
         });
 
-        ConfGDetalleDM(gt.data("kendoGrid"), VdSDM, "gFor_detalleDM" + vidEmbmerc);
+        fn_g_Der_Configdet(gt.data("kendoGrid"), VdSDM, "gFor_detalleDM" + vidEmbmerc);
 
         let selectedRowsTec = [];
         gt.data("kendoGrid").bind("dataBound", function (e) { 
@@ -1420,7 +622,7 @@ var DIDM = (e) => {
         let VdS = {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + `EmbalajesMercancias/GetCortesPorEmbalarDet/${vidhb}/${$("#txtIdDespachoMerc").val()}/${readSugeridos === 0 ? false : true}`; },
+                    url: function () { return TSM_Web_APi + `EmbalajesMercancias/GetCortesPorEmbalarDet/${vidhb}/${$("#txtIdDespachoMerc").val()}/${xOpcion}`; },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 },
@@ -1473,7 +675,7 @@ var DIDM = (e) => {
             ]
         });
 
-        ConfGDetalle(g.data("kendoGrid"), VdS, "gFor_detalle" + vidhb);
+        fn_g_Izq_Configdet(g.data("kendoGrid"), VdS, "gFor_detalle" + vidhb);
 
         let selectedRowsTec = [];
 
@@ -1486,13 +688,14 @@ var DIDM = (e) => {
 
 }
 
-var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
+//configurar detalle Grid izquierdo
+var fn_g_Der_Configdet = (gt, ds2, Id_gCHForDetalleX) => {
     SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
     SetGrid_CRUD_Command(gt, false, true, Id_gCHForDetalleX);
     Set_Grid_DataSource(gt, ds2);
 }
-
-var ConfGDetalle = (g, ds, Id_gCHForDetalle) => {
+//configurar detalle Grid izquierdo
+var fn_g_Izq_Configdet = (g, ds, Id_gCHForDetalle) => {
     SetGrid(g, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0, false);
     SetGrid_CRUD_Command(g, false, false, Id_gCHForDetalle);
     Set_Grid_DataSource(g, ds);
@@ -1558,7 +761,7 @@ $.fn.extend({
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}`; },
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/" + `${xCliente}`; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
@@ -1587,7 +790,7 @@ $.fn.extend({
                     transport: {
                         read: {
                             url: function () {
-                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xidPlanta === null ? 0 : xidPlanta}`;
+                                return TSM_Web_APi + "HojasBandeos/GetHojasBandeobyFM/" + `${KdoMultiColumnCmbGetValue($("#cmbFm")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbFm"))}/${xPlanta}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }
@@ -1597,7 +800,7 @@ $.fn.extend({
                     { field: "Corte", title: "Corte", width: 300 },
                     { field: "NoDocumento", title: "Documento", width: 300 },
                     { field: "NoReferencia", title: "No FM", width: 300 },
-                    { field: "IdCatalogoDiseno",title:"IdCatalogo",hidden:true}
+                    { field: "IdCatalogoDiseno",title:"IdCatalogo",hidden:true},
                     {
                         field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\,\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
                     }
@@ -1616,19 +819,25 @@ let fn_Get_DatosCab = (xIdDesEm) => {
         async:false,
         success: function (dato) {
             if (dato !== null) {
-                KdoCmbSetValue($("#cmbPlanta"), dato.IdPlanta);
+                xCliente = dato.IdCliente;
+                xPlanta = dato.IdPlanta;
+                xIdDespachoEmb = dato.IdDespachoEmbalajeMercancia;
+                $("#txtCliente").val(dato.NombreCliente);
+                $("#txtPlanta").val(dato.NombrePlanta);
                 $("#txtNoDoc").val(dato.IdDespachoEmbalajeMercancia);
+                $("#txtOrdenDespacho").val(dato.NoDocumento);
                 $("#txtIdDespachoMerc").val(dato.IdDespachoMercancia);
-                KdoComboBoxEnable($("#cmbPlanta"), false);
-                KdoButtonEnable($("#btnGuardar"), false);
-                xidPlanta = KdoCmbGetValue($("#cmbPlanta"))
+                $("#dfDespacho").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaEntrega), 'dd/MM/yyyy'));
             } else {
-                KdoCmbSetValue($("#cmbPlanta"),"");
+                xCliente = 0;
+                xPlanta = 0;
+                xIdDespachoEmb = 0;
                 $("#txtNoDoc").val("");
                 $("#txtIdDespachoMerc").val(0);
-                KdoComboBoxEnable($("#cmbPlanta"), true);
-                KdoButtonEnable($("#btnGuardar"), true);
-                xidPlanta = null;
+                $("#txtCliente").val("");
+                $("#txtPlanta").val("");
+                $("#txtOrdenDespacho").val("");
+                $("#dfDespacho").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaEntrega), 'dd/MM/yyyy'));
             }
             kendo.ui.progress($(document.body), false);
         },
@@ -1640,41 +849,6 @@ let fn_Get_DatosCab = (xIdDesEm) => {
 };
 
 
-const fn_GenCabEmbalaje = () => {
-    let resul = false;
-    kendo.ui.progress($(document.body), true);
-    $.ajax({
-        url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
-        method: "POST",
-        dataType: "json",
-        data: JSON.stringify({
-            IdDespachoEmbalajeMercancia: 0,
-            IdUsuario: getUser(),
-            IdCliente: Kendo_CmbGetvalue($("#cmbCliente")),
-            IdPlanta: Kendo_CmbGetvalue($("#cmbPlanta")),
-            IdDespachoMercancia: 0
-        }),
-        contentType: "application/json; charset=utf-8",
-        success: function (datos) {
-            $("#txtNoDoc").val(datos[0]);
-            fn_Get_DatosCab(datos[0]);
-            RequestEndMsg(datos, "Post");
-            kendo.ui.progress($(document.body), false);
-            KdoButtonEnable($("#btnCrearUniEmbalaje"), true);
-            xidDem = datos[0];
-            readIdDespachoEmbalajeMercancia = xidDem = datos[0];
-            resul = true;
-            window.history.pushState('', '', `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${datos[0]}/${KdoCmbGetValue($("#cmbPlanta"))}/${readSugeridos}`);
-        },
-        error: function (data) {
-            ErrorMsg(data);
-            kendo.ui.progress($(document.body), false);
-            resul = false;
-        }
-    });
-    return resul;
-
-}
 
 var fn_RefreshGrid = () => {
     $("#gCortes").data("kendoGrid").dataSource.read();

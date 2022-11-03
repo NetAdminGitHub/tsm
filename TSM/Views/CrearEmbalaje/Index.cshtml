@@ -7,10 +7,7 @@
 
     <script type="text/javascript">
         var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
-        var readIdCliente = "@ViewBag.IdCliente";
-        var readIdDespachoEmbalajeMercancia = "@ViewBag.IdDespachoEmbalajeMercancia";
-        var readPlanta = "@ViewBag.Planta";
-        var readSugeridos = @ViewBag.Sugerido;
+        var xIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
     </script>
 
     <script src="~/Scripts/js/RegistroCreacionEmbalaje.js"></script>
@@ -36,45 +33,43 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-3">
-                            <label for="cmbCliente">Cliente:</label>
-                            <input id="cmbCliente" name="cmbCliente" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="cmbPlanta" id="lblPlanta">Planta:</label>
-                            <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
-                        </div>
                         <div class="form-group col-lg-2" style="display:none;">
                             <label for="txtNoDoc">No. Embalaje:</label>
                             <input id="txtNoDoc" name="txtNoDoc" class="form-control" style="height:38px;" readonly />
                         </div>
-                        <div class="form-group col-lg-6 mt-auto text-right">
-                            <button type="button" id="btnGuardar">Guardar Registro</button>
-                            <button type="button" id="btnCrearUniEmbalaje">Agregar a Unidad Embalaje</button>
-                            <button type="button" id="btnFinalizarEmb">Finalizar Embalaje</button>
-                            <button type="button" id="btnRetornar"></button>
-                        </div>
-                       
                     </div>
-                    <hr />
-
                 </div>
             </div>
-
+           
             <div class="row">
                 <div class="form-group col-lg-6">
                     <div class="row">
                         <div class="form-group col-lg-4">
-                            <label for="cmbMarca">Marca:</label>
-                            <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
+                            <label for="txtCliente">Cliente:</label>
+                            <input id="txtCliente" name="txtCliente" class="form-control k-textbox" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="txtPlanta" id="lblPlanta">Planta:</label>
+                            <input id="txtPlanta" name="txtPlanta" class="form-control k-textbox" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="dfDespacho" id="lblfDespacho">Fecha de Despacho:</label>
+                            <input id="dfDespacho" name="dfDespacho" class="form-control" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="cmbOpcion">Consulta de Mercancia:</label>
+                            <input id="cmbOpcion" name="cmbOpcion" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="CmbServicio">Servicio:</label>
+                            <input id="CmbServicio" name="CmbServicio" class="form-control" />
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="cmbFm">Código FM:</label>
                             <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="cmbPL"># de Envío (No. Referncia PL):</label>
-                            <input id="cmbPL" name="cmbPL" type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
@@ -83,24 +78,26 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group col-lg-6">
                     <div class="row">
-                        <div class="form-group col-lg-3 align-self-center">
-                            <input type="checkbox" id="chkSugerido" name="chkEnlazarTsm" class="k-checkbox text-align-end">
-                            <label class="k-checkbox-label" for="chkSugerido">Mostrar sugeridos</label>
+                        <div class="form-group col-lg-5">
+                            <label for="txtOrdenDespacho">Orden Despacho</label>
+                            <input id="txtOrdenDespacho" name="txtOrdenDespacho" class="form-control k-textbox" />
                         </div>
+                        <div class="form-group col-lg-7 mt-auto text-right">
+                            <button type="button" id="btnFinalizarEmb">Finalizar Embalaje</button>
+                            <button type="button" id="btnRetornar">Regresar</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
                         <div class="form-group col-lg-5 ">
                             <label for="cmbCorte">Corte:</label>
                             <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
                         </div>
-                        <div class="form-group col-lg-4">
-                            <label for="CmbServicio">Servicio:</label>
-                            <input id="CmbServicio" name="CmbServicio" class="form-control" />
-                        </div>
                     </div>
                     <div class="row">
-                     
+
                         <div class="form-group col-lg-12">
                             <div id="gEnEmbalaje"></div>
                         </div>
