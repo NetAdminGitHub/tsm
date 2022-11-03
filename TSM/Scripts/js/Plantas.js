@@ -57,7 +57,8 @@ $(document).ready(function () {
                         }                        
                     },
                 IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                FechaMod: { type: "date" },
+                Direccion: { type: "string" }
                 }
             }
         }
@@ -75,7 +76,7 @@ $(document).ready(function () {
         columns: [
             { field: "IdPlanta", title: "Planta", hidden: true },
             { field: "Nombre", title: "Nombre" },
-           
+            { field: "Direccion", title: "Dirección" },
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
         ]

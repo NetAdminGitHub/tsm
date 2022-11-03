@@ -80,6 +80,14 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Longitud máxima del campo es 100");
                                     return false;
                                 }
+                                if (input.is("[name='NIT']") && input.val().length === 0) {
+                                    input.attr("data-maxlength-msg", "Requerido");
+                                    return false;
+                                }
+                                if (input.is("[name='NIT']") && input.val().length > 17) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 17");
+                                    return false;
+                                }
 
                                 return true;
                             }
@@ -91,7 +99,8 @@ $(document).ready(function () {
                             required: true                           
                         }
                     },
-                    Contacto: { type: "string" }
+                    Contacto: { type: "string" },
+                    NIT: { type: "string" }
                 }
             }
         }
@@ -110,6 +119,7 @@ $(document).ready(function () {
             { field: "Nombre", title: "Nombre del cliente" },
             { field: "Direccion", title: "Dirección" },
             { field: "Contacto", title: "Contacto" },
+            { field: "NIT", title: "NIT" },
             { field: "NoCuenta", title: "No Cuenta", editor: Grid_ColLocked },
             {
                 command: {

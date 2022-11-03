@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Ingreso de Declaracion";
-    ViewBag.IdVersion = "TSM0101116|v2207205";
+    ViewBag.IdVersion = "TSM0101116|v22100301";
 }
 
 @section Scripts {
@@ -18,78 +18,148 @@
     }
 </style>
 <div class="form-row">
-   
+
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-row">
-                    <div class="col-lg-12  text-lg-right">
-                        <button type="button" id="btnRetornar"></button>
+                <div class="form-row mb-3">
+                    <div class="col-lg-1">
+                        <button type="button" id="btnRetornar">Regresar</button>
+                    </div>
+                    <div class="col-lg-11  text-lg-right">
+                        <button type="button" id="btnCambiarEstado">Cambiar Estado</button>
                     </div>
                 </div>
                 <form id="FrmIngresoDeclaracion" method="POST" enctype="multipart/form-data" autocomplete="off">
                     <div class="form-row">
-                        <div class="col-lg-6 form-group">
+                        <div class="col-lg-2 form-group">
                             <label for="cmbCliente">Cliente:</label>
                             <input id="cmbCliente" name="cmbCliente" class="form-control" />
                         </div>
-                        <div class="col-lg-3 form-group">
+                        <div class="col-lg-4 form-group">
                             <label for="MltBodegaCliente">Bodega Cliente:</label>
                             <input id="MltBodegaCliente" name="MltBodegaCliente" class="form-control" />
                         </div>
-                        <div class="col-lg-3 form-group">
+                        <div class="col-lg-4 form-group">
                             <label for="MltIngreso"># Ingreso:</label>
                             <input id="MltIngreso" name="MltIngreso" type="text" class="form-control" />
                         </div>
-
-                        <div class="col-lg-3 form-group">
+                        <div class="col-lg-2 form-group">
+                            <label for="dFecha">Fecha de Creación Registro:</label>
+                            <input id="dFecha" name="dFecha" class="form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
+                            <label for="TxtNoRegistro">No. Registro:</label>
+                            <input id="TxtNoRegistro" name="TxtNoRegistro" class="k-textbox form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
                             <label for="TxtNoReferencia">No. Referencia:</label>
                             <input id="TxtNoReferencia" name="TxtNoReferencia" class="k-textbox form-control" />
                         </div>
-                        <div class="col-lg-3 form-group">
-                            <label for="dFecha">Fecha:</label>
-                            <input id="dFecha" name="dFecha" class="form-control" />
+                        <div class="col-lg-2 form-group">
+                            <label for="dFechaAceptacion">Fecha de Aceptación:</label>
+                            <input id="dFechaAceptacion" name="dFechaAceptacion" class="form-control" />
                         </div>
-                        <div class="col-lg-3 form-group">
-                            <label for="MltPaisExpor">País Exportacion:</label>
-                            <input id="MltPaisExpor" name="MltPaisExpor" class="form-control" />
-                        </div>
-                        <div class="col-lg-3 form-group">
+                        <div class="col-lg-2 form-group">
                             <label for="MltAduana">Aduana:</label>
                             <input id="MltAduana" name="MltAduana" class="form-control" />
                         </div>
-                        <div class="col-lg-6 form-group">
-                            <label for="TxtDireccion">Dirección del cliente:</label>
-                            <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
+                        <div class="col-lg-2 form-group">
+                            <label for="cmbCL">Código Localización:</label>
+                            <input id="cmbCL" name="cmbCL" class="form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
+                            <label for="cmbCL">Planta:</label>
+                            <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
                         </div>
 
-                        <div class="col-lg-3 form-group">
+                        <div class="col-lg-4 form-group">
+                            <label for="TaDespachante">Código, nombre y dirección del despachante:</label>
+                            <textarea id="TaDespachante" name="TaDespachante" class="form-control" cols="50" rows="5"></textarea>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="TaConsignatario">Código, nombre y dirección del consignatario:</label>
+                            <textarea id="TaConsignatario" name="TaConsignatario" class="form-control" cols="50" rows="5"></textarea>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="TaExportador">Código, nombre y dirección del exportador: <a id="modalExportador" name="modalExportador" style="color: blue; cursor: pointer;">Editar</a></label>
+                            <textarea id="TaExportador" name="TaExportador" class="form-control" cols="50" rows="5"></textarea>
+                        </div>
+
+                        <div class="col-lg-4 form-group">
+                            <label for="TxtRTMT">Registro transporte, medio transporte:</label>
+                            <input id="TxtRTMT" name="TxtRTMT" class="k-textbox form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
+                            <label for="MltPaisExpor">País Exportacion:</label>
+                            <input id="MltPaisExpor" name="MltPaisExpor" class="form-control" />
+                        </div>
+                        <!--<div class="col-lg-6 form-group">
+        <label for="TxtDireccion">Dirección del cliente:</label>
+        <input id="TxtDireccion" name="TxtDireccion" class="k-textbox form-control" />
+    </div>-->
+                        <div class="col-lg-2 form-group">
                             <label for="numTotalBultos">Total de Bultos:</label>
                             <input id="numTotalBultos" name="numTotalBultos" class="form-control" />
                         </div>
-                        <div class="col-lg-3 form-group">
-                            <label for="numTotalCuantia">Cuantía Total:</label>
-                            <input id="numTotalCuantia" name="numTotalCuantia" class="form-control" />
+                        <div class="col-lg-2 form-group">
+                            <label for="numTotalKgs">Total de Peso Bruto (Kgs):</label>
+                            <input id="numTotalKgs" name="numTotalKgs" class="form-control" />
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2 form-group">
+                            <label for="cmbModalidad">Modalidad:</label>
+                            <input id="cmbModalidad" name="cmbModalidad" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-4 form-group">
+                            <label for="cmbINCOTERMS">INCOTERMS:</label>
+                            <input id="cmbINCOTERMS" name="cmbINCOTERMS" class="form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
                             <label for="numTotalValor">Total de Valor:</label>
                             <input id="numTotalValor" name="numTotalValor" class="form-control" />
                         </div>
-
-                        <div class="col-lg-3 d-flex align-items-end">
-                            <button type="button" id="btnGuardarDM">Guardar</button>
+                        <!--<div class="col-lg-2 form-group">
+        <label for="numTotalFlete">Total de Flete:</label>
+        <input id="numTotalFlete" name="numTotalFlete" class="form-control" />
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="numTotalSeguro">Total de Seguro:</label>
+        <input id="numTotalSeguro" name="numTotalSeguro" class="form-control" />
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="numTotalOtros">Total de Otros Gastos:</label>
+        <input id="numTotalOtros" name="numTotalOtros" class="form-control" />
+    </div>-->
+                        <div class="col-lg-2 form-group">
+                            <label for="numTotalAduana">Total de Aduana:</label>
+                            <input id="numTotalAduana" name="numTotalAduana" class="form-control" />
                         </div>
-
-                        <div class="col-lg-6 d-flex align-items-end justify-content-end">
-                            <button type="button" id="btnNotaRemision">Gestión de Nota de Remisión</button>
+                        <div class="col-lg-2 form-group">
+                            <label for="numTotalCuantia">Cuantía Total:</label>
+                            <input id="numTotalCuantia" name="numTotalCuantia" class="form-control" />
+                        </div>
+                        <div class="col-lg-2 form-group">
+                            <label for="txtEstadoDM">Estado Actual:</label>
+                            <input id="txtEstadoDM" name="txtEstadoDM" class="form-control k-textbox" />
                         </div>
                     </div>
+                    
                 </form>
 
-                <div class="form-row"><br /></div>
+                <div class="form-row d-flex justify-content-end mb-3">
+                    <div class="col-lg-8 d-flex align-items-end">
+                        <label for="gridDetalleItem"><strong>Ingreso de Item</strong></label>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" id="btnGuardarDM" class="w-100 form-control">Guardar</button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" id="btnNotaRemision" class="w-100 form-control">Gestión de Nota de Remisión</button><!--Quitar margin top si es necesario cuando se habiliten los otros inputs-->
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-lg-12">
-                        <label for="gridDetalleItem"><strong>Ingreso de Item</strong></label>
                         <div id="gridDetalleItem"></div>
                     </div>
 
@@ -111,3 +181,6 @@
 <div id="vIngresoNotaremi"></div>
 <div id="vRelacionPLs"></div>
 <div id="vModalVerNotasRemi"></div>
+<div id="vModalExportador"></div>
+<div id="vModalItem"></div>
+<div id="vCambioEstado"></div>
