@@ -8,7 +8,11 @@ let xIdDespachoEmb = 0;
 let Gdet;
 let xOpcion = 0;
 let xCliente = 0;
+let rowsHijo = [];
+let mercancias = [];
+let StrIdBulto = [];
 let xPlanta = 0;
+let StrCorte = [];
 function myconfirm(content) {
     return $("<div></div>").kendoConfirm({
         title: "Finalizar Embalaje",
@@ -340,14 +344,14 @@ $(document).ready(function () {
                 }
             }
         },
-         requestEnd: function (e) {
-             Grid_requestEnd(e);
-             if (e.type === "destroy") {
-                     $("#gCortes").data("kendoGrid").dataSource.read();
-             }
-             
-         },
-         error: Grid_error,
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+            if (e.type === "destroy") {
+                $("#gCortes").data("kendoGrid").dataSource.read();
+            }
+
+        },
+        error: Grid_error,
         schema: {
             model: {
                 id: "IdEmbalajeMercancia",
@@ -382,6 +386,9 @@ $(document).ready(function () {
 
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gEnEmbalaje").kendoGrid({
+        toolbar: [
+            { name: "Generar", iconClass: "k-icon k-i-plus-outline",text:"Crear Embalaje" }
+        ],
         edit: function (e) {
             KdoHideCampoPopup(e.container, "IdEmbalajeMercancia");
             KdoHideCampoPopup(e.container, "IdEmbalaje");
@@ -415,9 +422,83 @@ $(document).ready(function () {
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gEnEmbalaje").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
-    SetGrid_CRUD_ToolbarTop($("#gEnEmbalaje").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gEnEmbalaje").data("kendoGrid"), true, true);
     Set_Grid_DataSource($("#gEnEmbalaje").data("kendoGrid"), dsDM);
+
+    $("#gEnEmbalaje").data("kendoGrid").bind("dataBound", function (e) {
+
+        if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
+            KdoButtonEnable($("#btnFinalizarEmb"), false);
+        } else {
+            KdoButtonEnable($("#btnFinalizarEmb"), true);
+        }
+
+    });
+
+    $("#gEnEmbalaje").on("click", ".k-grid-Generar", function () {
+ 
+        kendo.ui.progress($(document.body), true);
+        rowsHijo = [];
+        mercancias = [];
+        $.each($(".k-state-selected.k-master-row"), function (index, elemento) {
+            rowsHijo.push(elemento);
+
+        });
+
+        $.each($(rowsHijo), function (index, elemento) {
+            if (Number(elemento.cells[4].innerText)) {
+                mercancias.push(parseInt(elemento.cells[4].innerText));
+            }
+
+        });
+
+        if (mercancias.length > 0) {
+            $.ajax({
+                url: TSM_Web_APi + "EmbalajesMercancias/GetDetalleMercanciaEmbalar",
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify({
+                    IdMercancias: mercancias
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (datos) {
+                    let strjson = {
+                        config: [{
+                            Div: "vCrearUnidad",
+                            Vista: "~/Views/CrearEmbalaje/_CreacionEmbalaje.cshtml",
+                            Js: "CreacionEmbalaje.js",
+                            Titulo: "Agregar a Unidad Embalaje",
+                            Width: "50%",
+                            MinWidth: "30%"
+                        }],
+                        Param: {
+                            pvModal: "vCrearUnidad",
+                            pArrayCortes: datos, //Columnas: Corte, Tallas, Cantidad
+                            pCantidadPiezas: datos[0].TotalPiezas,
+                            pCantidadBultos: datos[0].TotalBultos,
+                            pCantidadCortes: datos[0].TotalCortes,
+                            pIdDespachoEmbalajeMercancia: xIdDespachoEmb,
+                            pIdDespachoMercancia: $("#txtIdDespachoMerc").val(),
+                            pIdPlanta: xPlanta,
+                            pIdCliente: xCliente,
+                            pIdMercancias: mercancias
+                        },
+                        fn: { fnclose: "fn_RefreshGrid", fnLoad: "fn_Ini_CreacionEmbalaje", fnReg: "fn_Reg_CreacionEmbalaje", fnActi: "" }
+                    };
+
+                    fn_GenLoadModalWindow(strjson);
+                    kendo.ui.progress($(document.body), false);
+                },
+                error: function () {
+                    kendo.ui.progress($(document.body), false);
+                }
+            });
+        } else {
+            $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una o más filas del listado de mercancías .", "error");
+            kendo.ui.progress($(document.body), false);
+        }
+     
+    });
     //#endregion
    
     //#region Filtros de vista
@@ -509,15 +590,7 @@ $(document).ready(function () {
     $("#btnRetornar").click(function () {
         window.location = window.location.origin + `/ControlUnidadesEmbalaje`;
     });
-    $("#gEnEmbalaje").data("kendoGrid").bind("dataBound", function (e) {
-      
-        if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
-            KdoButtonEnable($("#btnFinalizarEmb"), false);
-        } else {
-            KdoButtonEnable($("#btnFinalizarEmb"), true);
-        }
 
-    });
 
     // #endregion
 
