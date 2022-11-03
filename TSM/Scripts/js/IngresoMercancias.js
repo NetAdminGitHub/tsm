@@ -73,6 +73,7 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     IdPlanta: { type: "number" },
                     NombrePlanta: { type: "string" },
+                    NoReferenciaItem: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -94,6 +95,7 @@ $(document).ready(function () {
             { field: "Tallas", title: "Tallas" },
             { field: "NombrePlanta", title: "Planta" },
             { field: "Cantidad", title: "Total Cuantía", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "NoReferenciaItem", title: "Ref. Item" },
             {
                 field: "btnHb", title: "&nbsp;",
                 command: {
