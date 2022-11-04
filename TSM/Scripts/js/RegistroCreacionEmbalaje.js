@@ -13,6 +13,7 @@ let mercancias = [];
 let StrIdBulto = [];
 let xPlanta = 0;
 let StrCorte = [];
+let nuevoReg = 0;
 function myconfirm(content) {
     return $("<div></div>").kendoConfirm({
         title: "Finalizar Embalaje",
@@ -595,11 +596,14 @@ $(document).ready(function () {
     // #endregion
 
     //cargada la pagina leer los grid
-    $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
-        //se debe abrir y cerrar el detalle para la primera selección
-        closeOpenDetailGrid();
-    });
-    $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+    if (nuevoReg = 0) {
+        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+            //se debe abrir y cerrar el detalle para la primera selección
+            closeOpenDetailGrid();
+        });
+        $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+    }
+
    
 });
 
@@ -917,16 +921,32 @@ let fn_Get_DatosCab = (xIdDesEm) => {
                 $("#txtOrdenDespacho").val(dato.NoDocumento);
                 $("#txtIdDespachoMerc").val(dato.IdDespachoMercancia);
                 $("#dfDespacho").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaEntrega), 'dd/MM/yyyy'));
+                nuevoReg = 0;
             } else {
-                xCliente = 0;
-                xPlanta = 0;
-                xIdDespachoEmb = 0;
-                $("#txtNoDoc").val("");
-                $("#txtIdDespachoMerc").val(0);
-                $("#txtCliente").val("");
-                $("#txtPlanta").val("");
-                $("#txtOrdenDespacho").val("");
-                $("#dfDespacho").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaEntrega), 'dd/MM/yyyy'));
+                kendo.ui.progress($(document.body), true);
+                $.ajax({
+                    url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
+                    method: "POST",
+                    dataType: "json",
+                    data: JSON.stringify({ IdDespachoMercancia: xIdDesEm}),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (resultado) {
+                        nuevoReg = 1;
+                        fn_Get_DatosCab(xIdDesEm);
+                        $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
+                            //se debe abrir y cerrar el detalle para la primera selección
+                            closeOpenDetailGrid();
+                        });
+                        $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
+                        kendo.ui.progress($(document.body), false);
+                    },
+                    error: function (data) {
+                        kendo.ui.progress($(document.body), false);
+                        ErrorMsg(data);
+                        window.location.href = `/ConsultaDespacho`;
+                    }
+                });
+               
             }
             kendo.ui.progress($(document.body), false);
         },
