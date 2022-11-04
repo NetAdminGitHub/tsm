@@ -4067,7 +4067,10 @@ label.error {
 .badge-OrdenDespacho {
     background-color: #c933bd;
 }
-
+.badge-EnOtraOD {
+    color: orange;
+    font-size: 20px !important;
+}
 .dropdown-menu {
     border: 0;
     border-radius: 0;

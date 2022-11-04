@@ -721,7 +721,8 @@ var DIDM = (e) => {
                         Tallas: { type: "string" },
                         IdMercancia: { type: "number" },
                         CantidadDisponible: { type: "number" },
-                        CantidadDespacho: { type: "number" }
+                        CantidadDespacho: { type: "number" },
+                        ExisteOD: { type: "bool" }
                     }
                 }
             },
@@ -747,7 +748,14 @@ var DIDM = (e) => {
                 { field: "Tallas", title: "Tallas", attributes: { "class": "tallas-detail" } },
                 { field: "IdMercancia", title: "Id Mercancia", hidden: true },
                 { field: "CantidadDisponible", title: "Cantidad Disponible" },
-                { field: "CantidadDespacho", title: "Cantidad Despacho" }
+                { field: "CantidadDespacho", title: "Cantidad Despacho" },
+                {
+                    field: "ExisteOD", title: "&nbsp;",
+                    template: `#if(ExisteOD == true) { #<span class='badge-EnOtraOD k-icon k-i-exclamation-circle' data-toggle='tooltip' data-placement='left' title='Existe en otra Orden de Despacho como Mercancía Sugerida'></span>#}#`,
+                    attributes: {
+                        style: "text-align: center"
+                    }
+                }
             ]
         });
 
@@ -759,6 +767,11 @@ var DIDM = (e) => {
         g.data("kendoGrid").bind("change", function (e) {
             Grid_SelectRow(g, selectedRowsTec);
         });
+        g.data("kendoGrid").bind("dataBound", function (e) {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+  
         ////////////////////////////////////////////////////////////////////////////////
     }
 
