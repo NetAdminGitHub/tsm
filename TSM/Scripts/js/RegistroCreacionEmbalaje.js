@@ -439,7 +439,6 @@ $(document).ready(function () {
         detailInit: DIDM,
         //DEFINICIÓN DE LOS CAMPOS
         columns: [
-            { selectable: true, width: "35px" },
             { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
             { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
@@ -462,8 +461,10 @@ $(document).ready(function () {
                         text: " ",
                         title: "&nbsp;",
                         click: function (e) {
-                            
-                        },
+                            e.preventDefault();
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            Fn_VistaCambioEstadoMostrar("EmbalajesMercancias", dataItem.Estado, TSM_Web_APi + "EmbalajesMercancias/CambiarEstadoEmbalaje", "", dataItem.IdEmbalajeMercancia, undefined, function () { return fn_updGrid(dataItem.IdEmbalajeMercancia); });
+                        }
                     }
                 ],
                 width: "70px"
