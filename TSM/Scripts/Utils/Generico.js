@@ -679,7 +679,7 @@ var Fn_VistaCambioEstado = function (e,fn_close) {
         success: function (result) {
             var RList = [];
             VistaPopup.kendoDialog({
-                height: "auto",// $(window).height() - "510" + "px",
+               /* height: "auto",// $(window).height() - "510" + "px",*/
                 width: "20%",
                 title: "Cambio de estado",
                 closable: true,

@@ -28,7 +28,10 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     $("#txtCantidadPiezas").val(pJson.pCantidadPiezas);
     $("#txtCantidadBultos").val(pJson.pCantidadBultos);
     $("#txtCortes").val(pJson.pCantidadCortes);
-   
+    $("#TxtDetalle").kendoTextArea({
+        rows: 2,
+        maxLength: 2000
+    });
 
     KdoComboBoxbyData($("#cmbEmbAsignacion"), [], "NoDocumento", "IdEmbalajeMercancia", "seleccione una opción", "", "");
     Kendo_CmbFiltrarGrid($("#cmbUnidadEmbalaje"), TSM_Web_APi + "EmbalajeDeclaracionMercancias", "Nombre", "IdEmbalaje", "Seleccione una opción");
@@ -102,6 +105,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
             $("#divAsignacionEmbalaje").hide("slow");
             $("#txtPesoKg").data("kendoNumericTextBox").value(0);
             $("#textPesoLb").data("kendoNumericTextBox").value(0);
+            $("#TxtDetalle").val("");
             idUnidad = 1;
             KdoCmbSetValue($("#cmbEmbAsignacion"), "");
         } else {
@@ -136,6 +140,13 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
             $("#kendoNotificaciones").data("kendoNotification").show("valor del peso debe ser mayor a 0", "error");
             return
         }
+
+        if (!($("#TxtDetalle").val().length > 0 && $("#TxtDetalle").val().length <= 2000)) {
+
+            $("#kendoNotificaciones").data("kendoNotification").show("Detalle del embalaje es requerido, valor maximo 2000 caracteres", "error");
+            return
+        }
+
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeDetalleMercancia",
@@ -149,7 +160,8 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
                 IdCliente: pJson.pIdCliente,
                 IdMercancias: pJson.pIdMercancias,
                 Peso: Peso,
-                IdUnidad: idUnidad
+                IdUnidad: idUnidad,
+                Observacion: $("#TxtDetalle").val()
             }),
             type: 'POST',
             contentType: "application/json; charset=utf-8",
@@ -189,7 +201,7 @@ var fn_Reg_CreacionEmbalaje = (xjson) => {
     $("#txtCantidadPiezas").val(pJson.pCantidadPiezas);
     $("#txtCantidadBultos").val(pJson.pCantidadBultos);
     $("#txtCortes").val(pJson.pCantidadCortes);
-
+    $("#TxtDetalle").val("");
     $("#gridMercancia").data("kendoGrid").destroy();
 
     let dataSource = new kendo.data.DataSource({
@@ -252,11 +264,13 @@ let fn_Get_DatosEmbalaje = (xidEmbalaje) => {
             if (dato !== null) {
                 $("#txtPesoKg").data("kendoNumericTextBox").value(dato.Peso);
                 $("#textPesoLb").data("kendoNumericTextBox").value(dato.Peso * 2.20462);
+                $("#TxtDetalle").val(dato.Observacion);
                 idUnidad = dato.IdUnidad
 
             } else {
                 $("#txtPesoKg").data("kendoNumericTextBox").value(0);
                 $("#textPesoLb").data("kendoNumericTextBox").value(0);
+                $("#TxtDetalle").val("");
                 idUnidad = 1
             }
             kendo.ui.progress($(document.body), false);

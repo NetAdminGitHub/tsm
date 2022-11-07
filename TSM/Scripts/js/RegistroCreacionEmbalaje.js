@@ -25,7 +25,8 @@ $(document).ready(function () {
     KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
     Kendo_CmbFiltrarGrid($("#CmbServicio"), UrlServ, "Nombre", "IdServicio", "Selecione un Servicio...");
     $("#dfDespacho").kendoDatePicker({ format: "dd/MM/yyyy" });
-
+    //inicializar vista cambio de estado embalaje 
+    Fn_VistaCambioEstado($("#vCambioEstado"), function () { return true; });
     /* inhabilitar textbox*/
     TextBoxEnable($("#txtCliente"), false);
     TextBoxEnable($("#txtPlanta"), false);
@@ -190,7 +191,7 @@ $(document).ready(function () {
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
             { field: "Categoria", tittle: "Categoria", hidden: true},
             {
-                field: "btnGenerarEmbalaje",
+                field: "btnInfoDiseno",
                 title: "&nbsp;",
                 command: [
                     {
@@ -352,7 +353,8 @@ $(document).ready(function () {
                     if (type === "update") {
                         return kendo.stringify({
                             IdEmbalajeMercancia: data.IdEmbalajeMercancia,
-                            Peso: data.Peso
+                            Peso: data.Peso,
+                            Observacion: data.Observacion
                         });
                     } else {
                         return kendo.stringify(data);
@@ -390,14 +392,18 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "debe ser mayor que 0");
                                     return $("[name='Peso']").data("kendoNumericTextBox").value() > 0;
                                 }
-
+                                if (input.is("[name='Observacion']")) {
+                                    input.attr("data-maxlength-msg", "Longitud máxima del campo es 2000");
+                                    return input.val().length <= 2000 && input.val().length > 0;
+                                }
                                 return true;
                             }
                         }
                     },
                     IdUnidad: { type: "number" },
                     Estado: { type: "string" },
-                    NombreEstado: { type: "string" }
+                    NombreEstado: { type: "string" },
+                    Observacion: {type:"string"}
 
                 }
             }
@@ -418,9 +424,17 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "CantTallas");
             KdoHideCampoPopup(e.container, "CantBultos");
             KdoHideCampoPopup(e.container, "Cantidad");
+            KdoHideCampoPopup(e.container, "Estado");
+            KdoHideCampoPopup(e.container, "NombreEstado");
             KdoHideCampoPopup(e.container, "IdDespachoEmbalajeMercancia");
 
             Grid_Focus(e, "Peso");
+            if (!e.model.isNew()) {
+                if (e.model.Estado === "FINALIZADO") {
+                    KdoNumerictextboxEnable($('[name="Peso"]'), false);
+                    TextBoxEnable($('[name="Observacion"]'), false);
+                }
+            }
         },
         detailInit: DIDM,
         //DEFICNICIÓN DE LOS CAMPOS
@@ -436,8 +450,8 @@ $(document).ready(function () {
             { field: "IdUnidad", title: "IdUnidad", hidden: true },
             { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "NombreEstado", title: "Estado" }
-            
+            { field: "NombreEstado", title: "Estado" },
+            { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"] }
         ]
     });
 
@@ -1004,3 +1018,17 @@ var fn_RefreshGrid = () => {
     $("#gCortes").data("kendoGrid").dataSource.read();
     $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
 }
+// #region "Actaulizar estado en la celda
+let fn_updGrid = (xidEmbalaje) => {
+    let ge = $("#gEnEmbalaje").data("kendoGrid");
+    var uid = ge.dataSource.get(xidEmbalaje).uid;
+    ge.dataItem("tr[data-uid='" + uid + "']").set("NombreEstado", KdoCmbGetText($("#cmbEstados")))
+    ge.dataItem("tr[data-uid='" + uid + "']").set("Estado", KdoCmbGetValue($("#cmbEstados")))
+    $(".k-dirty-cell", $("#gEnEmbalaje")).removeClass("k-dirty-cell");
+    $(".k-dirty", $("#gEnEmbalaje")).remove();
+    return true;
+
+}
+
+
+//#endregion
