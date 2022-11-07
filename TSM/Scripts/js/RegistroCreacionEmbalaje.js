@@ -89,7 +89,8 @@ $(document).ready(function () {
                     CantidadIngreso: { field: "CantidadIngreso", type: "string" },
                     CantidadDisponible: { field: "CantidadDisponible", type: "string" },
                     CantidadDespacho: { field: "CantidadDespacho", type: "number" },
-                    Categoria: {field: "Categoria", type: "string"}
+                    Categoria: { field: "Categoria", type: "string" },
+                    ConDespachoParcial: { field: "ConDespachoParcial", type: "bool" }
                 }
             }
         }
@@ -122,11 +123,11 @@ $(document).ready(function () {
                 let row = $(rows[i]);
                 let dataItem = e.sender.dataItem(row);
                 let estatus = dataItem.get("Categoria");
-
-                if (estatus == "NODISPONIBLE") {
-                    row.addClass("bg-NoDisponible");
-                } else if (estatus == "PARCIAL") {
+                let ConDesParcial = dataItem.get("ConDespachoParcial");
+                if (estatus == "NODISPONIBLE" && ConDesParcial==true) {
                     row.addClass("bg-CorteParcial");
+                } else if (estatus == "NODISPONIBLE") {
+                    row.addClass("bg-NoDisponible");
                 }
             }
         },
@@ -187,7 +188,7 @@ $(document).ready(function () {
             { field: "CantidadIngreso", title: "Cantidad Ingreso" },
             { field: "CantidadDisponible", title: "Cantidad Disponible" },
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
-            { field: "Categoria", tittle: "Categoria"},
+            { field: "Categoria", tittle: "Categoria", hidden: true},
             {
                 field: "btnGenerarEmbalaje",
                 title: "&nbsp;",
@@ -746,7 +747,9 @@ var DIDM = (e) => {
                         IdMercancia: { type: "number" },
                         CantidadDisponible: { type: "number" },
                         CantidadDespacho: { type: "number" },
-                        ExisteOD: { type: "bool" }
+                        ExisteOD: { type: "bool" },
+                        Categoria: {  type: "string" },
+                        ConDespachoParcial: { type: "bool" }
                     }
                 }
             },
@@ -761,11 +764,12 @@ var DIDM = (e) => {
                     let row = $(rows[i]);
                     let dataItem = e.sender.dataItem(row);
                     let estatus = dataItem.get("Categoria");
+                    let ConDesParcial = dataItem.get("ConDespachoParcial");
 
-                    if (estatus == "NODISPONIBLE") {
-                        row.addClass("bg-NoDisponible");
-                    } else if (estatus == "PARCIAL") {
+                    if (estatus == "NODISPONIBLE" && ConDesParcial == true) {
                         row.addClass("bg-CorteParcial");
+                    } else if (estatus == "NODISPONIBLE") {
+                        row.addClass("bg-NoDisponible");
                     }
                 }
             },
