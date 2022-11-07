@@ -88,17 +88,19 @@ $(document).ready(function () {
                     ParteDecorada: { field: "ParteDecorada", type: "string" },
                     CantidadIngreso: { field: "CantidadIngreso", type: "string" },
                     CantidadDisponible: { field: "CantidadDisponible", type: "string" },
-                    CantidadDespacho: { field: "CantidadDespacho", type: "number" }
+                    CantidadDespacho: { field: "CantidadDespacho", type: "number" },
+                    Categoria: {field: "Categoria", type: "string"}
                 }
             }
         }
     });
 
     $("#gCortes").kendoGrid({
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         detailInit: DIDM,
         dataBound: function (e) {
             var grid = e.sender;
+            let rows = e.sender.tbody.children();
 
             grid.tbody.find("tr.k-master-row").click(function (e) {
                 var target = $(e.target);
@@ -115,6 +117,18 @@ $(document).ready(function () {
                     grid.collapseRow(row);
                 }
             });
+
+            for (let i = 0; i < rows.length; i++) {
+                let row = $(rows[i]);
+                let dataItem = e.sender.dataItem(row);
+                let estatus = dataItem.get("Categoria");
+
+                if (estatus == "NODISPONIBLE") {
+                    row.addClass("bg-NoDisponible");
+                } else if (estatus == "PARCIAL") {
+                    row.addClass("bg-CorteParcial");
+                }
+            }
         },
         change: function (e) {
             $("tr", ".lump-child-grid").removeClass("k-state-selected");
@@ -173,6 +187,7 @@ $(document).ready(function () {
             { field: "CantidadIngreso", title: "Cantidad Ingreso" },
             { field: "CantidadDisponible", title: "Cantidad Disponible" },
             { field: "CantidadDespacho", title: "Cantidad Despacho" },
+            { field: "Categoria", tittle: "Categoria"},
             {
                 field: "btnGenerarEmbalaje",
                 title: "&nbsp;",
@@ -739,7 +754,22 @@ var DIDM = (e) => {
         };
 
         let g = $(`<div id= "gridOrdenesDespacho${rowId}" class='lump-child-grid'></div>`).appendTo(e.detailCell).kendoGrid({
-            change: function (e) {
+            dataBound: function (e) {
+                let rows = e.sender.tbody.children();
+
+                for (let i = 0; i < rows.length; i++) {
+                    let row = $(rows[i]);
+                    let dataItem = e.sender.dataItem(row);
+                    let estatus = dataItem.get("Categoria");
+
+                    if (estatus == "NODISPONIBLE") {
+                        row.addClass("bg-NoDisponible");
+                    } else if (estatus == "PARCIAL") {
+                        row.addClass("bg-CorteParcial");
+                    }
+                }
+            },
+            change: function (e) {                
 
                 var masterRow = this.element.closest("tr").prev();
                 if (this.select().length) {
@@ -748,8 +778,10 @@ var DIDM = (e) => {
                 } else {
                     masterRow.removeClass("k-state-selected");
                 }
+
+                
             },
-            //DEFICNICIÓN DE LOS CAMPOS
+            //DEFINICIÓN DE LOS CAMPOS
             columns: [
                 { selectable: true, width: "35px", headerTemplate: ' ' },
                 { field: "IdHojaBandeo", title: "Id Hoja Bandeo", hidden: true, attributes: { "class": "idHB-detail" } },
