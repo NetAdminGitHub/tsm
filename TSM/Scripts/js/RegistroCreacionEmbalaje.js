@@ -379,7 +379,10 @@ $(document).ready(function () {
                             }
                         }
                     },
-                    IdUnidad: { type: "number" }
+                    IdUnidad: { type: "number" },
+                    Estado: { type: "string" },
+                    NombreEstado: { type: "string" }
+
                 }
             }
         }
@@ -415,7 +418,9 @@ $(document).ready(function () {
             { field: "Cantidad", title: "Cantidad" },
             { field: "Peso", title: "Peso (Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
             { field: "IdUnidad", title: "IdUnidad", hidden: true },
-            { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true }
+            { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true },
+            { field: "Estado", title: "Estado", hidden: true },
+            { field: "NombreEstado", title: "Estado" }
             
         ]
     });
