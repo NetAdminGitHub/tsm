@@ -667,6 +667,7 @@
     ControlSeleccionCodigoLocalizacion: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdLocalizacion",
                 filter: "contains",
@@ -697,6 +698,7 @@
     ControlSeleccionINCOTERMS: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdIncoterm",
                 filter: "contains",

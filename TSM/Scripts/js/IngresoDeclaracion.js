@@ -99,6 +99,7 @@ $(document).ready(function () {
 
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
+        size: "large",
         min: 0,
         min: 0,
         max: 999999999,
@@ -110,6 +111,7 @@ $(document).ready(function () {
 
 
     $("#numTotalBultos").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -119,6 +121,7 @@ $(document).ready(function () {
     });
     KdoNumerictextboxEnable($("#numTotalBultos"), false);
     $("#numTotalValor").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "c",
@@ -128,6 +131,7 @@ $(document).ready(function () {
     });
     KdoNumerictextboxEnable($("#numTotalValor"), false);
     $("#numTotalCuantia").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "{0:N2}",
@@ -138,6 +142,7 @@ $(document).ready(function () {
     KdoNumerictextboxEnable($("#numTotalCuantia"), false);
     //////////////////////Totales INCOTERMS///////////////////////////
     $("#numTotalKgs").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "{0:N2}",
@@ -146,34 +151,9 @@ $(document).ready(function () {
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalKgs"), false);
-    /*$("#numTotalFlete").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalFlete"), false);
-    $("#numTotalSeguro").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalSeguro"), false);
-    $("#numTotalOtros").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalOtros"), false);*/
+
     $("#numTotalAduana").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "c",
