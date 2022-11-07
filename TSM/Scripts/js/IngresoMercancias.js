@@ -310,7 +310,8 @@ $(document).ready(function () {
                 { field: "Estilos", title: "Estilos" },
                 { field: "Tallas", title: "Tallas" },
                 { field: "Color", title: "Color" },
-                { field: "CantidadTotal", title: "Cantidad" }
+                { field: "CantidadTotal", title: "Cantidad" },
+                { field: "NoReferenciaItem", title: "Ref. Item" }
             ]
         });
 
