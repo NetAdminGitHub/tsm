@@ -563,6 +563,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CambioEtapa.js" />
     <Content Include="Scripts\js\CodigosModalidad.js" />
     <Content Include="Scripts\js\CodigosRegimen.js" />
     <Content Include="Scripts\js\ConsultaDespacho.js" />
@@ -1188,6 +1189,7 @@
     <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
     <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
     <Content Include="Views\TiposTransportes\Index.cshtml" />
+    <Content Include="Views\Shared\_CambioEtapa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,6 +14,8 @@ let perPV = true;
 let perFac = true;
 let perDM = true;
 let perNR = true;
+let EtapaActual;
+let NombreEtapaActual;
 
 $(document).ready(function () {
 
@@ -389,18 +391,45 @@ $(document).ready(function () {
                 }
             },
             {//Boton para cambio de estado de las ordenes de despacho propuesta
-                field: "btnEstado",
+                field: "btnEtapa",
                 title: "&nbsp;",
                 command: {
-                    name: "btnEstado",
+                    name: "btnEtapa",
                     iconClass: "k-icon k-i-gear m-0",
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
-                        ConfirmacionMsg("¿Estás seguro que deseas cambiar la etapa de la Orden de Despacho?",
-                            null,
-                            function () { return false; }
-                        );
+
+                        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        let IdOD = dataItem.IdDespachoMercancia;
+
+                        $.ajax({
+                            url: TSM_Web_APi + "DespachosMercancias/GetEtapaOD/" + IdOD,
+                            dataType: 'json',
+                            type: 'GET',
+                            contentType: "application/json; charset=utf-8",
+                            async: false,
+                            success: function (respuesta) {
+                                EtapaActual = respuesta.IdEtapaProceso;
+                                NombreEtapaActual = respuesta.NombreEtapa;
+                            }
+                        });
+
+                        let strjson = {
+                            config: [{
+                                Div: "vCambioEtapa",
+                                Vista: "~/Views/Shared/_CambioEtapa.cshtml",
+                                Js: "CambioEtapa.js",
+                                Titulo: "Cambio Etapa",
+                                Width: "20%",
+                                MinWidth: "20%",
+                                Height: "45%"
+                            }],
+                            Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
+                            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+                        };
+
+                        fn_GenLoadModalWindow(strjson);
                     }
                 },
                 width: "70px",
@@ -439,9 +468,9 @@ $(document).ready(function () {
     });
 
     $("#gridDespachos").kendoTooltip({
-        filter: ".k-grid-btnEstado",
+        filter: ".k-grid-btnEtapa",
         content: function (e) {
-            return "Cambio de Estado";
+            return "Cambio de Etapa";
         }
     });
 
