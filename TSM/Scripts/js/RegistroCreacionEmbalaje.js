@@ -437,20 +437,37 @@ $(document).ready(function () {
             }
         },
         detailInit: DIDM,
-        //DEFICNICIÓN DE LOS CAMPOS
+        //DEFINICIÓN DE LOS CAMPOS
         columns: [
+            { selectable: true, width: "35px" },
             { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
-            { field: "NombreUnidadEmb", title: "Unidad Embalaje", attributes: { "class": "selFM" } },
+            { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
             { field: "NoDocumento", title: "Documento" },
-            { field: "CantTallas", title: "Cantidad Tallas" },
-            { field: "CantBultos", title: "Cantidad Bultos" },
-            { field: "Cantidad", title: "Cantidad" },
+            { field: "CantTallas", title: "Cant. Tallas" },
+            { field: "CantBultos", title: "Cant. Bultos" },
+            { field: "Cantidad", title: "Cant." },
             { field: "Peso", title: "Peso (Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
             { field: "IdUnidad", title: "IdUnidad", hidden: true },
             { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "NombreEstado", title: "Estado" },
+            {
+                field: "btnCambioEstado",
+                title: "&nbsp;",
+                command: [
+                    {
+                        name: "b_cambioEstado",
+                        iconClass: "k-icon k-i-gear m-0",
+                        text: " ",
+                        title: "&nbsp;",
+                        click: function (e) {
+                            
+                        },
+                    }
+                ],
+                width: "70px"
+            },
             { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"] }
         ]
     });
@@ -705,7 +722,7 @@ var DIDM = (e) => {
         };
 
         let gt = $(`<div id= "gridDM${rowId2}"></div>`).appendTo(e.detailCell).kendoGrid({
-            //DEFICNICIÓN DE LOS CAMPOS
+            //DEFINICIÓN DE LOS CAMPOS
             columns: [
                 { field: "IdDespachoEmbalajeMercancia", title: "Id DespachoEmbalaje Mercancia", hidden: true },
                 { field: "IdEmbalajeMercancia", title: "IdEmbalaje Mercancia", hidden: true },
@@ -714,7 +731,7 @@ var DIDM = (e) => {
                 { field: "Tallas", title: "Tallas" },
                 { field: "CantTallas", title: "Cantidad Tallas", hidden: true },
                 { field: "CantBultos", title: "Cantidad Bultos" },
-                { field: "Cantidad", title: "Cantidad" }
+                { field: "Cantidad", title: "Cantidad" }                
             ]
         });
 
