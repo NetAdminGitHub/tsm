@@ -432,7 +432,11 @@ $(document).ready(function () {
             if (!e.model.isNew()) {
                 if (e.model.Estado === "FINALIZADO") {
                     KdoNumerictextboxEnable($('[name="Peso"]'), false);
-                    TextBoxEnable($('[name="Observacion"]'), false);
+                    TextBoxReadOnly($('[name="Observacion"]'), false);
+                    $('[name="Observacion"]').css({ "background-color": "#CCCCCC" })
+                    $(".k-grid-update").addClass("k-state-disabled")
+                } else {
+                    $(".k-grid-update").removeClass("k-state-disabled")
                 }
             }
         },
@@ -440,6 +444,7 @@ $(document).ready(function () {
         //DEFINICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
+            { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"] },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
             { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
             { field: "NoDocumento", title: "Documento" },
@@ -468,8 +473,8 @@ $(document).ready(function () {
                     }
                 ],
                 width: "70px"
-            },
-            { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"] }
+            }
+
         ]
     });
 
@@ -480,13 +485,25 @@ $(document).ready(function () {
     Set_Grid_DataSource($("#gEnEmbalaje").data("kendoGrid"), dsDM);
 
     $("#gEnEmbalaje").data("kendoGrid").bind("dataBound", function (e) {
-
         if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
             KdoButtonEnable($("#btnFinalizarEmb"), false);
         } else {
             KdoButtonEnable($("#btnFinalizarEmb"), true);
         }
 
+    });
+
+    $("#gEnEmbalaje").kendoTooltip({
+        filter: ".k-grid-b_cambioEstado",
+        content: function (e) {
+            return "Ingreso de Mercancía";
+        }
+    });
+
+
+    $("#gEnEmbalaje").kendoTooltip({
+        filter: "tr",
+        content: function (e) { return e.target['children']()[2].getInnerHTML(); }
     });
 
     $("#gEnEmbalaje").on("click", ".k-grid-Generar", function () {
