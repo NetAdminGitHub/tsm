@@ -666,7 +666,7 @@ $(document).ready(function () {
     // #endregion
 
     //cargada la pagina leer los grid
-    if (nuevoReg = 0) {
+    if (nuevoReg == 0) {
         $("#gCortes").data("kendoGrid").dataSource.read().then(function () {
             //se debe abrir y cerrar el detalle para la primera selección
             closeOpenDetailGrid();
