@@ -306,12 +306,13 @@ $(document).ready(function () {
                 { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
                 { field: "IdIngreso", title: "Id Ingreso", hidden: true },
                 { field: "NoDocumento", title: "#Lista", hidden: true },
+                { field: "NoDocumento", title: "#Lista", hidden: true },
+                { field: "HBNoDoc", title: "Hoja Bandeo" },
                 { field: "Corte", title: "Corte" },
                 { field: "Estilos", title: "Estilos" },
                 { field: "Tallas", title: "Tallas" },
                 { field: "Color", title: "Color" },
                 { field: "CantidadTotal", title: "Cantidad" },
-                { field: "NoReferenciaItem", title: "Ref. Item" }
             ]
         });
 
