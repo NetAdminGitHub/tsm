@@ -471,7 +471,7 @@ var fn_DibujarUbicaciones = function (ds, IdCategoriaPrenda, item,spanId) {
         UbicacionPren.append(
             '<div class="form-row">' +
             '<div class="form-group col-lg-12 ">' +
-            '<input type="checkbox" id="' + TxtCant + '" name="' + TxtCant + '" class="k-checkbox">' +
+            '<input type="checkbox" id="' + TxtCant + '" name="' + TxtCant + '" class="k-checkbox k-checkbox-md k-rounded-md">' +
             '<label class="k-checkbox-label" for="' + TxtCant + '">'+ elemento.Nombre + '</label>' +
             '</div>' +
             '</div>' 
@@ -629,7 +629,7 @@ var fn_DibujarTallas = function (ds, IdCategoriaPrenda, item, spanId) {
         UbicacionPren.append(
             '<div class="form-row">' +
             '<div class="form-group col-lg-12 ">' +
-            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox" tipotalla="chk' + TipoTalla+ '">' +
+            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox k-checkbox-md k-rounded-md" tipotalla="chk' + TipoTalla+ '">' +
             '<label class="k-checkbox-label" for="' + chkRT + '">' + elemento.Nombre + '</label>' +
             '</div>' +
             '</div>' +

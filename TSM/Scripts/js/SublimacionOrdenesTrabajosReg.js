@@ -57,7 +57,10 @@ $(document).ready(function () {
     KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
     // deshabilitar botones en formulario
     $("#myBtnAdjunto").data("kendoButton").enable(false);
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     PanelBarConfig($("#BarPanel"));
     KdoDatePikerEnable($("#Fecha"), false);
@@ -67,6 +70,7 @@ $(document).ready(function () {
     //*******************************************************************
 
     $("#CntPiezas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -76,6 +80,7 @@ $(document).ready(function () {
     });
 
     $("#TxtCantidadSTrikeOff").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -85,6 +90,7 @@ $(document).ready(function () {
     });
 
     $("#TxtStrikeOffAdicional").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -94,6 +100,7 @@ $(document).ready(function () {
     });
 
     $("#Combo").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -103,6 +110,7 @@ $(document).ready(function () {
 
     });
     $("#TxtNoVeces").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,

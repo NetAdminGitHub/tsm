@@ -36,11 +36,17 @@ $(document).ready(function () {
     let dtfecha = new Date();
     let xfd = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde");
     let xfh = sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta") === null ? "" : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta");
-    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaDesde").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     //$("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
     $("#dFechaDesde").data("kendoDatePicker").value(xfd === "" ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaDesde"));
 
-    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     //$("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(xfh === "" ? Fhoy() : sessionStorage.getItem("SublimacionPreciosOrdenesTrabajos_dFechaHasta"));
 

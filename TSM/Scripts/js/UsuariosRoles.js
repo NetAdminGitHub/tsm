@@ -196,7 +196,10 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#gridUsuarioRoles").kendoGrid({
         edit: function (e) {
-            $('[name="Fecha"]').kendoDatePicker({ format: "dd/MM/yyyy" });
+            $('[name="Fecha"]').kendoDatePicker({
+                size: "large",
+                format: "dd/MM/yyyy"
+            });
             KdoHideCampoPopup(e.container, "IdUsuario");
             KdoHideCampoPopup(e.container, "Nombre");
             KdoHideCampoPopup(e.container, "Fecha");

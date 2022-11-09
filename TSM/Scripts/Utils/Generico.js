@@ -139,7 +139,7 @@ function ConfirmacionMsg(Mensaje, funcion, functionNo) {
     ResultadoYes = function () { return funcion(); };
     ResultadoNO = function () { return functionNo(); };
 
-    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
+    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
     windowConfirmar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -902,8 +902,8 @@ var KdoButton = function (BotonDiv, icono, tooltip, size = "large") {
  * @param {string} campo nombre del campo a ocultar
  */
 var KdoHideCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").hide();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").hide();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
 };
 
 /**
@@ -1952,7 +1952,7 @@ var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
 };
 
 var Grid_TemplateCheckBoxColumn = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 

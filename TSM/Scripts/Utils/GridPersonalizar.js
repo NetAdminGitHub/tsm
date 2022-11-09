@@ -135,14 +135,13 @@ function SetGrid_CRUD_ToolbarTop(e, agregar) {
  * @param {string} Id_GridDetalle colocar id cuando sea un grid detalle para el funcionamiento del boton elminar.
  */
 function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
-
     if (givenOrDefault(Id_GridDetalle, "") !== "" && e.element.parent().attr("class") === "k-detail-cell") {
         e.element.attr('id', Id_GridDetalle + Date.now().toString());
     }
 
     $("#" + Id_GridDetalle + "").children().remove();
 
-    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button' id='noButton_" + e.element.attr('id') + "' style='width: 75px;'>No</button></div></span>");
+    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='noButton_" + e.element.attr('id') + "' style='width: 75px;'>No</button></div></span>");
     var windowEliminar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -273,13 +272,13 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
 var Grid_ColCheckbox = function (container, options) {
     var guid = kendo.guid();
     var columName = options.field;
-    $('<input class="k-checkbox" id="' + guid + '" type="checkbox" name="' + columName + '" data-type="boolean" data-bind="checked:' + columName + '">').appendTo(container);
+    $('<input class="k-checkbox k-checkbox-md k-rounded-md" id="' + guid + '" type="checkbox" name="' + columName + '" data-type="boolean" data-bind="checked:' + columName + '">').appendTo(container);
     $('<label class="k-checkbox-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
 var Grid_ColRadiobutton = function (container, options) {
     var guid = kendo.guid();
-    $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
+    $('<input class="k-radio k-radio-md" id="' + guid + '" type="radio" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
     $('<label class="k-radio-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
@@ -290,7 +289,7 @@ var Grid_ColRadiobuttonGroup = function (container, options) {
     for (var element in radioArray) {
 
 
-        $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
+        $('<input class="k-radio k-radio-md" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
         $('<label class="k-radio-label" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
  
     }
@@ -302,13 +301,13 @@ var Grid_ColRadiobuttonGroup = function (container, options) {
 // Columna como CheckBox
 var Grid_ColTemplateCheckBox = function (data, columna) {
     let guid = kendo.guid();
-    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + guid + "\"></label>";
 };
 
 // Columna como CheckBox
 var Grid_ColTemplateRadiobutton = function (data, columna) {
-    return "<input name=\"" + columna + "\" id=\"" + data.id + "\" type=\"radio\" class=\"k-radio\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input name=\"" + columna + "\" id=\"" + data.id + "\" type=\"radio\" class=\"k-radio k-radio-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-radio-label\" for=\"" + data.id + "\"></label>";
 };
 

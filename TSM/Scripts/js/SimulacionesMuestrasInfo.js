@@ -49,6 +49,7 @@ $(document).ready(function () {
     $("#CmbTallasRecalcular").data("kendoMultiSelect").trigger("change");
 
     $("#NumCantidadTallasRecal").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -56,6 +57,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNuevaCantidadPiezasRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -63,6 +65,7 @@ $(document).ready(function () {
     });
 
     $("#txtPorcVariacionRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "p",
         restrictDecimals: true,
         decimals: 2,
@@ -70,6 +73,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNoMontajeRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -77,6 +81,7 @@ $(document).ready(function () {
     });
 
     $("#txtPersonalExtraRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -85,6 +90,7 @@ $(document).ready(function () {
     });
 
     $("#txtCombosRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -93,6 +99,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquinaRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -100,6 +107,7 @@ $(document).ready(function () {
         value: 1
     });
     $("#txtVeloMaquinaRecalcularFP").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -708,69 +716,83 @@ var fn_LoadVista = function (ViewPartial) {
 };
 
 let fn_CamposSimulacion = function () {
-    $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     $("#TxtCantidadPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtCostoMOD").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoFabril").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoOperacion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoTotal").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
+        size: "large",
         format: "P2",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtUtilidadDolares").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioCliente").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioTS").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioVenta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -778,18 +800,21 @@ let fn_CamposSimulacion = function () {
     });
 
     $("#TxtCantidadTecnicas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtMontajes").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#txtNoPersonalExtra").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -797,6 +822,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadColores").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -804,6 +830,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadCombos").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -811,6 +838,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadTallas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -818,6 +846,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtVelocidadMaquina").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -825,6 +854,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtVelocidadMaquinaFP").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -832,6 +862,7 @@ let fn_CamposSimulacion = function () {
         value: 0
     });
     $("#txtPorcVariacion").kendoNumericTextBox({
+        size: "large",
         format: "p",
         restrictDecimals: true,
         decimals: 2,
@@ -839,6 +870,7 @@ let fn_CamposSimulacion = function () {
     });
 
     $("#txtTiempoProyecto").kendoNumericTextBox({
+        size: "large",
         format: "n4",
         restrictDecimals: false,
         decimals: 4,
@@ -851,6 +883,7 @@ let fn_CamposSimulacion = function () {
 
 let fn_SetCampos = function () {
     $("#TxtCostoMP").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -858,6 +891,7 @@ let fn_SetCampos = function () {
     });
 
     $("#TxtCostoPrimo").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -865,48 +899,56 @@ let fn_SetCampos = function () {
     });
 
     $("#TxtCostoMPUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoMODUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoPrimoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoFabrilUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoProduccionUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoOperacionUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#txtCostoTermofijado").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#txtCostoTermofijadoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -914,6 +956,7 @@ let fn_SetCampos = function () {
     });
 
     $("#TxtCostoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -921,12 +964,14 @@ let fn_SetCampos = function () {
     });
 
     $("#txtCostoTransporte").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#txtCostoTransporteUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,

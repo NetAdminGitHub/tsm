@@ -5,7 +5,10 @@ var fn_VerifMuesCC = function () {
     KdoButton($("#btnCPesosVerifMues"), "search", "Consultar");
     KdoButton($("#btnFinOTVerifMue"), "gear", "Finalizar OT");
     KdoButton($("#btnAcepFinVerifMue"), "check", "Finalizar");
-    $("#dFechaFinVerifMue").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaFinVerifMue").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaFinVerifMue").data("kendoDatePicker").value(Fhoy());
     $("#MbtnFinVerifMue").kendoDialog({
         height: "auto",

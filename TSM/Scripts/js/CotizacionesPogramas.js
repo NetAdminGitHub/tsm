@@ -91,12 +91,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCntDocena").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtCntPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -104,6 +106,7 @@ $(document).ready(function () {
         min: 0
     });
     $("#TxtCM").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -111,6 +114,7 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoMOD").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -118,12 +122,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoPrimo").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -131,6 +137,7 @@ $(document).ready(function () {
     });
     
     $("#TxtCostoFra").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -138,12 +145,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoOper").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -151,6 +160,7 @@ $(document).ready(function () {
     });
 
     $("#TxtFacturacionVenta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -159,6 +169,7 @@ $(document).ready(function () {
 
 
     $("#TxtFacturaTech").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -167,6 +178,7 @@ $(document).ready(function () {
 
 
     $("#TxtFacturaClie").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -175,6 +187,7 @@ $(document).ready(function () {
 
 
     $("#TxtCostoTotal").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -182,12 +195,14 @@ $(document).ready(function () {
     });
 
     $("#TxtPrecioPon").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPrecioPonTechno").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -195,6 +210,7 @@ $(document).ready(function () {
     });
 
     $("#TxtDiferencia").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -202,42 +218,49 @@ $(document).ready(function () {
     });
 
     $("#TxtMargenNetoP").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtMargenNetoPTech").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
+        size: "large",
         format: "P2",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtUtilidadDolares").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioCliente").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioTS").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioVenta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -245,18 +268,21 @@ $(document).ready(function () {
     });
 
     $("#TxtFacturaTotalCliente").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtFacturaTotalTS").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtFacturaTotalVenta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,

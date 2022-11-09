@@ -7,6 +7,7 @@ let fn_Ini_IngresoBultoAddItem = (IngresoBultoAdd) => {
     KdoButton($("#btn_GuardarAddItem"), "check-outline", "Guardar Registro");
 
     $("#num_Peso").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max:  9999999.99,
         format: "{0:n2}",
@@ -15,6 +16,7 @@ let fn_Ini_IngresoBultoAddItem = (IngresoBultoAdd) => {
         value: 0
     });
     $("#num_Cuantia").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 9999999.99,
         format: "{0:n2}",
@@ -23,6 +25,7 @@ let fn_Ini_IngresoBultoAddItem = (IngresoBultoAdd) => {
         value: 0
     });
     $("#num_Valor").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 9999999.99,
         format: "{0:n2}",

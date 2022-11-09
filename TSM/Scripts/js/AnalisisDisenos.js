@@ -251,6 +251,7 @@ $(document).ready(function () {
     var status = $(".status");
 
     $("#ResolucionSqr").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -259,6 +260,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#ResolucionDPI").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -268,6 +270,7 @@ $(document).ready(function () {
 
     });
     $("#PixelesTotal").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -277,6 +280,7 @@ $(document).ready(function () {
 
     });
     $("#AreaTotal").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -285,6 +289,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AltoDiseno").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -293,6 +298,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AnchoDiseno").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -301,6 +307,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AltoDisenoSub").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -309,6 +316,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AnchoDisenoSub").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -317,6 +325,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AnchoDisenoPla").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -325,6 +334,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#AltoDisenoPla").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -333,6 +343,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#CntcolorSer").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 12,
         format: "#",
@@ -341,6 +352,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#TxtVelocidadMaquina").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -349,6 +361,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#TxtVelocidadMaquinaPla").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -357,6 +370,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#TxtFactorDistribucion").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -366,6 +380,7 @@ $(document).ready(function () {
     });
 
     $("#NumConsmoYar").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -374,13 +389,24 @@ $(document).ready(function () {
         value: 0
     });
 
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").enable(false);
-    $("#FechaSub").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
+    $("#FechaSub").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy",
+        parseFormats: ["dd/MM/yyyy"]
+    });
     $("#FechaSub").data("kendoDatePicker").enable(false);
     $("#ResolucionSqr").data("kendoNumericTextBox").enable(false);
     $("#AreaTotal").data("kendoNumericTextBox").enable(false);
-    $("#FechaPla").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
+    $("#FechaPla").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy",
+        parseFormats: ["dd/MM/yyyy"]
+    });
     $("#FechaPla").data("kendoDatePicker").enable(false);
     KdoButton($("#GSerigrafia"), "save", "Guardar análisis");
     KdoButton($("#GuardarSubli"), "save", "Guardar análisis");

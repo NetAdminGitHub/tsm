@@ -11,6 +11,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     KdoButton($("#btnAddMCE_Dis"), "check", "Agregar");
 
     $("#EscurridorDureza_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -20,6 +21,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
     });
 
     $("#NumPasadas_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -29,6 +31,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     });
     $("#NumCapilar_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 4000,
         format: "#",
@@ -39,6 +42,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     });
     $("#NumArea_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -47,6 +51,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
         value: 0
     });
     $("#NumResolucionDPI_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -56,6 +61,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     });
     $("#NumLineajeLPI_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -65,6 +71,7 @@ var fn_VistaEstacionDisenoDocuReady = function () {
 
     });
     $("#NumPixeles_Dis").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",

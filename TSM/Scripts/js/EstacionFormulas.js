@@ -11,6 +11,7 @@
     //informacion de revelado
 
     $("#EscurridorDureza_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -20,6 +21,7 @@
     });
 
     $("#NumPasadas_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -29,6 +31,7 @@
     });
 
     $("#NumCapilar_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 4000,
         format: "#",
@@ -39,6 +42,7 @@
 
     });
     $("#NumArea_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -47,6 +51,7 @@
         value: 0
     });
     $("#NumResolucionDPI_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -56,6 +61,7 @@
 
     });
     $("#NumLineajeLPI_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -65,6 +71,7 @@
 
     });
     $("#NumPixeles_MaRev").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",

@@ -17,6 +17,7 @@ var fn_Ini_IngresoBultoSerie = (strjson) => {
 
     //cnatidad de pieza
     $("#num_Ibs_Cantidad").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: xesRollo_BultoSerie === true ? 9999999.99 : 999999999,
         format: xesRollo_BultoSerie === true ? "{0:n2}" : "#",

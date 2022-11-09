@@ -44,7 +44,10 @@ $(document).ready(function () {
     KdoButton($("#btnCrearOrdenDespacho"), "save");
     // crear detakle de preparado
     KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
-    $("#dtFechaProyectada").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dtFechaProyectada").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoButton($("#btnMoveData"), "redo k-icon-xl");
     $("#btnMoveData").removeClass("k-button-icon");
     KdoButtonEnable($("#btnMoveData"), false);

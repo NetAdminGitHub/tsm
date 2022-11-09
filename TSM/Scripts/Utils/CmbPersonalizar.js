@@ -65,7 +65,7 @@ var KdoComboBoxEnable = function (InputElem, enable) {
  * @param {string} clearButton activar boton clear,
  * @param {string} fn_crear crea registro
  */
-var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear) {
+var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear, sizeValue = "large") {
     $.ajax({
         url: webApi,
         dataType: "json",
@@ -98,6 +98,7 @@ var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder,
                 }
             });
             e.kendoComboBox({
+                size: sizeValue,
                 dataTextField: textField,
                 dataValueField: valueField,
                 autoWidth: true,
@@ -174,8 +175,9 @@ function generateModel(response, valueField) {
 }
 
 
-var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, sizeValue = "large") {
     e.kendoComboBox({
+        size: sizeValue,
         dataTextField: textField,
         dataValueField: valueField,
         autoWidth: true,

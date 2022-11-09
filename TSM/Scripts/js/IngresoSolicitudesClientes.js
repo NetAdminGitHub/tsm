@@ -21,7 +21,10 @@ $(document).ready(function () {
     KdoComboBoxbyData($("#CmbEjecSol"), "[]", "Nombre", "IdEjecutivoCuenta", "Seleccione...");
     KdoComboBoxbyData($("#CmbContactoSol"), "[]", "Nombre", "IdContactoCliente", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#TxtPrenda"), TSM_Web_APi + "CategoriaPrendas", "Nombre", "IdCategoriaPrenda", "Seleccione ...", "", "");
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#Fecha"), false);
     KdoComboBoxbyData($("#CmbMarcas"), "[]", "Nombre", "IdMarca", "Seleccione...");

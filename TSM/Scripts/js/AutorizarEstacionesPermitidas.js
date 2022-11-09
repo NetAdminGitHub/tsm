@@ -2,6 +2,7 @@
 var fn_InicializarCntActualizarEstacionesPermitidas = (divCntEstaPermi, cepIdot, cepIdEtapa, cepItem) => {
     KdoButton($("#btnActualizarCntPermi"), "check", "Actualizar");
     $("#TxtCntPermitidas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",

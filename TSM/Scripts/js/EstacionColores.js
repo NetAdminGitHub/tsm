@@ -8,6 +8,7 @@ var fn_VistaEstacionColorDocuReady = function () {
     KdoButton($("#btnAddMCE"), "check", "Agregar");
 
     $("#EscurridorDureza").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -17,6 +18,7 @@ var fn_VistaEstacionColorDocuReady = function () {
     });
 
     $("#NumPasadas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -26,6 +28,7 @@ var fn_VistaEstacionColorDocuReady = function () {
 
     });
     $("#NumCapilar").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 4000,
         format: "#",

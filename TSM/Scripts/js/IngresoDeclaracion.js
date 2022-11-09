@@ -175,12 +175,18 @@ $(document).ready(function () {
     TextBoxReadOnly($("#txtEstadoDM"), false);
 
     //crear campo fecha
-    $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#dFecha"), false);
 
     //crear campo fecha aceptación
-    $("#dFechaAceptacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaAceptacion").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaAceptacion").data("kendoDatePicker").value(Fhoy());
 
     //#region crear item detalle
@@ -299,7 +305,7 @@ $(document).ready(function () {
 
             Grid_Focus(e, "IdIncisoArancelario");
         },
-        toolbar: "<button class='k-button k-button-icontext' id='btnAddItem' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
+        toolbar: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-button-icontext' id='btnAddItem' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
         columns: [
             { field: "IdDeclaracionMercancia", title: "id Declaracion", hidden: true },
             { field: "Item", title: "Item" },
@@ -883,6 +889,7 @@ $.fn.extend({
     ControlSeleccionRegimen: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Codigo",
                 dataValueField: "IdTipoTrasladoRegimen",
                 filter: "contains",
@@ -927,6 +934,7 @@ $.fn.extend({
     ControlSeleccionUnidadesAduanas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "CodigoAduana",
                 dataValueField: "IdUnidad",
                 filter: "contains",
