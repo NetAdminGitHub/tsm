@@ -63,6 +63,7 @@ $(document).ready(function () {
                     cantidadPiezas: { type: "number" },
                     FechaMod: { type: "date" },
                     FechaEntrega: { type: "date" },
+                    Etapa: { type: "string" },
                     Estado: { type: "string" },
                     Servicio: { type: "string" },
                     Progreso: { type: "number" }
@@ -222,6 +223,7 @@ $(document).ready(function () {
             { field: "cantidadPiezas", title: "Cantidad" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss}" },
             { field: "Servicio", title: "Servicio" },
+            { field: "Etapa", title: "Etapa" },
             { field: "Estado", title: "Estado" },
             {
                 field: "Progreso",

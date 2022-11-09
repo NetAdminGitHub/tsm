@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     var etapas;
-    var objSteps = '$("#stepperOD").kendoStepper({linear: true,steps: [';
+    var objSteps = '$("#stepperOD").kendoStepper({linear: false,steps: [';
 
     $.ajax({
         dataType: 'json',
@@ -23,7 +23,13 @@
 
             eval(objSteps);
 
+            let stepper = $("#stepperOD").data("kendoStepper");
+            stepper.select(0);
+            stepper.select().element[0].classList.remove("k-step-current");
+
         }
     });
+
+
 
 });
