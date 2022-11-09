@@ -580,6 +580,7 @@
     <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
     <Content Include="Scripts\js\SecuenciaMaquina.js" />
+    <Content Include="Scripts\js\SimulacionesMuestras\Consulta.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
     <Content Include="Scripts\js\SolicitarIngresoCambios.js" />
     <Content Include="Scripts\js\SolicitudesCambios.js" />
@@ -1022,6 +1023,7 @@
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
+    <Content Include="Views\SimulacionesMuestras\Consulta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

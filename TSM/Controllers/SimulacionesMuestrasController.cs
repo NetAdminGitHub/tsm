@@ -15,6 +15,12 @@ namespace TSM.Controllers
             return View();
         }
 
+        public ActionResult Consulta()
+        {
+
+            return View("Consulta");
+        }
+
         [HttpGet]
         [Route("SimulacionesMuestras/SimulacionesMuestrasInfo/{IdSimulacion}/{IdServicio}/{IdOrdenTrabajo}")]
         public ActionResult SimulacionesMuestrasInfo(long IdSimulacion,long IdServicio,long IdOrdenTrabajo)
