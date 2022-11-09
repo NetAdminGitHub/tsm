@@ -171,6 +171,10 @@ $(document).ready(function () {
                                             circulo.classList.remove(".k-step-done");
                                             circulo.firstChild.classList.remove("k-icon");
                                             circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
                                         }
                                         else if(tracking["Estado"] == 'OPERACION')
                                         {
@@ -178,10 +182,18 @@ $(document).ready(function () {
                                             circulo.classList.remove("k-stepper-color-f");
                                             circulo.firstChild.classList.remove("k-icon");
                                             circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
                                         }
                                         else if (tracking["Estado"] == 'FINALIZADO') {
                                             circulo.classList.remove("k-stepper-color-pe");
                                             circulo.classList.add("k-stepper-color-f");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove(ico);
                                             circulo.firstChild.classList.add("k-icon");
                                             circulo.firstChild.classList.add("k-i-check");
                                         }

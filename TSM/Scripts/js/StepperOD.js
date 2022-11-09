@@ -12,7 +12,9 @@
             etapas = result;
             //console.log(etapas);
             etapas.forEach(function (item, index, arr) {
-                objSteps = objSteps + '{label: "' + item.Nombre + '",icon: "' + item.Icono + '", successIcon: "check" },';
+                let ico="";
+                if (item.Icono === null) { ico = "image" } else { ico = item.Icono.slice(7); }
+                objSteps = objSteps + '{label: "' + item.Nombre + '",icon: "' + ico + '", successIcon: "check" },';
             });
 
             objSteps = objSteps.slice(0, -1);
