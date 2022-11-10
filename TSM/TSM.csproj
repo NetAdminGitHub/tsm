@@ -593,6 +593,7 @@
     <Content Include="Scripts\js\SeccionesMenuPublico.js" />
     <Content Include="Scripts\js\SeccionesVistas.js" />
     <Content Include="Scripts\js\statusOrdenDespacho.js" />
+    <Content Include="Scripts\js\StepperOD.js" />
     <Content Include="Scripts\js\TiposProcesos.js" />
     <Content Include="Scripts\js\TiposTransportes.js" />
     <Content Include="Scripts\js\UsuariosRolesPublicos.js" />

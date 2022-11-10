@@ -501,6 +501,7 @@ var fn_Reg_ControlBulto = (xjson) => {
     $("#txtNumero").val("");
     $("#txtPO").val("");
     $("#txtTO").val("");
+    $("#txtNRI").val("");
     $("#txtColor").val("");
 
     KdoCmbSetValue($("#xcmbPlanta"), "");
@@ -574,6 +575,7 @@ let fn_Gen_Hb = () => {
                 IdTipoProceso: KdoCmbGetValue($("#xcmbProceso")),
                 IdMarca: KdoCmbGetValue($("#xcmbMarca")),
                 TrafficOn: $("#txtTO").val(),
+                NoReferenciaItem: $("#txtNRI").val(),
                 PO: $("#txtPO").val(),
                 IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
 
@@ -621,6 +623,7 @@ let fn_Get_HojasBandeo = (xId)=> {
                 KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
                 KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
                 $("#txtTO").val(datos.TrafficOn);
+                $("#txtNRI").val(datos.NoReferenciaItem);
                 $("#txtPO").val(datos.PO);
                 KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
                 fn_Get_HojasBandeoDisenos(xId);

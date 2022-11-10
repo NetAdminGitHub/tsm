@@ -351,7 +351,7 @@ $(document).ready(function () {
                                 Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
                                 Js: "RelacionPLs.js",
                                 Titulo: "Asociar Lista de Empaque a Item #" + `${dataItem.Item}`,
-                                Height: "80%",
+                                Height: "82%",
                                 Width: "50%",
                                 MinWidth: "10%"
                             }],
