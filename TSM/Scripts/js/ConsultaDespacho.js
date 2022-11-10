@@ -5,7 +5,7 @@ let idPlanta = 0;
 let idMarca = 0;
 
 const NombresControladores = ["CrearEmbalaje", "PackingList", "PedidoVenta", "Factura", "DevolucionDM", "NotaRemision"];
-const NombresVistas = ["GestionOrdenDespacho", "Embalaje", "ListaEmpaque", "PedidoVenta", "Facturacion", "DeclaracionMercancia", "NotaRemision"];
+const NombresVistas = ["OrdenDespacho", "CrearEmbalaje", "ListaEmpaque", "PedidoVenta", "Facturacion", "DeclaracionMercancia", "NotaRemision"];
 let permisos = [];
 
 let perEmb = true;
