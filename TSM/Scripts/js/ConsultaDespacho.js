@@ -63,6 +63,7 @@ $(document).ready(function () {
                     cantidadPiezas: { type: "number" },
                     FechaMod: { type: "date" },
                     FechaEntrega: { type: "date" },
+                    Etapa: { type: "string" },
                     Estado: { type: "string" },
                     Servicio: { type: "string" },
                     Progreso: { type: "number" }
@@ -125,6 +126,95 @@ $(document).ready(function () {
                 kendo.bind($(this), dataItem);
             });
         },
+        change: function (e) {
+
+            let selectedRows = this.select();
+            let selectedDataItems = [];
+            let idOD = 0;
+            let tracking;
+            let etapas;
+            let stepper = $("#stepperOD").data("kendoStepper");
+
+            for (let i = 0; i < selectedRows.length; i++) {
+                let dataItem = this.dataItem(selectedRows[i]);
+                selectedDataItems.push(dataItem);
+            }
+
+            idOD = selectedDataItems[0]["id"];
+
+            $.ajax({
+                dataType: 'json',
+                url: TSM_Web_APi + 'EtapasProcesos/GetbyTabla/Bodega¿DespachosMercancias',
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                success: function (resultado) {
+                    etapas = resultado;
+
+                    $.ajax({
+                        dataType: 'json',
+                        url: TSM_Web_APi + 'DespachosMercanciasEtapas/GetConsultaTrackingOrdenDespacho/' + idOD,
+                        type: 'GET',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            tracking = result[0];
+
+                            if (tracking != undefined) {
+
+                                let cont = 0;
+                                let finded = 0;
+
+                                etapas.forEach(function (item, index, arr) {
+                                    if (item.Nombre == tracking["NombreEtapa"]) {
+                                        stepper.select(cont);
+                                        let circulo = stepper.select().element[0].firstChild.firstChild;
+                                        if (tracking["Estado"] == 'ENTREGADO') {
+                                            circulo.classList.add("k-stepper-color-pe");
+                                            circulo.classList.remove(".k-step-done");
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
+                                        }
+                                        else if(tracking["Estado"] == 'OPERACION')
+                                        {
+                                            circulo.classList.remove("k-stepper-color-pe");
+                                            circulo.classList.remove("k-stepper-color-f");
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
+                                        }
+                                        else if (tracking["Estado"] == 'FINALIZADO') {
+                                            circulo.classList.remove("k-stepper-color-pe");
+                                            circulo.classList.add("k-stepper-color-f");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove(ico);
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add("k-i-check");
+                                        }
+                                    }
+                                    else {
+                                        cont++;
+                                    }
+                                });
+
+                            }
+                            else {
+                                stepper.select(0);
+                            }
+                        }
+                    });
+
+                }
+            });
+         
+        },
         columns: [
             { field: "IdDespachoMercancia", title: "# Despacho" },
             { field: "FechaSolicitud", title: "Fecha solicitud", format: "{0: dd/MM/yyyy}" },
@@ -133,6 +223,7 @@ $(document).ready(function () {
             { field: "cantidadPiezas", title: "Cantidad" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss}" },
             { field: "Servicio", title: "Servicio" },
+            { field: "Etapa", title: "Etapa" },
             { field: "Estado", title: "Estado" },
             {
                 field: "Progreso",
