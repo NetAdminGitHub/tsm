@@ -111,10 +111,6 @@ $(document).ready(function() {
                 e.container.find("label[for=NoDocumento]").parent("div .k-form-field").hide();
                 e.container.find("label[for=NoDocumento]").parent().next("div .k-edit-field").hide();
             }
-            $('[name="Fecha"]').kendoDatePicker({
-                size: "large",
-                format: "dd/MM/yyyy"
-            });
          
             Grid_Focus(e, "Nombre");
         },

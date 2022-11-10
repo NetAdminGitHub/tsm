@@ -293,7 +293,7 @@ var Grid_ColRadiobuttonGroup = function (container, options) {
 
 
         $('<input class="k-radio k-radio-md" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
-        $('<label class="k-radio-label" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
+        $('<label class="k-radio-label mr-3" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
  
     }
 
@@ -398,7 +398,7 @@ var Grid_ColLocked = function (container, options) {
     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')
         .appendTo(container)
         .attr("disabled", "disabled")
-        .addClass("k-input k-textbox");
+        .addClass("k-input k-textbox k-input-solid k-input-md k-rounded-md");
 
 };
 
@@ -407,7 +407,7 @@ var Grid_ColReadOnly = function (container, options) {
     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')
         .appendTo(container)
         .attr("readonly", "readonly")
-        .addClass("k-input k-textbox");
+        .addClass("k-input k-textbox k-input-solid k-input-md k-rounded-md");
 
 };
 // funcion para lista desplegables
@@ -753,7 +753,7 @@ function Fn_Grid_Resize(e, height) {
  * @param {any} options opxion del campo
  */
 var Grid_ColTextArea = function (container, options) {
-    $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-textarea"></textarea>')
+    $('<span class="k-input k-textarea k-input-lg k-rounded-md k-input-solid k-resize-both"><textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-input-inner !k-overflow-y-auto"></textarea></span>')
         .appendTo(container);
 };
 
