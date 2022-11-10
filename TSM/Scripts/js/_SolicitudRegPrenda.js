@@ -234,7 +234,7 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '</div>' +
             '</div>' +
             '</li > ' +
-            '<li class="k-state-active">' +
+            '<li class="k-active">' +
             '<span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>' +
             'Seleccione de Partes' +
             '<div class="form-group col-lg-12">' +

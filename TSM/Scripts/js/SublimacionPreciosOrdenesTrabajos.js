@@ -102,6 +102,7 @@ $(document).ready(function () {
     $("#ModalPreciosHisCambios").kendoDialog({
         height: "auto",
         width: "60%",
+        height: "80%",
         title: "Histórico cambios de precios aprobados",
         closable: true,
         modal: true,
@@ -824,7 +825,7 @@ let fn_partesHisSublimado = function () {
                         datos.success(result);
                     },
                     error: function () {
-                        options.error(result);
+                        //options.error(result);
                     }
                 });
             },

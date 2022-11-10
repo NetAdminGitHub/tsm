@@ -282,18 +282,18 @@ $(document).ready(function () {
     $("#gridRentabilidad").kendoGrid({
 
         edit: function (e) {
-            e.container.find("label[for=IdSimulacionRentabilidad]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSimulacionRentabilidad]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSimulacionRentabilidad]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdSimulacion]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSimulacion]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSimulacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdRentabilidad]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdRentabilidad]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdRentabilidad]").parent().next("div .k-edit-field").hide();
 
             $('[name="Utilidad"]').data("kendoNumericTextBox").enable(false);
             $('[name="CU"]').data("kendoNumericTextBox").enable(false);
 
             if (e.model.isNew()) {
-                e.container.find("label[for=Aprobado]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Aprobado]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Aprobado]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Descripcion");
 

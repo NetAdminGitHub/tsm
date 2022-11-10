@@ -65,7 +65,10 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
         pageable: !givenOrDefault(Paginable, true) ? false : {
             input: true,
             refresh: true,
-            pageSizes: [20, 50, 100, "all"]
+            pageSizes: [20, 50, 100, "all"],
+            pageSize: 20,
+            numeric: false,
+            alwaysVisible: true
         },
         height: Opcheight === 0 ? "100 %" : givenOrDefault(Opcheight, 600)
 

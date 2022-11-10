@@ -97,15 +97,15 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdTecnica]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdTecnica]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdTecnica]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdServicio]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdServicio]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdServicio]").parent().next("div .k-edit-field").hide();   
-            e.container.find("label[for=IdUsuarioMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdUsuarioMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();   
-            e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=FechaMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();   
 
             KdoHideCampoPopup(e.container, "IconoView");
@@ -115,25 +115,25 @@ $(document).ready(function () {
             switch ($("#CmbServicio").data("kendoComboBox").value()) {
                 case "1":
 
-                    e.container.find("label[for=EsImpresion]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsImpresion]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsImpresion]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsSublimacion]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsSublimacion]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsSublimacion]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsPlantilla]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsPlantilla]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsPlantilla]").parent().next("div .k-edit-field").hide();
 
                     break;
 
                 case "2":
-                    e.container.find("label[for=EsPapel]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsPapel]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsPapel]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsPlantilla]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsPlantilla]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsPlantilla]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsEstampado]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsEstampado]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsEstampado]").parent().next("div .k-edit-field").hide();
 
 
@@ -141,13 +141,13 @@ $(document).ready(function () {
 
                 case "3":
 
-                    e.container.find("label[for=EsImpresion]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsImpresion]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsImpresion]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsSublimacion]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsSublimacion]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsSublimacion]").parent().next("div .k-edit-field").hide();
 
-                    e.container.find("label[for=EsEstampado]").parent("div .k-edit-label").hide();
+                    e.container.find("label[for=EsEstampado]").parent("div .k-form-field").hide();
                     e.container.find("label[for=EsEstampado]").parent().next("div .k-edit-field").hide();
          
                 

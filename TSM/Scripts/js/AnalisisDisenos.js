@@ -2554,15 +2554,15 @@ $(document).ready(function () {
             edit: function (e) {
                 // Ocultar
 
-                e.container.find("label[for=Fecha]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Fecha]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Fecha]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=Item]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Item]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Item]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=IdAnalisisDiseno]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdAnalisisDiseno]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdAnalisisDiseno]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=NombreArchivo]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=NombreArchivo]").parent("div .k-form-field").hide();
                 e.container.find("label[for=NombreArchivo]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=Id]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Id]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Id]").parent().next("div .k-edit-field").hide();
 
                 Grid_Focus(e, "Descripción");

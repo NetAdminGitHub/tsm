@@ -101,14 +101,14 @@ $(document).ready(function() {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdCliente]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCliente]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCliente]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdPrograma]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdPrograma]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdPrograma]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
             if (e.model.isNew()) {
-                e.container.find("label[for=NoDocumento]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=NoDocumento]").parent("div .k-form-field").hide();
                 e.container.find("label[for=NoDocumento]").parent().next("div .k-edit-field").hide();
             }
             $('[name="Fecha"]').kendoDatePicker({

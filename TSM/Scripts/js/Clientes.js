@@ -109,7 +109,7 @@ $(document).ready(function () {
 
     $("#GkClientes").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdCliente]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCliente]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCliente]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },        

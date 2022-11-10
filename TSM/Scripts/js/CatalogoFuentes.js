@@ -99,9 +99,9 @@ $(document).ready(function () {
 
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdCatalogoFuente]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCatalogoFuente]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCatalogoFuente]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=icono]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=icono]").parent("div .k-form-field").hide();
             e.container.find("label[for=icono]").parent().next("div .k-edit-field").hide();
             $('[name="Fuente"').attr('mayus', 'no');
             Grid_Focus(e, "Nombre");

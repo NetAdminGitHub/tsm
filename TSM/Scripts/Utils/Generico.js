@@ -912,8 +912,8 @@ var KdoHideCampoPopup = function (container, campo) {
  * @param {string} campo nombre del campo a mostrar
  */
 var KdoShowCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").show();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").show();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
 };
 
 /**

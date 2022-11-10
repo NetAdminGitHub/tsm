@@ -99,7 +99,7 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             //PERMITE OCULTAR CAMPOS EN EL EDITOR POPUP.
-            e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre2]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
 
             if (!e.model.isNew()) {

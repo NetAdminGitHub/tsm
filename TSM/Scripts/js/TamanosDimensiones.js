@@ -82,7 +82,7 @@
         
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdTamano]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdTamano]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdTamano]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },
