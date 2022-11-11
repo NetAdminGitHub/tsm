@@ -180,7 +180,7 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '<div class="form-row">' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbConfeccion + '">Confeciones de la tela</label>' +
-            '<input name="' + CmbConfeccion + '" id="' + CmbConfeccion + '" required validationMessage="Requerido" class="form-control">' +
+            '<input name="' + CmbConfeccion + '" id="' + CmbConfeccion + '" required validationMessage="Requerido" class="">' +
             '</div>' +
             '<div class="form-group col-lg-12">' +
             '<ul id="' + panelbar + '">' +
@@ -192,13 +192,13 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '<div class="form-row" >' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbTemporada + '">Temporada</label>' +
-            '<input name="' + CmbTemporada + '" id="' + CmbTemporada + '" required validationMessage="Requerido" class="form-control">' +
+            '<input name="' + CmbTemporada + '" id="' + CmbTemporada + '" required validationMessage="Requerido" class="">' +
             '</div>' +
             '</div>' +
             '<div class="form-row">' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbPrograma + '">Programas</label>' +
-            '<input name="' + CmbPrograma + '" id="' + CmbPrograma + '" type="text" class="form-control">' +
+            '<input name="' + CmbPrograma + '" id="' + CmbPrograma + '" type="text" class="">' +
             '</div>' +
             '</div>' +
             '<div class="form-row">' +
@@ -496,7 +496,7 @@ var fn_UbicacionSubli = function (IdCategoriaPrenda, Item, spanId,form) {
         '<div class="form-row">' +
         '<div class="form-group col-lg-12 ">' +
         '<label for="' + CmbMltUbi + '">Partes:</label>' +
-        '<input name="' + CmbMltUbi + '" id="' + CmbMltUbi + '"  class="form-control">' +
+        '<input name="' + CmbMltUbi + '" id="' + CmbMltUbi + '"  class="">' +
         '</div>' +
         '</div>'
     );
