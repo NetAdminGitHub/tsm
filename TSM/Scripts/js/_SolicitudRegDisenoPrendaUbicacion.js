@@ -555,7 +555,7 @@ $(document).ready(function () {
 
 function fn_BotonEliminarRG(container, options) {
     //container.append("<a class='k-button' id='btneref' onclick='fn_BorrarRefG()' ><span class='k-icon k-i-delete'></span></a> " + options.model.NombreRefGrafica + "");
-    container.append("<a class='k-button' id='btneref' onclick='fn_BorrarRefG()' ><span class='k-icon k-i-delete'></span></a>");
+    container.append("<a class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='btneref' onclick='fn_BorrarRefG()' ><span class='k-icon k-i-delete'></span></a>");
 }
 function AdjuntoEditor(container, options) {
     Fila = options.model;

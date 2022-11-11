@@ -1064,7 +1064,7 @@ $.fn.extend({
                         }
                     }
                 },
-                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"fn_CreaItemProm('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>"),//$("#noDataTemplate").html()
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"fn_CreaItemProm('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>"),//$("#noDataTemplate").html()
                 columns: [
                     { field: "NoDocumento", title: "NoDocumento", width: 150 },
                     { field: "Nombre", title: "Programa", width: 300 }
@@ -1222,10 +1222,10 @@ let fn_InsFilaGrid = function (g, data) {
 };
 
 var fn_BotonAgregar = function (container, options) {
-    container.append("<a class='k-button' id='btnInsPren' onclick='fn_Agregar()' ><span class='k-icon k-i-plus'></span></a>");
+    container.append("<a class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='btnInsPren' onclick='fn_Agregar()' ><span class='k-icon k-i-plus'></span></a>");
 };
 var fn_BotonAgregarFM = function (container, options) {
-    container.append("<a class='k-button' id='btnInsPren' onclick='fn_AgregarFM()' ><span class='k-icon k-i-plus'></span></a>");
+    container.append("<a class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='btnInsPren' onclick='fn_AgregarFM()' ><span class='k-icon k-i-plus'></span></a>");
  
 };
 
