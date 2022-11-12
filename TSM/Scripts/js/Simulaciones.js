@@ -329,12 +329,12 @@ $(document).ready(function () {
             },
             { field: "Fecha1", title: "Fecha del análisis", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "Fecha", title: "Fecha del requeimiento", format: "{0: dd/MM/yyyy}", hidden: true },
-            { field: "Nombre2", title: "Nombre del diseño" },
-            { field: "EstiloDiseno", title: "Estilo diseno" },
+            { field: "Nombre2", title: "Nombre del diseño", hidden: true },
+            { field: "EstiloDiseno", title: "Estilo diseno", hidden: true },
             { field: "NumeroDiseno", title: "Número diseno" },
             { field: "IdPrograma", title: "Código Programa", hidden: true },
             { field: "NoDocumento", title: "No Programa" },
-            { field: "Nombre3", title: "Nombre del programa" },
+            { field: "Nombre3", title: "Nombre del programa", hidden: true },
             { field: "IdCliente", title: "Código cliente", hidden: true },
             { field: "NoCuenta", title: "No Cuenta cliente" },
             { field: "Nombre4", title: "Nombre del cliente" },
@@ -347,7 +347,7 @@ $(document).ready(function () {
             { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "Tecnicas", title: "Técnicas" },
+            { field: "Tecnicas", title: "Técnicas", hidden: true },
             {field: "Nombre5", title: "Estado simulación", template: function (data) {
                 return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
                }
