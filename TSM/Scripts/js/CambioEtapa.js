@@ -68,6 +68,7 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                     success: function (data) {
                         $("#vCambioEtapa").data("kendoWindow").close();
                         $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
+                        $("#gridDespachos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
                         VistaCambioEsta.data("kendoDialog").close();
@@ -103,6 +104,7 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                         success: function (data) {
                             $("#vCambioEtapa").data("kendoWindow").close();
                             $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
+                            $("#gridDespachos").data("kendoGrid").dataSource.read();
                         },
                         error: function (data) {
                             VistaCambioEsta.data("kendoDialog").close();
@@ -182,6 +184,7 @@ var fn_con_ConsultaEtapa = function (strjson) {
                     success: function (data) {
                         $("#vCambioEtapa").data("kendoWindow").close();
                         $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
+                        $("#gridDespachos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
                         VistaCambioEsta.data("kendoDialog").close();
@@ -219,6 +222,7 @@ var fn_con_ConsultaEtapa = function (strjson) {
                         success: function (data) {
                             $("#vCambioEtapa").data("kendoWindow").close();
                             $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
+                            $("#gridDespachos").data("kendoGrid").dataSource.read();
                         },
                         error: function (data) {
                             VistaCambioEsta.data("kendoDialog").close();
