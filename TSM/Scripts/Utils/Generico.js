@@ -63,7 +63,7 @@ function RequestEndMsg(e, type) {
         }
 
         if (tipo === "error") {
-            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
             windowMensaje = $("<div />").kendoWindow({
                 title: "Información",
                 visible: false,
@@ -98,7 +98,7 @@ function ErrorMsg(e, fnClose) {
         mensaje = (e.responseJSON.Mensaje === null || e.responseJSON.Mensaje === undefined ? e.responseJSON.ExceptionMessage === undefined ? e.responseJSON.Message : e.responseJSON.ExceptionMessage : e.responseJSON.Mensaje)
             + (e.responseJSON.Output === null || e.responseJSON.Output === undefined ? "" : " " + e.responseJSON.Output);
         icono = e.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
-        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
@@ -114,7 +114,7 @@ function ErrorMsg(e, fnClose) {
     else {
         mensaje = e.toString();
         icono = "k-i-error";
-        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
@@ -139,7 +139,7 @@ function ConfirmacionMsg(Mensaje, funcion, functionNo) {
     ResultadoYes = function () { return funcion(); };
     ResultadoNO = function () { return functionNo(); };
 
-    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
+    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
     windowConfirmar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -880,9 +880,12 @@ var KdoButtonEnable = function (BotonElem, enable) {
     Button.enable(enable);
 };
 
-var KdoButton = function (BotonDiv, icono, tooltip) {
+var KdoButton = function (BotonDiv, icono, tooltip, size = "large") {
 
-    BotonDiv.kendoButton({ icon: icono });
+    BotonDiv.kendoButton({
+        icon: icono,
+        size: size
+    });
     if (givenOrDefault(tooltip, "undefined") !== "undefined") {
         BotonDiv.kendoTooltip({
             content: function (e) {
@@ -899,8 +902,8 @@ var KdoButton = function (BotonDiv, icono, tooltip) {
  * @param {string} campo nombre del campo a ocultar
  */
 var KdoHideCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").hide();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").hide();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
 };
 
 /**
@@ -909,8 +912,8 @@ var KdoHideCampoPopup = function (container, campo) {
  * @param {string} campo nombre del campo a mostrar
  */
 var KdoShowCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").show();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").show();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
 };
 
 /**
@@ -1949,7 +1952,7 @@ var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
 };
 
 var Grid_TemplateCheckBoxColumn = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 

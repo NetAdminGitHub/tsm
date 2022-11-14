@@ -8,7 +8,10 @@ $(document).ready(function () {
     vIdUsuario = getUser();
     
 
-    $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#TxtFecha"), false);
 

@@ -91,12 +91,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCntDocena").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtCntPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -104,6 +106,7 @@ $(document).ready(function () {
         min: 0
     });
     $("#TxtCM").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -111,6 +114,7 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoMOD").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -118,12 +122,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoPrimo").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -131,6 +137,7 @@ $(document).ready(function () {
     });
     
     $("#TxtCostoFra").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -138,12 +145,14 @@ $(document).ready(function () {
     });
 
     $("#TxtCostoOper").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -151,6 +160,7 @@ $(document).ready(function () {
     });
 
     $("#TxtFacturacionVenta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -159,6 +169,7 @@ $(document).ready(function () {
 
 
     $("#TxtFacturaTech").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -167,6 +178,7 @@ $(document).ready(function () {
 
 
     $("#TxtFacturaClie").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -175,6 +187,7 @@ $(document).ready(function () {
 
 
     $("#TxtCostoTotal").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -182,12 +195,14 @@ $(document).ready(function () {
     });
 
     $("#TxtPrecioPon").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPrecioPonTechno").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -195,6 +210,7 @@ $(document).ready(function () {
     });
 
     $("#TxtDiferencia").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -202,42 +218,49 @@ $(document).ready(function () {
     });
 
     $("#TxtMargenNetoP").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtMargenNetoPTech").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
+        size: "large",
         format: "P2",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtUtilidadDolares").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioCliente").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioTS").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioVenta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -245,18 +268,21 @@ $(document).ready(function () {
     });
 
     $("#TxtFacturaTotalCliente").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtFacturaTotalTS").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtFacturaTotalVenta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -387,68 +413,37 @@ $(document).ready(function () {
     $("#gridCotizacion").kendoGrid({
         autoBind: false,
         edit: function (e) {
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NoCuenta]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NoCuenta]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaCotizacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=FechaCotizacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaAprobacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=FechaAprobacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NoDocumento]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NoDocumento]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUsuario]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdUsuario]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Estado]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Estado]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdCotizacionPrograma]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=IdCotizacionPrograma]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Contacto]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Contacto]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Comentarios]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Comentarios]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=CotizaPromedio]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=CotizaPromedio]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FinalCotizacion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=FinalCotizacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioPreliminar]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioPreliminar]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioDesarrolloMuestra]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioDesarrolloMuestra]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=CondicionPagoDesarrollo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=CondicionPagoDesarrollo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioVendedorCTL]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioVendedorCTL]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Transporte]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Transporte]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=CondicionPagoProduccion]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=CondicionPagoProduccion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=NumeroSeteos]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=NumeroSeteos]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=CotizacionVigencia]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=CotizacionVigencia]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PorcentajeSegundos]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PorcentajeSegundos]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=CondicionPagoCTL]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=CondicionPagoCTL]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioSetupAdicional]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioSetupAdicional]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioAdicionalColorTela]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioAdicionalColorTela]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=TerminosPago]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=TerminosPago]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=ExcesoSetup]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=ExcesoSetup]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=PrecioSetup]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=PrecioSetup]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=RepeticionesDesarrollo]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=RepeticionesDesarrollo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=RepeticionesCTL]").parent("div .k-edit-label").hide();
-            e.container.find("label[for=RepeticionesCTL]").parent().next("div .k-edit-field").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Nombre]").parent("div .k-form-field").hide();
+            e.container.find("label[for=NoCuenta]").parent("div .k-form-field").hide();
+            e.container.find("label[for=FechaCotizacion]").parent("div .k-form-field").hide();
+            e.container.find("label[for=FechaAprobacion]").parent("div .k-form-field").hide();
+            e.container.find("label[for=NoDocumento]").parent("div .k-form-field").hide();
+            e.container.find("label[for=IdUsuario]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Estado]").parent("div .k-form-field").hide();
+            e.container.find("label[for=IdCotizacionPrograma]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Contacto]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Comentarios]").parent("div .k-form-field").hide();
+            e.container.find("label[for=CotizaPromedio]").parent("div .k-form-field").hide();
+            e.container.find("label[for=FinalCotizacion]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioPreliminar]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioDesarrolloMuestra]").parent("div .k-form-field").hide();
+            e.container.find("label[for=CondicionPagoDesarrollo]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioVendedorCTL]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Transporte]").parent("div .k-form-field").hide();
+            e.container.find("label[for=CondicionPagoProduccion]").parent("div .k-form-field").hide();
+            e.container.find("label[for=NumeroSeteos]").parent("div .k-form-field").hide();
+            e.container.find("label[for=CotizacionVigencia]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PorcentajeSegundos]").parent("div .k-form-field").hide();
+            e.container.find("label[for=CondicionPagoCTL]").parent("div .k-form-field").hide();
+            e.container.find("label[for=Nombre2]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioSetupAdicional]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioAdicionalColorTela]").parent("div .k-form-field").hide();
+            e.container.find("label[for=TerminosPago]").parent("div .k-form-field").hide();
+            e.container.find("label[for=ExcesoSetup]").parent("div .k-form-field").hide();
+            e.container.find("label[for=PrecioSetup]").parent("div .k-form-field").hide();
+            e.container.find("label[for=RepeticionesDesarrollo]").parent("div .k-form-field").hide();
+            e.container.find("label[for=RepeticionesCTL]").parent("div .k-form-field").hide();
 
             $('[name="FechaCreacion"]').data("kendoDatePicker").enable(false);
         },

@@ -64,7 +64,7 @@ $(document).ready(function () {
     $("#GkTemporadas").kendoGrid({
         edit: function (e) {
             // BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdTemporada]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdTemporada]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdTemporada]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

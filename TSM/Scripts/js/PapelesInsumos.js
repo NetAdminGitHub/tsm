@@ -82,7 +82,7 @@
     $("#grid").kendoGrid({
         edit: function (e) {
             // ocultar campo id
-            e.container.find("label[for=IdPapel]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdPapel]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdPapel]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

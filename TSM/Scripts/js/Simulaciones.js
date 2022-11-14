@@ -136,6 +136,7 @@ $(document).ready(function () {
     }).data("kendoValidator");
 
     $("#TxtNuevaCantidadPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -143,6 +144,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNoMontaje").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -150,6 +152,7 @@ $(document).ready(function () {
     });
 
     $("#txtPersonalExtra").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -158,6 +161,7 @@ $(document).ready(function () {
     });
 
     $("#txtCombos").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -166,6 +170,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquina").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -565,18 +570,18 @@ $(document).ready(function () {
     $("#gridRentabilidad").kendoGrid({
       
         edit: function (e) {
-            e.container.find("label[for=IdSimulacionRentabilidad]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSimulacionRentabilidad]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSimulacionRentabilidad]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdSimulacion]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSimulacion]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSimulacion]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdRentabilidad]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdRentabilidad]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdRentabilidad]").parent().next("div .k-edit-field").hide();
 
             $('[name="Utilidad"]').data("kendoNumericTextBox").enable(false);
             $('[name="CU"]').data("kendoNumericTextBox").enable(false);
 
             if (e.model.isNew()) {
-                e.container.find("label[for=Aprobado]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Aprobado]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Aprobado]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Descripcion");
 
@@ -1301,69 +1306,83 @@ let Fn_Consultar = function (IdServicio, IdCliente) {
 };
 
 let fn_SetCamposSimulacion = function () {
-    $("#TxtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#TxtFecha").data("kendoDatePicker").value(Fhoy());
     $("#TxtCantidadPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtCostoMOD").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoFabril").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoOperacion").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoTotal").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtPorcUtilidadConsiderada").kendoNumericTextBox({
+        size: "large",
         format: "P2",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtUtilidadDolares").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioCliente").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioTS").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioVenta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -1371,18 +1390,21 @@ let fn_SetCamposSimulacion = function () {
     });
 
     $("#TxtCantidadTecnicas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtMontajes").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#txtNoPersonalExtra").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1390,6 +1412,7 @@ let fn_SetCamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadColores").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1397,6 +1420,7 @@ let fn_SetCamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadCombos").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1404,6 +1428,7 @@ let fn_SetCamposSimulacion = function () {
         value: 0
     });
     $("#txtCantidadTallas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1411,6 +1436,7 @@ let fn_SetCamposSimulacion = function () {
         value: 0
     });
     $("#txtVelocidadMaquina").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1419,6 +1445,7 @@ let fn_SetCamposSimulacion = function () {
     });
 
     $("#txtTiempoProyecto").kendoNumericTextBox({
+        size: "large",
         format: "n4",
         restrictDecimals: false,
         decimals: 4,
@@ -1436,6 +1463,7 @@ let fn_SetCamposSimulacion = function () {
 
 let fn_SeteoCampos = function () {
     $("#TxtCostoMP").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1443,6 +1471,7 @@ let fn_SeteoCampos = function () {
     });
    
     $("#TxtCostoPrimo").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
@@ -1450,66 +1479,77 @@ let fn_SeteoCampos = function () {
     });
    
     $("#TxtCostoMPUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoMODUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoPrimoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoFabrilUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoProduccionUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoOperacionUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#txtCostoTermofijado").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#txtCostoTermofijadoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#txtCostoTransporte").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#txtCostoTransporteUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
@@ -1520,6 +1560,7 @@ let fn_SeteoCampos = function () {
 
 let fn_SeteoCamposSublimacion = function () {
     $("#NumAnchoimp").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1528,6 +1569,7 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumAltoimp").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1536,6 +1578,7 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumConsumoYarda").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1544,18 +1587,21 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumPeronalTransferencia").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#NumPeronalImpresion").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#NumYardaImpHora").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1564,6 +1610,7 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumConsumoTintas").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1572,6 +1619,7 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumYardaTransHora").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -1580,78 +1628,91 @@ let fn_SeteoCamposSublimacion = function () {
         value: 0
     });
     $("#NumCostoPapelImp").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#NumCostoTinta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoPrimoSubli").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#NumCostoPapelProtec").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#NumCostoAdicionales").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#NumCostoPrimoTransSubli").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoTotalMasTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoMODTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoFabrilTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccionTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoOperacionTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoTotalTrans").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#NumFactorDistribucion").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,

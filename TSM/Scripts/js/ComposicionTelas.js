@@ -63,7 +63,7 @@ $(document).ready(function () {
     //CONFIGURACION DEL GRID,CAMPOS
     $("#grid").kendoGrid({
         edit: function (e) {
-            e.container.find("label[for=IdComposicionTela]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdComposicionTela]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdComposicionTela]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

@@ -83,7 +83,7 @@ $(document).ready(function () {
                         name: "b_impresion",
                         text: " ",
                         click: fn_VinetaImp,
-                        imageClass: "k-i-print m-0"
+                        imageClass: "k-i-print"
                     }
                 ],
                 width: "70px"
@@ -648,6 +648,7 @@ $.fn.extend({
     mlcFmCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",
@@ -677,6 +678,7 @@ $.fn.extend({
     mlcCorteCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Corte",
                 dataValueField: "IdHojaBandeo",
                 filter: "contains",

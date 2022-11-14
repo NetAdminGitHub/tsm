@@ -5,6 +5,7 @@ const fn_VEVerifMuestraDocuReady = () => {
     KdoButton($("#btnAddMCE_VerifMues"), "check", "Agregar");
 
     $("#EscurridorDureza_VerifMues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -14,6 +15,7 @@ const fn_VEVerifMuestraDocuReady = () => {
     });
 
     $("#NumPasadas_VerifMues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -23,6 +25,7 @@ const fn_VEVerifMuestraDocuReady = () => {
     });
 
     $("#NumCapilar_VerifMues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 4000,
         format: "#",
@@ -33,6 +36,7 @@ const fn_VEVerifMuestraDocuReady = () => {
     });
 
     $("#NumArea_VerifMues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -42,6 +46,7 @@ const fn_VEVerifMuestraDocuReady = () => {
     });
 
     $("#NumPeso_VerifMues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",

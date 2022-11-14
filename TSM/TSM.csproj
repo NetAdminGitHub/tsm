@@ -551,7 +551,7 @@
     <Content Include="Content\icons\user.svg" />
     <Content Include="Content\icons\view.svg" />
     <Content Include="Content\icons\warning.svg" />
-    <Content Include="Content\kendo\kendo.bootstrap-v4.min.css" />
+    <Content Include="Content\kendo\kendo.bootstrap-main.min.css" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Menu.css" />
     <Content Include="Content\smart_wizard.css" />
@@ -563,6 +563,7 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CambioEtapa.js" />
     <Content Include="Scripts\js\CodigosModalidad.js" />
     <Content Include="Scripts\js\CodigosRegimen.js" />
     <Content Include="Scripts\js\ConsultaDespacho.js" />
@@ -698,7 +699,6 @@
     <Content Include="Content\bootstrap\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap\bootstrap.css.map" />
     <Content Include="Content\bootstrap\bootstrap.min.css.map" />
-    <Content Include="Content\kendo\kendo.bootstrap-v4.min.css.map" />
     <Content Include="Fonts\TS-Icons.woff" />
     <Content Include="Fonts\TSM-Icons-General.woff" />
     <Content Include="Images\DefaultUser.png" />
@@ -945,6 +945,7 @@
     <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <Content Include="jsonsettings.azconf" />
     <Content Include="Fonts\TSM-Icons-Tablet.woff" />
+    <Content Include="Content\kendo\kendo.bootstrap-main.min.css.map" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -1189,6 +1190,7 @@
     <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
     <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
     <Content Include="Views\TiposTransportes\Index.cshtml" />
+    <Content Include="Views\Shared\_CambioEtapa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

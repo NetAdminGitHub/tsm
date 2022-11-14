@@ -9,8 +9,9 @@
  * @param {string} parentCascade Nombre del campo del cual dependerá el ComboBox en cascada
  * @param {string} clearButton activar boton clear
  */
-var Kendo_CmbFiltrarGrid = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+var Kendo_CmbFiltrarGrid = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, sizeValue = "large") {
     e.kendoComboBox({
+        size: sizeValue,
         dataTextField: textField,
         dataValueField: valueField,
         autoWidth: true,
@@ -64,7 +65,7 @@ var KdoComboBoxEnable = function (InputElem, enable) {
  * @param {string} clearButton activar boton clear,
  * @param {string} fn_crear crea registro
  */
-var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear) {
+var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, fn_crear, sizeValue = "large") {
     $.ajax({
         url: webApi,
         dataType: "json",
@@ -97,6 +98,7 @@ var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder,
                 }
             });
             e.kendoComboBox({
+                size: sizeValue,
                 dataTextField: textField,
                 dataValueField: valueField,
                 autoWidth: true,
@@ -107,7 +109,7 @@ var KdoCmbComboBox = function (e, webApi, textField, valueField, opcPlaceHolder,
                 height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
                 cascadeFrom: givenOrDefault(parentCascade, ""),
                 dataSource: dataSource,
-                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
             });
 
         }
@@ -173,8 +175,9 @@ function generateModel(response, valueField) {
 }
 
 
-var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton) {
+var KdoComboBoxbyData = function (e, datos, textField, valueField, opcPlaceHolder, opcHeight, parentCascade, clearButton, sizeValue = "large") {
     e.kendoComboBox({
+        size: sizeValue,
         dataTextField: textField,
         dataValueField: valueField,
         autoWidth: true,

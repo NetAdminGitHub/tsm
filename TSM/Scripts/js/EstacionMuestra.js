@@ -3,6 +3,7 @@ const fn_VistaEstacionMuestraDocuReady = function () {
     KdoButton($("#btnAddMCE_Mues"), "check", "Agregar");
 
     $("#EscurridorDureza_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -12,6 +13,7 @@ const fn_VistaEstacionMuestraDocuReady = function () {
     });
 
     $("#NumPasadas_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -20,6 +22,7 @@ const fn_VistaEstacionMuestraDocuReady = function () {
         value: 0
     });
     $("#NumCapilar_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 4000,
         format: "#",
@@ -29,6 +32,7 @@ const fn_VistaEstacionMuestraDocuReady = function () {
         step: 50
     });
     $("#NumArea_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -37,6 +41,7 @@ const fn_VistaEstacionMuestraDocuReady = function () {
         value: 0
     });
     $("#NumPeso_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",

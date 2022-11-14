@@ -39,6 +39,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     $("#divAsignacionEmbalaje").hide();
 
     $("#txtPesoKg").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -54,6 +55,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     });
 
     $("#textPesoLb").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",

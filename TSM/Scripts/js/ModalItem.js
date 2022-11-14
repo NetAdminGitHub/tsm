@@ -18,6 +18,7 @@ var fn_Ini_Item = (strjson) => {
         KdoNumerictextboxEnable($("#numTotalBultos"), false);
 
         $("#txtPesoN").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "{0:N2}",
@@ -26,6 +27,7 @@ var fn_Ini_Item = (strjson) => {
             value: 0
         });
         $("#txtPesoB").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "{0:N2}",
@@ -34,6 +36,7 @@ var fn_Ini_Item = (strjson) => {
             value: 0
         });
         $("#txtValFac").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "c",
@@ -41,31 +44,8 @@ var fn_Ini_Item = (strjson) => {
             decimals: 2,
             value: 0
         });
-        /*$("#txtValFlete").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "{0:N2}",
-            restrictDecimals: true,
-            decimals: 2,
-            value: 0
-        });
-        $("#txtValSeg").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "{0:N2}",
-            restrictDecimals: true,
-            decimals: 2,
-            value: 0
-        });
-        $("#txtValOtros").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "{0:N2}",
-            restrictDecimals: true,
-            decimals: 2,
-            value: 0
-        });*/
         $("#txtValAduana").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "c",
@@ -73,23 +53,8 @@ var fn_Ini_Item = (strjson) => {
             decimals: 2,
             value: 0
         });
-        /*$("#txtDAI").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "{0:N2}",
-            restrictDecimals: true,
-            decimals: 2,
-            value: 0
-        });
-        $("#txtIVA").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "{0:N2}",
-            restrictDecimals: true,
-            decimals: 2,
-            value: 0
-        });*/
         $("#txtCantBultos").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "{0:N2}",
@@ -98,6 +63,7 @@ var fn_Ini_Item = (strjson) => {
             value: 0
         });
         $("#txtCuantia").kendoNumericTextBox({
+            size: "large",
             min: 0,
             max: 999999999,
             format: "{0:N2}",
@@ -105,8 +71,6 @@ var fn_Ini_Item = (strjson) => {
             decimals: 2,
             value: 0
         });
-        //KdoMultiColumnCmbSetValue($("#cmbPais"), 60);
-
         banLoad = 1;
     }
 
@@ -158,7 +122,6 @@ var fn_Ini_Item = (strjson) => {
                 KdoMultiColumnCmbSetValue($("#cmbInciAr"), result.IdIncisoArancelario);
                 $("#txtDesPar").val(result.DescripcionInciso);
                 $("#txtDesMerc").val(result.Descripcion);
-                //KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
                 $("#cmbPais").data("kendoMultiColumnComboBox").value(result.IdPais);
                 $("#cmbPais").data("kendoMultiColumnComboBox").text(result.NombrePais);
                 $("#cmbPais").data("kendoMultiColumnComboBox").trigger("change");

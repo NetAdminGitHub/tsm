@@ -11,11 +11,20 @@ var fn_SDCargarJSEtapa = function () {
     KdoComboBoxEnable($("#CmbTipoSolicitudDesarrollo"), false)
     Kendo_CmbFiltrarGrid($("#CmbTipoMuestra"), UrlTMU, "Nombre", "IdTipoMuestra", "Seleccione...");
     KdoComboBoxEnable($("#CmbTipoMuestra"), false);
-    $("#dtFechaSolicitudCliente").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dtFechaSolicitudCliente").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoDatePikerEnable($("#dtFechaSolicitudCliente"), false);
-    $("#dtFechaSolicitudDesarrollo").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dtFechaSolicitudDesarrollo").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoDatePikerEnable($("#dtFechaSolicitudDesarrollo"), false);
-    $("#dtFechaEstampado").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dtFechaEstampado").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoDatePikerEnable($("#dtFechaEstampado"), false);
     KdoCmbFocus($("#CmbTipoMaquina"));
 

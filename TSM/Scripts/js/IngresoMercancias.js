@@ -7,6 +7,7 @@ $(document).ready(function () {
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -28,7 +29,10 @@ $(document).ready(function () {
     KdoButton($("#btnCrearLista"), "gear", "Guardar");
 
     //crear campo fecha
-    $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFecha").data("kendoDatePicker").value(Fhoy());
     $("#dFecha").data("kendoDatePicker").enable(false);
 

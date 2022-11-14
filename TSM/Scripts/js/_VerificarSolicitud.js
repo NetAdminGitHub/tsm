@@ -63,7 +63,10 @@ var fn_VSCargarJSEtapa = function () {
     KdoButton($("#btnCerrarAdj"), "close-circle", "Cerrar");
     // deshabilitar botones en formulario
     $("#myBtnAdjunto").data("kendoButton").enable(false);
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     $("#Guardar").data("kendoButton").enable(false);
     PanelBarConfig($("#BarPanel"));
@@ -73,6 +76,7 @@ var fn_VSCargarJSEtapa = function () {
     //*******************************************************************
 
     $("#CntPiezas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -82,6 +86,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#TxtCantidadSTrikeOff").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -91,17 +96,19 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#TxtEstacionesPermitidas").kendoNumericTextBox({
-            min: 0,
-            max: 999999999,
-            format: "#",
-            restrictDecimals: true,
-            decimals: 0,
-            value: 0
+        size: "large",
+        min: 0,
+        max: 999999999,
+        format: "#",
+        restrictDecimals: true,
+        decimals: 0,
+        value: 0
     });
 
     KdoNumerictextboxEnable($("#TxtEstacionesPermitidas"), false);
 
     $("#TxtStrikeOffAdicional").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -111,6 +118,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#Combo").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -121,6 +129,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#CantidadColores").kendoNumericTextBox({
+        size: "large",
         min: 0,
         //max: 12,
         format: "#",
@@ -131,6 +140,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#CantidadTallas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -141,6 +151,7 @@ var fn_VSCargarJSEtapa = function () {
     });
 
     $("#TxtNoVeces").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -2244,6 +2255,7 @@ let CmbNuevoItem = function(widgetId, value) {
 let fn_CmbCriterioCalidad = function () {
 
     $("#CmbIdCalidadCriterio").kendoMultiColumnComboBox({
+        size: "large",
         dataTextField: "Nombre",
         dataValueField: "IdCalidadCriterio",
         height: 400,
@@ -2399,6 +2411,7 @@ $.fn.extend({
     ControlSeleccionOtporFM: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",

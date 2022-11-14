@@ -49,11 +49,11 @@ var fn_Ini_ControlBulto = (xjson) => {
     $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
 
     // crear boton "Crear Bulto"
-    KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
+    KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto", "small");
     // crear boton Crear serie Bulto
-    KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
+    KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto", "small");
     // crear boton Crear serie Bulto
-    KdoButton($("#btnBorrarMercancias"), "trash", "Borrar Bultos / Rollos");
+    KdoButton($("#btnBorrarMercancias"), "trash", "Borrar Bultos / Rollos", "small");
 
     //botón importar Bulto
     $("#Adjunto").kendoUpload({
