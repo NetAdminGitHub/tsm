@@ -1652,6 +1652,7 @@ $(document).ready(function () {
             saveUrl: "/RequerimientoDesarrollos/SubirArchivo",
             autoUpload: true
         },
+        select: onSelect,
         localization: {
             select: '<div class="k-icon k-i-attachment-45"></div>&nbsp;Adjuntos'
         },
@@ -1662,7 +1663,7 @@ $(document).ready(function () {
         success: function (e) {
             if (e.response.Resultado === true) {
                 if (e.operation === "upload") {
-                    GuardarArtAdj(UrlApiAAdj, e);
+                    GuardarArtAdj(UrlApiAAdj, e.files[0].name);
                 }
 
             } else {
@@ -1672,6 +1673,49 @@ $(document).ready(function () {
         }
 
     });
+
+    function onSelect(e) {
+        $.each(e.files, function (index, value) {
+            value.name = value.name.replace(/[^A-Za-z0-9.]/g, "");
+        });
+    }
+
+    $("#myModalAdjunto").on("show.bs.modal", function (e) {
+        $(document).on('custom/paste/images', fn_LeerImagen);
+    });
+
+    $("#myModalAdjunto").on("hide.bs.modal", function (e) {
+        $(document).off('custom/paste/images', fn_LeerImagen);
+    });
+
+    let fn_LeerImagen = function (event, blobs) {
+        console.log("paste");
+
+        kendo.ui.progress($(document.body), true);
+
+        var nombreArchivo = 'Recorte_' + kendo.toString(kendo.parseDate(new Date()), 'yyyyMMdd_HHmmss') + '.' + blobs[0].name.split('.')[1];
+        var form = new FormData();
+        form.append("Adjunto", blobs[0], nombreArchivo);
+
+        $.ajax({
+            url: "/RequerimientoDesarrollos/SubirArchivo/" + $("#NoDocumento").val(),//
+            type: "POST",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (data) {
+                GuardarArtAdj(UrlApiAAdj, nombreArchivo);
+                kendo.ui.progress($(document.body), false);
+            },
+            error: function (data) {
+                kendo.ui.progress($(document.body), false);
+                ErrorMsg(data);
+            }
+        });
+    };
+
+    //FIN Control para subir los adjutos
 
     //DataSource para Grid de Artes Adjuntos
     var DsAdj = new kendo.data.DataSource({
@@ -1790,7 +1834,7 @@ $(document).ready(function () {
     Set_Grid_DataSource($("#GridAdjuntos").data("kendoGrid"), DsAdj);
 
 
-    function GuardarArtAdj(UrlAA, e) {
+    function GuardarArtAdj(UrlAA, NombreArchivo) {
         kendo.ui.progress($("#splitter"), true);
         var XFecha = Fhoy();
         var XDescripcion = "ARCHIVO ADJUNTO";
@@ -1803,7 +1847,7 @@ $(document).ready(function () {
             data: JSON.stringify({
                 IdArte: $("#IdArte").val(),
                 Item: 0,
-                NombreArchivo: e.files[0].name,
+                NombreArchivo: NombreArchivo,
                 Fecha: XFecha,
                 Descripcion: XDescripcion
             }),
