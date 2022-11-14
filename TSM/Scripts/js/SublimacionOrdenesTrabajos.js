@@ -5,16 +5,27 @@ let VIdCliente = 0;
 let idOrden = 0;
 let idPro = 0;
 let data;
+let obj_Pro;
+let obj_OT;
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente") === null ? "" : sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente"));    
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("sot_CmbIdCliente") === null ? "" : sessionStorage.getItem("sot_CmbIdCliente"));    
 
-    $("#CmbPrograma").ControlSelecionPrograma();
-    KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbPrograma") === null ? "" : sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbPrograma"));
+    $("#CmbPrograma").ControlSelecionProg();
+    if (sessionStorage.sot_CmbPrograma !== undefined && sessionStorage.sot_CmbPrograma !== "") {
+        fn_multiColumnSetJson($("#CmbPrograma"), sessionStorage.sot_CmbPrograma, JSON.parse(sessionStorage.sot_CmbPrograma).IdPrograma);
+        obj_Pro = JSON.parse(sessionStorage.sot_CmbPrograma);
+    }
 
-    $("#CmbOrdenTrabajo").ControlSeleccionRequerimeintoSubli();
-    KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo") === null ? "" : sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo")); 
+    KdoButton($("#btnEliminaFiltros"), "filter-clear", "Borrar todos los filtros");
+
+    $("#CmbOrdenTrabajo").CSRequerimeintoSubli();
+    //*** buscar ot y asignar filtro**/
+    if (sessionStorage.sot_CmbOrdenTrabajo !== undefined && sessionStorage.sot_CmbOrdenTrabajo !== "") {
+        fn_multiColumnSetJson($("#CmbOrdenTrabajo"), sessionStorage.sot_CmbOrdenTrabajo, JSON.parse(sessionStorage.sot_CmbOrdenTrabajo).IdRequerimiento);
+        obj_OT = JSON.parse(sessionStorage.sot_CmbOrdenTrabajo);
+    }
 
     KdoButton($("#btnNuevoRegistro"), "edit", "Nuevo Registro");
     KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
@@ -202,92 +213,214 @@ $(document).ready(function () {
 
     //#region seleccion de servicio y cliente
 
-    $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", this.dataItem(e.item.index()).IdCliente.toString());
-            fn_ConsultarOTSublimacion(this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
-        } else {
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", "");
-            fn_ConsultarOTSublimacion(0,0,0);
+
+    $("#CmbIdCliente").data("kendoComboBox").bind("change", function () {
+        var colum = $("#CmbIdCliente").data("kendoComboBox");
+        let data = colum.listView.dataSource.data().find(q => q.IdCliente === Number(this.value()));
+        if (data === undefined) {
+            //limpiar filtros
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('sot_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('sot_CmbOrdenTrabajo', "");
+
+            fn_ConsultarOTSublimacion(0, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")));
             KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
+            sessionStorage.setItem("sot_CmbIdCliente", "");
+
+        } else {
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('sot_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('sot_CmbOrdenTrabajo', "");
+            fn_ConsultarOTSublimacion(this.value(), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
+            sessionStorage.setItem("sot_CmbIdCliente", this.value());
         }
     });
 
-    $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
-        let value = this.value();
-        if (value === "") {
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", "");
-            fn_ConsultarOTSublimacion(0,KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(false));
-        }
-    });
-
-    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
-        if (e.item) {
-            fn_ConsultarOTSublimacion(this.dataItem(e.item.index()).IdCliente, KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), this.dataItem(e.item.index()).IdPrograma);
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", this.dataItem(e.item.index()).IdCliente.toString());
-            KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
-            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
-        } else {
-            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), 0);
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbPrograma", "");
-            KdoButtonEnable($("#btnNuevoRegistro"), KdoCmbGetValue($("#CmbIdCliente")) === null ? false : fn_SNAgregar(true));
-        }
-    });
 
     $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
-            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), 0);
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbPrograma", "");
+            //limpiar filtros
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('sot_CmbOrdenTrabajo', "");
+
+            fn_ConsultarOTSublimacion(
+                KdoCmbGetValue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                0
+            );
+            sessionStorage.setItem("sot_CmbPrograma", "");
             KdoButtonEnable($("#btnNuevoRegistro"), KdoCmbGetValue($("#CmbIdCliente")) === null ? false : fn_SNAgregar(true));
-        }
-
-    });
-
-
-    $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("select", function (e) {
-        if (e.item) {
-            fn_ConsultarOTSublimacion(this.dataItem(e.item.index()).IdCliente, this.dataItem(e.item.index()).IdRequerimiento, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")) );
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo", this.dataItem(e.item.index()).IdRequerimiento);
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
-
-            KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
-            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
-
+      
         } else {
-            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo", "");
-            KdoButtonEnable($("#btnNuevoRegistro"), KdoCmbGetValue($("#CmbIdCliente"))===null? false: fn_SNAgregar(true));
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("sot_CmbIdCliente", data.IdCliente);
+            KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+            sessionStorage.setItem('sot_CmbOrdenTrabajo', "");
+
+            fn_ConsultarOTSublimacion(
+                KdoCmbGetValue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")),
+                data.IdPrograma
+            );
+
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
+            sessionStorage.setItem("sot_CmbPrograma", JSON.stringify(data.toJSON()));
         }
+
     });
+
+
 
     $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#CmbOrdenTrabajo").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdRequerimiento === Number(this.value()));
         if (data === undefined) {
-            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo", "");
-            KdoButtonEnable($("#btnNuevoRegistro"), KdoCmbGetValue($("#CmbIdCliente")) === null ? false : fn_SNAgregar(true));
+            //limpiar filtros
+
+            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            KdoButtonEnable($("#btnNuevoRegistro"), KdoCmbGetValue($("#CmbIdCliente"))===null? false: fn_SNAgregar(true));
+            sessionStorage.setItem("sot_CmbOrdenTrabajo", "");
+
+        } else {
+     
+            if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdProgramaCfd($("#CmbPrograma"), data.IdPrograma); }
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("sot_CmbIdCliente", data.IdCliente);
+
+            fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), data.IdRequerimiento, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+            KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
+            sessionStorage.setItem("sot_CmbOrdenTrabajo", JSON.stringify(data.toJSON()));
         }
 
     });
-
-
     //Coloca el filtro de cliente guardado en la sesion
-    if (sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente") !== null || sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente") !== "" ||
-        sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo") !== null || sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo") !== "" ||
-        sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbPrograma") !== null || sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbPrograma") !== ""
+    if (sessionStorage.getItem("sot_CmbIdCliente") !== null || sessionStorage.getItem("sot_CmbIdCliente") !== "" ||
+        sessionStorage.getItem("sot_CmbOrdenTrabajo") !== null || sessionStorage.getItem("sot_CmbOrdenTrabajo") !== "" ||
+        sessionStorage.getItem("sot_CmbPrograma") !== null || sessionStorage.getItem("sot_CmbPrograma") !== ""
         ) {
-        fn_ConsultarOTSublimacion(sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbIdCliente"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbOrdenTrabajo"), sessionStorage.getItem("SublimacionOrdenesTrabajos_CmbPrograma"));
+        fn_ConsultarOTSublimacion(
+            sessionStorage.getItem("sot_CmbIdCliente"),
+            obj_OT === "" || obj_OT === undefined ? 0 : obj_OT.IdRequerimiento,
+            obj_Pro === "" || obj_Pro === undefined ? 0 : obj_Pro.IdPrograma,
+        );
         KdoButtonEnable($("#btnNuevoRegistro"), fn_SNAgregar(true));
     }
     //#endregion
+
+    $("#btnEliminaFiltros").click(function (event) {
+        //limpiar filtros
+        KdoCmbSetValue($("#CmbIdCliente"), "");
+        sessionStorage.setItem("sot_CmbIdCliente", "");
+        KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+        sessionStorage.setItem('sot_CmbPrograma', "");
+        KdoMultiColumnCmbSetValue($("#CmbOrdenTrabajo"), "");
+        sessionStorage.setItem('sot_CmbOrdenTrabajo', "");
+
+        fn_ConsultarOTSublimacion(KdoCmbGetValue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+        KdoButtonEnable($("#btnNuevoRegistro"), false);
+
+    });
 });
 
+$.fn.extend({
+    ControlSelecionProg: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "Programas/GetProgramasFiltroCliente/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 },
+                    { field: "NombreTemporada", title: "Temporada", width: 300 }
+                ]
+            });
+        });
+    }
+});
+
+$.fn.extend({
+    CSRequerimeintoSubli: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoDocumento",
+                dataValueField: "IdRequerimiento",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                valuePrimitive: true,
+                placeholder: "Selección de Ordenes de trabajo",
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "RequerimientoDesarrollos/GetSubliConsulta/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+
+                },
+                columns: [
+                    { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
+                    { field: "Nombre", title: "Nombre del Diseño", width: 200 },
+                    { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 }
+
+                ]
+            });
+        });
+    },
+});
+
+
+// obtiene el programa y el resultado se lo paso al source del objeto para encontrar el valor
+let fn_SetValueMulticolumIdProgramaCfd = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "Programas/GetProgramasbyId/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
+            sessionStorage.setItem('sot_CmbPrograma', JSON.stringify(data[0]));
+        }
+    });
+}
+// obtiene la orden de trabajo y el resultado se lo paso al source del objeto para encontrar el valor
+let fn_SetValueMulticolumIdOTCfd = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "Programas/GetProgramasbyId/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
+            sessionStorage.setItem('sot_CmbOrdenTrabajo', JSON.stringify(data[0]));
+        }
+    });
+}
 
 let fn_ConsultarOTSublimacion = function (IdCliente, xIdOrden, xIdPro) {
     kendo.ui.progress($("#splitter"), true);
