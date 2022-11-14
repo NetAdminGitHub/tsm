@@ -177,7 +177,11 @@ $(document).ready(function () {
             noRows: "No hay datos dsiponibles"
         },
         columns: [
-            { selectable: true, width: "35px" },
+            {
+                selectable: true, width: "35px",
+                attributes: {
+                    "class": "#=Categoria == 'NODISPONIBLE' && ConDespachoParcial == true ? 'k-state-disabled': Categoria == 'NODISPONIBLE' ? 'k-state-disabled':''#"
+                }},
             { field: "IdHojaBandeo", title: "IdHojaBandeo", hidden: true },
             { field: "NoReferencia", title: "NoReferencia", hidden: true },
             { field: "Diseno", title: "Diseno", hidden: true },
@@ -674,7 +678,32 @@ $(document).ready(function () {
         $("#gEnEmbalaje").data("kendoGrid").dataSource.read();
     }
 
-   
+    $("#gCortes").data("kendoGrid").thead.on("click", ".k-checkbox", function () {
+        var grid = $('#gCortes').data("kendoGrid");
+        var data = grid.dataSource.data();
+        var deselectedRows = [];
+
+        for (var i = 0; i < data.length; i++) {
+            var currentDataItem = data[i];
+            var row = grid.tbody.find("tr[data-uid='" + currentDataItem.uid + "']");
+       
+            if (currentDataItem.Categoria == "NODISPONIBLE" && currentDataItem.ConDespachoParcial == true) {
+                deselectedRows.push(row);
+            } else if (currentDataItem.Categoria == "NODISPONIBLE") {
+                deselectedRows.push(row);
+            }
+        }
+
+        $.each(deselectedRows, function (index, row) {
+            setTimeout(function () {
+                $(row).removeClass("k-state-selected");
+                $(row).addClass("k-state-disabled");
+                var currRowCheckbox = $(row).find(".k-checkbox")
+                $(currRowCheckbox).attr("checked", false);
+            });
+        });
+    });
+
 });
 
 var fn_readonly = () => {
@@ -836,7 +865,13 @@ var DIDM = (e) => {
             },
             //DEFINICIÓN DE LOS CAMPOS
             columns: [
-                { selectable: true, width: "35px", headerTemplate: ' ' },
+                {
+                    selectable: true,
+                    width: "35px",
+                    attributes: {
+                        "class": "#=Categoria == 'NODISPONIBLE' && ConDespachoParcial == true ? 'k-state-disabled': Categoria == 'NODISPONIBLE' ? 'k-state-disabled':''#"
+                    }
+                },
                 { field: "IdHojaBandeo", title: "Id Hoja Bandeo", hidden: true, attributes: { "class": "idHB-detail" } },
                 { field: "Corte", title: "Corte", hidden: true, attributes: { "class": "corte-detail" } },
                 { field: "Tallas", title: "Tallas", attributes: { "class": "tallas-detail" } },
@@ -865,6 +900,31 @@ var DIDM = (e) => {
             $('[data-toggle="tooltip"]').tooltip();
         });
 
+        g.data("kendoGrid").thead.on("click", ".k-checkbox", function () {
+            var grid = g.data("kendoGrid");
+            var data = grid.dataSource.data();
+            var deselectedRows = [];
+
+            for (var i = 0; i < data.length; i++) {
+                var currentDataItem = data[i];
+                var row = grid.tbody.find("tr[data-uid='" + currentDataItem.uid + "']");
+
+                if (currentDataItem.Categoria == "NODISPONIBLE" && currentDataItem.ConDespachoParcial == true) {
+                    deselectedRows.push(row);
+                } else if (currentDataItem.Categoria == "NODISPONIBLE") {
+                    deselectedRows.push(row);
+                }
+            }
+
+            $.each(deselectedRows, function (index, row) {
+                setTimeout(function () {
+                    $(row).removeClass("k-state-selected");
+                    $(row).addClass("k-state-disabled");
+                    var currRowCheckbox = $(row).find(".k-checkbox")
+                    $(currRowCheckbox).attr("checked", false);
+                });
+            });
+        });
   
         ////////////////////////////////////////////////////////////////////////////////
     }
