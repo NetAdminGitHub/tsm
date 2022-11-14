@@ -344,7 +344,7 @@ $(document).ready(function () {
             { field: "Nombre1", title: "Ubicación", hidden: true },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", hidden: true },
             { field: "UbicacionVertical", title: "Ubicacion vertical", hidden: true },
-            { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal },
+            { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal }, //<--
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "Tecnicas", title: "Técnicas", hidden: true },
