@@ -7,7 +7,7 @@
 }
 
 
-function Kendo_MultiSelect(e, WebApi, TextField, ValueField, OpcPlaceholder, Opcheight) {
+function Kendo_MultiSelect(e, WebApi, TextField, ValueField, OpcPlaceholder, Opcheight, sizeOption = "large") {
     e.kendoMultiSelect({
         dataTextField: TextField,
         dataValueField: ValueField,
@@ -18,13 +18,14 @@ function Kendo_MultiSelect(e, WebApi, TextField, ValueField, OpcPlaceholder, Opc
         height: givenOrDefault(Opcheight, 550),
         tagMode: "multiple",
         autoBind: false,
-        clearButton:false
+        clearButton: false,
+        size: sizeOption
      
     });
 
 
 }
-function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Opcheight, clearButton) {
+function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Opcheight, clearButton, sizeOption = "large") {
     e.kendoMultiSelect({
         dataTextField: TextField,
         dataValueField: ValueField,
@@ -36,10 +37,8 @@ function KdoMultiSelectDatos(e, datos, TextField, ValueField, OpcPlaceholder, Op
         tagMode: "multiple",
         autoBind: false,
         clearButton: givenOrDefault(clearButton, false),
-
+        size: sizeOption
     });
-
-
 }
 /**
  * Habilita o Inhabilita campo Kendo Multi select

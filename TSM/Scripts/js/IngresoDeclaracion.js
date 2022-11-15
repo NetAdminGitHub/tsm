@@ -99,6 +99,7 @@ $(document).ready(function () {
 
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
+        size: "large",
         min: 0,
         min: 0,
         max: 999999999,
@@ -110,6 +111,7 @@ $(document).ready(function () {
 
 
     $("#numTotalBultos").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -119,6 +121,7 @@ $(document).ready(function () {
     });
     KdoNumerictextboxEnable($("#numTotalBultos"), false);
     $("#numTotalValor").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "c",
@@ -128,6 +131,7 @@ $(document).ready(function () {
     });
     KdoNumerictextboxEnable($("#numTotalValor"), false);
     $("#numTotalCuantia").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "{0:N2}",
@@ -138,6 +142,7 @@ $(document).ready(function () {
     KdoNumerictextboxEnable($("#numTotalCuantia"), false);
     //////////////////////Totales INCOTERMS///////////////////////////
     $("#numTotalKgs").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "{0:N2}",
@@ -146,34 +151,9 @@ $(document).ready(function () {
         value: 0
     });
     KdoNumerictextboxEnable($("#numTotalKgs"), false);
-    /*$("#numTotalFlete").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalFlete"), false);
-    $("#numTotalSeguro").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalSeguro"), false);
-    $("#numTotalOtros").kendoNumericTextBox({
-        min: 0,
-        max: 999999999,
-        format: "c",
-        restrictDecimals: true,
-        decimals: 2,
-        value: 0
-    });
-    KdoNumerictextboxEnable($("#numTotalOtros"), false);*/
+
     $("#numTotalAduana").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "c",
@@ -195,12 +175,18 @@ $(document).ready(function () {
     TextBoxReadOnly($("#txtEstadoDM"), false);
 
     //crear campo fecha
-    $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#dFecha"), false);
 
     //crear campo fecha aceptación
-    $("#dFechaAceptacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaAceptacion").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaAceptacion").data("kendoDatePicker").value(Fhoy());
 
     //#region crear item detalle
@@ -319,7 +305,7 @@ $(document).ready(function () {
 
             Grid_Focus(e, "IdIncisoArancelario");
         },
-        toolbar: "<button class='k-button k-button-icontext' id='btnAddItem' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
+        toolbar: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-button-icontext' id='btnAddItem' onclick='agregarItem(null)'><span class='k-icon k-i-plus'></span></button>",
         columns: [
             { field: "IdDeclaracionMercancia", title: "id Declaracion", hidden: true },
             { field: "Item", title: "Item" },
@@ -365,7 +351,7 @@ $(document).ready(function () {
                                 Vista: "~/Views/IngresoDeclaracion/_vRelacionPLs.cshtml",
                                 Js: "RelacionPLs.js",
                                 Titulo: "Asociar Lista de Empaque a Item #" + `${dataItem.Item}`,
-                                Height: "80%",
+                                Height: "82%",
                                 Width: "50%",
                                 MinWidth: "10%"
                             }],
@@ -858,6 +844,7 @@ $.fn.extend({
     ControlSelecionIncisos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "IncisoArancelario",
                 dataValueField: "IdIncisoArancelario",
                 filter: "contains",
@@ -902,6 +889,7 @@ $.fn.extend({
     ControlSeleccionRegimen: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Codigo",
                 dataValueField: "IdTipoTrasladoRegimen",
                 filter: "contains",
@@ -946,6 +934,7 @@ $.fn.extend({
     ControlSeleccionUnidadesAduanas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "CodigoAduana",
                 dataValueField: "IdUnidad",
                 filter: "contains",

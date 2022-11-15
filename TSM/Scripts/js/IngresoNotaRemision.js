@@ -8,7 +8,10 @@ var fn_Ini_IngresoNotaRemision = (strjson) => {
     declaracion = strjson.sidDeclaracion;
     xsDivInRe = strjson.sDiv;
     //fecha de ingreso
-    $("#FechaDocumento").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#FechaDocumento").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#FechaDocumento").data("kendoDatePicker").value(Fhoy());
     KdoButton($("#btnCrea_registroNota"), "save", "Crear Registro");
 

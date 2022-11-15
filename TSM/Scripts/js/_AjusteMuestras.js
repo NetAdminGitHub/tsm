@@ -12,6 +12,7 @@ var fn_CargarEtapaAjuste = function () {
     KdoButton($("#btnCambiarEstadoEtapa"), "gear", "Cambiar Estado Muestra");
 
     $("#NumAltoDiseno_Ajuste").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -20,6 +21,7 @@ var fn_CargarEtapaAjuste = function () {
         value: 0
     });
     $("#NumAnchoDiseno_Ajuste").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -28,6 +30,7 @@ var fn_CargarEtapaAjuste = function () {
         value: 0
     });
     $("#NumLPelicula_Ajuste").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -36,6 +39,7 @@ var fn_CargarEtapaAjuste = function () {
         value: 0
     });
     $("#NumTiempoTra_Ajuste").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -137,7 +141,10 @@ var fn_CargarEtapaAjuste = function () {
     Kendo_CmbFiltrarGrid($("#CmbIdImpresor_Ajuste"), URLImp, "Nombre", "IdImpresor", "Seleccione...");
 
     KdoButton($("#btnGuardarDiseñoMuesAjuste"), "save", "Guardar");
-    $("#DtFecha_Ajuste").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#DtFecha_Ajuste").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoDatePikerEnable($("#DtFecha_Ajuste"), false);
 
     KdoNumerictextboxEnable($("#NumAnchoDiseno_Ajuste"), false);

@@ -49,11 +49,11 @@ var fn_Ini_ControlBulto = (xjson) => {
     $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
 
     // crear boton "Crear Bulto"
-    KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto");
+    KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto", "small");
     // crear boton Crear serie Bulto
-    KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto");
+    KdoButton($("#btnCrearSerieBulto"), "plus-outline", "Crear Serie de Bulto", "small");
     // crear boton Crear serie Bulto
-    KdoButton($("#btnBorrarMercancias"), "trash", "Borrar Bultos / Rollos");
+    KdoButton($("#btnBorrarMercancias"), "trash", "Borrar Bultos / Rollos", "small");
 
     //botón importar Bulto
     $("#Adjunto").kendoUpload({
@@ -501,6 +501,7 @@ var fn_Reg_ControlBulto = (xjson) => {
     $("#txtNumero").val("");
     $("#txtPO").val("");
     $("#txtTO").val("");
+    $("#txtNRI").val("");
     $("#txtColor").val("");
 
     KdoCmbSetValue($("#xcmbPlanta"), "");
@@ -574,6 +575,7 @@ let fn_Gen_Hb = () => {
                 IdTipoProceso: KdoCmbGetValue($("#xcmbProceso")),
                 IdMarca: KdoCmbGetValue($("#xcmbMarca")),
                 TrafficOn: $("#txtTO").val(),
+                NoReferenciaItem: $("#txtNRI").val(),
                 PO: $("#txtPO").val(),
                 IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
 
@@ -621,6 +623,7 @@ let fn_Get_HojasBandeo = (xId)=> {
                 KdoCmbSetValue($("#xcmbProceso"), datos.IdTipoProceso);
                 KdoCmbSetValue($("#xcmbMarca"), datos.IdMarca);
                 $("#txtTO").val(datos.TrafficOn);
+                $("#txtNRI").val(datos.NoReferenciaItem);
                 $("#txtPO").val(datos.PO);
                 KdoCmbSetValue($("#xcmbIdUni"), datos.IdUnidad);
                 fn_Get_HojasBandeoDisenos(xId);

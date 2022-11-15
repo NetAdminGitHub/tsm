@@ -124,14 +124,14 @@ $(document).ready(function () {
        
         edit: function (e) {
             //PERMITE OCULTAR CAMPOS EN EL EDITOR POPUP.
-            e.container.find("label[for=ID]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=ID]").parent("div .k-form-field").hide();
             e.container.find("label[for=ID]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Item]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Item]").parent("div .k-form-field").hide();
             e.container.find("label[for=Item]").parent().next("div .k-edit-field").hide();
             if (!e.model.isNew()) {
-                e.container.find("label[for=Tabla]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Tabla]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Tabla]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=ClaveNumerica]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=ClaveNumerica]").parent("div .k-form-field").hide();
                 e.container.find("label[for=ClaveNumerica]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Descripcion");
             }

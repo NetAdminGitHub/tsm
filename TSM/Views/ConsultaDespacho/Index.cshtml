@@ -12,8 +12,10 @@
         }
     </script>
 
+    <script src="~/Scripts/js/StepperOD.js?@ViewBag.IdVersion"></script>
     <script src="~/Scripts/js/ConsultaDespacho.js?@ViewBag.IdVersion"></script>
 }
+<link href="~/Content/TSM-Style.css" rel="stylesheet" />
 
 <div class="row">
     <div class="col-lg-12">
@@ -22,15 +24,15 @@
                 <div class="row mb-3">
                     <div class="col-lg-5">
                         <label for="cmbCliente" id="lblCliente">Cliente:</label>
-                        <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                        <input id="cmbCliente" name="cmbCliente" class="" />
                     </div>
                     <div class="col-lg-2">
                         <label for="cmbPlanta" id="lblPlanta">Planta:</label>
-                        <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                        <input id="cmbPlanta" name="cmbPlanta" class="" />
                     </div>
                     <div class="col-lg-3">
                         <label for="cmbMarca" id="lblMarca">Marca:</label>
-                        <input id="cmbMarca" name="cmbMarca" class="form-control" />
+                        <input id="cmbMarca" name="cmbMarca" class="" />
                     </div>
 
                     <div class="col-lg-2 mt-auto">
@@ -38,6 +40,12 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav id="stepperOD"></nav>
+                    </div>
+                </div>
+                <br />
                 <div class="row">
                     <div class="col-lg-12">
                         <div id="gridDespachos"></div>
@@ -53,3 +61,4 @@
 <div id="vMod_statusOrdenDespacho"></div>
 
 <div id="vCambioEstado"></div>
+<div id="vCambioEtapa"></div>

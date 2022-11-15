@@ -12,9 +12,15 @@ $(document).ready(function () {
 
     //convertir a Kendo date picker
     let dtfecha = new Date();
-    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaDesde").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaDesde").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's'));
-    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
 
     //checkbox
@@ -145,6 +151,7 @@ $.fn.extend({
     OrdenesTrabajosFinalizadas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",

@@ -65,7 +65,7 @@ namespace TSM
                                                                  "~/Content/smart_wizard_theme_arrows.css"
                                                                  ));
             
-            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-v4.min.css",
+            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-main.min.css",
                                                                         "~/Content/bootstrap/boostrapKendoMod.css"));
 
             //BundleTable.EnableOptimizations = true;

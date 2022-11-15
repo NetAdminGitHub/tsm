@@ -132,7 +132,7 @@
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
             if (!e.model.isNew()) {
-                e.container.find("label[for=IdParametro]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdParametro]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdParametro]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Descripcion");
 

@@ -21,7 +21,10 @@ $(document).ready(function () {
     KdoComboBoxbyData($("#CmbEjecSol"), "[]", "Nombre", "IdEjecutivoCuenta", "Seleccione...");
     KdoComboBoxbyData($("#CmbContactoSol"), "[]", "Nombre", "IdContactoCliente", "Seleccione...");
     Kendo_CmbFiltrarGrid($("#TxtPrenda"), TSM_Web_APi + "CategoriaPrendas", "Nombre", "IdCategoriaPrenda", "Seleccione ...", "", "");
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     KdoDatePikerEnable($("#Fecha"), false);
     KdoComboBoxbyData($("#CmbMarcas"), "[]", "Nombre", "IdMarca", "Seleccione...");
@@ -1017,6 +1020,7 @@ $.fn.extend({
     ControlSelecionProgramaCli: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -1060,7 +1064,7 @@ $.fn.extend({
                         }
                     }
                 },
-                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"fn_CreaItemProm('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>"),//$("#noDataTemplate").html()
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"fn_CreaItemProm('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>"),//$("#noDataTemplate").html()
                 columns: [
                     { field: "NoDocumento", title: "NoDocumento", width: 150 },
                     { field: "Nombre", title: "Programa", width: 300 }
@@ -1074,6 +1078,7 @@ $.fn.extend({
     ControlSelecionPrenda: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdRegistroSolicitudPrenda",
                 filter: "contains",
@@ -1100,6 +1105,7 @@ $.fn.extend({
     ControlSelecionFM: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdRegistroSolicitudPrenda",
                 filter: "contains",
@@ -1216,10 +1222,10 @@ let fn_InsFilaGrid = function (g, data) {
 };
 
 var fn_BotonAgregar = function (container, options) {
-    container.append("<a class='k-button' id='btnInsPren' onclick='fn_Agregar()' ><span class='k-icon k-i-plus'></span></a>");
+    container.append("<a class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='btnInsPren' onclick='fn_Agregar()' ><span class='k-icon k-i-plus'></span></a>");
 };
 var fn_BotonAgregarFM = function (container, options) {
-    container.append("<a class='k-button' id='btnInsPren' onclick='fn_AgregarFM()' ><span class='k-icon k-i-plus'></span></a>");
+    container.append("<a class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='btnInsPren' onclick='fn_AgregarFM()' ><span class='k-icon k-i-plus'></span></a>");
  
 };
 

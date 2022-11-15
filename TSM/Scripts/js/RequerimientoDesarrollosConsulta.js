@@ -24,7 +24,10 @@ var RequerimientoDes = function () {
     UrlApiCPre_Consulta = TSM_Web_APi + "CategoriaPrendas";
     //#region Inicialización de variables y controles Kendo
   
-    $("#TxtFechaConsulta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFechaConsulta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
 
     Kendo_MultiSelect($("#IdSistemaTinta_Cota"), Url_CApiSisT_Consulta, "Nombre", "IdSistemaTinta", "");
     Kendo_MultiSelect($("#TxtCategoriaPrenda"), UrlApiCPre_Consulta, "Nombre", "IdCategoriaPrenda", "");

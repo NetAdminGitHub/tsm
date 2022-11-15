@@ -63,7 +63,7 @@ $(document).ready(function () {
     $("#GkCateTallas").kendoGrid({
         edit: function (e) {
             // BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdCategoriaTalla]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCategoriaTalla]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCategoriaTalla]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

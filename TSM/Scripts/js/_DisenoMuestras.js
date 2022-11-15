@@ -7,6 +7,7 @@ var fn_DMCargarConfiguracion = function () {
     KdoButton($("#btnUpdDimen"), "edit", "Actualizar Dimensiones");
 
     $("#NumAltoDiseno").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -15,6 +16,7 @@ var fn_DMCargarConfiguracion = function () {
         value: 0
     });
     $("#NumAnchoDiseno").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -23,6 +25,7 @@ var fn_DMCargarConfiguracion = function () {
         value: 0
     });
     $("#NumLPelicula").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -31,6 +34,7 @@ var fn_DMCargarConfiguracion = function () {
         value: 0
     });
     $("#NumTiempoTra").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -60,7 +64,10 @@ var fn_DMCargarConfiguracion = function () {
     Kendo_CmbFiltrarGrid($("#CmbIdImpresor"), URLImp, "Nombre", "IdImpresor", "Seleccione...");
 
     KdoButton($("#btnGuardarDiseñoMues"), "save", "Guardar");
-    $("#DtFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#DtFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoDatePikerEnable($("#DtFecha"), false);
 
     KdoNumerictextboxEnable($("#NumAnchoDiseno"), false);
