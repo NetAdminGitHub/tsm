@@ -9,9 +9,9 @@ let VIdOrdenTra = 0;
 let vIdPrograma = 0;
 let vNoFM = "";
 let data = null;
-let Mul1;
-let Mul2;
-let Mul3;
+let obj_Pro;
+let obj_IdCat;
+let obj_OT;
 $(document).ready(function () {
     $("#MbtnSimu").kendoDialog({
         height: "auto",
@@ -34,7 +34,7 @@ $(document).ready(function () {
         maxHeight: 900,
         close: fn_closeGSRecal
     });
-
+    KdoButton($("#btnEliminaFiltros"), "filter-clear", "Borrar todos los filtros");
     KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
     KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
     KdoButton($("#btnAceptarSimu"), "check", "Nueva simulación");
@@ -59,40 +59,26 @@ $(document).ready(function () {
     $("#CmbTallas").data("kendoMultiSelect").trigger("change");
 
     // transformar div en multicolumn
-    $("#cmbNoFM").ControlSelecionFMCatalogo();
-    if (sessionStorage.getItem("Simue_cmbNoFM") !== null && sessionStorage.getItem("Simue_cmbNoFM") !== "") {
-        Mul2 = $("#cmbNoFM").data("kendoMultiColumnComboBox");
-        Mul2.search(sessionStorage.getItem("Simue_NoReferencia"));
-        Mul2.text(sessionStorage.getItem("Simue_NoReferencia") === null ? "" : sessionStorage.getItem("Simue_NoReferencia"));
-        Mul2.trigger("change");
-        Mul2.close();
+    $("#cmbNoFM").CSFMCatalogo();
+    if (sessionStorage.Simue_cmbNoFM !== undefined && sessionStorage.Simue_cmbNoFM !== "") {
+        fn_multiColumnSetJson($("#cmbNoFM"), sessionStorage.Simue_cmbNoFM, JSON.parse(sessionStorage.Simue_cmbNoFM).IdCatalogoDiseno);
+        obj_IdCat = JSON.parse(sessionStorage.Simue_cmbNoFM);
     }
 
     $("#CmbNoOT").OrdenesTrabajos();
 
     $("#CmbNoOrdenTrabajo").OrdenesTrabajosSimulacion();
-    if (sessionStorage.getItem("Simue_CmbNoOrdenTrabajo") !== null && sessionStorage.getItem("Simue_CmbNoOrdenTrabajo") !== "") {
-        Mul1 = $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox");
-        Mul1.search(sessionStorage.getItem("Simue_NoDocumento"));
-        Mul1.text(sessionStorage.getItem("Simue_NoDocumento") === null ? "" : sessionStorage.getItem("Simue_NoDocumento"));
-        Mul1.trigger("change");
-        Mul1.close();
+    if (sessionStorage.Simue_CmbNoOrdenTrabajo !== undefined && sessionStorage.Simue_CmbNoOrdenTrabajo !== "") {
+        fn_multiColumnSetJson($("#CmbNoOrdenTrabajo"), sessionStorage.Simue_CmbNoOrdenTrabajo, JSON.parse(sessionStorage.Simue_CmbNoOrdenTrabajo).IdOrdenTrabajo);
+        obj_OT = JSON.parse(sessionStorage.Simue_CmbNoOrdenTrabajo);
     }
 
-    //KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), sessionStorage.getItem("Simue_CmbNoOrdenTrabajo") === null ? "" : sessionStorage.getItem("Simue_CmbNoOrdenTrabajo"));
-    //KdoMultiColumnCmbSetValue($("#cmbNoFM"), sessionStorage.getItem("Simue_cmbNoFM") === null ? "" : sessionStorage.getItem("Simue_cmbNoFM"));
 
-    $("#CmbPrograma").ControlSelecionPrograma();
-    //KdoMultiColumnCmbSetValue($("#CmbPrograma"), sessionStorage.getItem("Simue_CmbPrograma") === null ? "" : sessionStorage.getItem("Simue_CmbPrograma")); 
-    if (sessionStorage.getItem("Simue_CmbPrograma") !== null && sessionStorage.getItem("Simue_CmbPrograma") !== "") {
-        Mul3 = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        Mul3.search(sessionStorage.getItem("Simue_NombrePrograma"));
-        Mul3.text(sessionStorage.getItem("Simue_NombrePrograma") === null ? "" : sessionStorage.getItem("Simue_NombrePrograma"));
-        Mul3.trigger("change");
-        Mul3.close();
-
+    $("#CmbPrograma").ControlSelecionProg();
+    if (sessionStorage.Simue_CmbPrograma !== undefined && sessionStorage.Simue_CmbPrograma !== "") {
+        fn_multiColumnSetJson($("#CmbPrograma"), sessionStorage.Simue_CmbPrograma, JSON.parse(sessionStorage.Simue_CmbPrograma).IdPrograma);
+        obj_Pro = JSON.parse(sessionStorage.Simue_CmbPrograma);
     }
-
 
     $("#CmbNoOT").data("kendoMultiColumnComboBox").bind("change", function (e) {
         if (this.dataItem() !== undefined) {
@@ -626,57 +612,120 @@ $(document).ready(function () {
 
     //#region seleccion de servicio y cliente
 
-    $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
-       
-        if (e.item) {
-            Fn_ConsultarSimu(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdServicio",this.dataItem(e.item.index()).IdServicio);
-        } else {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdServicio","");
-        }
-
-    });
-
-    $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
-        let value = this.value();
-        if (value === "") {
-            Fn_ConsultarSimu(0, Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdServicio", "");
-        }
-    });
-
-    $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
-        } else {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdCliente", "");
-        }
-    });
-
-    $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
-        let value = this.value();
-        if (value === "") {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), 0, KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbIdCliente", "");
-        }
-
-    });
 
 
-
-    $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
-        var multicolumncombobox = $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
+    $("#CmbIdServicio").data("kendoComboBox").bind("change", function () {
+        var colum = $("#CmbIdServicio").data("kendoComboBox");
+        let data = colum.listView.dataSource.data().find(q => q.IdCliente === Number(this.value()));
         if (data === undefined) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), 0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbNoOrdenTrabajo", "");
+            //limpiar filtros
+   
+            KdoCmbSetValue($("#CmbIdCliente"), "");
+            sessionStorage.setItem('Simue_CmbIdCliente', "");
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('Simue_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
+            Fn_ConsultarSimu(0,
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbIdServicio","");
+
         } else {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), data.IdOrdenTrabajo, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("Simue_CmbNoOrdenTrabajo", data.IdOrdenTrabajo);
-            sessionStorage.setItem("Simue_NoDocumento", data.NoDocumento);
+       
+            KdoCmbSetValue($("#CmbIdCliente"), "");
+            sessionStorage.setItem('Simue_CmbIdCliente', "");
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('Simue_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
+            Fn_ConsultarSimu(this.value(),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbIdServicio", this.value(),);
+        }
+    });
+
+    $("#CmbIdCliente").data("kendoComboBox").bind("change", function () {
+        var colum = $("#CmbIdCliente").data("kendoComboBox");
+        let data = colum.listView.dataSource.data().find(q => q.IdCliente === Number(this.value()));
+        if (data === undefined) {
+            //limpiar filtros
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('Simue_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                0,
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbIdCliente", "");
+
+        } else {
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('Simue_CmbPrograma', "");
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                this.value(),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbIdCliente", this.value());
+        }
+    });
+
+    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+        if (data === undefined) {
+            //limpiar filtros  
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                0
+            );
+            sessionStorage.setItem("Simue_CmbPrograma", "");
+
+        } else {
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("Simue_CmbIdCliente", data.IdCliente);
+            KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+            sessionStorage.setItem('Simue_cmbNoFM', "");
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+            Fn_ConsultarSimu(Kendo_CmbGetvalue(
+                $("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+                data.IdPrograma
+            );
+            sessionStorage.setItem("Simue_CmbPrograma", JSON.stringify(data.toJSON()));
+
         }
 
     });
@@ -685,6 +734,9 @@ $(document).ready(function () {
         var multicolumncombobox = $("#cmbNoFM").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdCatalogoDiseno === Number(this.value()));
         if (data === undefined) {
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
             Fn_ConsultarSimu(
                 Kendo_CmbGetvalue($("#CmbIdServicio")),
                 Kendo_CmbGetvalue($("#CmbIdCliente")),
@@ -693,8 +745,17 @@ $(document).ready(function () {
                 ""
             );
             sessionStorage.setItem("Simue_cmbNoFM", "");
-            sessionStorage.setItem("Simue_NoReferencia","");
+     
+
         } else {
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("Simue_CmbIdCliente", data.IdCliente);
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+
+            if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdPrograma($("#CmbPrograma"), data.IdPrograma); }
+            KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
 
             Fn_ConsultarSimu(
                 Kendo_CmbGetvalue($("#CmbIdServicio")),
@@ -703,25 +764,38 @@ $(document).ready(function () {
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")),
                 data.NoReferencia
             );
-
-            sessionStorage.setItem("Simue_cmbNoFM", data.NoReferencia);
-            sessionStorage.setItem("Simue_NoReferencia", data.NoReferencia);
+            sessionStorage.setItem('Simue_cmbNoFM', JSON.stringify(data.toJSON()));
         }
+
     });
 
-    $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
-        var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
+    $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox").bind("change", function () {
+        var multicolumncombobox = $("#CmbNoOrdenTrabajo").data("kendoMultiColumnComboBox");
+        let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdOrdenTrabajo === Number(this.value()));
         if (data === undefined) {
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), 0);
-            sessionStorage.setItem("Simue_CmbPrograma", "");
-            sessionStorage.setItem("Simue_NombrePrograma", "");
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                0,
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbNoOrdenTrabajo", "");
 
         } else {
-
-            Fn_ConsultarSimu(Kendo_CmbGetvalue($("#CmbIdServicio")), Kendo_CmbGetvalue($("#CmbIdCliente")), KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")), data.IdPrograma);
-            sessionStorage.setItem("Simue_CmbPrograma", data.IdPrograma);
-            sessionStorage.setItem("Simue_NombrePrograma", data.Nombre);
+            KdoCmbSetValue($("#CmbIdServicio"), data.IdServicio);
+            sessionStorage.setItem("Simue_CmbIdServicio", data.IdServicio);
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("Simue_CmbIdCliente", data.IdCliente);
+            if (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null) { fn_SetValueMulticolumIdPrograma($("#CmbPrograma"), data.IdPrograma); }
+            if (KdoMultiColumnCmbGetValue($("#cmbNoFM")) === null) { fn_SetValueMulticolumIdFM($("#cmbNoFM"), data.IdCatalogoDiseno); }
+          
+            Fn_ConsultarSimu(
+                Kendo_CmbGetvalue($("#CmbIdServicio")),
+                Kendo_CmbGetvalue($("#CmbIdCliente")),
+                data.IdOrdenTrabajo,
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("Simue_CmbNoOrdenTrabajo", JSON.stringify(data.toJSON()));
         }
 
     });
@@ -791,13 +865,38 @@ $(document).ready(function () {
 
     //Coloca el filtro de cliente guardado en la sesion
     if (sessionStorage.getItem("Simue_CmbIdServicio") !== null || sessionStorage.getItem("Simue_CmbIdCliente") !== null ||
-        sessionStorage.getItem("Simue_CmbNoOrdenTrabajo") !== null || sessionStorage.getItem("Simue_CmbPrograma") !== null) {
+        sessionStorage.getItem("Simue_CmbNoOrdenTrabajo") !== null || sessionStorage.getItem("Simue_CmbPrograma") !== null
+        || sessionStorage.getItem("Simue_cmbNoFM") !== null) {
         Fn_ConsultarSimu(sessionStorage.getItem("Simue_CmbIdServicio"),
-                          sessionStorage.getItem("Simue_CmbIdCliente"),
-                          sessionStorage.getItem("Simue_CmbNoOrdenTrabajo"),
-                          sessionStorage.getItem("Simue_CmbPrograma") );
+            sessionStorage.getItem("Simue_CmbIdCliente"),
+            obj_OT === "" || obj_OT === undefined ? 0 : obj_OT.IdOrdenTrabajo,
+            obj_Pro === "" || obj_Pro === undefined ? 0 : obj_Pro.IdPrograma,
+            obj_IdCat === "" || obj_IdCat === undefined ? "" : obj_IdCat.NoReferencia
+        );
 
     }
+
+
+    $("#btnEliminaFiltros").click(function (event) {
+        KdoCmbSetValue($("#CmbIdServicio"), "");
+        sessionStorage.setItem('Simue_CmbIdServicio', "");
+        KdoCmbSetValue($("#CmbIdCliente"), "");
+        sessionStorage.setItem('Simue_CmbIdCliente', "");
+        KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+        sessionStorage.setItem('Simue_CmbPrograma', "");
+        KdoMultiColumnCmbSetValue($("#cmbNoFM"), "");
+        sessionStorage.setItem('Simue_cmbNoFM', "");
+        KdoMultiColumnCmbSetValue($("#CmbNoOrdenTrabajo"), "");
+        sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', "");
+      
+        Fn_ConsultarSimu(0,
+            Kendo_CmbGetvalue($("#CmbIdCliente")),
+            KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
+            KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+        );
+
+
+    });
 });
 
 let fn_hbbtnSimu = function () {
@@ -935,29 +1034,26 @@ $.fn.extend({
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
                 autoBind: false,
-                minLength: 3,
-                clearButton:false,
+                //minLength: 3,
                 height: 400,
-                placeholder:"Seleccione orden de trabajo...",
+                placeholder: "Selección de Ordenes de trabajo",
                 footerTemplate: 'Total #: instance.dataSource.total() # registros.',
                 dataSource: {
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosRequerimientos/" + (KdoCmbGetValue($("#CmbIdServicio")) === null ? 0 : KdoCmbGetValue($("#CmbIdServicio"))) + "/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            url: function () { return TSM_Web_APi + "OrdenesTrabajos/GetOrdenesTrabajosRequerimientos/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))) + "/" + (KdoMultiColumnCmbGetValue($("#cmbNoFM")) === null ? 0 : KdoMultiColumnCmbGetValue($("#cmbNoFM"))); },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
+
                 },
                 columns: [
-                    //{ field: "IdOrdenTrabajo", title: "ID. Orden Trabajo", width: 200 },
                     { field: "NoDocumento", title: "Orden Trabajo", width: 100 },
                     { field: "NoDocReq", title: "Requerimiento", width: 100 },
                     { field: "Nombre", title: "Nombre del Diseño", width: 200 },
                     { field: "NumeroDiseno", title: "Numero de Diseño", width: 100 },
-                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 },
-                    { field: "Tecnicas", title: "Tecnicas", width: 200 },
-                    { field: "Tallas", title: "Tallas", width: 200 }
+                    { field: "EstiloDiseno", title: "Estilo Diseño", width: 200 }
 
                 ]
             });
@@ -1088,3 +1184,105 @@ let fn_getSimulacionesTallas = function (vidSim) {
     });
 };
 
+$.fn.extend({
+    ControlSelecionProg: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "Nombre",
+                dataValueField: "IdPrograma",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de Programas",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "Programas/GetProgramasFiltroCliente/" + (KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "NoDocumento", width: 150 },
+                    { field: "Nombre", title: "Programa", width: 300 },
+                    { field: "NombreTemporada", title: "Temporada", width: 300 }
+                ]
+            });
+        });
+    }
+});
+
+$.fn.extend({
+    CSFMCatalogo: function () {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                dataTextField: "NoReferencia",
+                dataValueField: "IdCatalogoDiseno",
+                filter: "contains",
+                autoBind: false,
+                minLength: 3,
+                height: 400,
+                placeholder: "Selección de FM",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetbyidClienteIdPrograma/" + (KdoCmbGetValue($("#CmbIdCliente")) == null ? 0 : KdoCmbGetValue($("#CmbIdCliente"))) + "/" + (KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))); },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoReferencia", title: "No FM", width: 300 },
+                    { field: "Nombre", title: "Nombre", width: 300 },
+                    { field: "NombreCliente", title: "Cliente", width: 300 }
+                ]
+            });
+        });
+    }
+});
+
+
+// obtiene el programa y el resultado se lo paso al source del objeto para encontrar el valor
+let fn_SetValueMulticolumIdPrograma = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "Programas/GetProgramasbyId/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
+            sessionStorage.setItem('Simue_CmbPrograma', JSON.stringify(data[0]));
+        }
+    });
+}
+
+// obtiene la orden de trabajo y el resultado se lo paso al source del objeto para encontrar el valor
+let fn_SetValueMulticolumIdOT = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "Programas/GetProgramasbyId/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data[0]), id);
+            sessionStorage.setItem('Simue_CmbNoOrdenTrabajo', JSON.stringify(data[0]));
+        }
+    });
+}
+
+let fn_SetValueMulticolumIdFM = (e, id) => {
+    $.ajax({
+        url: TSM_Web_APi + "CatalogoDisenos/Getbyid/" + id.toString(),
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+            fn_multiColumnSetJson(e, JSON.stringify(data), id);
+            sessionStorage.setItem('Simue_cmbNoFM', JSON.stringify(data));
+        }
+    });
+}

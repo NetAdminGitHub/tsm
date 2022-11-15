@@ -3,21 +3,20 @@ let UrlClie = TSM_Web_APi + "Clientes";
 let UrlPro = TSM_Web_APi + "Programas";
 let VIdCliente = 0;
 let vIdPrograma = 0;
-let Mul3;
+let obj_Pro;
 $(document).ready(function () {
 
     // configurar clientes y servicios
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlClie, "Nombre", "IdCliente", "Selecione un Cliente...");
-    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("CotMu_CmbIdCliente") === null ? "" : sessionStorage.getItem("CotMu_CmbIdCliente")); 
-    $("#CmbPrograma").GetCotizacionesMuestrasProgramas();
+    KdoCmbSetValue($("#CmbIdCliente"), sessionStorage.getItem("CotMu_CmbIdCliente") === null ? "" : sessionStorage.getItem("CotMu_CmbIdCliente"));
+    KdoButton($("#btnEliminaFiltros"), "filter-clear", "Borrar todos los filtros");
 
-    if (sessionStorage.getItem("CotMu_CmbPrograma") !== null && sessionStorage.getItem("CotMu_CmbPrograma") !== "") {
-        Mul3 = $("#CmbPrograma").data("kendoMultiColumnComboBox");
-        Mul3.search(sessionStorage.getItem("CotMu_NombrePrograma"));
-        Mul3.text(sessionStorage.getItem("CotMu_NombrePrograma") === null ? "" : sessionStorage.getItem("CotMu_NombrePrograma"));
-        Mul3.trigger("change");
-        Mul3.close();
+    $("#CmbPrograma").GetCotizacionesMuestrasProgramas();
+    if (sessionStorage.CotMu_CmbPrograma !== undefined && sessionStorage.CotMu_CmbPrograma !== "") {
+        fn_multiColumnSetJson($("#CmbPrograma"), sessionStorage.CotMu_CmbPrograma, JSON.parse(sessionStorage.CotMu_CmbPrograma).IdPrograma);
+        obj_Pro = JSON.parse(sessionStorage.CotMu_CmbPrograma);
     }
+
     //#region PRGRANMACION DEL GRID citizacion
     var DsRD = new kendo.data.DataSource({
         dataType: "json",
@@ -288,53 +287,55 @@ $(document).ready(function () {
 
     //#region seleccion de servicio y cliente
 
+    $("#CmbIdCliente").data("kendoComboBox").bind("change", function () {
+        var colum = $("#CmbIdCliente").data("kendoComboBox");
+        let data = colum.listView.dataSource.data().find(q => q.IdCliente === Number(this.value()));
+        if (data === undefined) {
+            //limpiar filtros
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('CotMu_CmbPrograma', "");
 
-    $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente.toString(), KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("CotMu_CmbIdCliente", this.dataItem(e.item.index()).IdCliente);
-            Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
+            Fn_ConsultarCotiza(
+                0,
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("CotMu_CmbIdCliente", "");
+            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
         } else {
-            Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("CotMu_CmbIdCliente", "");
-            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
+            KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+            sessionStorage.setItem('CotMu_CmbPrograma', "");
+            Fn_ConsultarCotiza(this.value(),
+                KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+            );
+            sessionStorage.setItem("CotMu_CmbIdCliente", this.value());
+            Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
         }
     });
 
-    $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
-        let value = this.value();
-        if (value === "") {
-            Fn_ConsultarCotiza(0, KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma")));
-            sessionStorage.setItem("CotMu_CmbIdCliente", "");
-            Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
-        }
-    });
-
-    //$("#CmbPrograma").data("kendoMultiColumnComboBox").bind("select", function (e) {
-    //    if (e.item) {
-    //        KdoCmbSetValue($("#CmbIdCliente"), this.dataItem(e.item.index()).IdCliente);
-    //        Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, Permisos.SNEditar, Permisos.SNBorrar);
-    //        Fn_ConsultarCotiza(this.dataItem(e.item.index()).IdCliente, this.dataItem(e.item.index()).IdPrograma);
-    //        sessionStorage.setItem("CotMu_CmbPrograma", this.dataItem(e.item.index()).IdPrograma);
-    //    } else {
-    //        Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
-    //        sessionStorage.setItem("CotMu_CmbPrograma", "");
-    //    }
-    //});
 
     $("#CmbPrograma").data("kendoMultiColumnComboBox").bind("change", function () {
         var multicolumncombobox = $("#CmbPrograma").data("kendoMultiColumnComboBox");
         let data = multicolumncombobox.listView.dataSource.data().find(q => q.IdPrograma === Number(this.value()));
         if (data === undefined) {
-            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), 0);
+            //limpiar filtros
+         
+            Fn_ConsultarCotiza(
+                KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")),
+                0
+            );
+
             if (KdoCmbGetValue($("#CmbIdCliente")) === null) Grid_HabilitaToolbar($("#gridCotizacion"), false, false, false);
             sessionStorage.setItem("CotMu_CmbPrograma", "");
-            sessionStorage.setItem("CotMu_NombrePrograma","");
-        } else {
-            Fn_ConsultarCotiza(KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")), data.IdPrograma);
-            sessionStorage.setItem("CotMu_CmbPrograma", data.IdPrograma);
-            sessionStorage.setItem("CotMu_NombrePrograma", data.Nombre);
 
+        } else {
+            KdoCmbSetValue($("#CmbIdCliente"), data.IdCliente);
+            sessionStorage.setItem("CotMu_CmbIdCliente", data.IdCliente);
+            Fn_ConsultarCotiza(
+                KdoCmbGetValue($("#CmbIdCliente")) === null ? 0 : KdoCmbGetValue($("#CmbIdCliente")),
+                data.IdPrograma
+            );
+            sessionStorage.setItem("CotMu_CmbPrograma", JSON.stringify(data.toJSON()));
+ 
         }
 
     });
@@ -354,7 +355,10 @@ $(document).ready(function () {
     if ((sessionStorage.getItem("CotMu_CmbIdCliente") === "" ? null : sessionStorage.getItem("CotMu_CmbIdCliente")) !== null || (sessionStorage.getItem("CotMu_CmbPrograma") === "" ? null : sessionStorage.getItem("CotMu_CmbPrograma")) !== null) {
 
         Grid_HabilitaToolbar($("#gridCotizacion"), Permisos.SNAgregar, false, Permisos.SNBorrar);
-        Fn_ConsultarCotiza(sessionStorage.getItem("CotMu_CmbIdCliente"), sessionStorage.getItem("CotMu_CmbPrograma"));
+        Fn_ConsultarCotiza(
+            sessionStorage.getItem("CotMu_CmbIdCliente"),
+            obj_Pro === "" || obj_Pro === undefined ? null : obj_Pro.IdPrograma
+        );
     }
         
     $("#gridCotizacion").kendoTooltip({
@@ -383,6 +387,22 @@ $(document).ready(function () {
             return result;
         }
     });
+
+
+    $("#btnEliminaFiltros").click(function (event) {
+        //limpiar filtros
+        KdoCmbSetValue($("#CmbIdCliente"), "");
+        sessionStorage.setItem("CotMu_CmbIdCliente", "");
+        KdoMultiColumnCmbSetValue($("#CmbPrograma"), "");
+        sessionStorage.setItem('CotMu_CmbPrograma', "");
+   
+        Fn_ConsultarCotiza(
+            sessionStorage.getItem("CotMu_CmbIdCliente"),
+            KdoMultiColumnCmbGetValue($("#CmbPrograma"))
+        );
+   
+
+    });
 });
 
 let Fn_ConsultarCotiza = function (IdCliente,IdPrograma) {
@@ -401,7 +421,6 @@ $.fn.extend({
                 dataValueField: "IdPrograma",
                 filter: "contains",
                 autoBind: false,
-                clearButton:false,
                 minLength: 3,
                 height: 400,
                 placeholder:"Seleccione un programa ...",
