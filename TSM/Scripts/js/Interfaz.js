@@ -112,9 +112,9 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdInterfaz]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdInterfaz]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdInterfaz]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdSistema]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSistema]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSistema]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

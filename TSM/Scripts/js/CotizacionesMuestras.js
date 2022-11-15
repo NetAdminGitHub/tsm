@@ -397,6 +397,7 @@ $.fn.extend({
     GetCotizacionesMuestrasProgramas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -430,6 +431,7 @@ $.fn.extend({
     SelecionProgramas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",

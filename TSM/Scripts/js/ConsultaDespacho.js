@@ -4,6 +4,19 @@ var Permisos;
 let idPlanta = 0;
 let idMarca = 0;
 
+const NombresControladores = ["CrearEmbalaje", "PackingList", "PedidoVenta", "Factura", "DevolucionDM", "NotaRemision"];
+const NombresVistas = ["OrdenDespacho", "CrearEmbalaje", "ListaEmpaque", "PedidoVenta", "Facturacion", "DeclaracionMercancia", "NotaRemision"];
+let permisos = [];
+
+let perEmb = true;
+let perPL = true;
+let perPV = true;
+let perFac = true;
+let perDM = true;
+let perNR = true;
+let EtapaActual;
+let NombreEtapaActual;
+
 $(document).ready(function () {
 
     //1. defincion de la modal
@@ -15,6 +28,41 @@ $(document).ready(function () {
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "Seleccione una Marca");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione Planta");
+
+    NombresControladores.forEach(function (item, index, arr) {
+
+        $.ajax({
+            url: UrlMRSeguridad + "/GetMenusRolesSeguridad",
+            dataType: 'json',
+            type: 'POST',
+            data: JSON.stringify({ IdUsuario: getUser(), Url: item }),
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (respuesta) {
+                permisos.push(respuesta);
+            }
+        });
+
+    });
+
+    if (permisos[0] == "" || permisos[0] == null || permisos[0] == undefined) {
+        perEmb = false;
+    }
+    if (permisos[1] == "" || permisos[1] == null || permisos[1] == undefined) {
+        perPL = false;
+    }
+    if (permisos[2] == "" || permisos[2] == null || permisos[2] == undefined) {
+        perPV = false;
+    }
+    if (permisos[3] == "" || permisos[3] == null || permisos[3] == undefined) {
+        perFac = false;
+    }
+    if (permisos[4] == "" || permisos[4] == null || permisos[4] == undefined) {
+        perDM = false;
+    }
+    if (permisos[5] == "" || permisos[5] == null || permisos[5] == undefined) {
+        perNR = false;
+    }
 
     if (idCliente !== 0) {
         KdoButtonEnable($("#btnSolicitarDespacho"), true);
@@ -63,6 +111,7 @@ $(document).ready(function () {
                     cantidadPiezas: { type: "number" },
                     FechaMod: { type: "date" },
                     FechaEntrega: { type: "date" },
+                    Etapa: { type: "string" },
                     Estado: { type: "string" },
                     Servicio: { type: "string" },
                     Progreso: { type: "number" }
@@ -123,7 +172,236 @@ $(document).ready(function () {
                 });
 
                 kendo.bind($(this), dataItem);
+
+                let etaEmb;
+                let etaPL;
+                let etaPV;
+                let etaFac;
+                let etaDM;
+                let etaNR;
+
+                let absEmb = false;
+                let absPL = false;
+                let absPV = false;
+                let absFac = false;
+                let absDM = false;
+                let absNR = false;
+
+                let idOD = dataItem.IdDespachoMercancia;
+
+                $.ajax({
+                    url: TSM_Web_APi + "/DespachosMercancias/GetEtapaOD/" + idOD,
+                    dataType: 'json',
+                    type: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (respuesta) {
+
+                        if (jQuery.isEmptyObject(respuesta) || respuesta == null || respuesta == undefined || respuesta.Etapa == NombresVistas[0]) {
+                            etaEmb = false;
+                            etaPL = false;
+                            etaPV = false;
+                            etaFac = false;
+                            etaDM = false;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[1]) {
+                            etaEmb = true;
+                            etaPL = false;
+                            etaPV = false;
+                            etaFac = false;
+                            etaDM = false;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[2]) {
+                            etaEmb = false;
+                            etaPL = true;
+                            etaPV = false;
+                            etaFac = false;
+                            etaDM = false;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[3]) {
+                            etaEmb = false;
+                            etaPL = false;
+                            etaPV = true;
+                            etaFac = false;
+                            etaDM = false;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[4]) {
+                            etaEmb = false;
+                            etaPL = false;
+                            etaPV = false;
+                            etaFac = true;
+                            etaDM = false;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[5]) {
+                            etaEmb = false;
+                            etaPL = false;
+                            etaPV = false;
+                            etaFac = false;
+                            etaDM = true;
+                            etaNR = false;
+                        }
+                        else if (respuesta.Etapa == NombresVistas[6]) {
+                            etaEmb = false;
+                            etaPL = false;
+                            etaPV = false;
+                            etaFac = false;
+                            etaDM = false;
+                            etaNR = true;
+                        }
+
+                        if (perEmb == true && etaEmb == true) {
+                            absEmb = true;
+                        }
+                        if (perPL == true && etaPL == true) {
+                            absPL = true;
+                        }
+                        if (perPV == true && etaPV == true) {
+                            absPV = true;
+                        }
+                        if (perFac == true && etaFac == true) {
+                            absFac = true;
+                        }
+                        if (perDM == true && etaDM == true) {
+                            absDM = true;
+                        }
+                        if (perNR == true && etaNR == true) {
+                            absNR = true;
+                        }
+                    }
+                });
+
+                $("#opcOD" + idOD).kendoSplitButton({
+                    items: [
+                        {
+                            id: "opcEmb" + idOD, text: "Embalaje", icon: "plus-outline", click: function () {
+                                window.location.href = '/CrearEmbalaje/' + idOD ;
+                            }, enabled: absEmb
+                        },
+                        {
+                            id: "opcPL" + idOD, text: "Lista de Empaque", icon: "plus-outline", click: function () {
+                                window.location.href = '/PackingList/' + idOD;
+                            }, enabled: absPL
+                        },
+                        {
+                            id: "opcPV" + idOD, text: "Pedido de Venta", icon: "plus-outline", click: function () {
+                                window.location.href = '/PedidoVenta/' + idOD;
+                            }, enabled: absPV
+                        },
+                        {
+                            id: "opcFac" + idOD, text: "Factura", icon: "plus-outline", click: function () {
+                                window.location.href = '/Factura/' + idOD;
+                            }, enabled: absFac
+                        },
+                        {
+                            id: "opcDM" + idOD, text: "Devolución DM", icon: "plus-outline", click: function () {
+                                window.location.href = '/DevolucionDM/' + idOD;
+                            }, enabled: absDM
+                        },
+                        {
+                            id: "opcNR" + idOD, text: "Nota de Remisión", icon: "plus-outline", click: function () {
+                                window.location.href = '/NotaRemision/' + idOD;
+                            }, enabled: absNR
+                        }
+                    ]
+                });
+
+                
+
             });
+        },
+        change: function (e) {
+
+            let selectedRows = this.select();
+            let selectedDataItems = [];
+            let idOD = 0;
+            let tracking;
+            let etapas;
+            let stepper = $("#stepperOD").data("kendoStepper");
+
+            for (let i = 0; i < selectedRows.length; i++) {
+                let dataItem = this.dataItem(selectedRows[i]);
+                selectedDataItems.push(dataItem);
+            }
+
+            idOD = selectedDataItems[0]["id"];
+
+            $.ajax({
+                dataType: 'json',
+                url: TSM_Web_APi + 'EtapasProcesos/GetbyTabla/Bodega¿DespachosMercancias',
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                success: function (resultado) {
+                    etapas = resultado;
+
+                    $.ajax({
+                        dataType: 'json',
+                        url: TSM_Web_APi + 'DespachosMercanciasEtapas/GetConsultaTrackingOrdenDespacho/' + idOD,
+                        type: 'GET',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            tracking = result[0];
+
+                            if (tracking != undefined) {
+
+                                let cont = 0;
+                                let finded = 0;
+
+                                etapas.forEach(function (item, index, arr) {
+                                    if (item.Nombre == tracking["NombreEtapa"]) {
+                                        stepper.select(cont);
+                                        let circulo = stepper.select().element[0].firstChild.firstChild;
+                                        if (tracking["Estado"] == 'ENTREGADO') {
+                                            circulo.classList.add("k-stepper-color-pe");
+                                            circulo.classList.remove(".k-step-done");
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
+                                        }
+                                        else if(tracking["Estado"] == 'OPERACION')
+                                        {
+                                            circulo.classList.remove("k-stepper-color-pe");
+                                            circulo.classList.remove("k-stepper-color-f");
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove("k-i-check");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add(ico);
+                                        }
+                                        else if (tracking["Estado"] == 'FINALIZADO') {
+                                            circulo.classList.remove("k-stepper-color-pe");
+                                            circulo.classList.add("k-stepper-color-f");
+                                            let ico = "";
+                                            if (item.Icono === null) { ico = "k-i-image" } else { ico = item.Icono; }
+                                            circulo.firstChild.classList.remove("k-icon");
+                                            circulo.firstChild.classList.remove(ico);
+                                            circulo.firstChild.classList.add("k-icon");
+                                            circulo.firstChild.classList.add("k-i-check");
+                                        }
+                                    }
+                                    else {
+                                        cont++;
+                                    }
+                                });
+
+                            }
+                            else {
+                                stepper.select(0);
+                            }
+                        }
+                    });
+
+                }
+            });
+         
         },
         columns: [
             { field: "IdDespachoMercancia", title: "# Despacho" },
@@ -133,6 +411,7 @@ $(document).ready(function () {
             { field: "cantidadPiezas", title: "Cantidad" },
             { field: "FechaMod", title: "Fecha Mod.", format: "{0: dd/MM/yyyy HH:mm:ss}" },
             { field: "Servicio", title: "Servicio" },
+            { field: "Etapa", title: "Etapa" },
             { field: "Estado", title: "Estado" },
             {
                 field: "Progreso",
@@ -141,48 +420,7 @@ $(document).ready(function () {
                 format: "{0:n2}",
                 width: 220
             },
-            {
-                field: "btnGenerarEmbalaje",
-                title: "&nbsp;",
-                command: {
-                    name: "btnGenerarEmbalaje",
-                    iconClass: "k-icon k-i-play m-0",
-                    text: "",
-                    title: "&nbsp;",
-                    click: function (e) {
-                        let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-                        let jsonData = {
-                            IdDespachoEmbalajeMercancia: 0,
-                            IdUsuario: getUser(),
-                            IdPlanta: 0,
-                            IdCliente: KdoCmbGetValue($("#cmbCliente")),
-                            IdDespachoMercancia: dataItem.IdDespachoMercancia
-                        }
-
-                        kendo.ui.progress($(".k-dialog"), true);
-                        $.ajax({
-                            url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeMercancia",
-                            method: "POST",
-                            dataType: "json",
-                            data: JSON.stringify(jsonData),
-                            contentType: "application/json; charset=utf-8",
-                            success: function (resultado) {
-                                window.location.href = `/CrearEmbalaje/${KdoCmbGetValue($("#cmbCliente"))}/${resultado[0]}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}/${1}`;
-                            },
-                            error: function (data) {
-                                ErrorMsg(data);
-                                kendo.ui.progress($(".k-dialog"), false);
-                            }
-                        });
-
-                    }
-                },
-                width: "70px",
-                attributes: {
-                    style: "text-align: center"
-                }
-            },
+            { template: "<div class='opcOD' id='opcOD\#=data.IdDespachoMercancia#\'>Etapas</div>" },
             {
                 field: "btnStatus",
                 title: "&nbsp;",
@@ -244,16 +482,45 @@ $(document).ready(function () {
                 }
             },
             {//Boton para cambio de estado de las ordenes de despacho propuesta
-                field: "btnEstado",
+                field: "btnEtapa",
                 title: "&nbsp;",
                 command: {
-                    name: "btnEstado",
+                    name: "btnEtapa",
                     iconClass: "k-icon k-i-gear m-0",
                     text: "",
                     title: "&nbsp;",
                     click: function (e) {
+
                         let dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                        Fn_VistaCambioEstadoMostrar("DespachosMercancias", dataItem.Estado, TSM_Web_APi + "DespachosMercancias/CambiarEstadoOrdenDespacho", "", dataItem.IdDespachoMercancia, undefined, function () { return fn_RefreshGrid(); }, false);
+                        let IdOD = dataItem.IdDespachoMercancia;
+
+                        $.ajax({
+                            url: TSM_Web_APi + "DespachosMercancias/GetEtapaOD/" + IdOD,
+                            dataType: 'json',
+                            type: 'GET',
+                            contentType: "application/json; charset=utf-8",
+                            async: false,
+                            success: function (respuesta) {
+                                EtapaActual = respuesta.IdEtapaProceso;
+                                NombreEtapaActual = respuesta.NombreEtapa;
+                            }
+                        });
+
+                        let strjson = {
+                            config: [{
+                                Div: "vCambioEtapa",
+                                Vista: "~/Views/Shared/_CambioEtapa.cshtml",
+                                Js: "CambioEtapa.js",
+                                Titulo: "Cambio Etapa",
+                                Width: "20%",
+                                MinWidth: "20%",
+                                Height: "45%"
+                            }],
+                            Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
+                            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+                        };
+
+                        fn_GenLoadModalWindow(strjson);
                     }
                 },
                 width: "70px",
@@ -292,9 +559,9 @@ $(document).ready(function () {
     });
 
     $("#gridDespachos").kendoTooltip({
-        filter: ".k-grid-btnEstado",
+        filter: ".k-grid-btnEtapa",
         content: function (e) {
-            return "Cambio de Estado";
+            return "Cambio de Etapa";
         }
     });
 

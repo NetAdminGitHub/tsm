@@ -181,11 +181,11 @@ $(document).ready(function () {
         var g = $("<div/>").appendTo(e.detailCell).kendoGrid({
             edit: function (e) {
                 //  BLOQUEA CAMPO LLAVE ( ID)
-                e.container.find("label[for=IdTecnica]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdTecnica]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdTecnica]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-                e.container.find("label[for=IdServicio]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdServicio]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdServicio]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Nombre");
             },           

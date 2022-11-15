@@ -7,6 +7,7 @@ $(document).ready(function () {
     KdoButton($("#btnRetornar"), "hyperlink-open-sm", "Regresar");
     // crear campo numeric
     $("#num_Ingreso").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -28,7 +29,10 @@ $(document).ready(function () {
     KdoButton($("#btnCrearLista"), "gear", "Guardar");
 
     //crear campo fecha
-    $("#dFecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFecha").data("kendoDatePicker").value(Fhoy());
     $("#dFecha").data("kendoDatePicker").enable(false);
 
@@ -73,6 +77,7 @@ $(document).ready(function () {
                     Estado: { type: "string" },
                     IdPlanta: { type: "number" },
                     NombrePlanta: { type: "string" },
+                    NoReferenciaItem: { type: "string" },
                     IdUsuarioMod: { type: "string" },
                     FechaMod: { type: "date" }
                 }
@@ -94,6 +99,7 @@ $(document).ready(function () {
             { field: "Tallas", title: "Tallas" },
             { field: "NombrePlanta", title: "Planta" },
             { field: "Cantidad", title: "Total Cuantía", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
+            { field: "NoReferenciaItem", title: "Ref. Item" },
             {
                 field: "btnHb", title: "&nbsp;",
                 command: {
@@ -304,11 +310,13 @@ $(document).ready(function () {
                 { field: "IdListaEmpaqueBandeo", title: "Id Lista Empaque Bandeo", hidden: true },
                 { field: "IdIngreso", title: "Id Ingreso", hidden: true },
                 { field: "NoDocumento", title: "#Lista", hidden: true },
+                { field: "HBNoDoc", title: "Hoja Bandeo" },
                 { field: "Corte", title: "Corte" },
                 { field: "Estilos", title: "Estilos" },
                 { field: "Tallas", title: "Tallas" },
                 { field: "Color", title: "Color" },
-                { field: "CantidadTotal", title: "Cantidad" }
+                { field: "CantidadTotal", title: "Cantidad" },
+                { field: "NoReferenciaItem", title: "Ref. Item" }
             ]
         });
 

@@ -80,13 +80,13 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdModulo]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdModulo]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdModulo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUsuarioMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdUsuarioMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=FechaMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

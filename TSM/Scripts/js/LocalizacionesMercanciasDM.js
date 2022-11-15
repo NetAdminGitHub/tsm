@@ -147,6 +147,7 @@ $.fn.extend({
     ControlSeleccionAduanas: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdAduana",
                 filter: "contains",

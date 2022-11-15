@@ -63,7 +63,7 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdCategoriaConfeccion]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCategoriaConfeccion]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCategoriaConfeccion]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },

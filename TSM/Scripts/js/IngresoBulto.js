@@ -16,6 +16,7 @@ var fn_Ini_IngresoBulto = (strjson) => {
 
     //cnatidad de pieza
     $("#num_Ib_Cantidad").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: xesRollo_Bulto === true ? 9999999.99 : 999999999,
         format: xesRollo_Bulto === true ? "{0:n2}" : "#",

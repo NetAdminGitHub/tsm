@@ -538,6 +538,7 @@ $.fn.extend({
     mcBandeoDisenos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",

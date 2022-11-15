@@ -19,133 +19,158 @@ Simulacion_consulta =function () {
 
     
     $("#TxtCostoMP_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoMOD_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoPrimo_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoFabril_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoProduccion_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoOperacion_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoMP_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoMOD_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoPrimo_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoFabril_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoProduccion_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoOperacion_coltaUnitario").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCostoTotal_colta").kendoNumericTextBox({
+        size: "large",
         format: "c",
         restrictDecimals: false,
         decimals: 2,
         value: 0
     });
     $("#TxtCostoUnitario_colta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPorcUtilidadConsiderada_colta").kendoNumericTextBox({
+        size: "large",
         format: "P2",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtUtilidadDolares_colta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioCliente_colta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioTS_colta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtPrecioVenta_colta").kendoNumericTextBox({
+        size: "large",
         format: "c4",
         restrictDecimals: false,
         decimals: 4,
         value: 0
     });
     $("#TxtCantidadTecnicas_colta").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
     $("#TxtCantidadPiezas_colta").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
         value: 0
     });
-    $("#TxtFechaSim_colta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#TxtFechaSim_colta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#txtTiempoProyecto_colta").kendoNumericTextBox({
+        size: "large",
         format: "n4",
         restrictDecimals: false,
         decimals: 4,

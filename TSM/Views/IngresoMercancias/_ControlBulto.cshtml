@@ -4,7 +4,7 @@
         text-align: center;
     }
 </style>
-<div class="col-lg-12">
+<div>
     <form id="FrmGhojaBandeo" method="POST" enctype="multipart/form-data" autocomplete="off">
         <div class="row h-100">
             <div class="col-lg-7">
@@ -47,13 +47,19 @@
                                     <input id="txtPO" name="txtPO" type="text" class="k-textbox form-control" />
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label for="xcmbIdUni">Unidad:</label>
                                     <input id="xcmbIdUni" name="xcmbIdUni" type="text" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label for="txtNRI">No. Referencia Item:</label>
+                                    <input id="txtNRI" name="txtNRI" type="text" maxlength="10" class="k-textbox form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label for="txtTO"># Envío Traffic:</label>
                                     <input id="txtTO" name="txtTO" type="text" maxlength="256" class="k-textbox form-control" />
@@ -75,7 +81,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-lg-2">
-                                            <input type="checkbox" id="chkEnlazarTsm" name="chkEnlazarTsm" class="k-checkbox text-align-end">
+                                            <input type="checkbox" data-role="checkbox" id="chkEnlazarTsm" name="chkEnlazarTsm" class="k-checkbox k-checkbox-md k-rounded-md text-align-end">
                                             <label class="k-checkbox-label" for="chkEnlazarTsm" id="lblchkEnlazarTsm">Enlazar TSM</label>
                                         </div>
                                         <div class="col-lg-10  d-flex flex-row">
@@ -90,8 +96,7 @@
 
                                             </div>
                                             <div class="col-lg-10 d-flex flex-column">
-                                                <div class="form-group">
-                                                    <div class="row">
+                                                <div class="row">
                                                         <div class="col-lg-8">
                                                             <div class="form-group">
                                                                 <label for="txtNombreDiseño">Nombre del Diseño:</label>
@@ -141,14 +146,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-
-
-                                    
                                 </div>
                         </div>
                     </div>
@@ -163,14 +163,20 @@
                 </div>
             </div>
             <div class="col-lg-5">
-                <div class="form-row">
+                <div class="row">
                     <div class="col-lg-12 form-group text-right">
                         <a style="font-size: 12px; float: left;" class="badge badge-info" href="~/Support/Plantilla_BultosRollos.xlsx"><span class="k-icon k-i-download"></span>&nbsp;Descargar plantilla Excel</a>
                         <button type="button" id="btnCrearBulto" class="mr-1">Crear Bulto/Rollo</button>
                         <button type="button" id="btnCrearSerieBulto">Crear Serie de Bulto/Rollo</button>
                         <button type="button" id="btnBorrarMercancias">Borrar Bultos/Rollos</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group">
                         <input type="file" id="Adjunto" name="Adjunto" />
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12 form-group">
                         <label for="gridBultoDetalle" id="lblgridBultoDetalle" class="tsm-label-center"><strong>Detalle de Bultos</strong></label>
                         <div id="gridBultoDetalle"></div>

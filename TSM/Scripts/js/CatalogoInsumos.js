@@ -204,21 +204,21 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdCatalogoInsumo]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCatalogoInsumo]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCatalogoInsumo]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre2]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre3]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre3]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre3]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre4]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre4]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre4]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre5]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre5]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre5]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre6]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre6]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre6]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUsuarioMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdUsuarioMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();
 
             $('[name="FechaMod"]').data("kendoDatePicker").enable(false);

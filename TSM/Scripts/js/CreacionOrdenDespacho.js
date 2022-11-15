@@ -1,10 +1,7 @@
 ﻿var dTree;
 var Gdet;
 var Permisos;
-var xIdIngreso = 0;
 var StrId = "";
-var pkIdCarrito = 0;
-var pkIdHb = 0;
 var bgd = 0;
 var banFReadGrid = 0;
 var oldPlanta = 0;
@@ -21,16 +18,15 @@ var xNoDoc = 0;
 
 var rowsPadre = [];
 var rowsHijo = [];
-var dataPadre = [];
-var dataHijo = [];
-var acumRowPadre = [];
-var acumRowHijo = [];
-var acumDSOD = [];
-var oldElement = [];
+
+let EtapaActual;
+let NombreEtapaActual;
 
 $(document).ready(function () {
 
-    KdoButton($("#btnRetornar"), "arrow-left", "Regresar");
+    KdoButton($("#btnRetornar"), "arrow-left");
+    KdoButton($("#btnCrearOrdenDespacho"), "save");
+    KdoButton($("#btnEtapa"), "gear");
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
 
@@ -49,14 +45,16 @@ $(document).ready(function () {
     //crear combobox catalogo 
     $("#cmbFm").mlcFmCatalogo();
     $("#cmbCorte").mlcCorteCatalogo();
-    // Agregar Corte
-    KdoButton($("#btnCrearOrdenDespacho"), "save");
     // crear detakle de preparado
     KdoButtonEnable($("#btnCrearOrdenDespacho"), false);
-    $("#dtFechaProyectada").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dtFechaProyectada").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     KdoButton($("#btnMoveData"), "redo k-icon-xl");
     $("#btnMoveData").removeClass("k-button-icon");
     KdoButtonEnable($("#btnMoveData"), false);
+    KdoButtonEnable($("#btnEtapa"), false);
 
     //#region crear bultos si preparar
 
@@ -377,6 +375,7 @@ $(document).ready(function () {
 
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         KdoButtonEnable($("#btnMoveData"), true);
+        KdoButtonEnable($("#btnEtapa"), true);
         loadGridIzquierdo();
 
         $.ajax({
@@ -660,11 +659,13 @@ $(document).ready(function () {
                             $('#cmbCliente').data("kendoComboBox").readonly(true);
                             oldPlanta = xidPlanta;
                             KdoButtonEnable($("#btnMoveData"), true);
+                            KdoButtonEnable($("#btnEtapa"), true);
                             loadGridIzquierdo();
                             RequestEndMsg(datos, "Post");
                         },
                         error: function (data) {
                             KdoButtonEnable($("#btnMoveData"), false);
+                            KdoButtonEnable($("#btnEtapa"), false);
                             ErrorMsg(data);
                         },
                         complete: function () {
@@ -687,6 +688,39 @@ $(document).ready(function () {
 
     });
 
+    $("#btnEtapa").click(function () {
+
+        let IdOD = xidDM;
+
+        $.ajax({
+            url: TSM_Web_APi + "DespachosMercancias/GetEtapaOD/" + IdOD,
+            dataType: 'json',
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (respuesta) {
+                EtapaActual = respuesta.IdEtapaProceso;
+                NombreEtapaActual = respuesta.NombreEtapa;
+            }
+        });
+
+        let strjson = {
+            config: [{
+                Div: "vCambioEtapa",
+                Vista: "~/Views/Shared/_CambioEtapa.cshtml",
+                Js: "CambioEtapa.js",
+                Titulo: "Cambio Etapa",
+                Width: "20%",
+                MinWidth: "20%",
+                Height: "45%"
+            }],
+            Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
+            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+
+    });
 
     //compeltar campos de cabecera
 
@@ -1633,6 +1667,7 @@ $.fn.extend({
     mlcFmCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",
@@ -1662,6 +1697,7 @@ $.fn.extend({
     mlcCorteCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Corte",
                 dataValueField: "IdHojaBandeo",
                 filter: "contains",

@@ -16266,3 +16266,43 @@ div.k-grid-norecords {
     justify-content: center;
     flex-direction: column;
 }
+
+.k-stepper .k-step-label .k-step-text {
+    white-space: pre-wrap;
+}
+
+.k-step-list-horizontal ~ .k-progressbar {
+    height: 5px;
+}
+
+.k-stepper-color-pe {
+    border-color: #F9DF05 !important;
+    color: #fff;
+    background-color: #F9DF05 !important;
+}
+
+.k-stepper-color-f {
+    border-color: #1AB005 !important;
+    color: #fff;
+    background-color: #1AB005 !important;
+}
+
+.k-stepper .k-step-done .k-step-indicator {
+    border-color: #1AB005;
+    color: #fff;
+    background-color: #1AB005;
+}
+
+.k-progressbar .k-selected {
+    border-color: #1AB005;
+    color: #fff;
+    background-color: #1AB005;
+}
+
+.k-step-link {
+    pointer-events: none;
+}
+
+.k-step {
+    pointer-events: none;
+}

@@ -991,6 +991,7 @@ $.fn.extend({
     mlcFmCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",
@@ -1020,6 +1021,7 @@ $.fn.extend({
     mlcCorteCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Corte",
                 dataValueField: "IdHojaBandeo",
                 filter: "contains",
