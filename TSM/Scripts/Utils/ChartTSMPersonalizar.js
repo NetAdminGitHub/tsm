@@ -307,9 +307,9 @@ var ConfigSeriesxDefectoGrafico = function (e, visible, PosicionLabel, template)
 var ConfigExportarGrafico = function (e, IdDivExp, fPdf, fImg, fsvg) {
     $("#" + IdDivExp + "").children().remove();
     $("#" + IdDivExp + "").append(
-        '<button type="button" id="' + IdDivExp + '_pdf" name="' + IdDivExp + '_pdf" ></button>' +
-        '<button type="button" id="' + IdDivExp + '_img" name="' + IdDivExp + '_img" ></button>' +
-        '<button type="button" id="' + IdDivExp + '_svg" name="' + IdDivExp + '_svg" ></button>'  );
+        '<button type="button" id="' + IdDivExp + '_pdf" name="' + IdDivExp + '_pdf" class="mx-1" ></button>' +
+        '<button type="button" id="' + IdDivExp + '_img" name="' + IdDivExp + '_img" class="mx-1" ></button>' +
+        '<button type="button" id="' + IdDivExp + '_svg" name="' + IdDivExp + '_svg" class="mx-1" ></button>'  );
 
     KdoButton($("#" + IdDivExp + "_pdf"), "pdf", "Exportar a pdf");
     KdoButton($("#" + IdDivExp + "_img"), "image-export", "Exportar a imagen");

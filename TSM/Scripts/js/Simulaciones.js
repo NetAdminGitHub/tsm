@@ -11,15 +11,16 @@ var Permisos;
 let xIdCataInsuTrans;
 let xIdCataInsuImpre;
 let xIdCataConsu;
+let idRequerimiento = 0;
 
 $(document).ready(function () {
     //#region Inicializacion de variables
     Fn_VistaConsultaRequerimiento($('#vConsulta'));
-    KdoButton($("#btnRecalcular"), "gears", "Recalcular simulación");
-    KdoButton($("#btnSimulacion"), "gear", "Nueva simulación");
+    KdoButton($("#btnRecalcular"), "reset", "Recalcular simulación");
+    KdoButton($("#btnSimulacion"), "track-changes", "Nueva simulación");
     KdoButton($("#btnCerrar"), "cancel", "Cancelar");
     KdoButton($("#btnAceptar"), "check", "Aceptar");
-    KdoButton($("#btnCambioEstado"), "check", "Cambio de estado");
+    KdoButton($("#btnCambioEstado"), "gear", "Cambio de estado");
     Kendo_CmbFiltrarGrid($("#CmbIdServicio"), UrlApiServ, "Nombre", "IdServicio", "Selecione un Servicio...");
     Kendo_CmbFiltrarGrid($("#CmbIdCliente"), UrlApiClient, "Nombre", "IdCliente", "Selecione un Cliente...");
 
@@ -48,28 +49,10 @@ $(document).ready(function () {
         resizeSplitter($(window).height());
     });
 
-    resizeSplitter = function (height) {
-
-        var splElement = $("#splitter"),
-            splObject = splElement.data("kendoSplitter");
-        splElement.css({ height: height - height * 0.36 });
-        setTimeout(function () {
-            splObject.resize(true);
-        }, 300);
-
-    };
-    $(".sidebar").hover(function () {
-        resizeSplitter($(window).height());
-    });
-
-    resizeSplitter($(window).height());
-
-
     $("#TabSimulacion").kendoTabStrip({
         tabPosition: "left",
         animation: { open: { effects: "fadeIn" } }
     });
-
 
     let ValidNuevoSim = $("#FrmNuevoSim").kendoValidator({
         rules: {
@@ -192,13 +175,89 @@ $(document).ready(function () {
 
     //#endregion  fin Inicializacion de variABLES
 
+    //#region GRID LISTA DE REQUERIMIENTOS
+
+    let DSRequerimientos = new kendo.data.DataSource({
+        dataType: "json",
+        transport: {
+            read: {
+                url: function (datos) { return UrlRequeDesarrollo + `/GetReqDes_Simulaciones/${VIdSer}/${VIdCliente}/${vIdModulo}`; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        requestEnd: Grid_requestEnd,
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdRequerimiento",
+                fields: {
+                    IdRequerimiento: { type: "number" },
+                    NomPrograma: { type: "string" },
+                    IdAnalisisDiseno: { type: "number" },
+                    NoDocAnalisisDiseno: { type: "string" },
+                    NoDocRequerimiento: { type: "string" },
+                    Diseno: { type: "string" },
+                    NoDocPrograma: { type: "string" },
+                    EstiloDiseno: { type: "string" },
+                    TallaPrincipal: { type: "string" },
+                    FechaRequerimiento: { type: "date" }
+                }
+            }
+        }
+    });
+
+    $("#gridRequerimientosDesarrollos").kendoGrid({
+        change: function (e) {
+            let rows = e.sender.select();
+
+            let grid = $("#gridRequerimientosDesarrollos").data("kendoGrid");
+            rows.each(function (e) {
+                let dataItem = grid.dataItem(this);
+                idRequerimiento = dataItem.IdRequerimiento;
+            });
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            Fn_Consultar(VIdSer, VIdCliente);
+        },
+        autoBind: false,
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { field: "IdRequerimiento", title: "Cod. Requerimiento", hidden: true },
+            { field: "NomPrograma", title: "Nombre Programa" },
+            {
+                field: "NoDocRequerimiento", title: "Requerimiento", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='Fn_VerRequerimientoConsulta(" + data["IdRequerimiento"] + ")' >" + data["NoDocRequerimiento"] + "</button>";
+                }
+            },
+            {
+                field: "NoDocAnalisisDiseno", title: "No Análisis Diseño", template: function (data) {
+                    return "<button class='btn btn-link nav-link' onclick='Fn_VerAnalisis(" + data["IdAnalisisDiseno"] + ")' >" + data["NoDocAnalisisDiseno"] + "</button>";
+                }
+            },
+            { field: "Diseno", title: "Diseño" },
+            { field: "EstiloDiseno", title: "Estilo"}
+        ]
+    });
+
+    SetGrid($("#gridRequerimientosDesarrollos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, false, true, 0, "row");
+    SetGrid_CRUD_ToolbarTop($("#gridRequerimientosDesarrollos").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridRequerimientosDesarrollos").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridRequerimientosDesarrollos").data("kendoGrid"), DSRequerimientos);
+
+    //#endregion GRID LISTA DE REQUERIMIENTOS
+
     //#region PROGRAMACION GRID PRINCIPAL PARA SIMULACION
     let DsRD = new kendo.data.DataSource({
         dataType: "json",
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function (datos) { return UrlApiSimu + "/GetSimulacionesAnalisis/" + VIdSer + "/" + VIdCliente + "/" + vIdModulo; },
+                url: function (datos) { return UrlApiSimu + `/GetSimulacionesAnalisisByReq/${idRequerimiento}`; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
@@ -311,47 +370,41 @@ $(document).ready(function () {
         autoBind: false,
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
-            { field: "NoDocumento2", title: "No.Simulación" },
-            { field: "Fecha2", title: "Fecha simulación", format: "{0: dd/MM/yyyy}"},
+            { field: "NoDocumento2", title: "No. Simulación" },
+            { field: "Fecha2", title: "Fecha simulación", format: "{0: dd/MM/yyyy}" },
+            { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColIntNumSinDecimal }, //<--
+            { field: "Montajes", title: "Montajes" },
+            { field: "PersonalExtra", title: "Personal Extra" },
+            { field: "CantidadCombos", title: "Cantidad Combos" },
+            { field: "VelocidadMaquina", title: "Velocidad" },
+            {field: "Nombre5", title: "Estado simulación", template: function (data) {
+                return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
+               }
+            },
+            
             { field: "IdSimulacion", title: "Cod. simulación", hidden: true },
             { field: "IdRequerimiento", title: "Código requerimiento", hidden: true },
-            {
-                field: "NoDocumento1", title: "No Requerimiento", template: function (data) {
-                    return "<button class='btn btn-link nav-link' onclick='Fn_VerRequerimientoConsulta(" + data["IdRequerimiento"] + ")' >" + data["NoDocumento1"] + "</button>";
-                }
-            },
-            {field: "IdAnalisisDiseno", title: "Cod. análisis diseño", hidden:true },
-            {
-                field: "NoDocumento3", title: "No Analisis Diseño", template: function (data) {
-                    return "<button class='btn btn-link nav-link' onclick='Fn_VerAnalisis(" + data["IdAnalisisDiseno"] + ")' >" + data["NoDocumento3"] + "</button>";
-                }
-
-            },
+            { field: "IdAnalisisDiseno", title: "Cod. análisis diseño", hidden:true },
             { field: "Fecha1", title: "Fecha del análisis", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "Fecha", title: "Fecha del requeimiento", format: "{0: dd/MM/yyyy}", hidden: true },
             { field: "Nombre2", title: "Nombre del diseño", hidden: true },
             { field: "EstiloDiseno", title: "Estilo diseno", hidden: true },
-            { field: "NumeroDiseno", title: "Número diseno" },
+            { field: "NumeroDiseno", title: "Número diseno", hidden: true },
             { field: "IdPrograma", title: "Código Programa", hidden: true },
-            { field: "NoDocumento", title: "No Programa" },
+            { field: "NoDocumento", title: "No Programa", hidden: true },
             { field: "Nombre3", title: "Nombre del programa", hidden: true },
             { field: "IdCliente", title: "Código cliente", hidden: true },
-            { field: "NoCuenta", title: "No Cuenta cliente" },
-            { field: "Nombre4", title: "Nombre del cliente" },
+            { field: "NoCuenta", title: "No Cuenta cliente", hidden: true },
+            { field: "Nombre4", title: "Nombre del cliente", hidden: true },
             { field: "IdServicio", title: "Código servicio", hidden: true },
             { field: "Nombre", title: "Servicio", hidden: true },
             { field: "IdUbicacion", title: "Código ubicación", hidden: true },
             { field: "Nombre1", title: "Ubicación", hidden: true },
             { field: "UbicacionHorizontal", title: "Ubicación horizontal", hidden: true },
             { field: "UbicacionVertical", title: "Ubicacion vertical", hidden: true },
-            { field: "CantidadPiezas", title: "Cantidad de piezas", hidden: true, editor: Grid_ColIntNumSinDecimal }, //<--
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
             { field: "Tecnicas", title: "Técnicas", hidden: true },
-            {field: "Nombre5", title: "Estado simulación", template: function (data) {
-                return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
-               }
-            },
             { field: "Estado1", title: "Estado del Analisis", hidden: true },
             { field: "InstruccionesEspeciales", title: "Instrucciones especiales", hidden: true },
             { field: "CostoMP", title: "Costo de Materia Prima Total", format: "{0:c2}",hidden: true  },
@@ -380,49 +433,7 @@ $(document).ready(function () {
     SetGrid_CRUD_ToolbarTop($("#gridSimulacion").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridSimulacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridSimulacion").data("kendoGrid"), DsRD);
-
-   
-
-    $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
-        kendo.ui.progress($("#CmbIdServicio"), true);
-        if (e.item) {
-            if (this.dataItem(e.item.index()).IdServicio === 1)
-                $("#gridSimuConsumo").data("kendoGrid").showColumn("Nombre1");
-            else {
-                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre1");
-                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre2");
-            }
-
-            Fn_Consultar(this.dataItem(e.item.index()).IdServicio.toString(), Kendo_CmbGetvalue($("#CmbIdCliente")));
-        } else {
-            Fn_Consultar(0, Kendo_CmbGetvalue($("#CmbIdCliente")));
-        }
-
-    });
-
-    $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
-        kendo.ui.progress($("#CmbIdServicio"), true);
-        let value = this.value();
-        if (value === "") {
-            Fn_Consultar(0, Kendo_CmbGetvalue($("#CmbIdCliente")));
-        }
-    });
-
-    $("#CmbIdCliente").data("kendoComboBox").bind("select", function (e) {
-        if (e.item) {
-            Fn_Consultar(Kendo_CmbGetvalue($("#CmbIdServicio")), this.dataItem(e.item.index()).IdCliente.toString());
-        } else {
-            Fn_Consultar(0, 0);
-        }
-    });
-
-    $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
-        let value = this.value();
-        if (value === "") {
-            Fn_Consultar(Kendo_CmbGetvalue($("#CmbIdServicio")), 0);
-        }
-    });
-
+    
     var selectedRows = [];
     $("#gridSimulacion").data("kendoGrid").bind("dataBound", function (e) { //foco en la fila
         Grid_SetSelectRow($("#gridSimulacion"), selectedRows);
@@ -448,6 +459,29 @@ $(document).ready(function () {
         Grid_SelectRow($("#gridSimulacion"), selectedRows);        
     });
     //#endregion FIN GRID PRINCIPAL
+
+    $("#CmbIdServicio").data("kendoComboBox").bind("select", function (e) {
+        kendo.ui.progress($("#CmbIdServicio"), true);
+        if (e.item) {
+            if (this.dataItem(e.item.index()).IdServicio === 1)
+                $("#gridSimuConsumo").data("kendoGrid").showColumn("Nombre1");
+            else {
+                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre1");
+                $("#gridSimuConsumo").data("kendoGrid").hideColumn("Nombre2");
+            }
+        }
+    });
+
+    $("#CmbIdServicio").data("kendoComboBox").bind("change", function (e) {
+        VIdSer = this.value() == "" ? 0 : this.value();
+        $("#gridRequerimientosDesarrollos").data("kendoGrid").dataSource.read();
+    });
+
+    $("#CmbIdCliente").data("kendoComboBox").bind("change", function (e) {
+        VIdCliente = this.value() == "" ? 0 : this.value();
+        $("#gridRequerimientosDesarrollos").data("kendoGrid").dataSource.read();
+    });
+
 
     //#region CRUD para el grid Rentabilidad
     let DsRent = new kendo.data.DataSource({
@@ -494,11 +528,11 @@ $(document).ready(function () {
                     PrecioCliente = e.response[0].PrecioCliente;
                     Utilidad = e.response[0].Utilidad;
                 } else {
-                    PrecioVenta =0;
-                    Rentabilidad =0;
+                    PrecioVenta = 0;
+                    Rentabilidad = 0;
                     PrecioTS = 0;
-                    PrecioCliente =0;
-                    Utilidad =0;
+                    PrecioCliente = 0;
+                    Utilidad = 0;
                 }
                 let uid = $("#gridSimulacion").data("kendoGrid").dataSource.get(e.response[0].IdSimulacion).uid;
                 $("#gridSimulacion").data("kendoGrid").dataItem("tr[data-uid='" + uid + "']").set("PrecioVenta", PrecioVenta);
@@ -516,11 +550,8 @@ $(document).ready(function () {
                 $(".k-dirty", $("#gridSimulacion")).remove();
             }
             Grid_requestEnd(e);
-          
         },
-        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         error: Grid_error,
-        // DEFINICIÓN DEL ESQUEMA, MODELO Y COLUMNAS
         schema: {
             model: {
                 id: "IdSimulacionRentabilidad",
@@ -818,7 +849,7 @@ $(document).ready(function () {
     //#region Precotizar una nueva
     $("#btnAceptar").click(function (event) {
         event.preventDefault();
-        if (ValidNuevoSim.validate()) { ConfirmacionMsg("¿Está seguro de generar una nueva simulación de pre-costeo para el requerimiento : " + fn_NoRequerimiento($("#gridSimulacion").data("kendoGrid")).toString(), function () { return fn_NuevaSimulacion();}); } 
+        if (ValidNuevoSim.validate()) { ConfirmacionMsg("¿Está seguro de generar una nueva simulación de pre-costeo para el requerimiento: " + fn_NoRequerimiento($("#gridRequerimientosDesarrollos").data("kendoGrid")).toString(), function () { return fn_NuevaSimulacion();}); }
     });
 
     $("#btnRecalcular").click(function (event) {
@@ -874,10 +905,6 @@ $(document).ready(function () {
 
                 break;
             case 2:
-                //$("#CmbInsuImp").data("kendoComboBox").setDataSource(DsInsuImpre);
-                //$("#CmbInsuTrans").data("kendoComboBox").setDataSource(DsInsumTrans);
-                //$("#CmbInsuTinta").data("kendoComboBox").setDataSource(DsInsuTin);
-
                 $('[for="TxtNoMontaje"]').prop('hidden', true);
                 KdoNumericHide($("#TxtNoMontaje"));
                 $('[for="txtCombos"]').prop('hidden', true);
@@ -1240,6 +1267,7 @@ let getRDS = function () {
 //#endregion
 //#region Metodos Generales
 let Fn_Consultar = function (IdServicio, IdCliente) {
+
     kendo.ui.progress($("#splitter"), true);
     VIdSer = Number(IdServicio);
     VIdCliente = Number(IdCliente);
