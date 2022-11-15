@@ -292,6 +292,7 @@
     <Compile Include="Controllers\ConsultaDespachoController.cs" />
     <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
     <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
+    <Compile Include="Controllers\ConsultaListaEmpaquesController.cs" />
     <Compile Include="Controllers\ControlDeclaracionesController.cs" />
     <Compile Include="Controllers\ControlIngresosController.cs" />
     <Compile Include="Controllers\ControlUnidadesEmbalajeController.cs" />
@@ -571,6 +572,7 @@
     <Content Include="Scripts\js\CarritoEntrega.js" />
     <Content Include="Scripts\js\CarritosFinalizados.js" />
     <Content Include="Scripts\js\ConsultaEtapaCorte.js" />
+    <Content Include="Scripts\js\ConsultaListaEmpaques.js" />
     <Content Include="Scripts\js\ConsultaMercancia.js" />
     <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
     <Content Include="Scripts\js\EtapasMercanciasConsulta.js" />
@@ -1191,6 +1193,7 @@
     <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
     <Content Include="Views\TiposTransportes\Index.cshtml" />
     <Content Include="Views\Shared\_CambioEtapa.cshtml" />
+    <Content Include="Views\ConsultaListaEmpaques\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

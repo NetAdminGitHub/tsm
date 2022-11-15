@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Consulta Lista Empaques";
+    ViewBag.IdVersion = "TSM0101152|v22111401";
+}
+@section Scripts {
+    <script src="~/Scripts/js/ConsultaListaEmpaques.js?@ViewBag.IdVersion"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <label for="cmbCliente" id="lblCliente">Cliente:</label>
+                        <input id="cmbCliente" name="cmbCliente" class="" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                        <input id="cmbPlanta" name="cmbPlanta" class="" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbOD" id="lblOD">Orden de Despacho:</label>
+                        <input id="cmbOD" name="cmbOD" class="" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="gridListaEmpaques"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
