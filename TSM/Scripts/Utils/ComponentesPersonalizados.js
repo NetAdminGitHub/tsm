@@ -753,7 +753,7 @@
                 columns: [
                     { field: "NoDocumento", title: "Orden Despacho", width: 300 },
                     { field: "IdPlanta", title: "Planta", width: 200 },
-                    { field: "FechaEntrega", title: "Fecha de Entrega", width: 200 },
+                    { field: "FechaEntrega", title: "Fecha de Entrega", width: 200, template: '#:kendo.toString(kendo.parseDate(data.FechaEntrega), "dd/MM/yyyy")#' },
                 ]
             });
         });
