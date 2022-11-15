@@ -213,6 +213,10 @@ $(document).ready(function () {
     });
 
     $("#gridRequerimientosDesarrollos").kendoGrid({
+        dataBound: function () {
+            idRequerimiento = 0;
+            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+        },
         change: function (e) {
             let rows = e.sender.select();
 
@@ -223,6 +227,10 @@ $(document).ready(function () {
             });
             $("#gridSimulacion").data("kendoGrid").dataSource.read();
             Fn_Consultar(VIdSer, VIdCliente);
+        },
+        pageable: {
+            refresh: true,
+            pageSizes: true 
         },
         autoBind: false,
         //DEFICNICIÓN DE LOS CAMPOS
@@ -371,13 +379,13 @@ $(document).ready(function () {
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "NoDocumento2", title: "No. Simulación" },
-            { field: "Fecha2", title: "Fecha simulación", format: "{0: dd/MM/yyyy}" },
-            { field: "CantidadPiezas", title: "Cantidad Piezas", editor: Grid_ColIntNumSinDecimal }, //<--
+            { field: "Fecha2", title: "Fecha", format: "{0: dd/MM/yyyy}" },
+            { field: "CantidadPiezas", title: "Piezas", editor: Grid_ColIntNumSinDecimal }, //<--
             { field: "Montajes", title: "Montajes" },
             { field: "PersonalExtra", title: "Personal Extra" },
-            { field: "CantidadCombos", title: "Cantidad Combos" },
+            { field: "CantidadCombos", title: "Combos" },
             { field: "VelocidadMaquina", title: "Velocidad" },
-            {field: "Nombre5", title: "Estado simulación", template: function (data) {
+            {field: "Nombre5", title: "Estado", template: function (data) {
                 return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
                }
             },
