@@ -206,7 +206,8 @@ $(document).ready(function () {
                     NoDocPrograma: { type: "string" },
                     EstiloDiseno: { type: "string" },
                     TallaPrincipal: { type: "string" },
-                    FechaRequerimiento: { type: "date" }
+                    FechaRequerimiento: { type: "date" },
+                    NomCliente: { type: "string" }
                 }
             }
         }
@@ -215,7 +216,8 @@ $(document).ready(function () {
     $("#gridRequerimientosDesarrollos").kendoGrid({
         dataBound: function () {
             idRequerimiento = 0;
-            $("#gridSimulacion").data("kendoGrid").dataSource.read();
+            VIdCliente === 0 ? $("#gridRequerimientosDesarrollos").data("kendoGrid").showColumn("NomCliente") : $("#gridRequerimientosDesarrollos").data("kendoGrid").hideColumn("NomCliente");
+            $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () { if ($("#gridSimulacion").data("kendoGrid").dataSource.total() == 0) fn_LimpiarCamposSim(); });
         },
         change: function (e) {
             let rows = e.sender.select();
@@ -230,15 +232,17 @@ $(document).ready(function () {
         },
         pageable: {
             refresh: true,
-            pageSizes: true 
+            pageSizes: true,
+            input: false
         },
         autoBind: false,
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
+            { field: "NomCliente", title: "Cliente" },
             { field: "IdRequerimiento", title: "Cod. Requerimiento", hidden: true },
             { field: "NomPrograma", title: "Nombre Programa" },
             {
-                field: "NoDocRequerimiento", title: "Requerimiento", template: function (data) {
+                field: "NoDocRequerimiento", title: "Requerimiento", width: 126, template: function (data) {
                     return "<button class='btn btn-link nav-link' onclick='Fn_VerRequerimientoConsulta(" + data["IdRequerimiento"] + ")' >" + data["NoDocRequerimiento"] + "</button>";
                 }
             },
@@ -248,11 +252,13 @@ $(document).ready(function () {
                 }
             },
             { field: "Diseno", title: "Diseño" },
-            { field: "EstiloDiseno", title: "Estilo"}
+            { field: "EstiloDiseno", title: "Estilo" },
+            { field: "FechaRequerimiento", title: "Fecha", format: "{0: dd/MM/yyyy}" }
         ]
     });
 
-    SetGrid($("#gridRequerimientosDesarrollos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, false, true, 0, "row");
+    SetGrid($("#gridRequerimientosDesarrollos").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, false, true, 300, "row");
+    $("#gridRequerimientosDesarrollos").data("kendoGrid").setOptions($.extend({}, $("#gridRequerimientosDesarrollos").data("kendoGrid").getOptions(), { pageable: { input: false, pageSizes: false, buttonCount: 5 } }));
     SetGrid_CRUD_ToolbarTop($("#gridRequerimientosDesarrollos").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridRequerimientosDesarrollos").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridRequerimientosDesarrollos").data("kendoGrid"), DSRequerimientos);
@@ -386,7 +392,7 @@ $(document).ready(function () {
             { field: "CantidadCombos", title: "Combos" },
             { field: "VelocidadMaquina", title: "Velocidad" },
             {field: "Nombre5", title: "Estado", template: function (data) {
-                return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Nombre5"] + "</button>";
+                return "<button class='btn btn-link nav-link' onclick='Fn_VerEstados(" + data["IdRequerimiento"] + ")' >" + data["Estado"] + "</button>";
                }
             },
             
@@ -412,7 +418,7 @@ $(document).ready(function () {
             { field: "UbicacionVertical", title: "Ubicacion vertical", hidden: true },
             { field: "TallaPrincipal", title: "Talla principal", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
-            { field: "Tecnicas", title: "Técnicas", hidden: true },
+            { field: "Tecnicas", title: "Técnicas" },
             { field: "Estado1", title: "Estado del Analisis", hidden: true },
             { field: "InstruccionesEspeciales", title: "Instrucciones especiales", hidden: true },
             { field: "CostoMP", title: "Costo de Materia Prima Total", format: "{0:c2}",hidden: true  },
@@ -437,7 +443,7 @@ $(document).ready(function () {
         ]
     });
 
-    SetGrid($("#gridSimulacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 0);
+    SetGrid($("#gridSimulacion").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, true, 300);
     SetGrid_CRUD_ToolbarTop($("#gridSimulacion").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridSimulacion").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridSimulacion").data("kendoGrid"), DsRD);
@@ -1312,7 +1318,6 @@ let Fn_Consultar = function (IdServicio, IdCliente) {
         }
     });
 
-    VIdCliente === 0 ? $("#gridSimulacion").data("kendoGrid").showColumn("Nombre4") : $("#gridSimulacion").data("kendoGrid").hideColumn("Nombre4");
     // limpiar etapas del proceso
     CargarEtapasProceso(0);
     //leer grid
