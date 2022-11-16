@@ -3,12 +3,14 @@ let IdEtapaActual;
 let EsAnterior;
 let IdDespachoMercancia;
 let NombreEA;
+var cambioSuccess = 0;
 
 var fn_Ini_ConsultaEtapa = function (strjson) {
-
+    cambioSuccess = 0
     IdEtapaActual = strjson.IdEtapaActual;
     IdDespachoMercancia = strjson.IdDespachoMercancia;
     NombreEA = strjson.NombreEtapaActual;
+    VistaCambioEsta = strjson.divModal;
 
     if (banLoad == 0) {
         KdoButton($("#btnCambiarEtapaOD"), "check", "Cambiar");
@@ -66,12 +68,14 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                     async: false,
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
+                        cambioSuccess = 1;
                         $("#vCambioEtapa").data("kendoWindow").close();
                         $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
                         $("#gridDespachos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
-                        VistaCambioEsta.data("kendoDialog").close();
+                        cambioSuccess = 0;
+                        VistaCambioEsta.data("kendoWindow").close();
                         kendo.ui.progress($("#TxtMotivo"), false);
                         ErrorMsg(data);
                         Realizocambio = false;
@@ -107,7 +111,7 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                             $("#gridDespachos").data("kendoGrid").dataSource.read();
                         },
                         error: function (data) {
-                            VistaCambioEsta.data("kendoDialog").close();
+                            VistaCambioEsta.data("kendoWindow").close();
                             kendo.ui.progress($("#TxtMotivo"), false);
                             ErrorMsg(data);
                             Realizocambio = false;
@@ -129,14 +133,14 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
 }
 
 var fn_con_ConsultaEtapa = function (strjson) {
-
+    cambioSuccess = 0;
     KdoCmbSetValue($("#cmbEtapas"), "");
     $("#TxtMotivoEtapa").val("");
 
     IdEtapaActual = strjson.IdEtapaActual;
     IdDespachoMercancia = strjson.IdDespachoMercancia;
     NombreEA = strjson.NombreEtapaActual;
-
+    VistaCambioEsta = strjson.divModal;
     let dse = new kendo.data.DataSource({
         transport: {
             read: {
@@ -182,11 +186,13 @@ var fn_con_ConsultaEtapa = function (strjson) {
                     async: false,
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
+                        cambioSuccess = 1;
                         $("#vCambioEtapa").data("kendoWindow").close();
                         $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
                         $("#gridDespachos").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
+                        cambioSuccess = 0;
                         VistaCambioEsta.data("kendoDialog").close();
                         kendo.ui.progress($("#TxtMotivo"), false);
                         ErrorMsg(data);
@@ -220,11 +226,13 @@ var fn_con_ConsultaEtapa = function (strjson) {
                         async: false,
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
+                            cambioSuccess = 1;
                             $("#vCambioEtapa").data("kendoWindow").close();
                             $("#kendoNotificaciones").data("kendoNotification").show("Cambio de etapa exitoso", "success");
                             $("#gridDespachos").data("kendoGrid").dataSource.read();
                         },
                         error: function (data) {
+                            cambioSuccess = 0;
                             VistaCambioEsta.data("kendoDialog").close();
                             kendo.ui.progress($("#TxtMotivo"), false);
                             ErrorMsg(data);
