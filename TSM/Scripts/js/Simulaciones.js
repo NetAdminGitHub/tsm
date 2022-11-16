@@ -217,7 +217,17 @@ $(document).ready(function () {
         dataBound: function () {
             idRequerimiento = 0;
             VIdCliente === 0 ? $("#gridRequerimientosDesarrollos").data("kendoGrid").showColumn("NomCliente") : $("#gridRequerimientosDesarrollos").data("kendoGrid").hideColumn("NomCliente");
-            $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () { if ($("#gridSimulacion").data("kendoGrid").dataSource.total() == 0) fn_LimpiarCamposSim(); });
+            $("#gridSimulacion").data("kendoGrid").dataSource.read().then(function () {
+                if ($("#gridSimulacion").data("kendoGrid").dataSource.total() == 0) {
+                    $("#gridRentabilidad").data("kendoGrid").dataSource.data([]);
+                    $("#gridSimuConsumo").data("kendoGrid").dataSource.data([]);
+                    Grid_HabilitaToolbar($("#gridSimuConsumo"), false, false, false);
+                    Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false);
+                    fn_LimpiarCamposSim();
+                    $("#btnRecalcular").data("kendoButton").enable(false);
+                    $("#btnCambioEstado").data("kendoButton").enable(false);
+                }
+            });
         },
         change: function (e) {
             let rows = e.sender.select();
