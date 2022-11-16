@@ -222,6 +222,8 @@ $(document).ready(function () {
         change: function (e) {
             let rows = e.sender.select();
 
+            rows == undefined ? $("#btnSimulacion").data("kendoButton").enable(false) : $("#btnSimulacion").data("kendoButton").enable(true);
+
             let grid = $("#gridRequerimientosDesarrollos").data("kendoGrid");
             rows.each(function (e) {
                 let dataItem = grid.dataItem(this);
@@ -1189,7 +1191,7 @@ let fn_NuevaSimulacion = function () {
     kendo.ui.progress($("#splitter"), true);
     if (VIdSer !== 2) {
         $.ajax({
-            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTransp").is(':checked') ? "1" : "0"),
+            url: UrlApiSimu + "/Procesar/" + fn_getIdRequerimiento($("#gridRequerimientosDesarrollos").data("kendoGrid")).toString() + "/" + $("#TxtNuevaCantidadPiezas").data("kendoNumericTextBox").value() + "/" + $("#TxtNoMontaje").data("kendoNumericTextBox").value() + "/" + $("#txtPersonalExtra").data("kendoNumericTextBox").value() + "/" + $("#txtCombos").data("kendoNumericTextBox").value() + "/" + $("#txtVeloMaquina").data("kendoNumericTextBox").value() + "/" + ($("#chkUsarTermofijado").is(':checked') ? "1" : "0") + "/" + ($("#chkApliCostoTransp").is(':checked') ? "1" : "0"),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ IdAnalisisDiseno: null }),
@@ -1208,7 +1210,7 @@ let fn_NuevaSimulacion = function () {
     }
     if (VIdSer === 2) {
         $.ajax({
-            url: UrlApiSimu + "/ProcesarSublimado/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbInsuImp")) + "/" + KdoCmbGetValue($("#CmbInsuTinta")) + "/" + KdoCmbGetValue($("#CmbInsuTrans")),
+            url: UrlApiSimu + "/ProcesarSublimado/" + fn_getIdRequerimiento($("#gridRequerimientosDesarrollos").data("kendoGrid")).toString() + "/" + KdoCmbGetValue($("#CmbInsuImp")) + "/" + KdoCmbGetValue($("#CmbInsuTinta")) + "/" + KdoCmbGetValue($("#CmbInsuTrans")),
             type: "Post",
             dataType: "json",
             data: JSON.stringify({ IdAnalisisDiseno: null }),
@@ -1233,7 +1235,7 @@ let fn_NuevaSimulacion = function () {
 let fn_RecalcularSimulacion = function () {
     kendo.ui.progress($("#splitter"), true);
 
-    let UrlRecal = UrlApiSimu + "/" + (VIdSer !== 2 ? "Recalcular" : "RecalcularSublimado" ) + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(); 
+    let UrlRecal = UrlApiSimu + "/" + (VIdSer !== 2 ? "Recalcular" : "RecalcularSublimado" ) + "/" + fn_getIdRequerimiento($("#gridRequerimientosDesarrollos").data("kendoGrid")).toString() + "/" + getIdSimulacion($("#gridSimulacion").data("kendoGrid")).toString(); 
 
     $.ajax({
         url: UrlRecal,
@@ -1257,7 +1259,7 @@ let fn_RecalcularSimulacion = function () {
 let getRDS = function () {
     kendo.ui.progress($("#NuevaSimulacion"), true);
     $.ajax({
-        url: UrlRequeDesarrollo + "/" + fn_getIdRequerimiento($("#gridSimulacion").data("kendoGrid")).toString(),
+        url: UrlRequeDesarrollo + "/" + fn_getIdRequerimiento($("#gridRequerimientosDesarrollos").data("kendoGrid")).toString(),
         dataType: 'json',
         type: 'GET',
         async: false,
@@ -1329,12 +1331,10 @@ let Fn_Consultar = function (IdServicio, IdCliente) {
         $("#gridSimuConsumo").data("kendoGrid").dataSource.data([]);
         Grid_HabilitaToolbar($("#gridSimuConsumo"), false, false, false);
         Grid_HabilitaToolbar($("#gridRentabilidad"), false, false, false);
-        fn_LimpiarCamposSim();
-        $("#btnSimulacion").data("kendoButton").enable(false);
+        fn_LimpiarCamposSim();        
         $("#btnRecalcular").data("kendoButton").enable(false);
         $("#btnCambioEstado").data("kendoButton").enable(false);
     } else {
-        $("#btnSimulacion").data("kendoButton").enable(fn_SNProcesar(true));
         $("#btnRecalcular").data("kendoButton").enable(fn_SNProcesar(true));
         $("#btnCambioEstado").data("kendoButton").enable(fn_SNCambiarEstados(true));
     }
@@ -2161,7 +2161,7 @@ function fn_getIdRequerimiento(g) {
 }
 function fn_NoRequerimiento(g) {
     var SelItem = g.dataItem(g.select());
-    return SelItem === null ? 0 : SelItem.NoDocumento1;
+    return SelItem === null ? 0 : SelItem.NoDocRequerimiento;
 }
 let getIdAD = function (g) {
     var SelItem = g.dataItem(g.select());
