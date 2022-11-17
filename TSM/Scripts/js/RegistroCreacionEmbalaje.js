@@ -192,11 +192,11 @@ $(document).ready(function () {
             { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true, attributes: { "class": "selCata" } },
             { field: "TotalTallas", title: "Tallas" },
             { field: "TotaBultos", title: "Bultos" },
-            { field: "ParteDecorada", title: "Parte</br>Decorada", width: 65 },
-            { field: "CantidadIngreso", title: "Cantidad</br>Ingreso", width: 65   },
-            { field: "CantidadDisponible", title: "Cantidad</br>Disponible", width: 65 },
+            { field: "ParteDecorada", title: "Parte </br> Decorada" },
+            { field: "CantidadIngreso", title: "Cantidad </br> Ingreso"   },
+            { field: "CantidadDisponible", title: "Cantidad </br> Disponible" },
             {
-                field: "CantidadDespacho", title: "Cantidad Despacho",
+                field: "CantidadDespacho", title: "Cantidad </br> Despacho",
            
             },
             { field: "Categoria", tittle: "Categoria", hidden: true},
