@@ -43,12 +43,14 @@ $(document).ready(function () {
         error: Grid_error,
         change: function (data) {
             Grid_HabilitaToolbar($("#gridPPVV"), false, false, false);
+            Grid_HabilitaToolbar($("#gridPPVC"), false, false, false);
         },
         schema: {
             model: {
                 id: "IdPerfil",
                 fields: {
                     IdPerfil: { type: "number" },
+                    Nombre: { type: "string" },
                     Plantilla: {
                         type: "string",
                         validation: {
@@ -80,7 +82,7 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "Estado");
             KdoHideCampoPopup(e.container, "IdUsuarioMod");
             KdoHideCampoPopup(e.container, "FechaMod");
-            Grid_Focus(e, "Plantilla");
+            Grid_Focus(e, "Nombre");
         },
         change: function (e) {
 
@@ -98,6 +100,7 @@ $(document).ready(function () {
             {
                 IDPERFIL = IdPerfil;
                 Grid_HabilitaToolbar($("#gridPPVV"), true, true, true);
+                Grid_HabilitaToolbar($("#gridPPVC"), true, true, true);
                 $("#gridPPVV").data("kendoGrid").dataSource.data([]);
                 $("#gridPPVC").data("kendoGrid").dataSource.data([]);
                 $("#gridPPVV").data("kendoGrid").setDataSource(dataSource2);
@@ -110,7 +113,8 @@ $(document).ready(function () {
         //DEFINICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdPerfil", title: "ID", hidden: true },
-            { field: "Plantilla", title: "Plantilla" },
+            { field: "Nombre", title: "Nombre" },
+            { field: "Plantilla", title: "Plantilla", editor: Grid_ColTextArea, values: ["5"] },
             { field: "Estado", title: "Estado", hidden: true},
             { field: "IdUsuarioMod", title: "Usuario Mod", hidden: true },
             { field: "FechaMod", title: "Fecha Mod", format: "{0: dd/MM/yyyy HH:mm:ss.ss}", hidden: true }
