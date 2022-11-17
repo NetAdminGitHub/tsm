@@ -122,7 +122,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
         if ($("#chkNuevoEmbalaje").is(':checked') === true) {
 
             if (!($("#cmbUnidadEmbalaje").data("kendoComboBox").selectedIndex >= 0)){
-                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una Unidad de embalaje.", "error");
+                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una Unidad de Embalaje.", "error");
                 return
             }
          
@@ -130,7 +130,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
 
         if ($("#chkNuevoEmbalaje").is(':checked') === false) {
             if (!($("#cmbEmbAsignacion").data("kendoComboBox").selectedIndex >= 0)) {
-                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un embalaje.", "error");
+                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un Embalaje.", "error");
                 return
             }
         }
@@ -139,13 +139,13 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
                 idUnidad === 2 ? Number($("#textPesoLb").val()).toFixed(2) : 0;
 
         if ( Number($("#txtPesoKg").val()) === 0) {
-            $("#kendoNotificaciones").data("kendoNotification").show("valor del peso debe ser mayor a 0", "error");
+            $("#kendoNotificaciones").data("kendoNotification").show("Valor del peso debe ser mayor a 0", "error");
             return
         }
 
         if (!($("#TxtDetalle").val().length > 0 && $("#TxtDetalle").val().length <= 2000)) {
 
-            $("#kendoNotificaciones").data("kendoNotification").show("Detalle del embalaje es requerido, valor maximo 2000 caracteres", "error");
+            $("#kendoNotificaciones").data("kendoNotification").show("Detalle del Embalaje es Requerido, valor maximo 2000 caracteres", "error");
             return
         }
 

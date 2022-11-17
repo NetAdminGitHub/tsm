@@ -523,7 +523,7 @@ $(document).ready(function () {
             {
                 field: "embSplit",
                 title: "&nbsp",
-                template: "<div id='split_#= IdEmbalajeMercancia#' class='embSplit'>Opcion</div>"
+                template: "<div id='split_#= IdEmbalajeMercancia#' class='embSplit'>Opciones</div>"
             }
 
         ]
@@ -550,7 +550,7 @@ $(document).ready(function () {
 
     $("#gEnEmbalaje").kendoTooltip({
         filter: "tr",
-        content: function (e) { return e.target['children']()[2].getInnerHTML(); }
+        content: function (e) { return "Comentario: " + e.target['children']()[2].getInnerHTML(); }
     });
 
     $("#gEnEmbalaje").on("click", ".k-grid-Generar", function () {
