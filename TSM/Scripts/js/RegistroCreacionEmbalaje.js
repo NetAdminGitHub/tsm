@@ -192,9 +192,9 @@ $(document).ready(function () {
             { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true, attributes: { "class": "selCata" } },
             { field: "TotalTallas", title: "Tallas" },
             { field: "TotaBultos", title: "Bultos" },
-            { field: "ParteDecorada", title: "Parte Decorada", width: 65 },
-            { field: "CantidadIngreso", title: "Cantidad Ingreso", width: 65   },
-            { field: "CantidadDisponible", title: "Cantidad Disponible", width: 65 },
+            { field: "ParteDecorada", title: "Parte</br>Decorada", width: 65 },
+            { field: "CantidadIngreso", title: "Cantidad</br>Ingreso", width: 65   },
+            { field: "CantidadDisponible", title: "Cantidad</br>Disponible", width: 65 },
             {
                 field: "CantidadDespacho", title: "Cantidad Despacho",
            
@@ -513,9 +513,9 @@ $(document).ready(function () {
             { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
             { field: "NoDocumento", title: "Documento" },
             { field: "CantTallas", title: "Tallas" },
-            { field: "CantBultos", title: "Cantidad </br> Bultos"},
-            { field: "Cantidad", title: "Cantidad </br> Total" },
-            { field: "Peso", title: "Peso (Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
+            { field: "CantBultos", title: "Cantidad</br>Bultos"},
+            { field: "Cantidad", title: "Cantidad</br>Total" },
+            { field: "Peso", title: "Peso(Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
             { field: "IdUnidad", title: "IdUnidad", hidden: true },
             { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
@@ -523,7 +523,8 @@ $(document).ready(function () {
             {
                 field: "embSplit",
                 title: "&nbsp",
-                template: "<div id='split_#= IdEmbalajeMercancia#' class='embSplit'>Opciones</div>"
+                template: "<div id='split_#= IdEmbalajeMercancia#' class='embSplit'>Opciones</div>",width:"118px"
+                
             }
 
         ]
