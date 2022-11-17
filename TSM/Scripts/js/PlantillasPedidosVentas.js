@@ -98,6 +98,8 @@ $(document).ready(function () {
             {
                 IDPERFIL = IdPerfil;
                 Grid_HabilitaToolbar($("#gridPPVV"), true, true, true);
+                $("#gridPPVV").data("kendoGrid").dataSource.data([]);
+                $("#gridPPVC").data("kendoGrid").dataSource.data([]);
                 $("#gridPPVV").data("kendoGrid").setDataSource(dataSource2);
                 $("#gridPPVC").data("kendoGrid").setDataSource(dataSource3);
                 
