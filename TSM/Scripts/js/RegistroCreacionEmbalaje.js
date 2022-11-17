@@ -15,6 +15,7 @@ let xPlanta = 0;
 let StrCorte = [];
 let EtapaActual;
 let NombreEtapaActual;
+let xestado = "";
 function myconfirm(content) {
     return $("<div></div>").kendoConfirm({
         title: "Finalizar Embalaje",
@@ -189,12 +190,15 @@ $(document).ready(function () {
             { field: "Diseno", title: "Diseno", hidden: true },
             { field: "Corte", title: "Corte" },
             { field: "IdCatalogoDiseno", title: "IdCatalogoDiseno", hidden: true, attributes: { "class": "selCata" } },
-            { field: "TotalTallas", title: "Total Tallas" },
+            { field: "TotalTallas", title: "Tallas" },
             { field: "TotaBultos", title: "Bultos" },
-            { field: "ParteDecorada", title: "Parte Decorada" },
-            { field: "CantidadIngreso", title: "Cantidad Ingreso" },
-            { field: "CantidadDisponible", title: "Cantidad Disponible" },
-            { field: "CantidadDespacho", title: "Cantidad Despacho" },
+            { field: "ParteDecorada", title: "Parte</br>Decorada" },
+            { field: "CantidadIngreso", title: "Cantidad</br>Ingreso" },
+            { field: "CantidadDisponible", title: "Cantidad</br>Disponible" },
+            {
+                field: "CantidadDespacho", title: "Cantidad</br>Despacho",
+           
+            },
             { field: "Categoria", tittle: "Categoria", hidden: true},
             {
                 field: "btnInfoDiseno",
@@ -226,7 +230,7 @@ $(document).ready(function () {
                         },
                     }
                 ],
-                width: "70px"
+                width: "60px"
             }
         ]
     });
@@ -468,7 +472,9 @@ $(document).ready(function () {
                             click: function (e) {
                                 e.preventDefault();
                                 Fn_VistaCambioEstadoMostrar("EmbalajesMercancias", dataItem.Estado, TSM_Web_APi + "EmbalajesMercancias/CambiarEstadoEmbalaje", "", dataItem.IdEmbalajeMercancia, undefined, function () { return fn_updGrid(dataItem.IdEmbalajeMercancia); });
-                            }
+                            },
+                            enabled: xestado === 'FINALIZADO' ? false : true
+
                         },
                         {
                             id: "Editar" + dataItem.IdEmbalajeMercancia,
@@ -477,7 +483,8 @@ $(document).ready(function () {
                             click: function (e) {
                                 e.preventDefault();
                                 gridem.editRow(closest);
-                            }
+                            },
+                            enabled: xestado === 'FINALIZADO' ? false : true
                         },
                         {
                             id: "Borrar" + dataItem.IdEmbalajeMercancia,
@@ -492,7 +499,8 @@ $(document).ready(function () {
                                     }
                                 });
                                 gridem.removeRow(closest);
-                            }
+                            },
+                            enabled: xestado === 'FINALIZADO' ? false : true
                         }]
 
                 })
@@ -504,10 +512,10 @@ $(document).ready(function () {
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
             { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
             { field: "NoDocumento", title: "Documento" },
-            { field: "CantTallas", title: "Cantidad Tallas" },
-            { field: "CantBultos", title: "Cant. Bultos",hidden:true },
-            { field: "Cantidad", title: "Cantidad Total." },
-            { field: "Peso", title: "Peso (Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
+            { field: "CantTallas", title: "Tallas" },
+            { field: "CantBultos", title: "Cantidad </br> Bultos"},
+            { field: "Cantidad", title: "Cantidad </br> Total" },
+            { field: "Peso", title: "Peso</br>(Kg.)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "n", 2], format: "{0:n2}" },
             { field: "IdUnidad", title: "IdUnidad", hidden: true },
             { field: "IdDespachoEmbalajeMercancia", title: "Id Despacho Emb Mercancia", hidden: true },
             { field: "Estado", title: "Estado", hidden: true },
@@ -531,17 +539,13 @@ $(document).ready(function () {
         if ($("#gEnEmbalaje").data("kendoGrid").dataSource.total() === 0) {
             KdoButtonEnable($("#btnEtapa"), false);
         } else {
-            KdoButtonEnable($("#btnEtapa"), true);
+            KdoButtonEnable($("#btnEtapa"), xestado === 'FINALIZADO' ? false : true);
         }
+        xestado === 'FINALIZADO' ? $(".k-grid-Generar").addClass("k-disabled") : $(".k-grid-Generar").removeClass("k-disabled");
 
     });
 
-    $("#gEnEmbalaje").kendoTooltip({
-        filter: ".k-grid-b_cambioEstado",
-        content: function (e) {
-            return "Ingreso de Mercancía";
-        }
-    });
+
 
 
     $("#gEnEmbalaje").kendoTooltip({
@@ -784,8 +788,8 @@ var DIDM = (e) => {
                 { field: "IdHojaBandeo", title: "IdHoja Bandeo", hidden: true, attributes: { "class": "idHB-detail" } },
                 { field: "Corte", title: "Corte" },
                 { field: "Tallas", title: "Tallas" },
-                { field: "CantTallas", title: "Cantidad Tallas", hidden: true },
-                { field: "CantBultos", title: "Cantidad Bultos" },
+                { field: "CantTallas", title: "Cantidad </br> Tallas", hidden: true },
+                { field: "CantBultos", title: "Cantidad </br> Bultos" },
                 { field: "Cantidad", title: "Cantidad" }
             ]
         });
@@ -885,8 +889,8 @@ var DIDM = (e) => {
                 { field: "Corte", title: "Corte", hidden: true, attributes: { "class": "corte-detail" } },
                 { field: "Tallas", title: "Tallas", attributes: { "class": "tallas-detail" } },
                 { field: "IdMercancia", title: "Id Mercancia", hidden: true },
-                { field: "CantidadDisponible", title: "Cantidad Disponible" },
-                { field: "CantidadDespacho", title: "Cantidad Despacho" },
+                { field: "CantidadDisponible", title: "Cantidad </br> Disponible" },
+                { field: "CantidadDespacho", title: "Cantidad </br> Despacho" },
                 {
                     field: "ExisteOD", title: "&nbsp;",
                     template: `#if(ExisteOD == true) { #<span class='badge-EnOtraOD k-icon k-i-exclamation-circle' data-toggle='tooltip' data-placement='left' title='Existe en otra Orden de Despacho como Mercancía Sugerida'></span>#}#`,
@@ -1058,7 +1062,12 @@ let fn_Get_DatosCab = (xIdDesEm) => {
                 $("#txtOrdenDespacho").val(dato.NoDocumento);
                 $("#txtIdDespachoMerc").val(dato.IdDespachoMercancia);
                 $("#dfDespacho").data("kendoDatePicker").value(kendo.toString(kendo.parseDate(dato.FechaEntrega), 'dd/MM/yyyy'));
-
+                xestado = dato.EstadoEmb;
+                KdoComboBoxEnable($("#cmbOpcion"), xestado === 'FINALIZADO' ? false : true);
+                KdoComboBoxEnable($("#CmbServicio"), xestado === 'FINALIZADO' ? false : true);
+                KdoMultiColumnCmbEnable($("#cmbFm"), xestado === 'FINALIZADO' ? false : true);
+                KdoMultiColumnCmbEnable($("#cmbCorte"), xestado === 'FINALIZADO' ? false : true);
+          
             } 
             kendo.ui.progress($(document.body), false);
         },
