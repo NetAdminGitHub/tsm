@@ -28,12 +28,15 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
     $("#txtCantidadPiezas").val(pJson.pCantidadPiezas);
     $("#txtCantidadBultos").val(pJson.pCantidadBultos);
     $("#txtCortes").val(pJson.pCantidadCortes);
-   
+    $("#TxtDetalle").kendoTextArea({
+        rows: 2,
+        maxLength: 2000
+    });
 
     KdoComboBoxbyData($("#cmbEmbAsignacion"), [], "NoDocumento", "IdEmbalajeMercancia", "seleccione una opción", "", "");
     Kendo_CmbFiltrarGrid($("#cmbUnidadEmbalaje"), TSM_Web_APi + "EmbalajeDeclaracionMercancias", "Nombre", "IdEmbalaje", "Seleccione una opción");
 
-    $("#cmbEmbAsignacion").data("kendoComboBox").setDataSource(fn_dsDespacho(pJson));
+    $("#cmbEmbAsignacion").data("kendoComboBox").setDataSource(fn_EmbalajeEnPreparacion(pJson));
 
     $("#divUnidadEmbalaje").show();
     $("#divAsignacionEmbalaje").hide();
@@ -104,6 +107,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
             $("#divAsignacionEmbalaje").hide("slow");
             $("#txtPesoKg").data("kendoNumericTextBox").value(0);
             $("#textPesoLb").data("kendoNumericTextBox").value(0);
+            $("#TxtDetalle").val("");
             idUnidad = 1;
             KdoCmbSetValue($("#cmbEmbAsignacion"), "");
         } else {
@@ -118,7 +122,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
         if ($("#chkNuevoEmbalaje").is(':checked') === true) {
 
             if (!($("#cmbUnidadEmbalaje").data("kendoComboBox").selectedIndex >= 0)){
-                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una Unidad de embalaje.", "error");
+                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar una Unidad de Embalaje.", "error");
                 return
             }
          
@@ -126,7 +130,7 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
 
         if ($("#chkNuevoEmbalaje").is(':checked') === false) {
             if (!($("#cmbEmbAsignacion").data("kendoComboBox").selectedIndex >= 0)) {
-                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un embalaje.", "error");
+                $("#kendoNotificaciones").data("kendoNotification").show("Debe seleccionar un Embalaje.", "error");
                 return
             }
         }
@@ -135,9 +139,16 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
                 idUnidad === 2 ? Number($("#textPesoLb").val()).toFixed(2) : 0;
 
         if ( Number($("#txtPesoKg").val()) === 0) {
-            $("#kendoNotificaciones").data("kendoNotification").show("valor del peso debe ser mayor a 0", "error");
+            $("#kendoNotificaciones").data("kendoNotification").show("Valor del peso debe ser mayor a 0", "error");
             return
         }
+
+        if (!($("#TxtDetalle").val().length > 0 && $("#TxtDetalle").val().length <= 2000)) {
+
+            $("#kendoNotificaciones").data("kendoNotification").show("Detalle del Embalaje es Requerido, valor maximo 2000 caracteres", "error");
+            return
+        }
+
         kendo.ui.progress($(".k-dialog"), true);
         $.ajax({
             url: TSM_Web_APi + "EmbalajesMercancias/GenerarEmbalajeDetalleMercancia",
@@ -151,7 +162,8 @@ var fn_Ini_CreacionEmbalaje = (xjson) => {
                 IdCliente: pJson.pIdCliente,
                 IdMercancias: pJson.pIdMercancias,
                 Peso: Peso,
-                IdUnidad: idUnidad
+                IdUnidad: idUnidad,
+                Observacion: $("#TxtDetalle").val()
             }),
             type: 'POST',
             contentType: "application/json; charset=utf-8",
@@ -191,7 +203,7 @@ var fn_Reg_CreacionEmbalaje = (xjson) => {
     $("#txtCantidadPiezas").val(pJson.pCantidadPiezas);
     $("#txtCantidadBultos").val(pJson.pCantidadBultos);
     $("#txtCortes").val(pJson.pCantidadCortes);
-
+    $("#TxtDetalle").val("");
     $("#gridMercancia").data("kendoGrid").destroy();
 
     let dataSource = new kendo.data.DataSource({
@@ -219,8 +231,8 @@ var fn_Reg_CreacionEmbalaje = (xjson) => {
     $("#cmbEmbAsignacion").data("kendoComboBox").dataSource.read();
 }
 
-let fn_dsDespacho = function (pJson) {
-
+let fn_EmbalajeEnPreparacion = function (pJson) {
+    /* funcion que devuelve los embalajes creados o que estan en preparación*/
     return new kendo.data.DataSource({
         dataType: 'json',
         sort: { field: "NoDocumento", dir: "asc" },
@@ -228,14 +240,10 @@ let fn_dsDespacho = function (pJson) {
             read: function (datos) {
                 $.ajax({
                     dataType: 'json',
-                    type: "POST",
+                    type: "GET",
                     async: false,
-                    url: TSM_Web_APi + "EmbalajesMercanciasDetalles/GetEmbalajesMercanciasControl/",
+                    url: TSM_Web_APi + `EmbalajesMercancias/GetEmbalajesEnPreparacion/${pJson.pIdDespachoMercancia}`,
                     contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({
-                        IdCliente: pJson.pIdCliente,
-                        IdDespachoMercancia: pJson.pIdDespachoMercancia
-                    }),
                     success: function (result) {
                         datos.success(result);
                     }
@@ -258,11 +266,13 @@ let fn_Get_DatosEmbalaje = (xidEmbalaje) => {
             if (dato !== null) {
                 $("#txtPesoKg").data("kendoNumericTextBox").value(dato.Peso);
                 $("#textPesoLb").data("kendoNumericTextBox").value(dato.Peso * 2.20462);
+                $("#TxtDetalle").val(dato.Observacion);
                 idUnidad = dato.IdUnidad
 
             } else {
                 $("#txtPesoKg").data("kendoNumericTextBox").value(0);
                 $("#textPesoLb").data("kendoNumericTextBox").value(0);
+                $("#TxtDetalle").val("");
                 idUnidad = 1
             }
             kendo.ui.progress($(document.body), false);
