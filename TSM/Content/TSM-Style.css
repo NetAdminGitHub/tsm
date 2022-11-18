@@ -140,6 +140,11 @@ body {
 .bg-Devuelto {
     background: #FFDFE7 !important;
 }
+
+.bg-CorteParcial {
+    background: #FFBC67 !important;
+}
+
 .bg-default-gradient {
     background: #282a3c !important;
     background: -webkit-linear-gradient(legacy-direction(-45deg),#08080e,#282a3c) !important;
@@ -4067,7 +4072,10 @@ label.error {
 .badge-OrdenDespacho {
     background-color: #c933bd;
 }
-
+.badge-EnOtraOD {
+    color: orange;
+    font-size: 20px !important;
+}
 .dropdown-menu {
     border: 0;
     border-radius: 0;

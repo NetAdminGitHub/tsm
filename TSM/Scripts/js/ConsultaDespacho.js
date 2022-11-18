@@ -415,7 +415,7 @@ $(document).ready(function () {
             { field: "Estado", title: "Estado" },
             {
                 field: "Progreso",
-                title: "Progreso",
+                title: "Progreso Productivo Mercancía",
                 template: "<div id='progressChart_#= IdDespachoMercancia#' class='progress'></div>",
                 format: "{0:n2}",
                 width: 220
