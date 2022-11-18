@@ -4,7 +4,7 @@ var Permisos;
 let idPlanta = 0;
 let idMarca = 0;
 
-const NombresControladores = ["CrearEmbalaje", "PackingList", "PedidoVenta", "Factura", "DevolucionDM", "NotaRemision"];
+const NombresControladores = ["CrearEmbalaje", "ListaEmpaques", "PedidoVenta", "Factura", "DevolucionDM", "NotaRemision"];
 const NombresVistas = ["OrdenDespacho", "CrearEmbalaje", "ListaEmpaque", "PedidoVenta", "Facturacion", "DeclaracionMercancia", "NotaRemision"];
 let permisos = [];
 
@@ -284,7 +284,7 @@ $(document).ready(function () {
                         },
                         {
                             id: "opcPL" + idOD, text: "Lista de Empaque", icon: "plus-outline", click: function () {
-                                window.location.href = '/PackingList/' + idOD;
+                                window.location.href = '/ListaEmpaques/' + idOD;
                             }, enabled: absPL
                         },
                         {

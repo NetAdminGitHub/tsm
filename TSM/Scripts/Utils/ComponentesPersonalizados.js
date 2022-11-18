@@ -726,4 +726,36 @@
             });
         });
     },
+    ControlSeleccionOD: function (IdCliente, IdPlanta) {
+        return this.each(function () {
+            $(this).kendoMultiColumnComboBox({
+                size: "large",
+                dataTextField: "NoDocumento",
+                dataValueField: "IdDespachoMercancia",
+                filter: "contains",
+                autoBind: false,
+                minLength: 2,
+                height: 400,
+                placeholder: "Selección de Orden de Despacho",
+                valuePrimitive: true,
+                footerTemplate: 'Total #: instance.dataSource.total() # registros.',
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: function () {
+                                return TSM_Web_APi + "DespachosMercancias/GetOrdenesDespachar/" + IdCliente + "/" + IdPlanta + "/" + 0;
+                            },
+                            contentType: "application/json; charset=utf-8"
+                        }
+                    }
+                },
+                columns: [
+                    { field: "NoDocumento", title: "Orden Despacho", width: 300 },
+                    { field: "IdPlanta", title: "Planta", width: 200 },
+                    { field: "FechaEntrega", title: "Fecha de Entrega", width: 200, template: '#:kendo.toString(kendo.parseDate(data.FechaEntrega), "dd/MM/yyyy")#' },
+                ]
+            });
+        });
+    }
 });
