@@ -223,7 +223,7 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridPAVC").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.No, 700);
+    SetGrid($("#gridPAVC").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridPAVC").data("kendoGrid"), Permisos.SNAgregar);
     SetGrid_CRUD_Command($("#gridPAVC").data("kendoGrid"), Permisos.SNEditar, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridPAVC").data("kendoGrid"), dataSource3);
@@ -236,6 +236,12 @@ $(document).ready(function () {
     $("#gridPAVC").data("kendoGrid").bind("change", function (e) {
         Grid_SelectRow($("#gridPAVC"), selectedRows3);
     });
+
+    $(window).on("resize", function () {
+        Fn_Grid_Resize($("#gridPAVC"), $(window).height() - "300");
+    });
+
+    Fn_Grid_Resize($("#gridPAVC"), $(window).height() - "300");
 
 /////////////////////////////////////////////////////////FIN CLIENTES//////////////////////////////////////////////////////
 
