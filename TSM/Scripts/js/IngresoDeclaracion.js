@@ -324,12 +324,12 @@ $(document).ready(function () {
             { field: "IdTipoTrasladoRegimen", title: "Código Regímenes", hidden: true },
             { field: "PesoNeto", title: "Peso Neto (KG)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
             { field: "PesoBruto", title: "Peso Bruto (KG)", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
-            { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
-            { field: "Abreviatura", title: "Unidad" },
             { field: "CantidadBultos", title: "Total de Bultos", editor: Grid_ColNumeric, values: ["required", "1", "9999999999999999", "#", 0] },
             { field: "IdEmbalaje", title: "Embalaje", editor: Grid_Combox, values: ["IdEmbalaje", "Nombre", TSM_Web_APi + "EmbalajeDeclaracionMercancias", "", "Seleccione...."], hidden: true },
             { field: "NombreEmbalaje", title: "Embalaje" },
             { field: "Cuantia", title: "Cuantía", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "N2", 2], format: "{0:N2}" },
+            { field: "IdUnidadPesoBruto", title: "Unidad", editor: Grid_Combox, values: ["IdUnidad", "Nombre", TSM_Web_APi + "UnidadesMedidas", "", "Seleccione...."], hidden: true },
+            { field: "Abreviatura", title: "Unidad" },
             { field: "Valor", title: "Valor Factura", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
             { field: "ValorAduana", title: "Valor Aduana", editor: Grid_ColNumeric, values: ["required", "0.00", "99999999999999.99", "c", 2], format: "{0:c2}" },
             //////////////////
@@ -491,6 +491,7 @@ $(document).ready(function () {
                     NoDocumento: { type: "string" },
                     Fecha: { type: "date" },
                     Cuantia: { type: "number" },
+                    Docenas: { type: "number" },
                     Item: { type: "number" },
                     CantidadBultos: { type: "number" },
                     CantidadCorte: { type: "number" }
@@ -509,7 +510,8 @@ $(document).ready(function () {
             { field: "Fecha", title: "Fecha", format: "{0: dd/MM/yyyy}" },
             { field: "CantidadCorte", title: "Cantidad de Cortes" },
             { field: "CantidadBultos", title: "Total de Bultos" },
-            { field: "Cuantia", title: "Cuantía", format: "{0:N2}" }
+            { field: "Cuantia", title: "Cuantía", format: "{0:N2}" },
+            { field: "Docenas", title: "Docenas", format: "{0:N2}" }
         ]
     });
 
