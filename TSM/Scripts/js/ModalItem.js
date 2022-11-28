@@ -122,9 +122,7 @@ var fn_Ini_Item = (strjson) => {
                 KdoMultiColumnCmbSetValue($("#cmbInciAr"), result.IdIncisoArancelario);
                 $("#txtDesPar").val(result.DescripcionInciso);
                 $("#txtDesMerc").val(result.Descripcion);
-                $("#cmbPais").data("kendoMultiColumnComboBox").value(result.IdPais);
-                $("#cmbPais").data("kendoMultiColumnComboBox").text(result.NombrePais);
-                $("#cmbPais").data("kendoMultiColumnComboBox").trigger("change");
+                KdoMultiColumnCmbSetValue($("#cmbPais"), result.IdPais);
                 KdoMultiColumnCmbSetValue($("#cmbRegimen"), result.IdTipoTrasladoRegimen);
                 $("#txtCodReg").val(result.NombreReg);
                 kdoNumericSetValue($("#txtPesoN"), result.PesoNeto);
