@@ -18,7 +18,7 @@ namespace TSM.Controllers
         [Route("ListaEmpaques/{idOD}")]
         public ActionResult Index(long idOD)
         {
-            ViewBag.idOD = idOD;
+            ViewBag.IdDespachoMercancia = idOD;
             return View();
         }
     }

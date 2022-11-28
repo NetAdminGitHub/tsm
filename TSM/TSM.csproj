@@ -578,6 +578,7 @@
     <Content Include="Scripts\js\ConsultaMercancia.js" />
     <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
     <Content Include="Scripts\js\EtapasMercanciasConsulta.js" />
+    <Content Include="Scripts\js\InfoEmbalajeDisponibles.js" />
     <Content Include="Scripts\js\InfoEmpresa.js" />
     <Content Include="Scripts\js\Incoterms.js" />
     <Content Include="Scripts\js\ListaEmpaques.js" />
@@ -1200,6 +1201,7 @@
     <Content Include="Views\ConsultaListaEmpaques\Index.cshtml" />
     <Content Include="Views\PlantillasPedidosVentas\Index.cshtml" />
     <Content Include="Views\ListaEmpaques\Index.cshtml" />
+    <Content Include="Views\Shared\_InfoEmbalajeDisponibles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
