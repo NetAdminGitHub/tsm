@@ -558,9 +558,10 @@ $(document).ready(function () {
     $("#gEnEmbalaje").kendoTooltip({
         filter: "tr[data-uid].k-master-row.mrc",
         position: "buttom",
+        width: "300px",
         content: function (e) {
             var dataItem = $("#gEnEmbalaje").data("kendoGrid").dataItem(e.target.closest("tr"));
-            var result = "<p></p><p>Comentario :  " + dataItem.Observacion + "</p>";
+            var result = "<div class='col-lg-12'> <p></p><p>Comentario : " + (dataItem.Observacion === null ? '' : dataItem.Observacion) + "</p></div>";
             return result;
         }
     });

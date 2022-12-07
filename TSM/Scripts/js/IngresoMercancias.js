@@ -159,9 +159,10 @@ $(document).ready(function () {
     $("#gridHoja").kendoTooltip({
         filter: "tr[data-uid]",
         position: "buttom",
+        width:"300px",
         content: function (e) {
             var dataItem = $("#gridHoja").data("kendoGrid").dataItem(e.target.closest("tr"));
-            var result = "<p></p><p>Diseños: " + dataItem.Fms+"</p>";
+            var result = "<div class='col-lg-12'> <p></p><p>Diseños : " + (dataItem.Fms === null ? '' : dataItem.Fms) + "</p></div>";
             return result;
         }
 
