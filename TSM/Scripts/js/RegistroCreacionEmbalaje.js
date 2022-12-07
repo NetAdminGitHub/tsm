@@ -505,10 +505,16 @@ $(document).ready(function () {
 
                 })
             });
+
+            let rows = e.sender.tbody.children();
+            for (let i = 0; i < rows.length; i++) {
+                let row = $(rows[i]);
+                row.addClass("mrc");
+            }
         },
         columns: [
             { field: "IdEmbalajeMercancia", title: "IdEmbalajeMercancia", hidden: true },
-            { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"] },
+            { field: "Observacion", title: "Detalle de Embalaje", hidden: true, editor: Grid_ColTextArea, values: ["3"], attributes: { "Coment": "true" } },
             { field: "IdEmbalaje", title: "IdEmbalaje", hidden: true },
             { field: "NombreUnidadEmb", title: "Embalaje", attributes: { "class": "selFM" } },
             { field: "NoDocumento", title: "Documento" },
@@ -550,8 +556,14 @@ $(document).ready(function () {
 
 
     $("#gEnEmbalaje").kendoTooltip({
-        filter: "tr",
-        content: function (e) { return "Comentario: " + e.target['children']()[2].getInnerHTML(); }
+        filter: "tr[data-uid].k-master-row.mrc",
+        position: "buttom",
+        width: "300px",
+        content: function (e) {
+            var dataItem = $("#gEnEmbalaje").data("kendoGrid").dataItem(e.target.closest("tr"));
+            var result = "<div class='col-lg-12'> <p></p><p>Comentario : " + (dataItem.Observacion === null ? '' : dataItem.Observacion) + "</p></div>";
+            return result;
+        }
     });
 
     $("#gEnEmbalaje").on("click", ".k-grid-Generar", function () {
