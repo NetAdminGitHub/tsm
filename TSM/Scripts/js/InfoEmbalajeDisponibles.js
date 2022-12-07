@@ -5,7 +5,7 @@
         //CONFIGURACION DEL CRUD
         transport: {
             read: {
-                url: function () { return `${TSM_Web_APi}DespachosListaEmpaques/GetContenidoCortesEmbalaje//${idEmb}`; },
+                url: function () { return `${TSM_Web_APi}DespachosListaEmpaques/GetContenidoCortesEmbalaje/${idEmb}`; },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             }
@@ -28,6 +28,7 @@
                     FM: { type: "string" },
                     Diseño: { type: "string" },
                     Estilo: { type: "string" },
+                    Parte: { type: "string" },
                     Proceso: { type: "string" }
                 }
             }
@@ -46,6 +47,7 @@
             { field: "Diseño", title: "Diseño" },
             { field: "Estilo", title: "Estilo" },
             { field: "Tallas", title: "Tallas" },
+            { field: "Parte", title: "Parte" },
             { field: "Proceso", title: "Proceso" },
         ]
     });
