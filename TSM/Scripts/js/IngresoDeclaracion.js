@@ -16,6 +16,11 @@ var campo2Expo = "";
 var campo3Expo = "";
 var campo4Expo = "";
 
+var campo1Desp = "";
+var campo2Desp = "";
+var campo3Desp = "";
+var campo4Desp = "";
+
 var estadoDM = "";
 
 $(document).ready(function () {
@@ -408,11 +413,31 @@ $(document).ready(function () {
                     Vista: "~/Views/IngresoDeclaracion/_ModalExportador.cshtml",
                     Js: "ModalExportador.js",
                     Titulo: "Datos Exportador",
-                    Height: "53%",
+                    Height: "65%",
                     Width: "25%",
                     MinWidth: "20%"
                 }],
-                Param: { sIdRegNotaRemi: xIdDeMerca, campo1Expo: campo1Expo, campo2Expo: campo2Expo, campo3Expo: campo3Expo, campo4Expo: campo4Expo },
+                Param: { sIdRegNotaRemi: xIdDeMerca, campo1Expo: campo1Expo, campo2Expo: campo2Expo, campo3Expo: campo3Expo, campo4Expo: campo4Expo, tipoTA: "Expo" },
+                fn: { fnclose: "", fnLoad: "fn_Ini_Expo", fnReg: "fn_Reg_Expo", fnActi: "" }
+            };
+
+            fn_GenLoadModalWindow(strjson);
+        }
+    });
+
+    $("#modalDespachante").on("click", function () {
+        if (KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != "" && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != 0 && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != undefined && KdoMultiColumnCmbGetValue($("#MltBodegaCliente")) != null) {
+            let strjson = {
+                config: [{
+                    Div: "vModalExportador",
+                    Vista: "~/Views/IngresoDeclaracion/_ModalExportador.cshtml",
+                    Js: "ModalExportador.js",
+                    Titulo: "Datos Despachante",
+                    Height: "65%",
+                    Width: "25%",
+                    MinWidth: "20%"
+                }],
+                Param: { sIdRegNotaRemi: xIdDeMerca, campo1Desp: campo1Desp, campo2Desp: campo2Desp, campo3Desp: campo3Desp, campo4Desp: campo4Desp, tipoTA: "Desp" },
                 fn: { fnclose: "", fnLoad: "fn_Ini_Expo", fnReg: "fn_Reg_Expo", fnActi: "" }
             };
 
@@ -683,9 +708,15 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 campo2Expo = dato.ExportadorNombre;
                 campo3Expo = dato.ExportadorDireccion;
                 campo4Expo = dato.ExportadorTelefono;
+                campo1Desp = dato.DespachanteNit;
+                campo2Desp = dato.DespachanteNombre;
+                campo3Desp = dato.DespachanteDireccion;
+                campo4Desp = dato.DespachanteTelefono;
                 $("#txtEstadoDM").val(dato.Estado);
                 let taInfoExpo = "NIT: " + dato.ExportadorNit + "\nNombre: " + dato.ExportadorNombre + "\nDirección: " + dato.ExportadorDireccion + "\nTeléfono: " + dato.ExportadorTelefono;
                 $("#TaExportador").val(taInfoExpo);
+                let taInfoDesp = "NIT: " + dato.DespachanteNit + "\nNombre: " + dato.DespachanteNombre + "\nDirección: " + dato.DespachanteDireccion + "\nTeléfono: " + dato.DespachanteTelefono;
+                $("#TaDespachante").val(taInfoDesp);
                 estadoDM = dato.Estado;
                 if ($("#txtEstadoDM").val() == "FINALIZADO") {
                     KdoButtonEnable($("#btnCambiarEstado"), false);
@@ -810,6 +841,10 @@ let fn_GuardarDM = () => {
             ExportadorDireccion: campo3Expo,
             ExportadorNombre: campo2Expo,
             ExportadorTelefono: campo4Expo,
+            DespachanteNit: campo1Desp,
+            DespachanteNombre: campo2Desp,
+            DespachanteDireccion: campo3Desp,
+            DespachanteTelefono: campo4Desp,
             IdInfoEmpresa: 1,
             RegistroTransporte: $("#TxtRTMT").val(),
             IdModalidad: KdoCmbGetValue($("#cmbModalidad")),
@@ -1037,7 +1072,6 @@ let cargarDatosTACliente = () => {
             success: function (dato) {
                 if (dato !== null) {
                     let tactxtcli = "NIT: " + dato['NIT'] + "\nNombre: " + dato['Nombre'] + "\nDirección: " + dato['Direccion'] + "\nTeléfono: " + dato['Telefono'];
-                    $("#TaDespachante").val(tactxtcli);
                     if (xIdDeMerca == "" || xIdDeMerca == undefined || xIdDeMerca == 0 || xIdDeMerca == null)
                     {
                         $("#TaExportador").val(tactxtcli);
@@ -1045,6 +1079,11 @@ let cargarDatosTACliente = () => {
                         campo2Expo = dato['Nombre'];
                         campo3Expo = dato['Direccion'];
                         campo4Expo = dato['Telefono'];
+                        $("#TaDespachante").val(tactxtcli);
+                        campo1Desp = dato['NIT'];
+                        campo2Desp = dato['Nombre'];
+                        campo3Desp = dato['Direccion'];
+                        campo4Desp = dato['Telefono'];
                     }
 
                 }
@@ -1062,6 +1101,10 @@ let cargarDatosTACliente = () => {
         campo2Expo = null;
         campo3Expo = null;
         campo4Expo = null;
+        campo1Desp = null;
+        campo2Desp = null;
+        campo3Desp = null;
+        campo4Desp = null;
     }
 
 };

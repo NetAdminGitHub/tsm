@@ -2759,12 +2759,13 @@ let fn_GenLoadModalWindow = (obj) => {
     } else {
         kendo.ui.progress($(document.body), true);
         Jsload = false;
-        $("#" + obj.config[0].Div + "").kendoWindow({
+        $("#" + obj.config[0].Div + "").kendoWindow();
+        let window = $("#" + obj.config[0].Div + "").data("kendoWindow");
+        window.setOptions({
             height: obj.config[0].Height,
             width: obj.config[0].Width,
             title: obj.config[0].Titulo,
             modal: true,
-            /*     content: xview,*/
             visible: false,
             minWidth: obj.config[0].MinWidth,
             activate: onActivate,
