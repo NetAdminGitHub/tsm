@@ -62,7 +62,7 @@ $(document).ready(function () {
         type: 'GET',
         success: function (dato) {
             if (dato !== null) {
-                let tactxt = "NIT: " + dato[0]['NIT'] + "\nNombre: " + dato[0]['Nombre'] + "\nDirección: " + dato[0]['Direccion'] + "\nTeléfono: " + dato[0]['Telefono'];
+                let tactxt = "NIT: " + blankForNull(dato[0]['NIT']) + "\nNombre: " + blankForNull(dato[0]['Nombre']) + "\nDirección: " + blankForNull(dato[0]['Direccion']) + "\nTeléfono: " + blankForNull(dato[0]['Telefono']);
                 $("#TaConsignatario").val(tactxt);
                 campo1Consig = dato[0]['NIT'];
                 campo2Consig = dato[0]['Nombre'];
@@ -83,7 +83,7 @@ $(document).ready(function () {
             cargarDirPlantaTS(IdPlanta);
 
         } else {
-            let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + campo3Consig + "\nTeléfono: " + campo4Consig;
+            let tactxt = "NIT: " + blankForNull(campo1Consig) + "\nNombre: " + blankForNull(campo2Consig) + "\nDirección: " + blankForNull(campo3Consig) + "\nTeléfono: " + blankForNull(campo4Consig);
             $("#TaConsignatario").val(tactxt);
         }
     });
@@ -91,7 +91,7 @@ $(document).ready(function () {
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
         var value = this.value();
         if (value === "") {
-            let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + campo3Consig + "\nTeléfono: " + campo4Consig;
+            let tactxt = "NIT: " + blankForNull(campo1Consig) + "\nNombre: " + blankForNull(campo2Consig) + "\nDirección: " + blankForNull(campo3Consig) + "\nTeléfono: " + blankForNull(campo4Consig);
             $("#TaConsignatario").val(tactxt);
         }
     });
@@ -713,10 +713,10 @@ let fn_Get_IngresoDeclaracion = (xId) => {
                 campo3Desp = dato.DespachanteDireccion;
                 campo4Desp = dato.DespachanteTelefono;
                 $("#txtEstadoDM").val(dato.Estado);
-                let taInfoExpo = "NIT: " + dato.ExportadorNit + "\nNombre: " + dato.ExportadorNombre + "\nDirección: " + dato.ExportadorDireccion + "\nTeléfono: " + dato.ExportadorTelefono;
-                $("#TaExportador").val(taInfoExpo);
-                let taInfoDesp = "NIT: " + dato.DespachanteNit + "\nNombre: " + dato.DespachanteNombre + "\nDirección: " + dato.DespachanteDireccion + "\nTeléfono: " + dato.DespachanteTelefono;
-                $("#TaDespachante").val(taInfoDesp);
+                let taInfoExpo = "NIT: " + blankForNull(dato.ExportadorNit) + "\nNombre: " + blankForNull(dato.ExportadorNombre) + "\nDirección: " + blankForNull(dato.ExportadorDireccion) + "\nTeléfono: " + blankForNull(dato.ExportadorTelefono);
+                $("#TaExportador").val(taInfoExpo.replace(null, ""));
+                let taInfoDesp = "NIT: " + blankForNull(dato.DespachanteNit) + "\nNombre: " + blankForNull(dato.DespachanteNombre) + "\nDirección: " + blankForNull(dato.DespachanteDireccion) + "\nTeléfono: " + blankForNull(dato.DespachanteTelefono);
+                $("#TaDespachante").val(taInfoDesp.replace(null, ""));
                 estadoDM = dato.Estado;
                 if ($("#txtEstadoDM").val() == "FINALIZADO") {
                     KdoButtonEnable($("#btnCambiarEstado"), false);
@@ -1050,7 +1050,7 @@ let cargarDirPlantaTS = (IdPlanta) => {
         success: function (dato) {
             if (dato !== null) {
                 let planta = dato;
-                let tactxt = "NIT: " + campo1Consig + "\nNombre: " + campo2Consig + "\nDirección: " + dato['Direccion'] + "\nTeléfono: " + campo4Consig;
+                let tactxt = "NIT: " + blankForNull(campo1Consig) + "\nNombre: " + blankForNull(campo2Consig) + "\nDirección: " + blankForNull(dato['Direccion']) + "\nTeléfono: " + blankForNull(campo4Consig);
                 $("#TaConsignatario").val(tactxt);
             }
             kendo.ui.progress($(document.body), false);
@@ -1071,7 +1071,7 @@ let cargarDatosTACliente = () => {
             type: 'GET',
             success: function (dato) {
                 if (dato !== null) {
-                    let tactxtcli = "NIT: " + dato['NIT'] + "\nNombre: " + dato['Nombre'] + "\nDirección: " + dato['Direccion'] + "\nTeléfono: " + dato['Telefono'];
+                    let tactxtcli = "NIT: " + blankForNull(dato['NIT']) + "\nNombre: " + blankForNull(dato['Nombre']) + "\nDirección: " + blankForNull(dato['Direccion']) + "\nTeléfono: " + blankForNull(dato['Telefono']);
                     if (xIdDeMerca == "" || xIdDeMerca == undefined || xIdDeMerca == 0 || xIdDeMerca == null)
                     {
                         $("#TaExportador").val(tactxtcli);
@@ -1148,5 +1148,9 @@ var fn_CloseCmb = () => {
         }
     });
     
+};
+
+var blankForNull = (s) => {
+    return s === null ? "" : s;
 };
 

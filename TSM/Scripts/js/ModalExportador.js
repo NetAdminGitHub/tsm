@@ -42,7 +42,7 @@ var fn_Ini_Expo = (strjson) => {
                     tsc = $("#sCampo").val();
                     ttc = $("#tCampo").val();
                     tcc = $("#cCampo").val();
-                    let tatxt = "NIT: " + tpc + "\nNombre: " + tsc + "\nDirección: " + ttc + "\nTeléfono: " + tcc;
+                    let tatxt = "NIT: " + blankForNull(tpc) + "\nNombre: " + blankForNull(tsc) + "\nDirección: " + blankForNull(ttc) + "\nTeléfono: " + blankForNull(tcc);
                     $("#TaExportador").val(tatxt);
                     campo1Expo = $("#pCampo").val();
                     campo2Expo = $("#sCampo").val();
@@ -88,7 +88,7 @@ var fn_Ini_Expo = (strjson) => {
                     tsc = $("#sCampo").val();
                     ttc = $("#tCampo").val();
                     tcc = $("#cCampo").val();
-                    let tatxt = "NIT: " + tpc + "\nNombre: " + tsc + "\nDirección: " + ttc + "\nTeléfono: " + tcc;
+                    let tatxt = "NIT: " + blankForNull(tpc) + "\nNombre: " + blankForNull(tsc) + "\nDirección: " + blankForNull(ttc) + "\nTeléfono: " + blankForNull(tcc);
                     $("#TaDespachante").val(tatxt);
                     campo1Desp = $("#pCampo").val();
                     campo2Desp = $("#sCampo").val();
@@ -154,7 +154,7 @@ var fn_Reg_Expo = (strjson) => {
                     tsc = $("#sCampo").val();
                     ttc = $("#tCampo").val();
                     tcc = $("#cCampo").val();
-                    let tatxt = "NIT: " + tpc + "\nNombre: " + tsc + "\nDirección: " + ttc + "\nTeléfono: " + tcc;
+                    let tatxt = "NIT: " + blankForNull(tpc) + "\nNombre: " + blankForNull(tsc) + "\nDirección: " + blankForNull(ttc) + "\nTeléfono: " + blankForNull(tcc);
                     $("#TaExportador").val(tatxt);
                     campo1Expo = $("#pCampo").val();
                     campo2Expo = $("#sCampo").val();
@@ -214,7 +214,7 @@ var fn_Reg_Expo = (strjson) => {
                     tsc = $("#sCampo").val();
                     ttc = $("#tCampo").val();
                     tcc = $("#cCampo").val();
-                    let tatxt = "NIT: " + tpc + "\nNombre: " + tsc + "\nDirección: " + ttc + "\nTeléfono: " + tcc;
+                    let tatxt = "NIT: " + blankForNull(tpc) + "\nNombre: " + blankForNull(tsc) + "\nDirección: " + blankForNull(ttc) + "\nTeléfono: " + blankForNull(tcc);
                     $("#TaDespachante").val(tatxt);
                     campo1Desp = $("#pCampo").val();
                     campo2Desp = $("#sCampo").val();
