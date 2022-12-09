@@ -378,6 +378,7 @@
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PaisesController.cs" />
+    <Compile Include="Controllers\PerfilesAgrupacionesVentasController.cs" />
     <Compile Include="Controllers\PlantasController.cs" />
     <Compile Include="Controllers\PlantillasPedidosVentasController.cs" />
     <Compile Include="Controllers\PreparacionCarritoController.cs" />
@@ -595,6 +596,7 @@
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\PerfilesAgrupacionesVentas.js" />
     <Content Include="Scripts\js\PlantillasPedidosVentas.js" />
     <Content Include="Scripts\js\RegistroCreacionEmbalaje.js" />
     <Content Include="Scripts\js\RegistroListaEmpaque.js" />
@@ -1204,6 +1206,7 @@
     <Content Include="Views\ListaEmpaques\Index.cshtml" />
     <Content Include="Views\Shared\_InfoEmbalajeDisponibles.cshtml" />
     <Content Include="Views\Shared\_CrearPL.cshtml" />
+    <Content Include="Views\PerfilesAgrupacionesVentas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

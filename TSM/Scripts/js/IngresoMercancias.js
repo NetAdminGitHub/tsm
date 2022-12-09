@@ -59,6 +59,7 @@ $(document).ready(function () {
         error: Grid_error,
         aggregate: [
             { field: "Cantidad", aggregate: "sum" },
+            { field: "TotalBultos", aggregate: "sum" }
 
         ],
         schema: {
@@ -70,6 +71,7 @@ $(document).ready(function () {
                     NoDocumento: { type: "string" },
                     Rollo: { type: "boolean" },
                     Corte: { type: "string" },
+                    TotalBultos: { type: "number" },
                     Cantidad: { type: "number" },
                     Color: { type: "string" },
                     Estilo: { type: "string" },
@@ -79,7 +81,8 @@ $(document).ready(function () {
                     NombrePlanta: { type: "string" },
                     NoReferenciaItem: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    Fms: { type: "string" }
                 }
             }
         }
@@ -93,11 +96,13 @@ $(document).ready(function () {
             { field: "IdIngreso", title: "Id. Ingreso", hidden: true },
             { field: "IdPlanta", title: "Id. Planta", hidden: true },
             { field: "NoDocumento", title: "Correlativo", hidden: true },
+            { field: "Fms", title: "Fms", hidden: true },
             { field: "Corte", title: "Corte/Lote", footerTemplate: "Total" },
             { field: "Color", title: "Color" },
             { field: "Estilo", title: "Estilo" },
             { field: "Tallas", title: "Tallas" },
             { field: "NombrePlanta", title: "Planta" },
+            { field: "TotalBultos", title: "Total Bultos", footerTemplate: "#: data.TotalBultos ? kendo.format('{0:n0}', sum) : 0 #" },
             { field: "Cantidad", title: "Total Cuantía", footerTemplate: "#: data.Cantidad ? kendo.format('{0:n2}', sum) : 0 #" },
             { field: "NoReferenciaItem", title: "Ref. Item" },
             {
@@ -135,7 +140,7 @@ $(document).ready(function () {
     });
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridHoja").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si);
+    SetGrid($("#gridHoja").data("kendoGrid"), ModoEdicion.EnPopup, true, false, false, false, redimensionable.Si);
     SetGrid_CRUD_ToolbarTop($("#gridHoja").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridHoja").data("kendoGrid"), false, Permisos.SNBorrar);
     Set_Grid_DataSource($("#gridHoja").data("kendoGrid"), dS);
@@ -151,6 +156,18 @@ $(document).ready(function () {
 
     $("#gridHoja").data("kendoGrid").dataSource.read();
 
+    $("#gridHoja").kendoTooltip({
+        filter: "tr[data-uid]",
+        position: "buttom",
+        width:"300px",
+        content: function (e) {
+            var dataItem = $("#gridHoja").data("kendoGrid").dataItem(e.target.closest("tr"));
+            var result = "<div class='col-lg-12'> <p></p><p>Diseños : " + (dataItem.Fms === null ? '' : dataItem.Fms) + "</p></div>";
+            return result;
+        }
+
+
+    });
     //#endregion 
 
     //#region crear grid Lista
