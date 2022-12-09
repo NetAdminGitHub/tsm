@@ -1,14 +1,39 @@
 ﻿"use strict"
 var Permisos;
 
+let idCliente = 0;
+let idPlanta = 0;
+let idEtapaProcesoMacro = 0;
+let idCatalogoDiseno = 0;
+let FM = '';
+let idServicio = 0;
+
+let xFechaInicio;
+let xFechaFin;
+
 $(document).ready(function () {
 
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
-    KdoComboBoxbyData($("#cmbMarca"), "[]", "Nombre2", "IdMarca", "Seleccione una Marca");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione la Planta");
     Kendo_CmbFiltrarGrid($("#cmbEtapa"), TSM_Web_APi + "EtapasProcesosMacro", "Nombre", "IdEtapaProcesoMacro", "Seleccione la etapa");
     Kendo_CmbFiltrarGrid($("#cmbServicio"), TSM_Web_APi + "Servicios", "Nombre", "IdServicio", "Seleccione el servicio");
     $("#cmbFm").mlcFmCatalogo();
+
+    let end = new Date();
+    let start = new Date(end.getFullYear(), end.getMonth() - 1, end.getDate());
+
+    $("#daterangepicker").kendoDateRangePicker({
+        range: { start: start, end: end },
+        size: "large",
+        max: end,
+        "messages": {
+            "startLabel": "Fecha Inicio:",
+            "endLabel": "Fecha Fin:"
+        }
+    });
+
+    xFechaInicio = kendo.toString(kendo.parseDate($("#daterangepicker").data("kendoDateRangePicker").range().start), 's');
+    xFechaFin = kendo.toString(kendo.parseDate($("#daterangepicker").data("kendoDateRangePicker").range().end), 's');
 
     if (idCliente !== 0) {
         $("#cmbCliente").data("kendoComboBox").value(idCliente);
@@ -25,17 +50,11 @@ $(document).ready(function () {
                 }
             }
         });
-        $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
     }
 
     if (FM !== '') {
         $("#cmbFm").data("kendoMultiColumnComboBox").value(FM);
         $("#cmbFm").data("kendoMultiColumnComboBox").trigger("change");
-    }
-
-    if (idMarca !== 0) {
-        $("#cmbMarca").data("kendoComboBox").value(idMarca);
-        $("#cmbMarca").data("kendoComboBox").trigger("change");
     }
 
     if (idPlanta !== 0) {
@@ -63,12 +82,13 @@ $(document).ready(function () {
                     dataType: 'json',
                     async: false,
                     data: JSON.stringify({
-                        IdCliente: idCatalogoDiseno > 0 ? idCliente : 0,
-                        IdMarca: idMarca,
+                        IdCliente: idCliente,
                         IdPlanta: idPlanta,
                         IdEtapaProcesoMacro: idEtapaProcesoMacro,
                         IdCatalogoDiseno: idCatalogoDiseno,
-                        IdServicio: idServicio
+                        IdServicio: idServicio,
+                        FechaDesde: xFechaInicio,
+                        FechaHasta: xFechaFin
                     }),
                     url: TSM_Web_APi + "HojasBandeos/ConsultaMacroEtapas/",
                     contentType: "application/json; charset=utf-8",
@@ -89,6 +109,7 @@ $(document).ready(function () {
                     EstiloDiseno: { type: "string" },
                     Nombre: { type: "string" },
                     Corte: { type: "string" },
+                    IdCatalogoDiseno: { type: "number" },
                     ColorTela: { type: "string" },
                     PartePrenda: { type: "string" },
                     Prenda: { type: "string" },
@@ -162,13 +183,7 @@ $(document).ready(function () {
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
                         window.location = window.location.origin + "/ConsultaCorteMicro/"
                             + `${dataItem.IdHojaBandeo}/`
-                            + `${idCliente}/`
-                            + `${idMarca}/`
-                            + `${idPlanta}/`
-                            + `${idEtapaProcesoMacro}/`
-                            + `${idCatalogoDiseno}/`
-                            + `${idServicio}/`
-                            + `${FM}/`;
+                            + `${dataItem.IdCatalogoDiseno}/`;
                     }
                 },
                 width: "70px",
@@ -208,29 +223,27 @@ $(document).ready(function () {
         grid.saveAsExcel();
     });
 
+    $("#daterangepicker").data("kendoDateRangePicker").bind("change", function () {
+        let range = this.range();
+        if (range !== "" && range != null && range.start != null && range.end != null) {
+            xFechaInicio = kendo.toString(kendo.parseDate(range.start), 's');
+            xFechaFin = kendo.toString(kendo.parseDate(range.end), 's');
+
+            $("#gridCortes").data("kendoGrid").dataSource.read();
+        }
+    });
+
     $("#cmbCliente").data("kendoComboBox").bind("change", function () {
         idCliente = this.value() === "" ? 0 : this.value();
 
-        let dsm = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: function () { return TSM_Web_APi + `ClientesMarcas/GetByCliente/${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}` },
-                    contentType: "application/json; charset=utf-8"
-                }
-            }
-        });
-
-        idMarca = 0;
-        idPlanta = 0;
-        idEtapaProcesoMacro = 0;
         idCatalogoDiseno = 0;
         FM = '';
+        idPlanta = 0;
+        idEtapaProcesoMacro = 0;
         idServicio = 0;
 
         $("#cmbFm").data("kendoMultiColumnComboBox").value("");
         $("#cmbFm").data("kendoMultiColumnComboBox").dataSource.read();
-        $("#cmbMarca").data("kendoComboBox").value("");
-        $("#cmbMarca").data("kendoComboBox").setDataSource(dsm);
         $("#cmbPlanta").data("kendoComboBox").value("");
         $("#cmbEtapa").data("kendoComboBox").value("");
         $("#cmbServicio").data("kendoComboBox").value("");
@@ -241,11 +254,6 @@ $(document).ready(function () {
     $("#cmbFm").data("kendoMultiColumnComboBox").bind("change", function () {
         idCatalogoDiseno = this.value() === "" ? 0 : this.value();
         FM = this.text();
-        $("#gridCortes").data("kendoGrid").dataSource.read();
-    });
-
-    $("#cmbMarca").data("kendoComboBox").bind("change", function () {
-        idMarca = this.value() === "" ? 0 : this.value();
         $("#gridCortes").data("kendoGrid").dataSource.read();
     });
 
@@ -266,10 +274,44 @@ $(document).ready(function () {
 
 });
 
+let SetFiltrosValue = () => {
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            IdCliente: idCliente,
+            IdPlanta: idPlanta,
+            IdEtapaProcesoMacro: idEtapaProcesoMacro,
+            IdCatalogoDiseno: idCatalogoDiseno,
+            IdServicio: idServicio,
+            FechaDesde: xFechaInicio,
+            FechaHasta: xFechaFin
+        }),
+        url: "ConsultaCorteMacro/SetFiltrosValue",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+let GetFiltrosValue = () => {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        async: false,
+        url: "ConsultaCorteMacro/GetFiltrosValue",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+        }
+    });
+}
+
 fPermisos = (datos) => {
     Permisos = datos;
 };
-
 
 $.fn.extend({
     mlcFmCatalogo: function () {
