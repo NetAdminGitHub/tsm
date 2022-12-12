@@ -679,7 +679,7 @@ $(document).ready(function () {
     //#region Botones de negocio
 
     $("#btnRetornar").click(function () {
-        window.location = window.location.origin + `/ConsultaDespacho`;
+        window.location = window.location.origin + `/ConsultaDespacho/${xCliente}/`;
     });
 
 
