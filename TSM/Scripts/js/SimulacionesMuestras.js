@@ -616,7 +616,7 @@ $(document).ready(function () {
 
     $("#CmbIdServicio").data("kendoComboBox").bind("change", function () {
         var colum = $("#CmbIdServicio").data("kendoComboBox");
-        let data = colum.listView.dataSource.data().find(q => q.IdCliente === Number(this.value()));
+        let data = colum.listView.dataSource.data().find(q => q.IdServicio === Number(this.value()));
         if (data === undefined) {
             //limpiar filtros
    
@@ -652,7 +652,7 @@ $(document).ready(function () {
                 KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbNoOrdenTrabajo")),
                 KdoMultiColumnCmbGetValue($("#CmbPrograma")) === null ? 0 : KdoMultiColumnCmbGetValue($("#CmbPrograma"))
             );
-            sessionStorage.setItem("Simue_CmbIdServicio", this.value(),);
+            sessionStorage.setItem("Simue_CmbIdServicio", this.value());
         }
     });
 
