@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Listas de Empaques";
+    ViewBag.IdVersion = "TSM0101154|v22112201";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var xIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
+    </script>
+
+    <script src="~/Scripts/js/ListaEmpaques.js"></script>
+}
+
+<link href="~/Content/ConsultaCorteStyle.css" rel="stylesheet" />
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div id="vCambioEstado"></div>
+<div class="row">
+    <div class="card">
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="form-group col-lg-12" style="display:none;">
+                            <label for="txtIdDespachoMerc">Id Despacho:</label>
+                            <input id="txtIdDespachoMerc" name="txtIdDespachoMerc" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-12">
+                        <div class="row">
+                            <div class="form-group col-lg-3">
+                                <label for="txtCliente">Cliente:</label>
+                                <input id="txtCliente" name="txtCliente" class="form-control k-textbox" />
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label for="txtPlanta" id="lblPlanta">Planta:</label>
+                                <input id="txtPlanta" name="txtPlanta" class="form-control k-textbox" />
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label for="dfDespacho" id="lblfDespacho">Fecha de Despacho:</label>
+                                <input id="dfDespacho" name="dfDespacho" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label for="txtOrdenDespacho">Orden Despacho</label>
+                                <input id="txtOrdenDespacho" name="txtOrdenDespacho" class="form-control k-textbox" />
+                            </div>
+                            <div class="form-group col-lg-3 mt-auto text-right">
+                                <button type="button" id="btnEtapa">Cambio de etapa</button>
+                                <button type="button" id="btnRetornar">Regresar</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="form-group col-lg-5">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="gridEmbalaje"><b style="font-size:17px;">Embalajes disponibles para esta orden:</b></label>
+                            <div id="gridEmbalaje" style="margin-top:24px;"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-7">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <button type="button" id="btnCrearPL">Crear Lista de Empaque</button>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <div id="gridPL"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+@*vista modal crear PL*@
+<div id="vCrearPL"></div>
+
+@*vista modal información mercancía en embalaje*@
+<div id="vInfEmbDes"></div>
+
+@*modal cambio de etapa*@
+<div id="vCambioEtapa"></div>
