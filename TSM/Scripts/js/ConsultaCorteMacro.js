@@ -270,7 +270,7 @@ $(document).ready(function () {
 });
 
 let SetFiltrosValue = () => {
-    console.log(1);
+    kendo.ui.progress($(document.body), true);
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -288,13 +288,16 @@ let SetFiltrosValue = () => {
         url: "ConsultaCorteMacro/SetFiltrosValue",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            console.log(result);
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 }
 
 let GetFiltrosValue = () => {
-
+    kendo.ui.progress($(document.body), true);
     let end = new Date();
     let start = new Date(end.getFullYear(), end.getMonth() - 1, end.getDate());
 
@@ -313,6 +316,10 @@ let GetFiltrosValue = () => {
             xFechaInicio = result.FechaDesde == null ? start : result.FechaDesde;
             xFechaFin = result.FechaHasta == null ? end : result.FechaHasta;
             FM = result.FM == null ? '' : result.FM;
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
         }
     });
 }
@@ -341,7 +348,7 @@ $.fn.extend({
                         read: {
                             url: function (datos) {
                                 return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/"
-                                    + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}`;
+                                    + `${KdoCmbGetValue($("#cmbCliente")) === null ? -1 : KdoCmbGetValue($("#cmbCliente"))}`;
                             },
                             contentType: "application/json; charset=utf-8"
                         }
