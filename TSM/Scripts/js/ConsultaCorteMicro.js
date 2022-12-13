@@ -153,17 +153,6 @@ $(document).ready(function () {
         $("#gridBultos").data("kendoGrid").dataSource.read();
     });
 
-    $("#btnRetornar").click(function () {
-        window.location = window.location.origin + '/ConsultaCorteMacro/';
-            //+ `${idCliente}/`
-            //+ `${idMarca}/`
-            //+ `${idPlanta}/`
-            //+ `${idEtapaProcesoMacro}/`
-            //+ `${idCatalogoDiseno}/`
-            //+ `${idServicio}/`
-            //+ `${FM}/`;
-    });
-
 });
 
 let detalleHojaBandeo = (IdHojaBandeo) => {

@@ -13,14 +13,15 @@ let xFechaFin;
 
 $(document).ready(function () {
 
+    GetFiltrosValue();
     Kendo_CmbFiltrarGrid($("#cmbCliente"), TSM_Web_APi + "Clientes", "Nombre", "IdCliente", "Seleccione un cliente");
     Kendo_CmbFiltrarGrid($("#cmbPlanta"), TSM_Web_APi + "Plantas", "Nombre", "IdPlanta", "Seleccione la Planta");
     Kendo_CmbFiltrarGrid($("#cmbEtapa"), TSM_Web_APi + "EtapasProcesosMacro", "Nombre", "IdEtapaProcesoMacro", "Seleccione la etapa");
     Kendo_CmbFiltrarGrid($("#cmbServicio"), TSM_Web_APi + "Servicios", "Nombre", "IdServicio", "Seleccione el servicio");
     $("#cmbFm").mlcFmCatalogo();
 
-    let end = new Date();
-    let start = new Date(end.getFullYear(), end.getMonth() - 1, end.getDate());
+    let end = xFechaFin == null ? new Date() : new Date(xFechaFin);
+    let start = xFechaInicio == null ? new Date(end.getFullYear(), end.getMonth() - 1, end.getDate()) : new Date(xFechaInicio);
 
     $("#daterangepicker").kendoDateRangePicker({
         range: { start: start, end: end },
@@ -35,21 +36,9 @@ $(document).ready(function () {
     xFechaInicio = kendo.toString(kendo.parseDate($("#daterangepicker").data("kendoDateRangePicker").range().start), 's');
     xFechaFin = kendo.toString(kendo.parseDate($("#daterangepicker").data("kendoDateRangePicker").range().end), 's');
 
-    if (idCliente !== 0) {
+    if (idCliente != 0) {
         $("#cmbCliente").data("kendoComboBox").value(idCliente);
         $("#cmbCliente").data("kendoComboBox").trigger("change");
-
-        let dsm = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: function () {
-                        return TSM_Web_APi +
-                            `ClientesMarcas/GetByCliente/${idCliente === null ? 0 : idCliente}`
-                    },
-                    contentType: "application/json; charset=utf-8"
-                }
-            }
-        });
     }
 
     if (FM !== '') {
@@ -57,17 +46,17 @@ $(document).ready(function () {
         $("#cmbFm").data("kendoMultiColumnComboBox").trigger("change");
     }
 
-    if (idPlanta !== 0) {
+    if (idPlanta != 0) {
         $("#cmbPlanta").data("kendoComboBox").value(idPlanta);
         $("#cmbPlanta").data("kendoComboBox").trigger("change");
     }
 
-    if (idEtapaProcesoMacro !== 0) {
+    if (idEtapaProcesoMacro != 0) {
         $("#cmbEtapa").data("kendoComboBox").value(idEtapaProcesoMacro);
         $("#cmbEtapa").data("kendoComboBox").trigger("change");
     }
 
-    if (idServicio !== 0) {
+    if (idServicio != 0) {
         $("#cmbServicio").data("kendoComboBox").value(idServicio);
         $("#cmbServicio").data("kendoComboBox").trigger("change");
     }
@@ -230,6 +219,7 @@ $(document).ready(function () {
             xFechaFin = kendo.toString(kendo.parseDate(range.end), 's');
 
             $("#gridCortes").data("kendoGrid").dataSource.read();
+            SetFiltrosValue();
         }
     });
 
@@ -249,32 +239,38 @@ $(document).ready(function () {
         $("#cmbServicio").data("kendoComboBox").value("");
 
         $("#gridCortes").data("kendoGrid").dataSource.read();
+        SetFiltrosValue();
     });
 
     $("#cmbFm").data("kendoMultiColumnComboBox").bind("change", function () {
         idCatalogoDiseno = this.value() === "" ? 0 : this.value();
         FM = this.text();
         $("#gridCortes").data("kendoGrid").dataSource.read();
+        SetFiltrosValue();
     });
 
     $("#cmbPlanta").data("kendoComboBox").bind("change", function () {
         idPlanta = this.value() === "" ? 0 : this.value();
         $("#gridCortes").data("kendoGrid").dataSource.read();
+        SetFiltrosValue();
     });
 
     $("#cmbEtapa").data("kendoComboBox").bind("change", function () {
         idEtapaProcesoMacro = this.value() === "" ? 0 : this.value();
         $("#gridCortes").data("kendoGrid").dataSource.read();
+        SetFiltrosValue();
     });
 
     $("#cmbServicio").data("kendoComboBox").bind("change", function () {
         idServicio = this.value() === "" ? 0 : this.value();
         $("#gridCortes").data("kendoGrid").dataSource.read();
+        SetFiltrosValue();
     });
 
 });
 
 let SetFiltrosValue = () => {
+    console.log(1);
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -282,11 +278,12 @@ let SetFiltrosValue = () => {
         data: JSON.stringify({
             IdCliente: idCliente,
             IdPlanta: idPlanta,
-            IdEtapaProcesoMacro: idEtapaProcesoMacro,
-            IdCatalogoDiseno: idCatalogoDiseno,
+            IdEtapaMacro: idEtapaProcesoMacro,
+            IdCatalogo: idCatalogoDiseno,
             IdServicio: idServicio,
             FechaDesde: xFechaInicio,
-            FechaHasta: xFechaFin
+            FechaHasta: xFechaFin,
+            FM: FM
         }),
         url: "ConsultaCorteMacro/SetFiltrosValue",
         contentType: "application/json; charset=utf-8",
@@ -297,6 +294,10 @@ let SetFiltrosValue = () => {
 }
 
 let GetFiltrosValue = () => {
+
+    let end = new Date();
+    let start = new Date(end.getFullYear(), end.getMonth() - 1, end.getDate());
+
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -304,7 +305,14 @@ let GetFiltrosValue = () => {
         url: "ConsultaCorteMacro/GetFiltrosValue",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            console.log(result);
+            idCliente = result.IdCliente == null ? 0 : result.IdCliente;
+            idPlanta = result.IdPlanta == null ? 0 : result.IdPlanta;
+            idEtapaProcesoMacro = result.IdEtapaMacro == null ? 0 : result.IdEtapaMacro;
+            idCatalogoDiseno = result.IdCatalogo == null ? 0 : result.IdCatalogo;
+            idServicio = result.IdServicio == null ? 0 : result.IdServicio;
+            xFechaInicio = result.FechaDesde == null ? start : result.FechaDesde;
+            xFechaFin = result.FechaHasta == null ? end : result.FechaHasta;
+            FM = result.FM == null ? '' : result.FM;
         }
     });
 }

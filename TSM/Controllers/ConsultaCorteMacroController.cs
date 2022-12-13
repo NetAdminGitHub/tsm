@@ -18,15 +18,16 @@ namespace TSM.Controllers
         [HttpPost]
         [Route("ConsultaCorteMacro/SetFiltrosValue")]
         public ActionResult SetFiltrosValue(string IdCliente, string IdPlanta, string IdEtapaMacro, string IdCatalogo, 
-                                            string IdServicio, string FechaDesde, string FechaHasta)
+                                            string IdServicio, string FechaDesde, string FechaHasta, string FM)
         {
-            HttpContext.Session["IdCliente"] = IdCliente == null ? "" : IdCliente;
-            HttpContext.Session["IdPlanta"] = IdPlanta == null ? "" : IdPlanta;
-            HttpContext.Session["IdEtapaMacro"] = IdEtapaMacro == null ? "" : IdEtapaMacro;
-            HttpContext.Session["IdCatalogo"] = IdCatalogo == null ? "" : IdCatalogo;
-            HttpContext.Session["IdServicio"] = IdServicio == null ? "" : IdServicio;
-            HttpContext.Session["FechaDesde"] = FechaDesde == null ? "" : FechaDesde;
-            HttpContext.Session["FechaHasta"] = FechaHasta == null ? "" : FechaHasta;
+            Session["CM_IdCliente"] = IdCliente == null ? "" : IdCliente;
+            Session["CM_IdPlanta"] = IdPlanta == null ? "" : IdPlanta;
+            Session["CM_IdEtapaMacro"] = IdEtapaMacro == null ? "" : IdEtapaMacro;
+            Session["CM_IdCatalogo"] = IdCatalogo == null ? "" : IdCatalogo;
+            Session["CM_IdServicio"] = IdServicio == null ? "" : IdServicio;
+            Session["CM_FechaDesde"] = FechaDesde == null ? "" : FechaDesde;
+            Session["CM_FechaHasta"] = FechaHasta == null ? "" : FechaHasta;
+            Session["CM_FM"] = FM == null ? "" : FM;
 
             var result = FiltrosValue();
             return Json(result);
@@ -44,13 +45,14 @@ namespace TSM.Controllers
         {
             Dictionary<string, object> result = new Dictionary<string, object>();
 
-            result.Add("IdCliente", HttpContext.Session["IdCliente"] as string);
-            result.Add("IdPlanta", HttpContext.Session["IdPlanta"] as string);
-            result.Add("IdEtapaMacro", HttpContext.Session["IdEtapaMacro"] as string);
-            result.Add("IdCatalogo", HttpContext.Session["IdCatalogo"] as string);
-            result.Add("IdServicio", HttpContext.Session["IdServicio"] as string);
-            result.Add("FechaDesde", HttpContext.Session["FechaDesde"] as string);
-            result.Add("FechaHasta", HttpContext.Session["FechaHasta"] as string);
+            result.Add("IdCliente", Session["CM_IdCliente"] as string);
+            result.Add("IdPlanta", Session["CM_IdPlanta"] as string);
+            result.Add("IdEtapaMacro", Session["CM_IdEtapaMacro"] as string);
+            result.Add("IdCatalogo", Session["CM_IdCatalogo"] as string);
+            result.Add("IdServicio", Session["CM_IdServicio"] as string);
+            result.Add("FechaDesde", Session["CM_FechaDesde"] as string);
+            result.Add("FechaHasta", Session["CM_FechaHasta"] as string);
+            result.Add("FM", Session["CM_FM"] as string);
 
             return result;
         }
