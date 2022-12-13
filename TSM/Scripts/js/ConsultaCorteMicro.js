@@ -145,21 +145,12 @@ $(document).ready(function () {
         const grid = $("#gridBultos").data("kendoGrid");
         grid.saveAsExcel();
     });
+
     $("#btnRefrescar").data("kendoButton").bind("click", function (e) {
         detalleHojaBandeo(IdHojaBandeo);
         infoDiseno(idCatalogoDiseno);
         fn_Get_EtapasCorte(IdHojaBandeo);
         $("#gridBultos").data("kendoGrid").dataSource.read();
-    });
-    $("#btnRetornar").click(function () {
-        window.location = window.location.origin + '/ConsultaCorteMacro/'
-            + `${idCliente}/`
-            + `${idMarca}/`
-            + `${idPlanta}/`
-            + `${idEtapaProcesoMacro}/`
-            + `${idCatalogoDiseno}/`
-            + `${idServicio}/`
-            + `${FM}/`;
     });
 
 });
