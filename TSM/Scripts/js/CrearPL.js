@@ -71,7 +71,7 @@ var fn_Ini_create =  (pJson) => {
                     $("#gridPL").data("kendoGrid").dataSource.read();
                 },
                 error: function (data) {
-
+                    ErrorMsg(data);
                 }
 
             });
@@ -101,7 +101,7 @@ var fn_Ini_create =  (pJson) => {
                         $("#gridPL").data("kendoGrid").dataSource.read();
                     },
                     error: function (data) {
-
+                        ErrorMsg(data);
                     }
 
                 });

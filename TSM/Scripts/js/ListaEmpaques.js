@@ -298,6 +298,9 @@ $(document).ready(function () {
                                             $("#gridEmbalaje").data("kendoGrid").dataSource.read();
                                             $("#gridPL").data("kendoGrid").dataSource.read();
                                         }
+                                    },
+                                    error: function (data) {
+                                        ErrorMsg(data);
                                     }
                                 });
                             },
