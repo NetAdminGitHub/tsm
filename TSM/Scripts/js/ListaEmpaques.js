@@ -252,6 +252,16 @@ $(document).ready(function () {
                 $(this).find(".plSplit").kendoSplitButton({
                     items: [
                         {
+                            id: "PrintPL" + dataItem.IdListaEmpaque,
+                            text: "Imprimir",
+                            icon: "print",
+                            click: function (e) {
+                                e.preventDefault();
+                                ImprimirPL(dataItem.IdListaEmpaque);
+                            }/*,
+                            enabled: xestado === 'FINALIZADO' ? false : true*/
+                        },
+                        {
                             id: "CambioEst" + dataItem.IdListaEmpaque,
                             text: "Cambio Estado",
                             icon: "gear",
@@ -495,6 +505,40 @@ var fn_updGrid = () => {
                 KdoButtonEnable($("#btnCrearPL"), xestado === 'FINALIZADO' ? false : true);
                 $("#gridPL").data("kendoGrid").dataSource.read();
             }
+        }
+    });
+    return true;
+
+}
+
+var ImprimirPL = (IdListaEmpaque) => {
+
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: window.location.origin + "/Reportes/ReportePL/",
+        dataType: 'json',
+        type: 'POST',
+        data: JSON.stringify(
+            {
+                rptName: "crptFormatoListaEmpaque",
+                controlador: "ListaEmpaques",
+                accion: "GetCompletePL",
+                id: IdListaEmpaque
+
+            }
+        ),
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            let MiRpt = window.open(respuesta, "_blank");
+
+            if (!MiRpt)
+                $("#kendoNotificaciones").data("kendoNotification").show("Bloqueo de ventanas emergentes activado.<br /><br />Debe otorgar permisos para ver el reporte.", "error");
+
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function (e) {
+            $("#kendoNotificaciones").data("kendoNotification").show(e, "error");
+            kendo.ui.progress($(document.body), false);
         }
     });
     return true;
