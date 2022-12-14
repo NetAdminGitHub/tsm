@@ -3,6 +3,7 @@ let xCliente = 0;
 let xPlanta = 0;
 let IdCabPL = 0;
 let xestado = "";
+let xidDM = 0;
 
 $(document).ready(function () {
 
@@ -33,8 +34,43 @@ $(document).ready(function () {
             if (respuesta != null)
             {
                 IdCabPL = respuesta.IdDespachoListaEmpaque;
+                xidDM = respuesta.IdDespachoMercancia;
             }
         }
+    });
+
+    $("#btnEtapa").click(function () {
+
+        let IdOD = xidDM;
+
+        $.ajax({
+            url: TSM_Web_APi + "DespachosMercancias/GetEtapaOD/" + IdOD,
+            dataType: 'json',
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (respuesta) {
+                EtapaActual = respuesta.IdEtapaProceso;
+                NombreEtapaActual = respuesta.NombreEtapa;
+            }
+        });
+
+        let strjson = {
+            config: [{
+                Div: "vCambioEtapa",
+                Vista: "~/Views/Shared/_CambioEtapa.cshtml",
+                Js: "CambioEtapa.js",
+                Titulo: "Cambio Etapa",
+                Width: "20%",
+                MinWidth: "20%",
+                Height: "45%"
+            }],
+            Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
+            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+        };
+
+        fn_GenLoadModalWindow(strjson);
+
     });
 
     $.ajax({
