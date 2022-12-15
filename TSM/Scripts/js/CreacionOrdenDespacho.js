@@ -69,14 +69,15 @@ $(document).ready(function () {
                     dataType: 'json',
                     url: TSM_Web_APi + "HojasBandeos/GetCortesPorDespachar/",
                     data: JSON.stringify({
-                            IdCliente: xidclie,
-                            IdPlanta: xidPlanta,
-                            IdMarca: xidMarca,
-                            IdCatalogo: xidcata,
-                            IdHojaBandeo: xidCorte,
-                            IdListaEmpaque: xidListaEmpaque,
-                            IdServicio: xidServicio
-                        }),
+                        IdCliente: xidclie,
+                        IdPlanta: xidPlanta,
+                        IdMarca: xidMarca,
+                        IdCatalogo: xidcata,
+                        IdHojaBandeo: xidCorte,
+                        IdListaEmpaque: xidListaEmpaque,
+                        IdServicio: xidServicio,
+                        IdDespachoMercancia: xidDM
+                    }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -1474,7 +1475,8 @@ var DIDM = (e) => {
         let VdS = {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "HojasBandeos/GetCortesPorDespacharDet/" + vidhb; },
+                    url: function () {
+                        return TSM_Web_APi + `HojasBandeos/GetCortesPorDespacharDet/${vidhb}/${xidDM}`; },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 },
@@ -1723,7 +1725,7 @@ $.fn.extend({
                     { field: "NoReferencia", title: "No FM", width: 300 },
                     { field: "IdCatalogoDiseno", title: "IdCatalogo", width: 300,hidden:true },
                     {
-                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\",\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
+                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\",\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
                     }
                 ]
             });
