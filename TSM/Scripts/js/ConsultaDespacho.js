@@ -4,8 +4,8 @@ var Permisos;
 let idPlanta = 0;
 let idMarca = 0;
 
-const NombresControladores = ["CrearEmbalaje", "ListaEmpaques", "PedidoVenta", "Factura", "DevolucionDM", "NotaRemision"];
-const NombresVistas = ["OrdenDespacho", "CrearEmbalaje", "ListaEmpaque", "PedidoVenta", "Facturacion", "DeclaracionMercancia", "NotaRemision"];
+const NombresControladores = ["CrearEmbalaje", "ListaEmpaques", "NotaRemision", "PedidoVenta", "Factura", "DevolucionDM"];
+const NombresVistas = ["OrdenDespacho", "CrearEmbalaje", "ListaEmpaque", "NotaRemision", "PedidoVenta", "Facturacion", "DeclaracionMercancia"];
 let permisos = [];
 
 let perEmb = true;
@@ -288,6 +288,11 @@ $(document).ready(function () {
                             }, enabled: absPL
                         },
                         {
+                            id: "opcNR" + idOD, text: "Nota de Remisión", icon: "plus-outline", click: function () {
+                                window.location.href = '/NotaRemision/' + idOD;
+                            }, enabled: absNR
+                        },
+                        {
                             id: "opcPV" + idOD, text: "Pedido de Venta", icon: "plus-outline", click: function () {
                                 window.location.href = '/PedidoVenta/' + idOD;
                             }, enabled: absPV
@@ -301,11 +306,6 @@ $(document).ready(function () {
                             id: "opcDM" + idOD, text: "Devolución DM", icon: "plus-outline", click: function () {
                                 window.location.href = '/DevolucionDM/' + idOD;
                             }, enabled: absDM
-                        },
-                        {
-                            id: "opcNR" + idOD, text: "Nota de Remisión", icon: "plus-outline", click: function () {
-                                window.location.href = '/NotaRemision/' + idOD;
-                            }, enabled: absNR
                         }
                     ]
                 });
