@@ -662,7 +662,7 @@ $.fn.extend({
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "HojasBandeosDisenos/GetDisenoByClientePlanta/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}`; },
+                            url: function (datos) { return TSM_Web_APi + "HojasBandeosDisenos/GetDisenoByClientePlantaFiltro/" + `${KdoCmbGetValue($("#cmbCliente")) === null ? 0 : KdoCmbGetValue($("#cmbCliente"))}/${KdoCmbGetValue($("#cmbPlanta")) === null ? 0 : KdoCmbGetValue($("#cmbPlanta"))}`; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
