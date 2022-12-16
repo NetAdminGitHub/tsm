@@ -21,7 +21,7 @@ var rowsHijo = [];
 
 let EtapaActual;
 let NombreEtapaActual;
-let xActivar = false;
+let xActivar = true;
 $(document).ready(function () {
 
     KdoButton($("#btnRetornar"), "arrow-left");
@@ -60,6 +60,11 @@ $(document).ready(function () {
         // revisar si exite un embalaje creado
         fn_Get_DatosEmb(readIdDespachoMercancia);
     }
+
+    KdoComboBoxEnable($("#cmbPlanta"), xActivar);
+    KdoComboBoxEnable($("#cmbTipoTrans"), xActivar);
+
+
     //#region crear bultos si preparar
 
     //CONFIGURACION DEL GRID,CAMPOS
@@ -381,7 +386,7 @@ $(document).ready(function () {
 
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         KdoButtonEnable($("#btnMoveData"), xActivar);
-        KdoButtonEnable($("#btnEtapa"), true);
+        KdoButtonEnable($("#btnEtapa"), xActivar);
         loadGridIzquierdo();
 
         $.ajax({
@@ -679,8 +684,8 @@ $(document).ready(function () {
                             $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
                             $('#cmbCliente').data("kendoComboBox").readonly(true);
                             oldPlanta = xidPlanta;
-                            KdoButtonEnable($("#btnMoveData"), true);
-                            KdoButtonEnable($("#btnEtapa"), true);
+                            KdoButtonEnable($("#btnMoveData"), xActivar);
+                            KdoButtonEnable($("#btnEtapa"), xActivar);
                             loadGridIzquierdo();
                             RequestEndMsg(datos, "Post");
                         },
