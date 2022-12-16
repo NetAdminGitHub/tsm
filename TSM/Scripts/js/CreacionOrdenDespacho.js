@@ -69,14 +69,15 @@ $(document).ready(function () {
                     dataType: 'json',
                     url: TSM_Web_APi + "HojasBandeos/GetCortesPorDespachar/",
                     data: JSON.stringify({
-                            IdCliente: xidclie,
-                            IdPlanta: xidPlanta,
-                            IdMarca: xidMarca,
-                            IdCatalogo: xidcata,
-                            IdHojaBandeo: xidCorte,
-                            IdListaEmpaque: xidListaEmpaque,
-                            IdServicio: xidServicio
-                        }),
+                        IdCliente: xidclie,
+                        IdPlanta: xidPlanta,
+                        IdMarca: xidMarca,
+                        IdCatalogo: xidcata,
+                        IdHojaBandeo: xidCorte,
+                        IdListaEmpaque: xidListaEmpaque,
+                        IdServicio: xidServicio,
+                        IdDespachoMercancia: xidDM
+                    }),
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         datos.success(result);
@@ -450,14 +451,14 @@ $(document).ready(function () {
             { field: "CantidadMercancia", title: "Cantidad Mercancia" },
             { field: "Cantidad", title: "Cantidad" },
             {
-                field: "", title: "", template: "<button class='k-button k-button-icontext k-grid-b_deleteOD' id='eod#=data.IdDespachoMercancia#' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"Todas las tallas\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 70
+                field: "", title: "", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-b_deleteOD' id='eod#=data.IdDespachoMercancia#' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"Todas las tallas\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 70
             }
         ]
     });
 
 
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
-    SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, true, true, true, redimensionable.Si, 659, false);
+    SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
     SetGrid_CRUD_ToolbarTop($("#gridOrdenDespacho").data("kendoGrid"), false);
     SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, false);
     Set_Grid_DataSource($("#gridOrdenDespacho").data("kendoGrid"), dsDM);
@@ -1451,7 +1452,7 @@ var DIDM = (e) => {
                 { field: "CantidadMercancia", title: "Cantidad Mercancia" },
                 { field: "Cantidad", title: "Cantidad" },
                 {
-                    field: "", title: "", template: "<button class='k-button k-button-icontext k-grid-del_detalle' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"#=data.Talla#\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 90
+                    field: "", title: "", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-del_detalle' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"#=data.Talla#\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 90
                 }
             ]
         });
@@ -1474,7 +1475,8 @@ var DIDM = (e) => {
         let VdS = {
             transport: {
                 read: {
-                    url: function () { return TSM_Web_APi + "HojasBandeos/GetCortesPorDespacharDet/" + vidhb; },
+                    url: function () {
+                        return TSM_Web_APi + `HojasBandeos/GetCortesPorDespacharDet/${vidhb}/${xidDM}`; },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 },
@@ -1541,7 +1543,7 @@ var DIDM = (e) => {
 }
 
 var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
-    SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
+    SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0);
     SetGrid_CRUD_Command(gt, false, false, Id_gCHForDetalleX);
     Set_Grid_DataSource(gt, ds2);
 }
@@ -1723,7 +1725,7 @@ $.fn.extend({
                     { field: "NoReferencia", title: "No FM", width: 300 },
                     { field: "IdCatalogoDiseno", title: "IdCatalogo", width: 300,hidden:true },
                     {
-                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\",\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
+                        field: "Button", title: "Detalle", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-b_search' onclick='loadModalCorte(\"#=data.IdHojaBandeo#\",\"#=data.Corte#\",\"#=data.IdCatalogoDiseno#\")'><span class='k-icon k-i-eye m-0'></span> </button>", width: 90
                     }
                 ]
             });
