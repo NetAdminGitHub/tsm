@@ -21,7 +21,7 @@ var rowsHijo = [];
 
 let EtapaActual;
 let NombreEtapaActual;
-
+let xActivar = true;
 $(document).ready(function () {
 
     KdoButton($("#btnRetornar"), "arrow-left");
@@ -55,6 +55,15 @@ $(document).ready(function () {
     $("#btnMoveData").removeClass("k-button-icon");
     KdoButtonEnable($("#btnMoveData"), false);
     KdoButtonEnable($("#btnEtapa"), false);
+
+    if (readIdDespachoMercancia !== 0) {
+        // revisar si exite un embalaje creado
+        fn_Get_DatosEmb(readIdDespachoMercancia);
+    }
+
+    KdoComboBoxEnable($("#cmbPlanta"), xActivar);
+    KdoComboBoxEnable($("#cmbTipoTrans"), xActivar);
+
 
     //#region crear bultos si preparar
 
@@ -131,6 +140,8 @@ $(document).ready(function () {
                     grid.collapseRow(row);
                 }
             });
+
+
         },
         change: function (e) {
             $("tr", ".lump-child-grid").removeClass("k-state-selected");
@@ -375,8 +386,8 @@ $(document).ready(function () {
     }
 
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
-        KdoButtonEnable($("#btnMoveData"), true);
-        KdoButtonEnable($("#btnEtapa"), true);
+        KdoButtonEnable($("#btnMoveData"), xActivar);
+        KdoButtonEnable($("#btnEtapa"), xActivar);
         loadGridIzquierdo();
 
         $.ajax({
@@ -420,8 +431,21 @@ $(document).ready(function () {
                         kendo.ui.progress($(document.body), false);
                     }
                 });
+            }, destroy: function (datos) {
+
+                fn_delOD(datos.data.IdDespachoMercancia, "Todas las tallas", datos.data.IdHojaBandeo);
+
+            },
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
             }
         },
+        requestEnd: function (e) {
+            Grid_requestEnd(e);
+        },
+        error: Grid_error,
         schema: {
             model: {
                 id: "IdDespachoMercancia",
@@ -449,10 +473,8 @@ $(document).ready(function () {
             { field: "Disenos", title: "Diseños" },
             { field: "CantidadTallas", title: "Cantidad Tallas" },
             { field: "CantidadMercancia", title: "Cantidad Mercancia" },
-            { field: "Cantidad", title: "Cantidad" },
-            {
-                field: "", title: "", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-b_deleteOD' id='eod#=data.IdDespachoMercancia#' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"Todas las tallas\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 70
-            }
+            { field: "Cantidad", title: "Cantidad" }
+         
         ]
     });
 
@@ -460,8 +482,12 @@ $(document).ready(function () {
     // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
     SetGrid($("#gridOrdenDespacho").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, 659, false);
     SetGrid_CRUD_ToolbarTop($("#gridOrdenDespacho").data("kendoGrid"), false);
-    SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, false);
+    SetGrid_CRUD_Command($("#gridOrdenDespacho").data("kendoGrid"), false, true);
     Set_Grid_DataSource($("#gridOrdenDespacho").data("kendoGrid"), dsDM);
+
+    $("#gridOrdenDespacho").data("kendoGrid").bind("dataBound", function (e) {
+        xActivar === false ? $(".k-grid-Eliminar").addClass("k-disabled") : "";
+    });
 
     if (readIdDespachoMercancia > 0 && readIdDespachoMercancia != "" && readIdDespachoMercancia != undefined) {
         xidDM = readIdDespachoMercancia;
@@ -659,8 +685,8 @@ $(document).ready(function () {
                             $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
                             $('#cmbCliente').data("kendoComboBox").readonly(true);
                             oldPlanta = xidPlanta;
-                            KdoButtonEnable($("#btnMoveData"), true);
-                            KdoButtonEnable($("#btnEtapa"), true);
+                            KdoButtonEnable($("#btnMoveData"), xActivar);
+                            KdoButtonEnable($("#btnEtapa"), xActivar);
                             loadGridIzquierdo();
                             RequestEndMsg(datos, "Post");
                         },
@@ -1414,14 +1440,34 @@ var DIDM = (e) => {
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 },
+                destroy: {
+                    url: function (datos) { return TSM_Web_APi + "DespachosMercanciasDetalles/DelDespachoMercanciaxTalla"; },
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "DELETE"
+                },
                 parameterMap: function (data, type) {
                     if (type !== "read") {
+                        return kendo.stringify({
+                            IdDespachoMercancia: data.IdDespachoMercancia,
+                            Talla: data.Talla,
+                            IdHojaBandeo: data.IdHojaBandeo
+                        });
+                    } else {
                         return kendo.stringify(data);
+                       
                     }
                 }
             },
             requestEnd: function (e) {
                 Grid_requestEnd(e);
+                if (Gdet !== undefined) {
+                    if (Gdet.dataSource.total() === 0 && e.type === "destroy") {
+                        $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
+                        $("#treelist").data("kendoGrid").dataSource.read();
+
+                    }
+                }
             },
             error: Grid_error,
             schema: {
@@ -1450,17 +1496,18 @@ var DIDM = (e) => {
                 { field: "Disenos", title: "Disenos" },
                 { field: "Talla", title: "Talla" },
                 { field: "CantidadMercancia", title: "Cantidad Mercancia" },
-                { field: "Cantidad", title: "Cantidad" },
-                {
-                    field: "", title: "", template: "<button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-icon-button k-button-icontext k-grid-del_detalle' onclick='fn_delOD(\"#=data.IdDespachoMercancia#\",\"#=data.Talla#\",\"#=data.IdHojaBandeo#\");'><span class='k-icon k-i-trash m-0'></span> </button>", width: 90
-                }
+                { field: "Cantidad", title: "Cantidad" }
+                
             ]
         });
 
         ConfGDetalleDM(gt.data("kendoGrid"), VdSDM, "gFor_detalleDM" + viddm);
 
         let selectedRowsTec = [];
-
+        gt.data("kendoGrid").bind("dataBound", function (e) {
+            Gdet = gt.data("kendoGrid");
+            xActivar === false ? $(".k-grid-EliminarDet").addClass("k-disabled") : "";
+        });
 
         gt.data("kendoGrid").bind("change", function (e) {
             Grid_SelectRow(gt, selectedRowsTec);
@@ -1543,8 +1590,8 @@ var DIDM = (e) => {
 }
 
 var ConfGDetalleDM = (gt, ds2, Id_gCHForDetalleX) => {
-    SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0);
-    SetGrid_CRUD_Command(gt, false, false, Id_gCHForDetalleX);
+    SetGrid(gt, ModoEdicion.EnPopup, false, false, false, false, redimensionable.Si, 0,);
+    SetGrid_CRUD_Command(gt, false, true, Id_gCHForDetalleX);
     Set_Grid_DataSource(gt, ds2);
 }
 
@@ -1595,7 +1642,6 @@ var fn_delOD = (IdDespachoMercancia, Talla, IdHojaBandeo) => {
             success: function (datos) {
                 $loadGridIzquierdo();
                 $("#gridOrdenDespacho").data("kendoGrid").dataSource.read();
-                RequestEndMsg(datos, "Post");
             },
             error: function (data) {
                 ErrorMsg(data);
@@ -1732,3 +1778,27 @@ $.fn.extend({
         });
     }
 });
+
+
+let fn_Get_DatosEmb = (xid) => {
+    kendo.ui.progress($(document.body), true);
+    $.ajax({
+        url: TSM_Web_APi + "DespachosMercancias/GetVerEtapaActivaGestionDespacho/" + `${xid}`,
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function (dato) {
+            if (dato !== null) {
+                xActivar = dato.PermiteEditar;
+  
+            } else {
+                xActivar = true;
+            }
+            kendo.ui.progress($(document.body), false);
+        },
+        error: function () {
+            kendo.ui.progress($(document.body), false);
+        }
+    });
+
+};
