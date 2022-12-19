@@ -303,7 +303,7 @@ $(document).ready(function () {
                             icon: "gear",
                             click: function (e) {
                                 e.preventDefault();
-                                Fn_VistaCambioEstadoMostrar("ListaEmpaques", dataItem.Estado, TSM_Web_APi + "ListaEmpaques/ListaEmpaques_CambioEstado/", "", dataItem.IdListaEmpaque, undefined, function () { return fn_updGrid(); });
+                                Fn_VistaCambioEstadoMostrar("ListaEmpaques", dataItem.Estado, TSM_Web_APi + "ListaEmpaques/ListaEmpaques_CambioEstado/", "", dataItem.IdListaEmpaque, undefined, function () { return fn_updGrid(); },false);
                             },
                             enabled: xestado === 'FINALIZADO' ? false : true
 

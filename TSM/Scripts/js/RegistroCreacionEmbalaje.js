@@ -137,7 +137,10 @@ $(document).ready(function () {
         change: function (e) {
             $("tr", ".lump-child-grid").removeClass("k-state-selected");
             let child = this.select().next().find(".lump-child-grid");
+
             $("tr:not(.d-none)", child).addClass("k-state-selected");
+            $("tr.bg-NoDisponible", child).removeClass("k-state-selected");
+            $("tr.bg-CorteParcial", child).removeClass("k-state-selected");
 
             let childRow = this.element.closest("table").next();
             if (this.select().length > 0) {
@@ -155,6 +158,20 @@ $(document).ready(function () {
                     let row = index.closest("tr");
                     let chk = row.querySelector("input");
                     if (chk.checked) {
+
+                        $.each(row.classList, function (indice, elemento) {
+                            if (elemento == "bg-NoDisponible" ) {
+                                chk.checked = false;
+                                row.classList.remove("k-state-selected");
+                            }
+                        });
+                        $.each(row.classList, function (indice, elemento) {
+                            if (elemento == "bg-CorteParcial") {
+                                chk.checked = false;
+                                row.classList.remove("k-state-selected");
+                            }
+                        });
+
                         items.push(index.innerText);
                     }
                 });
@@ -471,7 +488,7 @@ $(document).ready(function () {
                             icon: "gear",
                             click: function (e) {
                                 e.preventDefault();
-                                Fn_VistaCambioEstadoMostrar("EmbalajesMercancias", dataItem.Estado, TSM_Web_APi + "EmbalajesMercancias/CambiarEstadoEmbalaje", "", dataItem.IdEmbalajeMercancia, undefined, function () { return fn_updGrid(dataItem.IdEmbalajeMercancia); });
+                                Fn_VistaCambioEstadoMostrar("EmbalajesMercancias", dataItem.Estado, TSM_Web_APi + "EmbalajesMercancias/CambiarEstadoEmbalaje", "", dataItem.IdEmbalajeMercancia, undefined, function () { return fn_updGrid(dataItem.IdEmbalajeMercancia); },false);
                             },
                             enabled: xestado === 'FINALIZADO' ? false : true
 
