@@ -75,7 +75,7 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                     },
                     error: function (data) {
                         cambioSuccess = 0;
-                        VistaCambioEsta.data("kendoWindow").close();
+                        $("#vCambioEtapa").data("kendoWindow").close();
                         kendo.ui.progress($("#TxtMotivo"), false);
                         ErrorMsg(data);
                         Realizocambio = false;
@@ -111,7 +111,7 @@ var fn_Ini_ConsultaEtapa = function (strjson) {
                             $("#gridDespachos").data("kendoGrid").dataSource.read();
                         },
                         error: function (data) {
-                            VistaCambioEsta.data("kendoWindow").close();
+                            $("#vCambioEtapa").data("kendoWindow").close();
                             kendo.ui.progress($("#TxtMotivo"), false);
                             ErrorMsg(data);
                             Realizocambio = false;
