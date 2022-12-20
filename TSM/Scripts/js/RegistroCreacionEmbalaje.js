@@ -1024,7 +1024,7 @@ $.fn.extend({
                     serverFiltering: true,
                     transport: {
                         read: {
-                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetFiltrobyCliente/" + `${xCliente}`; },
+                            url: function (datos) { return TSM_Web_APi + "CatalogoDisenos/GetCatalogoFiltrobyCliente/" + `${xCliente}`; },
                             contentType: "application/json; charset=utf-8"
                         }
                     }
