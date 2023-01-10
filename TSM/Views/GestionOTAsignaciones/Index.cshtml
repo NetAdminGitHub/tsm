@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Kanban de Asignaciones";
-    ViewBag.IdVersion = "TSM0101091|v20052301";
+    ViewBag.IdVersion = "TSM0101091|v22111401";
 }
 @section Scripts {
     <script src="~/Scripts/Utils/sortable.min.js"></script>
@@ -32,7 +32,7 @@
             <div class="card-body">
 
                 <div class="form-row">
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <div class="form-row">
                             <div class=" form-group col-lg-4">
                                 <label for="dFechaDesde">Fecha Desde:</label>
@@ -48,32 +48,44 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-8">
                         <div class="form-row">
-                            <div class="form-group col-lg-6">
+
+                            <div class="form-group col-lg-4">
                                 <label for="CmbEtapasProcesos">Etapa Proceso:</label>
                                 <input id="CmbEtapasProcesos" name="CmbEtapasProcesos" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-6 align-self-end">
-                                <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox k-checkbox-md k-rounded-md">
-                                <label class="k-checkbox-label" for="chkVerTodas">Ver todas (OTs activas y finalizadas) </label>
+                            <div class="form-group col-lg-8 align-self-end">
+                                <div class="form-row">
+                                    <div class="col-lg-6 ">
+                                        <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox k-checkbox-md k-rounded-md">
+                                        <label class="k-checkbox-label" for="chkVerTodas">Ver todas (OTs activas y finalizadas) </label>
+                                    </div>
+                                    <div class="col-lg-6 pr-3" style="text-align: start;">
+                                        <button type="button" id="btnEliminaFiltros" name="btnEliminaFiltros"></button>
+                                    </div>
+                                </div>
                             </div>
+
+                            
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-3">
+
+                    <div class="form-group col-lg-4">
                         <label for="CmbCliente">Cliente</label>
                         <input id="CmbCliente" name="CmbCliente" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <label for="CmbPrograma">Programa:</label>
                         <input id="CmbPrograma" name="CmbPrograma" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <label for="CmbOrdenTrabajo">Orden de Trabajo:</label>
                         <input id="CmbOrdenTrabajo" name="CmbOrdenTrabajo" type="text" class="form-control" />
                     </div>
+
                 </div>
                 <div class="form-row">
                     <div class="Kanban-view-topscroll">
