@@ -234,8 +234,8 @@ let fn_gridOT = function (xidCatalogo) {
                     IdOrdenTrabajoOrigen: { type: "number" },
                     NoDocumentoOrigen: { type: "sring" },
                     RoundMuestra: { type: "number" },
-                    TallaDesarrollada: { type: "sring"}
-
+                    TallaDesarrollada: { type: "sring"},
+                    NomIdTipoMuestra: { type: "sring" }
                 }
             }
         }
@@ -274,7 +274,7 @@ let fn_gridOT = function (xidCatalogo) {
             KdoCheckBoxEnable($('[name="MUPREAPRO"]'), e.model.SNFichaProd === true ? false : true);
             KdoCheckBoxEnable($('[name="REQMP"]'), e.model.SNFichaProd === true ? false : true);
             KdoCheckBoxEnable($('[name="FICHAPROD"]'), e.model.SNFichaProd === true ? false : true);
-
+            KdoHideCampoPopup(e.container, "NomIdTipoMuestra");
         },
         columns: [
             { field: "NombreDisOT", title: "Nombre del Diseño OT", hidden: true },
@@ -292,6 +292,7 @@ let fn_gridOT = function (xidCatalogo) {
             },
             { field: "IdOrdenTrabajoOrigen", title: "Cod. OT Origen", hidden: true },
             { field: "RoundMuestra", title: "Round Muestra", width: "100px" },
+            { field: "NomIdTipoMuestra", title: "Tipo Muestra" },
             { field: "TallaDesarrollada", title: "Talla Desarrollada", width: "150px" },
             { field: "FechaInicio", title: "Inicio de OT", format: "{0: dd/MM/yyyy}" },
             { field: "NoReq", title: "Requerimiento", width: "120px", hidden: true },

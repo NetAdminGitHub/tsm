@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Simulación de Pre-costeo";
-    ViewBag.IdVersion = "TSM0101029|v20040701";
+    ViewBag.IdVersion = "TSM0101029|v22111601";
 }
 
 @section Scripts {
@@ -21,94 +21,108 @@
         var UrlRequeDesarrollo = "@string.Format("{0}RequerimientoDesarrollos", TSM.Utils.Config.TSM_WebApi)";
     </script>
 
-    <script src="~/Scripts/js/Simulaciones.js"></script>
-    <script src="~/Scripts/js/RequerimientoDesarrollosEstados.js"></script>
-    <script src="~/Scripts/js/AnalisisDisenosConsulta.js"></script>
-    <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js"></script>
-    <script src="~/Scripts/js/RequerimientoDesarrollosConsulta.js"></script>
-    <script src="~/Scripts/Utils/ChartTSMPersonalizar.js"></script>
+    <script src="~/Scripts/js/Simulaciones.js?+@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/RequerimientoDesarrollosEstados.js?+@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/AnalisisDisenosConsulta.js?+@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/_EstadoRequerimientoDesarrollo.js?+@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/js/RequerimientoDesarrollosConsulta.js?+@ViewBag.IdVersion"></script>
+    <script src="~/Scripts/Utils/ChartTSMPersonalizar.js?+@ViewBag.IdVersion"></script>
 }
 <style>
+    #gridRequerimientosDesarrollos,
     #gridSimulacion,
     #gridRentabilidad,
     #gridSimuConsumo {
         height: 100%;
     }
 </style>
-<div class="form-row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
+
+<div class="row" style="height: 83vh;">
+    <div class="col-lg-12 h-100">
+        <div class="card h-100">
+            <div class="card-body pt-2 pb-1">
                 <div class="form-group">
-                    <div class="form-row">
+                    <div class="row">
                         <div class="form-group col-lg-4">
-                            <label for="CmbIdServicio">Servicio :</label>
+                            <label for="CmbIdServicio">Servicio:</label>
                             <input id="CmbIdServicio" name="CmbIdServicio" class="form-control" />
                         </div>
                         <div class="form-group col-lg-4">
-                            <label for="CmbIdCliente">Cliente :</label>
+                            <label for="CmbIdCliente">Cliente:</label>
                             <input id="CmbIdCliente" name="CmbIdCliente" class="form-control" />
                         </div>
                         <div class="form-group col-lg-4 align-self-end">
                             @Html.Partial("_NuevaSimulacion")
                         </div>
                     </div>
-
-                    <div id="splitter">
-                        <div id="Panel1">
-                            <div id="gridSimulacion"></div>
-                        </div>
-                        <div id="Panel2">
-                            <div class="form-group col-lg-12">
-                                @Html.Partial("_EstadoRequerimientoDesarrollo")
-                            </div>
-                            <div class="form-group col-lg-12">
-                                <div id="TabSimulacion">
-                                    <ul>
-                                        <li class="k-active">
-                                            Datos de Simulación
-                                        </li>
-                                        <li>
-                                            Consumos
-                                        </li>
-                                        <li>
-                                            Rentabilidad
-                                        </li>
-                                    </ul>
-                                    <div id="TabPDatos">
-                                        <div id="pvSimulacion" data-url='@Url.Action("SimulacionDatos","Simulaciones")'></div>
-                                        @*@Html.Partial("_SimulacionDatos")*@
-                                        @*Distribución de Costos*@
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="splitter" style="height: 73vh;">
+                                <div id="Panel1">
+                                    <div class="form-group col-lg-12">
                                         <div class="form-row">
-                                            <div class="col-md-12 col-lg-12"><label class="font-weight-bold">Distribución de Costos</label></div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div id="chart" class="col"></div>
-
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-4 align-self-end">
-                                                <div class="input-group">
-                                                    <div style="width: 100%;">
-                                                        <span id="chartexp2"></span>
-                                                    </div>
-                                                </div>
+                                            <div class="col-lg-5 pr-0 h-100">
+                                                <label for="gridRequerimientosDesarrollos"><strong>Lista de Requerimientos</strong></label>
+                                                <div id="gridRequerimientosDesarrollos"></div>
+                                            </div>
+                                            <div class="col-lg-7 pr-0 h-100">
+                                                <label for="gridSimulacion"><strong>Lista de Simulaciones</strong></label>
+                                                <div id="gridSimulacion"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="TabPConsu">
-                                        <div class="form-row">
-                                            <div class=" form-group col-lg-12"><div id="gridSimuConsumo"></div></div>
-                                        </div>
+                                </div>
+                                <div id="Panel2">
+                                    <div class="form-group col-lg-12">
+                                        @Html.Partial("_EstadoRequerimientoDesarrollo")
                                     </div>
-                                    <div id="TabPSimu">
-                                        <div class="form-row">
-                                            <label class="font-weight-bold">Rentabilidades</label>
+                                    <div class="form-group col-lg-12">
+                                        <div id="TabSimulacion">
+                                            <ul>
+                                                <li class="k-state-active">
+                                                    Datos de Simulación
+                                                </li>
+                                                <li>
+                                                    Consumos
+                                                </li>
+                                                <li>
+                                                    Rentabilidad
+                                                </li>
+                                            </ul>
+                                            <div id="TabPDatos">
+                                                <div id="pvSimulacion" data-url='@Url.Action("SimulacionDatos","Simulaciones")'></div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 col-lg-12"><label class="font-weight-bold">Distribución de Costos</label></div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div id="chart" class="col"></div>
+
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-4 align-self-end">
+                                                        <div class="input-group">
+                                                            <div style="width: 100%;">
+                                                                <span id="chartexp2"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="TabPConsu">
+                                                <div class="form-row">
+                                                    <div class=" form-group col-lg-12"><div id="gridSimuConsumo"></div></div>
+                                                </div>
+                                            </div>
+                                            <div id="TabPSimu">
+                                                <div class="form-row">
+                                                    <label class="font-weight-bold">Rentabilidades</label>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class=" form-group col-lg-12"><div id="gridRentabilidad"></div></div>
+                                                </div>
+                                                <div id="pvCostosPorPartes"></div>
+                                            </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class=" form-group col-lg-12"><div id="gridRentabilidad"></div></div>
-                                        </div>
-                                        <div id="pvCostosPorPartes"></div>
                                     </div>
                                 </div>
                             </div>

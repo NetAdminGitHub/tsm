@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Catalogo de Diseños";
-    ViewBag.IdVersion = "TMS0101085|v22070402";
+    ViewBag.IdVersion = "TMS0101085|v22111402";
     ViewBag.Ruta = (new TSM.FrwkSeguridadSrv.SeguridadClient("BasicHttpBinding_ISeguridad")).Encriptar(Server.MapPath("~/Adjuntos"), TSM.Utils.Config.App);
 }
 @section Scripts {
@@ -65,6 +65,7 @@
                 <div class="input-group">
                     <div style="width: 100%;">
                         <button type="button" id="btnAXaTSM" name="btnAXaTSM">Importar FM</button>
+                        <button type="button" id="btnEliminaFiltros" name="btnEliminaFiltros"></button>
                     </div>
                 </div>
             </div>

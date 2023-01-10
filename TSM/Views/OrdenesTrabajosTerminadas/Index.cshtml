@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Kanban de Proceso";
-    ViewBag.IdVersion = "TSM0101091|v20052301";
+    ViewBag.IdVersion = "TSM0101091|v22111401";
 }
 @section Scripts {
     <script src="~/Scripts/Utils/sortable.min.js"></script>
@@ -13,41 +13,45 @@
             <div class="card-body">
 
                 <div class="form-row">
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <div class="form-row">
-                            <div class=" form-group col-lg-4">
+                            <div class=" form-group col-lg-6">
                                 <label for="dFechaDesde">Fecha Desde:</label>
                                 <input id="dFechaDesde" name="dFechaDesde" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-6">
                                 <label for="dFechaHasta">Fecha Hasta:</label>
                                 <input id="dFechaHasta" name="dFechaHasta" class="form-control" />
                             </div>
-                            <div class="form-group col-lg-4 align-self-end">
-                                <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox k-checkbox-md k-rounded-md">
-                                <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
-                            </div>
+
                         </div>
                     </div>
-
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-1 align-self-center">
+                        <input type="checkbox" id="chkRangFechas" name="chkRangFechas" class="k-checkbox k-checkbox-md k-rounded-md">
+                        <label class="k-checkbox-label" for="chkRangFechas" id="lblchkRangFechas">Rango de Fechas</label>
+                    </div>
+                    <div class="form-group col-lg-3 align-self-center pl-5">
+                        <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox k-checkbox-md k-rounded-md">
+                        <label class="k-checkbox-label" for="chkVerTodas">Ver todas (OTs activas y finalizadas) </label>
+                    </div>
+                    <div class="form-group col-lg-4">
                         <label for="CmbCliente">Cliente</label>
                         <input id="CmbCliente" name="CmbCliente" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
                         <label for="CmbPrograma">Programa:</label>
                         <input id="CmbPrograma" name="CmbPrograma" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <label for="CmbOrdenTrabajo">Orden de Trabajo:</label>
                         <input id="CmbOrdenTrabajo" name="CmbOrdenTrabajo" type="text" class="form-control" />
                     </div>
-                    <div class="form-group col-lg-3 align-self-end">
-                        <input type="checkbox" id="chkVerTodas" name="chkVerTodas" class="k-checkbox k-checkbox-md k-rounded-md">
-                        <label class="k-checkbox-label" for="chkVerTodas">Solo Asignadas </label>
+                    <div class="form-group col-lg-4 align-self-end " style="text-align: start;">
+                        <button type="button" id="btnEliminaFiltros" name="btnEliminaFiltros"></button>
                     </div>
+                    
                 </div>
                 <div class="form-row">
                     <div id="myKanban" class="board">
