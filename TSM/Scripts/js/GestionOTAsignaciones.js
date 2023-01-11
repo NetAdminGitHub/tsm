@@ -35,9 +35,15 @@ $(document).ready(function () {
         obj_OT = JSON.parse(sessionStorage.gEOT_CmbOrdenTrabajo);
     }
 
-    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaDesde").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("gEOT_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("gEOT_dFechaDesde"));
-    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("gEOT_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("gEOT_dFechaHasta"));
     $('#chkVerTodas').prop('checked', sessionStorage.getItem("gEOT_chkVerTodas") === null ? 0 : sessionStorage.getItem("gEOT_chkVerTodas") === "true" ? 1 : 0);

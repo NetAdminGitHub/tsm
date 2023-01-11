@@ -33,6 +33,7 @@ namespace TSM
             
             bundles.Add(new ScriptBundle("~/bundles/Utils/js").Include("~/Scripts/Utils/GridPersonalizar.js",
                                                                        "~/Scripts/Utils/Generico.js",
+                                                                        "~/Scripts/Utils/Modales.js",
                                                                        "~/Scripts/Utils/CmbPersonalizar.js",
                                                                        "~/Scripts/js/Layout.js",
                                                                        "~/Scripts/Utils/MltSelectPersonalizar.js",
@@ -58,12 +59,13 @@ namespace TSM
                                                                  "~/Content/Font-TS-Icons.css",
                                                                  "~/Content/Font-TSM-General.css",
                                                                  "~/Content/Font-TSM-SeteoMaquinas.css",
+                                                                 "~/Content/Font-TSM-Tablet.css",
                                                                  "~/Content/TSM-Style.css",
                                                                  "~/Content/smart_wizard.css",
                                                                  "~/Content/smart_wizard_theme_arrows.css"
                                                                  ));
             
-            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-v4.min.css",
+            bundles.Add(new StyleBundle("~/Content/Kendo/css").Include("~/Content/kendo/kendo.bootstrap-main.min.css",
                                                                         "~/Content/bootstrap/boostrapKendoMod.css"));
 
             //BundleTable.EnableOptimizations = true;

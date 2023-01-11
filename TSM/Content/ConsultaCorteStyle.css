@@ -1,0 +1,19 @@
+﻿
+.custom-icon {
+    text-align: center;
+    padding-top: 1.5rem;
+    cursor: pointer;
+    display: list-item;
+    width: 5vw;
+    height: 5vw;
+    border-radius: 5vw;
+    overflow: hidden;
+    border: 6px solid #fff;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.46);
+    opacity: 0.8;
+    transition: background 0.5s, color 1s, opacity 0.5s, border 0.5s;
+}
+
+.k-progressbar-horizontal {
+    height: 2.5rem;
+}

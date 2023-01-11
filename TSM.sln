@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSM", "TSM\TSM.csproj", "{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}"
 EndProject
@@ -9,21 +9,27 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		IST|Any CPU = IST|Any CPU
+		IST2|Any CPU = IST2|Any CPU
 		PRD|Any CPU = PRD|Any CPU
 		Release|Any CPU = Release|Any CPU
 		UAT|Any CPU = UAT|Any CPU
+		UAT2|Any CPU = UAT2|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.IST|Any CPU.ActiveCfg = IST|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.IST|Any CPU.Build.0 = IST|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.IST2|Any CPU.ActiveCfg = IST2|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.IST2|Any CPU.Build.0 = IST2|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.PRD|Any CPU.ActiveCfg = PRD|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.PRD|Any CPU.Build.0 = PRD|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.ActiveCfg = UAT|Any CPU
 		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT|Any CPU.Build.0 = UAT|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT2|Any CPU.ActiveCfg = UAT2|Any CPU
+		{98A2F362-72A3-4E6E-AA3E-05BE9A96B3E5}.UAT2|Any CPU.Build.0 = UAT2|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

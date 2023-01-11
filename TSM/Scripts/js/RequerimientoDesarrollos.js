@@ -39,7 +39,10 @@ $(document).ready(function () {
     $("#btnCambioEstado").data("kendoButton").enable(false);
     $("#Nuevo").data("kendoButton").enable(false);
 
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
 
     $("#Guardar").data("kendoButton").enable(false);
@@ -99,6 +102,7 @@ $(document).ready(function () {
 
 
     $("#CntPiezas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -108,6 +112,7 @@ $(document).ready(function () {
     });
 
     $("#Combo").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -118,6 +123,7 @@ $(document).ready(function () {
     });
 
     $("#CantidadColores").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 12,
         format: "#",
@@ -128,6 +134,7 @@ $(document).ready(function () {
     });
 
     $("#CantidadTallas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -138,6 +145,7 @@ $(document).ready(function () {
     });
 
     $("#Montaje").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -148,6 +156,7 @@ $(document).ready(function () {
     });
 
     $("#TxtVelocidadMaquina").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 99999999999999,
         format: "#",
@@ -157,6 +166,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNoVeces").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,

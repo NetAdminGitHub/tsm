@@ -106,13 +106,13 @@ $(document).ready(function () {
        
         edit: function (e) {
             //PERMITE OCULTAR CAMPOS EN EL EDITOR POPUP.
-            e.container.find("label[for=Id]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Id]").parent("div .k-form-field").hide();
             e.container.find("label[for=Id]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Tabla]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Tabla]").parent("div .k-form-field").hide();
             e.container.find("label[for=Tabla]").parent().next("div .k-edit-field").hide();
 
             if (!e.model.isNew()) {
-                e.container.find("label[for=Estado]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=Estado]").parent("div .k-form-field").hide();
                 e.container.find("label[for=Estado]").parent().next("div .k-edit-field").hide();
 
                 Grid_Focus(e, "Nombre");
@@ -222,17 +222,17 @@ $(document).ready(function () {
     $("#gridEstadosSiguientes").kendoGrid({
         edit: function (e) {
             //PERMITE OCULTAR CAMPOS EN EL EDITOR POPUP.
-            e.container.find("label[for=Id]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Id]").parent("div .k-form-field").hide();
             e.container.find("label[for=Id]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Tabla]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Tabla]").parent("div .k-form-field").hide();
             e.container.find("label[for=Tabla]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Estado]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Estado]").parent("div .k-form-field").hide();
             e.container.find("label[for=Estado]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUsuarioMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdUsuarioMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=FechaMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();
 
             var NewDSSub = new kendo.data.DataSource({
@@ -259,7 +259,7 @@ $(document).ready(function () {
             });
 
             if (!e.model.isNew()) {
-                e.container.find("label[for=EstadoSiguiente]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=EstadoSiguiente]").parent("div .k-form-field").hide();
                 e.container.find("label[for=EstadoSiguiente]").parent().next("div .k-edit-field").hide();
 
                 Grid_Focus(e, "Nombre");
@@ -370,17 +370,17 @@ $(document).ready(function () {
     $("#gridEstadosAutorizados").kendoGrid({
         edit: function (e) {
             //PERMITE OCULTAR CAMPOS EN EL EDITOR POPUP.
-            e.container.find("label[for=Id]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Id]").parent("div .k-form-field").hide();
             e.container.find("label[for=Id]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Tabla]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Tabla]").parent("div .k-form-field").hide();
             e.container.find("label[for=Tabla]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Estado]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Estado]").parent("div .k-form-field").hide();
             e.container.find("label[for=Estado]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdUsuarioMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdUsuarioMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdUsuarioMod]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=FechaMod]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=FechaMod]").parent("div .k-form-field").hide();
             e.container.find("label[for=FechaMod]").parent().next("div .k-edit-field").hide();
 
             $('[name="IdRol"]').data("kendoComboBox").bind("change", function (p) {
@@ -388,7 +388,7 @@ $(document).ready(function () {
             });
 
             if (!e.model.isNew()) {
-                e.container.find("label[for=IdRol]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdRol]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdRol]").parent().next("div .k-edit-field").hide();
 
                 Grid_Focus(e, "Nombre");

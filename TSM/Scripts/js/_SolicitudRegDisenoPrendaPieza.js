@@ -391,7 +391,7 @@ let fn_CmbPrograma = function (container, options) {
                     placeholder: givenOrDefault(options.values[4], "Seleccione un valor ...."),
                     filter: "contains",
                     dataSource: dsPro,
-                    noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + options.values[8] + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")
+                    noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"" + options.values[8] + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")
 
                 });
         }

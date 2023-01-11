@@ -65,7 +65,10 @@ function SetGrid(e, ModoEdicion, Paginable, Filtrable, Ordenable, ColMenu, redim
         pageable: !givenOrDefault(Paginable, true) ? false : {
             input: true,
             refresh: true,
-            pageSizes: [20, 50, 100, "all"]
+            pageSizes: [20, 50, 100, "all"],
+            pageSize: 20,
+            numeric: false,
+            alwaysVisible: true
         },
         height: Opcheight === 0 ? "100 %" : givenOrDefault(Opcheight, 600)
 
@@ -135,14 +138,13 @@ function SetGrid_CRUD_ToolbarTop(e, agregar) {
  * @param {string} Id_GridDetalle colocar id cuando sea un grid detalle para el funcionamiento del boton elminar.
  */
 function SetGrid_CRUD_Command(e, editar, borrar, Id_GridDetalle) {
-
     if (givenOrDefault(Id_GridDetalle, "") !== "" && e.element.parent().attr("class") === "k-detail-cell") {
         e.element.attr('id', Id_GridDetalle + Date.now().toString());
     }
 
     $("#" + Id_GridDetalle + "").children().remove();
 
-    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button' id='noButton_" + e.element.attr('id') + "' style='width: 75px;'>No</button></div></span>");
+    var EliminarTemplate = kendo.template("<span id='" + Id_GridDetalle + "'><div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>¿Está seguro que desea eliminar el registro?</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton_" + e.element.attr('id') + "' style='width: 75px;'>Si</button> <button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='noButton_" + e.element.attr('id') + "' style='width: 75px;'>No</button></div></span>");
     var windowEliminar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -236,7 +238,7 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
     DSource = {
         dataSource: ds,
         noRecords: {
-            template: e.getOptions().pageable !== false ? "No hay datos disponibles. La pagina actual es: #=this.dataSource.page()#" : "No hay datos disponibles."
+            template: e.getOptions().pageable !== false ? "No hay datos disponibles. <br /> La pagina actual es: #=this.dataSource.page()# " : "No hay datos disponibles."
         }
     };
     e.setOptions($.extend({}, e.getOptions(), DSource));
@@ -273,13 +275,13 @@ function Set_Grid_DataSource(e, ds, TamañoPagina) {
 var Grid_ColCheckbox = function (container, options) {
     var guid = kendo.guid();
     var columName = options.field;
-    $('<input class="k-checkbox" id="' + guid + '" type="checkbox" name="' + columName + '" data-type="boolean" data-bind="checked:' + columName + '">').appendTo(container);
+    $('<input class="k-checkbox k-checkbox-md k-rounded-md" id="' + guid + '" type="checkbox" name="' + columName + '" data-type="boolean" data-bind="checked:' + columName + '">').appendTo(container);
     $('<label class="k-checkbox-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
 var Grid_ColRadiobutton = function (container, options) {
     var guid = kendo.guid();
-    $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
+    $('<input class="k-radio k-radio-md" id="' + guid + '" type="radio" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
     $('<label class="k-radio-label" for="' + guid + '">&#8203;</label>').appendTo(container);
 };
 
@@ -290,8 +292,8 @@ var Grid_ColRadiobuttonGroup = function (container, options) {
     for (var element in radioArray) {
 
 
-        $('<input class="k-radio" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
-        $('<label class="k-radio-label" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
+        $('<input class="k-radio k-radio-md" id="' + guid + '" type="radio" name="' + options.field + '"  data-bind="checked:' + options.field + '" value="'+radioArray[element]["valor"]+'">').appendTo(container);
+        $('<label class="k-radio-label mr-3" for="' + guid + '">"'+radioArray[element]["nombre"]+'"</label>').appendTo(container);
  
     }
 
@@ -302,13 +304,13 @@ var Grid_ColRadiobuttonGroup = function (container, options) {
 // Columna como CheckBox
 var Grid_ColTemplateCheckBox = function (data, columna) {
     let guid = kendo.guid();
-    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + guid + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + guid + "\"></label>";
 };
 
 // Columna como CheckBox
 var Grid_ColTemplateRadiobutton = function (data, columna) {
-    return "<input name=\"" + columna + "\" id=\"" + data.id + "\" type=\"radio\" class=\"k-radio\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input name=\"" + columna + "\" id=\"" + data.id + "\" type=\"radio\" class=\"k-radio k-radio-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-radio-label\" for=\"" + data.id + "\"></label>";
 };
 
@@ -396,10 +398,18 @@ var Grid_ColLocked = function (container, options) {
     $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')
         .appendTo(container)
         .attr("disabled", "disabled")
-        .addClass("k-input k-textbox");
+        .addClass("k-input k-textbox k-input-solid k-input-md k-rounded-md");
 
 };
 
+// Funcion para desabilitar o bloquear campo
+var Grid_ColReadOnly = function (container, options) {
+    $('<input data-bind="value:' + options.field + '" name="' + options.field + '" />')
+        .appendTo(container)
+        .attr("readonly", "readonly")
+        .addClass("k-input k-textbox k-input-solid k-input-md k-rounded-md");
+
+};
 // funcion para lista desplegables
 function Grid_CmbEditor(container, options) {
     $('<input required name="' + options.field + '"/>')
@@ -531,7 +541,7 @@ function Grid_requestEnd(e) {
         }
 
         if (tipo === "error") {
-            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
             windowMensaje = $("<div />").kendoWindow({
                 title: "Información",
                 visible: false,
@@ -553,12 +563,12 @@ function Grid_error(e) {
     if (e.status === "error" && e.xhr.responseJSON) {
         let mensaje = (e.xhr.responseJSON.Mensaje === null || e.xhr.responseJSON.Mensaje === undefined ? e.xhr.responseJSON.ExceptionMessage : e.xhr.responseJSON.Mensaje) + (e.xhr.responseJSON.Output === null || e.xhr.responseJSON.Output === undefined ? "" : " " + e.xhr.responseJSON.Output);
         let icono = e.xhr.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
-        let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
-            width: "500px",
-            height: "200px",
+            width: "30%",
+            height: "30%",
             modal: true
         }).data("kendoWindow");
 
@@ -743,7 +753,7 @@ function Fn_Grid_Resize(e, height) {
  * @param {any} options opxion del campo
  */
 var Grid_ColTextArea = function (container, options) {
-    $('<textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-textarea"></textarea>')
+    $('<span class="k-input k-textarea k-input-lg k-rounded-md k-input-solid k-resize-both"><textarea  data-bind="value:' + options.field + '" name="' + options.field + '"  rows="' + options.values[0] + '" style="width: 100%;" class="k-input-inner !k-overflow-y-auto"></textarea></span>')
         .appendTo(container);
 };
 

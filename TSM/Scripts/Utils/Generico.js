@@ -63,7 +63,7 @@ function RequestEndMsg(e, type) {
         }
 
         if (tipo === "error") {
-            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+            let MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon k-i-error' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='YesButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
             windowMensaje = $("<div />").kendoWindow({
                 title: "Información",
                 visible: false,
@@ -81,21 +81,31 @@ function RequestEndMsg(e, type) {
     }
 }
 
-function ErrorMsg(e) {
+function ErrorMsg(e, fnClose) {
     var icono = "";
     var MensajeTemplate = "";
     var mensaje = "";
+
+    let onClose = function () {
+        if (fnClose === undefined || fnClose === "") {
+            return true;
+        } else {
+            return fnClose();
+        }
+    };
+
     if (e.responseJSON) {
         mensaje = (e.responseJSON.Mensaje === null || e.responseJSON.Mensaje === undefined ? e.responseJSON.ExceptionMessage === undefined ? e.responseJSON.Message : e.responseJSON.ExceptionMessage : e.responseJSON.Mensaje)
             + (e.responseJSON.Output === null || e.responseJSON.Output === undefined ? "" : " " + e.responseJSON.Output);
         icono = e.responseJSON.TipoCodigo === "Satisfactorio" ? "k-i-information" : "k-i-error";
-        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
             width: "30%",
             height: "30%",
-            modal: true
+            modal: true,
+            close: onClose
         }).data("kendoWindow");
 
         windowMensaje.content(MensajeTemplate);
@@ -104,13 +114,14 @@ function ErrorMsg(e) {
     else {
         mensaje = e.toString();
         icono = "k-i-error";
-        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
+        MensajeTemplate = kendo.template("<div class='float-left'><span class='k-icon " + icono + "' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='OkButton' style='width: 100px;' onclick='windowMensaje.close(); return;'>Aceptar</button>");
         windowMensaje = $("<div />").kendoWindow({
             title: "Error",
             visible: false,
             width: "30%", //400px
             height: "30%",//200px
-            modal: true
+            modal: true,
+            close: onClose
         }).data("kendoWindow");
 
         windowMensaje.content(MensajeTemplate);
@@ -128,7 +139,7 @@ function ConfirmacionMsg(Mensaje, funcion, functionNo) {
     ResultadoYes = function () { return funcion(); };
     ResultadoNO = function () { return functionNo(); };
 
-    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
+    var Template = kendo.template("<div class='float-left'><span class='k-icon k-i-question' style='font-size: 55px; margin: 10px'></span></div><p style='height: 100px;'>" + Mensaje + "</p><div class='float-right'><button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary' id='yesButton' onclick='ResultadoYes(); windowConfirmar.close(); return;' style='width: 75px;'>Si</button> <button class='k-button k-button-md k-rounded-md k-button-solid k-button-solid-base' id='noButton'onclick='ResultadoNO();windowConfirmar.close(); return;' style='width: 75px;'>No</button><div>");
     windowConfirmar = $("<div />").kendoWindow({
         title: "Confirmación",
         visible: false,
@@ -668,7 +679,7 @@ var Fn_VistaCambioEstado = function (e,fn_close) {
         success: function (result) {
             var RList = [];
             VistaPopup.kendoDialog({
-                height: "auto",// $(window).height() - "510" + "px",
+               /* height: "auto",// $(window).height() - "510" + "px",*/
                 width: "20%",
                 title: "Cambio de estado",
                 closable: true,
@@ -703,7 +714,7 @@ var Fn_VistaCambioEstado = function (e,fn_close) {
  * @param {function} fnGuardado este parametro es opcional, si desea guardar un registro o ejecutar una funcion al momento hacer click en el boton cambiar asignar funcion a este parametro
  * @param {function} fn_AfterChange opcional funcion a invocar despues de hacer un cambio satisfactorio
  */
-var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado, fn_AfterChange) {
+var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado, SP, Id, fnGuardado, fn_AfterChange, aplicaMotivo) {
 
     VistaPopup.data("kendoDialog").open();
     var Param = {
@@ -716,7 +727,7 @@ var Fn_VistaCambioEstadoMostrar = function (Tabla, EstadoActual, UrlCambioEstado
         fnGuardado: fnGuardado,
         fn_AfterChange: fn_AfterChange
     };
-    fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, Param);
+    fn_CambioEstadoInicializacion(VistaPopup, UrlCambioEstado, Param, aplicaMotivo);
 };
 
 /**
@@ -869,9 +880,12 @@ var KdoButtonEnable = function (BotonElem, enable) {
     Button.enable(enable);
 };
 
-var KdoButton = function (BotonDiv, icono, tooltip) {
+var KdoButton = function (BotonDiv, icono, tooltip, size = "large") {
 
-    BotonDiv.kendoButton({ icon: icono });
+    BotonDiv.kendoButton({
+        icon: icono,
+        size: size
+    });
     if (givenOrDefault(tooltip, "undefined") !== "undefined") {
         BotonDiv.kendoTooltip({
             content: function (e) {
@@ -888,8 +902,8 @@ var KdoButton = function (BotonDiv, icono, tooltip) {
  * @param {string} campo nombre del campo a ocultar
  */
 var KdoHideCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").hide();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").hide();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").hide();
 };
 
 /**
@@ -898,8 +912,8 @@ var KdoHideCampoPopup = function (container, campo) {
  * @param {string} campo nombre del campo a mostrar
  */
 var KdoShowCampoPopup = function (container, campo) {
-    container.find("label[for=" + campo + "]").parent("div .k-edit-label").show();
-    container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
+    container.find("label[for=" + campo + "]").parent("div .k-form-field").show();
+    //container.find("label[for=" + campo + "]").parent().next("div .k-edit-field").show();
 };
 
 /**
@@ -1938,7 +1952,7 @@ var fn_DSIdUnidadByGrupo = function (IdGrupoUnidadMedida) {
 };
 
 var Grid_TemplateCheckBoxColumn = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 
@@ -2745,12 +2759,13 @@ let fn_GenLoadModalWindow = (obj) => {
     } else {
         kendo.ui.progress($(document.body), true);
         Jsload = false;
-        $("#" + obj.config[0].Div + "").kendoWindow({
+        $("#" + obj.config[0].Div + "").kendoWindow();
+        let window = $("#" + obj.config[0].Div + "").data("kendoWindow");
+        window.setOptions({
             height: obj.config[0].Height,
             width: obj.config[0].Width,
             title: obj.config[0].Titulo,
             modal: true,
-            /*     content: xview,*/
             visible: false,
             minWidth: obj.config[0].MinWidth,
             activate: onActivate,
@@ -2758,7 +2773,8 @@ let fn_GenLoadModalWindow = (obj) => {
         });
         kendo.ui.progress($(document.body), false);
         $("#" + obj.config[0].Div + "").data("kendoWindow").content(xview);
-        $("#" + obj.config[0].Div + "").data("kendoWindow").center().open();
+        $("#" + obj.config[0].Div + "").data("kendoWindow").open();
+        $("#" + obj.config[0].Div + "").data("kendoWindow").center();
         onShow();
 
     }

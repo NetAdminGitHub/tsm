@@ -17,6 +17,7 @@ var fn_InicializarNuevoAjuste = function (idSeteo, idEstacion, xDivModal) {
 
     //definicion del campo cantidad inicial de formula Inicial o Recibida
     $("#NumCntIni_Recibida").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",

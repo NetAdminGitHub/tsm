@@ -76,9 +76,9 @@ $(document).ready(function () {
                                     input.attr("data-maxlength-msg", "Requerido");
                                     return $("#IdTipoMaquina").data("kendoComboBox").selectedIndex >= 0;
                                 }
-                                if (input.is("[name='IdCategoriaMaquina']")) {
+                                if (input.is("[name='IdMarcaMaquina']")) {
                                     input.attr("data-maxlength-msg", "Requerido");
-                                    return $("#IdCategoriaMaquina").data("kendoComboBox").selectedIndex >= 0;
+                                    return $("#IdMarcaMaquina").data("kendoComboBox").selectedIndex >= 0;
                                 }
 
                                 return true;
@@ -93,15 +93,15 @@ $(document).ready(function () {
                     },
                     Marca: { type: "string" },
                     Descripcion: { type: "string" },
-                    CantidadEstaciones:{ type: "number" },
+                    CantidadEstaciones: { type: "number" },
                     IdFormaMaquina: { type: "string" },
                     NombreForma: { type: "string" },
                     IdTipoMaquina: { type: "string" },
                     NombreTipoMaquina: { type: "string" },
-                    IdCategoriaMaquina: { type: "string" },
-                    NombreCategoriaMaquina: { type: "string" },
                     IdUsuarioMod: { type: "string" },
-                    FechaMod: { type: "date" }
+                    FechaMod: { type: "date" },
+                    IdMarcaMaquina: { type: "string" },
+                    NombreMarcaMaquina: { type: "string" }
 
                 }
             }
@@ -115,25 +115,23 @@ $(document).ready(function () {
             KdoHideCampoPopup(e.container, "IdEstructuraMaquina");
             KdoHideCampoPopup(e.container, "NombreForma");
             KdoHideCampoPopup(e.container, "NombreTipoMaquina");
-            KdoHideCampoPopup(e.container, "NombreCategoriaMaquina");
+            KdoHideCampoPopup(e.container, "NombreMarcaMaquina");
             Grid_Focus(e, "Modelo");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
+            { field: "IdMarcaMaquina", title: "Marca", editor: Grid_Combox, values: ["IdMarcaMaquina", "Nombre", TSM_Web_APi + "MarcaMaquinas", "", "Seleccione....", "required", "", "Requerido"], hidden: true },
+            { field: "NombreMarcaMaquina", title: "Marca" },
             { field: "IdEstructuraMaquina", title: "Código costo tecnica", hidden: true },
             { field: "IdServicio", title: "IdServicio", hidden: true },
             { field: "Modelo", title: "Modelo" },
-            { field: "Nombre", title: "Nombre" },
-            { field: "Marca", title: "Marca" },
-            { field: "Descripcion", title: "Descripcion" },
+            { field: "Nombre", title: "Nombre" },            
+            { field: "Descripcion", title: "Descripción" },
             { field: "CantidadEstaciones", title: "Cantidad Estaciones", editor: Grid_ColIntNumSinDecimal },
             { field: "IdFormaMaquina", title: "Forma", editor: Grid_Combox, values: ["IdFormaMaquina", "Nombre", TSM_Web_APi + "FormasMaquinas/GetFormas", "", "Seleccione....", "required", "", "Requerido"], hidden: true },
             { field: "NombreForma", title: "Forma" },
             {field: "IdTipoMaquina", title: "Tipo Maquina", editor: Grid_Combox, values: ["IdTipoMaquina", "Nombre", TSM_Web_APi +"TiposMaquinas", "", "Seleccione....", "required", "", "Requerido"], hidden: true },
-            { field: "NombreTipoMaquina", title: "Tipo Maquina" },
-            { field: "IdCategoriaMaquina", title: "Categoría Maquina", editor: Grid_Combox, values: ["IdCategoriaMaquina", "Nombre", TSM_Web_APi + "CategoriaMaquinas", "", "Seleccione....", "required", "", "Requerido"], hidden: true },
-            { field: "NombreCategoriaMaquina", title: "Categoría Maquina" }
-
+            { field: "NombreTipoMaquina", title: "Tipo Maquina" }            
         ]
     });
 

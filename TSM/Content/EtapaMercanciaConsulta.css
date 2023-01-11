@@ -1,0 +1,109 @@
+﻿
+/*Horizontal Steps*/
+.list-group.horizontal-steps {
+    padding-top: 12px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.list-group {
+    display: inline;
+}
+
+    .list-group.horizontal-steps .list-group-item {
+        border: 0px;
+        border-radius: unset;
+        /*  border-top: 3px solid #ece5dd;*/
+        box-sizing: border-box;
+        counter-increment: step-counter;
+        display: table-cell;
+        padding-top: 10px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 10px;
+        width: 1%;
+    }
+
+        .list-group.horizontal-steps .list-group-item.active {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .list-group.horizontal-steps .list-group-item:last-child {
+            border-top: 3px solid transparent;
+        }
+
+        .list-group.horizontal-steps .list-group-item::before {
+            border-radius: 50%;
+            background-color: #ece5dd;
+            color: #555;
+            /*        content: counter(step-counter);*/
+            display: inline-block;
+            float: left;
+            height: 25px;
+            line-height: 25px;
+            margin-left: 0px;
+            margin-top: -25px;
+            text-align: center;
+            width: 25px;
+        }
+
+        .list-group.horizontal-steps .list-group-item span,
+        .list-group.horizontal-steps .list-group-item a {
+            display: block;
+            overflow: hidden;
+            padding-top: 2px;
+            /* padding-left: 10px;*/
+        }
+
+body.dark-only .page-wrapper .list-group-item {
+    border: 0;
+}
+
+.custom-icon {
+    text-align: center;
+    padding-top: 1.5rem;
+    cursor: pointer;
+    display: list-item;
+    width: 5vw;
+    height: 5vw;
+    /* color: #fff;*/
+    /* font-size: 4rem;*/
+    border-radius: 5vw;
+    overflow: hidden;
+    /*background-size: cover;*/
+    border: 6px solid #fff;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.46);
+    opacity: 0.8;
+    transition: background 0.5s, color 1s, opacity 0.5s, border 0.5s;
+}
+
+a.text-decoration-none {
+    color: #1e2f65;
+}
+
+
+.k-progressbar-horizontal {
+    height: 2.5rem;
+}
+
+
+
+.badge-porcentaje {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    padding: 0px;
+    font-size: 13px !important;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #d4d4d6;
+    color: #000000;
+}
+.Activa_Etapa {
+    background-color: lightblue;
+}

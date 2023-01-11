@@ -129,11 +129,11 @@
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
             if (!e.model.isNew()) {
-                e.container.find("label[for=IdDefinicion]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdDefinicion]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdDefinicion]").parent().next("div .k-edit-field").hide();
                 Grid_Focus(e, "Nombre");
             }
-            e.container.find("label[for=IdSistema]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdSistema]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdSistema]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "IdDefinicion");
         },

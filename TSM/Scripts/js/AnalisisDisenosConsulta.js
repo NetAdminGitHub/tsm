@@ -34,6 +34,7 @@ AnalisisDis_Consulta = function (){
     UrlArtes = TSM_Web_APi + "Artes";
 
     $("#ResolucionSqrSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -42,6 +43,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#ResolucionDPISer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -51,6 +53,7 @@ AnalisisDis_Consulta = function (){
 
     });
     $("#PixelesTotalSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -60,6 +63,7 @@ AnalisisDis_Consulta = function (){
 
     });
     $("#AreaTotalSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -68,6 +72,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AltoDisenoSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -76,6 +81,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AnchoDisenoSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -84,6 +90,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AltoDisenoSub_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -92,6 +99,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AnchoDisenoSub_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -100,6 +108,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AnchoDisenoPla_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -108,6 +117,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#AltoDisenoPla_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -116,6 +126,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#CntcolorSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 12,
         format: "#",
@@ -124,6 +135,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#TxtVelocidadMaquinaSer_colta").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -132,6 +144,7 @@ AnalisisDis_Consulta = function (){
         value: 0
     });
     $("#TxtFactorDistribucion_colta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -140,13 +153,24 @@ AnalisisDis_Consulta = function (){
         value: 0
 
     });
-    $("#FechaSer_colta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#FechaSer_colta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#FechaSer_colta").data("kendoDatePicker").enable(false);
-    $("#FechaSub_colta").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
+    $("#FechaSub_colta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy",
+        parseFormats: ["dd/MM/yyyy"]
+    });
     $("#FechaSub_colta").data("kendoDatePicker").enable(false);
     $("#ResolucionSqrSer_colta").data("kendoNumericTextBox").enable(false);
     $("#AreaTotalSer_colta").data("kendoNumericTextBox").enable(false);
-    $("#FechaPla_colta").kendoDatePicker({ format: "dd/MM/yyyy", parseFormats: ["dd/MM/yyyy"] });
+    $("#FechaPla_colta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy",
+        parseFormats: ["dd/MM/yyyy"]
+    });
     $("#FechaPla_colta").data("kendoDatePicker").enable(false);
 
 

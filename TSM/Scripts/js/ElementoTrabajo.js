@@ -206,6 +206,7 @@ $(document).ready(function () {
     $("#swchCobDiseno").kendoSwitch();
 
     $("#NumBrazoIni").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -214,6 +215,7 @@ $(document).ready(function () {
     });
 
     $("#NumCntCantDesplazar").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -222,6 +224,7 @@ $(document).ready(function () {
 
 
     $("#TxtCntEstacionesPermitidas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -231,6 +234,7 @@ $(document).ready(function () {
     });
 
     $("#NumOrigenA").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -239,6 +243,7 @@ $(document).ready(function () {
     });
 
     $("#NumDestinoB").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,

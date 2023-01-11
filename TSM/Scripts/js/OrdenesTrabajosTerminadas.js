@@ -31,9 +31,15 @@ $(document).ready(function () {
     }
 
 
-    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaDesde").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("OTer_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("OTer_dFechaDesde"));
-    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("OTer_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("OTer_dFechaHasta"));
     $('#chkVerTodas').prop('checked', sessionStorage.getItem("OTer_chkVerTodas") === null ? 0 : sessionStorage.getItem("OTer_chkVerTodas") === "true" ? 1 : 0);

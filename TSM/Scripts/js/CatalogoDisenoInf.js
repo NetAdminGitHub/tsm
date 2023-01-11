@@ -759,7 +759,7 @@ let fn_gridOT = function (xidCatalogo) {
     //#endregion Fin CRUD Programación GRID Dimensiones
 };
 var Grid_ColTemplateCheckBox = function (data, columna) {
-    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
+    return "<input id=\"" + data.id + "\" type=\"checkbox\" class=\"k-checkbox k-checkbox-md k-rounded-md\" disabled=\"disabled\"" + (data[columna] ? "checked=\"checked\"" : "") + " />" +
         "<label class=\"k-checkbox-label\" for=\"" + data.id + "\"></label>";
 };
 let fn_GetAdjuntos = function () {

@@ -136,8 +136,6 @@ namespace TSM.Controllers
                 respuesta.Add("Resultado", false);
                 return Json(respuesta);
             }
-            
-           
         }
     }
 }

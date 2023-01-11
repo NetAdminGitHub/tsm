@@ -51,7 +51,10 @@ $(document).ready(function () {
     // deshabilitar botones en formulario
     $("#myBtnAdjunto").data("kendoButton").enable(false);
     $("#myBtnAdjunto").data("kendoButton").element.hide();
-    $("#Fecha").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#Fecha").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#Fecha").data("kendoDatePicker").value(Fhoy());
     PanelBarConfig($("#BarPanel"));
     KdoDatePikerEnable($("#Fecha"), false);
@@ -61,6 +64,7 @@ $(document).ready(function () {
     //*******************************************************************
 
     $("#CntPiezas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -70,6 +74,7 @@ $(document).ready(function () {
     });
 
     $("#TxtCantidadSTrikeOff").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -79,6 +84,7 @@ $(document).ready(function () {
     });
 
     $("#TxtStrikeOffAdicional").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -88,6 +94,7 @@ $(document).ready(function () {
     });
 
     $("#Combo").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -97,6 +104,7 @@ $(document).ready(function () {
 
     });
     $("#TxtNoVeces").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -1374,7 +1382,7 @@ var fn_KdoCmbProgramas = function (e, webApi, textField, valueField, opcPlaceHol
                 height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
                 cascadeFrom: givenOrDefault(parentCascade, ""),
                 dataSource: dataSource,
-                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
             });
 
         }

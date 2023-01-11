@@ -33,9 +33,9 @@ input:disabled {
     background-color: #CCCCCC !important;
 }
 
-input:read-only {
+/*input:read-only {
     background-color: #CCCCCC !important;
-}
+}*/
 
 div.k-state-disabled input {
     background-color: #CCCCCC !important;
@@ -61,3 +61,7 @@ div.k-state-disabled input {
     display: inline-flex;
 }
 /*#endregion*/
+
+.k-column-title {
+    white-space: normal;
+}

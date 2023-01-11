@@ -1,0 +1,196 @@
+﻿let xidDeclaracionMercancia;
+let StrIdListaEmp = [];
+let xitem = 0;
+let xsDiv;
+let xgrid;
+let xgd;
+let dS;
+var fn_Ini_RelacionPLs = (strjson) => {
+
+    xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
+    xitem = strjson.item;
+    xsDiv = strjson.sDiv;
+    xgrid = strjson.grid;
+    xgd = strjson.gd;
+    KdoButton($("#btnCrea_registroPlAsig"), "save", "Crear Registro");
+
+    Kendo_CmbFiltrarGrid($("#cmbReferenciaItem"), TSM_Web_APi + `ListaEmpaques/GetNoReferenciaItemByDeclaracionMercancia/${xidDeclaracionMercancia}`, "NoReferenciaItem", "NoReferenciaItem", "Seleccione...");
+
+    ////#region crear grid ingresos
+    dS = new kendo.data.DataSource({
+        //CONFIGURACION DEL CRUD
+        transport: {
+            read: {
+                url: function () { return TSM_Web_APi + `ListaEmpaques/GetListasEmpaqueByDM/${xidDeclaracionMercancia}`; },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            },
+
+            parameterMap: function (data, type) {
+                if (type !== "read") {
+                    return kendo.stringify(data);
+                }
+            }
+        },
+        requestEnd: Grid_requestEnd,
+        error: Grid_error,
+        schema: {
+            model: {
+                id: "IdListaEmpaque",
+                fields: {
+                    IdListaEmpaque: { type: "string" },
+                    NoDocumento: { type: "string" },
+                    Cantidad: { type: "number" },
+                    Docenas: { type: "number" },
+                    NoReferenciaItem: { type: "string" }
+                }
+            }
+        }
+    });
+
+    //CONFIGURACION DEL GRID,CAMPOS
+    $("#gridListasEmpaques").kendoGrid({
+        dataBound: function () {
+            StrIdListaEmp = [];
+        },
+        change: function (e) {
+            StrIdListaEmp = [];
+
+            let rows = e.sender.select();
+            let items = [];
+
+            rows.each(function (e) {
+                let grid = $("#gridListasEmpaques").data("kendoGrid");
+                let dataItem = grid.dataItem(this);
+                items.push(dataItem.id);
+            });
+            StrIdListaEmp = items;
+        },
+        //DEFICNICIÓN DE LOS CAMPOS
+        columns: [
+            { selectable: true, width: "50px" },
+            { field: "IdListaEmpaque", title: "id Lista Empaque", hidden: true },
+            { field: "NoDocumento", title: "No Documento" },
+            { field: "CantidadBultos", title: "Cantidad de Bultos" },
+            { field: "Cantidad", title: "Cuantía" , format: "{0:N2}"},
+            { field: "Docenas", title: "Docenas" },
+            { field: "NoReferenciaItem", title: "Ref. Item" }
+        ]
+    });
+
+    // FUNCIONES STANDAR PARA LA CONFIGURACION DEL GRID
+    SetGrid($("#gridListasEmpaques").data("kendoGrid"), ModoEdicion.EnPopup, true, false, true, false, redimensionable.Si, undefined, "multiple");
+    SetGrid_CRUD_ToolbarTop($("#gridListasEmpaques").data("kendoGrid"), false);
+    SetGrid_CRUD_Command($("#gridListasEmpaques").data("kendoGrid"), false, false);
+    Set_Grid_DataSource($("#gridListasEmpaques").data("kendoGrid"), dS);
+
+    $("#gridListasEmpaques").kendoTooltip({
+        filter: ".k-grid-btnIng",
+        content: function (e) {
+            return "Ingreso de Mercancía";
+        }
+    });
+    var selectedRows = [];
+   
+    $("#gridListasEmpaques").data("kendoGrid").bind("change", function (e) {
+        Grid_SelectRow($("#gridListasEmpaques"), selectedRows);
+    });
+    $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
+
+    ////#endregion 
+
+    $("#btnCrea_registroPlAsig").click(function () {
+        fn_Crear_Reg()
+    });
+
+    $("#cmbReferenciaItem").data("kendoComboBox").bind("change", function (e) {
+        let referenciaItem = this.value();
+
+        let GridLE = $("#gridListasEmpaques").data("kendoGrid");
+        if (referenciaItem != "") {
+            GridLE.dataSource.filter(
+            {
+                    field: "NoReferenciaItem",
+                    operator: "eq",
+                    value: referenciaItem
+            });
+        }
+        else {
+            GridLE.dataSource.filter([]);
+        }
+    });
+};
+
+var fn_Reg_RelacionPLs = (strjson) => {
+    xidDeclaracionMercancia = strjson.idDeclaracionMercancia;
+    xitem = strjson.item;
+    xsDiv = strjson.sDiv;
+    StrIdListaEmp = [];
+    xgrid = strjson.grid;
+    xgd = strjson.gd;
+
+    KdoCmbSetValue($("#cmbReferenciaItem"), "");
+    $("#cmbReferenciaItem").data("kendoComboBox").dataSource.read();
+
+    let GridLE = $("#gridListasEmpaques").data("kendoGrid");
+    GridLE.dataSource.filter([]);
+    GridLE.dataSource.read();
+};
+
+let fn_Crear_Reg = () => {
+    let result = false;
+    if (StrIdListaEmp.length !== 0 ) {
+        let PLs = [];
+        $.each(StrIdListaEmp, function (index, elemento) {
+            PLs.push({
+                IdDeclaracionMercancias: Number(xidDeclaracionMercancia),
+                Item: Number(xitem),
+                IdListaEmpaque: Number(elemento),
+                IdHojaBandeo: null,
+                IdMercancia: null
+            });
+        });
+        result = fn_AgregarPL(PLs);
+    } else {
+        result = false;
+        $("#kendoNotificaciones").data("kendoNotification").show("Debe completar campos requeridos", "error");
+    }
+
+    return result;
+};
+
+let fn_AgregarPL = (strPLs) => {
+    let resultPak = false;
+    kendo.ui.progress($(".k-dialog"), true);
+    $.ajax({
+        url: TSM_Web_APi + "DeclaracionItemsMercancias/CrearRelacionDM_PL",
+        method: "POST",
+        dataType: "json",
+        data: JSON.stringify({
+            IdUsuarioMod: getUser(),
+            ListasEmpaques: strPLs
+        }),
+        contentType: "application/json; charset=utf-8",
+        success: function (datos) {
+            $("#gridListasEmpaques").data("kendoGrid").dataSource.read();
+            RequestEndMsg(datos, "Post");
+            kendo.ui.progress($(".k-dialog"), false);
+            resultPak = true;
+            StrIdListaEmp = [];
+            xgd.set("plAsociado", true);
+            $(".k-dirty-cell", xgrid).removeClass("k-dirty-cell");
+            $(".k-dirty", xgrid).remove();
+            xgrid.data("kendoGrid").saveChanges();
+            $("#" + `${xsDiv}`).data("kendoWindow").close();
+        },
+        error: function (data) {
+            ErrorMsg(data);
+            resultPak = false;
+        },
+        complete: function () {
+            kendo.ui.progress($(".k-dialog"), false);
+        }
+    });
+    return resultPak;
+
+}

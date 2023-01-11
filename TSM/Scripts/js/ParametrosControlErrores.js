@@ -69,7 +69,7 @@
     $("#grid").kendoGrid({
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdParametro]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdParametro]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdParametro]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "RegistrarBItacora");
         },

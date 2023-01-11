@@ -25,7 +25,10 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
     }).data("kendoTabStrip");
 
     KdoButton($("#GuardarSolicitud"), "save", "Guardar solicitud");
-    $("#FechaCreacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#FechaCreacion").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
   //  $("#FechaCreacion").data("kendoDatePicker").value(Fhoy());
    
     //Kendo_CmbFiltrarGrid($("#CmbEstado"), TSM_Web_APi + "Estados/", "Nombre", "Estado", "Seleccione...");
@@ -58,6 +61,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
 
     Kendo_CmbFiltrarGrid($("#CmbOrigenPrueba"), TSM_Web_APi + "OrigenesPruebasLaboratorio/", "OrigenPrueba", "IdOrigenPrueba", "Seleccione...");
     $("#NumCantLavadas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -66,6 +70,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         value: 0
     });
     $("#NumCantQuemadas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -74,6 +79,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         value: 0
     });
     $("#IdPlanta").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -82,6 +88,7 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         value: 0
     });
     $("#IdMaquina").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -601,7 +608,10 @@ var fn_InicializarInfoLaboratorio = function (vIdPruebaLaboratorio, NewReg = fal
         $("#gridResultado").data("kendoGrid").dataSource.read();
         $("#gridEspecimen").data("kendoGrid").dataSource.data([]);
         $("#gridEspecimen").data("kendoGrid").dataSource.read();
-        $("#FechaCreacion").kendoDatePicker({ format: "dd/MM/yyyy" });
+        $("#FechaCreacion").kendoDatePicker({
+            size: "large",
+            format: "dd/MM/yyyy"
+        });
         $("#FechaCreacion").data("kendoDatePicker").value(Fhoy());
     }
 

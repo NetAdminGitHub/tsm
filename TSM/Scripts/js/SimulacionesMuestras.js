@@ -92,6 +92,7 @@ $(document).ready(function () {
 
     //#region campos para generar simulacion
     $("#TxtNuevaCantidadPiezas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -99,6 +100,7 @@ $(document).ready(function () {
     });
     
     $("#txtPorcVariacion").kendoNumericTextBox({
+        size: "large",
         format: "p",
         restrictDecimals: true,
         decimals: 2,
@@ -106,6 +108,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNoMontaje").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -113,6 +116,7 @@ $(document).ready(function () {
     });
 
     $("#txtPersonalExtra").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -121,6 +125,7 @@ $(document).ready(function () {
     });
 
     $("#txtCombos").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -129,6 +134,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquina").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -137,6 +143,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquinaFP").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -146,6 +153,7 @@ $(document).ready(function () {
 
     //#region campos para generar simulacion
     $("#NumCantidadTallas").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -153,6 +161,7 @@ $(document).ready(function () {
     });
 
     $("#NumCantidadTallasRecal").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -160,6 +169,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNuevaCantidadPiezasRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -167,6 +177,7 @@ $(document).ready(function () {
     });
 
     $("#txtPorcVariacionRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "p",
         restrictDecimals: true,
         decimals: 2,
@@ -174,6 +185,7 @@ $(document).ready(function () {
     });
 
     $("#TxtNoMontajeRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -181,6 +193,7 @@ $(document).ready(function () {
     });
 
     $("#txtPersonalExtraRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -189,6 +202,7 @@ $(document).ready(function () {
     });
 
     $("#txtCombosRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -197,6 +211,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquinaRecalcular").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -205,6 +220,7 @@ $(document).ready(function () {
     });
 
     $("#txtVeloMaquinaRecalcularFP").kendoNumericTextBox({
+        size: "large",
         format: "#",
         restrictDecimals: true,
         decimals: 0,
@@ -991,6 +1007,7 @@ $.fn.extend({
     OrdenesTrabajos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -1030,6 +1047,7 @@ $.fn.extend({
     OrdenesTrabajosSimulacion: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",

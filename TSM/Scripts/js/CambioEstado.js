@@ -13,7 +13,7 @@ var fn_DocRIniciaVistaCambio = function () {
  * @param {string} pUrlCambioEstado url para el cambio de estado
  * @param {JSON} Param valores pasados a la funcion
  */
-var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
+var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param, aplicaMotivo) {
     VistaCambioEsta = e;
 
     var DSestado = new kendo.data.DataSource({
@@ -54,7 +54,7 @@ var fn_CambioEstadoInicializacion = function (e,pUrlCambioEstado,Param) {
 
 
                 MsgMotivo: function (input) {
-                    if (input.is("[name='TxtMotivo']")) {
+                    if (input.is("[name='TxtMotivo']") && (givenOrDefault(aplicaMotivo, true)===true ))  {
                         return (input.val().length > 0 && input.val().length <= 2000);
                     }
                     return true;

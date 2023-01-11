@@ -252,6 +252,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AdjuntosHttpHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthFilters\AuthAttribute.cs" />
@@ -271,24 +272,37 @@
     <Compile Include="Controllers\AccesoriosMaquinasArticulosController.cs" />
     <Compile Include="Controllers\AccesoriosMaquinasController.cs" />
     <Compile Include="Controllers\AdjuntosController.cs" />
+    <Compile Include="Controllers\AduanasController.cs" />
     <Compile Include="Controllers\AnalisisDisenosController.cs" />
     <Compile Include="Controllers\ArticulosController.cs" />
+    <Compile Include="Controllers\Auditoria_logController.cs" />
     <Compile Include="Controllers\AXFormulacionesController.cs" />
     <Compile Include="Controllers\BasesController.cs" />
     <Compile Include="Controllers\BasesMuestrasController.cs" />
     <Compile Include="Controllers\BasesPigmentosController.cs" />
     <Compile Include="Controllers\BitacoraErroresController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\BodegasClientesController.cs" />
     <Compile Include="Controllers\CambioClienteOTController.cs" />
     <Compile Include="Controllers\CambioClienteRDController.cs" />
+    <Compile Include="Controllers\CatalogoMaquinasController.cs" />
     <Compile Include="Controllers\CategoriasMotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\CodigosModalidadController.cs" />
+    <Compile Include="Controllers\CodigosRegimenController.cs" />
+    <Compile Include="Controllers\ConsultaDespachoController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMacroController.cs" />
+    <Compile Include="Controllers\ConsultaCorteMicroController.cs" />
+    <Compile Include="Controllers\ConsultaListaEmpaquesController.cs" />
+    <Compile Include="Controllers\ControlDeclaracionesController.cs" />
+    <Compile Include="Controllers\ControlIngresosController.cs" />
+    <Compile Include="Controllers\ControlUnidadesEmbalajeController.cs" />
+    <Compile Include="Controllers\CrearEmbalajeController.cs" />
     <Compile Include="Controllers\CriteriosCriticosCalidadController.cs" />
     <Compile Include="Controllers\CalidadCriteriosController.cs" />
     <Compile Include="Controllers\CatalogoDisenosController.cs" />
     <Compile Include="Controllers\CatalogoFuentesController.cs" />
     <Compile Include="Controllers\CatalogoInsumosController.cs" />
     <Compile Include="Controllers\CategoriaConfeccionesController.cs" />
-    <Compile Include="Controllers\CategoriaMaquinasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasController.cs" />
     <Compile Include="Controllers\CategoriaPrendasUbicacionesController.cs" />
     <Compile Include="Controllers\CategoriaTallasController.cs" />
@@ -298,6 +312,7 @@
     <Compile Include="Controllers\ConstruccionTelasController.cs" />
     <Compile Include="Controllers\DefectosEncontradosController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
+    <Compile Include="Controllers\EmbalajeDeclaracionMercanciasController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EstructuraMaquinasController.cs" />
     <Compile Include="Controllers\ExtensionesArchivosModulosController.cs" />
@@ -315,6 +330,7 @@
     <Compile Include="Controllers\EtapasOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\EtapasProcesosController.cs" />
     <Compile Include="Controllers\FactoresCostosController.cs" />
+    <Compile Include="Controllers\FormasMaquinasController.cs" />
     <Compile Include="Controllers\FormaTipoInsumosController.cs" />
     <Compile Include="Controllers\ConsultaFichasProduccionesController.cs" />
     <Compile Include="Controllers\FormulasFMController.cs" />
@@ -326,27 +342,50 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
     <Compile Include="Controllers\ImpresoresController.cs" />
+    <Compile Include="Controllers\IncisosArancelariosController.cs" />
+    <Compile Include="Controllers\InfoEmpresaController.cs" />
+    <Compile Include="Controllers\IncotermsController.cs" />
+    <Compile Include="Controllers\IngresoDeclaracionController.cs" />
+    <Compile Include="Controllers\IngresoMercanciasController.cs" />
     <Compile Include="Controllers\InstruccionesController.cs" />
     <Compile Include="Controllers\InterfazController.cs" />
+    <Compile Include="Controllers\ListaEmpaquesController.cs" />
+    <Compile Include="Controllers\LocalizacionesMercanciasDMController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MacroEtapasController.cs" />
     <Compile Include="Controllers\MaquinasController.cs" />
+    <Compile Include="Controllers\MarcaMaquinasController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
+    <Compile Include="Controllers\MenusSeccionesVistasController.cs" />
     <Compile Include="Controllers\MisNotificacionesController.cs" />
+    <Compile Include="Controllers\ModalesIngresoDeclaracionesController.cs" />
+    <Compile Include="Controllers\ModalesIngresoMercanciaController.cs" />
     <Compile Include="Controllers\ModalGenLoadController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\MotivosAjustesTintasController.cs" />
+    <Compile Include="Controllers\MotivosDevolucionController.cs" />
     <Compile Include="Controllers\MotivosLaboratorioController.cs" />
+    <Compile Include="Controllers\MotivosRetencionController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesAjustesController.cs" />
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
+    <Compile Include="Controllers\MotivosSustraidasController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
+    <Compile Include="Controllers\OrdenDespachoController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
     <Compile Include="Controllers\MotivosDesarrollosController.cs" />
     <Compile Include="Controllers\OrdenesTrabajosTerminadasController.cs" />
     <Compile Include="Controllers\OrigenesPruebasLaboratorioController.cs" />
+    <Compile Include="Controllers\PaisesController.cs" />
+    <Compile Include="Controllers\PerfilesAgrupacionesVentasController.cs" />
+    <Compile Include="Controllers\PlantasController.cs" />
+    <Compile Include="Controllers\PlantillasPedidosVentasController.cs" />
+    <Compile Include="Controllers\PreparacionCarritoController.cs" />
     <Compile Include="Controllers\PruebasLaboratorioController.cs" />
     <Compile Include="Controllers\PiezasDesarrolladasController.cs" />
+    <Compile Include="Controllers\RecintosFiscalesController.cs" />
+    <Compile Include="Controllers\SeccionesVistasController.cs" />
     <Compile Include="Controllers\SolicitudesCambiosController.cs" />
     <Compile Include="Controllers\SublimacionOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\OrientacionPositivosController.cs" />
@@ -398,17 +437,21 @@
     <Compile Include="Controllers\TiposOperacionesSublimacionesController.cs" />
     <Compile Include="Controllers\TiposOrdenesTrabajosController.cs" />
     <Compile Include="Controllers\TiposPiezasController.cs" />
+    <Compile Include="Controllers\TiposProcesosController.cs" />
     <Compile Include="Controllers\TiposRequerimientoColoresController.cs" />
     <Compile Include="Controllers\TiposRetencionesController.cs" />
     <Compile Include="Controllers\TiposSeparacionesController.cs" />
     <Compile Include="Controllers\TiposSolicitudesDesarrollosController.cs" />
     <Compile Include="Controllers\TiposTintasController.cs" />
+    <Compile Include="Controllers\TiposTransportesController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\ReportesPbiController.cs" />
     <Compile Include="Controllers\UbicacionesController.cs" />
     <Compile Include="Controllers\UnidadesMedidasController.cs" />
     <Compile Include="Controllers\UsuariosRolesController.cs" />
+    <Compile Include="Controllers\UsuariosRolesPublicosController.cs" />
     <Compile Include="Controllers\VelocidadesTransferenciasController.cs" />
+    <Compile Include="Controllers\VinetasMercanciasController.cs" />
     <Compile Include="DAL\AzureAuthDAL.cs" />
     <Compile Include="DAL\ReportePbiDAL.cs" />
     <Compile Include="Global.asax.cs">
@@ -483,10 +526,13 @@
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrapMod.css" />
+    <Content Include="Content\ConsultaCorteStyle.css" />
+    <Content Include="Content\EtapaMercanciaConsulta.css" />
     <Content Include="Content\Font-HelveticaNeue.css" />
     <Content Include="Content\Font-TS-Icons.css" />
     <Content Include="Content\Font-TSM-General.css" />
     <Content Include="Content\CatalogoDisenos.css" />
+    <Content Include="Content\Font-TSM-Tablet.css" />
     <Content Include="Content\icons\14.svg" />
     <Content Include="Content\icons\16.svg" />
     <Content Include="Content\icons\22.svg" />
@@ -509,7 +555,7 @@
     <Content Include="Content\icons\user.svg" />
     <Content Include="Content\icons\view.svg" />
     <Content Include="Content\icons\warning.svg" />
-    <Content Include="Content\kendo\kendo.bootstrap-v4.min.css" />
+    <Content Include="Content\kendo\kendo.bootstrap-main.min.css" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Menu.css" />
     <Content Include="Content\smart_wizard.css" />
@@ -521,8 +567,58 @@
     <Content Include="Content\TSM_imagen_modal.css" />
     <Content Include="Content\TSM_VerDiseno.css" />
     <Content Include="Content\UsuariosRoles.css" />
+    <Content Include="Scripts\js\CambioEtapa.js" />
+    <Content Include="Scripts\js\CodigosModalidad.js" />
+    <Content Include="Scripts\js\CodigosRegimen.js" />
+    <Content Include="Scripts\js\ConsultaDespacho.js" />
+    <Content Include="Scripts\js\Auditoria_log.js" />
+    <Content Include="Scripts\js\CarritoEntrega.js" />
+    <Content Include="Scripts\js\CarritosFinalizados.js" />
+    <Content Include="Scripts\js\ConsultaEtapaCorte.js" />
+    <Content Include="Scripts\js\ConsultaListaEmpaques.js" />
+    <Content Include="Scripts\js\ConsultaMercancia.js" />
+    <Content Include="Scripts\js\CreacionOrdenDespacho.js" />
+    <Content Include="Scripts\js\CrearPL.js" />
+    <Content Include="Scripts\js\EtapasMercanciasConsulta.js" />
+    <Content Include="Scripts\js\InfoEmbalajeDisponibles.js" />
+    <Content Include="Scripts\js\InfoEmpresa.js" />
+    <Content Include="Scripts\js\Incoterms.js" />
+    <Content Include="Scripts\js\ListaEmpaques.js" />
+    <Content Include="Scripts\js\LocalizacionesMercanciasDM.js" />
+    <Content Include="Scripts\js\MacroEtapas.js" />
+    <Content Include="Scripts\js\ConsultaCorteMacro.js" />
+    <Content Include="Scripts\js\ConsultaCorteMicro.js" />
+    <Content Include="Scripts\js\ControlUnidadesEmbalaje.js" />
+    <Content Include="Scripts\js\CreacionEmbalaje.js" />
+    <Content Include="Scripts\js\MenusSeccionesVistas.js" />
+    <Content Include="Scripts\js\ModalExportador.js" />
+    <Content Include="Scripts\js\ModalItem.js" />
+    <Content Include="Scripts\js\MotivosDevolucion.js" />
+    <Content Include="Scripts\js\MotivosRetencion.js" />
+    <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\PerfilesAgrupacionesVentas.js" />
+    <Content Include="Scripts\js\PlantillasPedidosVentas.js" />
+    <Content Include="Scripts\js\RegistroCreacionEmbalaje.js" />
+    <Content Include="Scripts\js\RegistroListaEmpaque.js" />
+    <Content Include="Scripts\js\SeccionesMenuPublico.js" />
+    <Content Include="Scripts\js\SeccionesVistas.js" />
+    <Content Include="Scripts\js\statusOrdenDespacho.js" />
+    <Content Include="Scripts\js\StepperOD.js" />
+    <Content Include="Scripts\js\TiposProcesos.js" />
+    <Content Include="Scripts\js\TiposTransportes.js" />
+    <Content Include="Scripts\js\UsuariosRolesPublicos.js" />
+    <Content Include="Scripts\js\VinetasMercancias.js" />
+    <Content Include="Scripts\js\CatalogoMaquinas.js" />
+    <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
+    <Content Include="Scripts\js\EmbalajeDeclaracionMercancias.js" />
+    <Content Include="Scripts\js\FormasMaquinas.js" />
+    <Content Include="Scripts\js\ControlDeclaraciones.js" />
+    <Content Include="Scripts\js\IngresoBultoAddItem.js" />
+    <Content Include="Scripts\js\IngresoDeclaracion.js" />
+    <Content Include="Scripts\js\IngresoMercancias.js" />
     <Content Include="Scripts\js\AccesoriosMaquinas.js" />
     <Content Include="Scripts\js\AccesoriosMaquinasArticulos.js" />
+    <Content Include="Scripts\js\Aduanas.js" />
     <Content Include="Scripts\js\AutorizarEstacionesPermitidas.js" />
     <Content Include="Scripts\js\Articulos.js" />
     <Content Include="Scripts\js\AutorizarRetenciones.js" />
@@ -531,15 +627,16 @@
     <Content Include="Scripts\js\CambioClienteOT.js" />
     <Content Include="Scripts\js\CambioClienteRD.js" />
     <Content Include="Scripts\js\CategoriasMotivosLaboratorio.js" />
+    <Content Include="Scripts\js\ControlBulto.js" />
+    <Content Include="Scripts\js\ControlIngresos.js" />
+    <Content Include="Scripts\js\CrearListaEmpaque.js" />
     <Content Include="Scripts\js\CriteriosCriticosCalidad.js" />
     <Content Include="Scripts\js\CalidadCriterios.js" />
     <Content Include="Scripts\js\CatalogoDisenoInf.js" />
     <Content Include="Scripts\js\CatalogoDisenos.js" />
-    <Content Include="Scripts\js\CategoriaMaquinas.js" />
     <Content Include="Scripts\js\ConfigEjecutivasContactosMarcas.js" />
     <Content Include="Scripts\js\ConsultaHistoricaFormulas.js" />
     <Content Include="Scripts\js\ConsultarCatalogoDisenos.js" />
-    <Content Include="Scripts\js\ConsultaFichasDesarrollos.js" />
     <Content Include="Scripts\js\ConsumoTintasPRD.js" />
     <Content Include="Scripts\js\CotizacionesMuestras.js" />
     <Content Include="Scripts\js\CotizacionesMuestrasDatos.js" />
@@ -557,6 +654,18 @@
     <Content Include="Scripts\js\ExtensionesArchivosModulos.js" />
     <Content Include="Scripts\js\FormulasFM.js" />
     <Content Include="Scripts\js\GenerarFichaProduccion.js" />
+    <Content Include="Scripts\js\BodegasClientes.js" />
+    <Content Include="Scripts\js\IncisosArancelarios.js" />
+    <Content Include="Scripts\js\ModalVerNotaRemision.js" />
+    <Content Include="Scripts\js\MarcaMaquinas.js" />
+    <Content Include="Scripts\js\IngresoNotaRemision.js" />
+    <Content Include="Scripts\js\ListaEmpaqueAddPL.js" />
+    <Content Include="Scripts\js\Paises.js" />
+    <Content Include="Scripts\js\IngresoBulto.js" />
+    <Content Include="Scripts\js\IngresoBultoSerie.js" />
+    <Content Include="Scripts\js\PreparacionCarrito.js" />
+    <Content Include="Scripts\js\RecintosFiscales.js" />
+    <Content Include="Scripts\js\Plantas.js" />
     <Content Include="Scripts\js\Instrucciones.js" />
     <Content Include="Scripts\js\MotivosLaboratorio.js" />
     <Content Include="Scripts\js\MotivosSolicitudesAjustes.js" />
@@ -579,6 +688,7 @@
     <Content Include="Scripts\js\pbiReporte.js" />
     <Content Include="Scripts\js\PiezasDesarrolladas.js" />
     <Content Include="Scripts\js\RegistroOrdenesTrabajosAgendas.js" />
+    <Content Include="Scripts\js\RelacionPLs.js" />
     <Content Include="Scripts\js\SecuenciaMaquina.js" />
     <Content Include="Scripts\js\SimulacionesMuestras\Consulta.js" />
     <Content Include="Scripts\js\SolicitarIngresoAjustes.js" />
@@ -600,7 +710,6 @@
     <Content Include="Content\bootstrap\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap\bootstrap.css.map" />
     <Content Include="Content\bootstrap\bootstrap.min.css.map" />
-    <Content Include="Content\kendo\kendo.bootstrap-v4.min.css.map" />
     <Content Include="Fonts\TS-Icons.woff" />
     <Content Include="Fonts\TSM-Icons-General.woff" />
     <Content Include="Images\DefaultUser.png" />
@@ -744,6 +853,7 @@
     <Content Include="Scripts\js\_DesarrolloMuestras.js" />
     <Content Include="Scripts\js\_DisenoMuestras.js" />
     <Content Include="Scripts\js\_EstadoRequerimientoDesarrollo.js" />
+    <Content Include="Scripts\js\GenInfoFM.js" />
     <Content Include="Scripts\js\_HistoricoSeteos.js" />
     <Content Include="Scripts\js\_InfoPruebaLaboratorio.js" />
     <Content Include="Scripts\js\_MaqSR22.js" />
@@ -789,6 +899,7 @@
     <Content Include="Scripts\Utils\GridPersonalizar.js" />
     <Content Include="Scripts\Utils\Menu.js" />
     <Content Include="Scripts\Utils\MltSelectPersonalizar.js" />
+    <Content Include="Scripts\Utils\Modales.js" />
     <Content Include="Scripts\Utils\powerbi.js" />
     <Content Include="Scripts\Utils\powerbi.min.js" />
     <Content Include="Scripts\Utils\sortable.min.js" />
@@ -844,6 +955,8 @@
     <Content Include="Views\Menus\_MenuPermisos.cshtml" />
     <Content Include="Fonts\TSM-SeteoMaquinas.woff" />
     <Content Include="jsonsettings.azconf" />
+    <Content Include="Fonts\TSM-Icons-Tablet.woff" />
+    <Content Include="Content\kendo\kendo.bootstrap-main.min.css.map" />
     <None Include="Properties\PublishProfiles\IST.pubxml" />
     <None Include="Properties\PublishProfiles\PRD.pubxml" />
     <Content Include="Views\CatalogoFuentes\Index.cshtml" />
@@ -984,7 +1097,6 @@
     <Content Include="Views\Shared\_SolicitudReactivacionOrdenTrabajo.cshtml" />
     <Content Include="Views\TiposIgualacionesColores\Index.cshtml" />
     <Content Include="Views\EstructuraMaquinas\Index.cshtml" />
-    <Content Include="Views\CategoriaMaquinas\Index.cshtml" />
     <Content Include="Views\Shared\_HistoricoSeteos.cshtml" />
     <Content Include="Views\TiposRequerimientoColores\Index.cshtml" />
     <None Include="Scripts\kendo\kendo.all.min.intellisense.js" />
@@ -1016,14 +1128,87 @@
     </Content>
     <Content Include="Views\Shared\_AutorizarEstacionesPermitidas.cshtml" />
     <Content Include="Views\Shared\_DimensionesRequerimiento.cshtml" />
+    <Content Include="Views\Plantas\Index.cshtml" />
+    <Content Include="Views\RecintosFiscales\Index.cshtml" />
+    <Content Include="Views\BodegasClientes\Index.cshtml" />
+    <Content Include="Web.UAT2.config">
+    </Content>
+    <Content Include="Views\Aduanas\Index.cshtml" />
+    <Content Include="Views\Paises\Index.cshtml" />
     <Content Include="Views\ExtensionesArchivosModulos\Index.cshtml" />
     <Content Include="Views\CambioClienteOT\Index.cshtml" />
     <Content Include="Views\CambioClienteRD\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\IncisosArancelarios\Index.cshtml" />
+    <Content Include="Views\ControlIngresos\Index.cshtml" />
+    <Content Include="Views\IngresoMercancias\_ControlBulto.cshtml" />
+    <Content Include="Views\IngresoMercancias\_IngresoBulto.cshtml" />
+    <Content Include="Views\IngresoMercancias\_IngresoBultoSerie.cshtml" />
+    <Content Include="Views\IngresoMercancias\_CrearListaEmpaque.cshtml" />
+    <Content Include="Views\IngresoMercancias\Index.cshtml" />
+    <Content Include="Web.IST2.config">
+    </Content>
+    <Content Include="Views\ControlDeclaraciones\Index.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_IngresoNotaRemision.cshtml" />
+    <Content Include="Views\Shared\_IngresoBultoAddItem.cshtml" />
+    <Content Include="Views\Shared\_ListaEmpaqueAddPL.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\Index.cshtml" />
+    <Content Include="Web.IST2.config">
+    </Content>
+    <Content Include="Views\MarcaMaquinas\Index.cshtml" />
+    <Content Include="Views\FormasMaquinas\Index.cshtml" />
+    <Content Include="Views\EmbalajeDeclaracionMercancias\Index.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalVerNotasRemision.cshtml" />
+    <Content Include="Views\CatalogoMaquinas\Index.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_vRelacionPLs.cshtml" />
+    <Content Include="Views\PreparacionCarrito\Index.cshtml" />
+    <Content Include="Views\PreparacionCarrito\_CarritosFinalizados.cshtml" />
+    <Content Include="Views\PreparacionCarrito\_CarritoEntregaTela.cshtml" />
+    <Content Include="Views\VinetasMercancias\Index.cshtml" />
+    <Content Include="Views\MotivosSustraidas\Index.cshtml" />
+    <Content Include="Views\UsuariosRolesPublicos\Index.cshtml" />
+    <Content Include="Views\MenusSeccionesVistas\Index.cshtml" />
+    <Content Include="Views\TiposProcesos\Index.cshtml" />
+    <Content Include="Views\SeccionesVistas\Index.cshtml" />
+    <Content Include="Support\Plantilla_BultosRollos.xlsx" />
+    <Content Include="Views\MotivosRetencion\Index.cshtml" />
+    <Content Include="Views\MotivosDevolucion\Index.cshtml" />
+    <Content Include="Views\Menus\_SeccionesMenuPublico.cshtml" />
+    <Content Include="Views\Auditoria_log\Index.cshtml" />
     <Content Include="Views\FormulasFM\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\_vSecuenciaMaquina.cshtml" />
     <Content Include="Views\Instrucciones\Index.cshtml" />
     <Content Include="Views\SimulacionesMuestras\Consulta.cshtml" />
+    <Content Include="Views\ConsultaDespacho\Index.cshtml" />
+    <Content Include="Views\ConsultaDespacho\_statusOrdenDespacho.cshtml" />
+    <Content Include="Views\OrdenDespacho\Index.cshtml" />
+    <Content Include="Views\Shared\_GenInfoFM.cshtml" />
+    <Content Include="Views\Shared\_ConsultaEtapaCorte.cshtml" />
+    <Content Include="Views\Shared\_VistaFM.cshtml" />
+    <Content Include="Views\Shared\_ConsultaMercancia.cshtml" />
+    <Content Include="Views\MacroEtapas\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMacro\Index.cshtml" />
+    <Content Include="Views\ConsultaCorteMicro\Index.cshtml" />
+    <Content Include="Views\ControlUnidadesEmbalaje\Index.cshtml" />
+    <Content Include="Views\ControlUnidadesEmbalaje\_RegistroListaEmpaque.cshtml" />
+    <Content Include="Views\CrearEmbalaje\Index.cshtml" />
+    <Content Include="Views\CrearEmbalaje\_CreacionEmbalaje.cshtml" />
+    <Content Include="Views\CodigosRegimen\Index.cshtml" />
+    <Content Include="Views\CodigosModalidad\Index.cshtml" />
+    <Content Include="Views\InfoEmpresa\Index.cshtml" />
+    <Content Include="Views\LocalizacionesMercanciasDM\Index.cshtml" />
+    <Content Include="Views\Incoterms\Index.cshtml" />
+    <Content Include="Views\Shared\_EtapasMercanciasConsulta.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalExportador.cshtml" />
+    <Content Include="Views\IngresoDeclaracion\_ModalItem.cshtml" />
+    <Content Include="Views\TiposTransportes\Index.cshtml" />
+    <Content Include="Views\Shared\_CambioEtapa.cshtml" />
+    <Content Include="Views\ConsultaListaEmpaques\Index.cshtml" />
+    <Content Include="Views\PlantillasPedidosVentas\Index.cshtml" />
+    <Content Include="Views\ListaEmpaques\Index.cshtml" />
+    <Content Include="Views\Shared\_InfoEmbalajeDisponibles.cshtml" />
+    <Content Include="Views\Shared\_CrearPL.cshtml" />
+    <Content Include="Views\PerfilesAgrupacionesVentas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1031,9 +1216,12 @@
     <Folder Include="Data\" />
     <Folder Include="Views\Adjuntos\" />
     <Folder Include="Views\Imagen\" />
+    <Folder Include="Views\ModalesIngresoDeclaraciones\" />
+    <Folder Include="Views\ModalesIngresoMercancia\" />
     <Folder Include="Views\ModalGenLoad\" />
     <Folder Include="Views\ParametrosEjecutivasContatosMarcas\" />
     <Folder Include="Views\PerfilUsuarios\" />
+    <Folder Include="Views\Regimenes\" />
     <Folder Include="Views\Token\" />
   </ItemGroup>
   <ItemGroup>
@@ -1119,6 +1307,28 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'IST2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -1144,6 +1354,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties scripts_4kendo_4messages_4kendo_1messages_1es-es_1min_1js_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.15.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.15.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" />

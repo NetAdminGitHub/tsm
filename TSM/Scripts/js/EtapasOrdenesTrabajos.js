@@ -41,9 +41,16 @@ $(document).ready(function () {
         obj_OT = JSON.parse(sessionStorage.eOT_CmbOrdenTrabajo);
     }
 
-    $("#dFechaDesde").kendoDatePicker({ format: "dd/MM/yyyy" });
+
+    $("#dFechaDesde").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaDesde").data("kendoDatePicker").value(sessionStorage.getItem("eOT_dFechaDesde") === null ? kendo.toString(kendo.parseDate(new Date(dtfecha.getFullYear(), dtfecha.getMonth() - 1, dtfecha.getUTCDate())), 's') : sessionStorage.getItem("eOT_dFechaDesde"));
-    $("#dFechaHasta").kendoDatePicker({ format: "dd/MM/yyyy" });
+    $("#dFechaHasta").kendoDatePicker({
+        size: "large",
+        format: "dd/MM/yyyy"
+    });
     $("#dFechaHasta").data("kendoDatePicker").value(Fhoy());
     $("#dFechaHasta").data("kendoDatePicker").value(sessionStorage.getItem("eOT_dFechaHasta") === null ? Fhoy() : sessionStorage.getItem("eOT_dFechaHasta"));
 

@@ -13,6 +13,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
     $("#row-2").prop("hidden", true);
 
     $("#NumAncho").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -22,6 +23,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
     });
 
     $("#NumAlto").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -31,6 +33,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
     });
     
     let txtAnchoConsu = $("#NumConsuAncho").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -39,6 +42,7 @@ var fn_VistaEstacionAccesoriosDisDocuReady = function () {
         value: 0,        
     });
     let txtAltoConsu = $("#NumConsuAlto").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",

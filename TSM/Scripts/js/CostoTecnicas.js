@@ -94,21 +94,21 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // S BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdCostoTecnica]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdCostoTecnica]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdCostoTecnica]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=IdServicio]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdServicio]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdServicio]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre1]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre1]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre1]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre2]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre2]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre2]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Nombre3]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Nombre3]").parent("div .k-form-field").hide();
             e.container.find("label[for=Nombre3]").parent().next("div .k-edit-field").hide();
-            e.container.find("label[for=Predeterminado]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=Predeterminado]").parent("div .k-form-field").hide();
             e.container.find("label[for=Predeterminado]").parent().next("div .k-edit-field").hide();
 
             if ($("#CmbIdServicio").data("kendoComboBox").value() === "2" || $("#CmbIdServicio").data("kendoComboBox").value() === "3") {
-                e.container.find("label[for=IdBase]").parent("div .k-edit-label").hide();
+                e.container.find("label[for=IdBase]").parent("div .k-form-field").hide();
                 e.container.find("label[for=IdBase]").parent().next("div .k-edit-field").hide();
             }
        

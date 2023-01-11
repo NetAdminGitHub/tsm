@@ -310,6 +310,7 @@ $(document).ready(function () {
     });
 
     $("#NumCantLavadas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",
@@ -318,6 +319,7 @@ $(document).ready(function () {
         value: 0
     });
     $("#NumCantQuemadas").kendoNumericTextBox({
+        size: "large",
         min: 0,
         max: 999999999,
         format: "#",

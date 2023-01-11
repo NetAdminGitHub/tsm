@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Consulta de Corte Macro";
+    ViewBag.IdVersion = "TSM0101140|v22081601";
+}
+@section Scripts {
+
+    <script src="~/Scripts/js/ConsultaCorteMacro.js?@ViewBag.IdVersion"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div id="daterangepicker" title="daterangepicker"></div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cmbCliente" id="lblCliente">Cliente:</label>
+                        <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="cmbFm" id="lblFm">Código FM:</label>
+                        <input id="cmbFm" name="cmbFm" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                        <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="cmbEtapa" id="lblEtapa">Macro Etapa:</label>
+                        <input id="cmbEtapa" name="cmbEtapa" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="cmbServicio" id="lblServicio">Servicio:</label>
+                        <input id="cmbServicio" name="cmbServicio" class="form-control" />
+                    </div>
+                    <div class="col text-right mt-auto">
+                        <button type="button" id="btnGenerarExcel">Descargar Data</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="gridCortes"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

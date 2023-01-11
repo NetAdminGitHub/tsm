@@ -392,7 +392,7 @@ var fn_DibujarCatalogo = function (data) {
             '<p>#:' + elemento.NoReferencia + '</p>' +
             '</div>' +
             '<div class="k-card-footer">' +
-            '<a class="k-button k-flat k-button-icon" onClick="fn_CargarModal(' + elemento.IdCatalogoDiseno + ',' + elemento.IdArte + ')"><span class="k-icon k-i-search" ></span></a>' +
+            '<a class="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base k-flat k-button-icon" onClick="fn_CargarModal(' + elemento.IdCatalogoDiseno + ',' + elemento.IdArte + ')"><span class="k-icon k-i-search" ></span></a>' +
             '</div>' +
             '</div >');
     });
@@ -413,6 +413,7 @@ $.fn.extend({
     CatalogoOrdenesTrabajos: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoDocumento",
                 dataValueField: "IdOrdenTrabajo",
                 filter: "contains",
@@ -448,6 +449,7 @@ $.fn.extend({
     ControlSelecionFM_AX: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "CODIGODISENO",
                 dataValueField: "CODIGODISENO",
                 filter: "contains",
@@ -487,6 +489,7 @@ $.fn.extend({
     ControlSelecionProg: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "Nombre",
                 dataValueField: "IdPrograma",
                 filter: "contains",
@@ -519,6 +522,7 @@ $.fn.extend({
     CSFMCatalogo: function () {
         return this.each(function () {
             $(this).kendoMultiColumnComboBox({
+                size: "large",
                 dataTextField: "NoReferencia",
                 dataValueField: "IdCatalogoDiseno",
                 filter: "contains",

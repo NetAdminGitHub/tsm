@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "Crear Ordenes para Despachar";
+    ViewBag.IdVersion = "TSM0101145|v22111101";
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var UrlServ = "@string.Format("{0}Servicios", TSM.Utils.Config.TSM_WebApi)";
+        var readIdCliente = "@ViewBag.IdCliente";
+        var readIdDespachoMercancia = "@ViewBag.IdDespachoMercancia";
+        var readFecha = "@ViewBag.Fecha";
+        var readPlanta = "@ViewBag.Planta";
+        var readNoDoc = "@ViewBag.NoDocumento";
+    </script>
+
+    <script src="~/Scripts/js/CreacionOrdenDespacho.js?@ViewBag.IdVersion"></script>
+
+}
+<link href="~/Content/ConsultaCorteStyle.css" rel="stylesheet" />
+<style>
+    tsm-label-center {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="cmbCliente">Cliente:</label>
+                            <input id="cmbCliente" name="cmbCliente" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="cmbPlanta" id="lblPlanta">Planta:</label>
+                            <input id="cmbPlanta" name="cmbPlanta" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <label for="dtFechaProyectada">Fecha Entrega:</label>
+                            <input id="dtFechaProyectada" name="dtFechaProyectada" type="date" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="txtNoDoc">No. Documento:</label>
+                            <input id="txtNoDoc" name="txtNoDoc" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="cmbTipoTrans">Tipo Transporte:</label>
+                            <input id="cmbTipoTrans" name="cmbTipoTrans" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-1 mt-auto text-right">
+                            <button type="button" id="btnRetornar" class="form-control" style="margin-bottom:3px;">Regresar</button>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="txtMotorista">Nombre del Motorista:</label>
+                            <input id="txtMotorista" name="txtMotorista" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="txtPlaca">Placa:</label>
+                            <input id="txtPlaca" name="txtPlaca" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-7 mt-auto text-right">
+                            <button type="button" id="btnCrearOrdenDespacho">Guardar</button>
+                            <button type="button" id="btnEtapa">Cambiar Etapa</button>
+                        </div>
+                    </div>
+                    <hr />
+
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="cmbMarca">Marca:</label>
+                                <input id="cmbMarca" name="cmbMarca" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="cmbFm">Código FM:</label>
+                                <input id="cmbFm" name="cmbFm" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="cmbPL"># de Envío (No. Referncia PL):</label>
+                                <input id="cmbPL" name="cmbPL" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <div id="treelist"> </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <div class="row">
+                            <div class="form-group col-lg-2">
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <label for="cmbCorte">Corte:</label>
+                                <input id="cmbCorte" name="cmbCorte" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <label for="CmbServicio">Servicio:</label>
+                                <input id="CmbServicio" name="CmbServicio" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 d-flex flex-column justify-content-center align-items-center text-center">
+                                <button type="button" id="btnMoveData"></button>
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <div id="gridOrdenDespacho"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@*vista modal detalle de preparado*@
+<div id="vdPreparado"></div>
+
+@*vista modal entrega a prod*@
+<div id="vInfDiseno"></div>
+
+@*vista modal corte*@
+<div id="vConsultaEtapa"></div>
+<div id="vCambioEtapa"></div>

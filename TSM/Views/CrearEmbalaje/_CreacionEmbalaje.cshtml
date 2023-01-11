@@ -1,0 +1,62 @@
+﻿
+
+<div class="row mb-3">
+    <div class="col-2 my-auto">
+        <input type="checkbox" id="chkNuevoEmbalaje" name="chkNuevoEmbalaje" class="k-checkbox k-checkbox-md k-rounded-md text-align-end">
+        <label class="k-checkbox-label" for="chkNuevoEmbalaje" id="lblchkNuevoEmbalaje">Nuevo Embalaje</label>
+    </div>
+    <div class="col-4">
+        <div id="divUnidadEmbalaje">
+            <label for="cmbUnidadEmbalaje" id="lblUnidadEmbalaje">Unidad de Embalaje:</label>
+            <input id="cmbUnidadEmbalaje" name="cmbUnidadEmbalaje" class="form-control" />
+        </div>
+        <div id="divAsignacionEmbalaje">
+            <label for="cmbEmbAsignacion" id="lblEmbAsignacion">Asignación de Embalajes:</label>
+            <input id="cmbEmbAsignacion" name="cmbEmbAsignacion" class="form-control" />
+        </div>
+    </div>
+    <div class="col-3">
+        <label for="txtPesoKg" id="lblPesoKg">Peso(Kg):</label>
+        <input id="txtPesoKg" name="txtPesoKg" class="form-control" />
+    </div>
+    <div class="col-3">
+        <label for="textPesoLb" id="lblPesoLb">Peso(Lb):</label>
+        <input id="textPesoLb" name="textPesoLb" class="form-control" />
+    </div>
+   
+</div>
+<div class="row mb-3">
+    <div class=" col-lg-9">
+        <label for="TxtDetalle">Detalle de Embalaje:</label>
+        <textarea  id="TxtDetalle" name="TxtDetalle" class="form-control" />
+    </div>
+    <div class="col-3 text-right mt-auto">
+        <button type="button" id="btnGuardarRegistro">Guardar Registro</button>
+    </div>
+</div>
+<hr />
+<div class="row mb-3">
+
+    <div class="col-4">
+        <label for="txtCantidadPiezas" id="lblCantidadPiezas">Cantidad de Piezas:</label>
+        <input id="txtCantidadPiezas" name="txtCantidadPiezas" class="k-textbox form-control" />
+    </div>
+    <div class="col-4">
+        <label for="txtCantidadBultos" id="lblCantidadBultos">Cantidad de Bultos:</label>
+        <input id="txtCantidadBultos" name="txtCantidadBultos" class="k-textbox form-control" />
+    </div>
+    <div class="col-4">
+        <label for="txtCortes" id="lblCortes">Cortes:</label>
+        <input id="txtCortes" name="txtCortes" class="k-textbox form-control" />
+    </div>
+   
+</div>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <h3>Detalle de Mercancía</h3>
+    </div>
+    <div class="col-12">
+        <div id="gridMercancia"></div>
+    </div>
+</div>

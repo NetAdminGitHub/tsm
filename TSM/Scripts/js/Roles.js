@@ -60,7 +60,8 @@ $(document).ready(function () {
                                 return true;
                             }
                         }
-                    }
+                    },
+                    RolPublico: { type: "bool" }
 
                 }
             }
@@ -73,14 +74,15 @@ $(document).ready(function () {
     $("#grid").kendoGrid({
         edit: function (e) {
             // SI ESTOY ACTUALIZANDO BLOQUEA CAMPO LLAVE ( ID)
-            e.container.find("label[for=IdRol]").parent("div .k-edit-label").hide();
+            e.container.find("label[for=IdRol]").parent("div .k-form-field").hide();
             e.container.find("label[for=IdRol]").parent().next("div .k-edit-field").hide();
             Grid_Focus(e, "Nombre");
         },
         //DEFICNICIÓN DE LOS CAMPOS
         columns: [
             { field: "IdRol", title: "Código Rol ",  hidden: true },
-            { field: "Nombre", title: "Nombre del Rol" }
+            { field: "Nombre", title: "Nombre del Rol" },
+            { field: "RolPublico", title: "Rol Público", width: 150, editor: Grid_ColCheckbox, attributes: { style: "text-align: center" }, template: function (dataItem) { return Grid_ColTemplateCheckBox(dataItem, "RolPublico"); } }
         ]
 
     });

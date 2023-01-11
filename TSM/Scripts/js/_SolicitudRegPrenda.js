@@ -180,7 +180,7 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '<div class="form-row">' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbConfeccion + '">Confeciones de la tela</label>' +
-            '<input name="' + CmbConfeccion + '" id="' + CmbConfeccion + '" required validationMessage="Requerido" class="form-control">' +
+            '<input name="' + CmbConfeccion + '" id="' + CmbConfeccion + '" required validationMessage="Requerido" class="">' +
             '</div>' +
             '<div class="form-group col-lg-12">' +
             '<ul id="' + panelbar + '">' +
@@ -192,13 +192,13 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '<div class="form-row" >' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbTemporada + '">Temporada</label>' +
-            '<input name="' + CmbTemporada + '" id="' + CmbTemporada + '" required validationMessage="Requerido" class="form-control">' +
+            '<input name="' + CmbTemporada + '" id="' + CmbTemporada + '" required validationMessage="Requerido" class="">' +
             '</div>' +
             '</div>' +
             '<div class="form-row">' +
             '<div class="form-group col-lg-12">' +
             '<label for="' + CmbPrograma + '">Programas</label>' +
-            '<input name="' + CmbPrograma + '" id="' + CmbPrograma + '" type="text" class="form-control">' +
+            '<input name="' + CmbPrograma + '" id="' + CmbPrograma + '" type="text" class="">' +
             '</div>' +
             '</div>' +
             '<div class="form-row">' +
@@ -234,7 +234,7 @@ var fn_DibujarSeccionPrenda = function (ds) {
             '</div>' +
             '</div>' +
             '</li > ' +
-            '<li class="k-state-active">' +
+            '<li class="k-active">' +
             '<span class="TS-icon-INFORMACION-2" style="font-size: 1.7em;">&nbsp</span>' +
             'Seleccione de Partes' +
             '<div class="form-group col-lg-12">' +
@@ -471,7 +471,7 @@ var fn_DibujarUbicaciones = function (ds, IdCategoriaPrenda, item,spanId) {
         UbicacionPren.append(
             '<div class="form-row">' +
             '<div class="form-group col-lg-12 ">' +
-            '<input type="checkbox" id="' + TxtCant + '" name="' + TxtCant + '" class="k-checkbox">' +
+            '<input type="checkbox" id="' + TxtCant + '" name="' + TxtCant + '" class="k-checkbox k-checkbox-md k-rounded-md">' +
             '<label class="k-checkbox-label" for="' + TxtCant + '">'+ elemento.Nombre + '</label>' +
             '</div>' +
             '</div>' 
@@ -496,7 +496,7 @@ var fn_UbicacionSubli = function (IdCategoriaPrenda, Item, spanId,form) {
         '<div class="form-row">' +
         '<div class="form-group col-lg-12 ">' +
         '<label for="' + CmbMltUbi + '">Partes:</label>' +
-        '<input name="' + CmbMltUbi + '" id="' + CmbMltUbi + '"  class="form-control">' +
+        '<input name="' + CmbMltUbi + '" id="' + CmbMltUbi + '"  class="">' +
         '</div>' +
         '</div>'
     );
@@ -629,7 +629,7 @@ var fn_DibujarTallas = function (ds, IdCategoriaPrenda, item, spanId) {
         UbicacionPren.append(
             '<div class="form-row">' +
             '<div class="form-group col-lg-12 ">' +
-            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox" tipotalla="chk' + TipoTalla+ '">' +
+            '<input type="checkbox" id="' + chkRT + '" name="' + chkRT + '" class="k-checkbox k-checkbox-md k-rounded-md" tipotalla="chk' + TipoTalla+ '">' +
             '<label class="k-checkbox-label" for="' + chkRT + '">' + elemento.Nombre + '</label>' +
             '</div>' +
             '</div>' +
@@ -1006,7 +1006,7 @@ var KdoCmbComboBoxPrograma = function (e,  textField, valueField, opcPlaceHolder
                 height: givenOrDefault(opcHeight === "" || opcHeight === 0 ? undefined : opcHeight, 550),
                 cascadeFrom: givenOrDefault(parentCascade, ""),
                 dataSource: dataSource,
-                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
+                noDataTemplate: kendo.template("<div>Dato no encontrado.¿Quieres agregar nuevo registro - '#: instance.text() #' ? </div ><br /><button class=\"k-button k-button-md k-rounded-md k-button-solid k-button-solid-base\" onclick=\"" + fn_crear + "('#: instance.element[0].id #', '#: instance.text() #')\"><span class=\"k-icon k-i-save\"></span>&nbsp;Crear Registro</button>")//$("#noDataTemplate").html()
             });
 
         }

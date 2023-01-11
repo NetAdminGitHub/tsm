@@ -13,6 +13,7 @@ var fn_VistaEstacionAccesoriosMuesDocuReady = function () {
     $("#row-2").prop("hidden", true);
 
     $("#NumConsuAncho_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
@@ -21,6 +22,7 @@ var fn_VistaEstacionAccesoriosMuesDocuReady = function () {
         value: 0
     });
     $("#NumConsuAlto_Mues").kendoNumericTextBox({
+        size: "large",
         min: 0.00,
         max: 99999999999999.99,
         format: "{0:n2}",
