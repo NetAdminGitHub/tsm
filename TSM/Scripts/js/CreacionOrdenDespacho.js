@@ -742,7 +742,7 @@ $(document).ready(function () {
                 Height: "45%"
             }],
             Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
-            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+            fn: { fnclose: "fn_OD_Actualizar", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
         };
 
         fn_GenLoadModalWindow(strjson);
@@ -1802,3 +1802,9 @@ let fn_Get_DatosEmb = (xid) => {
     });
 
 };
+
+var fn_OD_Actualizar = () => {
+    if (cambioSuccess === 1) {
+        window.location = window.location.origin + `/ConsultaDespacho/${xCliente}/`;
+    }
+}

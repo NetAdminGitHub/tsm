@@ -371,6 +371,7 @@
     <Compile Include="Controllers\MotivosSolicitudesCambiosController.cs" />
     <Compile Include="Controllers\MotivosSustraidasController.cs" />
     <Compile Include="Controllers\NivelesExigenciasController.cs" />
+    <Compile Include="Controllers\NotaRemisionController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrdenDespachoController.cs" />
     <Compile Include="Controllers\OrdenesTrabajoController.cs" />
@@ -596,6 +597,7 @@
     <Content Include="Scripts\js\MotivosDevolucion.js" />
     <Content Include="Scripts\js\MotivosRetencion.js" />
     <Content Include="Scripts\js\MotivosSustraidas.js" />
+    <Content Include="Scripts\js\NotaRemision.js" />
     <Content Include="Scripts\js\PerfilesAgrupacionesVentas.js" />
     <Content Include="Scripts\js\PlantillasPedidosVentas.js" />
     <Content Include="Scripts\js\RegistroCreacionEmbalaje.js" />
@@ -1207,6 +1209,7 @@
     <Content Include="Views\Shared\_InfoEmbalajeDisponibles.cshtml" />
     <Content Include="Views\Shared\_CrearPL.cshtml" />
     <Content Include="Views\PerfilesAgrupacionesVentas\Index.cshtml" />
+    <Content Include="Views\NotaRemision\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

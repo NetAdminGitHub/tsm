@@ -66,7 +66,7 @@ $(document).ready(function () {
                 Height: "45%"
             }],
             Param: { IdEtapaActual: EtapaActual, IdDespachoMercancia: IdOD, NombreEtapaActual: NombreEtapaActual },
-            fn: { fnclose: "", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
+            fn: { fnclose: "fn_PL_Actualizar", fnLoad: "fn_Ini_ConsultaEtapa", fnReg: "fn_con_ConsultaEtapa", fnActi: "" }
         };
 
         fn_GenLoadModalWindow(strjson);
@@ -303,7 +303,7 @@ $(document).ready(function () {
                             icon: "gear",
                             click: function (e) {
                                 e.preventDefault();
-                                Fn_VistaCambioEstadoMostrar("ListaEmpaques", dataItem.Estado, TSM_Web_APi + "ListaEmpaques/ListaEmpaques_CambioEstado/", "", dataItem.IdListaEmpaque, undefined, function () { return fn_updGrid(); });
+                                Fn_VistaCambioEstadoMostrar("ListaEmpaques", dataItem.Estado, TSM_Web_APi + "ListaEmpaques/ListaEmpaques_CambioEstado/", "", dataItem.IdListaEmpaque, undefined, function () { return fn_updGrid(); },false);
                             },
                             enabled: xestado === 'FINALIZADO' ? false : true
 
@@ -582,4 +582,10 @@ var ImprimirPL = (IdListaEmpaque) => {
     });
     return true;
 
+}
+
+var fn_PL_Actualizar = () => {
+    if (cambioSuccess === 1) {
+        window.location = window.location.origin + `/ConsultaDespacho/${xCliente}/`;
+    }
 }

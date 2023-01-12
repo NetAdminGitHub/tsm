@@ -1111,7 +1111,7 @@ let fn_updGrid = (xidEmbalaje) => {
 
 var fn_emb_Actualizar = () => {
     if (cambioSuccess === 1) {
-        window.location = window.location.origin + `/ConsultaDespacho`;
+        window.location = window.location.origin + `/ConsultaDespacho/${xCliente}/`;
     }
 }
 
