@@ -46,7 +46,9 @@ var fn_Ini_ControlBulto = (xjson) => {
     KdoCmbSetValue($("#xcmbMarca"), "");
     KdoCmbSetValue($("#xcmbProceso"), "");
 
-    $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM("9,20"));
+    $("#xcmbIdUni").data("kendoComboBox").setDataSource(fn_dsFiltroUM({
+        Unidades: [9,20]
+    }));
 
     // crear boton "Crear Bulto"
     KdoButton($("#btnCrearBulto"), "plus-outline", "Crear Bulto", "small");
@@ -674,7 +676,7 @@ let fn_dsFiltroUM = function (filtro) {
                     dataType: 'json',
                     type: "POST",
                     async: false,
-                    url: TSM_Web_APi + "UnidadesMedidas/GetUnidadesMedidasByFiltro",
+                    url: TSM_Web_APi + "UnidadesMedidas/GetUnidadesMedidasByJsFiltro",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(filtro),
                     success: function (result) {
