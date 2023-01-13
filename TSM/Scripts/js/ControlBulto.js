@@ -279,11 +279,7 @@ var fn_Ini_ControlBulto = (xjson) => {
                     if (input.is("[name='txtCorte_Rollo']")) {
                         return input.val() !== "";
                     }
-                    if (input.is("[name='txtPO']")) {
-                        return input.val() !== "";
-                    }
-                    
-                    
+        
                     return true;
                 },
                 MsgLong1: function (input) {
@@ -576,7 +572,7 @@ let fn_Gen_Hb = () => {
                 IdMarca: KdoCmbGetValue($("#xcmbMarca")),
                 TrafficOn: $("#txtTO").val(),
                 NoReferenciaItem: $("#txtNRI").val(),
-                PO: $("#txtPO").val(),
+                PO: $("#txtPO").val() === "" ? null : $("#txtPO").val(),
                 IdUnidad: KdoCmbGetValue($("#xcmbIdUni"))
 
             }),
